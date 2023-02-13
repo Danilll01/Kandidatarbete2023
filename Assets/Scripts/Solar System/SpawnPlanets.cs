@@ -26,17 +26,20 @@ public class SpawnPlanets : MonoBehaviour
         bodies.Add(Sun.GetComponent<PlanetBody>());
         bodies[0].bodyName = "Sun";
         bodies[0].initialVelocity = new Vector3(0, 0, 0);
+        bodies[0].radius = 5000;
+        bodies[0].SetUp();
 
         for (int i = 1; i < numberOfPlanets + 1; i++)
         {
             GameObject planet = Instantiate(planetsPrefab);
             planet.transform.parent = planetsParent.transform;
-            planet.transform.position = new Vector3(0,0,5000*i);
+            planet.transform.position = new Vector3(0,0,10000*i);
             planet.gameObject.name = "Planet " + i;
             PlanetBody planetBody = planet.GetComponent<PlanetBody>();
             planetBody.GetComponent<Rigidbody>().position = planet.transform.position;
             planetBody.bodyName = "Planet " + i;
-            planetBody.initialVelocity = new Vector3(0,45,0);
+            planetBody.initialVelocity = new Vector3(100,0,0);
+            planetBody.SetUp();
             bodies.Add(planetBody);
         }
     }

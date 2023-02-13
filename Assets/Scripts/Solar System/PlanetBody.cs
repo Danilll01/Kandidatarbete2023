@@ -16,15 +16,6 @@ public class PlanetBody : MonoBehaviour
     public float mass;
     Rigidbody rb;
 
-    void Awake()
-    {
-        SetUp();
-        rb = GetComponent<Rigidbody>();
-        rb.mass = mass;
-        rb.position = transform.position;
-        velocity = initialVelocity;
-    }
-
     public void UpdateVelocity(PlanetBody[] allBodies, float timeStep)
     {
         foreach (var otherBody in allBodies)
@@ -54,13 +45,18 @@ public class PlanetBody : MonoBehaviour
 
     }
 
-    void SetUp()
+    public void SetUp()
     {
         mass = surfaceGravity * radius * radius / Universe.gravitationalConstant;
         meshHolder = transform.GetChild(0);
         meshHolder.localScale = Vector3.one * radius;
         gameObject.name = bodyName;
-        
+
+        rb = GetComponent<Rigidbody>();
+        rb.mass = mass;
+        rb.position = transform.position;
+        velocity = initialVelocity;
+
     }
 
     public Rigidbody Rigidbody
