@@ -20,7 +20,7 @@ jobs:
         run: echo "GITHUB_RUN_NUMBER_WITH_OFFSET=$(($NUM - 0))" >> $GITHUB_ENV
       - run: echo $GITHUB_RUN_NUMBER_WITH_OFFSET
     
-      - name: Get files
+      - name: Get repo files
         uses: actions/download-artifact@v3
         with:
           path: build
