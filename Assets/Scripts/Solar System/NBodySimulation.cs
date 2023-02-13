@@ -6,38 +6,15 @@ public class NBodySimulation : MonoBehaviour
 {
     private List<PlanetBody> bodies;
     private static NBodySimulation instance;
-    [SerializeField] private GameObject planetsPrefab;
-    [SerializeField] private GameObject planetsParent;
-    [SerializeField] private int numberOfPlanets;
+    private SpawnPlanets planetsSpawner;
 
-    void Awake()
+    void Start()
     {
-        bodies = new List<PlanetBody>();
-        GameObject Sun = Instantiate(planetsPrefab);
-        Sun.transform.parent = planetsParent.transform;
-        Sun.gameObject.name = "Sun";
-        bodies.Add(Sun.GetComponent<PlanetBody>());
-
-        for (int i = 0; i < numberOfPlanets; i++)
-        {
-            GameObject planet = Instantiate(planetsPrefab);
-            planet.transform.parent = planetsParent.transform;
-            bodies.Add(planet.GetComponent<PlanetBody>());
-        }
+        planetsSpawner = GetComponent<SpawnPlanets>();
+        bodies = planetsSpawner.bodies;
         Time.fixedDeltaTime = Universe.physicsTimeStep;
         Debug.Log("Setting fixedDeltaTime to: " + Universe.physicsTimeStep);
-        Setup();
-    }
 
-    void Setup()
-    {
-        bodies[0].bodyName = "Sun";
-        bodies[0].initialVelocity = new Vector3(0, 0, 0);
-        for (int i = 1; i < bodies.Count; i++)
-        {
-            bodies[i].gameObject.name = "Planet " + i;
-            bodies[i].bodyName = "Planet " + i;
-        }
     }
 
     void FixedUpdate()
