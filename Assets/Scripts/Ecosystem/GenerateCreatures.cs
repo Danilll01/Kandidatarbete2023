@@ -47,17 +47,18 @@ public class GenerateCreatures : MonoBehaviour
             if (Physics.Raycast(ray, out hit, distance))
             {
                 Debug.Log("Hit!");
-                //GameObject newObject = Instantiate(creature, hit.point, Quaternion.identity, gameObject.transform);
-                //newObject.transform.rotation = Quaternion.FromToRotation(newObject.transform.up, hit.normal) * newObject.transform.rotation;
 
-                //newObject.transform.rotation = Quaternion.FromToRotation(newObject.transform.position - planetCenter)
+                
+                for (int i = 0; i < 30; i++)
+                {
+                    Vector3 randPoint = Random.onUnitSphere * (planet.radius * 0.7f);
+                    //Debug.Log(randV);
+                    Debug.DrawLine(planetCenter, planetCenter + randPoint, Color.red, 10f);
 
-                Vector3 randV = Random.onUnitSphere * (planet.radius * 0.7f);
-                //Debug.Log(randV);
-                Debug.DrawLine(planetCenter, planetCenter + randV, Color.red, 10f);
-
-                Quaternion rotation = Quaternion.FromToRotation(Vector3.forward, hit.normal);
-                CreateRandomPack(randV, rotation);
+                    Quaternion rotation = Quaternion.FromToRotation(Vector3.forward, hit.normal);
+                    CreateRandomPack(randPoint, rotation);
+                }
+                
             }
 
             // This is how system random works where we dont share Random instances
