@@ -1,9 +1,6 @@
 run-name: Build project
 
-on: 
-  push:
-    branches:
-      - '#0.2-Automatiska-builds-i-github'
+on:
   pull_request:
     types: [closed]
   workflow_dispatch: {}
