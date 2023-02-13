@@ -67,6 +67,7 @@ MonoBehaviour:
   surfaceGravity: 10
   initialVelocity: {x: 0, y: 0, z: 0}
   bodyName: Planet
+  mass: 0
 --- !u!120 &2573983038883837091
 LineRenderer:
   m_ObjectHideFlags: 0
@@ -74,7 +75,7 @@ LineRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2474355628650455300}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1

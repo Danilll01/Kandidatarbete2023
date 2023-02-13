@@ -34,8 +34,9 @@ public class SpawnPlanets : MonoBehaviour
             planet.transform.position = new Vector3(0,0,5000*i);
             planet.gameObject.name = "Planet " + i;
             PlanetBody planetBody = planet.GetComponent<PlanetBody>();
+            planetBody.GetComponent<Rigidbody>().position = planet.transform.position;
             planetBody.bodyName = "Planet " + i;
-            planetBody.initialVelocity = new Vector3(0,100,0);
+            planetBody.initialVelocity = new Vector3(0,45,0);
             bodies.Add(planetBody);
         }
     }

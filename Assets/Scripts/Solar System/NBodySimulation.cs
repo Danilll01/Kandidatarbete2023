@@ -23,7 +23,6 @@ public class NBodySimulation : MonoBehaviour
         {
             Vector3 acceleration = CalculateAcceleration(bodies[i].Position, bodies[i]);
             bodies[i].UpdateVelocity(acceleration, Universe.physicsTimeStep);
-            //bodies[i].UpdateVelocity (bodies, Universe.physicsTimeStep);
         }
 
         for (int i = 0; i < bodies.Count; i++)

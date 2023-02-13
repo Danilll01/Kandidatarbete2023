@@ -354,7 +354,7 @@ PrefabInstance:
     - target: {fileID: 776431053636631548, guid: 93094628cce30c64195c2ae1633e7e60,
         type: 3}
       propertyPath: numberOfPlanets
-      value: 3
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 93094628cce30c64195c2ae1633e7e60, type: 3}
@@ -545,8 +545,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7525293063153615357, guid: 039e7cd4bf8332d47b1e9320cbd8f347,
         type: 3}
+      propertyPath: timeStep
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7525293063153615357, guid: 039e7cd4bf8332d47b1e9320cbd8f347,
+        type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7525293063153615357, guid: 039e7cd4bf8332d47b1e9320cbd8f347,
+        type: 3}
+      propertyPath: useThickLines
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7525293063153615357, guid: 039e7cd4bf8332d47b1e9320cbd8f347,
         type: 3}

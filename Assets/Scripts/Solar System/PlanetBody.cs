@@ -13,13 +13,15 @@ public class PlanetBody : MonoBehaviour
     Transform meshHolder;
 
     public Vector3 velocity { get; private set; }
-    public float mass { get; private set; }
+    public float mass;
     Rigidbody rb;
 
     void Awake()
     {
+        SetUp();
         rb = GetComponent<Rigidbody>();
         rb.mass = mass;
+        rb.position = transform.position;
         velocity = initialVelocity;
     }
 
@@ -52,12 +54,13 @@ public class PlanetBody : MonoBehaviour
 
     }
 
-    void OnValidate()
+    void SetUp()
     {
         mass = surfaceGravity * radius * radius / Universe.gravitationalConstant;
         meshHolder = transform.GetChild(0);
         meshHolder.localScale = Vector3.one * radius;
         gameObject.name = bodyName;
+        
     }
 
     public Rigidbody Rigidbody
