@@ -3,6 +3,9 @@ name: Build project
 on: 
   pull_request:
     types: [closed]
+  push:
+    branches:
+      - '#0.2-Automatiska-builds-i-github'
   workflow_dispatch:
 
 jobs:
