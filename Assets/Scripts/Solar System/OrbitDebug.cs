@@ -138,7 +138,7 @@ public class OrbitDebug : MonoBehaviour
         public VirtualBody(PlanetBody body)
         {
             position = body.transform.position;
-            velocity = body.initialVelocity;
+            velocity = body.velocity;
             mass = body.mass;
         }
     }

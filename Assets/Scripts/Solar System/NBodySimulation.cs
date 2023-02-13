@@ -7,11 +7,13 @@ public class NBodySimulation : MonoBehaviour
     [HideInInspector] public List<PlanetBody> bodies;
     private static NBodySimulation instance;
     private SpawnPlanets planetsSpawner;
+    private static PlanetBody sun;
 
     void Start()
     {
         planetsSpawner = GetComponent<SpawnPlanets>();
         bodies = planetsSpawner.bodies;
+        sun = bodies[0];
         Time.fixedDeltaTime = Universe.physicsTimeStep;
         Debug.Log("Setting fixedDeltaTime to: " + Universe.physicsTimeStep);
 
@@ -21,8 +23,8 @@ public class NBodySimulation : MonoBehaviour
     {
         for (int i = 0; i < bodies.Count; i++)
         {
-            Vector3 acceleration = CalculateAcceleration(bodies[i].Position, bodies[i]);
-            bodies[i].UpdateVelocity(acceleration, Universe.physicsTimeStep);
+            Vector3 velocity = CalculateVelocity(bodies[i]);
+            bodies[i].UpdateVelocity(velocity);
         }
 
         for (int i = 0; i < bodies.Count; i++)
@@ -32,20 +34,22 @@ public class NBodySimulation : MonoBehaviour
 
     }
 
-    public static Vector3 CalculateAcceleration(Vector3 point, PlanetBody ignoreBody = null)
+    public static Vector3 CalculateVelocity(PlanetBody body)
     {
-        Vector3 acceleration = Vector3.zero;
-        foreach (var body in Instance.bodies)
+        Vector3 velocity = Vector3.zero;
+        if (body.bodyName != "Sun")
         {
-            if (body != ignoreBody)
-            {
-                float sqrDst = (body.Position - point).sqrMagnitude;
-                Vector3 forceDir = (body.Position - point).normalized;
-                acceleration += forceDir * Universe.gravitationalConstant * body.mass / sqrDst;
-            }
+            // Get the distance between the two object centers .
+            MeshRenderer sunRenderer = sun.GetComponentInChildren<MeshRenderer>();
+            MeshRenderer bodyRenderer = body.GetComponentInChildren<MeshRenderer>();
+            Vector2 dist = new Vector2(sunRenderer.bounds.center.x - bodyRenderer.bounds.center.x, sunRenderer.bounds.center.z - bodyRenderer.bounds.center.z);
+            float r = dist.magnitude;
+            Vector2 tdist = new Vector2(dist.y, -dist.x).normalized; // 2D vector prependicular to the dist vector .
+            float force = Mathf.Sqrt(Universe.gravitationalConstant * ((body.mass + sun.mass) / r)); // Calculate the velocity .
+            velocity = tdist * force;
         }
 
-        return acceleration;
+        return velocity;
     }
 
     public static PlanetBody[] Bodies

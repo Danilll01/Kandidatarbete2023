@@ -31,14 +31,16 @@ public class PlanetBody : MonoBehaviour
         }
     }
 
-    public void UpdateVelocity(Vector3 acceleration, float timeStep)
+    public void UpdateVelocity(Vector3 newVelocity)
     {
-        velocity += acceleration * timeStep;
+        velocity = newVelocity;
+
     }
+
 
     public void UpdatePosition(float timeStep)
     {
-        if (velocity.magnitude > 0)
+        if (velocity.magnitude > 0 && bodyName != "Sun")
         {
             rb.MovePosition(rb.position + velocity * timeStep);
         }
