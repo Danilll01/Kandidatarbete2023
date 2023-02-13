@@ -1,8 +1,5 @@
 run-name: Acquire activation file
 on:
-  push:
-    branches:
-      - '#0.2-Automatiska-builds-i-github'
   workflow_dispatch:
 jobs:
   activation:
