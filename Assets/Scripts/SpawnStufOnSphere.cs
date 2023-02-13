@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Burst.CompilerServices;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -8,17 +9,32 @@ using UnityEngine;
 
 public class SpawnStufOnSphere : MonoBehaviour
 {
-	public Object prefab;
-	public Object prefab1;
-	public Object prefab2;
+    [SerializeField] private Object prefab;
+    [SerializeField] private Object prefab1;
+    [SerializeField] private Object prefab2;
     // Start is called before the first frame update
     void Start()
     {
+
+        int layerMask = 1 << 8;
+        layerMask = ~layerMask;
+
         Perlin.SetSeed("1kdjfghld");
 		for(int i = 0; i < 1000; i++)
-        { 
+        {
 
-            Vector3 pos = Random.onUnitSphere*100;
+            Vector3 pos = Random.onUnitSphere*150;
+
+            RaycastHit hit;
+            if (Physics.Raycast(pos, -pos, out hit, 100.0f))
+            {
+                pos = hit.point;
+            }
+            else
+            {
+                continue;
+            }
+
             Quaternion rotation = Quaternion.LookRotation(pos) * Quaternion.Euler(90, 0, 0);
             float noise = Perlin.Noise(pos/5);
             Object use;
@@ -37,7 +53,7 @@ public class SpawnStufOnSphere : MonoBehaviour
             }
 
             Object newTree = Instantiate(use, pos, rotation);
-            newTree.GetComponent<Transform>().parent = this.transform;
+            //newTree.GetComponent<Transform>().parent = this.transform;
         }
     }
 
