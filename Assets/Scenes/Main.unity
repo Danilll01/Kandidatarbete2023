@@ -267,6 +267,18 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 210303239}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &289872331 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 776431053636631426, guid: 93094628cce30c64195c2ae1633e7e60,
+    type: 3}
+  m_PrefabInstance: {fileID: 882231451}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb718a60a5672524cada6f0b0df17258, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &882231451
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -339,6 +351,11 @@ PrefabInstance:
       propertyPath: planetsParent
       value: 
       objectReference: {fileID: 210303240}
+    - target: {fileID: 776431053636631548, guid: 93094628cce30c64195c2ae1633e7e60,
+        type: 3}
+      propertyPath: numberOfPlanets
+      value: 3
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 93094628cce30c64195c2ae1633e7e60, type: 3}
 --- !u!1 &1212578161
@@ -526,6 +543,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: OrbitDebugHandler
       objectReference: {fileID: 0}
+    - target: {fileID: 7525293063153615357, guid: 039e7cd4bf8332d47b1e9320cbd8f347,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7525293063153615357, guid: 039e7cd4bf8332d47b1e9320cbd8f347,
+        type: 3}
+      propertyPath: nBodySimulation
+      value: 
+      objectReference: {fileID: 289872331}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 039e7cd4bf8332d47b1e9320cbd8f347, type: 3}
 --- !u!1 &1676012109

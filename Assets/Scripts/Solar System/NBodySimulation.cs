@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class NBodySimulation : MonoBehaviour
 {
-    private List<PlanetBody> bodies;
+    [HideInInspector] public List<PlanetBody> bodies;
     private static NBodySimulation instance;
     private SpawnPlanets planetsSpawner;
 

@@ -13,7 +13,6 @@ public class SpawnPlanets : MonoBehaviour
 
     void Awake()
     {
-        
         Setup();
     }
 
@@ -32,9 +31,11 @@ public class SpawnPlanets : MonoBehaviour
         {
             GameObject planet = Instantiate(planetsPrefab);
             planet.transform.parent = planetsParent.transform;
+            planet.transform.position = new Vector3(0,0,5000*i);
             planet.gameObject.name = "Planet " + i;
             PlanetBody planetBody = planet.GetComponent<PlanetBody>();
             planetBody.bodyName = "Planet " + i;
+            planetBody.initialVelocity = new Vector3(0,100,0);
             bodies.Add(planetBody);
         }
     }
