@@ -14,6 +14,14 @@ public class MarchingCubes
 
     Mesh mesh;
 
+    /// <summary>
+    /// Initializes the MarchingCubes script
+    /// </summary>
+    /// <param name="mesh"></param>
+    /// <param name="meshGenerator"></param>
+    /// <param name="threshold"></param>
+    /// <param name="resolution"></param>
+    /// <param name="radius"></param>
     public MarchingCubes(Mesh mesh, ComputeShader meshGenerator, float threshold, int resolution, float radius)
     {
         this.mesh = mesh;
@@ -24,12 +32,17 @@ public class MarchingCubes
         this.radius = radius;
     }
 
+    /// <summary>
+    /// Generate the mesh from the given parameters in the constructor
+    /// </summary>
     public void generateMesh()
     {
+        // Calculate the total number of voxels and the max triangle count possible
         int numVoxelsPerAxis = (resolution << 3) - 1;
         int numVoxels = numVoxelsPerAxis * numVoxelsPerAxis * numVoxelsPerAxis;
         int maxTriangleCount = numVoxels * 5;
 
+        // Set up buffers for the triangles
         ComputeBuffer trianglesBuffer = new ComputeBuffer(maxTriangleCount, sizeof(int) * 3 * 3, ComputeBufferType.Append);
         trianglesBuffer.SetCounterValue(0);
 
@@ -46,12 +59,14 @@ public class MarchingCubes
         Triangle[] triangles = new Triangle[length];
         trianglesBuffer.GetData(triangles, 0, 0, length);
 
+        // Release all buffers
         trianglesBuffer.Release();
 
         // Process our data from the compute shader
         int[] meshTriangles = new int[length * 3];
         Vector3[] meshVertices = new Vector3[length * 3];
 
+        // Set values for the meshtriangles and meshvertices arrays
         for (int i = 0; i < length; i++)
         {
             for (int j = 0; j < 3; j++)
@@ -61,12 +76,14 @@ public class MarchingCubes
             }
         }
 
+        // Set values in mesh
         mesh.Clear();
         mesh.vertices = meshVertices;
         mesh.triangles = meshTriangles;
         mesh.RecalculateBounds();
     }
 
+    // Get the length buffer of type append
     private int getLengthBuffer(ref ComputeBuffer buffer)
     {
         ComputeBuffer counter = new ComputeBuffer(1, sizeof(int), ComputeBufferType.Raw);
@@ -74,10 +91,10 @@ public class MarchingCubes
         ComputeBuffer.CopyCount(buffer, counter, 0);
         counter.GetData(count);
         counter.Release();
-        MonoBehaviour.print("We have: " + count[0] + " triangles");
         return count[0];
     }
 
+    // Triangle struct with three points
     struct Triangle
     {
         public Vector3 vertexA, vertexB, vertexC;

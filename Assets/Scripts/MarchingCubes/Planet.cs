@@ -23,12 +23,14 @@ public class Planet : MonoBehaviour
 
     void Initialize()
     {
+        // Get meshfilter and create new mesh if it doesn't exist
         MeshFilter meshFilter = meshObj.GetComponent<MeshFilter>();
         if(meshFilter.sharedMesh == null)
         {
             meshFilter.sharedMesh = new Mesh();
         }
 
+        // Initialize the meshgenerator
         if (meshGenerator != null)
         {
             marchingCubes = new MarchingCubes(meshFilter.sharedMesh, meshGenerator, threshold, resolution, radius);

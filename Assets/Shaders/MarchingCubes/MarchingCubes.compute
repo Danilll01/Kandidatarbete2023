@@ -90,12 +90,14 @@ void GenerateMesh(uint3 id : SV_DispatchThreadID)
     }
 }
 
+// Interpolate between two points
 float3 interpolateVerts(float4 v1, float4 v2)
 {
     float t = (threshold - v1.w) / (v2.w - v1.w);
     return v1.xyz + t * (v2.xyz - v1.xyz);
 }
 
+// Get an index from the coord given
 int indexFromCoord(uint x, uint y, uint z)
 {
     return x + y * resolution + z * resolution * resolution;
