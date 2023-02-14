@@ -80,7 +80,7 @@ public class GenerateCreatures : MonoBehaviour
 
                 // Get correct rotation from the normal of the hit point
                 Quaternion rotation = Quaternion.FromToRotation(Vector3.forward, hit.normal);
-                CreateRandomPack(randPoint, rotation);
+                CreateRandomPack(planetCenter + randPoint, rotation);
 
                 packPositions[i] = hit.point;
             }
@@ -101,7 +101,7 @@ public class GenerateCreatures : MonoBehaviour
         {
             Vector3 randomOrigin = centerPoint + rotation * Random.insideUnitCircle * packRadius;
 
-            Ray ray = new(randomOrigin, -(randomOrigin - planetCenter));
+            Ray ray = new(randomOrigin, planetCenter - randomOrigin);
             RaycastHit hit;
             
             // Registered a hit
