@@ -12,6 +12,10 @@ public class TextureViewer3D : MonoBehaviour {
     [SerializeField] private RenderTexture renderTextureSimple;
     [SerializeField] private int numChunks = 4;
     [SerializeField] private int numPointsPerAxis = 10;
+    public float boundsSize = 10;
+    public float noiseScale = 1f;
+    public float noiseHeightMultiplier = 1f;
+
     [SerializeField] private ComputeShader shader;
 
     private RenderTexture renderTexture;
@@ -23,7 +27,10 @@ public class TextureViewer3D : MonoBehaviour {
         material = GetComponentInChildren<MeshRenderer>().material;
         int size = numChunks * (numPointsPerAxis - 1) + 1;
         Create3DTexture(ref renderTexture, size, "VisulizeArray");
-        
+
+        // Set textures on compute shaders
+        shader.SetTexture(0, "DensityTexture", renderTexture);
+
     }
 
     public void Display() { }
@@ -32,7 +39,21 @@ public class TextureViewer3D : MonoBehaviour {
     void Update() {
         material.SetFloat("sliceDepth", sliceDepth);
         //material.SetTexture("DisplayTexture", FindObjectOfType<GenTest>().rawDensityTexture);
-        material.SetTexture("DisplayTexture", renderTextureSimple);
+        material.SetTexture("DisplayTexture", renderTexture);
+
+    }
+
+    void ComputeDensity() {
+        // Get points (each point is a vector4: xyz = position, w = density)
+        int textureSize = renderTexture.width;
+
+        shader.SetInt("textureSize", textureSize);
+
+        shader.SetFloat("planetSize", boundsSize);
+        shader.SetFloat("noiseHeightMultiplier", noiseHeightMultiplier);
+        shader.SetFloat("noiseScale", noiseScale);
+
+        Dispatch(shader, textureSize, textureSize, textureSize);
 
     }
 
@@ -59,6 +80,37 @@ public class TextureViewer3D : MonoBehaviour {
         texture.filterMode = FilterMode.Bilinear;
         texture.name = name;
     }
+
+
+    // Creates and sets up the buffers
+    private void CreateAndSetBuffer<T>(ref ComputeBuffer buffer, T[] data, ComputeShader cs, string nameID, int kernelIndex = 0) {
+        int stride = System.Runtime.InteropServices.Marshal.SizeOf(typeof(T));
+        CreateStructuredBuffer<T>(ref buffer, data.Length);
+        buffer.SetData(data);
+        cs.SetBuffer(kernelIndex, nameID, buffer);
+    }
+
+    private void CreateStructuredBuffer<T>(ref ComputeBuffer buffer, int count) {
+        int stride = System.Runtime.InteropServices.Marshal.SizeOf(typeof(T));
+        bool createNewBuffer = buffer == null || !buffer.IsValid() || buffer.count != count || buffer.stride != stride;
+        if (createNewBuffer) {
+            Release(buffer);
+            buffer = new ComputeBuffer(count, stride);
+        }
+    }
+
+    /// Releases supplied buffer/s if not null
+	public static void Release(params ComputeBuffer[] buffers) {
+        for (int i = 0; i < buffers.Length; i++) {
+            if (buffers[i] != null) {
+                buffers[i].Release();
+            }
+        }
+    }
+
+
+
+    // Dispatches buffer
 
     /// Convenience method for dispatching a compute shader.
 	/// It calculates the number of thread groups based on the number of iterations needed.
