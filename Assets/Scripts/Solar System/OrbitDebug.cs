@@ -1,39 +1,33 @@
 using UnityEngine;
 
-[ExecuteInEditMode]
 public class OrbitDebug : MonoBehaviour
 {
+    public NBodySimulation nBodySimulation;
 
     public int numSteps = 1000;
     public float timeStep = 0.1f;
     public bool usePhysicsTimeStep;
 
-    public bool relativeToBody;
-    public PlanetBody centralBody;
+    private PlanetBody centralBody;
     public float width = 100;
     public bool useThickLines;
 
-    void Start()
-    {
-        if (Application.isPlaying)
-        {
-            HideOrbits();
-        }
-        
-    }
-
     void Update()
     {
-
-        if (!Application.isPlaying)
+        if (centralBody == null)
+        {
+            centralBody = nBodySimulation.bodies[0];
+        }
+        else
         {
             DrawOrbits();
+
         }
     }
 
     void DrawOrbits()
     {
-        PlanetBody[] bodies = FindObjectsOfType<PlanetBody>();
+        PlanetBody[] bodies = nBodySimulation.bodies.ToArray();
         var virtualBodies = new VirtualBody[bodies.Length];
         var drawPoints = new Vector3[bodies.Length][];
         int referenceFrameIndex = 0;
@@ -45,7 +39,7 @@ public class OrbitDebug : MonoBehaviour
             virtualBodies[i] = new VirtualBody(bodies[i]);
             drawPoints[i] = new Vector3[numSteps];
 
-            if (bodies[i] == centralBody && relativeToBody)
+            if (bodies[i] == centralBody)
             {
                 referenceFrameIndex = i;
                 referenceBodyInitialPosition = virtualBodies[i].position;
@@ -55,7 +49,7 @@ public class OrbitDebug : MonoBehaviour
         // Simulate
         for (int step = 0; step < numSteps; step++)
         {
-            Vector3 referenceBodyPosition = (relativeToBody) ? virtualBodies[referenceFrameIndex].position : Vector3.zero;
+            Vector3 referenceBodyPosition = virtualBodies[referenceFrameIndex].position;
             // Update velocities
             for (int i = 0; i < virtualBodies.Length; i++)
             {
@@ -66,12 +60,10 @@ public class OrbitDebug : MonoBehaviour
             {
                 Vector3 newPos = virtualBodies[i].position + virtualBodies[i].velocity * timeStep;
                 virtualBodies[i].position = newPos;
-                if (relativeToBody)
-                {
-                    var referenceFrameOffset = referenceBodyPosition - referenceBodyInitialPosition;
-                    newPos -= referenceFrameOffset;
-                }
-                if (relativeToBody && i == referenceFrameIndex)
+                var referenceFrameOffset = referenceBodyPosition - referenceBodyInitialPosition;
+                newPos -= referenceFrameOffset;  
+                
+                if (i == referenceFrameIndex)
                 {
                     newPos = referenceBodyInitialPosition;
                 }
@@ -127,17 +119,6 @@ public class OrbitDebug : MonoBehaviour
             acceleration += forceDir * Universe.gravitationalConstant * virtualBodies[j].mass / sqrDst;
         }
         return acceleration;
-    }
-
-    void HideOrbits()
-    {
-        PlanetBody[] bodies = FindObjectsOfType<PlanetBody>();
-        // Draw paths
-        for (int bodyIndex = 0; bodyIndex < bodies.Length; bodyIndex++)
-        {
-            var lineRenderer = bodies[bodyIndex].gameObject.GetComponentInChildren<LineRenderer>();
-            lineRenderer.positionCount = 0;
-        }
     }
 
     void OnValidate()
