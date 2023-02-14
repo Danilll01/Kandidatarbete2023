@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Planet : MonoBehaviour
+public class TempPlanet : MonoBehaviour
 {
     [Range(1, 8)]
     public int resolution = 2;

@@ -54,9 +54,9 @@ public class SpawnFoliage : MonoBehaviour
 
             if (Physics.Raycast(position, -position, out hit, rayLenght))
             {
-                if (hit.transform.tag == "Foliage" ||
-                    Mathf.Abs(Vector3.Angle(position, hit.normal)) > 30 ||
-                    hit.distance < (radius - planetRadius) - treeLine)
+                if (hit.transform.tag == "Foliage" ||                         // Checks if it doesnt hit ground
+                    Mathf.Abs(Vector3.Angle(position, hit.normal)) > 30 ||    // Checks the angle
+                    hit.distance < (radius - planetRadius) - treeLine)        // Checks the height
                 {
                     // Illegal spawn point
                     i--;
@@ -72,6 +72,7 @@ public class SpawnFoliage : MonoBehaviour
 
             // Sets spawning placement, rotation and prefab
             Quaternion rotation = Quaternion.LookRotation(position) * Quaternion.Euler(90, 0, 0);
+            rotation *= Quaternion.Euler(0, Random.value * 360, 0);
             int use;
             if(hit.distance < (radius - planetRadius) - treeLine / 3) use = (Random.value > 0.5f) ? 0 : 1;
             else use = (Random.value > 0.5f) ? 2 : 3;
@@ -93,9 +94,9 @@ public class SpawnFoliage : MonoBehaviour
             position = Random.onUnitSphere * radius;
             if (Physics.Raycast(position, -position, out hit, rayLenght))
             {
-                if (hit.transform.tag == "Foliage" || 
-                    Mathf.Abs(Vector3.Angle(position, hit.normal)) > spawningAngleLimit + 10 ||
-                    hit.distance < (radius - planetRadius) - treeLine - 10)
+                if (hit.transform.tag == "Foliage" ||                                               // Checks if it doesnt hit ground
+                    Mathf.Abs(Vector3.Angle(position, hit.normal)) > spawningAngleLimit + 10 ||     // Checks the angle
+                    hit.distance < (radius - planetRadius) - treeLine - 10)                         // Checks the height
                 {
                     // Illegal spawn point
                     i--;
@@ -112,6 +113,7 @@ public class SpawnFoliage : MonoBehaviour
 
             // Sets spawning placement, rotation and prefab
             Quaternion rotation = Quaternion.LookRotation(hit.normal) * Quaternion.Euler(90, 0, 0);
+            rotation *= Quaternion.Euler(0, Random.value * 360, 0);
             int use = (Random.value > 0.5f) ? 1 : 0;
             Object newBush = Instantiate(bushes[use], position, rotation);
             newBush.GetComponent<Transform>().parent = this.transform;
@@ -133,9 +135,9 @@ public class SpawnFoliage : MonoBehaviour
             position = Random.onUnitSphere * radius;
             if (Physics.Raycast(position, -position, out hit, rayLenght))
             {
-                if (hit.transform.tag == "Foliage" || 
-                    Mathf.Abs(Vector3.Angle(position, hit.normal)) < spawningAngleLimit)
-                {
+                if (hit.transform.tag == "Foliage" ||                                         // Checks if it doesnt hit ground
+                    Mathf.Abs(Vector3.Angle(position, hit.normal)) < spawningAngleLimit)      // Checks the angle
+                {                                                                             
                     // Illegal spawn point
                     i--;
                     continue;
@@ -150,6 +152,7 @@ public class SpawnFoliage : MonoBehaviour
             }
 
             Quaternion rotation = Quaternion.LookRotation(hit.normal) * Quaternion.Euler(90, 0, 0);
+            rotation *= Quaternion.Euler(0, Random.value * 360, 0);
             int use = (Random.value > 0.5f) ? 1 : 0;
             Object newBush = Instantiate(stones[use], position, rotation);
             newBush.GetComponent<Transform>().parent = this.transform;
