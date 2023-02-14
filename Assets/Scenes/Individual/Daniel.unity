@@ -190,31 +190,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Planet
       objectReference: {fileID: 0}
-    - target: {fileID: 2474355628650455301, guid: e968ae35fe5497846ac168b2a3675f3e,
-        type: 3}
-      propertyPath: radius
-      value: 10000
-      objectReference: {fileID: 0}
-    - target: {fileID: 2474355629006401318, guid: e968ae35fe5497846ac168b2a3675f3e,
-        type: 3}
-      propertyPath: m_LocalScale.x
-      value: 10000
-      objectReference: {fileID: 0}
-    - target: {fileID: 2474355629006401318, guid: e968ae35fe5497846ac168b2a3675f3e,
-        type: 3}
-      propertyPath: m_LocalScale.y
-      value: 10000
-      objectReference: {fileID: 0}
-    - target: {fileID: 2474355629006401318, guid: e968ae35fe5497846ac168b2a3675f3e,
-        type: 3}
-      propertyPath: m_LocalScale.z
-      value: 10000
-      objectReference: {fileID: 0}
-    - target: {fileID: 4288861829289013952, guid: e968ae35fe5497846ac168b2a3675f3e,
-        type: 3}
-      propertyPath: maxPackCount
-      value: 1000
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e968ae35fe5497846ac168b2a3675f3e, type: 3}
 --- !u!1 &1205317317

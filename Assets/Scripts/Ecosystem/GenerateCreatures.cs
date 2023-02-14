@@ -11,23 +11,25 @@ using UnityEngine.UIElements;
 
 public class GenerateCreatures : MonoBehaviour
 {
-    PlanetBody planet;
-    Vector3 planetCenter;
-
     [SerializeField] GameObject creature;
-    [SerializeField] int seed = 1234;
+    [SerializeField] private int seed = 1234;
 
     [Header("Creature Generation")]
-    [SerializeField] int maxPackCount = 100;
-    [SerializeField] int minPackSize = 1;
-    [SerializeField] int maxPackSize = 10;
+    [SerializeField] private int maxPackCount = 100;
+    [SerializeField] private int minPackSize = 1;
+    [SerializeField] private int maxPackSize = 10;
+    [SerializeField] private float packRadius = 50f;
+    [SerializeField] private float terrainSteepnesAngle = 30f;
 
+    [Header("Misc")]
+    [SerializeField] private bool DEBUG = true;
 
-    private bool DEBUG = true;
+    private PlanetBody planet;
+    private Vector3 planetCenter;
+
     private float creatureSize = 20f; // Make so it fit creature size
-    private float packRadius = 50f;
     private GameObject creatureParent;
-
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -44,12 +46,6 @@ public class GenerateCreatures : MonoBehaviour
         Random.InitState(seed);
 
         GenerateCreaturesOnPlanet();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 
     private void GenerateCreaturesOnPlanet()
@@ -125,6 +121,11 @@ public class GenerateCreatures : MonoBehaviour
                     continue;
                 }
 
+                if (AngleNotTooSteep(randomOrigin, hit.point, hit.normal))
+                {
+                    continue;
+                }
+
                 // Creates a rotation for the new object that always is rotated towards the planet
                 //Quaternion rotation2 = Quaternion.FromToRotation(Vector3.forward, hit.normal);
                 Quaternion rotation2 = Quaternion.LookRotation(hit.point) * Quaternion.Euler(90, 0, 0);
@@ -152,5 +153,19 @@ public class GenerateCreatures : MonoBehaviour
             }
         }
         return false;
+    }
+
+    // Calculates if the angle between three points is too steep
+    private bool AngleNotTooSteep(Vector3 spawnPos, Vector3 groundPos, Vector3 groundNormal)
+    {
+        // Calculate the angle between the normal and the vector from the spawn point to the ground point
+        float angle = Vector3.Angle(groundNormal, spawnPos - groundPos);
+        Debug.Log("Angle: " + angle);
+        // If the angle is too steep, return false
+        if (angle > terrainSteepnesAngle)
+        {
+            return false;
+        }
+        return true;
     }
 }
