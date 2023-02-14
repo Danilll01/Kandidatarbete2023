@@ -100183,6 +100183,9 @@ MonoBehaviour:
   maxPackCount: 100
   minPackSize: 1
   maxPackSize: 10
+  packRadius: 50
+  terrainSteepnesAngle: 30
+  DEBUG: 1
 --- !u!1 &2474355629006401317
 GameObject:
   m_ObjectHideFlags: 0

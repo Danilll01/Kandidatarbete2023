@@ -101,7 +101,7 @@ public class GenerateCreatures : MonoBehaviour
         {
             Vector3 randomOrigin = centerPoint + rotation * Random.insideUnitCircle * packRadius;
 
-            Ray ray = new Ray(randomOrigin, -centerPoint);
+            Ray ray = new(randomOrigin, -(randomOrigin - planetCenter));
             RaycastHit hit;
             
             // Registered a hit
@@ -121,8 +121,9 @@ public class GenerateCreatures : MonoBehaviour
                     continue;
                 }
 
-                if (AngleNotTooSteep(randomOrigin, hit.point, hit.normal))
+                if (AngleTooSteep(randomOrigin, hit.point, hit.normal))
                 {
+                    if (DEBUG) Debug.Log("Skip");
                     continue;
                 }
 
@@ -156,7 +157,7 @@ public class GenerateCreatures : MonoBehaviour
     }
 
     // Calculates if the angle between three points is too steep
-    private bool AngleNotTooSteep(Vector3 spawnPos, Vector3 groundPos, Vector3 groundNormal)
+    private bool AngleTooSteep(Vector3 spawnPos, Vector3 groundPos, Vector3 groundNormal)
     {
         // Calculate the angle between the normal and the vector from the spawn point to the ground point
         float angle = Vector3.Angle(groundNormal, spawnPos - groundPos);
@@ -164,8 +165,8 @@ public class GenerateCreatures : MonoBehaviour
         // If the angle is too steep, return false
         if (angle > terrainSteepnesAngle)
         {
-            return false;
+            return true;
         }
-        return true;
+        return false;
     }
 }
