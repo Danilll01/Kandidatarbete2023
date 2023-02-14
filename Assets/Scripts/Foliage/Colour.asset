@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: Colour
   m_EditorClassIdentifier: 
   foldOut: 1
-  planetColor: {r: 0.766962, g: 1, b: 0.5235849, a: 0}
+  planetColor: {r: 0.46264178, g: 0.6320754, b: 0.28324133, a: 0}
