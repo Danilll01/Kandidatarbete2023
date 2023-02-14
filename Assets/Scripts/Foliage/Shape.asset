@@ -15,6 +15,6 @@ MonoBehaviour:
   foldOut: 1
   planetRadius: 500
   seed: "asddfggldf\xF6gdf"
-  frequency: 4.5
-  magnitude: 0.94
-  seperation: 0.34
+  frequency: 3.6
+  magnitude: 1.02
+  seperation: 0.12
