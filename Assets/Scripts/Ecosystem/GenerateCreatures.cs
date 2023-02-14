@@ -5,6 +5,9 @@ using System;
 using Random = UnityEngine.Random;
 using Unity.VisualScripting;
 using static UnityEditor.PlayerSettings;
+using System.Linq;
+using Unity.Burst.CompilerServices;
+using UnityEngine.UIElements;
 
 public class GenerateCreatures : MonoBehaviour
 {
@@ -21,6 +24,7 @@ public class GenerateCreatures : MonoBehaviour
 
 
     private bool DEBUG = true;
+    private float creatureSize = 20f; // Make so it fit creature size
 
     // Start is called before the first frame update
     void Start()
@@ -81,7 +85,7 @@ public class GenerateCreatures : MonoBehaviour
         int packSize = Random.Range(minPackSize, maxPackSize);
 
 
-        
+        Vector3[] positions = new Vector3[maxPackCount];
 
         // Create the pack
         for (int i = 0; i < packSize; i++)
@@ -101,7 +105,9 @@ public class GenerateCreatures : MonoBehaviour
                     continue;
                 }
 
-                
+                // Check if "hit.point" is close to a point in positions
+                if (CloseToCreatureInPack(positions, hit.point)) continue;
+               
 
                 // Creates a rotation for the new object that always is rotated towards the planet
                 //Quaternion rotation2 = Quaternion.FromToRotation(Vector3.forward, hit.normal);
@@ -111,12 +117,25 @@ public class GenerateCreatures : MonoBehaviour
 
                 if (DEBUG) Debug.DrawLine(randomOrigin, hit.point, Color.cyan, 10f);
 
-                
+                positions[i] = hit.point;
             }
 
             // Draw casted ray
             //Debug.DrawRay(ray.origin, -centerPoint, Color.blue, 20f, false);
-            
+
         }
+    }
+
+    private bool CloseToCreatureInPack(Vector3[] positions, Vector3 newPoint)
+    {
+        for (int j = 0; j < positions.Count(); j++)
+        {
+            if (Vector3.Distance(newPoint, positions[j]) < creatureSize)
+            {
+                if (DEBUG) Debug.Log("Too close to another creature");
+                return true;
+            }
+        }
+        return false;
     }
 }
