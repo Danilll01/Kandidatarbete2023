@@ -1,13 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using System;
 using Random = UnityEngine.Random;
-using Unity.VisualScripting;
-using static UnityEditor.PlayerSettings;
 using System.Linq;
-using Unity.Burst.CompilerServices;
-using UnityEngine.UIElements;
 
 public class GenerateCreatures : MonoBehaviour
 {
@@ -30,7 +24,6 @@ public class GenerateCreatures : MonoBehaviour
     private float creatureSize = 20f; // Make so it fit creature size
     private GameObject creatureParent;
     
-    // Start is called before the first frame update
     void Start()
     {
         planet = GetComponent<PlanetBody>();
@@ -48,6 +41,7 @@ public class GenerateCreatures : MonoBehaviour
         GenerateCreaturesOnPlanet();
     }
 
+    // Raycasts where all the packs should be created and calls CreateRandomPack to create the packs
     private void GenerateCreaturesOnPlanet()
     {
         // How far do we raycast
@@ -87,13 +81,14 @@ public class GenerateCreatures : MonoBehaviour
         }
     }
 
+    // Raycasts around the center point of a pack and creates a random amount of creatures around that point
     private void CreateRandomPack(Vector3 centerPoint, Quaternion rotation)
     {
         
         // How many creatures in this pack
         int packSize = Random.Range(minPackSize, maxPackSize);
 
-
+        // Used to keep track of all creature positions in a pack
         Vector3[] positions = new Vector3[packSize];
 
         // Create the pack
@@ -107,7 +102,7 @@ public class GenerateCreatures : MonoBehaviour
             // Registered a hit
             if (Physics.Raycast(ray, out hit, planet.radius))
             {
-                
+                // Check if the hit colliding with a creature
                 if (hit.transform.CompareTag("Creature"))
                 {
                     if (DEBUG) Debug.Log("Hit creature");
@@ -121,9 +116,10 @@ public class GenerateCreatures : MonoBehaviour
                     continue;
                 }
 
+                // Check if the terrain is too steep to place a creature on 
                 if (AngleTooSteep(randomOrigin, hit.point, hit.normal))
                 {
-                    if (DEBUG) Debug.Log("Skip");
+                    if (DEBUG) Debug.Log("Angle too steep");
                     continue;
                 }
 
@@ -137,9 +133,6 @@ public class GenerateCreatures : MonoBehaviour
 
                 positions[i] = hit.point;
             }
-
-            // Draw casted ray
-            //Debug.DrawRay(ray.origin, -centerPoint, Color.blue, 20f, false);
 
         }
     }
