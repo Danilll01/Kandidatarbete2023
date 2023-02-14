@@ -13,7 +13,7 @@ public class SpawnFoliage : MonoBehaviour
 { 
 
     // Temporary while testing
-    [SerializeField] private float radius;
+    [SerializeField] private float rayBallRadius;
     [SerializeField] private float planetRadius;
     [SerializeField] private float rayLenght;
     [SerializeField] private float spawningAngleLimit;
@@ -50,13 +50,13 @@ public class SpawnFoliage : MonoBehaviour
         for (int i = 0; i < treeLimit; i++)
         {
             // Creates a ball around the planet which shoots rays to check if it's legal to spawn foliage
-            position = Random.onUnitSphere * radius;
+            position = Random.onUnitSphere * rayBallRadius;
 
             if (Physics.Raycast(position, -position, out hit, rayLenght))
             {
                 if (hit.transform.tag == "Foliage" ||                         // Checks if it doesnt hit ground
                     Mathf.Abs(Vector3.Angle(position, hit.normal)) > 30 ||    // Checks the angle
-                    hit.distance < (radius - planetRadius) - treeLine)        // Checks the height
+                    hit.distance < (rayBallRadius - planetRadius) - treeLine)        // Checks the height
                 {
                     // Illegal spawn point
                     i--;
@@ -74,7 +74,7 @@ public class SpawnFoliage : MonoBehaviour
             Quaternion rotation = Quaternion.LookRotation(position) * Quaternion.Euler(90, 0, 0);
             rotation *= Quaternion.Euler(0, Random.value * 360, 0);
             int use;
-            if(hit.distance < (radius - planetRadius) - treeLine / 3) use = (Random.value > 0.5f) ? 0 : 1;
+            if(hit.distance < (rayBallRadius - planetRadius) - treeLine / 3) use = (Random.value > 0.5f) ? 0 : 1;
             else use = (Random.value > 0.5f) ? 2 : 3;
             Object newTree = Instantiate(trees[use], position, rotation);
             newTree.GetComponent<Transform>().parent = this.transform;
@@ -91,12 +91,12 @@ public class SpawnFoliage : MonoBehaviour
         for (int i = 0; i < bushLimit; i++)
         {
             // Creates a ball around the planet which shoots rays to check if it's legal to spawn foliage
-            position = Random.onUnitSphere * radius;
+            position = Random.onUnitSphere * rayBallRadius;
             if (Physics.Raycast(position, -position, out hit, rayLenght))
             {
                 if (hit.transform.tag == "Foliage" ||                                               // Checks if it doesnt hit ground
                     Mathf.Abs(Vector3.Angle(position, hit.normal)) > spawningAngleLimit + 10 ||     // Checks the angle
-                    hit.distance < (radius - planetRadius) - treeLine - 10)                         // Checks the height
+                    hit.distance < (rayBallRadius - planetRadius) - treeLine - 10)                         // Checks the height
                 {
                     // Illegal spawn point
                     i--;
@@ -132,7 +132,7 @@ public class SpawnFoliage : MonoBehaviour
         for (int i = 0; i < stoneLimit; i++)
         {
             // Creates a ball around the planet which shoots rays to check if it's legal to spawn foliage
-            position = Random.onUnitSphere * radius;
+            position = Random.onUnitSphere * rayBallRadius;
             if (Physics.Raycast(position, -position, out hit, rayLenght))
             {
                 if (hit.transform.tag == "Foliage" ||                                         // Checks if it doesnt hit ground
