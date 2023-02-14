@@ -25,6 +25,7 @@ public class GenerateCreatures : MonoBehaviour
 
     private bool DEBUG = true;
     private float creatureSize = 20f; // Make so it fit creature size
+    private float packRadius = 50f;
 
     // Start is called before the first frame update
     void Start()
@@ -51,6 +52,8 @@ public class GenerateCreatures : MonoBehaviour
         // How far do we raycast
         float distance = planet.radius;
 
+        Vector3[] packPositions = new Vector3[maxPackCount];
+
         for (int i = 0; i < maxPackCount; i++)
         {
 
@@ -63,17 +66,22 @@ public class GenerateCreatures : MonoBehaviour
             // Registered a hit
             if (Physics.Raycast(ray, out hit, distance))
             {
+                // Check if the hit is close to a already existing pack
+                if (CloseToListOfPoints(packPositions, hit.point, packRadius * 2))
+                {
+                    if (DEBUG) Debug.Log("Too close to another pack!");
+                    continue;
+                }
 
-                if (DEBUG) Debug.Log("Hit!");
-                
-                
-                //Debug.Log(randV);
+
+                // Draw a line from pack center
                 if (DEBUG) Debug.DrawLine(planetCenter, planetCenter + randPoint, Color.red, 10f);
 
+                // Get correct rotation from the normal of the hit point
                 Quaternion rotation = Quaternion.FromToRotation(Vector3.forward, hit.normal);
                 CreateRandomPack(randPoint, rotation);
 
-                
+                packPositions[i] = hit.point;
             }
         }
     }
@@ -85,12 +93,12 @@ public class GenerateCreatures : MonoBehaviour
         int packSize = Random.Range(minPackSize, maxPackSize);
 
 
-        Vector3[] positions = new Vector3[maxPackCount];
+        Vector3[] positions = new Vector3[packSize];
 
         // Create the pack
         for (int i = 0; i < packSize; i++)
         {
-            Vector3 randomOrigin = centerPoint + rotation * Random.insideUnitCircle * 50f;
+            Vector3 randomOrigin = centerPoint + rotation * Random.insideUnitCircle * packRadius;
 
             Ray ray = new Ray(randomOrigin, -centerPoint);
             RaycastHit hit;
@@ -106,8 +114,11 @@ public class GenerateCreatures : MonoBehaviour
                 }
 
                 // Check if "hit.point" is close to a point in positions
-                if (CloseToCreatureInPack(positions, hit.point)) continue;
-               
+                if (CloseToListOfPoints(positions, hit.point, creatureSize))
+                {
+                    if (DEBUG) Debug.Log("Too close to another creature in pack");
+                    continue;
+                }
 
                 // Creates a rotation for the new object that always is rotated towards the planet
                 //Quaternion rotation2 = Quaternion.FromToRotation(Vector3.forward, hit.normal);
@@ -126,13 +137,12 @@ public class GenerateCreatures : MonoBehaviour
         }
     }
 
-    private bool CloseToCreatureInPack(Vector3[] positions, Vector3 newPoint)
+    private bool CloseToListOfPoints(Vector3[] positions, Vector3 newPoint, float minDistance)
     {
         for (int j = 0; j < positions.Count(); j++)
         {
-            if (Vector3.Distance(newPoint, positions[j]) < creatureSize)
+            if (Vector3.Distance(newPoint, positions[j]) < minDistance)
             {
-                if (DEBUG) Debug.Log("Too close to another creature");
                 return true;
             }
         }
