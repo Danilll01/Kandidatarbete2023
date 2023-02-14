@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Unity.Collections;
 using Unity.Mathematics;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Rendering;
 
@@ -28,12 +29,21 @@ public class TextureViewer3D : MonoBehaviour {
         int size = numChunks * (numPointsPerAxis - 1) + 1;
         Create3DTexture(ref renderTexture, size, "VisulizeArray");
 
+        int kernelId = shader.FindKernel("CSMain");
+        Debug.Log(kernelId);
+
         // Set textures on compute shaders
         shader.SetTexture(0, "DensityTexture", renderTexture);
+        ComputeDensity();
+        AssetDatabase.CreateAsset(renderTexture, "Assets/Assets/PlanetTerrain/TEST.asset");
 
     }
 
     public void Display() { }
+
+
+
+
 
 
     void Update() {
@@ -42,6 +52,18 @@ public class TextureViewer3D : MonoBehaviour {
         material.SetTexture("DisplayTexture", renderTexture);
 
     }
+
+
+
+
+
+
+
+
+
+
+
+
 
     void ComputeDensity() {
         // Get points (each point is a vector4: xyz = position, w = density)
