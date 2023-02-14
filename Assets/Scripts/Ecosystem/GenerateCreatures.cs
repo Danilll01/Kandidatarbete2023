@@ -15,55 +15,62 @@ public class GenerateCreatures : MonoBehaviour
     [SerializeField] int seed = 1234;
 
     [Header("Creature Generation")]
-    [SerializeField] int maxCreatureCount = 100;
+    [SerializeField] int maxPackCount = 100;
     [SerializeField] int minPackSize = 1;
     [SerializeField] int maxPackSize = 10;
 
+
+    private bool DEBUG = true;
 
     // Start is called before the first frame update
     void Start()
     {
         planet = GetComponent<PlanetBody>();
-
+        
         planetCenter = planet.transform.position;
 
+        // This is how system random works where we dont share Random instances
+        //System.Random rand1 = new System.Random(1234);
         Random.InitState(seed);
 
+        GenerateCreaturesOnPlanet();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Mouse0))
+        
+    }
+
+    private void GenerateCreaturesOnPlanet()
+    {
+        // How far do we raycast
+        float distance = planet.radius;
+
+        for (int i = 0; i < maxPackCount; i++)
         {
-            // How far do we raycast
-            float distance = planet.radius;
+
+            Vector3 randPoint = Random.onUnitSphere * (planet.radius * 0.7f);
 
             // The ray that will be cast
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            Ray ray = new Ray(randPoint, planetCenter - randPoint);
             RaycastHit hit;
 
             // Registered a hit
             if (Physics.Raycast(ray, out hit, distance))
             {
-                Debug.Log("Hit!");
 
+                if (DEBUG) Debug.Log("Hit!");
                 
-                for (int i = 0; i < 30; i++)
-                {
-                    Vector3 randPoint = Random.onUnitSphere * (planet.radius * 0.7f);
-                    //Debug.Log(randV);
-                    Debug.DrawLine(planetCenter, planetCenter + randPoint, Color.red, 10f);
+                
+                //Debug.Log(randV);
+                if (DEBUG) Debug.DrawLine(planetCenter, planetCenter + randPoint, Color.red, 10f);
 
-                    Quaternion rotation = Quaternion.FromToRotation(Vector3.forward, hit.normal);
-                    CreateRandomPack(randPoint, rotation);
-                }
+                Quaternion rotation = Quaternion.FromToRotation(Vector3.forward, hit.normal);
+                CreateRandomPack(randPoint, rotation);
+
                 
             }
-
-            // This is how system random works where we dont share Random instances
-            //System.Random rand1 = new System.Random(1234);
-            
         }
     }
 
@@ -72,12 +79,14 @@ public class GenerateCreatures : MonoBehaviour
         
         // How many creatures in this pack
         int packSize = Random.Range(minPackSize, maxPackSize);
+
+
         
 
         // Create the pack
         for (int i = 0; i < packSize; i++)
         {
-            Vector3 randomOrigin = centerPoint + rotation * Random.onUnitSphere * 50f;
+            Vector3 randomOrigin = centerPoint + rotation * Random.insideUnitCircle * 50f;
 
             Ray ray = new Ray(randomOrigin, -centerPoint);
             RaycastHit hit;
@@ -85,7 +94,14 @@ public class GenerateCreatures : MonoBehaviour
             // Registered a hit
             if (Physics.Raycast(ray, out hit, planet.radius))
             {
-                Debug.Log("Spawning object");
+                
+                if (hit.transform.CompareTag("Creature"))
+                {
+                    if (DEBUG) Debug.Log("Hit creature");
+                    continue;
+                }
+
+                
 
                 // Creates a rotation for the new object that always is rotated towards the planet
                 //Quaternion rotation2 = Quaternion.FromToRotation(Vector3.forward, hit.normal);
@@ -93,8 +109,9 @@ public class GenerateCreatures : MonoBehaviour
                 GameObject newObject = Instantiate(creature, hit.point, rotation2, gameObject.transform);
 
 
-                Debug.DrawLine(randomOrigin, hit.point, Color.cyan, 10f);
+                if (DEBUG) Debug.DrawLine(randomOrigin, hit.point, Color.cyan, 10f);
 
+                
             }
 
             // Draw casted ray
