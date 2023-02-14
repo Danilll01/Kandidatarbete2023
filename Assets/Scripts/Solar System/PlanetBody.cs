@@ -1,10 +1,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[ExecuteInEditMode]
+
 public class PlanetBody : MonoBehaviour
 {
-
     public float radius;
     public float surfaceGravity;
     public string bodyName = "TBT";
