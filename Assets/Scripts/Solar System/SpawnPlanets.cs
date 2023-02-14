@@ -9,6 +9,9 @@ public class SpawnPlanets : MonoBehaviour
     [SerializeField] private GameObject planetsPrefab;
     [SerializeField] private GameObject planetsParent;
     [SerializeField] private int numberOfPlanets;
+    [SerializeField] public int radiusMinValue = 500;
+    [SerializeField] public int radiusMaxValue = 1500;
+
 
     [SerializeField] private Material sunMaterial;
 
@@ -26,26 +29,32 @@ public class SpawnPlanets : MonoBehaviour
         Sun.GetComponentInChildren<MeshRenderer>().material = sunMaterial;
         bodies.Add(Sun.GetComponent<PlanetBody>());
         bodies[0].bodyName = "Sun";
-        bodies[0].radius = 5000;
+        bodies[0].radius = radiusMaxValue * 2;
         bodies[0].SetUp();
 
         for (int i = 1; i < numberOfPlanets + 1; i++)
         {
             GameObject planet = Instantiate(planetsPrefab);
-            GameObject velocityHelper = new GameObject();
-            velocityHelper.gameObject.name = "VelocityHelper";
-            velocityHelper.transform.parent = planet.transform;
-
             planet.transform.parent = planetsParent.transform;
-            planet.transform.position = new Vector3(0,0,10000*i);
+            planet.transform.position = new Vector3(0,0, radiusMaxValue * 5 * i);
             planet.gameObject.name = "Planet " + i;
             PlanetBody planetBody = planet.GetComponent<PlanetBody>();
             planetBody.bodyName = "Planet " + i;
+            planetBody.radius = Random.Range(radiusMinValue, radiusMaxValue + 1);
 
             planetBody.SetUp();
             bodies.Add(planetBody);
 
+            GameObject velocityHelper = new GameObject();
+            velocityHelper.gameObject.name = "VelocityHelper";
+            velocityHelper.transform.parent = planet.transform;
+
             planet.AddComponent<KeplerOrbitMover>();
+            planet.AddComponent<KeplerOrbitLineDisplay>();
+
+            planet.GetComponent<KeplerOrbitLineDisplay>().MaxOrbitWorldUnitsDistance = 50000;
+            planet.GetComponent<KeplerOrbitLineDisplay>().LineRendererReference = planet.GetComponent<LineRenderer>();
+
             KeplerOrbitMover planetOrbitMover = planet.GetComponent<KeplerOrbitMover>();
             planetOrbitMover.AttractorSettings.AttractorObject = Sun.transform;
             planetOrbitMover.AttractorSettings.AttractorMass = Sun.GetComponent<PlanetBody>().mass;

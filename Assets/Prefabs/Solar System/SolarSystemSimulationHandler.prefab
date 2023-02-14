@@ -48,5 +48,7 @@ MonoBehaviour:
   planetsPrefab: {fileID: 2474355628650455300, guid: e968ae35fe5497846ac168b2a3675f3e,
     type: 3}
   planetsParent: {fileID: 0}
-  numberOfPlanets: 5
+  numberOfPlanets: 3
+  radiusMinValue: 500
+  radiusMaxValue: 1500
   sunMaterial: {fileID: 2100000, guid: c7d5f095bd03ec34d954c874818413bc, type: 2}
