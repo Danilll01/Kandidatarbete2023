@@ -73,7 +73,7 @@ namespace SimpleKeplerOrbits
 			get { return AttractorSettings != null && AttractorSettings.AttractorObject != null; }
 		}
 
-		private void OnEnable()
+		public void SetUp()
 		{
 			if (!LockOrbitEditing)
 			{

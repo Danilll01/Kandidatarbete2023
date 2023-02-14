@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 776431053636631427}
-  - component: {fileID: 776431053636631426}
   - component: {fileID: 776431053636631548}
   m_Layer: 0
   m_Name: SolarSystemSimulationHandler
@@ -33,18 +32,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &776431053636631426
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 776431053636631425}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fb718a60a5672524cada6f0b0df17258, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &776431053636631548
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -61,5 +48,5 @@ MonoBehaviour:
   planetsPrefab: {fileID: 2474355628650455300, guid: e968ae35fe5497846ac168b2a3675f3e,
     type: 3}
   planetsParent: {fileID: 0}
-  numberOfPlanets: 0
+  numberOfPlanets: 5
   sunMaterial: {fileID: 2100000, guid: c7d5f095bd03ec34d954c874818413bc, type: 2}

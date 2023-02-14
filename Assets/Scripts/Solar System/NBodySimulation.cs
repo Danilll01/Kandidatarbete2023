@@ -24,12 +24,12 @@ public class NBodySimulation : MonoBehaviour
         for (int i = 0; i < bodies.Count; i++)
         {
             Vector3 velocity = CalculateVelocity(bodies[i]);
-            bodies[i].UpdateVelocity(velocity);
+            //bodies[i].UpdateVelocity(velocity);
         }
 
         for (int i = 0; i < bodies.Count; i++)
         {
-            bodies[i].UpdatePosition(Universe.physicsTimeStep);
+            //bodies[i].UpdatePosition(Universe.physicsTimeStep);
         }
 
     }

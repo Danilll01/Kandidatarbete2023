@@ -20,11 +20,12 @@ public class OrbitDebug : MonoBehaviour
         }
         else
         {
-            DrawOrbits();
+           // DrawOrbits();
 
         }
     }
 
+    /*
     void DrawOrbits()
     {
         PlanetBody[] bodies = nBodySimulation.bodies.ToArray();
@@ -53,7 +54,7 @@ public class OrbitDebug : MonoBehaviour
             // Update velocities
             for (int i = 0; i < virtualBodies.Length; i++)
             {
-                virtualBodies[i].velocity += CalculateAcceleration(i, virtualBodies) * timeStep;
+               // virtualBodies[i].velocity += CalculateAcceleration(i, virtualBodies) * timeStep;
             }
             // Update positions
             for (int i = 0; i < virtualBodies.Length; i++)
@@ -132,14 +133,15 @@ public class OrbitDebug : MonoBehaviour
     class VirtualBody
     {
         public Vector3 position;
-        public Vector3 velocity;
+       // public Vector3 velocity;
         public float mass;
 
         public VirtualBody(PlanetBody body)
         {
             position = body.transform.position;
-            velocity = body.velocity;
+            //velocity = body.velocity;
             mass = body.mass;
         }
     }
+    */
 }
