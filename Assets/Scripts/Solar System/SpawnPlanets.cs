@@ -9,19 +9,23 @@ public class SpawnPlanets : MonoBehaviour
     [SerializeField] private GameObject planetsPrefab;
     [SerializeField] private GameObject planetsParent;
     [SerializeField] private int numberOfPlanets;
-    [SerializeField] public int radiusMinValue = 500;
-    [SerializeField] public int radiusMaxValue = 1500;
+    [SerializeField] private int radiusMinValue = 500;
+    [SerializeField] private int radiusMaxValue = 1500;
+    [SerializeField] private int orbitOffsetMinValue = -10;
+    [SerializeField] private int orbitOffsetMaxValue = 10;
 
 
     [SerializeField] private Material sunMaterial;
 
     void Awake()
     {
-        Setup();
+        CreatePlanets();
     }
 
-    // Creates all the planets
-    void Setup()
+    /// <summary>
+    /// Creates all the planets
+    /// </summary>
+    void CreatePlanets()
     {
         bodies = new List<PlanetBody>();
 
@@ -34,7 +38,7 @@ public class SpawnPlanets : MonoBehaviour
         PlanetBody SunPlanetBody = Sun.GetComponent<PlanetBody>();
         SunPlanetBody.bodyName = "Sun";
         SunPlanetBody.radius = radiusMaxValue * 2;
-        SunPlanetBody.SetUp();
+        SunPlanetBody.SetUpPlanetValues();
         bodies.Add(SunPlanetBody);
 
         // Create all other planets and helpers
@@ -48,12 +52,15 @@ public class SpawnPlanets : MonoBehaviour
             PlanetBody planetBody = planet.GetComponent<PlanetBody>();
             planetBody.bodyName = "Planet " + i;
             planetBody.radius = Random.Range(radiusMinValue, radiusMaxValue + 1);
-            planetBody.SetUp();
+            planetBody.SetUpPlanetValues();
             bodies.Add(planetBody);
 
             GameObject velocityHelper = new GameObject();
             velocityHelper.gameObject.name = "VelocityHelper";
             velocityHelper.transform.parent = planet.transform;
+
+            int orbitOffset = Random.Range(orbitOffsetMinValue, orbitOffsetMaxValue);
+            velocityHelper.transform.localPosition = new Vector3(100, orbitOffset, orbitOffset);
 
             // Assign needed scripts to the planet
             planet.AddComponent<KeplerOrbitMover>();

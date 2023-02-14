@@ -51,4 +51,6 @@ MonoBehaviour:
   numberOfPlanets: 3
   radiusMinValue: 500
   radiusMaxValue: 1500
+  orbitOffsetMinValue: -10
+  orbitOffsetMaxValue: 10
   sunMaterial: {fileID: 2100000, guid: c7d5f095bd03ec34d954c874818413bc, type: 2}

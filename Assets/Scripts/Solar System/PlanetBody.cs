@@ -10,8 +10,10 @@ public class PlanetBody : MonoBehaviour
     Transform meshHolder;
     public float mass;
   
-
-    public void SetUp()
+    /// <summary>
+    /// Set up the values for the planets
+    /// </summary>
+    public void SetUpPlanetValues()
     {
         mass = surfaceGravity * radius * radius / Universe.gravitationalConstant;
         meshHolder = transform.GetChild(0);
