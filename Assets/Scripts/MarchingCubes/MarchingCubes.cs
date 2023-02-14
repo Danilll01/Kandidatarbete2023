@@ -1,7 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class MarchingCubes
 {
@@ -15,6 +17,7 @@ public class MarchingCubes
     public MarchingCubes(Mesh mesh, ComputeShader meshGenerator, float threshold, int resolution, float radius)
     {
         this.mesh = mesh;
+        mesh.indexFormat = IndexFormat.UInt32;
         this.meshGenerator = meshGenerator;
         this.threshold = threshold;
         this.resolution = resolution;
@@ -71,6 +74,7 @@ public class MarchingCubes
         ComputeBuffer.CopyCount(buffer, counter, 0);
         counter.GetData(count);
         counter.Release();
+        MonoBehaviour.print("We have: " + count[0] + " triangles");
         return count[0];
     }
 

@@ -6,11 +6,11 @@ public class Planet : MonoBehaviour
 {
     [SerializeField] ComputeShader meshGenerator;
     [SerializeField, Range(0, 255)] float threshold = 200;
-    [SerializeField, Range(1, 32)] int resolution = 1;
+    [SerializeField, Range(1, 28)] int resolution = 1;
     [SerializeField, Range(1, 500)] float radius = 1;
+    [SerializeField] GameObject meshObj;
 
     MarchingCubes marchingCubes;
-    MeshFilter meshFilter;
 
     private void OnValidate()
     {
@@ -23,14 +23,9 @@ public class Planet : MonoBehaviour
 
     void Initialize()
     {
-        if (meshFilter == null)
+        MeshFilter meshFilter = meshObj.GetComponent<MeshFilter>();
+        if(meshFilter.sharedMesh == null)
         {
-            meshFilter = new MeshFilter();
-            GameObject meshObj = new GameObject("mesh");
-            meshObj.transform.parent = transform;
-
-            meshObj.AddComponent<MeshRenderer>().sharedMaterial = new Material(Shader.Find("Universal Render Pipeline/Lit"));
-            meshFilter = meshObj.AddComponent<MeshFilter>();
             meshFilter.sharedMesh = new Mesh();
         }
 
