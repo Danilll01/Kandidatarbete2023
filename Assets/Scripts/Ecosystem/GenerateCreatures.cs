@@ -26,6 +26,7 @@ public class GenerateCreatures : MonoBehaviour
     private bool DEBUG = true;
     private float creatureSize = 20f; // Make so it fit creature size
     private float packRadius = 50f;
+    private GameObject creatureParent;
 
     // Start is called before the first frame update
     void Start()
@@ -33,6 +34,10 @@ public class GenerateCreatures : MonoBehaviour
         planet = GetComponent<PlanetBody>();
         
         planetCenter = planet.transform.position;
+
+        // Create a gameobject to hold all creatures
+        creatureParent = new GameObject("Creatures");
+        creatureParent.transform.parent = planet.transform;
 
         // This is how system random works where we dont share Random instances
         //System.Random rand1 = new System.Random(1234);
@@ -123,7 +128,7 @@ public class GenerateCreatures : MonoBehaviour
                 // Creates a rotation for the new object that always is rotated towards the planet
                 //Quaternion rotation2 = Quaternion.FromToRotation(Vector3.forward, hit.normal);
                 Quaternion rotation2 = Quaternion.LookRotation(hit.point) * Quaternion.Euler(90, 0, 0);
-                GameObject newObject = Instantiate(creature, hit.point, rotation2, gameObject.transform);
+                GameObject newObject = Instantiate(creature, hit.point, rotation2, creatureParent.transform);
 
 
                 if (DEBUG) Debug.DrawLine(randomOrigin, hit.point, Color.cyan, 10f);
