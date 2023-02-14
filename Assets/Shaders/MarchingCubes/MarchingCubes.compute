@@ -1,0 +1,104 @@
+// Each #kernel tells which function to compile; you can have many kernels
+#pragma kernel GenerateMesh
+
+#include "Includes/MarchTables.compute"
+#include "Includes/TextureGenerator.compute"
+
+// Helper functions declaration
+float3 interpolateVerts(float4 v1, float4 v2);
+int indexFromCoord(uint x, uint y, uint z);
+
+struct Triangle
+{
+    float3 vertexA;
+    float3 vertexB;
+    float3 vertexC;
+};
+
+//RWStructuredBuffer<float4> points;
+AppendStructuredBuffer<Triangle> triangles;
+
+uint resolution;
+float threshold;
+float radius;
+
+[numthreads(8, 8, 8)]
+void GenerateMesh(uint3 id : SV_DispatchThreadID)
+{
+    
+    // Since we are going through the voxels, not the points, we stop before we reach the endpoint
+    if (id.x >= resolution - 1 || id.y >= resolution - 1 || id.z >= resolution - 1)
+    {
+        return;
+    }
+     
+    // Get the value for each of the 8 corners in current cube
+    float4 cubeCorners[8] =
+    {
+        getTexturePoint(id, resolution, radius),
+        getTexturePoint(uint3(id.x + 1, id.y, id.z), resolution, radius),
+        getTexturePoint(uint3(id.x + 1, id.y, id.z + 1), resolution, radius),
+        getTexturePoint(uint3(id.x, id.y, id.z + 1), resolution, radius),
+        getTexturePoint(uint3(id.x, id.y + 1, id.z), resolution, radius),
+        getTexturePoint(uint3(id.x + 1, id.y + 1, id.z), resolution, radius),
+        getTexturePoint(uint3(id.x + 1, id.y + 1, id.z + 1), resolution, radius),
+        getTexturePoint(uint3(id.x, id.y + 1, id.z + 1), resolution, radius)
+    };
+    
+    // Find the unique index for which cube config. we are dealing with, each bit in cubeindex represent a corner
+    // The value is used to lookup in triangulation matrix, note w is alpha value in texture
+    int cubeindex = 0;
+    if (cubeCorners[0].w < threshold)
+        cubeindex |= 1 << 0;
+    if (cubeCorners[1].w < threshold)
+        cubeindex |= 1 << 1;
+    if (cubeCorners[2].w < threshold)
+        cubeindex |= 1 << 2;
+    if (cubeCorners[3].w < threshold)
+        cubeindex |= 1 << 3;
+    if (cubeCorners[4].w < threshold)
+        cubeindex |= 1 << 4;
+    if (cubeCorners[5].w < threshold)
+        cubeindex |= 1 << 5;
+    if (cubeCorners[6].w < threshold)
+        cubeindex |= 1 << 6;
+    if (cubeCorners[7].w < threshold)
+        cubeindex |= 1 << 7;
+    
+    // Create triangles from the cube
+    for (int i = 0; triangulation[cubeindex][i] != -1; i += 3)
+    {
+        // Get edge from corner a0 -> b0 one on which point 0 in triangle i lies
+        int a0 = cornerIndexAFromEdge[triangulation[cubeindex][i]];
+        int b0 = cornerIndexBFromEdge[triangulation[cubeindex][i]];
+        
+        // Get edge from corner a1 -> b1 one on which point 0 in triangle i lies
+        int a1 = cornerIndexAFromEdge[triangulation[cubeindex][i + 1]];
+        int b1 = cornerIndexBFromEdge[triangulation[cubeindex][i + 1]];
+        
+        // Get edge from corner a2 -> b2 one on which point 0 in triangle i lies
+        int a2 = cornerIndexAFromEdge[triangulation[cubeindex][i + 2]];
+        int b2 = cornerIndexBFromEdge[triangulation[cubeindex][i + 2]];
+        
+        // Instead of just picking middle point between corners, we interpolate
+        // based on the strength of the alpha value in the corners.
+        Triangle tri;
+        tri.vertexA = interpolateVerts(cubeCorners[a0], cubeCorners[b0]);
+        tri.vertexB = interpolateVerts(cubeCorners[a1], cubeCorners[b1]);
+        tri.vertexC = interpolateVerts(cubeCorners[a2], cubeCorners[b2]);
+        triangles.Append(tri);
+    }
+}
+
+// Interpolate between two points
+float3 interpolateVerts(float4 v1, float4 v2)
+{
+    float t = (threshold - v1.w) / (v2.w - v1.w);
+    return v1.xyz + t * (v2.xyz - v1.xyz);
+}
+
+// Get an index from the coord given
+int indexFromCoord(uint x, uint y, uint z)
+{
+    return x + y * resolution + z * resolution * resolution;
+}

@@ -1,0 +1,20 @@
+
+
+//Create a sphere on a 3D texture
+float4 getTexturePoint(uint3 pos, uint resolution, float radius)
+{
+    int index =
+    pos.x +
+    pos.y * resolution +
+    pos.z * resolution * resolution;
+    
+    float mid = (resolution >> 1) - .5;
+    
+    float3 relPos = -(pos - mid) * radius / resolution;
+    
+    float3 vec = (pos / mid) - 1;
+    
+    float density = (length(vec) > 1) ? 0 : (1 - length(vec)) * 255;
+    
+    return float4(relPos, density);
+}
