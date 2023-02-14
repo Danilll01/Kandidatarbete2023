@@ -1,14 +1,20 @@
-// Each #kernel tells which function to compile; you can have many kernels
-#pragma kernel CSMain
 
-// Create a RenderTexture with enableRandomWrite flag and set it
-// with cs.SetTexture
-RWTexture2D<float4> Result;
 
-[numthreads(8,8,1)]
-void CSMain (uint3 id : SV_DispatchThreadID)
+//Create a sphere on a 3D texture
+float4 getTexturePoint(uint3 pos, uint resolution, float radius)
 {
-    // TODO: insert actual code here!
-
-    Result[id.xy] = float4(id.x & id.y, (id.x & 15)/15.0, (id.y & 15)/15.0, 0.0);
+    int index =
+    pos.x +
+    pos.y * resolution +
+    pos.z * resolution * resolution;
+    
+    float mid = (resolution >> 1) - .5;
+    
+    float3 relPos = -(pos - mid) * radius / resolution;
+    
+    float3 vec = (pos / mid) - 1;
+    
+    float density = (length(vec) > 1) ? 0 : (1 - length(vec)) * 255;
+    
+    return float4(relPos, density);
 }
