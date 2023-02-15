@@ -16,7 +16,7 @@ public class GenerateCreatures : MonoBehaviour
     [SerializeField] private float terrainSteepnesAngle = 30f;
 
     [Header("Misc")]
-    [SerializeField] private bool DEBUG = true;
+    [SerializeField] private bool DEBUG = false;
 
     private Planet planet;
     private Vector3 planetCenter;
@@ -24,6 +24,7 @@ public class GenerateCreatures : MonoBehaviour
     private float creatureSize = 20f; // Make so it fit creature size
     private GameObject creatureParent;
     
+    // Initializes creature generation
     public void Initialize(Planet planet)
     {
         this.planet = planet;
@@ -60,8 +61,6 @@ public class GenerateCreatures : MonoBehaviour
             Ray ray = new Ray(randPoint, planetCenter - randPoint);
             RaycastHit hit;
 
-            //Debug.DrawLine(planetCenter, randPoint, Color.black, 20f);
-
             // Registered a hit
             if (Physics.Raycast(ray, out hit, distance)) // (Physics.Linecast(randPoint, planetCenter, out hit))
             {
@@ -71,7 +70,6 @@ public class GenerateCreatures : MonoBehaviour
                     if (DEBUG) Debug.Log("Too close to another pack!");
                     continue;
                 }
-
 
                 // Draw a line from pack center
                 if (DEBUG) Debug.DrawLine(planetCenter, randPoint, Color.red, 10f);
@@ -142,6 +140,7 @@ public class GenerateCreatures : MonoBehaviour
         }
     }
 
+    // Check if a point is near other points in an array
     private bool CloseToListOfPoints(Vector3[] positions, Vector3 newPoint, float minDistance)
     {
         for (int j = 0; j < positions.Count(); j++)
@@ -159,7 +158,7 @@ public class GenerateCreatures : MonoBehaviour
     {
         // Calculate the angle between the normal and the vector from the spawn point to the ground point
         float angle = Vector3.Angle(groundNormal, spawnPos - groundPos);
-        Debug.Log("Angle: " + angle);
+        if (DEBUG) Debug.Log("Angle: " + angle);
         // If the angle is too steep, return false
         if (angle > terrainSteepnesAngle)
         {
