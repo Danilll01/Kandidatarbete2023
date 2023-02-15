@@ -17,6 +17,9 @@ public class Planet : MonoBehaviour
     MarchingCubes marchingCubes;
 
 
+    /// <summary>
+    /// Initialize mesh for marching cubes
+    /// </summary>
     public void Initialize()
     {
         // Get meshfilter and create new mesh if it doesn't exist
