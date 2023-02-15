@@ -3,6 +3,9 @@ run-name: Build project
 on:
   pull_request:
     types: [closed]
+  push:
+    branches:
+      - "Build-script-package-bump"
   workflow_dispatch: {}
 
 env:
@@ -25,30 +28,19 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           path: build
-      - name: Create release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: v${{ env.MAJOR_RELEASE_NR }}.${{ env.GITHUB_RUN_NUMBER_WITH_OFFSET }}
-          release_name: Release V${{ env.MAJOR_RELEASE_NR }}.${{ env.GITHUB_RUN_NUMBER_WITH_OFFSET }}
-          
+
       - name: Zipping win
         uses: montudor/action-zip@v1
         with:
           args: zip -qq -r build/StandaloneWindows64.zip build/StandaloneWindows64
           
-      - name: Upload asset windows
-        id: upload-release-asset-win
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Release
+        uses: softprops/action-gh-release@v1
         with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: build/StandaloneWindows64.zip
-          asset_name: Win64-v${{ env.MAJOR_RELEASE_NR }}.${{ env.GITHUB_RUN_NUMBER_WITH_OFFSET }}.zip
-          asset_content_type: application/zip
+          tag_name: v${{ env.MAJOR_RELEASE_NR }}.${{ env.GITHUB_RUN_NUMBER_WITH_OFFSET }}
+          name: Release V${{ env.MAJOR_RELEASE_NR }}.${{ env.GITHUB_RUN_NUMBER_WITH_OFFSET }}
+          token: ${{ secrets.CUSTOM_GITHUB_TOKEN }}
+          files: build/StandaloneWindows64.zip
 
   buildForAllSupportedPlatforms:
     name: Build for ${{ matrix.targetPlatform }}
