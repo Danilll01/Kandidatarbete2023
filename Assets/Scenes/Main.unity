@@ -355,6 +355,16 @@ PrefabInstance:
       propertyPath: radiusMinValue
       value: 500
       objectReference: {fileID: 0}
+    - target: {fileID: 776431053636631548, guid: 93094628cce30c64195c2ae1633e7e60,
+        type: 3}
+      propertyPath: orbitOffsetMaxValue
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 776431053636631548, guid: 93094628cce30c64195c2ae1633e7e60,
+        type: 3}
+      propertyPath: orbitOffsetMinValue
+      value: -5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 93094628cce30c64195c2ae1633e7e60, type: 3}
 --- !u!1 &1212578161

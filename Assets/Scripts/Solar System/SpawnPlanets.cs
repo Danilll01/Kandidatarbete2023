@@ -13,6 +13,9 @@ public class SpawnPlanets : MonoBehaviour
     [SerializeField] private int radiusMaxValue = 1500;
     [SerializeField] private int orbitOffsetMinValue = -10;
     [SerializeField] private int orbitOffsetMaxValue = 10;
+    [SerializeField] private int chanceOfMoonsLimit = 5;
+    [SerializeField] private int minNumberOfMoons = 1;
+    [SerializeField] private int maxNumberOfMoons = 5;
 
 
     [SerializeField] private Material sunMaterial;
@@ -25,13 +28,14 @@ public class SpawnPlanets : MonoBehaviour
     /// <summary>
     /// Creates all the planets
     /// </summary>
-    void CreatePlanets()
+    private void CreatePlanets()
     {
         bodies = new List<Planet>();
 
         // Create a sun object
         GameObject Sun = Instantiate(planetsPrefab);
         Sun.transform.parent = planetsParent.transform;
+        Sun.transform.localPosition = new Vector3(0, 0, 0);
         Sun.gameObject.name = "Sun";
         Sun.GetComponentInChildren<MeshRenderer>().material = sunMaterial;
 
@@ -41,13 +45,18 @@ public class SpawnPlanets : MonoBehaviour
         SunPlanetBody.SetUpPlanetValues();
         SunPlanetBody.Initialize();
         bodies.Add(SunPlanetBody);
+        InstantiatePlanets(Sun);
+        
+    }
 
+    private void InstantiatePlanets(GameObject Sun)
+    {
         // Create all other planets and helpers
         for (int i = 1; i < numberOfPlanets + 1; i++)
         {
             GameObject planet = Instantiate(planetsPrefab);
             planet.transform.parent = planetsParent.transform;
-            planet.transform.position = new Vector3(0,0, radiusMaxValue * 5 * i);
+            planet.transform.localPosition = RandomPointOnCircleEdge(radiusMaxValue * 5 * i);
             planet.gameObject.name = "Planet " + i;
 
             Planet planetBody = planet.GetComponent<Planet>();
@@ -56,31 +65,76 @@ public class SpawnPlanets : MonoBehaviour
             planetBody.SetUpPlanetValues();
             planetBody.Initialize();
             bodies.Add(planetBody);
+            SetupOrbitComponents(Sun, planet);
 
-            GameObject velocityHelper = new GameObject();
-            velocityHelper.gameObject.name = "VelocityHelper";
-            velocityHelper.transform.parent = planet.transform;
-
-            int orbitOffset = Random.Range(orbitOffsetMinValue, orbitOffsetMaxValue);
-            velocityHelper.transform.localPosition = new Vector3(100, orbitOffset, orbitOffset);
-
-            // Assign needed scripts to the planet
-            planet.AddComponent<KeplerOrbitMover>();
-            planet.AddComponent<KeplerOrbitLineDisplay>();
-
-            // Not nessecarry, used for debug
-            planet.GetComponent<KeplerOrbitLineDisplay>().MaxOrbitWorldUnitsDistance = 50000;
-            planet.GetComponent<KeplerOrbitLineDisplay>().LineRendererReference = planet.GetComponent<LineRenderer>();
-
-            // Setup settings for the orbit script with the sun as the central body
-            KeplerOrbitMover planetOrbitMover = planet.GetComponent<KeplerOrbitMover>();
-            planetOrbitMover.AttractorSettings.AttractorObject = Sun.transform;
-            planetOrbitMover.AttractorSettings.AttractorMass = Sun.GetComponent<Planet>().mass;
-            planetOrbitMover.AttractorSettings.GravityConstant = Universe.gravitationalConstant;
-            planetOrbitMover.VelocityHandle = velocityHelper.transform;
-            planetOrbitMover.SetUp();
-            planetOrbitMover.SetAutoCircleOrbit();
-            planetOrbitMover.ForceUpdateOrbitData();
+            InstantiateMoons(planetBody);
         }
     }
+
+    private void InstantiateMoons(Planet parentPlanet)
+    {
+        int shouldHaveMoons = Random.Range(1, 10);
+
+        if (shouldHaveMoons >= chanceOfMoonsLimit)
+        {
+            int numberOfMoons = Random.Range(minNumberOfMoons, maxNumberOfMoons + 1);
+
+            for (int i = 1; i < numberOfMoons; i++)
+            {
+                GameObject moon = Instantiate(planetsPrefab);
+                moon.transform.parent = parentPlanet.transform;
+                moon.transform.localPosition = RandomPointOnCircleEdge(parentPlanet.radius * i);
+                moon.gameObject.name = "Moon " + i;
+
+                Planet planetBody = moon.GetComponent<Planet>();
+                planetBody.bodyName = "Moon " + i;
+                planetBody.radius = Random.Range(parentPlanet.radius / 5, (parentPlanet.radius / 2) + 1);
+                planetBody.SetUpPlanetValues();
+                planetBody.Initialize();
+                bodies.Add(planetBody);
+                SetupOrbitComponents(parentPlanet.gameObject, moon);
+            }
+
+        }
+    }
+
+    private Vector3 RandomPointOnCircleEdge(float radius)
+    {
+        var vector2 = Random.insideUnitCircle.normalized * radius;
+        return new Vector3(vector2.x, 0, vector2.y);
+    }
+
+    private void SetupOrbitComponents(GameObject Attractor, GameObject planet)
+    {
+        GameObject velocityHelper = new GameObject();
+        velocityHelper.gameObject.name = "VelocityHelper";
+        velocityHelper.transform.parent = planet.transform;
+
+        int orbitOffset = Random.Range(orbitOffsetMinValue, orbitOffsetMaxValue);
+        velocityHelper.transform.localPosition = new Vector3(100, orbitOffset, orbitOffset);
+
+        // Assign needed scripts to the planet
+        planet.AddComponent<KeplerOrbitMover>();
+        planet.AddComponent<KeplerOrbitLineDisplay>();
+
+        // Not nessecarry, used for debug
+        planet.GetComponent<KeplerOrbitLineDisplay>().MaxOrbitWorldUnitsDistance = 50000;
+        planet.GetComponent<KeplerOrbitLineDisplay>().LineRendererReference = planet.GetComponent<LineRenderer>();
+
+        // Setup settings for the orbit script with the sun as the central body
+        KeplerOrbitMover planetOrbitMover = planet.GetComponent<KeplerOrbitMover>();
+        planetOrbitMover.AttractorSettings.AttractorObject = Attractor.transform;
+        planetOrbitMover.AttractorSettings.AttractorMass = Attractor.GetComponent<Planet>().mass;
+        planetOrbitMover.AttractorSettings.GravityConstant = Universe.gravitationalConstant;
+        planetOrbitMover.VelocityHandle = velocityHelper.transform;
+        planetOrbitMover.SetUp();
+        planetOrbitMover.SetAutoCircleOrbit();
+        planetOrbitMover.ForceUpdateOrbitData();
+        planetOrbitMover.LockOrbitEditing = true;
+    }
+
+    
+
+
+
 }
