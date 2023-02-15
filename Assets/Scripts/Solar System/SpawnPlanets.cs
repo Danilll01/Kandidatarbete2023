@@ -56,7 +56,7 @@ public class SpawnPlanets : MonoBehaviour
         {
             GameObject planet = Instantiate(planetsPrefab);
             planet.transform.parent = planetsParent.transform;
-            planet.transform.localPosition = RandomPointOnCircleEdge(radiusMaxValue * 5 * i);
+            planet.transform.localPosition = RandomPointOnCircleEdge(radiusMaxValue * (maxNumberOfMoons + 0.2f) * i);
             planet.gameObject.name = "Planet " + i;
 
             Planet planetBody = planet.GetComponent<Planet>();
@@ -65,8 +65,8 @@ public class SpawnPlanets : MonoBehaviour
             planetBody.SetUpPlanetValues();
             planetBody.Initialize();
             bodies.Add(planetBody);
+           
             SetupOrbitComponents(Sun, planet);
-
             InstantiateMoons(planetBody);
         }
     }
@@ -118,7 +118,7 @@ public class SpawnPlanets : MonoBehaviour
         planet.AddComponent<KeplerOrbitLineDisplay>();
 
         // Not nessecarry, used for debug
-        planet.GetComponent<KeplerOrbitLineDisplay>().MaxOrbitWorldUnitsDistance = 50000;
+        planet.GetComponent<KeplerOrbitLineDisplay>().MaxOrbitWorldUnitsDistance = (Attractor.transform.position - planet.transform.position).magnitude * 1.2f;
         planet.GetComponent<KeplerOrbitLineDisplay>().LineRendererReference = planet.GetComponent<LineRenderer>();
 
         // Setup settings for the orbit script with the sun as the central body
