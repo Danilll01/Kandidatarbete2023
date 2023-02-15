@@ -25,9 +25,7 @@ public class SpawnPlanets : MonoBehaviour
         CreatePlanets();
     }
 
-    /// <summary>
-    /// Creates all the planets
-    /// </summary>
+    // Creates all the planets 
     private void CreatePlanets()
     {
         bodies = new List<Planet>();
@@ -49,6 +47,7 @@ public class SpawnPlanets : MonoBehaviour
         
     }
 
+    // Instantiates the all the components on all the planets
     private void InstantiatePlanets(GameObject Sun)
     {
         // Create all other planets and helpers
@@ -71,6 +70,7 @@ public class SpawnPlanets : MonoBehaviour
         }
     }
 
+    // Instantiate moons for the given planet
     private void InstantiateMoons(Planet parentPlanet)
     {
         int shouldHaveMoons = Random.Range(1, 10);
@@ -98,12 +98,14 @@ public class SpawnPlanets : MonoBehaviour
         }
     }
 
+    // Gives back a random position on the edge of a circle given the radius of the circle
     private Vector3 RandomPointOnCircleEdge(float radius)
     {
         var vector2 = Random.insideUnitCircle.normalized * radius;
         return new Vector3(vector2.x, 0, vector2.y);
     }
 
+    // Adds all componets for orbit movement for given planet and it's attractor
     private void SetupOrbitComponents(GameObject Attractor, GameObject planet)
     {
         GameObject velocityHelper = new GameObject();
