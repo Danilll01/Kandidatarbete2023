@@ -79,7 +79,7 @@ public class SpawnPlanets : MonoBehaviour
         {
             int numberOfMoons = Random.Range(minNumberOfMoons, maxNumberOfMoons + 1);
 
-            for (int i = 1; i < numberOfMoons; i++)
+            for (int i = 1; i < numberOfMoons + 1; i++)
             {
                 GameObject moon = Instantiate(planetsPrefab);
                 moon.transform.parent = parentPlanet.transform;
