@@ -37,7 +37,7 @@ public class SpawnPlanets : MonoBehaviour
 
         Planet SunPlanetBody = Sun.GetComponent<Planet>();
         SunPlanetBody.bodyName = "Sun";
-        SunPlanetBody.diameter = radiusMaxValue * 2;
+        SunPlanetBody.radius = radiusMaxValue * 2;
         SunPlanetBody.SetUpPlanetValues();
         SunPlanetBody.Initialize();
         bodies.Add(SunPlanetBody);
@@ -52,7 +52,7 @@ public class SpawnPlanets : MonoBehaviour
 
             Planet planetBody = planet.GetComponent<Planet>();
             planetBody.bodyName = "Planet " + i;
-            planetBody.diameter = Random.Range(radiusMinValue, radiusMaxValue + 1);
+            planetBody.radius = Random.Range(radiusMinValue, radiusMaxValue + 1);
             planetBody.SetUpPlanetValues();
             planetBody.Initialize();
             bodies.Add(planetBody);

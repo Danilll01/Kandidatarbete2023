@@ -9,7 +9,7 @@ public class Planet : MonoBehaviour
     [SerializeField, Range(1, 28)] int resolution = 1;
     [SerializeField] GameObject meshObj;
 
-    public float diameter;
+    public float radius;
     public float surfaceGravity;
     public string bodyName = "TBT";
     public float mass;
@@ -29,7 +29,7 @@ public class Planet : MonoBehaviour
         // Initialize the meshgenerator
         if (meshGenerator != null)
         {
-            marchingCubes = new MarchingCubes(meshFilter.sharedMesh, meshGenerator, threshold, resolution, (diameter / 2));
+            marchingCubes = new MarchingCubes(meshFilter.sharedMesh, meshGenerator, threshold, resolution, radius);
         }
 
         if (marchingCubes != null)
@@ -43,7 +43,7 @@ public class Planet : MonoBehaviour
     /// </summary>
     public void SetUpPlanetValues()
     {
-        mass = surfaceGravity * diameter / Universe.gravitationalConstant;
+        mass = surfaceGravity * radius * radius / Universe.gravitationalConstant;
         gameObject.name = bodyName;
     }
 }
