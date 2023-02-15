@@ -18,27 +18,29 @@ public class GenerateCreatures : MonoBehaviour
     [Header("Misc")]
     [SerializeField] private bool DEBUG = true;
 
-    private PlanetBody planet;
+    private Planet planet;
     private Vector3 planetCenter;
 
     private float creatureSize = 20f; // Make so it fit creature size
     private GameObject creatureParent;
     
-    void Start()
+    public void Initialize(Planet planet)
     {
-        planet = GetComponent<PlanetBody>();
-        
+        this.planet = planet;
+
         planetCenter = planet.transform.position;
 
         // Create a gameobject to hold all creatures
         creatureParent = new GameObject("Creatures");
         creatureParent.transform.parent = planet.transform;
+        creatureParent.transform.localPosition = new Vector3(0,0,0);
 
         // This is how system random works where we dont share Random instances
         //System.Random rand1 = new System.Random(1234);
         Random.InitState(seed);
 
         GenerateCreaturesOnPlanet();
+        if (DEBUG) Debug.Log("Spawning");
     }
 
     // Raycasts where all the packs should be created and calls CreateRandomPack to create the packs
@@ -52,14 +54,16 @@ public class GenerateCreatures : MonoBehaviour
         for (int i = 0; i < maxPackCount; i++)
         {
 
-            Vector3 randPoint = Random.onUnitSphere * (planet.radius * 0.7f);
+            Vector3 randPoint = planetCenter + Random.onUnitSphere * (planet.radius * 0.7f);
 
             // The ray that will be cast
             Ray ray = new Ray(randPoint, planetCenter - randPoint);
             RaycastHit hit;
 
+            //Debug.DrawLine(planetCenter, randPoint, Color.black, 20f);
+
             // Registered a hit
-            if (Physics.Raycast(ray, out hit, distance))
+            if (Physics.Raycast(ray, out hit, distance)) // (Physics.Linecast(randPoint, planetCenter, out hit))
             {
                 // Check if the hit is close to a already existing pack
                 if (CloseToListOfPoints(packPositions, hit.point, packRadius * 2))
@@ -70,11 +74,11 @@ public class GenerateCreatures : MonoBehaviour
 
 
                 // Draw a line from pack center
-                if (DEBUG) Debug.DrawLine(planetCenter, planetCenter + randPoint, Color.red, 10f);
+                if (DEBUG) Debug.DrawLine(planetCenter, randPoint, Color.red, 10f);
 
                 // Get correct rotation from the normal of the hit point
                 Quaternion rotation = Quaternion.FromToRotation(Vector3.forward, hit.normal);
-                CreateRandomPack(planetCenter + randPoint, rotation);
+                CreateRandomPack(randPoint, rotation);
 
                 packPositions[i] = hit.point;
             }
@@ -124,9 +128,10 @@ public class GenerateCreatures : MonoBehaviour
                 }
 
                 // Creates a rotation for the new object that always is rotated towards the planet
-                //Quaternion rotation2 = Quaternion.FromToRotation(Vector3.forward, hit.normal);
-                Quaternion rotation2 = Quaternion.LookRotation(hit.point) * Quaternion.Euler(90, 0, 0);
+                Quaternion rotation2 = Quaternion.FromToRotation(Vector3.forward, hit.normal) * Quaternion.Euler(90, 0, 0);
+                //Quaternion rotation2 = Quaternion.LookRotation(hit.point) * Quaternion.Euler(90, 0, 0);
                 GameObject newObject = Instantiate(creature, hit.point, rotation2, creatureParent.transform);
+                newObject.transform.rotation = rotation2;
 
 
                 if (DEBUG) Debug.DrawLine(randomOrigin, hit.point, Color.cyan, 10f);

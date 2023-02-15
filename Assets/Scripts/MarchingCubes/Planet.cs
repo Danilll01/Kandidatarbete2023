@@ -15,6 +15,7 @@ public class Planet : MonoBehaviour
     public float mass;
 
     MarchingCubes marchingCubes;
+    [SerializeField] private GenerateCreatures generateCreatures;
 
 
     public void Initialize()
@@ -35,6 +36,13 @@ public class Planet : MonoBehaviour
         if (marchingCubes != null)
         {
             marchingCubes.generateMesh();
+            MeshCollider meshCollider = meshFilter.gameObject.AddComponent<MeshCollider>();
+            meshCollider.sharedMesh = meshFilter.sharedMesh;
+        }
+
+        if (generateCreatures != null && bodyName != "Sun")
+        {
+            generateCreatures.Initialize(this);
         }
     }
 

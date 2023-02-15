@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 2176386958015389607}
   - component: {fileID: 8085060048720669979}
   - component: {fileID: 2865990664458296443}
+  - component: {fileID: 7065241369011201559}
   m_Layer: 0
   m_Name: Planet
   m_TagString: Untagged
@@ -49,12 +50,12 @@ MonoBehaviour:
   meshGenerator: {fileID: 7200000, guid: 2b54143d75bd2344bb987facb6cb4950, type: 3}
   threshold: 115.9
   resolution: 14
-  radius: 293
   meshObj: {fileID: 2421649971222294434}
-  diameter: 500
+  radius: 293
   surfaceGravity: 10
   bodyName: TBT
   mass: 100
+  generateCreatures: {fileID: 7065241369011201559}
 --- !u!120 &2865990664458296443
 LineRenderer:
   m_ObjectHideFlags: 0
@@ -154,6 +155,27 @@ LineRenderer:
     generateLightingData: 0
   m_UseWorldSpace: 1
   m_Loop: 0
+--- !u!114 &7065241369011201559
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 938852981703260768}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e711f09e57fe0846be5f77dc317df2b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  creature: {fileID: 1804619385181138144, guid: 02ede06db9fc4944faf96463db22788b,
+    type: 3}
+  seed: 1234
+  maxPackCount: 1000
+  minPackSize: 2
+  maxPackSize: 10
+  packRadius: 50
+  terrainSteepnesAngle: 30
+  DEBUG: 0
 --- !u!1 &2421649971222294434
 GameObject:
   m_ObjectHideFlags: 0
