@@ -18,6 +18,9 @@ public class Planet : MonoBehaviour
     [SerializeField] private GenerateCreatures generateCreatures;
 
 
+    /// <summary>
+    /// Initialize mesh for marching cubes
+    /// </summary>
     public void Initialize()
     {
         // Get meshfilter and create new mesh if it doesn't exist
