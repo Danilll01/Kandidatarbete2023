@@ -5,7 +5,7 @@ using SimpleKeplerOrbits;
 
 public class SpawnPlanets : MonoBehaviour
 {
-    [HideInInspector] public List<PlanetBody> bodies;
+    [HideInInspector] public List<Planet> bodies;
     [SerializeField] private GameObject planetsPrefab;
     [SerializeField] private GameObject planetsParent;
     [SerializeField] private int numberOfPlanets;
@@ -27,7 +27,7 @@ public class SpawnPlanets : MonoBehaviour
     /// </summary>
     void CreatePlanets()
     {
-        bodies = new List<PlanetBody>();
+        bodies = new List<Planet>();
 
         // Create a sun object
         GameObject Sun = Instantiate(planetsPrefab);
@@ -35,10 +35,11 @@ public class SpawnPlanets : MonoBehaviour
         Sun.gameObject.name = "Sun";
         Sun.GetComponentInChildren<MeshRenderer>().material = sunMaterial;
 
-        PlanetBody SunPlanetBody = Sun.GetComponent<PlanetBody>();
+        Planet SunPlanetBody = Sun.GetComponent<Planet>();
         SunPlanetBody.bodyName = "Sun";
-        SunPlanetBody.radius = radiusMaxValue * 2;
+        SunPlanetBody.diameter = radiusMaxValue * 2;
         SunPlanetBody.SetUpPlanetValues();
+        SunPlanetBody.Initialize();
         bodies.Add(SunPlanetBody);
 
         // Create all other planets and helpers
@@ -49,10 +50,11 @@ public class SpawnPlanets : MonoBehaviour
             planet.transform.position = new Vector3(0,0, radiusMaxValue * 5 * i);
             planet.gameObject.name = "Planet " + i;
 
-            PlanetBody planetBody = planet.GetComponent<PlanetBody>();
+            Planet planetBody = planet.GetComponent<Planet>();
             planetBody.bodyName = "Planet " + i;
-            planetBody.radius = Random.Range(radiusMinValue, radiusMaxValue + 1);
+            planetBody.diameter = Random.Range(radiusMinValue, radiusMaxValue + 1);
             planetBody.SetUpPlanetValues();
+            planetBody.Initialize();
             bodies.Add(planetBody);
 
             GameObject velocityHelper = new GameObject();
@@ -73,7 +75,7 @@ public class SpawnPlanets : MonoBehaviour
             // Setup settings for the orbit script with the sun as the central body
             KeplerOrbitMover planetOrbitMover = planet.GetComponent<KeplerOrbitMover>();
             planetOrbitMover.AttractorSettings.AttractorObject = Sun.transform;
-            planetOrbitMover.AttractorSettings.AttractorMass = Sun.GetComponent<PlanetBody>().mass;
+            planetOrbitMover.AttractorSettings.AttractorMass = Sun.GetComponent<Planet>().mass;
             planetOrbitMover.AttractorSettings.GravityConstant = Universe.gravitationalConstant;
             planetOrbitMover.VelocityHandle = velocityHelper.transform;
             planetOrbitMover.SetUp();
