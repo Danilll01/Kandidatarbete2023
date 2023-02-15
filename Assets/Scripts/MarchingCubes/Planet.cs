@@ -12,7 +12,6 @@ public class Planet : MonoBehaviour
     public float diameter;
     public float surfaceGravity;
     public string bodyName = "TBT";
-    private Transform meshHolder;
     public float mass;
 
     MarchingCubes marchingCubes;
@@ -45,8 +44,6 @@ public class Planet : MonoBehaviour
     public void SetUpPlanetValues()
     {
         mass = surfaceGravity * diameter / Universe.gravitationalConstant;
-        meshHolder = transform.GetChild(0);
-        //meshHolder.localScale = Vector3.one * (diameter/2);
         gameObject.name = bodyName;
     }
 }
