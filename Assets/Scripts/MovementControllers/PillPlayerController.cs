@@ -5,7 +5,7 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class PillPlayerController : MonoBehaviour
 {
-    public GameObject centerOfGravity;
+    public Planet attractor;
     public Camera firstPersonCamera;
     public float movementSpeed;
 
@@ -14,14 +14,14 @@ public class PillPlayerController : MonoBehaviour
     void Start()
     {
         body = GetComponent<Rigidbody>();
-        GetComponent<Rigidbody>().rotation = Quaternion.Euler(30, 30, 30);
     }
 
     // Update is called once per frame
     void Update()
     {
         HandleInput();
-        KeepBodyUpright();
+        CenterOfGravity.KeepUpright(transform, attractor.transform);
+        CenterOfGravity.Attract(transform, body, attractor.transform, attractor.mass);
     }
 
     private void HandleInput()
@@ -53,6 +53,6 @@ public class PillPlayerController : MonoBehaviour
     private void KeepBodyUpright()
     {
         //Look at center of gravity
-        CenterOfGravity.KeepUpright(transform, centerOfGravity.transform);
+        CenterOfGravity.KeepUpright(transform, attractor.transform);
     }
 }
