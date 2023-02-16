@@ -8,6 +8,8 @@ public class Planet : MonoBehaviour
     [SerializeField, Range(0, 255)] float threshold = 200;
     [SerializeField, Range(1, 28)] int resolution = 1;
     [SerializeField, Range(1, 500)] float radius = 1;
+    [SerializeField, Range(1, 25)] int frequency;
+    [SerializeField, Range(0, 2)] float amplitude;
     [SerializeField] GameObject meshObj;
 
     MarchingCubes marchingCubes;
@@ -32,7 +34,7 @@ public class Planet : MonoBehaviour
         // Initialize the meshgenerator
         if (meshGenerator != null)
         {
-            marchingCubes = new MarchingCubes(meshFilter.sharedMesh, meshGenerator, threshold, resolution, radius);
+            marchingCubes = new MarchingCubes(meshFilter.sharedMesh, meshGenerator, threshold, resolution, radius, frequency, amplitude);
         }
     }
 }
