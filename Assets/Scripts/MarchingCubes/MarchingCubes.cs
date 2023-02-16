@@ -101,7 +101,7 @@ public class MarchingCubes
         ComputeBuffer.CopyCount(buffer, counter, 0);
         counter.GetData(count);
         counter.Release();
-        MonoBehaviour.print(count[0]);
+        //MonoBehaviour.print(count[0]);
         return count[0];
     }
 

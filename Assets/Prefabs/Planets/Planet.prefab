@@ -49,6 +49,9 @@ MonoBehaviour:
   threshold: 115.9
   resolution: 14
   radius: 293
+  frequency: 0
+  amplitude: 0
+  bottomLevel: 0
   meshObj: {fileID: 2421649971222294434}
 --- !u!1 &2421649971222294434
 GameObject:

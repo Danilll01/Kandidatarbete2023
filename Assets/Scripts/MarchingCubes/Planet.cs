@@ -9,8 +9,8 @@ public class Planet : MonoBehaviour
     [SerializeField, Range(1, 28)] int resolution = 1;
     [SerializeField, Range(1, 500)] float radius = 1;
     [SerializeField, Range(1, 25)] int frequency;
-    [SerializeField, Range(0, 2)] float amplitude;
-    [SerializeField, Range(0, 2)] float bottomLevel;
+    [SerializeField, Range(0, 5)] float amplitude;
+    [SerializeField, Range(0, 1)] float bottomLevel;
     [SerializeField] GameObject meshObj;
 
     MarchingCubes marchingCubes;

@@ -3,6 +3,7 @@
 
 #include "Includes/MarchTables.compute"
 //#include "Includes/TextureGenerator.compute"
+#include "Includes/PerlinNoise.compute"
 
 // Helper functions declaration
 float4 getTexturePoint(uint3 pos, uint resolution, float radius);
@@ -108,28 +109,6 @@ int indexFromCoord(uint x, uint y, uint z)
 }
 
 
-float hash(float n)
-{
-    return frac(sin(n) * 43758.5453);
-}
-
-float noise(float3 x)
-{
-    // The noise function returns a value in the range -1.0f -> 1.0f
-
-    float3 p = floor(x);
-    float3 f = frac(x);
-
-    f = f * f * (3.0 - 2.0 * f);
-    float n = p.x + p.y * 57.0 + 113.0 * p.z;
-
-    return lerp(lerp(lerp(hash(n + 0.0), hash(n + 1.0), f.x),
-                   lerp(hash(n + 57.0), hash(n + 58.0), f.x), f.y),
-               lerp(lerp(hash(n + 113.0), hash(n + 114.0), f.x),
-                   lerp(hash(n + 170.0), hash(n + 171.0), f.x), f.y), f.z);
-}
-
-
 //Create a sphere on a 3D texture
 float4 getTexturePoint(uint3 pos, uint resolution, float radius)
 {
@@ -140,36 +119,28 @@ float4 getTexturePoint(uint3 pos, uint resolution, float radius)
     
     float mid = (resolution >> 1) - .5;
     
-    float3 relPos = -(pos - mid) * radius / resolution;
+    float3 relPos = (mid - pos) * radius / resolution;
     
     float3 vec = (pos / mid) - 1;
     
-    //float density = (length(vec) > 1) ? 0 : (1 - length(vec)) * 255;
+    //float density = (length(vec) > 1) ? 0 : (planetBottom - length(vec)) * 255;
     
     //return float4(relPos, density);
     
-    if (length(vec) < planetBottom)
-    {
-        return float4(relPos, (1 - length(vec)) * 255);
-    }
     if (length(vec) > 1)
-    {
         return float4(relPos, 0);
-    }
-    else
-    {
-        float3 normPos = pos / (resolution - 1.0);
-        float density = (1 - length(vec)) * 255;
-        float noiseOctave0 = (noise(normPos * (frequency << 0)) + 1) * 0.5f * amplitude;
-        float noiseOctave1 = (noise(normPos * (frequency << 1)) + 1) * 0.5f * amplitude * amplitude;
-        float noiseOctave2 = (noise(normPos * (frequency << 2)) + 1) * 0.5f * amplitude * amplitude * amplitude;
-        float noiseLevel = 1 - planetBottom;
-        float actualNoiseLevel = planetBottom - length(vec);
-        float noiseDampen = actualNoiseLevel / noiseLevel;
+    
+    float density = (1 - length(vec)) * 255;
+    float3 normPos = pos / (resolution - 1.0);
+    float noiseOctave0 = (calculateNoise(normPos * (frequency << 0)) + 1) * 0.5f * amplitude;
+    float noiseOctave1 = (calculateNoise(normPos * (frequency << 1)) + 1) * 0.5f * amplitude * amplitude;
+    float noiseOctave2 = (calculateNoise(normPos * (frequency << 2)) + 1) * 0.5f * amplitude * amplitude * amplitude;
+    density *= noiseOctave0 * noiseOctave1 * noiseOctave2;
+    
+    float innerSphereDensity = (planetBottom - length(vec)) * 255;
+    
+    if (density < innerSphereDensity)
+        return float4(relPos, innerSphereDensity);
         
-        
-        density *= 1 + noiseOctave0 * noiseOctave1 * noiseOctave2; // * noiseOctave1 * noiseOctave2;
-        return float4(relPos, density);
-
-    }
+    return float4(relPos, density);
 }
