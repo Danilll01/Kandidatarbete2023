@@ -16,7 +16,7 @@ public class PillPlayerController : MonoBehaviour
     {
         body = GetComponent<Rigidbody>();
         playerSpin = transform.rotation;
-        GetComponent<Rigidbody>().rotation = Quaternion.Euler(30,30,30);
+        GetComponent<Rigidbody>().rotation = Quaternion.Euler(30, 30, 30);
     }
 
     // Update is called once per frame
@@ -27,7 +27,8 @@ public class PillPlayerController : MonoBehaviour
         HandleCamera();
     }
 
-    private void HandleInput() {
+    private void HandleInput()
+    {
         Vector3 movementVector = Vector3.zero;
         if (Input.GetKey(KeyCode.W)) {
             movementVector += Vector3.forward;
@@ -41,6 +42,9 @@ public class PillPlayerController : MonoBehaviour
         if (Input.GetKey(KeyCode.D)) {
             movementVector += Vector3.right;
         }
+        if (Input.GetKey(KeyCode.Space)) {
+            movementVector += Vector3.up;
+        }
         body.velocity += transform.rotation * movementVector * Time.deltaTime * movementSpeed;
 
         Vector3 cameraRotationVector = new Vector3(Input.GetAxis("Mouse Y") * -1, 0);
@@ -49,14 +53,16 @@ public class PillPlayerController : MonoBehaviour
         transform.Rotate(playerRotationVector);
     }
 
-    private void KeepBodyUpright() {
+    private void KeepBodyUpright()
+    {
         //Look at center of gravity
         Vector3 directionFromCenter = transform.position - centerOfGravity.transform.position;
         directionFromCenter = directionFromCenter.normalized;
         transform.rotation = Quaternion.FromToRotation(transform.up, directionFromCenter) * transform.rotation;
     }
 
-    private void HandleCamera() {
-        
+    private void HandleCamera()
+    {
+
     }
 }
