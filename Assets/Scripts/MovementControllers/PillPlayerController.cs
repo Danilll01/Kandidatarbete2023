@@ -28,8 +28,8 @@ public class PillPlayerController : MonoBehaviour
     void Update()
     {
         HandleInput();
-        CenterOfGravity.KeepUpright(transform, attractor.transform);
-        CenterOfGravity.Attract(transform.position, body, attractor.transform.position, attractor.mass);
+        Gravity.KeepUpright(transform, attractor.transform);
+        Gravity.Attract(transform.position, body, attractor.transform.position, attractor.mass);
     }
 
     private void HandleInput()
@@ -61,6 +61,6 @@ public class PillPlayerController : MonoBehaviour
     private void KeepBodyUpright()
     {
         //Look at center of gravity
-        CenterOfGravity.KeepUpright(transform, attractor.transform);
+        Gravity.KeepUpright(transform, attractor.transform);
     }
 }
