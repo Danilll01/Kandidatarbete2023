@@ -4,7 +4,11 @@ using UnityEngine;
 
 public class CenterOfGravity
 {
-    // Start is called before the first frame update
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="entity"></param>
+    /// <param name="centerOfGravity"></param>
     public static void KeepUpright(Transform entity, Transform centerOfGravity)
     {
         Vector3 directionFromCenter = entity.position - centerOfGravity.transform.position;
@@ -12,6 +16,9 @@ public class CenterOfGravity
         entity.rotation = Quaternion.FromToRotation(entity.up, directionFromCenter) * entity.rotation;
     }
 
+    /// <summary>
+    /// Attracts an entity towards a body. The attracting body is not affected.
+    /// </summary>
     public static void Attract(Vector3 entityPos, Rigidbody entityRigidbody, Vector3 attractingBodyPos, float attractingBodyMass)
     {
         double r2 = Vector3.Distance(entityPos, attractingBodyPos);
