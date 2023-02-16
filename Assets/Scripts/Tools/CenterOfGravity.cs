@@ -12,11 +12,11 @@ public class CenterOfGravity
         entity.rotation = Quaternion.FromToRotation(entity.up, directionFromCenter) * entity.rotation;
     }
 
-    public static void Attract(Transform entity, Transform centerOfGravity, float centerOfGravityMass)
+    public static void Attract(Transform entity, Rigidbody entityBody, Transform centerOfGravity, float centerOfGravityMass)
     {
         double r2 = Vector3.Distance(entity.position, centerOfGravity.position);
-        r2 = r2 * r2;
+        r2 *= r2;
 
-        
+        entityBody.velocity += entity.up * -1 * (float)((Universe.gravitationalConstant * centerOfGravityMass) / r2);
     }
 }
