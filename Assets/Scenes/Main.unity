@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028331, g: 0.2257133, b: 0.3069217, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -339,6 +339,22 @@ PrefabInstance:
       propertyPath: planetsParent
       value: 
       objectReference: {fileID: 210303240}
+    - target: {fileID: 776431053636631548, guid: 93094628cce30c64195c2ae1633e7e60,
+        type: 3}
+      propertyPath: planetsPrefab
+      value: 
+      objectReference: {fileID: 938852981703260768, guid: a63d80705e6906648b6df8c31608d660,
+        type: 3}
+    - target: {fileID: 776431053636631548, guid: 93094628cce30c64195c2ae1633e7e60,
+        type: 3}
+      propertyPath: radiusMaxValue
+      value: 10000
+      objectReference: {fileID: 0}
+    - target: {fileID: 776431053636631548, guid: 93094628cce30c64195c2ae1633e7e60,
+        type: 3}
+      propertyPath: radiusMinValue
+      value: 2000
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 93094628cce30c64195c2ae1633e7e60, type: 3}
 --- !u!1 &1212578161

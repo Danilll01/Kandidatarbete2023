@@ -7,21 +7,21 @@ public class Planet : MonoBehaviour
     [SerializeField] ComputeShader meshGenerator;
     [SerializeField, Range(0, 255)] float threshold = 200;
     [SerializeField, Range(1, 28)] int resolution = 1;
-    [SerializeField, Range(1, 500)] float radius = 1;
     [SerializeField] GameObject meshObj;
 
+    public float radius;
+    public float surfaceGravity;
+    public string bodyName = "TBT";
+    public float mass;
+
     MarchingCubes marchingCubes;
+    [SerializeField] private GenerateCreatures generateCreatures;
 
-    private void OnValidate()
-    {
-        Initialize();
-        if (marchingCubes != null)
-        {
-            marchingCubes.generateMesh();
-        }
-    }
 
-    void Initialize()
+    /// <summary>
+    /// Initialize mesh for marching cubes
+    /// </summary>
+    public void Initialize()
     {
         // Get meshfilter and create new mesh if it doesn't exist
         MeshFilter meshFilter = meshObj.GetComponent<MeshFilter>();
@@ -35,5 +35,28 @@ public class Planet : MonoBehaviour
         {
             marchingCubes = new MarchingCubes(meshFilter.sharedMesh, meshGenerator, threshold, resolution, radius);
         }
+
+        // Generates the mesh
+        if (marchingCubes != null)
+        {
+            marchingCubes.generateMesh();
+            MeshCollider meshCollider = meshFilter.gameObject.AddComponent<MeshCollider>();
+            meshCollider.sharedMesh = meshFilter.sharedMesh;
+        }
+
+        // Generate the creatures
+        if (generateCreatures != null && bodyName != "Sun")
+        {
+            generateCreatures.Initialize(this);
+        }
+    }
+
+    /// <summary>
+    /// Set up the values for the planets
+    /// </summary>
+    public void SetUpPlanetValues()
+    {
+        mass = surfaceGravity * radius * radius / Universe.gravitationalConstant;
+        gameObject.name = bodyName;
     }
 }
