@@ -36,6 +36,7 @@ public class Planet : MonoBehaviour
             marchingCubes = new MarchingCubes(meshFilter.sharedMesh, meshGenerator, threshold, resolution, radius);
         }
 
+        // Generates the mesh
         if (marchingCubes != null)
         {
             marchingCubes.generateMesh();
@@ -43,6 +44,7 @@ public class Planet : MonoBehaviour
             meshCollider.sharedMesh = meshFilter.sharedMesh;
         }
 
+        // Generate the creatures
         if (generateCreatures != null && bodyName != "Sun")
         {
             generateCreatures.Initialize(this);

@@ -24,7 +24,10 @@ public class GenerateCreatures : MonoBehaviour
     private float creatureSize = 20f; // Make so it fit creature size
     private GameObject creatureParent;
     
-    // Initializes creature generation
+    /// <summary>
+    /// Initializes creature generation
+    /// </summary>
+    /// <param name="planet">The planet script found on a planet</param>
     public void Initialize(Planet planet)
     {
         this.planet = planet;
