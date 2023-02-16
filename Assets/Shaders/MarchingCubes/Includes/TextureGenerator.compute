@@ -1,48 +1,53 @@
 
 
-//#include "PerlinNoise.compute"
+#include "PerlinNoise.compute"
 
-float noiseScale = 1;
-float noiseHeightMultiplier = 1;
-float planetSize;
+//#include "Packages/Noise Shader/Shader/ClassicNoise2D.hlsl"
+//#include "Packages/Noise Shader/Shader/ClassicNoise3D.hlsl"
+//#include "Packages/Noise Shader/Shader/SimplexNoise2D.hlsl"
+//#include "Packages/Noise Shader/Shader/SimplexNoise3D.hlsl"
 
-float fbm(int numLayers, float lacunarity, float persistence, float scale, float3 pos)
-{
-    float noise = 0;
-    float frequency = scale / 100;
-    float amplitude = 1;
+//float noiseScale = 1;
+//float noiseHeightMultiplier = 1;
+//float planetSize;
 
-    for (int i = 0; i < numLayers; i++)
-    {
-        //float n = 1 - abs(snoise(pos * frequency) * 2 - 1);
-		//n*=n;
-        noise += n * amplitude;
+//float fbm(int numLayers, float lacunarity, float persistence, float scale, float3 pos)
+//{
+//    float noise = 0;
+//    float frequency = scale / 100;
+//    float amplitude = 1;
 
-        amplitude *= persistence;
-        frequency *= lacunarity;
-    }
+//    for (int i = 0; i < numLayers; i++)
+//    {
+//        float n = 1 - abs(snoise(pos * frequency) * 2 - 1);
+//		//n*=n;
+//        noise += n * amplitude;
 
-    return noise;
-}
+//        amplitude *= persistence;
+//        frequency *= lacunarity;
+//    }
 
-float calculateDensity(int3 cell, float textureResolution)
-{
-    float3 worldPos = (cell / float(textureResolution - 1.0) - 0.5f) * planetSize;
+//    return noise;
+//}
 
-    float halfS = planetSize / 2;
-    float maxD = length(float3(halfS, halfS, halfS));
+//float calculateDensity(int3 cell, float textureResolution)
+//{
+//    float3 worldPos = (cell / float(textureResolution - 1.0) - 0.5f) * planetSize;
 
-    float fudge = 1;
+//    float halfS = planetSize / 2;
+//    float maxD = length(float3(halfS, halfS, halfS));
 
-    float density = length(worldPos) / (maxD + fudge) - 0.5;
+//    float fudge = 1;
 
-	// Noise
-    float noise = fbm(6, 2, 0.5, noiseScale, worldPos) * noiseHeightMultiplier;
+//    float density = length(worldPos) / (maxD + fudge) - 0.5;
 
-    density += noise;
+//	// Noise
+//    float noise = fbm(6, 2, 0.5, noiseScale, worldPos) * noiseHeightMultiplier;
 
-    return density;
-}
+//    density += noise;
+
+//    return density;
+//}
 
 //Create a sphere on a 3D texture
 float4 getTexturePoint(uint3 pos, uint resolution, float radius)
@@ -91,8 +96,8 @@ float4 getTexturePoint(uint3 pos, uint resolution, float radius)
     
     float density = (length(vec) > 1) ? 0 : (1 - length(vec)) * 255;
     
-    float noiseValue = (noise(pos/100) + 1) * 0.1f;
-    density *= noiseValue;
+    float noiseValue = (noise(pos/10) + 1) * 0.5f;
+    //density *= noiseValue;
     
     return float4(relPos, density);
 }

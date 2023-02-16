@@ -15,7 +15,7 @@ struct Triangle
     float3 vertexC;
 };
 
-//RWStructuredBuffer<float4> points;
+//RWStructuredBuffer<float4> points; 
 AppendStructuredBuffer<Triangle> triangles;
 
 uint resolution;

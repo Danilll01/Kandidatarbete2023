@@ -15,8 +15,7 @@ public class Planet : MonoBehaviour
     private void OnValidate()
     {
         Initialize();
-        if (marchingCubes != null)
-        {
+        if (marchingCubes != null) {
             marchingCubes.generateMesh();
         }
     }
