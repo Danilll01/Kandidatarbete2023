@@ -55,46 +55,90 @@ public class SpawnPlanets : MonoBehaviour
         {
             GameObject planet = Instantiate(planetsPrefab);
             planet.transform.parent = planetsParent.transform;
-            planet.transform.localPosition = RandomPointOnCircleEdge(radiusMaxValue * (maxNumberOfMoons + 0.2f) * i);
-            planet.gameObject.name = "Planet " + i;
 
             Planet planetBody = planet.GetComponent<Planet>();
             planetBody.bodyName = "Planet " + i;
             planetBody.radius = Random.Range(radiusMinValue, radiusMaxValue + 1);
+
+
+            int nrOfMoonsForPlanet = GetNrOfMoonsToGenerate();
+            planet.transform.localPosition = CalculatePositionForPlanet(planetBody, i, nrOfMoonsForPlanet);//RandomPointOnCircleEdge(radiusMaxValue * (maxNumberOfMoons + 0.2f) * i);
+            planet.gameObject.name = "Planet " + i;
+
+            
             planetBody.SetUpPlanetValues();
             planetBody.Initialize();
+            InstantiateMoons(planetBody, nrOfMoonsForPlanet);
             bodies.Add(planetBody);
            
             SetupOrbitComponents(Sun, planet);
-            InstantiateMoons(planetBody);
         }
     }
 
-    // Instantiate moons for the given planet
-    private void InstantiateMoons(Planet parentPlanet)
+    
+    private Vector3 CalculatePositionForPlanet(Planet planet, int index, int moonsNumber)
+    {
+        Vector3 pos = Vector3.one;
+
+        // Calculates the position from the sun given the number of moons 
+        if (index == 1)
+        {
+            float totalRadiusOfCurrentPlanet = planet.radius + (planet.radius * moonsNumber);
+            float sunRadius = bodies[0].radius;
+            float offset = Random.Range(radiusMinValue, radiusMaxValue + 1) * 1.2f;
+            float distanceFromSun = sunRadius + totalRadiusOfCurrentPlanet + offset;
+
+            pos = RandomPointOnCircleEdge(distanceFromSun);
+        }
+
+        // Calculates the position from the sun based on previous planets position and radius
+        else
+        {
+            Planet previousPlanet = bodies[index - 1];
+            int nrOfMoonsOnPreviousPlanet = previousPlanet.moons.Count;
+            float totalRadiusOfPreviousPlanet = previousPlanet.radius + (previousPlanet.radius * nrOfMoonsOnPreviousPlanet);
+            float previousPlanetPosMagnitude = previousPlanet.gameObject.transform.position.magnitude;
+
+            float totalRadiusOfCurrentPlanet = planet.radius + (planet.radius * moonsNumber);
+
+            float offset = Random.Range(radiusMinValue, radiusMaxValue + 1) * 1.2f;
+            float distanceFromSun = previousPlanetPosMagnitude + totalRadiusOfPreviousPlanet + totalRadiusOfCurrentPlanet + offset;
+            pos = RandomPointOnCircleEdge(distanceFromSun);
+        }
+        return pos;
+    }
+
+
+    private int GetNrOfMoonsToGenerate()
     {
         int shouldHaveMoons = Random.Range(1, 10);
+        int numberOfMoons = 0;
 
         if (shouldHaveMoons >= chanceOfMoonsLimit)
         {
-            int numberOfMoons = Random.Range(minNumberOfMoons, maxNumberOfMoons + 1);
+            numberOfMoons = Random.Range(minNumberOfMoons, maxNumberOfMoons + 1);
+        }
 
-            for (int i = 1; i < numberOfMoons + 1; i++)
-            {
-                GameObject moon = Instantiate(planetsPrefab);
-                moon.transform.parent = parentPlanet.transform;
-                moon.transform.localPosition = RandomPointOnCircleEdge(parentPlanet.radius * i);
-                moon.gameObject.name = "Moon " + i;
+        return numberOfMoons;
+    }
 
-                Planet planetBody = moon.GetComponent<Planet>();
-                planetBody.bodyName = "Moon " + i;
-                planetBody.radius = Random.Range(parentPlanet.radius / 5, (parentPlanet.radius / 2) + 1);
-                planetBody.SetUpPlanetValues();
-                planetBody.Initialize();
-                bodies.Add(planetBody);
-                SetupOrbitComponents(parentPlanet.gameObject, moon);
-            }
+    // Instantiate moons for the given planet
+    private void InstantiateMoons(Planet parentPlanet, int numberOfMoons)
+    {
+        for (int i = 1; i < numberOfMoons + 1; i++)
+        {
+            GameObject moon = Instantiate(planetsPrefab);
+            moon.transform.parent = parentPlanet.transform;
+            moon.transform.localPosition = RandomPointOnCircleEdge(parentPlanet.radius * i);
+            moon.gameObject.name = "Moon " + i;
 
+            Planet moonBody = moon.GetComponent<Planet>();
+            moonBody.bodyName = "Moon " + i;
+            moonBody.radius = Random.Range(parentPlanet.radius / 5, (parentPlanet.radius / 2) + 1);
+            moonBody.SetUpPlanetValues();
+            moonBody.Initialize();
+            parentPlanet.moons.Add(moonBody);
+            SetupOrbitComponents(parentPlanet.gameObject, moon);
         }
     }
 
@@ -134,9 +178,4 @@ public class SpawnPlanets : MonoBehaviour
         planetOrbitMover.ForceUpdateOrbitData();
         planetOrbitMover.LockOrbitEditing = true;
     }
-
-    
-
-
-
 }
