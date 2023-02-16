@@ -14,6 +14,14 @@ public class PillPlayerController : MonoBehaviour
     void Start()
     {
         body = GetComponent<Rigidbody>();
+        //A bit of a hack to give the player a starting planet
+        attractor = GameObject.Find("Sun").transform.parent.transform.GetChild(1).GetComponent<Planet>();
+        Vector3 directionNearestPlanet = attractor.transform.position - transform.position;
+        Physics.Raycast(transform.position, directionNearestPlanet, out RaycastHit hit);
+        transform.SetParent(attractor.transform);
+        
+        //Put the player above the ground
+        transform.position = hit.point - (directionNearestPlanet.normalized) * 5;
     }
 
     // Update is called once per frame
