@@ -10,12 +10,10 @@ public class PillPlayerController : MonoBehaviour
     public float movementSpeed;
 
     private Rigidbody body;
-    private Quaternion playerSpin;
     // Start is called before the first frame update
     void Start()
     {
         body = GetComponent<Rigidbody>();
-        playerSpin = transform.rotation;
         GetComponent<Rigidbody>().rotation = Quaternion.Euler(30, 30, 30);
     }
 
