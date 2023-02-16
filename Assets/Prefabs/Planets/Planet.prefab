@@ -55,6 +55,7 @@ MonoBehaviour:
   surfaceGravity: 10
   bodyName: TBT
   mass: 100
+  moons: []
   generateCreatures: {fileID: 7065241369011201559}
 --- !u!120 &2865990664458296443
 LineRenderer:
@@ -172,7 +173,7 @@ MonoBehaviour:
   maxPackCount: 10000
   minPackSize: 2
   maxPackSize: 10
-  packRadius: 50
+  packRadius: 30
   terrainSteepnesAngle: 30
   DEBUG: 0
 --- !u!1 &2421649971222294434

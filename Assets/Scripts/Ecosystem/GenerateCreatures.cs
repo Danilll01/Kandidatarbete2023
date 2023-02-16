@@ -21,7 +21,7 @@ public class GenerateCreatures : MonoBehaviour
     private Planet planet;
     private Vector3 planetCenter;
 
-    private float creatureSize = 20f; // Make so it fit creature size
+    private float creatureSize = 1.5f; // Make so it fit creature size
     private GameObject creatureParent;
     
     /// <summary>
