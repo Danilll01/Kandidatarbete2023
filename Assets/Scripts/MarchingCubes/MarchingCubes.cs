@@ -14,6 +14,7 @@ public class MarchingCubes
     readonly float radius;
     readonly int frequency;
     readonly float amplitude;
+    readonly float bottomLevel;
 
     Mesh mesh;
 
@@ -25,7 +26,7 @@ public class MarchingCubes
     /// <param name="threshold"></param>
     /// <param name="resolution"></param>
     /// <param name="radius"></param>
-    public MarchingCubes(Mesh mesh, ComputeShader meshGenerator, float threshold, int resolution, float radius, int frequency, float amplitude)
+    public MarchingCubes(Mesh mesh, ComputeShader meshGenerator, float threshold, int resolution, float radius, int frequency, float amplitude, float bottomLevel)
     {
         this.mesh = mesh;
         mesh.indexFormat = IndexFormat.UInt32;
@@ -35,6 +36,7 @@ public class MarchingCubes
         this.radius = radius;
         this.amplitude = amplitude;
         this.frequency = frequency;
+        this.bottomLevel = bottomLevel;
     }
 
     /// <summary>
@@ -55,6 +57,7 @@ public class MarchingCubes
         int kernelIndex = meshGenerator.FindKernel("GenerateMesh");
         meshGenerator.SetInt("frequency", frequency);
         meshGenerator.SetFloat("amplitude", amplitude);
+        meshGenerator.SetFloat("bottomLevel", bottomLevel);
         meshGenerator.SetInt("resolution", resolution << 3);
         meshGenerator.SetFloat("threshold", threshold);
         meshGenerator.SetFloat("radius", radius);

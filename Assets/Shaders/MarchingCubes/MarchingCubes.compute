@@ -22,6 +22,9 @@ AppendStructuredBuffer<Triangle> triangles;
 uint resolution;
 float threshold;
 float radius;
+uint frequency;
+float amplitude;
+float planetBottom;
 
 [numthreads(8, 8, 8)]
 void GenerateMesh(uint3 id : SV_DispatchThreadID)
@@ -130,37 +133,6 @@ float noise(float3 x)
 //Create a sphere on a 3D texture
 float4 getTexturePoint(uint3 pos, uint resolution, float radius)
 {
-    
-    //planetSize = radius;
-    
-    
-    //float density = 0;
-
-    //const int b = 1;
-    //if (pos.x >= resolution - b || pos.y >= resolution - b || pos.z >= resolution - b)
-    //{
-    //    density = 1;
-    //}
-    //else if (pos.x <= b || pos.y <= b || pos.z <= b)
-    //{
-    //    density = 1;
-    //}
-    //else
-    //{
-    //    density = calculateDensity(pos, resolution);
-    //}
-
-    ////DensityTexture[pos] = density;
-    
-    
-    //return float4(pos, 100);
-    
-    
-    
-    
-    
-    
-    
     int index =
     pos.x +
     pos.y * resolution +
@@ -172,33 +144,29 @@ float4 getTexturePoint(uint3 pos, uint resolution, float radius)
     
     float3 vec = (pos / mid) - 1;
     
+    //float density = (length(vec) > 1) ? 0 : (1 - length(vec)) * 255;
     
-    if (length(vec) < 0.8)
+    //return float4(relPos, density);
+    
+    if (length(vec) < planetBottom)
     {
-        return float4(relPos, length(vec));
-
+        return float4(relPos, (1 - length(vec)) * 255);
     }
-    else if (length(vec) > 1)
+    if (length(vec) > 1)
     {
         return float4(relPos, 0);
-
     }
     else
     {
         float3 normPos = pos / (resolution - 1.0);
+        length(vec) - planetBottom;
         float density = (1 - length(vec)) * 255;
         float noiseOctave0 = (noise(normPos * (frequency << 0)) + 1) * 0.5f * amplitude;
         float noiseOctave1 = (noise(normPos * (frequency << 1)) + 1) * 0.5f * amplitude * amplitude;
         float noiseOctave2 = (noise(normPos * (frequency << 2)) + 1) * 0.5f * amplitude * amplitude * amplitude;
-        density *= noiseOctave0 * noiseOctave1 * noiseOctave2;
+        float noiseLevel = length(vec) - planetBottom;
+        density *= 1 + noiseOctave0 * noiseOctave1 * noiseOctave2 * noiseLevel; // * noiseOctave1 * noiseOctave2;
         return float4(relPos, density);
 
     }
-    
-        //float density = (length(vec) > 1) ? 0 : (1 - length(vec)) * 255;
-    
-    //float noiseValue = (noise(pos/10) + 1) * 0.5f;
-    //density *= noiseValue;
-    
-    //return float4(relPos, density);
 }
