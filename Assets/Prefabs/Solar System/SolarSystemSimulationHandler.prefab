@@ -45,12 +45,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bodies: []
-  planetsPrefab: {fileID: 2474355628650455300, guid: e968ae35fe5497846ac168b2a3675f3e,
+  planetsPrefab: {fileID: 938852981703260768, guid: a63d80705e6906648b6df8c31608d660,
     type: 3}
   planetsParent: {fileID: 0}
   numberOfPlanets: 3
   radiusMinValue: 500
-  radiusMaxValue: 1500
-  orbitOffsetMinValue: -10
-  orbitOffsetMaxValue: 10
+  radiusMaxValue: 2000
+  orbitOffsetMinValue: -1
+  orbitOffsetMaxValue: 1
+  chanceOfMoonsLimit: 5
+  minNumberOfMoons: 1
+  maxNumberOfMoons: 5
   sunMaterial: {fileID: 2100000, guid: c7d5f095bd03ec34d954c874818413bc, type: 2}
