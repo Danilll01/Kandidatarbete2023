@@ -159,13 +159,16 @@ float4 getTexturePoint(uint3 pos, uint resolution, float radius)
     else
     {
         float3 normPos = pos / (resolution - 1.0);
-        length(vec) - planetBottom;
         float density = (1 - length(vec)) * 255;
         float noiseOctave0 = (noise(normPos * (frequency << 0)) + 1) * 0.5f * amplitude;
         float noiseOctave1 = (noise(normPos * (frequency << 1)) + 1) * 0.5f * amplitude * amplitude;
         float noiseOctave2 = (noise(normPos * (frequency << 2)) + 1) * 0.5f * amplitude * amplitude * amplitude;
-        float noiseLevel = length(vec) - planetBottom;
-        density *= 1 + noiseOctave0 * noiseOctave1 * noiseOctave2 * noiseLevel; // * noiseOctave1 * noiseOctave2;
+        float noiseLevel = 1 - planetBottom;
+        float actualNoiseLevel = planetBottom - length(vec);
+        float noiseDampen = actualNoiseLevel / noiseLevel;
+        
+        
+        density *= 1 + noiseOctave0 * noiseOctave1 * noiseOctave2; // * noiseOctave1 * noiseOctave2;
         return float4(relPos, density);
 
     }

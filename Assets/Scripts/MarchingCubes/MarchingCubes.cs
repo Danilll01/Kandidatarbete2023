@@ -57,7 +57,7 @@ public class MarchingCubes
         int kernelIndex = meshGenerator.FindKernel("GenerateMesh");
         meshGenerator.SetInt("frequency", frequency);
         meshGenerator.SetFloat("amplitude", amplitude);
-        meshGenerator.SetFloat("bottomLevel", bottomLevel);
+        meshGenerator.SetFloat("planetBottom", bottomLevel);
         meshGenerator.SetInt("resolution", resolution << 3);
         meshGenerator.SetFloat("threshold", threshold);
         meshGenerator.SetFloat("radius", radius);
