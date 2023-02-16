@@ -44,7 +44,7 @@ public class SpawnPlanets : MonoBehaviour
         SunPlanetBody.Initialize();
         bodies.Add(SunPlanetBody);
         InstantiatePlanets(Sun);
-        
+
     }
 
     // Instantiates the all the components on all the planets
@@ -62,20 +62,20 @@ public class SpawnPlanets : MonoBehaviour
 
 
             int nrOfMoonsForPlanet = GetNrOfMoonsToGenerate();
-            planet.transform.localPosition = CalculatePositionForPlanet(planetBody, i, nrOfMoonsForPlanet);//RandomPointOnCircleEdge(radiusMaxValue * (maxNumberOfMoons + 0.2f) * i);
+            planet.transform.localPosition = CalculatePositionForPlanet(planetBody, i, nrOfMoonsForPlanet);
             planet.gameObject.name = "Planet " + i;
 
-            
+
             planetBody.SetUpPlanetValues();
             planetBody.Initialize();
             InstantiateMoons(planetBody, nrOfMoonsForPlanet);
             bodies.Add(planetBody);
-           
+
             SetupOrbitComponents(Sun, planet);
         }
     }
 
-    
+
     private Vector3 CalculatePositionForPlanet(Planet planet, int index, int moonsNumber)
     {
         Vector3 pos = Vector3.one;
