@@ -39,7 +39,7 @@ jobs:
         with:
           tag_name: v${{ env.MAJOR_RELEASE_NR }}.${{ env.GITHUB_RUN_NUMBER_WITH_OFFSET }}
           name: Release V${{ env.MAJOR_RELEASE_NR }}.${{ env.GITHUB_RUN_NUMBER_WITH_OFFSET }}
-          token: ${{ secrets.CUSTOM_GITHUB_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
           files: build/StandaloneWindows64.zip
 
   buildForAllSupportedPlatforms:
