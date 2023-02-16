@@ -7,7 +7,7 @@ using TMPro;
 
 public class StartManager : MonoBehaviour
 {
-    public TextMeshProUGUI seedInput;
+    public TMP_InputField seedInput;
     public TextMeshProUGUI nrOfPlanetsText;
 
     public void UpdatePlanetInputValue(Slider slider)
@@ -17,13 +17,12 @@ public class StartManager : MonoBehaviour
 
     public void StartGame()
     {
-
-        if (seedInput.text.Trim() == "")
+        if (string.IsNullOrEmpty(seedInput.text))
         {
             seedInput.text = Random.Range(0,100000).ToString();
         }
 
-        //Universe.seed = int.Parse(seedInput.text);
+        Universe.seed = int.Parse(seedInput.text);
         Universe.nrOfPlanets = int.Parse(nrOfPlanetsText.text);
         SceneManager.LoadScene("Main");
     }

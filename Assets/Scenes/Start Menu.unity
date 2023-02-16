@@ -1987,7 +1987,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e434c76395b5da47a172ee85ea63d06, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  seedInput: {fileID: 1570805275}
+  seedInput: {fileID: 45092317}
   nrOfPlanetsText: {fileID: 865830585}
 --- !u!4 &1783668272
 Transform:
