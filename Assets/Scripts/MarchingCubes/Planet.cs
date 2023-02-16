@@ -13,6 +13,7 @@ public class Planet : MonoBehaviour
     public float surfaceGravity;
     public string bodyName = "TBT";
     public float mass;
+    public List<Planet> moons; 
 
     MarchingCubes marchingCubes;
     [SerializeField] private GenerateCreatures generateCreatures;
@@ -45,7 +46,7 @@ public class Planet : MonoBehaviour
         }
 
         // Generate the creatures
-        if (generateCreatures != null && bodyName != "Sun")
+        if (generateCreatures != null && bodyName != "Sun" && !bodyName.Contains("Moon"))
         {
             generateCreatures.Initialize(this);
         }
