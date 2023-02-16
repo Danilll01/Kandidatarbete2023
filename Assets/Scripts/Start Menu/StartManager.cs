@@ -17,7 +17,9 @@ public class StartManager : MonoBehaviour
 
     public void StartGame()
     {
-        if (string.IsNullOrEmpty(seedInput.text))
+        int tryParse = 0;
+        int.TryParse(seedInput.text, out tryParse);
+        if (string.IsNullOrEmpty(seedInput.text) || tryParse == 0)
         {
             seedInput.text = Random.Range(0, 1000000).ToString();
         }
