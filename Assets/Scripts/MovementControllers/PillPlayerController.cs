@@ -53,8 +53,6 @@ public class PillPlayerController : MonoBehaviour
     private void KeepBodyUpright()
     {
         //Look at center of gravity
-        Vector3 directionFromCenter = transform.position - centerOfGravity.transform.position;
-        directionFromCenter = directionFromCenter.normalized;
-        transform.rotation = Quaternion.FromToRotation(transform.up, directionFromCenter) * transform.rotation;
+        CenterOfGravity.KeepUpright(transform, centerOfGravity.transform);
     }
 }
