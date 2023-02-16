@@ -3,14 +3,11 @@ run-name: Build project
 on:
   pull_request:
     types: [closed]
-  push:
-    branches:
-      - "Build-script-package-bump"
   workflow_dispatch: {}
 
 env:
-  MAJOR_RELEASE_NR: 0
-  MINOR_OFFSET: 0
+  MAJOR_RELEASE_NR: 1
+  MINOR_OFFSET: 20
 
 jobs:
   release-project:
