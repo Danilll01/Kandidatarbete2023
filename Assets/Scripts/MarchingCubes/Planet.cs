@@ -13,7 +13,7 @@ public class Planet : MonoBehaviour
     public float surfaceGravity;
     public string bodyName = "TBT";
     public float mass;
-    public List<Planet> moons; 
+    public List<Planet> moons;
 
     MarchingCubes marchingCubes;
     [SerializeField] private GenerateCreatures generateCreatures;
@@ -26,7 +26,7 @@ public class Planet : MonoBehaviour
     {
         // Get meshfilter and create new mesh if it doesn't exist
         MeshFilter meshFilter = meshObj.GetComponent<MeshFilter>();
-        if(meshFilter.sharedMesh == null)
+        if (meshFilter.sharedMesh == null)
         {
             meshFilter.sharedMesh = new Mesh();
         }

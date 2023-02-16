@@ -19,11 +19,12 @@ public class StartManager : MonoBehaviour
     {
         if (string.IsNullOrEmpty(seedInput.text))
         {
-            seedInput.text = Random.Range(0,100000).ToString();
+            seedInput.text = Random.Range(0, 1000000).ToString();
         }
 
         Universe.seed = int.Parse(seedInput.text);
         Universe.nrOfPlanets = int.Parse(nrOfPlanetsText.text);
+        Universe.InitializeSeed();
         SceneManager.LoadScene("Main");
     }
 }
