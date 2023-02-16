@@ -24,7 +24,6 @@ public class PillPlayerController : MonoBehaviour
     {
         HandleInput();
         KeepBodyUpright();
-        HandleCamera();
     }
 
     private void HandleInput()
@@ -59,10 +58,5 @@ public class PillPlayerController : MonoBehaviour
         Vector3 directionFromCenter = transform.position - centerOfGravity.transform.position;
         directionFromCenter = directionFromCenter.normalized;
         transform.rotation = Quaternion.FromToRotation(transform.up, directionFromCenter) * transform.rotation;
-    }
-
-    private void HandleCamera()
-    {
-
     }
 }
