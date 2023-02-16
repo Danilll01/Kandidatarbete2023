@@ -21,7 +21,7 @@ public class PillPlayerController : MonoBehaviour
     {
         HandleInput();
         CenterOfGravity.KeepUpright(transform, attractor.transform);
-        CenterOfGravity.Attract(transform, body, attractor.transform, attractor.mass);
+        CenterOfGravity.Attract(transform.position, body, attractor.transform.position, attractor.mass);
     }
 
     private void HandleInput()
