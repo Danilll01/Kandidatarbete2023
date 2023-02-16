@@ -22,7 +22,13 @@ public class SpawnPlanets : MonoBehaviour
 
     void Awake()
     {
+        GetValues();
         CreatePlanets();
+    }
+
+    private void GetValues()
+    {
+        numberOfPlanets = Universe.nrOfPlanets;
     }
 
     // Creates all the planets 
