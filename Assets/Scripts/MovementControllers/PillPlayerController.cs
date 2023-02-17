@@ -8,6 +8,7 @@ public class PillPlayerController : MonoBehaviour
     public Planet attractor;
     public Camera firstPersonCamera;
     public float movementSpeed;
+    [SerializeField] private float maxSpeed = 0;
 
     private Rigidbody body;
     // Start is called before the first frame update
@@ -51,6 +52,10 @@ public class PillPlayerController : MonoBehaviour
             movementVector += Vector3.up;
         }
         body.velocity += transform.rotation * movementVector * Time.deltaTime * movementSpeed;
+        if (body.velocity.magnitude > maxSpeed) {
+            body.velocity = body.velocity.normalized * maxSpeed;
+        }
+
 
         Vector3 cameraRotationVector = new Vector3(Input.GetAxis("Mouse Y") * -1, 0);
         Vector3 playerRotationVector = new Vector3(0, Input.GetAxis("Mouse X"));
