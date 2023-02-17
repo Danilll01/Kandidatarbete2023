@@ -1,8 +1,110 @@
 
 
+//#include "PerlinNoise.compute"
+
+//#include "Packages/Noise Shader/Shader/ClassicNoise2D.hlsl"
+//#include "Packages/Noise Shader/Shader/ClassicNoise3D.hlsl"
+//#include "Packages/Noise Shader/Shader/SimplexNoise2D.hlsl"
+//#include "Packages/Noise Shader/Shader/SimplexNoise3D.hlsl"
+
+//float noiseScale = 1;
+//float noiseHeightMultiplier = 1;
+//float planetSize;
+
+//float fbm(int numLayers, float lacunarity, float persistence, float scale, float3 pos)
+//{
+//    float noise = 0;
+//    float frequency = scale / 100;
+//    float amplitude = 1;
+
+//    for (int i = 0; i < numLayers; i++)
+//    {
+//        float n = 1 - abs(snoise(pos * frequency) * 2 - 1);
+//		//n*=n;
+//        noise += n * amplitude;
+
+//        amplitude *= persistence;
+//        frequency *= lacunarity;
+//    }
+
+//    return noise;
+//}
+
+//float calculateDensity(int3 cell, float textureResolution)
+//{
+//    float3 worldPos = (cell / float(textureResolution - 1.0) - 0.5f) * planetSize;
+
+//    float halfS = planetSize / 2;
+//    float maxD = length(float3(halfS, halfS, halfS));
+
+//    float fudge = 1;
+
+//    float density = length(worldPos) / (maxD + fudge) - 0.5;
+
+//	// Noise
+//    float noise = fbm(6, 2, 0.5, noiseScale, worldPos) * noiseHeightMultiplier;
+
+//    density += noise;
+
+//    return density;
+//}
+
+float hash(float n)
+{
+    return frac(sin(n) * 43758.5453);
+}
+
+float noise(float3 x)
+{
+    // The noise function returns a value in the range -1.0f -> 1.0f
+
+    float3 p = floor(x);
+    float3 f = frac(x);
+
+    f = f * f * (3.0 - 2.0 * f);
+    float n = p.x + p.y * 57.0 + 113.0 * p.z;
+
+    return lerp(lerp(lerp(hash(n + 0.0), hash(n + 1.0), f.x),
+                   lerp(hash(n + 57.0), hash(n + 58.0), f.x), f.y),
+               lerp(lerp(hash(n + 113.0), hash(n + 114.0), f.x),
+                   lerp(hash(n + 170.0), hash(n + 171.0), f.x), f.y), f.z);
+}
+
+
 //Create a sphere on a 3D texture
 float4 getTexturePoint(uint3 pos, uint resolution, float radius)
 {
+    
+    //planetSize = radius;
+    
+    
+    //float density = 0;
+
+    //const int b = 1;
+    //if (pos.x >= resolution - b || pos.y >= resolution - b || pos.z >= resolution - b)
+    //{
+    //    density = 1;
+    //}
+    //else if (pos.x <= b || pos.y <= b || pos.z <= b)
+    //{
+    //    density = 1;
+    //}
+    //else
+    //{
+    //    density = calculateDensity(pos, resolution);
+    //}
+
+    ////DensityTexture[pos] = density;
+    
+    
+    //return float4(pos, 100);
+    
+    
+    
+    
+    
+    
+    
     int index =
     pos.x +
     pos.y * resolution +
@@ -14,7 +116,35 @@ float4 getTexturePoint(uint3 pos, uint resolution, float radius)
     
     float3 vec = (pos / mid) - 1;
     
-    float density = (length(vec) > 1) ? 0 : (1 - length(vec)) * 255;
     
-    return float4(relPos, density);
+    if (length(vec) < 0)
+    {
+        return float4(relPos, length(vec));
+
+    }
+    else if (length(vec) > 1)
+    {
+        return float4(relPos, 0);
+
+    }
+    else
+    {
+        float3 normPos = pos / (resolution - 1.0);
+        float density = (1 - length(vec)) * 255;
+        float noiseValue = (noise(normPos * 10) + 1) * 0.5f;
+        density *= noiseValue;
+        return float4(relPos, density);
+
+    }
+    
+        //float density = (length(vec) > 1) ? 0 : (1 - length(vec)) * 255;
+    
+    //float noiseValue = (noise(pos/10) + 1) * 0.5f;
+    //density *= noiseValue;
+    
+    //return float4(relPos, density);
 }
+
+
+
+

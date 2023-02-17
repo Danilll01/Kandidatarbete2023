@@ -5,8 +5,11 @@ using UnityEngine;
 public class Planet : MonoBehaviour
 {
     [SerializeField] ComputeShader meshGenerator;
-    [SerializeField, Range(0, 255)] float threshold = 200;
-    [SerializeField, Range(1, 28)] int resolution = 1;
+    //[SerializeField, Range(0, 255)] float threshold = 200;
+    [SerializeField, Range(1, 28)] int resolution = 20;
+    //[SerializeField, Range(1, 25)] int frequency;
+    //[SerializeField, Range(0, 5)] float amplitude;
+    //[SerializeField, Range(0, 1)] float bottomLevel;
     [SerializeField] GameObject meshObj;
 
     public float radius;
@@ -34,7 +37,12 @@ public class Planet : MonoBehaviour
         // Initialize the meshgenerator
         if (meshGenerator != null)
         {
-            marchingCubes = new MarchingCubes(meshFilter.sharedMesh, meshGenerator, threshold, resolution, radius);
+            System.Random rand = new System.Random(1);
+            
+            float threshold = 23 + (float) rand.NextDouble() * 4;
+            int frequency = rand.Next(2) + 3;
+            float amplitude = 1.2f + (float) rand.NextDouble() * 0.4f;
+            marchingCubes = new MarchingCubes(meshFilter.sharedMesh, meshGenerator, threshold, resolution, radius, frequency, amplitude, 1);
         }
 
         // Generates the mesh
