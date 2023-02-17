@@ -50,7 +50,6 @@ MonoBehaviour:
   meshGenerator: {fileID: 7200000, guid: 2b54143d75bd2344bb987facb6cb4950, type: 3}
   threshold: 115.9
   resolution: 14
-  radius: 293
   frequency: 0
   amplitude: 0
   bottomLevel: 0
@@ -59,6 +58,8 @@ MonoBehaviour:
   surfaceGravity: 10
   bodyName: TBT
   mass: 100
+  moons: []
+  willGenerateCreature: 0
   generateCreatures: {fileID: 7065241369011201559}
 --- !u!120 &2865990664458296443
 LineRenderer:
@@ -191,6 +192,7 @@ GameObject:
   - component: {fileID: 7956990945511889848}
   - component: {fileID: 2212189957996678208}
   - component: {fileID: 5168162772191441532}
+  - component: {fileID: -4591922142737729086}
   m_Layer: 0
   m_Name: mesh
   m_TagString: Untagged
@@ -262,4 +264,18 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2421649971222294434}
+  m_Mesh: {fileID: 0}
+--- !u!64 &-4591922142737729086
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2421649971222294434}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
   m_Mesh: {fileID: 0}
