@@ -48,17 +48,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   meshGenerator: {fileID: 7200000, guid: 2b54143d75bd2344bb987facb6cb4950, type: 3}
-  threshold: 115.9
+  waterMaterial: {fileID: 2100000, guid: 7881bea7b465ff0479fc44800be5d79f, type: 2}
   resolution: 14
-  radius: 293
-  frequency: 0
-  amplitude: 0
-  bottomLevel: 0
   meshObj: {fileID: 2421649971222294434}
   radius: 293
   surfaceGravity: 10
   bodyName: TBT
   mass: 100
+  moons: []
   generateCreatures: {fileID: 7065241369011201559}
 --- !u!120 &2865990664458296443
 LineRenderer:
