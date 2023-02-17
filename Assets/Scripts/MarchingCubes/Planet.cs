@@ -16,8 +16,12 @@ public class Planet : MonoBehaviour
     public List<Planet> moons; 
 
     MarchingCubes marchingCubes;
+    [SerializeField] private bool willGenerateCreature = false;
     [SerializeField] private GenerateCreatures generateCreatures;
 
+    public void OnValidate() {
+        Initialize();
+    }
 
     /// <summary>
     /// Initialize mesh for marching cubes
@@ -45,10 +49,12 @@ public class Planet : MonoBehaviour
             meshCollider.sharedMesh = meshFilter.sharedMesh;
         }
 
-        // Generate the creatures
-        if (generateCreatures != null && bodyName != "Sun" && !bodyName.Contains("Moon"))
+        if (willGenerateCreature) 
         {
-            generateCreatures.Initialize(this);
+            // Generate the creatures
+            if (generateCreatures != null && bodyName != "Sun" && !bodyName.Contains("Moon")) {
+                generateCreatures.Initialize(this);
+            }
         }
     }
 
