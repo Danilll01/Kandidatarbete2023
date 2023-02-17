@@ -19,6 +19,7 @@ public class Planet : MonoBehaviour
     public List<Planet> moons; 
 
     MarchingCubes marchingCubes;
+    [SerializeField] private SpawnFoliage spawnFoliage;
     [SerializeField] private GenerateCreatures generateCreatures;
 
 
@@ -38,7 +39,7 @@ public class Planet : MonoBehaviour
         if (meshGenerator != null)
         {
             System.Random rand = new System.Random(1);
-            
+          
             float threshold = 23 + (float) rand.NextDouble() * 4;
             int frequency = rand.Next(2) + 3;
             float amplitude = 1.2f + (float) rand.NextDouble() * 0.4f;
@@ -51,6 +52,12 @@ public class Planet : MonoBehaviour
             marchingCubes.generateMesh();
             MeshCollider meshCollider = meshFilter.gameObject.AddComponent<MeshCollider>();
             meshCollider.sharedMesh = meshFilter.sharedMesh;
+        }
+
+        // Generate the creatures
+        if (spawnFoliage != null && bodyName != "Sun" && !bodyName.Contains("Moon"))
+        {
+            spawnFoliage.Initialize(this);
         }
 
         // Generate the creatures
