@@ -20,7 +20,7 @@ public class PillPlayerController : MonoBehaviour
         Vector3 directionNearestPlanet = attractor.transform.position - transform.position;
         Physics.Raycast(transform.position, directionNearestPlanet, out RaycastHit hit);
         transform.SetParent(attractor.transform);
-        
+
         //Put the player above the ground
         transform.position = hit.point - (directionNearestPlanet.normalized) * 5;
     }
@@ -36,23 +36,29 @@ public class PillPlayerController : MonoBehaviour
     private void HandleInput()
     {
         Vector3 movementVector = Vector3.zero;
-        if (Input.GetKey(KeyCode.W)) {
+        if (Input.GetKey(KeyCode.W))
+        {
             movementVector += Vector3.forward;
         }
-        if (Input.GetKey(KeyCode.A)) {
+        if (Input.GetKey(KeyCode.A))
+        {
             movementVector += Vector3.left;
         }
-        if (Input.GetKey(KeyCode.S)) {
+        if (Input.GetKey(KeyCode.S))
+        {
             movementVector += Vector3.back;
         }
-        if (Input.GetKey(KeyCode.D)) {
+        if (Input.GetKey(KeyCode.D))
+        {
             movementVector += Vector3.right;
         }
-        if (Input.GetKey(KeyCode.Space)) {
+        if (Input.GetKey(KeyCode.Space))
+        {
             movementVector += Vector3.up;
         }
         body.velocity += transform.rotation * movementVector * Time.deltaTime * movementSpeed;
-        if (body.velocity.magnitude > maxSpeed) {
+        if (body.velocity.magnitude > maxSpeed)
+        {
             body.velocity = body.velocity.normalized * maxSpeed;
         }
 
@@ -61,11 +67,5 @@ public class PillPlayerController : MonoBehaviour
         Vector3 playerRotationVector = new Vector3(0, Input.GetAxis("Mouse X"));
         firstPersonCamera.transform.Rotate(cameraRotationVector);
         transform.Rotate(playerRotationVector);
-    }
-
-    private void KeepBodyUpright()
-    {
-        //Look at center of gravity
-        Gravity.KeepUpright(transform, attractor.transform);
     }
 }
