@@ -55,6 +55,6 @@ public class StartManager : MonoBehaviour
 
         // Set the seed and load the game
         Universe.InitializeRandomWithSeed();
-        SceneManager.LoadScene("Main");
+        SceneManager.LoadScene("Load Menu");
     }
 }
