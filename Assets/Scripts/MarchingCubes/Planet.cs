@@ -8,7 +8,7 @@ public class Planet : MonoBehaviour
     [SerializeField] Material waterMaterial;
     [SerializeField, Range(1, 28)] int resolution = 20;
     //[SerializeField, Range(1, 25)] int frequency;
-    
+    [SerializeField] GameObject water;
     [SerializeField] GameObject meshObj;
 
 
@@ -21,7 +21,6 @@ public class Planet : MonoBehaviour
     public float mass;
     public List<Planet> moons;
 
-    GameObject water;
     MarchingCubes marchingCubes;
     [SerializeField] private GenerateCreatures generateCreatures;
 
@@ -53,18 +52,11 @@ public class Planet : MonoBehaviour
             marchingCubes = new MarchingCubes(meshFilter.sharedMesh, meshGenerator, threshold, resolution, radius, frequency, amplitude, bottomLevel);
         }
 
-        if (water == null)
-        {
-            water = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-            water.transform.parent = transform;
-            water.transform.localPosition = Vector3.zero;
+        float waterRadius = (threshold / 255 - bottomLevel) * radius;
 
-            float waterRadius = (threshold / 255 - bottomLevel) * radius;
+        water.transform.localScale = new Vector3(waterRadius, waterRadius, waterRadius);
 
-            water.transform.localScale = new Vector3(waterRadius, waterRadius, waterRadius);
-
-            water.GetComponent<Renderer>().material = waterMaterial;
-        }
+        water.GetComponent<Renderer>().material = waterMaterial;
 
         // Generates the mesh
         if (marchingCubes != null)
