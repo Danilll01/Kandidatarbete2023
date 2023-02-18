@@ -37,7 +37,7 @@ public class Planet : MonoBehaviour
         // Initialize the meshgenerator
         if (meshGenerator != null)
         {
-            System.Random rand = new System.Random(1);
+            System.Random rand = Universe.random;
             
             float threshold = 23 + (float) rand.NextDouble() * 4;
             int frequency = rand.Next(2) + 3;
