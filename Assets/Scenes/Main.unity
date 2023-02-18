@@ -858,7 +858,7 @@ GameObject:
   - component: {fileID: 1414091877}
   m_Layer: 5
   m_Name: Debug Container
-  m_TagString: Debug
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

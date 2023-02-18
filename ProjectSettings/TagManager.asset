@@ -6,7 +6,6 @@ TagManager:
   tags:
   - Foliage
   - Creature
-  - Debug
   layers:
   - Default
   - TransparentFX
