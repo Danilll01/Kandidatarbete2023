@@ -17,15 +17,30 @@ public class StartManager : MonoBehaviour
 
     public void StartGame()
     {
-        int tryParse = 0;
-        int.TryParse(seedInput.text, out tryParse);
-        if (string.IsNullOrEmpty(seedInput.text) || tryParse == 0)
+        int tryParseSeed = 0;
+        int tryParsePlanets = 0;
+
+        int.TryParse(seedInput.text, out tryParseSeed);
+        int.TryParse(nrOfPlanetsText.text, out tryParsePlanets);
+
+        if (string.IsNullOrEmpty(seedInput.text) || tryParseSeed == 0)
         {
             seedInput.text = Random.Range(0, 1000000).ToString();
         }
 
+        if (tryParsePlanets == 0)
+        {
+            int[] nrOfPlanetsArray = new int[] { 1, 2, 3, 3, 3, 4, 4, 4, 5, 5, 5 };
+            int randomValue = Random.Range(0, nrOfPlanetsArray.Length);
+            int nrOfPlanets = nrOfPlanetsArray[randomValue];
+            Universe.nrOfPlanets = nrOfPlanets;
+        }
+        else
+        {
+            Universe.nrOfPlanets = int.Parse(nrOfPlanetsText.text);
+        }
+
         Universe.seed = int.Parse(seedInput.text);
-        Universe.nrOfPlanets = int.Parse(nrOfPlanetsText.text);
         Universe.InitializeSeed();
         SceneManager.LoadScene("Main");
     }
