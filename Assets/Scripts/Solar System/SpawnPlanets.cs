@@ -17,12 +17,25 @@ public class SpawnPlanets : MonoBehaviour
     [SerializeField] private int minNumberOfMoons = 1;
     [SerializeField] private int maxNumberOfMoons = 5;
 
-
     [SerializeField] private Material sunMaterial;
+
+    private System.Random random;
 
     void Awake()
     {
+        // Checks if we are in the Unity editor, this will make it so we don't have to start from start meny
+        if (Application.isEditor && Universe.random == null)
+        {
+            Universe.InitializeRandomWithSeed();
+        }
+        random = Universe.random;
+        GetValues();
         CreatePlanets();
+    }
+
+    private void GetValues()
+    {
+        numberOfPlanets = Universe.nrOfPlanets;
     }
 
     // Creates all the planets 
@@ -58,7 +71,7 @@ public class SpawnPlanets : MonoBehaviour
 
             Planet planetBody = planet.GetComponent<Planet>();
             planetBody.bodyName = "Planet " + i;
-            planetBody.radius = Random.Range(radiusMinValue, radiusMaxValue + 1);
+            planetBody.radius = random.Next(radiusMinValue, radiusMaxValue);
 
 
             int nrOfMoonsForPlanet = GetNrOfMoonsToGenerate();
@@ -85,7 +98,7 @@ public class SpawnPlanets : MonoBehaviour
         {
             float totalRadiusOfCurrentPlanet = planet.radius + (planet.radius * moonsNumber);
             float sunRadius = bodies[0].radius;
-            float offset = Random.Range(radiusMinValue, radiusMaxValue + 1) * 1.2f;
+            float offset = random.Next(radiusMinValue, radiusMaxValue) * 1.2f;
             float distanceFromSun = sunRadius + totalRadiusOfCurrentPlanet + offset;
 
             pos = RandomPointOnCircleEdge(distanceFromSun);
@@ -101,7 +114,7 @@ public class SpawnPlanets : MonoBehaviour
 
             float totalRadiusOfCurrentPlanet = planet.radius + (planet.radius * moonsNumber);
 
-            float offset = Random.Range(radiusMinValue, radiusMaxValue + 1) * 1.2f;
+            float offset = random.Next(radiusMinValue, radiusMaxValue + 1) * 1.2f;
             float distanceFromSun = previousPlanetPosMagnitude + totalRadiusOfPreviousPlanet + totalRadiusOfCurrentPlanet + offset;
             pos = RandomPointOnCircleEdge(distanceFromSun);
         }
@@ -111,12 +124,12 @@ public class SpawnPlanets : MonoBehaviour
 
     private int GetNrOfMoonsToGenerate()
     {
-        int shouldHaveMoons = Random.Range(1, 10);
+        int shouldHaveMoons = random.Next(1, 10);
         int numberOfMoons = 0;
 
         if (shouldHaveMoons >= chanceOfMoonsLimit)
         {
-            numberOfMoons = Random.Range(minNumberOfMoons, maxNumberOfMoons + 1);
+            numberOfMoons = random.Next(minNumberOfMoons, maxNumberOfMoons + 1);
         }
 
         return numberOfMoons;
@@ -134,7 +147,7 @@ public class SpawnPlanets : MonoBehaviour
 
             Planet moonBody = moon.GetComponent<Planet>();
             moonBody.bodyName = "Moon " + i;
-            moonBody.radius = Random.Range(parentPlanet.radius / 5, (parentPlanet.radius / 2) + 1);
+            moonBody.radius = random.Next((int)(parentPlanet.radius / 5), (int)((parentPlanet.radius / 2) + 1));
             moonBody.SetUpPlanetValues();
             moonBody.Initialize();
             parentPlanet.moons.Add(moonBody);
@@ -156,7 +169,7 @@ public class SpawnPlanets : MonoBehaviour
         velocityHelper.gameObject.name = "VelocityHelper";
         velocityHelper.transform.parent = planet.transform;
 
-        int orbitOffset = Random.Range(orbitOffsetMinValue, orbitOffsetMaxValue);
+        int orbitOffset = random.Next(orbitOffsetMinValue, orbitOffsetMaxValue);
         velocityHelper.transform.localPosition = new Vector3(100, orbitOffset, orbitOffset);
 
         // Assign needed scripts to the planet
