@@ -18,6 +18,9 @@ public class Planet : MonoBehaviour
     public float mass;
     public List<Planet> moons;
 
+    //REMOVE
+    public float offset = 0;
+
     MarchingCubes marchingCubes;
     [SerializeField] private GenerateCreatures generateCreatures;
 
