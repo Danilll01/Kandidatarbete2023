@@ -9,7 +9,10 @@ public static class Universe
     public static int seed = 1;
     public static System.Random random;
 
-    public static void InitializeSeed()
+    /// <summary>
+    /// Initializes the System.Random with the given seed
+    /// </summary>
+    public static void InitializeRandomWithSeed()
     {
         random = new System.Random(seed);
     }
