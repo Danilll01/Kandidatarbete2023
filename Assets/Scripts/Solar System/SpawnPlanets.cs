@@ -23,6 +23,11 @@ public class SpawnPlanets : MonoBehaviour
 
     void Awake()
     {
+        // Checks if we are in the Unity editor, this will make it so we don't have to start from start meny
+        if (Application.isEditor && Universe.random == null)
+        {
+            Universe.InitializeRandomWithSeed();
+        }
         random = Universe.random;
         GetValues();
         CreatePlanets();

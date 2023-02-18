@@ -5,8 +5,8 @@ using UnityEngine;
 public static class Universe
 {
     public const float gravitationalConstant = 0.0001f;
-    public static int nrOfPlanets = 1;
-    public static int seed = 1;
+    public static int nrOfPlanets = 3;
+    public static int seed = 100;
     public static System.Random random;
 
     /// <summary>
