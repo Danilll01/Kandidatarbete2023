@@ -34,7 +34,7 @@ public class DebugManager : MonoBehaviour
             if (timer <= 0)
             {
                 GetFPS(timelapse);
-                DisplayDebug.AddOrSetDebugVariable("FPS", fps);
+                DisplayDebug.AddOrSetDebugVariable("FPS", fps, 0);
                 DisplayDebug.UpdateDebugs();
             }
 

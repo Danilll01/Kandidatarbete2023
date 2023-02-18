@@ -8,6 +8,7 @@ public static class DisplayDebug
     
     private static TextMeshProUGUI debugTextContainer;
     private static Dictionary<string, int> debugDictionary;
+    private static List<KeyValuePair<string, int>> debugList;
 
     public static void InitalizeDebugManager(GameObject debugContainer)
     {
@@ -24,37 +25,55 @@ public static class DisplayDebug
     {
         debugTextContainer.text = "";
 
-        foreach (var debug in debugDictionary)
+        foreach (var debug in debugList)
         {
             debugTextContainer.text += debug.Key + ": " + debug.Value + "\n";
         }
     }
 
-    public static void AddOrSetDebugVariable(string text, int variableValue)
+    public static void AddOrSetDebugVariable(string text, int variableValue, int indexInList)
     {
-        if (debugDictionary == null)
+        KeyValuePair<string, int> debugVariable = new KeyValuePair<string, int>(text,variableValue);
+        if (debugList == null)
         {
             InitializeDictionary();
         }
 
-        if (debugDictionary.ContainsKey(text))
+        int existingIndex = -1;
+        for (int i = 0; i < debugList.Count; i++)
         {
-            debugDictionary[text] = variableValue;
+            KeyValuePair<string, int> pair = debugList[i];
+            if (pair.Key == text)
+            {
+                existingIndex = i;
+            }   
+        }
+
+        if (existingIndex >= 0)
+        {
+            debugList[existingIndex] = debugVariable;
         }
         else
         {
-            debugDictionary.Add(text, variableValue);
+            if (debugList.Count > indexInList)
+            {
+                debugList.Insert(indexInList,debugVariable);
+            }
+            else
+            {
+                debugList.Add(debugVariable);
+            }
         }
     }
 
     private static void InitializeDictionary()
     {
-        if (debugDictionary != null)
+        if (debugList != null)
         {
             return;
         }
 
-        debugDictionary = new Dictionary<string, int>();
+        debugList = new List<KeyValuePair<string, int>>();
     }
 
 }
