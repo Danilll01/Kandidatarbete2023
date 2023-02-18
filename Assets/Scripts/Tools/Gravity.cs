@@ -27,6 +27,6 @@ public class Gravity
         //THE DIVIDED BY TEN IS A HOTFIX TO KEEP GRAVITY DOWN
         Vector3 attractionDirection = (attractingBodyPos - entityPos).normalized / 10;
 
-        entityRigidbody.velocity += attractionDirection * (float)((Universe.gravitationalConstant * attractingBodyMass * Time.deltaTime) / r2);
+        entityRigidbody.velocity += attractionDirection * (float)((attractingBodyMass * Time.deltaTime) / r2);
     }
 }
