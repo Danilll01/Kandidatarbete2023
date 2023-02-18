@@ -1,4 +1,5 @@
 using System;
+
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
@@ -11,6 +12,9 @@ public class MarchingCubes
     readonly float threshold;
     readonly int resolution;
     readonly float radius;
+    readonly int frequency;
+    readonly float amplitude;
+    readonly float bottomLevel;
 
     Mesh mesh;
 
@@ -22,7 +26,7 @@ public class MarchingCubes
     /// <param name="threshold"></param>
     /// <param name="resolution"></param>
     /// <param name="radius"></param>
-    public MarchingCubes(Mesh mesh, ComputeShader meshGenerator, float threshold, int resolution, float radius)
+    public MarchingCubes(Mesh mesh, ComputeShader meshGenerator, float threshold, int resolution, float radius, int frequency, float amplitude, float bottomLevel)
     {
         this.mesh = mesh;
         mesh.indexFormat = IndexFormat.UInt32;
@@ -30,6 +34,9 @@ public class MarchingCubes
         this.threshold = threshold;
         this.resolution = resolution;
         this.radius = radius;
+        this.amplitude = amplitude;
+        this.frequency = frequency;
+        this.bottomLevel = bottomLevel;
     }
 
     /// <summary>
@@ -48,6 +55,9 @@ public class MarchingCubes
 
         // Run generateMesh in compute shader
         int kernelIndex = meshGenerator.FindKernel("GenerateMesh");
+        meshGenerator.SetInt("frequency", frequency);
+        meshGenerator.SetFloat("amplitude", amplitude);
+        meshGenerator.SetFloat("planetBottom", bottomLevel);
         meshGenerator.SetInt("resolution", resolution << 3);
         meshGenerator.SetFloat("threshold", threshold);
         meshGenerator.SetFloat("radius", radius);
@@ -91,6 +101,7 @@ public class MarchingCubes
         ComputeBuffer.CopyCount(buffer, counter, 0);
         counter.GetData(count);
         counter.Release();
+        //MonoBehaviour.print(count[0]);
         return count[0];
     }
 
