@@ -5,23 +5,23 @@ using TMPro;
 
 public static class DisplayDebug
 {
-    
     private static TextMeshProUGUI debugTextContainer;
-    private static Dictionary<string, int> debugDictionary;
     private static List<KeyValuePair<string, int>> debugList;
 
-    public static void InitalizeDebugManager(GameObject debugContainer)
+    /// <summary>
+    /// Initialize the parameters
+    /// </summary>
+    /// <param name="debugContainer"></param>
+    public static void Initalize(GameObject debugContainer)
     {
         debugTextContainer = debugContainer.GetComponentsInChildren<TextMeshProUGUI>()[0];
         debugTextContainer.text = "";
     }
 
+    /// <summary>
+    /// Update the debug texts
+    /// </summary>
     public static void UpdateDebugs()
-    {
-        LoopVariables();
-    }
-
-    private static void LoopVariables()
     {
         debugTextContainer.text = "";
 
@@ -31,9 +31,16 @@ public static class DisplayDebug
         }
     }
 
-    public static void AddOrSetDebugVariable(string text, int variableValue, int indexInList)
+
+    /// <summary>
+    /// Add or update a variable to display in the debug text
+    /// </summary>
+    /// <param name="text">The prompt text in front of value</param>
+    /// <param name="variableValue">The value to be displayed</param>
+    /// <param name="indexInList">What order in the debug text it should be displayed (optional)</param>
+    public static void AddOrSetDebugVariable(string text, int variableValue, int indexInList = -1)
     {
-        KeyValuePair<string, int> debugVariable = new KeyValuePair<string, int>(text,variableValue);
+        KeyValuePair<string, int> debugVariable = new KeyValuePair<string, int>(text, variableValue);
         if (debugList == null)
         {
             InitializeDictionary();
@@ -46,7 +53,7 @@ public static class DisplayDebug
             if (pair.Key == text)
             {
                 existingIndex = i;
-            }   
+            }
         }
 
         if (existingIndex >= 0)
@@ -55,9 +62,9 @@ public static class DisplayDebug
         }
         else
         {
-            if (debugList.Count > indexInList)
+            if (debugList.Count > indexInList && indexInList != -1)
             {
-                debugList.Insert(indexInList,debugVariable);
+                debugList.Insert(indexInList, debugVariable);
             }
             else
             {

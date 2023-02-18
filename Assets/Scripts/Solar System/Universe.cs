@@ -15,7 +15,7 @@ public static class Universe
     public static void InitializeRandomWithSeed()
     {
         random = new System.Random(seed);
-        DisplayDebug.AddOrSetDebugVariable("Seed", seed, 1);
-        DisplayDebug.AddOrSetDebugVariable("Number of planets", nrOfPlanets, 2);
+        DisplayDebug.AddOrSetDebugVariable("Seed", seed);
+        DisplayDebug.AddOrSetDebugVariable("Number of planets", nrOfPlanets);
     }
 }

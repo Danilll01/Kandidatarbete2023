@@ -9,17 +9,15 @@ public class DebugManager : MonoBehaviour
     private float timelapse = 0;
     private int fps;
 
-    private GameObject debugContainer;
+    [SerializeField] private GameObject debugContainer;
 
 
     void Awake()
     {
-        debugContainer = GameObject.FindGameObjectWithTag("Debug");
-        DisplayDebug.InitalizeDebugManager(debugContainer);
+        DisplayDebug.Initalize(debugContainer);
         debugContainer.SetActive(false);
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Tab))
@@ -33,7 +31,7 @@ public class DebugManager : MonoBehaviour
             timelapse = Time.unscaledDeltaTime;
             if (timer <= 0)
             {
-                GetFPS(timelapse);
+                fps = (int)(1.0f / timelapse);
                 DisplayDebug.AddOrSetDebugVariable("FPS", fps, 0);
                 DisplayDebug.UpdateDebugs();
             }
@@ -41,12 +39,5 @@ public class DebugManager : MonoBehaviour
             timer = timer <= 0 ? refresh : timer -= timelapse;
         }
     }
-
-
-    private void GetFPS(float time)
-    {
-        fps = (int)(1.0f / time);
-    }
-
 
 }
