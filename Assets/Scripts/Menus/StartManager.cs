@@ -10,7 +10,6 @@ public class StartManager : MonoBehaviour
     [SerializeField] private TMP_InputField seedInput;
     [SerializeField] private TextMeshProUGUI nrOfPlanetsText;
 
-
     /// <summary>
     /// Update the text for the planet slider corresponding to value of slider
     /// </summary>
