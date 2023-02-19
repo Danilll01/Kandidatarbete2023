@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Burst.CompilerServices;
 using UnityEngine;
 
 public class Creature : MonoBehaviour
@@ -24,16 +25,17 @@ public class Creature : MonoBehaviour
     [SerializeField] private float hungerIncrease = 20f;
     [SerializeField] private float thirstIncrease = 20f;
 
-    
+    [Header("Debug")]
     [SerializeField] private CreatureState currentState;
+    [SerializeField] private bool DEBUG = false;
 
-    private bool foundFoodOrWater;
-    private Vector3 foodOrWaterDestination = Vector3.zero;
+    private bool atDestination = false;
+    private Vector3 destination = Vector3.zero;
 
     // Start is called before the first frame update
     void Start()
     {
-        currentState = CreatureState.LookingForWater;
+        currentState = CreatureState.Walking;
     }
 
     /*
@@ -57,7 +59,7 @@ public class Creature : MonoBehaviour
         }
         else if (currentState == CreatureState.Walking)
         {
-            //Walking();
+            RandomWalking();
         }
         else if (currentState == CreatureState.LookingForFood)
         {
@@ -90,6 +92,29 @@ public class Creature : MonoBehaviour
         }
     }
 
+    private void RandomWalking()
+    {
+        if (DEBUG)
+        {
+            Debug.Log("dest: " + destination);
+            Debug.Log("pos: " + transform.position);
+            Debug.Log("Is at dest: " + atDestination);
+        }
+
+        if (atDestination)
+        {
+            // Randomly walk around
+            Quaternion rotation = Quaternion.FromToRotation(Vector3.forward, transform.position);
+
+            destination = transform.position +  rotation * Random.insideUnitCircle * detectionRadius;
+            atDestination = false;
+        } else
+        {
+            GotoPosition(destination);
+        }
+        
+    }
+
     private void LookingForResource(ResourceType resource)
     {
         
@@ -98,7 +123,7 @@ public class Creature : MonoBehaviour
         if (nearestResource != null && Vector3.Distance(transform.position, nearestResource.transform.position) < consumeRadius)
         {
             Debug.Log("Found it " + Vector3.Distance(transform.position, nearestResource.transform.position) + " away");
-            foundFoodOrWater = true;
+            atDestination = true;
             InteractWithResourceAction();
 
             if (resource == ResourceType.Water)
@@ -115,14 +140,14 @@ public class Creature : MonoBehaviour
         }
         else if (nearestResource != null && Vector3.Distance(transform.position, nearestResource.transform.position) > consumeRadius)
         {
-            foundFoodOrWater = true;
-            foodOrWaterDestination = nearestResource.transform.position;
-            GotoPosition(foodOrWaterDestination);
+            atDestination = true;
+            destination = nearestResource.transform.position;
+            GotoPosition(destination);
         }
         else
         {
-            foundFoodOrWater = false;
-            foodOrWaterDestination = Vector3.zero;
+            atDestination = false;
+            destination = Vector3.zero;
         }
 
 
@@ -155,9 +180,18 @@ public class Creature : MonoBehaviour
 
     private void GotoPosition(Vector3 pos)
     {
-        Vector3 direction = pos - transform.position;
-        transform.position += direction.normalized * speed * Time.deltaTime;
-        transform.rotation = Quaternion.LookRotation(direction);
+        if (!pos.Equals(Vector2.zero) && Vector3.Distance(transform.position, pos) > 0.1f)
+        {
+            Vector3 direction = pos - transform.position;
+            transform.position += direction.normalized * speed * Time.deltaTime;
+            transform.rotation = Quaternion.LookRotation(direction);
+        }
+        else
+        {
+            atDestination = true;
+        }
+
+        
     }
 
     private void InteractWithResourceAction()
