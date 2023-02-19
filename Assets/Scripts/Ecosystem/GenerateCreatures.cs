@@ -114,6 +114,7 @@ public class GenerateCreatures : MonoBehaviour
                     continue;
                 }
 
+                // Check if the hit is coliiding with water
                 if (Mathf.Abs(planet.waterRadius)/2 > Vector3.Distance(hit.point, planetCenter))
                 {
                     if (DEBUG) Debug.Log("Hit water");

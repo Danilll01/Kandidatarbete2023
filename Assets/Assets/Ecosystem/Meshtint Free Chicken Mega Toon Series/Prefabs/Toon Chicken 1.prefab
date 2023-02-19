@@ -106,6 +106,7 @@ GameObject:
   - component: {fileID: 4410910982438300}
   - component: {fileID: 137954050844376528}
   - component: {fileID: 7968980092248736339}
+  - component: {fileID: 2180957730422292905}
   m_Layer: 0
   m_Name: Toon Chicken
   m_TagString: Untagged
@@ -219,6 +220,19 @@ LODGroup:
     renderers:
     - renderer: {fileID: 137954050844376528}
   m_Enabled: 1
+--- !u!65 &2180957730422292905
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1055748561691468}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.30719844, y: 0.46899435, z: 0.4619253}
+  m_Center: {x: -0.000000005207167, y: 0.008951833, z: 0.22431983}
 --- !u!1 &1200174205398646
 GameObject:
   m_ObjectHideFlags: 0
@@ -324,6 +338,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4303844821561524}
   - component: {fileID: 95943282229431942}
+  - component: {fileID: 3592370630759065652}
   m_Layer: 0
   m_Name: Toon Chicken 1
   m_TagString: Untagged
@@ -371,6 +386,28 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
+--- !u!114 &3592370630759065652
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1311290861401530}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc2db926f95bed34580350e7d08b7a3a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 1
+  detectionRadius: 50
+  consumeRadius: 1
+  hunger: 100
+  thirst: 100
+  hungerDecrease: 0.1
+  thirstDecrease: 0.1
+  hungerIncrease: 20
+  thirstIncrease: 20
+  currentState: 0
 --- !u!1 &1325880688823160
 GameObject:
   m_ObjectHideFlags: 0

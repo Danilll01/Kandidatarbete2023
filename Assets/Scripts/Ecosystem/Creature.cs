@@ -6,7 +6,7 @@ public class Creature : MonoBehaviour
 {
     
     [SerializeField] private float speed = 1f;
-    [SerializeField] private float detectionRadius = 50f;
+    [SerializeField] private float detectionRadius = 30f;
     [SerializeField] private float consumeRadius = 1f;
 
     [Header("Creature food and water needs")]
@@ -20,16 +20,26 @@ public class Creature : MonoBehaviour
     [SerializeField] private float thirstIncrease = 20f;
 
     
-    private CreatureState currentState;
+    [SerializeField] private CreatureState currentState;
 
     private bool foundFoodOrWater;
-    private Vector3 foodOrWaterDestination;
+    private Vector3 foodOrWaterDestination = Vector3.zero;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        currentState = CreatureState.LookingForWater;
     }
+
+    /*
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, detectionRadius);
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireSphere(transform.position, consumeRadius);
+    }
+    */
 
     // Update is called once per frame
     void Update()
@@ -46,33 +56,74 @@ public class Creature : MonoBehaviour
         }
         else if (currentState == CreatureState.LookingForFood)
         {
-            LookingForFood();
+            LookingForResource(ResourceType.Food);
         }
         else if (currentState == CreatureState.LookingForWater)
         {
-            //LookingForWater();
+            LookingForResource(ResourceType.Water);
+        }
+        else if (currentState == CreatureState.PerformingAction)
+        {
+            InteractWithResourceAction();
+        }
+        else if (currentState == CreatureState.LookingForPartner)
+        {
+            //LookingForPartner();
+        }
+        else if (currentState == CreatureState.Breeding)
+        {
+            //Breeding();
         }
 
         hunger -= hungerDecrease * Time.deltaTime;
         thirst -= thirstDecrease * Time.deltaTime;
-        
-        
+
+        // Die if hunger or thirst is 0
+        if (hunger <= 0 || thirst <= 0)
+        {
+            Destroy(gameObject);
+        }
     }
 
-    private void LookingForFood()
+    private void LookingForResource(ResourceType resource)
     {
-        
-        if (foundFoodOrWater)
+        /*
+        if (!foundFoodOrWater && !foodOrWaterDestination.Equals(Vector3.zero))
         {
             GotoPosition(foodOrWaterDestination);
-        }
-
-        GameObject nearestFood = GetNearestGameobject("Food");
-
-        if (nearestFood != null && Vector3.Distance(transform.position, nearestFood.transform.position) < consumeRadius)
+        }*/
+        
+        GameObject nearestResource = GetNearestGameobject(resource.ToString());
+        
+        if (nearestResource != null && Vector3.Distance(transform.position, nearestResource.transform.position) < consumeRadius)
         {
-            hunger += hungerIncrease;
-            Destroy(nearestFood);
+            Debug.Log("Found it");
+            foundFoodOrWater = true;
+            InteractWithResourceAction();
+
+            if (resource == ResourceType.Water)
+            {
+                thirst += thirstIncrease;
+            }
+            else if (resource == ResourceType.Food)
+            {
+                hunger += hungerIncrease;
+            }
+            
+            Destroy(nearestResource);
+        }
+        else if (nearestResource != null && Vector3.Distance(transform.position, nearestResource.transform.position) > consumeRadius)
+        {
+            Debug.Log("Going to it");
+            foundFoodOrWater = true;
+            foodOrWaterDestination = nearestResource.transform.position;
+            GotoPosition(foodOrWaterDestination);
+            
+        }
+        else
+        {
+            foundFoodOrWater = false;
+            foodOrWaterDestination = Vector3.zero;
         }
 
 
@@ -107,10 +158,11 @@ public class Creature : MonoBehaviour
     {
         Vector3 direction = pos - transform.position;
         transform.position += direction.normalized * speed * Time.deltaTime;
+        transform.rotation = Quaternion.LookRotation(direction);
     }
 
-    private void PerformAction()
+    private void InteractWithResourceAction()
     {
-        
+        currentState = CreatureState.PerformingAction;
     }
 }
