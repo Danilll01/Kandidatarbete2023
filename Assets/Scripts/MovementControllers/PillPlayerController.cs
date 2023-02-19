@@ -11,6 +11,9 @@ public class PillPlayerController : MonoBehaviour
     [SerializeField] private float maxSpeed = 0;
 
     private Rigidbody body;
+    private int collisionCount = 0;
+    private bool grounded = false;
+    [SerializeField] private float groundedSlowDownFactor = 0.9f;
     // Start is called before the first frame update
     void Start()
     {
@@ -42,10 +45,26 @@ public class PillPlayerController : MonoBehaviour
             body.velocity = body.velocity.normalized * maxSpeed;
         }
 
+        if (grounded && movementVector == Vector3.zero)
+        {
+            body.velocity *= groundedSlowDownFactor;
+        }
 
         Vector3 cameraRotationVector = new Vector3(Input.GetAxis("Mouse Y") * -1, 0);
         Vector3 playerRotationVector = new Vector3(0, Input.GetAxis("Mouse X"));
         firstPersonCamera.transform.Rotate(cameraRotationVector);
         transform.Rotate(playerRotationVector);
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        collisionCount++;
+        grounded = true;
+    }
+
+    private void OnCollisionExit(Collision collision)
+    {
+        collisionCount--;
+        grounded = collisionCount != 0;
     }
 }
