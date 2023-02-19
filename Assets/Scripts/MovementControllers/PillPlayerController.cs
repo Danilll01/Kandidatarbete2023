@@ -35,27 +35,7 @@ public class PillPlayerController : MonoBehaviour
 
     private void HandleInput()
     {
-        Vector3 movementVector = Vector3.zero;
-        if (Input.GetKey(KeyCode.W))
-        {
-            movementVector += Vector3.forward;
-        }
-        if (Input.GetKey(KeyCode.A))
-        {
-            movementVector += Vector3.left;
-        }
-        if (Input.GetKey(KeyCode.S))
-        {
-            movementVector += Vector3.back;
-        }
-        if (Input.GetKey(KeyCode.D))
-        {
-            movementVector += Vector3.right;
-        }
-        if (Input.GetKey(KeyCode.Space))
-        {
-            movementVector += Vector3.up;
-        }
+        Vector3 movementVector = new Vector3(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Jump"), Input.GetAxisRaw("Vertical"));
         body.velocity += transform.rotation * movementVector * Time.deltaTime * movementSpeed;
         if (body.velocity.magnitude > maxSpeed)
         {
