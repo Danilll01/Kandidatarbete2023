@@ -114,6 +114,12 @@ public class GenerateCreatures : MonoBehaviour
                     continue;
                 }
 
+                if (Mathf.Abs(planet.waterRadius)/2 > Vector3.Distance(hit.point, planetCenter))
+                {
+                    if (DEBUG) Debug.Log("Hit water");
+                    continue;
+                }
+
                 // Check if "hit.point" is close to a point in positions
                 if (CloseToListOfPoints(positions, hit.point, creatureSize))
                 {

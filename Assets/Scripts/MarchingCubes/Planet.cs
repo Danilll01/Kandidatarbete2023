@@ -15,6 +15,7 @@ public class Planet : MonoBehaviour
     float threshold;
     float amplitude;
     float bottomLevel;
+    [HideInInspector] public float waterRadius;
     public float radius;
     public float surfaceGravity;
     public string bodyName = "TBT";
@@ -52,7 +53,7 @@ public class Planet : MonoBehaviour
             marchingCubes = new MarchingCubes(meshFilter.sharedMesh, meshGenerator, threshold, resolution, radius, frequency, amplitude, bottomLevel);
         }
 
-        float waterRadius = (threshold / 255 - bottomLevel) * radius;
+        waterRadius = (threshold / 255 - bottomLevel) * radius;
 
         water.transform.localScale = new Vector3(waterRadius, waterRadius, waterRadius);
 
