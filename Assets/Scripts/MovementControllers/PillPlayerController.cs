@@ -38,22 +38,27 @@ public class PillPlayerController : MonoBehaviour
 
     private void HandleInput()
     {
+        //Movement
         Vector3 movementVector = new Vector3(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Jump"), Input.GetAxisRaw("Vertical"));
+        //Stop vertical movement if player is too high
         if (Altitude > attractor.radius)
         {
             movementVector.y = 0;
         }
         body.velocity += transform.rotation * movementVector * Time.deltaTime * movementSpeed;
+        //Limit max speed
         if (body.velocity.magnitude > maxSpeed)
         {
             body.velocity = body.velocity.normalized * maxSpeed;
         }
 
+        //Deaccelerate if touching ground and not trying to move
         if (grounded && movementVector == Vector3.zero)
         {
             body.velocity *= groundedSlowDownFactor;
         }
 
+        //Rotate player and camera
         Vector3 cameraRotationVector = new Vector3(Input.GetAxis("Mouse Y") * -1, 0);
         Vector3 playerRotationVector = new Vector3(0, Input.GetAxis("Mouse X"));
         firstPersonCamera.transform.Rotate(cameraRotationVector);
