@@ -401,6 +401,7 @@ MonoBehaviour:
   speed: 1
   detectionRadius: 50
   consumeRadius: 1
+  ownCollider: {fileID: 2180957730422292905}
   hunger: 100
   thirst: 100
   hungerDecrease: 0.1

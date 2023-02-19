@@ -140,7 +140,11 @@ public class GenerateCreatures : MonoBehaviour
                 //Quaternion rotation2 = Quaternion.LookRotation(hit.point) * Quaternion.Euler(90, 0, 0);
                 GameObject newObject = Instantiate(creature, hit.point, rotation2, creatureParent.transform);
                 newObject.transform.rotation = rotation2;
-
+                
+                if (Random.Range(0, 2) == 0)
+                {
+                    newObject.tag = "Water";
+                }
 
                 if (DEBUG) Debug.DrawLine(randomOrigin, hit.point, Color.cyan, 10f);
 

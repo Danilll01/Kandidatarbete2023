@@ -7,11 +7,16 @@ public class Creature : MonoBehaviour
     
     [SerializeField] private float speed = 1f;
     [SerializeField] private float detectionRadius = 30f;
-    [SerializeField] private float consumeRadius = 1f;
+    [SerializeField] private float consumeRadius = 0.5f;
+
+    [SerializeField] private Collider ownCollider;
 
     [Header("Creature food and water needs")]
     [SerializeField] private float hunger = 100f;
     [SerializeField] private float thirst = 100f;
+
+    [SerializeField] private float maxHunger = 100f;
+    [SerializeField] private float maxThirst = 100f;
 
     [SerializeField] private float hungerDecrease = 0.1f;
     [SerializeField] private float thirstDecrease = 0.1f;
@@ -87,38 +92,32 @@ public class Creature : MonoBehaviour
 
     private void LookingForResource(ResourceType resource)
     {
-        /*
-        if (!foundFoodOrWater && !foodOrWaterDestination.Equals(Vector3.zero))
-        {
-            GotoPosition(foodOrWaterDestination);
-        }*/
         
         GameObject nearestResource = GetNearestGameobject(resource.ToString());
         
         if (nearestResource != null && Vector3.Distance(transform.position, nearestResource.transform.position) < consumeRadius)
         {
-            Debug.Log("Found it");
+            Debug.Log("Found it " + Vector3.Distance(transform.position, nearestResource.transform.position) + " away");
             foundFoodOrWater = true;
             InteractWithResourceAction();
 
             if (resource == ResourceType.Water)
             {
-                thirst += thirstIncrease;
+                thirst = Mathf.Min(maxThirst, thirst + thirstIncrease);
             }
             else if (resource == ResourceType.Food)
             {
-                hunger += hungerIncrease;
+                hunger = Mathf.Min(maxHunger, hunger + hungerIncrease);
             }
             
+            currentState = CreatureState.Idle;
             Destroy(nearestResource);
         }
         else if (nearestResource != null && Vector3.Distance(transform.position, nearestResource.transform.position) > consumeRadius)
         {
-            Debug.Log("Going to it");
             foundFoodOrWater = true;
             foodOrWaterDestination = nearestResource.transform.position;
             GotoPosition(foodOrWaterDestination);
-            
         }
         else
         {
@@ -138,7 +137,7 @@ public class Creature : MonoBehaviour
 
         foreach (Collider coll in hitColliders)
         {
-            if (coll.gameObject.CompareTag(tagname))
+            if (coll != ownCollider && coll.gameObject.CompareTag(tagname))
             {
                 float distanceToGameObject = Vector3.Distance(transform.position, coll.transform.position);
 
