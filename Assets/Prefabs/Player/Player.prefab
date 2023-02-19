@@ -133,6 +133,7 @@ MonoBehaviour:
   firstPersonCamera: {fileID: 4197161890332043641}
   movementSpeed: 40
   maxSpeed: 50
+  groundedSlowDownFactor: 0.9
 --- !u!1 &4197161890332043643
 GameObject:
   m_ObjectHideFlags: 0

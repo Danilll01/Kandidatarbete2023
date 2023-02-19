@@ -39,6 +39,10 @@ public class PillPlayerController : MonoBehaviour
     private void HandleInput()
     {
         Vector3 movementVector = new Vector3(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Jump"), Input.GetAxisRaw("Vertical"));
+        if (Altitude > attractor.radius)
+        {
+            movementVector.y = 0;
+        }
         body.velocity += transform.rotation * movementVector * Time.deltaTime * movementSpeed;
         if (body.velocity.magnitude > maxSpeed)
         {
@@ -54,6 +58,14 @@ public class PillPlayerController : MonoBehaviour
         Vector3 playerRotationVector = new Vector3(0, Input.GetAxis("Mouse X"));
         firstPersonCamera.transform.Rotate(cameraRotationVector);
         transform.Rotate(playerRotationVector);
+    }
+
+    /// <summary>
+    /// The altitude of the player from the currently attracting planet.
+    /// </summary>
+    public float Altitude
+    {
+        get { return (attractor.transform.position - transform.position).magnitude; }
     }
 
     private void OnCollisionEnter(Collision collision)
