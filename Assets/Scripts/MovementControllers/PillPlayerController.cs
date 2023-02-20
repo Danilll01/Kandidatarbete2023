@@ -8,12 +8,10 @@ public class PillPlayerController : MonoBehaviour
     public Planet attractor;
     public Camera firstPersonCamera;
     public float movementSpeed;
-    [SerializeField] private float maxSpeed = 0;
+    public float airControlFactor;
+    public float jumpForce;
 
     private Rigidbody body;
-    private int collisionCount = 0;
-    private bool grounded = false;
-    [SerializeField] private float groundedSlowDownFactor = 0.9f;
     // Start is called before the first frame update
     void Start()
     {
@@ -38,24 +36,35 @@ public class PillPlayerController : MonoBehaviour
 
     private void HandleInput()
     {
-        //Movement
-        Vector3 movementVector = new Vector3(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Jump"), Input.GetAxisRaw("Vertical"));
-        //Stop vertical movement if player is too high
-        if (Altitude > attractor.radius / 2)
+        //Keep old Y velocity. Rotates to world space, grabs y velocity and rotates back to planet orientation
+        Vector3 oldY = transform.rotation * new Vector3(0, (Quaternion.Inverse(transform.rotation) * body.velocity).y);
+        //New movement
+        Vector3 movementVector = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical")) * movementSpeed;
+        //Jumping
+        if (Input.GetKeyDown(KeyCode.Space) && Grounded)
         {
-            movementVector.y = 0;
+            movementVector.y += jumpForce;
         }
-        body.velocity += transform.rotation * movementVector * Time.deltaTime * movementSpeed;
-        //Limit max speed
-        if (body.velocity.magnitude > maxSpeed)
+        //Input recieved
+        if (movementVector.magnitude != 0)
         {
-            body.velocity = body.velocity.normalized * maxSpeed;
+            //Ground controls
+            if (Grounded)
+            {
+                body.velocity = transform.rotation * movementVector;
+                body.velocity += oldY;
+            }
+            //Air controls
+            else
+            {
+                body.velocity += transform.rotation * movementVector * Time.deltaTime * airControlFactor;
+            }
         }
-
-        //Deaccelerate if touching ground and not trying to move
-        if (grounded && movementVector == Vector3.zero)
+        //No input
+        else if (Grounded)
         {
-            body.velocity *= groundedSlowDownFactor;
+            body.velocity = Vector3.zero;
+            body.velocity += oldY;
         }
 
         //Rotate player and camera
@@ -73,15 +82,8 @@ public class PillPlayerController : MonoBehaviour
         get { return (attractor.transform.position - transform.position).magnitude; }
     }
 
-    private void OnCollisionEnter(Collision collision)
+    public bool Grounded
     {
-        collisionCount++;
-        grounded = true;
-    }
-
-    private void OnCollisionExit(Collision collision)
-    {
-        collisionCount--;
-        grounded = collisionCount != 0;
+        get { return Physics.Raycast(transform.position,  attractor.transform.position  - transform.position, 2f); }
     }
 }

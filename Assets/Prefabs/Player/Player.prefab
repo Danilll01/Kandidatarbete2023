@@ -131,8 +131,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attractor: {fileID: 0}
   firstPersonCamera: {fileID: 4197161890332043641}
-  movementSpeed: 40
-  maxSpeed: 50
+  movementSpeed: 20
+  airControlFactor: 1
+  jumpForce: 20
+  maxSpeed: 20
   groundedSlowDownFactor: 0.9
 --- !u!1 &4197161890332043643
 GameObject:
