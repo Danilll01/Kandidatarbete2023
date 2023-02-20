@@ -104,10 +104,13 @@ public class SpawnFoliage : MonoBehaviour
                 }
             }
         }
-
     }
 
-
+    /// <summary>
+    /// Initialize the foliage script.
+    /// </summary>
+    /// <param name="planet"> A reference to the planet the script should be run on</param>
+    /// <param name="waterLevel"> Radius (diameter) of the water level of the planet </param>
     public void Initialize(Planet planet, float waterLevel)
     {
         // Gets the parameters for the planets
@@ -127,125 +130,6 @@ public class SpawnFoliage : MonoBehaviour
         generateSpawnPoints();
     }
 
-    /*
-    /// <summary>
-    /// Plants a specified prefab on a planet
-    /// </summary>
-    /// <param name="spawnList"> An array with prefabs </param>
-    /// <param name="spawningLimit"> Maximum limit to spawn </param>
-    /// <param name="maxHeight"> Maximum spawning altitude </param>
-    /// <param name="angleLimit"> Maximum spawning angle </param>
-    /// <param name="normalVectorSpawning"> If the prefabs should with the normal of the ground as the spawning angle </param>
-
-    private void plant(GameObject[] spawnList, int spawningLimit, float maxHeight, float angleLimit, bool normalVectorSpawning = false)
-    {
-        Vector3 rayOrigin;
-        Vector3 pos;
-        RaycastHit hit;
-        int arrayIndex;
-        float maxRayDistance = 5000;
-
-        for (int i = 0; i < spawningLimit; i++)
-        {
-            // Creates and sends a ray
-            rayOrigin = planetCenter + Random.onUnitSphere * (planetRadius * 0.7f);
-            Ray ray = new Ray(rayOrigin, planetCenter - rayOrigin);
-
-            if (Physics.Raycast(ray, out hit, maxRayDistance))
-            {
-                // Checks if the ray hit and if the angle isn't too steep
-                if (hit.transform.tag == "Foliage" || Mathf.Abs(Vector3.Angle(rayOrigin - planetCenter, hit.normal)) > angleLimit)// || hit.distance < maxRayDistance - maxHeight) Detta funkar inte just nu pga planet radius är fel
-                {
-                    // Invalid spawn spot
-                    if (DEBUG) Debug.DrawLine(rayOrigin, hit.point, Color.yellow, 10);
-                    continue;
-                }
-                else
-                {
-                    // Valid spawn spot
-                    if (DEBUG) Debug.DrawLine(rayOrigin, hit.point, Color.cyan, 10);
-                    pos = hit.point;
-                }
-            }
-            else
-            {
-                // Missed the planet
-                if (DEBUG) Debug.DrawLine(rayOrigin, rayOrigin + (planetCenter - rayOrigin).normalized * 200, Color.red, 10);
-                continue;
-            }
-
-
-            // Sets the corret rotation for the prefabs
-            Quaternion rotation = Quaternion.LookRotation((normalVectorSpawning) ? hit.normal : rayOrigin - planetCenter) * Quaternion.Euler(90, 0, 0);
-            // Sets a random rotation for more variation
-            rotation *= Quaternion.Euler(0, Random.value * 360, 0);
-
-            // Currently the only way to distinguish bioms right now, which is height
-            // Checks the hight of the ground and sets the correct prefab
-            if (hit.distance < maxRayDistance - maxHeight / 3) arrayIndex = Random.Range(0, 1);
-            else arrayIndex = Random.Range(2, 3);
-            Instantiate(spawnList[arrayIndex], pos, rotation, foliageHandler.transform);
-        }
-
-    }
-
-    /// <summary>
-    /// Plants a specified stone prefab on a planet
-    /// </summary>
-    /// <param name="spawnList"> An array with stones </param>
-    /// <param name="spawningLimit"> Maximum limit to spawn </param>
-    /// <param name="maxHeight"> Maximum spawning altitude </param>
-    /// <param name="angleLimit"> Minimum spawning angle </param>
-    /// <param name="normalVectorSpawning"> If the prefabs should with the normal of the ground as the spawning angle </param>
-    private void setStones(GameObject[] spawnList, int spawningLimit, float maxHeight, float angleLimit, bool normalVectorSpawning = false)
-    {
-        Vector3 rayOrigin;
-        Vector3 pos;
-        RaycastHit hit;
-        int arrayIndex;
-        float maxRayDistance = 500;
-
-        for (int i = 0; i < spawningLimit; i++)
-        {
-            // Creates and sends a ray
-            rayOrigin = planetCenter + Random.onUnitSphere * (planetRadius * 0.7f);
-            Ray ray = new Ray(rayOrigin, planetCenter - rayOrigin);
-
-            if (Physics.Raycast(ray, out hit, maxRayDistance))
-            {
-                // Checks if the ray hit and if the angle isn't too steep
-                if (hit.transform.tag == "Foliage" || Mathf.Abs(Vector3.Angle(rayOrigin - planetCenter, hit.normal)) < angleLimit) // || hit.distance < maxRayDistance - maxHeight) Detta funkar inte just nu pga planet radius är fel
-                {
-                    // Invalid spawn spot
-                    if (DEBUG) Debug.DrawLine(rayOrigin, hit.point, Color.red, 10);
-                    continue;
-                }
-                else
-                {
-                    // Valid spawn spot
-                    if (DEBUG) Debug.DrawLine(rayOrigin, hit.point, Color.cyan, 10);
-                    pos = hit.point;
-                }
-            }
-            else
-            {
-                // Missed the planet
-                if (DEBUG) Debug.DrawLine(rayOrigin, rayOrigin + (planetCenter - rayOrigin).normalized * 200, Color.yellow, 10);
-                continue;
-            }
-
-            // Sets the corret rotation for the prefabs
-            Quaternion rotation = Quaternion.LookRotation((normalVectorSpawning) ? hit.normal : rayOrigin - planetCenter) * Quaternion.Euler(90, 0, 0);
-            // Sets a random rotation for more variation
-            rotation *= Quaternion.Euler(0, Random.value * 360, 0);
-
-            // randoms which prefab to place
-            arrayIndex = Random.Range(0, 3);
-            Instantiate(spawnList[arrayIndex], pos, rotation, foliageHandler.transform);
-        }
-    }
-
-    */
     private void generateSpawnPoints()
     {
         // Generates positions for all ray origins. TODO make them all care about planet rotation
@@ -275,16 +159,9 @@ public class SpawnFoliage : MonoBehaviour
 
             if (Physics.Raycast(ray, out hit, maxRayDistance))
             {
-                if (hit.distance < maxRayDistance - angleLimit)
-                {
-                    if (DEBUG) Debug.DrawLine(rayOrigin, hit.point, Color.cyan, 10);
-                    arr[index] = rayOrigin - planetCenter;
-                    index++;
-                }
-                else
-                {
-                    if (DEBUG) Debug.DrawLine(rayOrigin, hit.point, Color.yellow, 10);
-                }
+                if (DEBUG) Debug.DrawLine(rayOrigin, hit.point, Color.green, 10);
+                arr[index] = rayOrigin - planetCenter;
+                index++;   
             }
             else
             {
@@ -292,6 +169,10 @@ public class SpawnFoliage : MonoBehaviour
             }
         }
     }
+    
+    /// <summary>
+    /// Plants a tree from the tree array
+    /// </summary>
     private void plantTree()
     {
 
@@ -310,8 +191,12 @@ public class SpawnFoliage : MonoBehaviour
         // Sets a random rotation for more variation
         rotation *= Quaternion.Euler(0, Random.value * 360, 0);
 
-        Instantiate(treePrefabs[Random.Range(0, 1)], hit.point, rotation, foliageHandler.transform);
+        Instantiate(treePrefabs[Random.Range(0, 3)], hit.point, rotation, foliageHandler.transform);
     }
+
+    /// <summary>
+    /// Plants a bush from the bush array
+    /// </summary>
     private void plantBush()
     {
 
@@ -331,8 +216,12 @@ public class SpawnFoliage : MonoBehaviour
         // Sets a random rotation for more variation
         rotation *= Quaternion.Euler(0, Random.value * 360, 0);
 
-        Instantiate(bushPrefab[Random.Range(0, 1)], hit.point, rotation, foliageHandler.transform);
+        Instantiate(bushPrefab[Random.Range(0, 3)], hit.point, rotation, foliageHandler.transform);
     }
+
+    /// <summary>
+    /// Plants a stone :) from the stone array
+    /// </summary>
     private void plantStone()
     {
 
@@ -353,6 +242,6 @@ public class SpawnFoliage : MonoBehaviour
         // Sets a random rotation for more variation
         rotation *= Quaternion.Euler(0, Random.value * 360, 0);
 
-        Instantiate(stonePrefab[Random.Range(0, 1)], hit.point, rotation, foliageHandler.transform);
+        Instantiate(stonePrefab[Random.Range(0, 3)], hit.point, rotation, foliageHandler.transform);
     }
 }
