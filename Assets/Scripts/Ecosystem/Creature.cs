@@ -10,7 +10,7 @@ public class Creature : MonoBehaviour
     [SerializeField] private float detectionRadius = 30f;
     [SerializeField] private float consumeRadius = 0.5f;
 
-    [SerializeField] private Collider ownCollider;
+    [SerializeField] private GameObject meshObj;
 
     [Header("Creature food and water needs")]
     [SerializeField] private float hunger = 100f;
@@ -31,11 +31,22 @@ public class Creature : MonoBehaviour
 
     private bool atDestination = false;
     private Vector3 destination = Vector3.zero;
+    private GameObject planet;
+
+    private Collider collider;
+    private Rigidbody rigidbody;
 
     // Start is called before the first frame update
     void Start()
     {
         currentState = CreatureState.Walking;
+
+        planet = transform.parent.parent.gameObject;
+
+        //collider = meshObj.GetComponent<Collider>();
+        //rigidbody = meshObj.GetComponent<Rigidbody>();
+        collider = GetComponent<Collider>();
+        rigidbody = GetComponent<Rigidbody>();
     }
 
     /*
@@ -162,7 +173,7 @@ public class Creature : MonoBehaviour
 
         foreach (Collider coll in hitColliders)
         {
-            if (coll != ownCollider && coll.gameObject.CompareTag(tagname))
+            if (coll != collider && coll.gameObject.CompareTag(tagname))
             {
                 float distanceToGameObject = Vector3.Distance(transform.position, coll.transform.position);
 
@@ -185,6 +196,8 @@ public class Creature : MonoBehaviour
             Vector3 direction = pos - transform.position;
             transform.position += direction.normalized * speed * Time.deltaTime;
             transform.rotation = Quaternion.LookRotation(direction);
+
+            AttractToPlanet();
         }
         else
         {
@@ -192,6 +205,19 @@ public class Creature : MonoBehaviour
         }
 
         
+    }
+
+    private void AttractToPlanet()
+    {
+        float attractingBodyMass = 100000000;
+
+        double r2 = Vector3.Distance(transform.position, planet.transform.position);
+        r2 *= r2;
+
+        //THE DIVIDED BY TEN IS A HOTFIX TO KEEP GRAVITY DOWN
+        Vector3 attractionDirection = (planet.transform.position - transform.position).normalized / 10;
+
+        rigidbody.velocity += attractionDirection * (float)((attractingBodyMass * Time.deltaTime) / r2);
     }
 
     private void InteractWithResourceAction()
