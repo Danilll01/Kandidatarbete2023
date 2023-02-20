@@ -5,21 +5,23 @@ using UnityEngine;
 public class Planet : MonoBehaviour
 {
     [SerializeField] ComputeShader meshGenerator;
-    //[SerializeField, Range(0, 255)] float threshold = 200;
+    [SerializeField] Material waterMaterial;
     [SerializeField, Range(1, 28)] int resolution = 20;
     //[SerializeField, Range(1, 25)] int frequency;
-    //[SerializeField, Range(0, 5)] float amplitude;
-    //[SerializeField, Range(0, 1)] float bottomLevel;
+    [SerializeField] GameObject water;
     [SerializeField] GameObject meshObj;
 
+
+    float threshold;
+    float amplitude;
+    float bottomLevel;
     public float radius;
     public float surfaceGravity;
     public string bodyName = "TBT";
     public float mass;
-    public List<Planet> moons; 
+    public List<Planet> moons;
 
     MarchingCubes marchingCubes;
-    [SerializeField] private SpawnFoliage spawnFoliage;
     [SerializeField] private GenerateCreatures generateCreatures;
 
 
@@ -30,21 +32,31 @@ public class Planet : MonoBehaviour
     {
         // Get meshfilter and create new mesh if it doesn't exist
         MeshFilter meshFilter = meshObj.GetComponent<MeshFilter>();
-        if(meshFilter.sharedMesh == null)
+        if (meshFilter.sharedMesh == null)
         {
             meshFilter.sharedMesh = new Mesh();
         }
+        
+        
+        
 
         // Initialize the meshgenerator
         if (meshGenerator != null)
         {
-            System.Random rand = new System.Random(1);
-          
-            float threshold = 23 + (float) rand.NextDouble() * 4;
+            System.Random rand = Universe.random;
+            
+            threshold = 23 + (float) rand.NextDouble() * 4;
             int frequency = rand.Next(2) + 3;
-            float amplitude = 1.2f + (float) rand.NextDouble() * 0.4f;
-            marchingCubes = new MarchingCubes(meshFilter.sharedMesh, meshGenerator, threshold, resolution, radius, frequency, amplitude, 1);
+            amplitude = 1.2f + (float) rand.NextDouble() * 0.4f;
+            bottomLevel = 1;
+            marchingCubes = new MarchingCubes(meshFilter.sharedMesh, meshGenerator, threshold, resolution, radius, frequency, amplitude, bottomLevel);
         }
+
+        float waterRadius = (threshold / 255 - bottomLevel) * radius;
+
+        water.transform.localScale = new Vector3(waterRadius, waterRadius, waterRadius);
+
+        water.GetComponent<Renderer>().material = waterMaterial;
 
         // Generates the mesh
         if (marchingCubes != null)
@@ -52,12 +64,6 @@ public class Planet : MonoBehaviour
             marchingCubes.generateMesh();
             MeshCollider meshCollider = meshFilter.gameObject.AddComponent<MeshCollider>();
             meshCollider.sharedMesh = meshFilter.sharedMesh;
-        }
-
-        // Initializes the foliage
-        if (spawnFoliage != null && bodyName != "Sun" && !bodyName.Contains("Moon"))
-        {
-            spawnFoliage.Initialize(this);
         }
 
         // Generate the creatures
