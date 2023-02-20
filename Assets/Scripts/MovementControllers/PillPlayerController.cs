@@ -41,7 +41,7 @@ public class PillPlayerController : MonoBehaviour
         //Movement
         Vector3 movementVector = new Vector3(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Jump"), Input.GetAxisRaw("Vertical"));
         //Stop vertical movement if player is too high
-        if (Altitude > attractor.radius)
+        if (Altitude > attractor.radius / 2)
         {
             movementVector.y = 0;
         }
