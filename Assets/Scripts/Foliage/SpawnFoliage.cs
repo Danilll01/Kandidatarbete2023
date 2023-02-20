@@ -10,104 +10,124 @@ using System.Linq;
 
 public class SpawnFoliage : MonoBehaviour
 {
+    const int prefabLimit = 10000;
+
     [Header("Trees")]
-    [SerializeField] private int treeLimit = 10000;
+    [SerializeField] private int treeLimit = 1000;
     [SerializeField] private float treeLine = 25;
     [SerializeField] private float treeAngleLimit = 30;
-    [SerializeField] private GameObject[] trees = new GameObject[4];
+    [SerializeField] private GameObject[] treePrefabs = new GameObject[4];
 
     [Header("Bushes")]
-    [SerializeField] private int bushLimit = 50000;
+    [SerializeField] private int bushLimit = 5000;
     [SerializeField] private float bushLine = 35;
     [SerializeField] private float bushAngleLimit = 30;
-    [SerializeField] private GameObject[] bushes = new GameObject[4];
+    [SerializeField] private GameObject[] bushPrefab = new GameObject[4];
 
     [Header("Rocks")]
-    [SerializeField] private int stoneLimit = 4000;
+    [SerializeField] private int stoneLimit = 400;
     [SerializeField] private float stoneLine = 36;
     [SerializeField] private float stoneAngleLimit = 30;
-    [SerializeField] private GameObject[] stones = new GameObject[4];
+    [SerializeField] private GameObject[] stonePrefab = new GameObject[4];
 
     [Header("Misc")]
     [SerializeField] private int seed = 0;
     [SerializeField] private bool DEBUG = false;
 
 
+    private int treeIndex = 0;
+    private int treeSpawnIndex = 0;
+    private Vector3[] treePositions = new Vector3[prefabLimit];
+
+    private int bushIndex = 0;
+    private int bushSpawnIndex = 0;
+    private Vector3[] bushPositions = new Vector3[prefabLimit];
+
+    private int stoneIndex = 0;
+    private int stoneSpawnIndex = 0;
+    private Vector3[] stonePositions = new Vector3[prefabLimit];
+
 
     // Private members
     private GameObject foliageHandler;
-    private float planetRadius;
+
     private Vector3 planetCenter;
     private Planet planet;
+    private float planetRadius;
+    private float waterLevel;
 
     void Update()
     {
 
-        if (planet != null )
+        if(planet != null && foliageHandler != null)
         {
             GameObject[] cameras = GameObject.FindGameObjectsWithTag("MainCamera");
-
-            for (int i = 0; i < cameras.Length; i++)
+            for(int i = 0; i < cameras.Length; i++)
             {
-                if ((cameras[i].transform.position - planet.transform.position).magnitude < 2000)
+                // Tries to spawn 100 of each every frame we are near the planet
+                if ((cameras[i].transform.position - planet.transform.position).magnitude < 3000)
                 {
-                    if (foliageHandler == null)
+
+                    for (int j = 100; j > 0; j--)
                     {
-                        spawnFoliage();
-                        break;
+                        if (treeIndex > treeSpawnIndex) plantTree();
+                        else break;
                     }
-                    
+                    for (int j = 100; j > 0; j--)
+                    {
+                        if (bushIndex > bushSpawnIndex) plantBush();
+                        else break;
+                    }
+                    for (int j = 100; j > 0; j--)
+                    {
+                        if (stoneIndex > stoneSpawnIndex) plantStone();
+                        else break;
+                    }
+
                 }
-                else
+                // Delets all foliage when leaving
+                else if((cameras[i].transform.position - planet.transform.position).magnitude > 5000)
                 {
-                    deleteFoliage();
+                    if (foliageHandler.transform.childCount > 0)
+                    {
+
+                        Destroy(foliageHandler);
+
+                        foliageHandler = new GameObject("Foliage");
+                        foliageHandler.transform.parent = planet.transform;
+                        foliageHandler.transform.localPosition = new Vector3(0, 0, 0);
+
+                        treeSpawnIndex = 0;
+                        bushSpawnIndex = 0;
+                        stoneSpawnIndex = 0;
+                    }
                 }
-
             }
-
         }
+
     }
 
-    /// <summary>
-    /// Destroys all the foliage on the current planet
-    /// </summary>
-    public void deleteFoliage()
+
+    public void Initialize(Planet planet, float waterLevel)
     {
-        if(foliageHandler!= null)
-        {
-            Destroy(foliageHandler);
-        }
-    }
-    /// <summary>
-    /// Takes a planet and spawns foliage on it.
-    /// </summary>
-    private void spawnFoliage()
-    {
+        // Gets the parameters for the planets
+        this.planet = planet;
+        planetRadius = Mathf.Abs(planet.radius / 2);
+        planetCenter = planet.transform.position;
+        this.waterLevel = Mathf.Abs(waterLevel / 2);
+
         // Makes the script seedable
         Random.InitState(seed);
 
         // Creates a game object to hold foilage objects
         foliageHandler = new GameObject("Foliage");
         foliageHandler.transform.parent = planet.transform;
-        foliageHandler.transform.localPosition = new     Vector3(0, 0, 0);
+        foliageHandler.transform.localPosition = new Vector3(0, 0, 0);
 
-        // Gets the parameters for the planets
-        planetRadius = planet.radius;
-        planetCenter = planet.transform.position;
-
-        // Places foliage
-        plant(trees, treeLimit, treeLine, treeAngleLimit);
-        plant(bushes, bushLimit, bushLine, bushAngleLimit, true);
-        setStones(stones, stoneLimit, stoneLine, stoneAngleLimit, true);
-
+        generateSpawnPoints();
     }
 
-
-    public void Initialize(Planet planet)
-    {
-        this.planet = planet;
-    }
-
+    /*
     /// <summary>
     /// Plants a specified prefab on a planet
     /// </summary>
@@ -223,5 +243,116 @@ public class SpawnFoliage : MonoBehaviour
             arrayIndex = Random.Range(0, 3);
             Instantiate(spawnList[arrayIndex], pos, rotation, foliageHandler.transform);
         }
+    }
+
+    */
+    private void generateSpawnPoints()
+    {
+        // Generates positions for all ray origins. TODO make them all care about planet rotation
+        generateSpots(treePositions, ref treeIndex, treeLimit, treeLine);
+        generateSpots(bushPositions, ref bushIndex, bushLimit, bushLine);
+        generateSpots(stonePositions, ref stoneIndex, stoneLimit, stoneLine);
+    }
+
+    /// <summary>
+    /// Adds ray origin positions to a vector3 array
+    /// </summary>
+    /// <param name="arr"> Vector3 array </param>
+    /// <param name="index"> Index for the kind that should be calculated </param>
+    /// <param name="limit"> Limit of spot</param>
+    /// <param name="angleLimit"> Checks angle to the ground and that can't be bigger than the limit </param>
+    private void generateSpots(Vector3[] arr, ref int index, float limit,float angleLimit)
+    {
+        Vector3 rayOrigin;
+        RaycastHit hit;
+        float maxRayDistance = (planetRadius - waterLevel);
+
+        for (int i = 0; i < limit && i < prefabLimit; i++)
+        {
+            // Creates and sends a ray
+            rayOrigin = planetCenter + Random.onUnitSphere * planetRadius;
+            Ray ray = new Ray(rayOrigin, planetCenter - rayOrigin);
+
+            if (Physics.Raycast(ray, out hit, maxRayDistance))
+            {
+                if (hit.distance < maxRayDistance - angleLimit)
+                {
+                    if (DEBUG) Debug.DrawLine(rayOrigin, hit.point, Color.cyan, 10);
+                    arr[index] = rayOrigin - planetCenter;
+                    index++;
+                }
+                else
+                {
+                    if (DEBUG) Debug.DrawLine(rayOrigin, hit.point, Color.yellow, 10);
+                }
+            }
+            else
+            {
+                if (DEBUG) Debug.DrawLine(rayOrigin, rayOrigin + (planetCenter - rayOrigin).normalized * maxRayDistance, Color.red, 10);
+            }
+        }
+    }
+    private void plantTree()
+    {
+
+        planetCenter = planet.transform.position;
+        RaycastHit hit;
+        Vector3 rayOrigin = planetCenter + treePositions[treeSpawnIndex++];
+        Ray ray = new Ray(rayOrigin, planetCenter - rayOrigin);
+        Physics.Raycast(ray, out hit, 10000);
+  
+        if (hit.transform.tag == "Foliage" || hit.transform.tag == "Creature" || Mathf.Abs(Vector3.Angle(rayOrigin - planetCenter, hit.normal)) > treeAngleLimit)
+        {
+            return;
+        }
+        // Sets the corret rotation for the prefabs
+        Quaternion rotation = Quaternion.LookRotation(rayOrigin - planetCenter) * Quaternion.Euler(90, 0, 0);
+        // Sets a random rotation for more variation
+        rotation *= Quaternion.Euler(0, Random.value * 360, 0);
+
+        Instantiate(treePrefabs[Random.Range(0, 1)], hit.point, rotation, foliageHandler.transform);
+    }
+    private void plantBush()
+    {
+
+        planetCenter = planet.transform.position;
+        RaycastHit hit;
+        Vector3 rayOrigin = planetCenter + bushPositions[bushSpawnIndex++];
+        Ray ray = new Ray(rayOrigin, planetCenter - rayOrigin);
+        Physics.Raycast(ray, out hit, 10000);
+
+        if (hit.transform.tag == "Foliage" || hit.transform.tag == "Creature" || Mathf.Abs(Vector3.Angle(rayOrigin - planetCenter, hit.normal)) > bushAngleLimit)
+        {
+            return;
+        }
+
+        // Sets the corret rotation for the prefabs
+        Quaternion rotation = Quaternion.LookRotation(hit.normal) * Quaternion.Euler(90, 0, 0);
+        // Sets a random rotation for more variation
+        rotation *= Quaternion.Euler(0, Random.value * 360, 0);
+
+        Instantiate(bushPrefab[Random.Range(0, 1)], hit.point, rotation, foliageHandler.transform);
+    }
+    private void plantStone()
+    {
+
+        planetCenter = planet.transform.position;
+
+        RaycastHit hit;
+        Vector3 rayOrigin = planetCenter + stonePositions[stoneSpawnIndex++];
+        Ray ray = new Ray(rayOrigin, planetCenter - rayOrigin);
+        Physics.Raycast(ray, out hit, 10000);
+
+        if (hit.transform.tag == "Foliage" || hit.transform.tag == "Creature" || Mathf.Abs(Vector3.Angle(rayOrigin - planetCenter, hit.normal)) < stoneAngleLimit)
+        {
+            return;
+        }
+
+        // Sets the corret rotation for the prefabs
+        Quaternion rotation = Quaternion.LookRotation(hit.normal) * Quaternion.Euler(90, 0, 0);
+        // Sets a random rotation for more variation
+        rotation *= Quaternion.Euler(0, Random.value * 360, 0);
+
+        Instantiate(stonePrefab[Random.Range(0, 1)], hit.point, rotation, foliageHandler.transform);
     }
 }

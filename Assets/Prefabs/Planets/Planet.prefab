@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 8085060048720669979}
   - component: {fileID: 2865990664458296443}
   - component: {fileID: 7065241369011201559}
+  - component: {fileID: 2855617038713985127}
   m_Layer: 0
   m_Name: Planet
   m_TagString: Untagged
@@ -59,6 +60,7 @@ MonoBehaviour:
   mass: 100
   moons: []
   generateCreatures: {fileID: 7065241369011201559}
+  spawnFoliage: {fileID: 2855617038713985127}
 --- !u!120 &2865990664458296443
 LineRenderer:
   m_ObjectHideFlags: 0
@@ -178,6 +180,44 @@ MonoBehaviour:
   maxPackSize: 10
   packRadius: 50
   terrainSteepnesAngle: 30
+  DEBUG: 0
+--- !u!114 &2855617038713985127
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 938852981703260768}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8931a0870bcc7e48a77bf4dba98a375, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  treeLimit: 10000
+  treeLine: 25
+  treeAngleLimit: 30
+  treePrefabs:
+  - {fileID: 9069115365609291303, guid: 60f79905accf3b24fa0114b941f1aac0, type: 3}
+  - {fileID: 4661435515762455780, guid: e289bf5debb17f6459818c207d781953, type: 3}
+  - {fileID: 2222111361404534124, guid: 88f2fd29f58b9734683512546acec310, type: 3}
+  - {fileID: 2807449429036958551, guid: f0c16f0ea935ea64297ca1d4d55d9746, type: 3}
+  bushLimit: 50000
+  bushLine: 35
+  bushAngleLimit: 30
+  bushPrefab:
+  - {fileID: 38335279662140195, guid: 34d3f526198dae440bb2ce6005d86055, type: 3}
+  - {fileID: 6239969156481229051, guid: b71b0f8d2f881c743a85228f3030d1cb, type: 3}
+  - {fileID: 38335279662140195, guid: 34d3f526198dae440bb2ce6005d86055, type: 3}
+  - {fileID: 6239969156481229051, guid: b71b0f8d2f881c743a85228f3030d1cb, type: 3}
+  stoneLimit: 4000
+  stoneLine: 36
+  stoneAngleLimit: 30
+  stonePrefab:
+  - {fileID: 7405846476849542632, guid: c6308cb7062fac34e8e50600086b12a1, type: 3}
+  - {fileID: 1576488453971893466, guid: a778b631c6253a04899cb31bad047c81, type: 3}
+  - {fileID: 7405846476849542632, guid: c6308cb7062fac34e8e50600086b12a1, type: 3}
+  - {fileID: 1576488453971893466, guid: a778b631c6253a04899cb31bad047c81, type: 3}
+  seed: 0
   DEBUG: 0
 --- !u!1 &2421649971222294434
 GameObject:
