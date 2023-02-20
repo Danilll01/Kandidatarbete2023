@@ -83,7 +83,7 @@ Material:
     - _BUILTIN_QueueControl: -1
     - _BUILTIN_QueueOffset: 0
     - _Blend: 0
-    - _BottomHight: 134.9
+    - _BottomHight: 118.4
     - _BumpScale: 1
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 0
@@ -109,7 +109,7 @@ Material:
     - _Surface: 0
     - _TestAdd: 289.4
     - _TopHeight: 23.6
-    - _TopHight: 99.4
+    - _TopHight: 95.2
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
