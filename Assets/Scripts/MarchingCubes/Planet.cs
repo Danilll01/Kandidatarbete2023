@@ -54,7 +54,7 @@ public class Planet : MonoBehaviour
             meshCollider.sharedMesh = meshFilter.sharedMesh;
         }
 
-        // Generate the creatures
+        // Initializes the foliage
         if (spawnFoliage != null && bodyName != "Sun" && !bodyName.Contains("Moon"))
         {
             spawnFoliage.Initialize(this);

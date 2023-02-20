@@ -190,7 +190,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a8931a0870bcc7e48a77bf4dba98a375, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  treeLimit: 4000
+  treeLimit: 10000
   treeLine: 25
   treeAngleLimit: 30
   trees:
@@ -198,7 +198,7 @@ MonoBehaviour:
   - {fileID: 9069115365609291303, guid: 60f79905accf3b24fa0114b941f1aac0, type: 3}
   - {fileID: 2222111361404534124, guid: 88f2fd29f58b9734683512546acec310, type: 3}
   - {fileID: 6941765000743290380, guid: c60edd51c065ceb46b345849a03bc106, type: 3}
-  bushLimit: 10000
+  bushLimit: 20000
   bushLine: 35
   bushAngleLimit: 30
   bushes:

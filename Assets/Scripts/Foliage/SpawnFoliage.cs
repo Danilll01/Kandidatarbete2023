@@ -32,17 +32,56 @@ public class SpawnFoliage : MonoBehaviour
     [SerializeField] private int seed = 0;
     [SerializeField] private bool DEBUG = false;
 
+
+
     // Private members
     private GameObject foliageHandler;
     private float planetRadius;
     private Vector3 planetCenter;
+    private Planet planet;
 
+    void Update()
+    {
+
+        if (planet != null )
+        {
+            GameObject[] cameras = GameObject.FindGameObjectsWithTag("MainCamera");
+
+            for (int i = 0; i < cameras.Length; i++)
+            {
+                if ((cameras[i].transform.position - planet.transform.position).magnitude < 2000)
+                {
+                    if (foliageHandler == null)
+                    {
+                        spawnFoliage();
+                        break;
+                    }
+                    
+                }
+                else
+                {
+                    deleteFoliage();
+                }
+
+            }
+
+        }
+    }
+
+    /// <summary>
+    /// Destroys all the foliage on the current planet
+    /// </summary>
+    public void deleteFoliage()
+    {
+        if(foliageHandler!= null)
+        {
+            Destroy(foliageHandler);
+        }
+    }
     /// <summary>
     /// Takes a planet and spawns foliage on it.
     /// </summary>
-    /// <param name="planet"> The planet foliage should spawn on.</param>
-
-    public void Initialize(Planet planet)
+    private void spawnFoliage()
     {
         // Makes the script seedable
         Random.InitState(seed);
@@ -50,7 +89,7 @@ public class SpawnFoliage : MonoBehaviour
         // Creates a game object to hold foilage objects
         foliageHandler = new GameObject("Foliage");
         foliageHandler.transform.parent = planet.transform;
-        foliageHandler.transform.localPosition = new Vector3(0, 0, 0);
+        foliageHandler.transform.localPosition = new     Vector3(0, 0, 0);
 
         // Gets the parameters for the planets
         planetRadius = planet.radius;
@@ -59,8 +98,14 @@ public class SpawnFoliage : MonoBehaviour
         // Places foliage
         plant(trees, treeLimit, treeLine, treeAngleLimit);
         plant(bushes, bushLimit, bushLine, bushAngleLimit, true);
-        setStones(stones, stoneLimit, stoneLine, stoneAngleLimit, true); // Disabled just nu för det går inte att spawna utan kullar
+        setStones(stones, stoneLimit, stoneLine, stoneAngleLimit, true);
 
+    }
+
+
+    public void Initialize(Planet planet)
+    {
+        this.planet = planet;
     }
 
     /// <summary>
@@ -71,6 +116,7 @@ public class SpawnFoliage : MonoBehaviour
     /// <param name="maxHeight"> Maximum spawning altitude </param>
     /// <param name="angleLimit"> Maximum spawning angle </param>
     /// <param name="normalVectorSpawning"> If the prefabs should with the normal of the ground as the spawning angle </param>
+
     private void plant(GameObject[] spawnList, int spawningLimit, float maxHeight, float angleLimit, bool normalVectorSpawning = false)
     {
         Vector3 rayOrigin;
