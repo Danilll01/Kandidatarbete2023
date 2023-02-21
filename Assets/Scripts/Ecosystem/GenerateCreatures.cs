@@ -47,6 +47,11 @@ public class GenerateCreatures : MonoBehaviour
         if (DEBUG) Debug.Log("Spawning");
     }
 
+    public void ShowCreatures(bool show)
+    {
+        creatureParent.SetActive(show);
+    }
+
     // Raycasts where all the packs should be created and calls CreateRandomPack to create the packs
     private void GenerateCreaturesOnPlanet()
     {

@@ -82,4 +82,12 @@ public class Planet : MonoBehaviour
         mass = surfaceGravity * radius * radius / Universe.gravitationalConstant;
         gameObject.name = bodyName;
     }
+
+    public void ShowCreatures(bool show)
+    {
+        if (generateCreatures != null)
+        {
+            generateCreatures.ShowCreatures(show);
+        }
+    }
 }
