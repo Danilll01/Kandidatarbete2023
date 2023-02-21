@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(GenerateCreatures))]
+[RequireComponent(typeof(TerrainColor))]
 public class Planet : MonoBehaviour
 {
     [SerializeField] ComputeShader meshGenerator;
@@ -21,9 +23,20 @@ public class Planet : MonoBehaviour
     MarchingCubes marchingCubes;
     [SerializeField] private bool willGenerateCreature = false;
     [SerializeField] private GenerateCreatures generateCreatures;
+    [SerializeField] private TerrainColor terrainColor;
 
     public void OnValidate() {
         Initialize();
+    }
+
+    void Start() {
+        if (generateCreatures == null) { 
+            generateCreatures = GetComponent<GenerateCreatures>();
+        }
+
+        if (terrainColor == null) {
+            terrainColor = GetComponent<TerrainColor>();
+        }
     }
 
     /// <summary>
@@ -52,6 +65,8 @@ public class Planet : MonoBehaviour
         // Generates the mesh
         if (marchingCubes != null) {
             marchingCubes.generateMesh();
+            terrainColor.ColorPlanet();
+
             //MeshCollider meshCollider = meshFilter.gameObject.AddComponent<MeshCollider>();
             //meshCollider.sharedMesh = meshFilter.sharedMesh;
         }
