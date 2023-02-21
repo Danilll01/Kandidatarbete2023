@@ -129,7 +129,7 @@ public class Creature : MonoBehaviour
             // Randomly walk around
             Quaternion rotation = Quaternion.FromToRotation(Vector3.forward, transform.position);
 
-            destination = transform.position +  rotation * Random.insideUnitCircle * detectionRadius;
+            destination = transform.position + rotation * Random.insideUnitCircle * detectionRadius;
             atDestination = false;
         } else
         {
@@ -203,7 +203,7 @@ public class Creature : MonoBehaviour
 
     private void GotoPosition(Vector3 pos)
     {
-        if (!pos.Equals(Vector2.zero) && Vector3.Distance(transform.position, pos) > 1.5f)
+        if (!pos.Equals(Vector2.zero) && !IsCloseToDestination(pos))//Vector3.Distance(transform.position, pos) > 1.5f + consumeRadius)
         {
             //Vector3 direction = pos - transform.position;
             //transform.position += speed * Time.deltaTime * direction.normalized;
@@ -216,6 +216,17 @@ public class Creature : MonoBehaviour
         {
             atDestination = true;
         }
+    }
+
+    private bool IsCloseToDestination(Vector3 pos)
+    {
+        // transform.position += -(planet.meshObj.transform.position - transform.position).normalized;
+        Vector3 creatureToPlanetCenter = (planet.meshObj.transform.position - transform.position);
+        Vector3 posToPlanetCenter = planet.meshObj.transform.position - pos;
+
+        float angle = Vector3.Angle(creatureToPlanetCenter, posToPlanetCenter);
+        if (DEBUG) Debug.Log("Angle:" + angle);
+        return angle < 1f;
     }
 
     private void KeepUpRight()
