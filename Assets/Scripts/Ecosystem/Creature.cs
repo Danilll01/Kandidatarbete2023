@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Burst.CompilerServices;
 using UnityEngine;
+using static UnityEngine.EventSystems.EventTrigger;
 
 public class Creature : MonoBehaviour
 {
@@ -31,7 +32,7 @@ public class Creature : MonoBehaviour
 
     private bool atDestination = false;
     private Vector3 destination = Vector3.zero;
-    private GameObject planet;
+    private Planet planet;
 
     private Collider collider;
     private Rigidbody rigidbody;
@@ -41,12 +42,16 @@ public class Creature : MonoBehaviour
     {
         currentState = CreatureState.Walking;
 
-        planet = transform.parent.parent.gameObject;
+        planet = transform.parent.parent.GetComponent<Planet>();
 
         //collider = meshObj.GetComponent<Collider>();
         //rigidbody = meshObj.GetComponent<Rigidbody>();
         collider = GetComponent<Collider>();
         rigidbody = GetComponent<Rigidbody>();
+
+        // Teleport the creature 2 meters up in correct direction based on position on planet
+        transform.position += -(planet.meshObj.transform.position - transform.position).normalized;
+
     }
 
     /*
@@ -62,7 +67,8 @@ public class Creature : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        //KeepUpRight();
+        //AttractToPlanet();
 
         if (currentState == CreatureState.Idle)
         {
@@ -101,6 +107,12 @@ public class Creature : MonoBehaviour
         {
             Destroy(gameObject);
         }
+    }
+
+    void FixedUpdate()
+    {
+        AttractToPlanet();
+        KeepUpRight();
     }
 
     private void RandomWalking()
@@ -191,33 +203,80 @@ public class Creature : MonoBehaviour
 
     private void GotoPosition(Vector3 pos)
     {
-        if (!pos.Equals(Vector2.zero) && Vector3.Distance(transform.position, pos) > 0.1f)
+        if (!pos.Equals(Vector2.zero) && Vector3.Distance(transform.position, pos) > 1.5f)
         {
-            Vector3 direction = pos - transform.position;
-            transform.position += direction.normalized * speed * Time.deltaTime;
-            transform.rotation = Quaternion.LookRotation(direction);
+            //Vector3 direction = pos - transform.position;
+            //transform.position += speed * Time.deltaTime * direction.normalized;
+            //transform.rotation = Quaternion.LookRotation(direction);
 
-            AttractToPlanet();
+            // Move the ridgidbody based on velocity
+            rigidbody.MovePosition(transform.position + speed * Time.deltaTime * (pos - transform.position).normalized);
         }
         else
         {
             atDestination = true;
         }
-
-        
     }
 
+    private void KeepUpRight()
+    {
+        // Look at the walking direction and have the create follow the terrain
+
+        Vector3 direction = destination - transform.position;
+
+        Quaternion rotation;
+
+        if (direction != Vector3.zero)
+        {
+            rotation = Quaternion.LookRotation(direction);
+        } else
+        {
+            rotation = Quaternion.FromToRotation(Vector3.forward, transform.position);
+        }
+        
+        
+        Vector3 directionFromCenter = transform.position - planet.meshObj.transform.position;
+
+        directionFromCenter = directionFromCenter.normalized;
+        transform.rotation = Quaternion.FromToRotation(transform.up, directionFromCenter) * transform.rotation;
+
+        // Make the caracter also look a the direction it is walking
+        transform.rotation = Quaternion.Lerp(transform.rotation, rotation, Time.fixedDeltaTime * 1f);
+
+        RaycastHit hit;
+
+        // Cast a ray down to get the normal of the terrain
+        if (Physics.Raycast(transform.position, directionFromCenter, out hit))
+        {
+
+            // Set rotation of creature to the normal of hit
+            transform.rotation = Quaternion.FromToRotation(Vector3.forward, hit.normal) * Quaternion.Euler(90, 0, 0);
+        }
+
+    }
     private void AttractToPlanet()
     {
-        float attractingBodyMass = 100000000;
+        float gravity = -9.82f;
+        Vector3 targetDirection = (transform.position - planet.meshObj.transform.position).normalized;
+        Vector3 bodyUp = transform.up;
 
-        double r2 = Vector3.Distance(transform.position, planet.transform.position);
+        rigidbody.AddForce(targetDirection * gravity);
+        transform.rotation = Quaternion.FromToRotation(bodyUp, targetDirection) * transform.rotation;
+
+        /*
+        float attractingBodyMass = planet.mass / 1000;
+        Vector3 planetPosition = planet.meshObj.transform.position;
+
+        double r2 = Vector3.Distance(transform.position, planetPosition);
         r2 *= r2;
 
+        if (DEBUG) Debug.Log("Distance" + transform.position + " : " + planetPosition);
+
         //THE DIVIDED BY TEN IS A HOTFIX TO KEEP GRAVITY DOWN
-        Vector3 attractionDirection = (planet.transform.position - transform.position).normalized / 10;
+        Vector3 attractionDirection = (planetPosition - transform.position).normalized / 10;
 
         rigidbody.velocity += attractionDirection * (float)((attractingBodyMass * Time.deltaTime) / r2);
+        */
     }
 
     private void InteractWithResourceAction()

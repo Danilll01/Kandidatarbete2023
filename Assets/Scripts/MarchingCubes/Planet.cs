@@ -9,7 +9,7 @@ public class Planet : MonoBehaviour
     [SerializeField, Range(1, 28)] int resolution = 20;
     //[SerializeField, Range(1, 25)] int frequency;
     [SerializeField] GameObject water;
-    [SerializeField] GameObject meshObj;
+    [SerializeField] public GameObject meshObj;
 
 
     float threshold;
