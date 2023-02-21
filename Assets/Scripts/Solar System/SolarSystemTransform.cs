@@ -44,5 +44,25 @@ public class SolarSystemTransform : MonoBehaviour
         planet.gameObject.GetComponent<KeplerOrbitMover>().enabled = false;
         Vector3 distanceFromOrigin = planet.transform.GetChild(0).transform.position - Vector3.zero;
         planetsParent.transform.position -= distanceFromOrigin;
+        ActivateSunOrbit(planet.gameObject);
+    }
+
+    private void ActivateSunOrbit(GameObject planetToOrbit)
+    {
+        KeplerOrbitMover sunOrbitMover = sun.GetComponent<KeplerOrbitMover>();
+        sunOrbitMover.AttractorSettings.AttractorObject = planetToOrbit.transform;
+        sunOrbitMover.AttractorSettings.AttractorMass = sun.GetComponent<Planet>().mass;
+        sunOrbitMover.AttractorSettings.GravityConstant = 2;
+        sunOrbitMover.SetUp();
+        sunOrbitMover.SetAutoCircleOrbit();
+        sunOrbitMover.ForceUpdateOrbitData();
+        sunOrbitMover.enabled = true;
+
+        // Not nessecarry, used for debug
+        KeplerOrbitLineDisplay sunOrbitDisplay = sun.GetComponent<KeplerOrbitLineDisplay>();
+        sunOrbitDisplay.MaxOrbitWorldUnitsDistance = (planetToOrbit.transform.position - sunOrbitMover.gameObject.transform.position).magnitude * 1.2f;
+        sunOrbitDisplay.LineRendererReference = sunOrbitMover.gameObject.GetComponent<LineRenderer>();
+
+        sunOrbitDisplay.enabled = true;
     }
 }

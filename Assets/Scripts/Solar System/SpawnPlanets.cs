@@ -56,6 +56,15 @@ public class SpawnPlanets : MonoBehaviour
         SunPlanetBody.SetUpPlanetValues();
         SunPlanetBody.Initialize();
         bodies.Add(SunPlanetBody);
+        GameObject velocityHelper = new GameObject();
+        velocityHelper.gameObject.name = "VelocityHelper";
+        velocityHelper.transform.parent = Sun.transform;
+        velocityHelper.transform.localPosition = new Vector3(-100, 0, 0);
+        Sun.AddComponent<KeplerOrbitMover>();
+        Sun.AddComponent<KeplerOrbitLineDisplay>();
+        Sun.GetComponent<KeplerOrbitMover>().enabled = false;
+        Sun.GetComponent<KeplerOrbitLineDisplay>().enabled = false;
+        Sun.GetComponent<KeplerOrbitMover>().VelocityHandle = velocityHelper.transform;
         InstantiatePlanets(Sun);
 
     }
