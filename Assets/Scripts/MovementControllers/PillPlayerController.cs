@@ -10,6 +10,7 @@ public class PillPlayerController : MonoBehaviour
     public float movementSpeed;
     public float airControlFactor;
     public float jumpForce;
+    public float maxSpeed;
 
     private Rigidbody body;
     // Start is called before the first frame update
@@ -61,7 +62,17 @@ public class PillPlayerController : MonoBehaviour
             //Air controls
             else
             {
+                //Add movement
                 body.velocity += transform.rotation * movementVector * Time.deltaTime * airControlFactor;
+                //Normalize to maxSpeed if necessary
+                Vector3 oldVelocity = (Quaternion.Inverse(transform.rotation) * body.velocity);
+                Vector3 oldHorizontalVelocity = new Vector3(oldVelocity.x, 0, oldVelocity.z);
+                if (oldHorizontalVelocity.magnitude > maxSpeed)
+                {
+                    Vector3 newHorizontalVelocity = oldHorizontalVelocity.normalized * maxSpeed;
+                    Vector3 newVelocity = oldVelocity - oldHorizontalVelocity + newHorizontalVelocity;
+                    body.velocity = transform.rotation * newVelocity;
+                }
             }
         }
         //No input

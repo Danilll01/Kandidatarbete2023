@@ -134,8 +134,7 @@ MonoBehaviour:
   movementSpeed: 20
   airControlFactor: 1
   jumpForce: 20
-  maxSpeed: 20
-  groundedSlowDownFactor: 0.9
+  maxSpeed: 40
 --- !u!1 &4197161890332043643
 GameObject:
   m_ObjectHideFlags: 0
