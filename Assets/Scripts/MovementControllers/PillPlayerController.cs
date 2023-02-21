@@ -24,6 +24,10 @@ public class PillPlayerController : MonoBehaviour
 
         //Put the player above the ground
         transform.position = hit.point - (directionNearestPlanet.normalized) * 5;
+
+        //Lock the mouse inside of the game
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
 
     // Update is called once per frame
