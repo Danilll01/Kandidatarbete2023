@@ -22,8 +22,7 @@ public class Gravity
         double r2 = Vector3.Distance(entityPos, attractingBodyPos);
         r2 *= r2;
 
-        //THE DIVIDED BY TEN IS A HOTFIX TO KEEP GRAVITY DOWN
-        Vector3 attractionDirection = (attractingBodyPos - entityPos).normalized / 10;
+        Vector3 attractionDirection = (attractingBodyPos - entityPos).normalized;
 
         entityRigidbody.velocity += attractionDirection * (float)((attractingBodyMass * Time.deltaTime) / r2);
     }
