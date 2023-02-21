@@ -51,7 +51,7 @@ public class MarchingCubes
         int verticesCount = (resolution - 1) * 3 * resolution * resolution;
 
         // Set up buffers for the triangles
-        ComputeBuffer verticesBuffer = new ComputeBuffer(verticesCount, 3 * sizeof(float));
+        ComputeBuffer verticesBuffer = new ComputeBuffer(numVoxels * 12, 3 * sizeof(float));
         ComputeBuffer trianglesBuffer = new ComputeBuffer(maxTriangleCount, sizeof(int) * 3, ComputeBufferType.Append);
         trianglesBuffer.SetCounterValue(0);
 
@@ -76,7 +76,7 @@ public class MarchingCubes
         trianglesBuffer.Release();
 
         // Retrieve vertices
-        Vector3[] vertices = new Vector3[verticesCount];
+        Vector3[] vertices = new Vector3[numVoxels * 12];
         verticesBuffer.GetData(vertices);
         verticesBuffer.Release();
 

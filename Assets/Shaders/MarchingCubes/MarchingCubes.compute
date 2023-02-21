@@ -54,24 +54,6 @@ void GenerateMesh(uint3 id : SV_DispatchThreadID)
         getTexturePoint(uint3(id.x, id.y + 1, id.z + 1), resolution, diameter)
     };
     
-    /*
-    if (id.x == 0 && id.z == 0)
-    {
-        vertices[voxelIndex + 11] = interpolateVerts(cubeCorners[0], cubeCorners[4]);
-    }
-    if (id.x == 0 && id.y == 0)
-    {
-        vertices[voxelIndex + 4] = interpolateVerts(cubeCorners[0], cubeCorners[3]);
-    }
-    if (id.y == 0 && id.z == 0)
-    {
-        vertices[voxelIndex + 8] = interpolateVerts(cubeCorners[0], cubeCorners[1]);
-    }*/
-    
-    vertices[voxelIndex + 1] = interpolateVerts(cubeCorners[2], cubeCorners[6]);
-    vertices[voxelIndex + 2] = interpolateVerts(cubeCorners[6], cubeCorners[7]);
-    vertices[voxelIndex + 6] = interpolateVerts(cubeCorners[6], cubeCorners[5]);
-    
     // Find the unique index for which cube config. we are dealing with, each bit in cubeindex represent a corner
     // The value is used to lookup in triangulation matrix, note w is alpha value in texture
     int cubeindex = 0;
@@ -98,17 +80,29 @@ void GenerateMesh(uint3 id : SV_DispatchThreadID)
         // Get edge from corner a0 -> b0 one on which point 0 in triangle i lies
         int a0 = cornerIndexAFromEdge[triangulation[cubeindex][i]];
         int b0 = cornerIndexBFromEdge[triangulation[cubeindex][i]];
+        float3 sideVert0 = interpolateVerts(cubeCorners[a0], cubeCorners[b0]);
+        
+        int index0 = getVoxelIndex(a0, b0);  
+        vertices[voxelIndex + index0] = sideVert0;
         
         // Get edge from corner a1 -> b1 one on which point 0 in triangle i lies
         int a1 = cornerIndexAFromEdge[triangulation[cubeindex][i + 1]];
         int b1 = cornerIndexBFromEdge[triangulation[cubeindex][i + 1]];
+        float3 sideVert1 = interpolateVerts(cubeCorners[a1], cubeCorners[b1]);
+        
+        int index1 = getVoxelIndex(a1, b1);
+        vertices[voxelIndex + index1] = sideVert1;
         
         // Get edge from corner a2 -> b2 one on which point 0 in triangle i lies
         int a2 = cornerIndexAFromEdge[triangulation[cubeindex][i + 2]];
         int b2 = cornerIndexBFromEdge[triangulation[cubeindex][i + 2]];
+        float3 sideVert2 = interpolateVerts(cubeCorners[a2], cubeCorners[b2]);
+        
+        int index2 = getVoxelIndex(a2, b2);
+        vertices[voxelIndex + index2] = sideVert2;
         
         // Append to triangle array
-        int3 tri = int3(getVoxelIndex(a0, b0), getVoxelIndex(a1, b1), getVoxelIndex(a2, b2));
+        int3 tri = int3(voxelIndex + index0, voxelIndex + index1, voxelIndex + index2);
         triangles.Append(tri);
     }
 }
@@ -167,9 +161,9 @@ int getPointsIndex(int3 pos)
 // Interpolate between two points
 float3 interpolateVerts(float4 v1, float4 v2)
 {
-    //float t = (threshold - v1.w) / (v2.w - v1.w);
-    //return v1.xyz + t * (v2.xyz - v1.xyz);
-    return v1.xyz + 0.5 * (v2.xyz - v1.xyz);
+    float t = (threshold - v1.w) / (v2.w - v1.w);
+    return v1.xyz + t * (v2.xyz - v1.xyz);
+    //return v1.xyz + 0.5 * (v2.xyz - v1.xyz);
 
 }
 
