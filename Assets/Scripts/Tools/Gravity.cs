@@ -5,10 +5,8 @@ using UnityEngine;
 public class Gravity
 {
     /// <summary>
-    /// 
+    /// Forces entity to be upright by putting their positive y-axis facing away from centerOfGravity's position.
     /// </summary>
-    /// <param name="entity"></param>
-    /// <param name="centerOfGravity"></param>
     public static void KeepUpright(Transform entity, Transform centerOfGravity)
     {
         Vector3 directionFromCenter = entity.position - centerOfGravity.transform.position;
