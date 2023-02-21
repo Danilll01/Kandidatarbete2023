@@ -5,12 +5,18 @@ using SimpleKeplerOrbits;
 
 public class SolarSystemTransform : MonoBehaviour
 {
-    public int activePlanetIndex = 0;
-    private int previousMovedPlanet = -1;
+    public int activePlanetIndex = 1;
     [SerializeField] private SpawnPlanets spawnPlanets;
     private GameObject sun;
-    public bool update = false;
     private GameObject planetsParent;
+    [SerializeField] private GameObject player;
+    private float timeToReachTarget = 5f;
+    private float t = 0;
+    private int playerOnPlanetIndex = 1;
+
+    // For testing
+    public bool movePlayerToNextPlanet;
+    public bool resetOrbit;
 
     void Start()
     {
@@ -30,12 +36,89 @@ public class SolarSystemTransform : MonoBehaviour
             sun = spawnPlanets.bodies[0].gameObject;
         }
 
-        if (previousMovedPlanet != activePlanetIndex && update)
+        if (resetOrbit)
+        {
+            ResetPlanetOrbit(activePlanetIndex);
+        }
+
+        // For testing
+        int nextPlanetIndex = 0;
+        if (movePlayerToNextPlanet)
+        {
+            nextPlanetIndex = (activePlanetIndex + 1) % Universe.nrOfPlanets;
+            if (nextPlanetIndex == 0) nextPlanetIndex++;
+            Planet nextplanet = spawnPlanets.bodies[nextPlanetIndex];
+            t += Time.deltaTime / timeToReachTarget;
+            player.transform.position = Vector3.Lerp(player.transform.position, nextplanet.transform.GetChild(0).position, t);
+        }
+
+        if (t == timeToReachTarget)
+        {
+            movePlayerToNextPlanet = false;
+            t = 0;
+        }
+
+        for (int i = 1; i < spawnPlanets.bodies.Count; i++)
+        {
+            Planet planet = spawnPlanets.bodies[i];
+            float distance = (player.transform.position - planet.transform.GetChild(0).position).magnitude;
+            
+            if (distance <= (planet.radius * 2) && i != activePlanetIndex)
+            {
+                player.transform.parent = planet.transform;
+                playerOnPlanetIndex = i;
+                break;
+            }
+
+            if (playerOnPlanetIndex >= 0 && i == playerOnPlanetIndex)
+            {
+                if (distance > (planet.radius * 2))
+                {
+                    playerOnPlanetIndex = -1;
+                    break;
+                }
+            }
+        }
+
+        if (playerOnPlanetIndex != activePlanetIndex && playerOnPlanetIndex == -1)
+        {
+            ResetPlanetOrbit(activePlanetIndex);
+            activePlanetIndex = -1;
+        }
+        else if (playerOnPlanetIndex != activePlanetIndex)
+        {
+            MovePlanets(playerOnPlanetIndex);
+            activePlanetIndex = playerOnPlanetIndex;
+        }
+
+        /*
+        if (movePlayerToNextPlanet && t == timeToReachTarget)
+        {
+            movePlayerToNextPlanet = false;
+            activePlanetIndex = nextPlanetIndex;
+        }
+        if (previousMovedPlanet != activePlanetIndex)
         {
             MovePlanets(activePlanetIndex);
             previousMovedPlanet = activePlanetIndex;
-            update = false;
         }
+        */
+    }
+
+    private void ResetPlanetOrbit(int planetIndex)
+    {
+        if (planetIndex >= 0)
+        {
+            Planet planet = spawnPlanets.bodies[planetIndex];
+            TurnOnOrbit(planet.gameObject);
+
+            KeplerOrbitMover sunOrbitMover = sun.GetComponent<KeplerOrbitMover>();
+            sunOrbitMover.enabled = false;
+
+            planetsParent.transform.position = Vector3.zero;
+            player.transform.parent = null;
+        }
+
     }
 
     private void MovePlanets(int planetIndex)
@@ -53,10 +136,7 @@ public class SolarSystemTransform : MonoBehaviour
         sunOrbitMover.AttractorSettings.AttractorObject = planetToOrbit.transform;
         sunOrbitMover.AttractorSettings.AttractorMass = sun.GetComponent<Planet>().mass;
         sunOrbitMover.AttractorSettings.GravityConstant = 2;
-        sunOrbitMover.SetUp();
-        sunOrbitMover.SetAutoCircleOrbit();
-        sunOrbitMover.ForceUpdateOrbitData();
-        sunOrbitMover.enabled = true;
+        TurnOnOrbit(sun);
 
         // Not nessecarry, used for debug
         KeplerOrbitLineDisplay sunOrbitDisplay = sun.GetComponent<KeplerOrbitLineDisplay>();
@@ -64,5 +144,14 @@ public class SolarSystemTransform : MonoBehaviour
         sunOrbitDisplay.LineRendererReference = sunOrbitMover.gameObject.GetComponent<LineRenderer>();
 
         sunOrbitDisplay.enabled = true;
+    }
+
+    private void TurnOnOrbit(GameObject planet)
+    {
+        KeplerOrbitMover orbitMover = planet.GetComponent<KeplerOrbitMover>();
+        orbitMover.SetUp();
+        orbitMover.SetAutoCircleOrbit();
+        orbitMover.ForceUpdateOrbitData();
+        orbitMover.enabled = true;
     }
 }

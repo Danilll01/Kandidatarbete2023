@@ -283,7 +283,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   activePlanetIndex: 0
   spawnPlanets: {fileID: 882231452}
-  update: 0
+  player: {fileID: 805800667}
+  movePlayerToNextPlanet: 0
 --- !u!1 &459511075
 GameObject:
   m_ObjectHideFlags: 0
@@ -419,6 +420,12 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 459511075}
   m_CullTransparentMesh: 1
+--- !u!1 &805800667 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4197161889152382809, guid: a27088cae5f8b5549bde9f1342be2696,
+    type: 3}
+  m_PrefabInstance: {fileID: 1073200472}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &882231451
 PrefabInstance:
   m_ObjectHideFlags: 0
