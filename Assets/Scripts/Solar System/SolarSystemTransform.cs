@@ -13,10 +13,11 @@ public class SolarSystemTransform : MonoBehaviour
     private float timeToReachTarget = 5f;
     private float t = 0;
     private int playerOnPlanetIndex = 1;
+    private int nextPlanetIndex = -1;
 
     // For testing
-    public bool movePlayerToNextPlanet;
-    public bool resetOrbit;
+    public bool movePlayerToNextPlanet = false;
+    public bool resetOrbit = false;
 
     void Start()
     {
@@ -39,24 +40,34 @@ public class SolarSystemTransform : MonoBehaviour
         if (resetOrbit)
         {
             ResetPlanetOrbit(activePlanetIndex);
+            resetOrbit = false;
         }
 
-        // For testing
-        int nextPlanetIndex = 0;
-        if (movePlayerToNextPlanet)
+        if (movePlayerToNextPlanet && nextPlanetIndex == -1)
         {
-            nextPlanetIndex = (activePlanetIndex + 1) % Universe.nrOfPlanets;
-            if (nextPlanetIndex == 0) nextPlanetIndex++;
+            nextPlanetIndex = (activePlanetIndex + 1) % (Universe.nrOfPlanets + 1);
+
+            if (nextPlanetIndex == 0) 
+            {
+                nextPlanetIndex++;
+            }
+
+        }
+        else if (movePlayerToNextPlanet)
+        {
             Planet nextplanet = spawnPlanets.bodies[nextPlanetIndex];
             t += Time.deltaTime / timeToReachTarget;
             player.transform.position = Vector3.Lerp(player.transform.position, nextplanet.transform.GetChild(0).position, t);
+
+            if (player.transform.position == nextplanet.transform.GetChild(0).position)
+            {
+                movePlayerToNextPlanet = false;
+                t = 0;
+                nextPlanetIndex = -1;
+            }
         }
 
-        if (t == timeToReachTarget)
-        {
-            movePlayerToNextPlanet = false;
-            t = 0;
-        }
+        
 
         for (int i = 1; i < spawnPlanets.bodies.Count; i++)
         {
