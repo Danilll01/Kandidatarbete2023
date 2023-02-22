@@ -127,6 +127,8 @@ MonoBehaviour:
     m_NumAlphaKeys: 2
   tempMin: 200
   tempMax: 300
+  angleCutOf: 90
+  angleBlending: 0.1
 --- !u!120 &2865990664458296443
 LineRenderer:
   m_ObjectHideFlags: 0
