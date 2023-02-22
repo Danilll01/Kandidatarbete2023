@@ -37,18 +37,15 @@ public class Planet : MonoBehaviour
         {
             meshFilter.sharedMesh = new Mesh();
         }
-        
-        
-        
 
         // Initialize the meshgenerator
         if (meshGenerator != null)
         {
             System.Random rand = Universe.random;
-            
-            threshold = 23 + (float) rand.NextDouble() * 4;
+
+            threshold = 23 + (float)rand.NextDouble() * 4;
             int frequency = rand.Next(2) + 3;
-            amplitude = 1.2f + (float) rand.NextDouble() * 0.4f;
+            amplitude = 1.2f + (float)rand.NextDouble() * 0.4f;
             bottomLevel = 1;
             marchingCubes = new MarchingCubes(meshFilter.sharedMesh, meshGenerator, threshold, resolution, radius, frequency, amplitude, bottomLevel);
         }

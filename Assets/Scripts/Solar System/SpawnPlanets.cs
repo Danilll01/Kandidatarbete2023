@@ -58,12 +58,23 @@ public class SpawnPlanets : MonoBehaviour
         SunPlanetBody.bodyName = "Sun";
         SunPlanetBody.radius = radiusMaxValue * 2;
         SunPlanetBody.SetUpPlanetValues();
-        SunPlanetBody.Initialize();
         bodies.Add(SunPlanetBody);
+
+        GameObject sphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+        Sun.GetComponentInChildren<MeshFilter>().sharedMesh = sphere.GetComponent<MeshFilter>().sharedMesh;
+        Sun.transform.GetChild(0).localScale = new Vector3(SunPlanetBody.radius, SunPlanetBody.radius, SunPlanetBody.radius);
+        GameObject water = Sun.transform.GetChild(1).gameObject;
+        Destroy(water);
+        Destroy(sphere);
+
+        Destroy(Sun.GetComponent<SpawnFoliage>());
+        Destroy(Sun.GetComponent<GenerateCreatures>());
+
         GameObject velocityHelper = new GameObject();
         velocityHelper.gameObject.name = "VelocityHelper";
         velocityHelper.transform.parent = Sun.transform;
         velocityHelper.transform.localPosition = new Vector3(-100, 0, 0);
+
         Sun.AddComponent<KeplerOrbitMover>();
         Sun.AddComponent<KeplerOrbitLineDisplay>();
         Sun.GetComponent<KeplerOrbitMover>().enabled = false;
