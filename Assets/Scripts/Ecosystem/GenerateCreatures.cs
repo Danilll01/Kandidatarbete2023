@@ -157,6 +157,8 @@ public class GenerateCreatures : MonoBehaviour
             }
 
         }
+
+        creatureParent.SetActive(false);
     }
 
     // Check if a point is near other points in an array

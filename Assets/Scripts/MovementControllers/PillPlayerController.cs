@@ -30,6 +30,8 @@ public class PillPlayerController : MonoBehaviour
         //Lock the mouse inside of the game
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+
+        attractor.ShowCreatures(true);
     }
 
     // Update is called once per frame
