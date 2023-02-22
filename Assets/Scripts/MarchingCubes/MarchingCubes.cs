@@ -42,7 +42,7 @@ public class MarchingCubes
     /// <summary>
     /// Generate the mesh from the given parameters in the constructor
     /// </summary>
-    public void generateMesh()
+    public void generateMesh(MinMaxTerrainLevel hightFillerTerrainLevel)
     {
         // Calculate the total number of voxels and the max triangle count possible
         int numVoxelsPerAxis = (resolution << 3) - 1;
@@ -75,8 +75,6 @@ public class MarchingCubes
         // Process our data from the compute shader
         int[] meshTriangles = new int[length * 3];
         Vector3[] meshVertices = new Vector3[length * 3];
-        Vector3 vert = Vector3.zero;
-        MinMaxTerrainLevel minMaxTerrainLevel = new MinMaxTerrainLevel();
 
         // Set values for the meshtriangles and meshvertices arrays
         for (int i = 0; i < length; i++)
@@ -84,14 +82,14 @@ public class MarchingCubes
             for (int j = 0; j < 3; j++)
             {
                 meshTriangles[i * 3 + j] = i * 3 + j;
-                minMaxTerrainLevel.UpdateMinMax(triangles[i][j]);
+                hightFillerTerrainLevel.UpdateMinMax(triangles[i][j]);
 
                 meshVertices[i * 3 + j] = triangles[i][j];
             }
         }
 
-        Debug.Log("Min: " + minMaxTerrainLevel.getMin());
-        Debug.Log("Max: " + minMaxTerrainLevel.getMax());
+        Debug.Log("Min: " + hightFillerTerrainLevel.getMin());
+        Debug.Log("Max: " + hightFillerTerrainLevel.getMax());
 
         // Set values in mesh
         mesh.Clear();

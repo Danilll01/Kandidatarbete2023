@@ -77,8 +77,9 @@ public class Planet : MonoBehaviour
 
         // Generates the mesh
         if (marchingCubes != null) {
-            marchingCubes.generateMesh();
-            terrainColor.ColorPlanet();
+            MinMaxTerrainLevel terrainLevel = new MinMaxTerrainLevel();
+            marchingCubes.generateMesh(terrainLevel);
+            terrainColor.ColorPlanet(terrainLevel);
 
             //MeshCollider meshCollider = meshFilter.gameObject.AddComponent<MeshCollider>();
             //meshCollider.sharedMesh = meshFilter.sharedMesh;

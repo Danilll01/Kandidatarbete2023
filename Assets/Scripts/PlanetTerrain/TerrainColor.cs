@@ -17,11 +17,17 @@ public class TerrainColor : MonoBehaviour
 
 
     public void OnValidate() {
-        ColorPlanet();
+        MinMaxTerrainLevel terrainLevel = null;
+        ColorPlanet(terrainLevel);
     }
 
-    public void ColorPlanet() 
+    public void ColorPlanet(MinMaxTerrainLevel terrainLevel) 
     {
+
+        if (terrainLevel != null) {
+            tempMin = terrainLevel.getMin();
+            tempMax = terrainLevel.getMax();
+        }
 
         if (texture == null) {
             texture = new Texture2D(textureRes, 1);
