@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
-public class DebugManager : MonoBehaviour
+public class MenuManager : MonoBehaviour
 {
     private float refresh = 0.5f;
     private float timer = 0.5f;
@@ -10,6 +11,7 @@ public class DebugManager : MonoBehaviour
     private int fps;
 
     [SerializeField] private GameObject debugContainer;
+    [SerializeField] private GameObject pausContainer;
 
 
     void Awake()
@@ -26,6 +28,22 @@ public class DebugManager : MonoBehaviour
             debugContainer.SetActive(!isActive);
         }
 
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            bool isActive = pausContainer.activeSelf;
+            if (!isActive)
+            {
+                Cursor.lockState = CursorLockMode.Confined;
+                Cursor.visible = true;
+            }
+            else
+            {
+                Cursor.lockState = CursorLockMode.Locked;
+                Cursor.visible = false;
+            }
+            pausContainer.SetActive(!isActive);
+        }
+
         if (debugContainer.activeSelf)
         {
             timelapse = Time.unscaledDeltaTime;
@@ -38,6 +56,11 @@ public class DebugManager : MonoBehaviour
 
             timer = timer <= 0 ? refresh : timer -= timelapse;
         }
+    }
+
+    public void BackToStart()
+    {
+        SceneManager.LoadScene("Start Menu");
     }
 
 }
