@@ -6,19 +6,23 @@
 #include "Includes/PerlinNoise.compute"
 
 // Helper functions declaration
-int getVoxelIndex(int cubeCorner0, int cubeCorner1);
-int getPointsIndex(int3 pos);
 float4 getTexturePoint(uint3 pos, uint resolution, float radius);
 float3 interpolateVerts(float4 v1, float4 v2);
 int indexFromCoord(uint x, uint y, uint z);
 
+struct Triangle
+{
+    float3 vertexA;
+    float3 vertexB;
+    float3 vertexC;
+};
+
 //RWStructuredBuffer<float4> points; 
-AppendStructuredBuffer<int3> triangles;
-RWStructuredBuffer<float3> vertices;
+AppendStructuredBuffer<Triangle> triangles;
 
 uint resolution;
 float threshold;
-float diameter;
+float radius;
 uint frequency;
 float amplitude;
 float planetBottom;
@@ -32,26 +36,18 @@ void GenerateMesh(uint3 id : SV_DispatchThreadID)
     {
         return;
     }
-    
-    
-    int voxelResolution = resolution - 1;
-    
-    int voxelIndex = 
-    id.x +
-    id.y * voxelResolution +
-    id.z * voxelResolution * voxelResolution;
      
     // Get the value for each of the 8 corners in current cube
     float4 cubeCorners[8] =
     {
-        getTexturePoint(id, resolution, diameter),
-        getTexturePoint(uint3(id.x + 1, id.y, id.z), resolution, diameter),
-        getTexturePoint(uint3(id.x + 1, id.y, id.z + 1), resolution, diameter),
-        getTexturePoint(uint3(id.x, id.y, id.z + 1), resolution, diameter),
-        getTexturePoint(uint3(id.x, id.y + 1, id.z), resolution, diameter),
-        getTexturePoint(uint3(id.x + 1, id.y + 1, id.z), resolution, diameter),
-        getTexturePoint(uint3(id.x + 1, id.y + 1, id.z + 1), resolution, diameter),
-        getTexturePoint(uint3(id.x, id.y + 1, id.z + 1), resolution, diameter)
+        getTexturePoint(id, resolution, radius),
+        getTexturePoint(uint3(id.x + 1, id.y, id.z), resolution, radius),
+        getTexturePoint(uint3(id.x + 1, id.y, id.z + 1), resolution, radius),
+        getTexturePoint(uint3(id.x, id.y, id.z + 1), resolution, radius),
+        getTexturePoint(uint3(id.x, id.y + 1, id.z), resolution, radius),
+        getTexturePoint(uint3(id.x + 1, id.y + 1, id.z), resolution, radius),
+        getTexturePoint(uint3(id.x + 1, id.y + 1, id.z + 1), resolution, radius),
+        getTexturePoint(uint3(id.x, id.y + 1, id.z + 1), resolution, radius)
     };
     
     // Find the unique index for which cube config. we are dealing with, each bit in cubeindex represent a corner
@@ -80,82 +76,23 @@ void GenerateMesh(uint3 id : SV_DispatchThreadID)
         // Get edge from corner a0 -> b0 one on which point 0 in triangle i lies
         int a0 = cornerIndexAFromEdge[triangulation[cubeindex][i]];
         int b0 = cornerIndexBFromEdge[triangulation[cubeindex][i]];
-        float3 sideVert0 = interpolateVerts(cubeCorners[a0], cubeCorners[b0]);
-        
-        int index0 = getVoxelIndex(a0, b0);  
-        vertices[voxelIndex + index0] = sideVert0;
         
         // Get edge from corner a1 -> b1 one on which point 0 in triangle i lies
         int a1 = cornerIndexAFromEdge[triangulation[cubeindex][i + 1]];
         int b1 = cornerIndexBFromEdge[triangulation[cubeindex][i + 1]];
-        float3 sideVert1 = interpolateVerts(cubeCorners[a1], cubeCorners[b1]);
-        
-        int index1 = getVoxelIndex(a1, b1);
-        vertices[voxelIndex + index1] = sideVert1;
         
         // Get edge from corner a2 -> b2 one on which point 0 in triangle i lies
         int a2 = cornerIndexAFromEdge[triangulation[cubeindex][i + 2]];
         int b2 = cornerIndexBFromEdge[triangulation[cubeindex][i + 2]];
-        float3 sideVert2 = interpolateVerts(cubeCorners[a2], cubeCorners[b2]);
         
-        int index2 = getVoxelIndex(a2, b2);
-        vertices[voxelIndex + index2] = sideVert2;
-        
-        // Append to triangle array
-        int3 tri = int3(voxelIndex + index0, voxelIndex + index1, voxelIndex + index2);
+        // Instead of just picking middle point between corners, we interpolate
+        // based on the strength of the alpha value in the corners.
+        Triangle tri;
+        tri.vertexA = interpolateVerts(cubeCorners[a0], cubeCorners[b0]);
+        tri.vertexB = interpolateVerts(cubeCorners[a1], cubeCorners[b1]);
+        tri.vertexC = interpolateVerts(cubeCorners[a2], cubeCorners[b2]);
         triangles.Append(tri);
     }
-}
-
-int getVoxelIndex(int cubeCorner0, int cubeCorner1)
-{
-    switch (cubeCorner0 + cubeCorner1)
-    {
-        case 1:
-            return 8;
-        case 3:
-            if (cubeCorner0 == 0 || cubeCorner1 == 0)
-            {
-                return 4;
-            }
-            else
-            {
-                return 5;
-            }
-        case 4:
-            return 11;
-        case 5:
-            return 0;
-        case 6:
-            return 9;
-        case 8:
-            return 1;
-        case 9:
-            return 10;
-        case 10:
-            return 3;
-        case 11:
-            if (cubeCorner0 == 4 || cubeCorner1 == 7)
-            {
-                return 7;
-            }
-            else
-            {
-                return 6;
-            }
-        case 13:
-            return 2;
-        default:
-            return -1;
-    }
-}
-
-int getPointsIndex(int3 pos)
-{
-    return
-    pos.x +
-    pos.y * resolution +
-    pos.z * resolution * resolution;
 }
 
 // Interpolate between two points
@@ -163,8 +100,6 @@ float3 interpolateVerts(float4 v1, float4 v2)
 {
     float t = (threshold - v1.w) / (v2.w - v1.w);
     return v1.xyz + t * (v2.xyz - v1.xyz);
-    //return v1.xyz + 0.5 * (v2.xyz - v1.xyz);
-
 }
 
 // Get an index from the coord given

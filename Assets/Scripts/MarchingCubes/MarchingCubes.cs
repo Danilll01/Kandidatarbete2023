@@ -11,7 +11,7 @@ public class MarchingCubes
     readonly ComputeShader meshGenerator;
     readonly float threshold;
     readonly int resolution;
-    readonly float diameter;
+    readonly float radius;
     readonly int frequency;
     readonly float amplitude;
     readonly float bottomLevel;
@@ -26,14 +26,14 @@ public class MarchingCubes
     /// <param name="threshold"></param>
     /// <param name="resolution"></param>
     /// <param name="radius"></param>
-    public MarchingCubes(Mesh mesh, ComputeShader meshGenerator, float threshold, int resolution, float diameter, int frequency, float amplitude, float bottomLevel)
+    public MarchingCubes(Mesh mesh, ComputeShader meshGenerator, float threshold, int resolution, float radius, int frequency, float amplitude, float bottomLevel)
     {
         this.mesh = mesh;
         mesh.indexFormat = IndexFormat.UInt32;
         this.meshGenerator = meshGenerator;
         this.threshold = threshold;
         this.resolution = resolution;
-        this.diameter = diameter;
+        this.radius = radius;
         this.amplitude = amplitude;
         this.frequency = frequency;
         this.bottomLevel = bottomLevel;
@@ -48,50 +48,47 @@ public class MarchingCubes
         int numVoxelsPerAxis = (resolution << 3) - 1;
         int numVoxels = numVoxelsPerAxis * numVoxelsPerAxis * numVoxelsPerAxis;
         int maxTriangleCount = numVoxels * 5;
-        int verticesCount = (resolution - 1) * 3 * resolution * resolution;
 
         // Set up buffers for the triangles
-        ComputeBuffer verticesBuffer = new ComputeBuffer(numVoxels * 12, 3 * sizeof(float));
-        ComputeBuffer trianglesBuffer = new ComputeBuffer(maxTriangleCount, sizeof(int) * 3, ComputeBufferType.Append);
+        ComputeBuffer trianglesBuffer = new ComputeBuffer(maxTriangleCount, sizeof(int) * 3 * 3, ComputeBufferType.Append);
         trianglesBuffer.SetCounterValue(0);
 
         // Run generateMesh in compute shader
         int kernelIndex = meshGenerator.FindKernel("GenerateMesh");
-
         meshGenerator.SetInt("frequency", frequency);
         meshGenerator.SetFloat("amplitude", amplitude);
         meshGenerator.SetFloat("planetBottom", bottomLevel);
         meshGenerator.SetInt("resolution", resolution << 3);
         meshGenerator.SetFloat("threshold", threshold);
-        meshGenerator.SetFloat("diameter", diameter);
-
-        meshGenerator.SetBuffer(kernelIndex, "vertices", verticesBuffer);
+        meshGenerator.SetFloat("radius", radius);
         meshGenerator.SetBuffer(kernelIndex, "triangles", trianglesBuffer);
         meshGenerator.Dispatch(kernelIndex, resolution, resolution, resolution);
 
         // Retrieve triangles
-        int length = getLengthBuffer(ref trianglesBuffer);
+        int length = getLengthBuffer(ref trianglesBuffer) * 3 * 3;
         Triangle[] triangles = new Triangle[length];
         trianglesBuffer.GetData(triangles, 0, 0, length);
+
+        // Release all buffers
         trianglesBuffer.Release();
 
-        // Retrieve vertices
-        Vector3[] vertices = new Vector3[numVoxels * 12];
-        verticesBuffer.GetData(vertices);
-        verticesBuffer.Release();
-
+        // Process our data from the compute shader
         int[] meshTriangles = new int[length * 3];
+        Vector3[] meshVertices = new Vector3[length * 3];
 
+        // Set values for the meshtriangles and meshvertices arrays
         for (int i = 0; i < length; i++)
         {
-            meshTriangles[i] = triangles[i].vertexA;
-            meshTriangles[i + 1] = triangles[i].vertexB;
-            meshTriangles[i + 2] = triangles[i].vertexC;
+            for (int j = 0; j < 3; j++)
+            {
+                meshTriangles[i * 3 + j] = i * 3 + j;
+                meshVertices[i * 3 + j] = triangles[i][j];
+            }
         }
 
         // Set values in mesh
         mesh.Clear();
-        mesh.vertices = vertices;
+        mesh.vertices = meshVertices;
         mesh.triangles = meshTriangles;
         mesh.RecalculateBounds();
     }
@@ -111,6 +108,19 @@ public class MarchingCubes
     // Triangle struct with three points
     struct Triangle
     {
-        public int vertexA, vertexB, vertexC;
+        public Vector3 vertexA, vertexB, vertexC;
+
+        public Vector3 this[int i]
+        {
+            get
+            {
+                switch (i)
+                {
+                    case 0: return vertexA;
+                    case 1: return vertexB;
+                    default: return vertexC;
+                }
+            }
+        }
     }
 }
