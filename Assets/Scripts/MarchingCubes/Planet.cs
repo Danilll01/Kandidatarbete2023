@@ -43,10 +43,12 @@ public class Planet : MonoBehaviour
             {
                 GameObject meshObj = new GameObject("mesh");
                 meshObj.transform.parent = transform;
+                
 
                 meshObj.AddComponent<MeshRenderer>().sharedMaterial = planetMaterial;
 
                 meshFilters[i] = meshObj.AddComponent<MeshFilter>();
+                meshObj.transform.localPosition = Vector3.zero;
                 meshFilters[i].sharedMesh = new Mesh();
             }
         }
@@ -59,7 +61,7 @@ public class Planet : MonoBehaviour
             threshold = 23 + (float) rand.NextDouble() * 4;
             int frequency = rand.Next(2) + 3;
             amplitude = 1.2f + (float) rand.NextDouble() * 0.4f;
-            marchingCubes = new MarchingCubes(meshFilters, chunkResolution, meshGenerator, threshold, radius, frequency, amplitude);
+            marchingCubes = new MarchingCubes(chunkResolution, meshGenerator, threshold, radius, frequency, amplitude);
         }
 
         float waterRadius = (threshold / 255 - 1) * radius;
@@ -73,7 +75,7 @@ public class Planet : MonoBehaviour
         {
             for(int i = 0; i < 64; i++)
             {
-                marchingCubes.generateMesh(i, 12);
+                marchingCubes.generateMesh(i, 12, meshFilters[i].sharedMesh);
                 MeshCollider meshCollider = meshFilters[i].gameObject.AddComponent<MeshCollider>();
                 meshCollider.sharedMesh = meshFilters[i].sharedMesh;
             }   

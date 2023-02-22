@@ -14,7 +14,7 @@ public class SpawnPlanet : MonoBehaviour
     {
         Planet planet = Instantiate(prefab);
 
-        planet.transform.position = Vector3.zero;
+        planet.transform.position = new Vector3(100, 0, 0);
 
         Universe.InitializeRandomWithSeed();
         planet.Initialize();
