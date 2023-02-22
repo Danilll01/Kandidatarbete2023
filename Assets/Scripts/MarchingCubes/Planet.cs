@@ -13,7 +13,6 @@ public class Planet : MonoBehaviour
     [SerializeField, Range(0, 5)] float amplitude = 1;
     [SerializeField, Range(0, 1)] float bottomLevel = 1;
     [SerializeField] Material waterMaterial;
-    //[SerializeField, Range(1, 25)] int frequency;
     [SerializeField] GameObject water;
     [SerializeField] GameObject meshObj;
 
@@ -78,6 +77,7 @@ public class Planet : MonoBehaviour
         // Generates the mesh
         if (marchingCubes != null) {
             MinMaxTerrainLevel terrainLevel = new MinMaxTerrainLevel();
+            terrainLevel.SetMin(Mathf.Abs((waterRadius + 1) / 2));
             marchingCubes.generateMesh(terrainLevel);
             terrainColor.ColorPlanet(terrainLevel);
 

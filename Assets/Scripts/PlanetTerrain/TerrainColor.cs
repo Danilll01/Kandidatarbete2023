@@ -25,8 +25,8 @@ public class TerrainColor : MonoBehaviour
     {
 
         if (terrainLevel != null) {
-            tempMin = terrainLevel.getMin();
-            tempMax = terrainLevel.getMax();
+            tempMin = terrainLevel.GetMin();
+            tempMax = terrainLevel.GetMax();
         }
 
         if (texture == null) {

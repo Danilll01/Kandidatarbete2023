@@ -88,8 +88,8 @@ public class MarchingCubes
             }
         }
 
-        Debug.Log("Min: " + hightFillerTerrainLevel.getMin());
-        Debug.Log("Max: " + hightFillerTerrainLevel.getMax());
+        Debug.Log("Min: " + hightFillerTerrainLevel.GetMin());
+        Debug.Log("Max: " + hightFillerTerrainLevel.GetMax());
 
         // Set values in mesh
         mesh.Clear();
