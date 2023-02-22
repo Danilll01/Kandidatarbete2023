@@ -35,11 +35,13 @@ public class MenuManager : MonoBehaviour
             {
                 Cursor.lockState = CursorLockMode.Confined;
                 Cursor.visible = true;
+                Time.timeScale = 0;
             }
             else
             {
                 Cursor.lockState = CursorLockMode.Locked;
                 Cursor.visible = false;
+                Time.timeScale = 1;
             }
             pausContainer.SetActive(!isActive);
         }
