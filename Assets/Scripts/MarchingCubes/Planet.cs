@@ -27,6 +27,7 @@ public class Planet : MonoBehaviour
     MeshFilter[] meshFilters;
     MarchingCubes marchingCubes;
     [SerializeField] private GenerateCreatures generateCreatures;
+    [SerializeField] private SpawnFoliage spawnFoliage;
 
 
     /// <summary>
@@ -82,6 +83,11 @@ public class Planet : MonoBehaviour
         if (generateCreatures != null && bodyName != "Sun" && !bodyName.Contains("Moon"))
         {
             generateCreatures.Initialize(this);
+        }
+
+        if (spawnFoliage != null && bodyName != "Sun" && !bodyName.Contains("Moon"))
+        {
+            spawnFoliage.Initialize(this, waterRadius);
         }
     }
 
