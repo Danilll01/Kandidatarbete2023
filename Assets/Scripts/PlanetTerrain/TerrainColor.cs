@@ -58,6 +58,7 @@ public class TerrainColor : MonoBehaviour
 
         texture.SetPixels(colors);
         texture.Apply();
+        material.SetColor("_GroundColor", colors[0]);
         material.SetTexture("_ColorGradient", texture);
     }
 
