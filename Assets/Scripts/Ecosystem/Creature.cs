@@ -29,6 +29,7 @@ public class Creature : MonoBehaviour
     [Header("Debug")]
     [SerializeField] private CreatureState currentState;
     [SerializeField] private bool DEBUG = false;
+    [SerializeField] private bool isSleeping;
 
     private bool atDestination = false;
     private Vector3 destination = Vector3.zero;
@@ -36,6 +37,8 @@ public class Creature : MonoBehaviour
 
     private Collider collider;
     private Rigidbody rigidbody;
+    private LODGroup lodGroup;
+    private Renderer renderer;
 
     // Start is called before the first frame update
     void Start()
@@ -48,6 +51,8 @@ public class Creature : MonoBehaviour
         //rigidbody = meshObj.GetComponent<Rigidbody>();
         collider = GetComponent<Collider>();
         rigidbody = GetComponent<Rigidbody>();
+        lodGroup = meshObj.GetComponent<LODGroup>();
+        renderer = lodGroup.transform.GetComponent<Renderer>();
 
         // Teleport the creature 2 meters up in correct direction based on position on planet
         transform.position += -(planet.meshObj.transform.position - transform.position).normalized;
@@ -69,6 +74,19 @@ public class Creature : MonoBehaviour
     {
         //KeepUpRight();
         //AttractToPlanet();
+        //print(rigidbody.IsSleeping());
+
+        if (!renderer.isVisible)
+        {
+            isSleeping = true;
+            rigidbody.Sleep();
+            return;
+            //Debug.Log("Name:");
+        } else
+        {
+            isSleeping = false;
+            
+        }
 
         if (currentState == CreatureState.Idle)
         {
@@ -111,8 +129,12 @@ public class Creature : MonoBehaviour
 
     void FixedUpdate()
     {
-        AttractToPlanet();
-        KeepUpRight();
+        if (!isSleeping)
+        {
+            print("Rendering");
+            AttractToPlanet();
+            KeepUpRight();
+        }
     }
 
     private void RandomWalking()
