@@ -58,7 +58,7 @@ public class TerrainColor : MonoBehaviour {
             texture = new Texture2D(textureRes, 1);
         }
         if (material == null) {
-            material = transform.GetChild(0).GetComponent<MeshRenderer>().sharedMaterial;
+            material = transform.GetChild(0).GetComponent<MeshRenderer>().material;
         }
 
         UpdateMinMaxHight();
