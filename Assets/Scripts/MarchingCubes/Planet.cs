@@ -6,21 +6,25 @@ public class Planet : MonoBehaviour
 {
     [SerializeField] ComputeShader meshGenerator;
     [SerializeField] Material waterMaterial;
+    [SerializeField] Material planetMaterial;
     [SerializeField, Range(1, 28)] int resolution = 20;
     //[SerializeField, Range(1, 25)] int frequency;
     [SerializeField] GameObject water;
-    [SerializeField] GameObject meshObj;
+
+    //[SerializeField] GameObject meshObj;
+    //[SerializeField] int chunks;
 
 
     float threshold;
     float amplitude;
-    float bottomLevel;
     public float radius;
     public float surfaceGravity;
     public string bodyName = "TBT";
     public float mass;
     public List<Planet> moons;
 
+
+    MeshFilter[] meshFilters;
     MarchingCubes marchingCubes;
     [SerializeField] private GenerateCreatures generateCreatures;
 
@@ -30,15 +34,29 @@ public class Planet : MonoBehaviour
     /// </summary>
     public void Initialize()
     {
+        if(meshFilters == null || meshFilters.Length == 0)
+        {
+            meshFilters = new MeshFilter[resolution * resolution * resolution];
+
+            for(int i = 0; i < resolution * resolution * resolution; i++)
+            {
+                GameObject meshObj = new GameObject("mesh");
+                meshObj.transform.parent = transform;
+
+                meshObj.AddComponent<MeshRenderer>().sharedMaterial = planetMaterial;
+
+                meshFilters[i] = meshObj.AddComponent<MeshFilter>();
+                meshFilters[i].sharedMesh = new Mesh();
+            }
+        }
+
+        /*
         // Get meshfilter and create new mesh if it doesn't exist
         MeshFilter meshFilter = meshObj.GetComponent<MeshFilter>();
         if (meshFilter.sharedMesh == null)
         {
             meshFilter.sharedMesh = new Mesh();
-        }
-        
-        
-        
+        }*/
 
         // Initialize the meshgenerator
         if (meshGenerator != null)
@@ -48,11 +66,10 @@ public class Planet : MonoBehaviour
             threshold = 23 + (float) rand.NextDouble() * 4;
             int frequency = rand.Next(2) + 3;
             amplitude = 1.2f + (float) rand.NextDouble() * 0.4f;
-            bottomLevel = 1;
-            marchingCubes = new MarchingCubes(meshFilter.sharedMesh, meshGenerator, threshold, resolution, radius, frequency, amplitude, bottomLevel);
+            marchingCubes = new MarchingCubes(meshFilters, meshGenerator, threshold, radius, frequency, amplitude);
         }
 
-        float waterRadius = (threshold / 255 - bottomLevel) * radius;
+        float waterRadius = (threshold / 255 - 1) * radius;
 
         water.transform.localScale = new Vector3(waterRadius, waterRadius, waterRadius);
 
@@ -61,9 +78,9 @@ public class Planet : MonoBehaviour
         // Generates the mesh
         if (marchingCubes != null)
         {
-            marchingCubes.generateMesh();
-            MeshCollider meshCollider = meshFilter.gameObject.AddComponent<MeshCollider>();
-            meshCollider.sharedMesh = meshFilter.sharedMesh;
+            marchingCubes.generateMesh(0, resolution);
+            MeshCollider meshCollider = meshFilters[0].gameObject.AddComponent<MeshCollider>();
+            meshCollider.sharedMesh = meshFilters[0].sharedMesh;
         }
 
         // Generate the creatures

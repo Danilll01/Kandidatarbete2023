@@ -25,7 +25,8 @@ float threshold;
 float radius;
 uint frequency;
 float amplitude;
-float planetBottom;
+
+//float planetBottom; // Value from 0-1
 
 [numthreads(8, 8, 8)]
 void GenerateMesh(uint3 id : SV_DispatchThreadID)
@@ -135,11 +136,12 @@ float4 getTexturePoint(uint3 pos, uint resolution, float radius)
     float noiseOctave2 = (calculateNoise(normPos * (frequency << 2)) + 1) * 0.5f * amplitude * amplitude * amplitude;
     density *= noiseOctave0 * noiseOctave1 * noiseOctave2;
     
-    float innerSphereDensity = (planetBottom - length(vec)) * 255;
     
+    //float innerSphereDensity = (planetBottom - length(vec)) * 255; 
     // If we are subtracting noise from the innersphere, then don't, and return the inner sphere
     //if (density < innerSphereDensity)
         //return float4(relPos, innerSphereDensity);
+    
         
     // Return the noised value
     return float4(relPos, density);

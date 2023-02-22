@@ -2,6 +2,7 @@ using System;
 
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -10,13 +11,12 @@ public class MarchingCubes
 {
     readonly ComputeShader meshGenerator;
     readonly float threshold;
-    readonly int resolution;
+    //readonly int resolution;
     readonly float radius;
     readonly int frequency;
     readonly float amplitude;
-    readonly float bottomLevel;
 
-    Mesh mesh;
+    List<Mesh> meshes;
 
     /// <summary>
     /// Initializes the MarchingCubes script
@@ -24,25 +24,29 @@ public class MarchingCubes
     /// <param name="mesh"></param>
     /// <param name="meshGenerator"></param>
     /// <param name="threshold"></param>
-    /// <param name="resolution"></param>
     /// <param name="radius"></param>
-    public MarchingCubes(Mesh mesh, ComputeShader meshGenerator, float threshold, int resolution, float radius, int frequency, float amplitude, float bottomLevel)
+    public MarchingCubes(MeshFilter[] meshFilters, ComputeShader meshGenerator, float threshold, float radius, int frequency, float amplitude)
     {
-        this.mesh = mesh;
-        mesh.indexFormat = IndexFormat.UInt32;
+        //this.meshes = meshes;
+        meshes = new List<Mesh>();
+        foreach (MeshFilter meshFilter in meshFilters)
+        {
+            Mesh mesh = meshFilter.sharedMesh;
+            mesh.indexFormat = IndexFormat.UInt32;
+            meshes.Add(mesh);   
+        }
         this.meshGenerator = meshGenerator;
         this.threshold = threshold;
-        this.resolution = resolution;
+        //this.resolution = resolution;
         this.radius = radius;
         this.amplitude = amplitude;
         this.frequency = frequency;
-        this.bottomLevel = bottomLevel;
     }
 
     /// <summary>
     /// Generate the mesh from the given parameters in the constructor
     /// </summary>
-    public void generateMesh()
+    public void generateMesh(int index, int resolution)
     {
         // Calculate the total number of voxels and the max triangle count possible
         int numVoxelsPerAxis = (resolution << 3) - 1;
@@ -57,15 +61,15 @@ public class MarchingCubes
         int kernelIndex = meshGenerator.FindKernel("GenerateMesh");
         meshGenerator.SetInt("frequency", frequency);
         meshGenerator.SetFloat("amplitude", amplitude);
-        meshGenerator.SetFloat("planetBottom", bottomLevel);
+
         meshGenerator.SetInt("resolution", resolution << 3);
         meshGenerator.SetFloat("threshold", threshold);
         meshGenerator.SetFloat("radius", radius);
         meshGenerator.SetBuffer(kernelIndex, "triangles", trianglesBuffer);
-        meshGenerator.Dispatch(kernelIndex, resolution, resolution, resolution);
+        meshGenerator.Dispatch(kernelIndex, 2, 2, 2);
 
         // Retrieve triangles
-        int length = getLengthBuffer(ref trianglesBuffer) * 3 * 3;
+        int length = getLengthBuffer(ref trianglesBuffer);
         Triangle[] triangles = new Triangle[length];
         trianglesBuffer.GetData(triangles, 0, 0, length);
 
@@ -87,6 +91,7 @@ public class MarchingCubes
         }
 
         // Set values in mesh
+        Mesh mesh = meshes.ElementAt(index);
         mesh.Clear();
         mesh.vertices = meshVertices;
         mesh.triangles = meshTriangles;
