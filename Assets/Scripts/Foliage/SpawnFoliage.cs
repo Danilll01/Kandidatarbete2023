@@ -195,7 +195,7 @@ public class SpawnFoliage : MonoBehaviour
         // Sets a random rotation for more variation
         rotation *= Quaternion.Euler(0, Random.value * 360, 0);
 
-        Instantiate(treePrefabs[getIndex(hit.point + noiseOffset)], hit.point, rotation, foliageHandler.transform);
+        Instantiate(treePrefabs[getIndex(hit.point + noiseOffset)], hit.point + (ray.direction.normalized * 0.2f), rotation, foliageHandler.transform);
     }
 
     /// <summary>

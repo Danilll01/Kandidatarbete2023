@@ -209,7 +209,7 @@ MonoBehaviour:
   - {fileID: 6239969156481229051, guid: b71b0f8d2f881c743a85228f3030d1cb, type: 3}
   - {fileID: 38335279662140195, guid: 34d3f526198dae440bb2ce6005d86055, type: 3}
   - {fileID: 6239969156481229051, guid: b71b0f8d2f881c743a85228f3030d1cb, type: 3}
-  stoneLimit: 4000
+  stoneLimit: 20000
   stoneLine: 36
   stoneAngleLimit: 30
   stonePrefab:
