@@ -78,8 +78,8 @@ public class Creature : MonoBehaviour
 
         if (!renderer.isVisible)
         {
+            if (!isSleeping) rigidbody.Sleep();
             isSleeping = true;
-            rigidbody.Sleep();
             return;
             //Debug.Log("Name:");
         } else
@@ -131,7 +131,7 @@ public class Creature : MonoBehaviour
     {
         if (!isSleeping)
         {
-            print("Rendering");
+            //print("Rendering");
             AttractToPlanet();
             KeepUpRight();
         }
