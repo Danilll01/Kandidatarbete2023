@@ -160,7 +160,7 @@ public class SpawnFoliage : MonoBehaviour
 
                 if (Physics.Raycast(ray, out hit, maxRayDistance))
                 {
-                    if (hit.distance < maxRayDistance - maxHeight)
+                    //if (hit.distance < maxRayDistance - maxHeight)
                     if (DEBUG) Debug.DrawLine(rayOrigin, hit.point, Color.green, 10);
                     arr[index] = rayOrigin - planetCenter;
                     index++;
