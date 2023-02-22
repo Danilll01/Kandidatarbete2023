@@ -50,14 +50,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   meshGenerator: {fileID: 7200000, guid: 2b54143d75bd2344bb987facb6cb4950, type: 3}
+  threshold: 9
+  resolution: 13
+  frequency: 1
+  amplitude: 1
+  bottomLevel: 0.305
   waterMaterial: {fileID: 2100000, guid: 417f8c1f207df654b84c6e8b4c0e8f0f, type: 2}
-  resolution: 14
-  frequency: 0
-  amplitude: 0
-  bottomLevel: 0
   water: {fileID: 5613251696109344692}
   meshObj: {fileID: 2421649971222294434}
-  radius: 293
+  radius: 287
   surfaceGravity: 10
   bodyName: TBT
   mass: 100
@@ -100,7 +101,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gradient:
     serializedVersion: 2
-    key0: {r: 1, g: 1, b: 1, a: 1}
+    key0: {r: 0, g: 0, b: 0, a: 1}
     key1: {r: 1, g: 1, b: 1, a: 1}
     key2: {r: 0, g: 0, b: 0, a: 0}
     key3: {r: 0, g: 0, b: 0, a: 0}
@@ -127,10 +128,10 @@ MonoBehaviour:
     m_Mode: 0
     m_NumColorKeys: 2
     m_NumAlphaKeys: 2
-  tempMin: 200
-  tempMax: 300
-  angleCutOf: 90
-  angleBlending: 0.1
+  tempMin: 118.1
+  tempMax: 137
+  angleCutOf: 114
+  angleBlending: 0.46
 --- !u!120 &2865990664458296443
 LineRenderer:
   m_ObjectHideFlags: 0
@@ -241,7 +242,6 @@ GameObject:
   - component: {fileID: 7956990945511889848}
   - component: {fileID: 2212189957996678208}
   - component: {fileID: 5168162772191441532}
-  - component: {fileID: -4591922142737729086}
   m_Layer: 0
   m_Name: mesh
   m_TagString: Untagged
@@ -284,7 +284,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: fb2fb58d57b39db478f9e3c862b39948, type: 2}
+  - {fileID: 2100000, guid: 8d8eeb6d5285f3041ac278db6f825c36, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -341,7 +341,7 @@ Transform:
   m_GameObject: {fileID: 5613251696109344692}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: -77.405594, y: -77.405594, z: -77.405594}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2176386958015389607}

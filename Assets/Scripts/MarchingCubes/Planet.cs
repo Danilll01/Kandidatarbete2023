@@ -9,9 +9,9 @@ public class Planet : MonoBehaviour
     [SerializeField] ComputeShader meshGenerator;
     [SerializeField, Range(0, 255)] float threshold = 200;
     [SerializeField, Range(1, 28)] int resolution = 20;
-    [SerializeField, Range(1, 25)] int frequency;
-    [SerializeField, Range(0, 5)] float amplitude;
-    [SerializeField, Range(0, 1)] float bottomLevel;
+    [SerializeField, Range(1, 25)] int frequency = 20;
+    [SerializeField, Range(0, 5)] float amplitude = 1;
+    [SerializeField, Range(0, 1)] float bottomLevel = 1;
     [SerializeField] Material waterMaterial;
     //[SerializeField, Range(1, 25)] int frequency;
     [SerializeField] GameObject water;
@@ -60,12 +60,12 @@ public class Planet : MonoBehaviour
         // Initialize the meshgenerator
         if (meshGenerator != null)
         {
-            System.Random rand = Universe.random;
+            //System.Random rand = Universe.random;
             
-            threshold = 23 + (float) rand.NextDouble() * 4;
-            int frequency = rand.Next(2) + 3;
-            amplitude = 1.2f + (float) rand.NextDouble() * 0.4f;
-            bottomLevel = 1;
+            //threshold = 23 + (float) rand.NextDouble() * 4;
+            //int frequency = rand.Next(2) + 3;
+            //amplitude = 1.2f + (float) rand.NextDouble() * 0.4f;
+            //bottomLevel = 1;
             marchingCubes = new MarchingCubes(meshFilter.sharedMesh, meshGenerator, threshold, resolution, radius, frequency, amplitude, bottomLevel);
         }
 
