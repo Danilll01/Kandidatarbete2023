@@ -32,7 +32,7 @@ public class LoadManager : MonoBehaviour
             loadingText.text = Mathf.Round(progress * 100f) + "%";
             progress += .01f;
 
-            yield return new WaitForSeconds(.01f);
+            yield return new WaitForSeconds(.02f);
         }
 
         while (!asyncLoad.isDone && progress >= 1f)
