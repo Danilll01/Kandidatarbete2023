@@ -75,16 +75,20 @@ public class MarchingCubes
         // Process our data from the compute shader
         int[] meshTriangles = new int[length * 3];
         Vector3[] meshVertices = new Vector3[length * 3];
-
+        Vector3 vert = Vector3.zero;
         // Set values for the meshtriangles and meshvertices arrays
         for (int i = 0; i < length; i++)
         {
             for (int j = 0; j < 3; j++)
             {
                 meshTriangles[i * 3 + j] = i * 3 + j;
-                meshVertices[i * 3 + j] = triangles[i][j];
+                vert = triangles[i][j];
+
+                meshVertices[i * 3 + j] = vert;
             }
         }
+
+        Debug.Log(triangles[20][20]);
 
         // Set values in mesh
         mesh.Clear();
