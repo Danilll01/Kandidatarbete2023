@@ -16,6 +16,7 @@ public class MarchingCubes
     readonly int frequency;
     readonly float amplitude;
 
+    readonly int chunkResolution;
     List<Mesh> meshes;
 
     /// <summary>
@@ -25,7 +26,7 @@ public class MarchingCubes
     /// <param name="meshGenerator"></param>
     /// <param name="threshold"></param>
     /// <param name="radius"></param>
-    public MarchingCubes(MeshFilter[] meshFilters, ComputeShader meshGenerator, float threshold, float radius, int frequency, float amplitude)
+    public MarchingCubes(MeshFilter[] meshFilters, int chunkResolution, ComputeShader meshGenerator, float threshold, float radius, int frequency, float amplitude)
     {
         //this.meshes = meshes;
         meshes = new List<Mesh>();
@@ -35,6 +36,7 @@ public class MarchingCubes
             mesh.indexFormat = IndexFormat.UInt32;
             meshes.Add(mesh);   
         }
+        this.chunkResolution = chunkResolution;
         this.meshGenerator = meshGenerator;
         this.threshold = threshold;
         //this.resolution = resolution;
@@ -61,12 +63,13 @@ public class MarchingCubes
         int kernelIndex = meshGenerator.FindKernel("GenerateMesh");
         meshGenerator.SetInt("frequency", frequency);
         meshGenerator.SetFloat("amplitude", amplitude);
+        meshGenerator.SetInt("chunkIndex", index);
 
         meshGenerator.SetInt("resolution", resolution << 3);
         meshGenerator.SetFloat("threshold", threshold);
         meshGenerator.SetFloat("radius", radius);
         meshGenerator.SetBuffer(kernelIndex, "triangles", trianglesBuffer);
-        meshGenerator.Dispatch(kernelIndex, 2, 2, 2);
+        meshGenerator.Dispatch(kernelIndex, resolution >> 2, resolution >> 2, resolution >> 2);
 
         // Retrieve triangles
         int length = getLengthBuffer(ref trianglesBuffer);

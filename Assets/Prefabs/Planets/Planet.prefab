@@ -50,7 +50,7 @@ MonoBehaviour:
   meshGenerator: {fileID: 7200000, guid: 2b54143d75bd2344bb987facb6cb4950, type: 3}
   waterMaterial: {fileID: 2100000, guid: 417f8c1f207df654b84c6e8b4c0e8f0f, type: 2}
   planetMaterial: {fileID: 2100000, guid: df41b9edb600ab046bbaeafd0aa07486, type: 2}
-  resolution: 4
+  chunkResolution: 4
   water: {fileID: 5613251696109344692}
   radius: 293
   surfaceGravity: 10
