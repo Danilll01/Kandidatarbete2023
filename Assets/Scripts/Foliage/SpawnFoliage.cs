@@ -186,7 +186,7 @@ public class SpawnFoliage : MonoBehaviour
         Ray ray = new Ray(rayOrigin, planetCenter - rayOrigin);
         Physics.Raycast(ray, out hit, 10000);
   
-        if (hit.transform.tag == "Foliage" || hit.transform.tag == "Creature" || Mathf.Abs(Vector3.Angle(rayOrigin - planetCenter, hit.normal)) > treeAngleLimit)
+        if (hit.transform.tag == "Foliage" || hit.transform.tag == "Creature" || hit.transform.tag == "Player" || Mathf.Abs(Vector3.Angle(rayOrigin - planetCenter, hit.normal)) > treeAngleLimit)
         {
             return;
         }
@@ -210,7 +210,7 @@ public class SpawnFoliage : MonoBehaviour
         Ray ray = new Ray(rayOrigin, planetCenter - rayOrigin);
         Physics.Raycast(ray, out hit, 10000);
 
-        if (hit.transform.tag == "Foliage" || hit.transform.tag == "Creature" || Mathf.Abs(Vector3.Angle(rayOrigin - planetCenter, hit.normal)) > bushAngleLimit)
+        if (hit.transform.tag == "Foliage" || hit.transform.tag == "Creature" || hit.transform.tag == "Player" || Mathf.Abs(Vector3.Angle(rayOrigin - planetCenter, hit.normal)) > bushAngleLimit)
         {
             return;
         }
@@ -235,7 +235,7 @@ public class SpawnFoliage : MonoBehaviour
         Ray ray = new Ray(rayOrigin, planetCenter - rayOrigin);
         Physics.Raycast(ray, out hit, 10000);
 
-        if (hit.transform.tag == "Foliage" || hit.transform.tag == "Creature" || Mathf.Abs(Vector3.Angle(rayOrigin - planetCenter, hit.normal)) < stoneAngleLimit)
+        if (hit.transform.tag == "Foliage" || hit.transform.tag == "Creature" || hit.transform.tag == "Player" || Mathf.Abs(Vector3.Angle(rayOrigin - planetCenter, hit.normal)) < stoneAngleLimit)
         {
             return;
         }
