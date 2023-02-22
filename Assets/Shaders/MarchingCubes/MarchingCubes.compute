@@ -26,16 +26,22 @@ float radius;
 uint frequency;
 float amplitude;
 int chunkIndex;
+int chunkResolution;
 
 //float planetBottom; // Value from 0-1
 
 [numthreads(8, 8, 8)]
 void GenerateMesh(uint3 id : SV_DispatchThreadID)
-{      
+{
+    int mask = 0;
+    for (int i = 0; i < chunkResolution; i++)
+    {
+        mask += 1 << i;
+    }
     
-    id.x += ((chunkIndex >> 0) & 3) * (resolution >> 2);
-    id.y += ((chunkIndex >> 2) & 3) * (resolution >> 2);
-    id.z += ((chunkIndex >> 4) & 3) * (resolution >> 2);
+    id.x += ((chunkIndex >> (0 * chunkResolution)) & mask) * (resolution >> chunkResolution);
+    id.y += ((chunkIndex >> (1 * chunkResolution)) & mask) * (resolution >> chunkResolution);
+    id.z += ((chunkIndex >> (2 * chunkResolution)) & mask) * (resolution >> chunkResolution);
     
     // Since we are going through the voxels, not the points, we stop before we reach the endpoint
     if (id.x >= resolution - 1 || id.y >= resolution - 1 || id.z >= resolution - 1)

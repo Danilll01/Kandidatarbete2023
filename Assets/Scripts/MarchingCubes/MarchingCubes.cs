@@ -41,8 +41,10 @@ public class MarchingCubes
     /// </summary>
     public void generateMesh(int index, int resolution, Mesh mesh)
     {
+        resolution *= 1 << chunkResolution;
+
         // Calculate the total number of voxels and the max triangle count possible
-        int numVoxelsPerAxis = (resolution << 3) - 1;
+        int numVoxelsPerAxis = ((resolution << 3) >> chunkResolution) - 1;
         int numVoxels = numVoxelsPerAxis * numVoxelsPerAxis * numVoxelsPerAxis;
         int maxTriangleCount = numVoxels * 5;
 
@@ -55,12 +57,13 @@ public class MarchingCubes
         meshGenerator.SetInt("frequency", frequency);
         meshGenerator.SetFloat("amplitude", amplitude);
         meshGenerator.SetInt("chunkIndex", index);
+        meshGenerator.SetInt("chunkResolution", chunkResolution);
 
         meshGenerator.SetInt("resolution", resolution << 3);
         meshGenerator.SetFloat("threshold", threshold);
         meshGenerator.SetFloat("radius", radius);
         meshGenerator.SetBuffer(kernelIndex, "triangles", trianglesBuffer);
-        meshGenerator.Dispatch(kernelIndex, resolution >> 2, resolution >> 2, resolution >> 2);
+        meshGenerator.Dispatch(kernelIndex, resolution >> chunkResolution, resolution >> chunkResolution, resolution >> chunkResolution);
 
         // Retrieve triangles
         int length = getLengthBuffer(ref trianglesBuffer);
@@ -85,6 +88,7 @@ public class MarchingCubes
         }
 
         // Set values in mesh
+        mesh.indexFormat = IndexFormat.UInt32;
         mesh.Clear();
         mesh.vertices = meshVertices;
         mesh.triangles = meshTriangles;

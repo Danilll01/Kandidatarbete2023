@@ -52,13 +52,19 @@ public class SpawnPlanets : MonoBehaviour
         Sun.transform.parent = planetsParent.transform;
         Sun.transform.localPosition = new Vector3(0, 0, 0);
         Sun.gameObject.name = "Sun";
-        Sun.GetComponentInChildren<MeshRenderer>().material = sunMaterial;
+        //Sun.GetComponentInChildren<MeshRenderer>().material = sunMaterial;
 
         Planet SunPlanetBody = Sun.GetComponent<Planet>();
         SunPlanetBody.bodyName = "Sun";
         SunPlanetBody.radius = radiusMaxValue * 2;
         SunPlanetBody.SetUpPlanetValues();
         SunPlanetBody.Initialize();
+
+        for (int i = 0; i < SunPlanetBody.transform.childCount; i++)
+        {
+            SunPlanetBody.transform.GetChild(i).GetComponent<MeshRenderer>().material = sunMaterial;
+        }
+
         bodies.Add(SunPlanetBody);
         GameObject velocityHelper = new GameObject();
         velocityHelper.gameObject.name = "VelocityHelper";
