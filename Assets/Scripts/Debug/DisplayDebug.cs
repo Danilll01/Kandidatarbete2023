@@ -6,7 +6,7 @@ using TMPro;
 public static class DisplayDebug
 {
     private static TextMeshProUGUI debugTextContainer;
-    private static List<KeyValuePair<string, int>> debugList;
+    private static List<KeyValuePair<string, string>> debugListInt;
 
     /// <summary>
     /// Initialize the parameters
@@ -25,7 +25,7 @@ public static class DisplayDebug
     {
         debugTextContainer.text = "";
 
-        foreach (var debug in debugList)
+        foreach (var debug in debugListInt)
         {
             debugTextContainer.text += debug.Key + ": " + debug.Value + "\n";
         }
@@ -40,16 +40,32 @@ public static class DisplayDebug
     /// <param name="indexInList">What order in the debug text it should be displayed (optional)</param>
     public static void AddOrSetDebugVariable(string text, int variableValue, int indexInList = -1)
     {
-        KeyValuePair<string, int> debugVariable = new KeyValuePair<string, int>(text, variableValue);
-        if (debugList == null)
+        UpdateOrAddToList(text, variableValue.ToString(), indexInList);
+    }
+
+    /// <summary>
+    /// Overload of other method, this one takes in a string instead of an int
+    /// </summary>
+    /// <param name="text"></param>
+    /// <param name="variableValue"></param>
+    /// <param name="indexInList"></param>
+    public static void AddOrSetDebugVariable(string text, string variableValue, int indexInList = -1)
+    {
+        UpdateOrAddToList(text, variableValue, indexInList);
+    }
+
+    private static void UpdateOrAddToList(string text, string variableValue, int indexInList)
+    {
+        KeyValuePair<string, string> debugVariable = new KeyValuePair<string, string>(text, variableValue);
+        if (debugListInt == null)
         {
             InitializeDictionary();
         }
 
         int existingIndex = -1;
-        for (int i = 0; i < debugList.Count; i++)
+        for (int i = 0; i < debugListInt.Count; i++)
         {
-            KeyValuePair<string, int> pair = debugList[i];
+            KeyValuePair<string, string> pair = debugListInt[i];
             if (pair.Key == text)
             {
                 existingIndex = i;
@@ -58,29 +74,29 @@ public static class DisplayDebug
 
         if (existingIndex >= 0)
         {
-            debugList[existingIndex] = debugVariable;
+            debugListInt[existingIndex] = debugVariable;
         }
         else
         {
-            if (debugList.Count > indexInList && indexInList != -1)
+            if (debugListInt.Count > indexInList && indexInList != -1)
             {
-                debugList.Insert(indexInList, debugVariable);
+                debugListInt.Insert(indexInList, debugVariable);
             }
             else
             {
-                debugList.Add(debugVariable);
+                debugListInt.Add(debugVariable);
             }
         }
     }
 
     private static void InitializeDictionary()
     {
-        if (debugList != null)
+        if (debugListInt != null)
         {
             return;
         }
 
-        debugList = new List<KeyValuePair<string, int>>();
+        debugListInt = new List<KeyValuePair<string, string>>();
     }
 
 }
