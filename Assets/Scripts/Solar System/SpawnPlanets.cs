@@ -60,6 +60,7 @@ public class SpawnPlanets : MonoBehaviour
         SunPlanetBody.SetUpPlanetValues();
         bodies.Add(SunPlanetBody);
 
+        // Creates a sphere to be able to use the mesh for the sun
         GameObject sphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
         Sun.GetComponentInChildren<MeshFilter>().sharedMesh = sphere.GetComponent<MeshFilter>().sharedMesh;
         Sun.transform.GetChild(0).localScale = new Vector3(SunPlanetBody.radius, SunPlanetBody.radius, SunPlanetBody.radius);
