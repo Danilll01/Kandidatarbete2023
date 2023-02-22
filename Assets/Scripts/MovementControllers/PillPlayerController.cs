@@ -18,7 +18,6 @@ public class PillPlayerController : MonoBehaviour
     {
         body = GetComponent<Rigidbody>();
         //A bit of a hack to give the player a starting planet
-        //attractor = GameObject.Find("Sun").transform.parent.transform.GetChild(1).GetComponent<Planet>();
         attractor = planetToSpawnOn.GetComponent<Planet>();
         transform.parent = attractor.transform;
         transform.position = planetToSpawnOn.transform.position + new Vector3(0, attractor.radius, 0);
