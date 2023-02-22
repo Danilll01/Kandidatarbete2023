@@ -12,6 +12,7 @@ public class Create3dTexture : MonoBehaviour
 
     int resolution = 8;
 
+#if UNITY_EDITOR
     // On validate called each time something changes in editor
     private void OnValidate()
     {
@@ -56,6 +57,7 @@ public class Create3dTexture : MonoBehaviour
         }
         return res + colorToString(arr[arr.Length - 1]) + "]";
     }
+#endif
 }
 
 

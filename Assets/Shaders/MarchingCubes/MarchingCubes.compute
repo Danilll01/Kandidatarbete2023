@@ -138,8 +138,8 @@ float4 getTexturePoint(uint3 pos, uint resolution, float radius)
     float innerSphereDensity = (planetBottom - length(vec)) * 255;
     
     // If we are subtracting noise from the innersphere, then don't, and return the inner sphere
-    if (density < innerSphereDensity)
-        return float4(relPos, innerSphereDensity);
+    //if (density < innerSphereDensity)
+        //return float4(relPos, innerSphereDensity);
         
     // Return the noised value
     return float4(relPos, density);

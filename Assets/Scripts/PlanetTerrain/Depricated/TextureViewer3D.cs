@@ -20,7 +20,7 @@ public class TextureViewer3D : MonoBehaviour {
     [SerializeField] private ComputeShader shader;
 
     private RenderTexture renderTexture;
-    
+#if UNITY_EDITOR
 
     Material material;
     void Start() {
@@ -52,6 +52,7 @@ public class TextureViewer3D : MonoBehaviour {
         material.SetTexture("DisplayTexture", renderTexture);
 
     }
+#endif
 
 
 
