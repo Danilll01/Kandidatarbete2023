@@ -76,19 +76,22 @@ public class MarchingCubes
         int[] meshTriangles = new int[length * 3];
         Vector3[] meshVertices = new Vector3[length * 3];
         Vector3 vert = Vector3.zero;
+        MinMaxTerrainLevel minMaxTerrainLevel = new MinMaxTerrainLevel();
+
         // Set values for the meshtriangles and meshvertices arrays
         for (int i = 0; i < length; i++)
         {
             for (int j = 0; j < 3; j++)
             {
                 meshTriangles[i * 3 + j] = i * 3 + j;
-                vert = triangles[i][j];
+                minMaxTerrainLevel.UpdateMinMax(triangles[i][j]);
 
-                meshVertices[i * 3 + j] = vert;
+                meshVertices[i * 3 + j] = triangles[i][j];
             }
         }
 
-        Debug.Log(triangles[20][20]);
+        Debug.Log("Min: " + minMaxTerrainLevel.getMin());
+        Debug.Log("Max: " + minMaxTerrainLevel.getMax());
 
         // Set values in mesh
         mesh.Clear();
