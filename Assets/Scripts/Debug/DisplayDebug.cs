@@ -6,7 +6,7 @@ using TMPro;
 public static class DisplayDebug
 {
     private static TextMeshProUGUI debugTextContainer;
-    private static List<KeyValuePair<string, string>> debugListInt;
+    private static List<KeyValuePair<string, string>> debugList;
 
     /// <summary>
     /// Initialize the parameters
@@ -25,7 +25,7 @@ public static class DisplayDebug
     {
         debugTextContainer.text = "";
 
-        foreach (var debug in debugListInt)
+        foreach (var debug in debugList)
         {
             debugTextContainer.text += debug.Key + ": " + debug.Value + "\n";
         }
@@ -57,15 +57,15 @@ public static class DisplayDebug
     private static void UpdateOrAddToList(string text, string variableValue, int indexInList)
     {
         KeyValuePair<string, string> debugVariable = new KeyValuePair<string, string>(text, variableValue);
-        if (debugListInt == null)
+        if (debugList == null)
         {
             InitializeDictionary();
         }
 
         int existingIndex = -1;
-        for (int i = 0; i < debugListInt.Count; i++)
+        for (int i = 0; i < debugList.Count; i++)
         {
-            KeyValuePair<string, string> pair = debugListInt[i];
+            KeyValuePair<string, string> pair = debugList[i];
             if (pair.Key == text)
             {
                 existingIndex = i;
@@ -74,29 +74,29 @@ public static class DisplayDebug
 
         if (existingIndex >= 0)
         {
-            debugListInt[existingIndex] = debugVariable;
+            debugList[existingIndex] = debugVariable;
         }
         else
         {
-            if (debugListInt.Count > indexInList && indexInList != -1)
+            if (debugList.Count > indexInList && indexInList != -1)
             {
-                debugListInt.Insert(indexInList, debugVariable);
+                debugList.Insert(indexInList, debugVariable);
             }
             else
             {
-                debugListInt.Add(debugVariable);
+                debugList.Add(debugVariable);
             }
         }
     }
 
     private static void InitializeDictionary()
     {
-        if (debugListInt != null)
+        if (debugList != null)
         {
             return;
         }
 
-        debugListInt = new List<KeyValuePair<string, string>>();
+        debugList = new List<KeyValuePair<string, string>>();
     }
 
 }
