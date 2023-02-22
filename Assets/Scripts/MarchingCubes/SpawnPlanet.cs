@@ -6,6 +6,7 @@ public class SpawnPlanet : MonoBehaviour
 {
     [SerializeField] Planet prefab;
     [SerializeField, Range(0, 1)] int update = 0;
+    [SerializeField] PillPlayerController player;
 
     Planet planet;
 
@@ -18,5 +19,7 @@ public class SpawnPlanet : MonoBehaviour
         Universe.InitializeRandomWithSeed();
         planet.Initialize();
         planet.SetUpPlanetValues();
+
+        player.Initialize(planet.gameObject);
     }
 }

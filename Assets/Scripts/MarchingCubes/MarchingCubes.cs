@@ -26,7 +26,7 @@ public class MarchingCubes
     /// <param name="meshGenerator"></param>
     /// <param name="threshold"></param>
     /// <param name="radius"></param>
-    public MarchingCubes(MeshFilter[] meshFilters, int chunkResolution, ComputeShader meshGenerator, float threshold, float radius, int frequency, float amplitude)
+    public MarchingCubes(ref MeshFilter[] meshFilters, int chunkResolution, ComputeShader meshGenerator, float threshold, float radius, int frequency, float amplitude)
     {
         //this.meshes = meshes;
         meshes = new List<Mesh>();
