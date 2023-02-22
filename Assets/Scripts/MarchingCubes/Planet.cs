@@ -72,7 +72,7 @@ public class Planet : MonoBehaviour
         {
             for(int i = 0; i < 64; i++)
             {
-                marchingCubes.generateMesh(i, 28);
+                marchingCubes.generateMesh(i, 12);
             }
             MeshCollider meshCollider = meshFilters[0].gameObject.AddComponent<MeshCollider>();
             meshCollider.sharedMesh = meshFilters[0].sharedMesh;
