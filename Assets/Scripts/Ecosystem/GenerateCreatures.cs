@@ -6,7 +6,6 @@ using System.Linq;
 public class GenerateCreatures : MonoBehaviour
 {
     [SerializeField] GameObject creature;
-    [SerializeField] private int seed = 1234;
 
     [Header("Creature Generation")]
     [SerializeField] private int maxPackCount = 100;
@@ -18,11 +17,14 @@ public class GenerateCreatures : MonoBehaviour
     [Header("Misc")]
     [SerializeField] private bool DEBUG = false;
 
+    private static int seed = Universe.seed;
     private Planet planet;
     private Vector3 planetCenter;
 
     private float creatureSize = 1.5f; // Make so it fit creature size
     private GameObject creatureParent;
+
+
     
     /// <summary>
     /// Initializes creature generation

@@ -20,6 +20,9 @@ public class Creature : MonoBehaviour
     [SerializeField] private float maxHunger = 100f;
     [SerializeField] private float maxThirst = 100f;
 
+    [SerializeField] private float hungerThreshold = 80f;
+    [SerializeField] private float thirstThreshold = 80f;
+
     [SerializeField] private float hungerDecrease = 0.1f;
     [SerializeField] private float thirstDecrease = 0.1f;
     
@@ -85,36 +88,44 @@ public class Creature : MonoBehaviour
         } else
         {
             isSleeping = false;
-            
         }
 
-        if (currentState == CreatureState.Idle)
+        if (hunger < hungerThreshold)
         {
-            //Idle();
+            currentState = CreatureState.LookingForFood;
+            
+        } else if (thirst < thirstThreshold)
+        {
+            currentState = CreatureState.LookingForWater;
+        } else
+        {
+            currentState = CreatureState.Walking;
         }
-        else if (currentState == CreatureState.Walking)
+
+
+        switch (currentState)
         {
-            RandomWalking();
-        }
-        else if (currentState == CreatureState.LookingForFood)
-        {
-            LookingForResource(ResourceType.Food);
-        }
-        else if (currentState == CreatureState.LookingForWater)
-        {
-            LookingForResource(ResourceType.Water);
-        }
-        else if (currentState == CreatureState.PerformingAction)
-        {
-            InteractWithResourceAction();
-        }
-        else if (currentState == CreatureState.LookingForPartner)
-        {
-            //LookingForPartner();
-        }
-        else if (currentState == CreatureState.Breeding)
-        {
-            //Breeding();
+            case CreatureState.Idle:
+                //Idle()
+                break;
+            case CreatureState.Walking:
+                RandomWalking();
+                break;
+            case CreatureState.LookingForFood:
+                LookingForResource(ResourceType.Food);
+                break;
+            case CreatureState.LookingForWater:
+                LookingForResource(ResourceType.Water);
+                break;
+            case CreatureState.PerformingAction:
+                InteractWithResourceAction();
+                break;
+            case CreatureState.LookingForPartner:
+                //LookingForPartner();
+                break;
+            case CreatureState.Breeding:
+                // Bredding();
+                break;
         }
 
         hunger -= hungerDecrease * Time.deltaTime;
@@ -139,7 +150,7 @@ public class Creature : MonoBehaviour
 
     private void RandomWalking()
     {
-        if (DEBUG)
+        if (false)
         {
             Debug.Log("dest: " + destination);
             Debug.Log("pos: " + transform.position);
@@ -165,9 +176,9 @@ public class Creature : MonoBehaviour
         
         GameObject nearestResource = GetNearestGameobject(resource.ToString());
         
-        if (nearestResource != null && Vector3.Distance(transform.position, nearestResource.transform.position) < consumeRadius)
+        if (nearestResource != null && IsCloseToDestination(nearestResource.transform.position))
         {
-            Debug.Log("Found it " + Vector3.Distance(transform.position, nearestResource.transform.position) + " away");
+            //Debug.Log("Found it " + Vector3.Distance(transform.position, nearestResource.transform.position) + " away");
             atDestination = true;
             InteractWithResourceAction();
 
@@ -201,7 +212,6 @@ public class Creature : MonoBehaviour
     private GameObject GetNearestGameobject(string tagname)
     {
         Collider[] hitColliders = Physics.OverlapSphere(transform.position, detectionRadius);
-
         GameObject nearestObject = null;
         float nearestDistance = Mathf.Infinity;
 
@@ -225,12 +235,8 @@ public class Creature : MonoBehaviour
 
     private void GotoPosition(Vector3 pos)
     {
-        if (!pos.Equals(Vector2.zero) && !IsCloseToDestination(pos))//Vector3.Distance(transform.position, pos) > 1.5f + consumeRadius)
+        if (!pos.Equals(Vector2.zero) && !IsCloseToDestination(pos))
         {
-            //Vector3 direction = pos - transform.position;
-            //transform.position += speed * Time.deltaTime * direction.normalized;
-            //transform.rotation = Quaternion.LookRotation(direction);
-
             // Move the ridgidbody based on velocity
             rigidbody.MovePosition(transform.position + speed * Time.deltaTime * (pos - transform.position).normalized);
         }
@@ -248,7 +254,7 @@ public class Creature : MonoBehaviour
 
         float angle = Vector3.Angle(creatureToPlanetCenter, posToPlanetCenter);
         if (DEBUG) Debug.Log("Angle:" + angle);
-        return angle < 1f;
+        return angle < consumeRadius;
     }
 
     private void KeepUpRight()
@@ -270,21 +276,56 @@ public class Creature : MonoBehaviour
         
         Vector3 directionFromCenter = transform.position - planet.meshObj.transform.position;
 
-        directionFromCenter = directionFromCenter.normalized;
-        transform.rotation = Quaternion.FromToRotation(transform.up, directionFromCenter) * transform.rotation;
+        //directionFromCenter = directionFromCenter.normalized;
+        //transform.rotation = Quaternion.FromToRotation(transform.up, directionFromCenter) * transform.rotation;
 
         // Make the caracter also look a the direction it is walking
-        transform.rotation = Quaternion.Lerp(transform.rotation, rotation, Time.fixedDeltaTime * 1f);
+        //transform.rotation = Quaternion.Lerp(transform.rotation, rotation, Time.fixedDeltaTime * 0.2f);
 
         RaycastHit hit;
-
+        
         // Cast a ray down to get the normal of the terrain
-        if (Physics.Raycast(transform.position, directionFromCenter, out hit))
+        if (Physics.Linecast(transform.position, planet.meshObj.transform.position, out hit))
         {
-
+            if (DEBUG) Debug.Log("Hit: " + hit.collider.gameObject.name);
+            //Quaternion grndTilt = 
             // Set rotation of creature to the normal of hit
-            transform.rotation = Quaternion.FromToRotation(Vector3.forward, hit.normal) * Quaternion.Euler(90, 0, 0);
+            //transform.rotation = Quaternion.FromToRotation(Vector3.up, hit.normal) * rotation; // Typ works
+            //Quaternion.AngleAxis(Quaternion.Angle(transform.rotation, rotation), hit.normal);
+
+            /*
+            Vector3 newUp = hit.normal;
+            Vector3 oldForward = transform.forward;
+
+            Vector3 newRight = Vector3.Cross(newUp, oldForward);
+            Vector3 newForward = Vector3.Cross(newRight, newUp);
+
+            transform.rotation = Quaternion.LookRotation(newForward, newUp);
+
+            */
+            Vector3 terrainNormal = hit.normal;
+
+            // Calculate the forward direction towards the target point
+            Vector3 targetPoint = destination;
+            Vector3 forwardDirection = (targetPoint - transform.position).normalized;
+
+            // Calculate the right direction using the cross product of the forward direction and the terrain normal
+            Vector3 rightDirection = Vector3.Cross(forwardDirection, terrainNormal);
+
+            // Calculate the new up direction using the cross product of the right and forward directions
+            Vector3 upDirection = Vector3.Cross(rightDirection, forwardDirection);
+
+            // Create a new rotation using the forward and up directions
+            Quaternion targetRotation = Quaternion.LookRotation(forwardDirection, upDirection);
+
+            // Combine the new rotation with the rotation that keeps the object aligned with the terrain normal
+            Quaternion finalRotation = Quaternion.FromToRotation(transform.up, terrainNormal) * targetRotation;
+
+            // Apply the final rotation to the object
+            transform.rotation = finalRotation;
         }
+
+        // https://stackoverflow.com/questions/61852558/unity-rotating-object-around-y-axis-while-constantly-setting-up-different-rot
 
     }
     private void AttractToPlanet()
@@ -294,7 +335,7 @@ public class Creature : MonoBehaviour
         Vector3 bodyUp = transform.up;
 
         rigidbody.AddForce(targetDirection * gravity);
-        transform.rotation = Quaternion.FromToRotation(bodyUp, targetDirection) * transform.rotation;
+        //transform.rotation = Quaternion.FromToRotation(bodyUp, targetDirection) * transform.rotation;
 
         /*
         float attractingBodyMass = planet.mass / 1000;
