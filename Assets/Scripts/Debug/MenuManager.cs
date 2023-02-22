@@ -58,6 +58,9 @@ public class MenuManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Loads the start menu
+    /// </summary>
     public void BackToStart()
     {
         SceneManager.LoadScene("Start Menu");
