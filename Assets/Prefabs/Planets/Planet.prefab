@@ -201,7 +201,7 @@ MonoBehaviour:
   - {fileID: 4661435515762455780, guid: e289bf5debb17f6459818c207d781953, type: 3}
   - {fileID: 2222111361404534124, guid: 88f2fd29f58b9734683512546acec310, type: 3}
   - {fileID: 2807449429036958551, guid: f0c16f0ea935ea64297ca1d4d55d9746, type: 3}
-  bushLimit: 50000
+  bushLimit: 20000
   bushLine: 35
   bushAngleLimit: 30
   bushPrefab:
@@ -217,7 +217,6 @@ MonoBehaviour:
   - {fileID: 1576488453971893466, guid: a778b631c6253a04899cb31bad047c81, type: 3}
   - {fileID: 7405846476849542632, guid: c6308cb7062fac34e8e50600086b12a1, type: 3}
   - {fileID: 1576488453971893466, guid: a778b631c6253a04899cb31bad047c81, type: 3}
-  seed: 0
   DEBUG: 0
 --- !u!1 &2421649971222294434
 GameObject:
