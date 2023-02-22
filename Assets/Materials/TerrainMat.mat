@@ -113,14 +113,14 @@ Material:
     - _Surface: 0
     - _TestAdd: 289.4
     - _TopHeight: 23.6
-    - _TopHight: 113.3
+    - _TopHight: 1
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _GroundColor: {r: 1, g: 0, b: 0, a: 1}
+    - _GroundColor: {r: 0.41509432, g: 0.41509432, b: 0.41509432, a: 1}
     - _HightMinMax: {r: 107.8, g: 114.8, b: 0, a: 0}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
     - _TopColor: {r: 1, g: 0, b: 0, a: 0}

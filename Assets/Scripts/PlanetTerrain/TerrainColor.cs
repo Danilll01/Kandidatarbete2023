@@ -8,6 +8,8 @@ public class TerrainColor : MonoBehaviour
     [SerializeField] private Gradient gradient = new Gradient();
     [SerializeField] private float tempMin = 200;
     [SerializeField] private float tempMax = 300;
+    [SerializeField][Range(0, 180)] private float angleCutOf = 90;
+    [SerializeField][Range(0, 1)] private float angleBlending = 0.5f;
 
     private Texture2D texture;
     private const int textureRes = 50;
@@ -29,12 +31,22 @@ public class TerrainColor : MonoBehaviour
         }
 
         UpdateMinMaxHight();
+        UpdateAngleColorCutOf();
         SetMaterialColor();
-
+        
     }
 
     private void UpdateMinMaxHight() {
         material.SetVector("_HightMinMax", new Vector4(tempMin, tempMax));
+    }
+
+    private void UpdateAngleColorCutOf() {
+
+        float cutOf = angleCutOf / 180;
+        float minVal = Mathf.Clamp((cutOf - angleBlending), 0, 1);
+        float maxVal = Mathf.Clamp((cutOf), 0, 1);
+
+        material.SetVector("_AngleCutAndBlend", new Vector4(minVal, maxVal));
     }
 
     private void SetMaterialColor() {
