@@ -14,7 +14,7 @@ public class TerrainColor : MonoBehaviour {
     private const int textureRes = 50;
     private Material material;
 
-    Color[][] crazyColorPaletts =
+    private Color[][] crazyColorPaletts =
     {
         new Color[] { new Color(49/255f, 55/255f, 21/255f), new Color(209/255f, 96/255f, 20/255f), new Color(147/255f, 159/255f, 92/255f), new Color(187/255f, 206/255f, 138/255f), new Color(226/255f, 249/255f, 184/255f) }, // Olive green palette
         new Color[] { new Color(70/255f, 34/255f, 85/255f), new Color(49/255f, 59/255f, 114/255f), new Color(98/255f, 168/255f, 124/255f), new Color(126/255f, 224/255f, 129/255f), new Color(195/255f, 243/255f, 192/255f) }, // Green blue palette
@@ -31,12 +31,10 @@ public class TerrainColor : MonoBehaviour {
         new Color[] { new Color(140/255f, 140 / 255f, 140 / 255f), new Color(180/255f, 179/255f, 20/255f), new Color(73/255f, 200/255f, 40/255f), new Color(149 / 255f, 149 / 255f, 149 / 255f), new Color(1, 1, 1) } // EARTH FOR TESTING
     };
 
-    Color[][] normalColorPalette =
+    private Color[][] normalColorPalette =
     {
       new Color[] { new Color(140/255f, 140 / 255f, 140 / 255f), new Color(180/255f, 179/255f, 20/255f), new Color(73/255f, 200/255f, 40/255f), new Color(149 / 255f, 149 / 255f, 149 / 255f), new Color(1, 1, 1) } // Earth like palette
     };
-
-
 
 
     public void OnValidate() {
@@ -44,6 +42,10 @@ public class TerrainColor : MonoBehaviour {
         ColorPlanet(terrainLevel);
     }
 
+    /// <summary>
+    /// Will color the planet with a random color
+    /// </summary>
+    /// <param name="terrainLevel">The terrain level, this contains min and max hight for colors</param>
     public void ColorPlanet(MinMaxTerrainLevel terrainLevel) 
     {
 
@@ -65,10 +67,12 @@ public class TerrainColor : MonoBehaviour {
         
     }
 
+    // Updates the min and max color hight
     private void UpdateMinMaxHight() {
         material.SetVector("_HightMinMax", new Vector4(tempMin, tempMax));
     }
 
+    // Updates the angle color value
     private void UpdateAngleColorCutOf() {
 
         float cutOf = angleCutOf / 180;
@@ -79,9 +83,11 @@ public class TerrainColor : MonoBehaviour {
         material.SetVector("_AngleCutAndBlend", new Vector4(minVal, maxVal));
     }
 
+    // Sets the material color bands to use based on hight
     private void SetMaterialColor() {
-        Color[] colors = new Color[textureRes];
+        Color[] colors = new Color[textureRes]; // Creates a color array to be sent to texture
 
+        // Gets color palette and puts it into a gradient
         Color[] takePalette = crazyColorPaletts[Random.Range(0, crazyColorPaletts.Length - 1)];
         float[] keyPos = new float[] { 0f, 0,015f, 0.144f, 0.618f, 1f };
         GradientColorKey[] gradientKeys = new GradientColorKey[takePalette.Length];
@@ -93,10 +99,12 @@ public class TerrainColor : MonoBehaviour {
         GradientAlphaKey[] alphaKey = new GradientAlphaKey[1];
         gradient.SetKeys(gradientKeys, alphaKey);
 
+        // Use the gradient to sample the 50 values into the color texture
         for (int i = 0; i < textureRes; i++) {
             colors[i] = gradient.Evaluate(i / (textureRes - 1f));
         }
 
+        // Applies all to material
         texture.SetPixels(colors);
         texture.Apply();
         material.SetColor("_GroundColor", colors[0]);
