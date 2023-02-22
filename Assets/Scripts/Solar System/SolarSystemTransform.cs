@@ -30,6 +30,10 @@ public class SolarSystemTransform : MonoBehaviour
         {
             sun = spawnPlanets.bodies[0].gameObject;
         }
+        if (!spawnPlanets.solarySystemGenerated)
+        {
+            return;
+        }
 
         CheckIfPlayerOnAnyPlanet();
 
