@@ -2089,10 +2089,10 @@ MonoBehaviour:
   m_FillRect: {fileID: 990108236}
   m_HandleRect: {fileID: 162830195}
   m_Direction: 0
-  m_MinValue: 1
+  m_MinValue: 0
   m_MaxValue: 10
   m_WholeNumbers: 1
-  m_Value: 1
+  m_Value: 0
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
