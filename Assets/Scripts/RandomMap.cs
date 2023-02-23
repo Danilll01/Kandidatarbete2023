@@ -17,7 +17,7 @@ public class RandomMap : MonoBehaviour
     // storing the map tiles in a list could be useful
     List<GameObject> mapList = new List<GameObject>();
     List<Vector3> positions = new List<Vector3>();
-    public InstanceFoliage instanceFoliage;
+
 
     // Use t$$anonymous$$s for initialization
     void Start()
@@ -51,7 +51,7 @@ public class RandomMap : MonoBehaviour
             rotations.Add(Quaternion.identity);
         }
 
-        instanceFoliage.CalculateMatrices(positions,rotations,new List<Vector3>(), new List<Quaternion>());
+        InstanceFoliage.CalculateMatrices(positions,rotations,new List<Vector3>(), new List<Quaternion>());
     }
 
 }

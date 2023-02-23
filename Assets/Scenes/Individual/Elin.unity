@@ -133,7 +133,6 @@ GameObject:
   m_Component:
   - component: {fileID: 258820202}
   - component: {fileID: 258820201}
-  - component: {fileID: 258820203}
   - component: {fileID: 258820204}
   m_Layer: 0
   m_Name: GameObject
@@ -158,7 +157,6 @@ MonoBehaviour:
   tileDimensions: {x: 5, y: 1, z: 5}
   prefabTiles:
   - {fileID: 2102194907}
-  instanceFoliage: {fileID: 258820203}
 --- !u!4 &258820202
 Transform:
   m_ObjectHideFlags: 0
@@ -174,22 +172,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &258820203
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 258820200}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 86214632412964b4dbec463db47675fa, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  foliageMaterial: {fileID: 2100000, guid: 93caadf4359ae8143aad35b3145d31af, type: 2}
-  prefabMeshes:
-  - {fileID: 4300000, guid: 6c7eaede4efc960409fb9ef2dfb77f29, type: 3}
-  - {fileID: 4300000, guid: e9089b1db16b58f4282a94e020b9c0e8, type: 3}
 --- !u!114 &258820204
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -206,7 +188,9 @@ MonoBehaviour:
   tileDimensions: {x: 5, y: 1, z: 5}
   prefabTiles:
   - {fileID: 2102194907}
-  instanceFoliage: {fileID: 258820203}
+  trees:
+  - {fileID: 2102194907}
+  rocks: []
   mesh: {fileID: 4300000, guid: 6c7eaede4efc960409fb9ef2dfb77f29, type: 3}
   material: {fileID: 2100000, guid: 93caadf4359ae8143aad35b3145d31af, type: 2}
 --- !u!1 &454088898

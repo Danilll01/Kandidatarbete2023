@@ -16,7 +16,11 @@ public class Test : MonoBehaviour
     // storing the map tiles in a list could be useful
     List<GameObject> mapList = new List<GameObject>();
     List<Vector3> positions = new List<Vector3>();
-    public InstanceFoliage instanceFoliage;
+    List<Quaternion> rotations = new List<Quaternion>();
+    //public InstanceFoliage instanceFoliage;
+
+    public GameObject[] trees;
+    public GameObject[] rocks;
 
     public Mesh mesh;
     public Material material;
@@ -50,17 +54,18 @@ public class Test : MonoBehaviour
             Vector3 scale = new Vector3(1f, 1f, 1f);
             matrices[i] = Matrix4x4.TRS(positions[i], rotation, scale);
         }*/
-        List<Quaternion> rotations = new List<Quaternion>();
+        
         for (int i = 0; i < positions.Count; i++)
         {
             rotations.Add(Quaternion.identity);
         }
 
-        instanceFoliage.CalculateMatrices(positions, rotations, new List<Vector3>(), new List<Quaternion>());
+        InstanceFoliage.SetInstancingData(trees, rocks, material);
     }
 
     void Update()
     {
+        InstanceFoliage.CalculateMatrices(positions, rotations, new List<Vector3>(), new List<Quaternion>());
         //Graphics.DrawMeshInstanced(mesh, 0, material, matrices);
     }
 }
