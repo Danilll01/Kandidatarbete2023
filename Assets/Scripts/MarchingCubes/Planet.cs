@@ -19,7 +19,7 @@ public class Planet : MonoBehaviour
     public float mass;
     public List<Planet> moons;
     readonly int chunkResolution = 3; //This is 2^chunkResolution
-    readonly int resolution = 5;
+    readonly int resolution = 1;
 
 
     MeshFilter[] meshFilters;

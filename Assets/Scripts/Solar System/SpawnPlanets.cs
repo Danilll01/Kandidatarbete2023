@@ -61,12 +61,10 @@ public class SpawnPlanets : MonoBehaviour
         bodies.Add(SunPlanetBody);
 
         // Creates a sphere to be able to use the mesh for the sun
-        GameObject sphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-        Sun.GetComponentInChildren<MeshFilter>().sharedMesh = sphere.GetComponent<MeshFilter>().sharedMesh;
-        Sun.transform.GetChild(0).localScale = new Vector3(SunPlanetBody.radius, SunPlanetBody.radius, SunPlanetBody.radius);
-        GameObject water = Sun.transform.GetChild(1).gameObject;
-        Destroy(water);
-        Destroy(sphere);
+        GameObject water = Sun.transform.GetChild(0).gameObject;
+        water.name = "body";
+        water.transform.localScale = new Vector3(SunPlanetBody.radius, SunPlanetBody.radius, SunPlanetBody.radius);
+        water.GetComponent<MeshRenderer>().material = sunMaterial;
 
         Destroy(Sun.GetComponent<SpawnFoliage>());
         Destroy(Sun.GetComponent<GenerateCreatures>());
