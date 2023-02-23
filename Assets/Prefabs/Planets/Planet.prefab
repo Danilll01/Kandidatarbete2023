@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 2865990664458296443}
   - component: {fileID: 7065241369011201559}
   - component: {fileID: 2855617038713985127}
+  - component: {fileID: 2276995421542875557}
   m_Layer: 0
   m_Name: Planet
   m_TagString: Untagged
@@ -218,6 +219,23 @@ MonoBehaviour:
   - {fileID: 7405846476849542632, guid: c6308cb7062fac34e8e50600086b12a1, type: 3}
   - {fileID: 1576488453971893466, guid: a778b631c6253a04899cb31bad047c81, type: 3}
   DEBUG: 0
+  instanceFoliage: {fileID: 2276995421542875557}
+--- !u!114 &2276995421542875557
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 938852981703260768}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86214632412964b4dbec463db47675fa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  foliageMaterial: {fileID: 2100000, guid: 93caadf4359ae8143aad35b3145d31af, type: 2}
+  prefabMeshes:
+  - {fileID: 4300000, guid: 6c7eaede4efc960409fb9ef2dfb77f29, type: 3}
+  - {fileID: 4300000, guid: e9089b1db16b58f4282a94e020b9c0e8, type: 3}
 --- !u!1 &2421649971222294434
 GameObject:
   m_ObjectHideFlags: 0

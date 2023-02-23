@@ -2,7 +2,7 @@ using UnityEngine;
 using System;
 using Random = UnityEngine.Random;
 using System.Linq;
-
+using System.Collections.Generic;
 
 /// <summary>
 /// Script which spawns given foliage on a planet
@@ -37,6 +37,8 @@ public class SpawnFoliage : MonoBehaviour
     private int treeIndex = 0;
     private int treeSpawnIndex = 0;
     private Vector3[] treePositions = new Vector3[prefabLimit];
+    private List<Vector3> treeInstancingPositions = new List<Vector3>();
+    private List<Quaternion> treeInstancingRotations = new List<Quaternion>();
 
     private int bushIndex = 0;
     private int bushSpawnIndex = 0;
@@ -45,6 +47,8 @@ public class SpawnFoliage : MonoBehaviour
     private int stoneIndex = 0;
     private int stoneSpawnIndex = 0;
     private Vector3[] stonePositions = new Vector3[prefabLimit];
+    private List<Vector3> stoneInstancingPositions = new List<Vector3>();
+    private List<Quaternion> stoneInstancingRotations = new List<Quaternion>();
 
     private GameObject foliageHandler;
     private GameObject player;
@@ -56,6 +60,9 @@ public class SpawnFoliage : MonoBehaviour
     private float planetRadius;
     private float waterLevel;
     private Vector3 noiseOffset;
+
+    [SerializeField] private InstanceFoliage instanceFoliage;
+    private bool setUpInstancing = false;
 
 
 
@@ -81,10 +88,17 @@ public class SpawnFoliage : MonoBehaviour
                     if (stoneIndex > stoneSpawnIndex) plantStone();
                     else j = 0;
                 }
+
+                if (treeIndex <= treeSpawnIndex && bushIndex <= bushSpawnIndex && stoneIndex <= stoneSpawnIndex && !setUpInstancing)
+                {
+                    instanceFoliage.CalculateMatrices(treeInstancingPositions, treeInstancingRotations, stoneInstancingPositions, stoneInstancingRotations);
+                    setUpInstancing = true;
+                }
             }
             // Delets all foliage when leaving
             else if((player.transform.position - planet.transform.position).magnitude > 5000)
             {
+                setUpInstancing = false;
                 if (foliageHandler.transform.childCount > 0)
                 {
                     Destroy(foliageHandler);
@@ -98,6 +112,7 @@ public class SpawnFoliage : MonoBehaviour
                     stoneSpawnIndex = 0;
                 }
             }
+            
         }
     }
 
@@ -120,10 +135,12 @@ public class SpawnFoliage : MonoBehaviour
         // Makes the script seedable
         Random.InitState(seed);
 
+        
         // Creates a game object to hold foilage objects
         foliageHandler = new GameObject("Foliage");
         foliageHandler.transform.parent = planet.transform;
         foliageHandler.transform.localPosition = new Vector3(0, 0, 0);
+        
 
         generateSpawnPoints();
     }
@@ -199,7 +216,9 @@ public class SpawnFoliage : MonoBehaviour
         // Sets a random rotation for more variation
         rotation *= Quaternion.Euler(0, Random.value * 360, 0);
 
-        Instantiate(treePrefabs[getIndex(hit.point + noiseOffset)], hit.point + (ray.direction.normalized * 0.2f), rotation, foliageHandler.transform);
+        treeInstancingPositions.Add(hit.point + (ray.direction.normalized * 0.2f));
+        treeInstancingRotations.Add(rotation);
+        //Instantiate(treePrefabs[getIndex(hit.point + noiseOffset)], hit.point + (ray.direction.normalized * 0.2f), rotation, foliageHandler.transform);
     }
 
     /// <summary>
@@ -257,7 +276,9 @@ public class SpawnFoliage : MonoBehaviour
         // Sets a random rotation for more variation
         rotation *= Quaternion.Euler(0, Random.value * 360, 0);
 
-        Instantiate(stonePrefab[getIndex(hit.point + noiseOffset)], hit.point, rotation, foliageHandler.transform);
+        stoneInstancingPositions.Add(hit.point);
+        stoneInstancingRotations.Add(rotation);
+        //Instantiate(stonePrefab[getIndex(hit.point + noiseOffset)], hit.point, rotation, foliageHandler.transform);
     }
 
 
