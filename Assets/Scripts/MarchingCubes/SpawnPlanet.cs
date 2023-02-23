@@ -19,7 +19,7 @@ public class SpawnPlanet : MonoBehaviour
         planet.transform.position = new Vector3(100, 0, 0);
 
         Universe.InitializeRandomWithSeed();
-        planet.Initialize();
+        planet.Initialize(player);
         planet.SetUpPlanetValues();
 
         player.Initialize(planet.gameObject);

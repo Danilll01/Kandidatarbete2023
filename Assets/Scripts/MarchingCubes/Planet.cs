@@ -18,12 +18,15 @@ public class Planet : MonoBehaviour
     public string bodyName = "TBT";
     public float mass;
     public List<Planet> moons;
-    readonly int chunkResolution = 3; //This is 2^chunkResolution
-    readonly int resolution = 1;
+    //readonly int chunkResolution = 3; //This is 2^chunkResolution
+    readonly int resolution = 5;
 
 
-    MeshFilter[] meshFilters;
+    List<Chunk> chunks;
     MarchingCubes marchingCubes;
+    PillPlayerController player;
+    [SerializeField] Chunk chunkPrefab;
+    [SerializeField] GameObject chunksParent;
     [SerializeField] private GenerateCreatures generateCreatures;
     [SerializeField] private SpawnFoliage spawnFoliage;
 
@@ -31,53 +34,16 @@ public class Planet : MonoBehaviour
     /// <summary>
     /// Initialize mesh for marching cubes
     /// </summary>
-    public void Initialize()
+    public void Initialize(PillPlayerController player)
     {
-        if (meshFilters == null || meshFilters.Length == 0)
-        {
-            meshFilters = new MeshFilter[(1 << chunkResolution) * (1 << chunkResolution) * (1 << chunkResolution)];
-
-            for (int i = 0; i < meshFilters.Length; i++)
-            {
-                GameObject meshObj = new GameObject("mesh");
-                meshObj.transform.parent = transform;
-
-
-                meshObj.AddComponent<MeshRenderer>().sharedMaterial = planetMaterial;
-
-                meshFilters[i] = meshObj.AddComponent<MeshFilter>();
-                meshObj.transform.localPosition = Vector3.zero;
-                meshFilters[i].sharedMesh = new Mesh();
-            }
-        }
-
-        // Initialize the meshgenerator
-        if (meshGenerator != null)
-        {
-            System.Random rand = Universe.random;
-
-            threshold = 23 + (float)rand.NextDouble() * 4;
-            int frequency = rand.Next(2) + 3;
-            amplitude = 1.2f + (float)rand.NextDouble() * 0.4f;
-            marchingCubes = new MarchingCubes(chunkResolution, meshGenerator, threshold, radius, frequency, amplitude);
-        }
+        this.player = player;
+        createMeshes(3);
 
         float waterRadius = (threshold / 255 - 1) * radius;
 
         water.transform.localScale = new Vector3(waterRadius, waterRadius, waterRadius);
 
         water.GetComponent<Renderer>().material = waterMaterial;
-
-        // Generates the mesh
-        if (marchingCubes != null)
-        {
-            for (int i = 0; i < meshFilters.Length; i++)
-            {
-                marchingCubes.generateMesh(i, resolution, meshFilters[i].sharedMesh);
-                MeshCollider meshCollider = meshFilters[i].gameObject.AddComponent<MeshCollider>();
-                meshCollider.sharedMesh = meshFilters[i].sharedMesh;
-            }
-        }
 
         // Generate the creatures
         if (generateCreatures != null && bodyName != "Sun" && !bodyName.Contains("Moon"))
@@ -88,6 +54,33 @@ public class Planet : MonoBehaviour
         if (spawnFoliage != null && bodyName != "Sun" && !bodyName.Contains("Moon"))
         {
             spawnFoliage.Initialize(this, waterRadius);
+        }
+    }
+
+    void createMeshes(int chunkResolution)
+    {
+        // Initialize the meshgenerator
+        if (marchingCubes == null)
+        {
+            System.Random rand = Universe.random;
+
+            threshold = 23 + (float)rand.NextDouble() * 4;
+            int frequency = rand.Next(2) + 3;
+            amplitude = 1.2f + (float)rand.NextDouble() * 0.4f;
+            marchingCubes = new MarchingCubes(chunkResolution, meshGenerator, threshold, radius, frequency, amplitude);
+        }
+
+        chunks = new List<Chunk>();
+        int noChunks = (1 << chunkResolution) * (1 << chunkResolution) * (1 << chunkResolution);
+
+        for (int i = 0; i < noChunks; i++)
+        {
+            Chunk chunk = Instantiate(chunkPrefab);
+            chunk.transform.parent = chunksParent.transform;
+            chunk.transform.localPosition = Vector3.zero;
+            chunk.name = "chunk" + i;
+            chunk.Initialize(i, resolution, marchingCubes, player); 
+            chunks.Add(chunk);
         }
     }
 
