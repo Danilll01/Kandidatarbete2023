@@ -74,4 +74,12 @@ public class MenuManager : MonoBehaviour
         SceneManager.LoadScene("Start Menu");
     }
 
+    /// <summary>
+    /// Resumes the game
+    /// </summary>
+    public void ResumeGame()
+    {
+        PausGame();
+    }
+
 }
