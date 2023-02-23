@@ -108,13 +108,18 @@ public static class InstanceFoliage
         {
             for (int i = 0; i < renderedPositionsTrees.Count; i++)
             {
-                if (i < indexSeperationBetweenMeshesTrees[j])
+                if (j == 0 && i < indexSeperationBetweenMeshesTrees[j])
                 {
                     Graphics.DrawMeshInstanced(treeMeshes[j], 0, foliageMaterial, renderedPositionsTrees[i], renderedPositionsTrees[i].Length, block);
                 }
-            }
+                else if (i < indexSeperationBetweenMeshesTrees[j] && i >= indexSeperationBetweenMeshesTrees[j - 1])
+                {
+                    Graphics.DrawMeshInstanced(treeMeshes[j], 0, foliageMaterial, renderedPositionsTrees[i], renderedPositionsTrees[i].Length, block);
+                }
+            } 
         }
 
+        /*
         for (int j = 0; j < indexSeperationBetweenMeshesRocks.Count; j++)
         {
             for (int i = 0; i < renderedPositionsRocks.Count; i++)
