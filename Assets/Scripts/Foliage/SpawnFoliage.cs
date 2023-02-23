@@ -61,7 +61,6 @@ public class SpawnFoliage : MonoBehaviour
     private float waterLevel;
     private Vector3 noiseOffset;
 
-    [SerializeField] private InstanceFoliage instanceFoliage;
     private bool setUpInstancing = false;
 
 
@@ -112,6 +111,8 @@ public class SpawnFoliage : MonoBehaviour
                     stoneSpawnIndex = 0;
                 }
             }
+
+            InstanceFoliage.Run();
             
         }
     }
@@ -140,8 +141,8 @@ public class SpawnFoliage : MonoBehaviour
         foliageHandler = new GameObject("Foliage");
         foliageHandler.transform.parent = planet.transform;
         foliageHandler.transform.localPosition = new Vector3(0, 0, 0);
-        
 
+        InstanceFoliage.SetInstancingData(treePrefabs, stonePrefab, treePrefabs[0].GetComponent<MeshRenderer>().sharedMaterial);
         generateSpawnPoints();
     }
 
@@ -241,6 +242,7 @@ public class SpawnFoliage : MonoBehaviour
         {
             return;
         }
+
 
         // Sets the corret rotation for the prefabs
         Quaternion rotation = Quaternion.LookRotation(hit.normal) * Quaternion.Euler(90, 0, 0);
