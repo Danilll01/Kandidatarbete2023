@@ -13,6 +13,7 @@ public class PillPlayerController : MonoBehaviour
     public float maxSpeed;
 
     private Rigidbody body;
+    public bool paused;
     // Start is called before the first frame update
     public void Initialize(GameObject planetToSpawnOn)
     {
@@ -30,12 +31,16 @@ public class PillPlayerController : MonoBehaviour
         //Lock the mouse inside of the game
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+        paused = false;
     }
 
     // Update is called once per frame
     void Update()
     {
-        HandleInput();
+        if (!paused)
+        {
+            HandleInput();
+        }
         Gravity.KeepUpright(transform, attractor.transform);
         Gravity.Attract(transform.position, body, attractor.transform.position, attractor.mass);
         DisplayDebug.AddOrSetDebugVariable("Current planet", attractor.bodyName);

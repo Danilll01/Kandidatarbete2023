@@ -12,6 +12,7 @@ public class MenuManager : MonoBehaviour
 
     [SerializeField] private GameObject debugContainer;
     [SerializeField] private GameObject pausContainer;
+    [SerializeField] private PillPlayerController playerController;
 
 
     void Awake()
@@ -52,12 +53,14 @@ public class MenuManager : MonoBehaviour
         bool isActive = pausContainer.activeSelf;
         if (!isActive)
         {
+            playerController.paused = true;
             Cursor.lockState = CursorLockMode.Confined;
             Cursor.visible = true;
             Time.timeScale = 0;
         }
         else
         {
+            playerController.paused = false;
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
             Time.timeScale = 1;

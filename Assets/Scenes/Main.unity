@@ -1945,3 +1945,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   debugContainer: {fileID: 1414091875}
   pausContainer: {fileID: 878722367}
+  playerController: {fileID: 1376926153}
