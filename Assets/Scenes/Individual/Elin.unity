@@ -189,6 +189,7 @@ MonoBehaviour:
   tileDimensions: {x: 5, y: 1, z: 5}
   prefabTiles:
   - {fileID: 2102194907}
+  instanceFoliage: {fileID: 258820205}
   trees:
   - {fileID: 2102194907}
   rocks: []
@@ -206,6 +207,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86214632412964b4dbec463db47675fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  foliageMaterial: {fileID: 2100000, guid: 93caadf4359ae8143aad35b3145d31af, type: 2}
+  prefabMeshes:
+  - {fileID: 4300000, guid: 6c7eaede4efc960409fb9ef2dfb77f29, type: 3}
 --- !u!1 &454088898
 GameObject:
   m_ObjectHideFlags: 0

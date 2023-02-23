@@ -90,7 +90,8 @@ public class SpawnFoliage : MonoBehaviour
 
                 if (treeIndex <= treeSpawnIndex && bushIndex <= bushSpawnIndex && stoneIndex <= stoneSpawnIndex && !setUpInstancing)
                 {
-                    //instanceFoliage.CalculateMatrices(treeInstancingPositions, treeInstancingRotations, stoneInstancingPositions, stoneInstancingRotations);
+                    InstanceFoliage.SetInstancingData(treePrefabs, stonePrefab, treePrefabs[0].GetComponent<MeshRenderer>().sharedMaterial, treeInstancingPositions, treeInstancingRotations, stoneInstancingPositions, stoneInstancingRotations);
+                    InstanceFoliage.instanceFoliage = true;
                     setUpInstancing = true;
                 }
             }
@@ -112,7 +113,7 @@ public class SpawnFoliage : MonoBehaviour
                 }
             }
 
-            //InstanceFoliage.Run();
+            InstanceFoliage.Run();
             
         }
     }
@@ -219,7 +220,7 @@ public class SpawnFoliage : MonoBehaviour
 
         treeInstancingPositions.Add(hit.point + (ray.direction.normalized * 0.2f));
         treeInstancingRotations.Add(rotation);
-        Instantiate(treePrefabs[getIndex(hit.point + noiseOffset)], hit.point + (ray.direction.normalized * 0.2f), rotation, foliageHandler.transform);
+        //Instantiate(treePrefabs[getIndex(hit.point + noiseOffset)], hit.point + (ray.direction.normalized * 0.2f), rotation, foliageHandler.transform);
     }
 
     /// <summary>
@@ -280,7 +281,7 @@ public class SpawnFoliage : MonoBehaviour
 
         stoneInstancingPositions.Add(hit.point);
         stoneInstancingRotations.Add(rotation);
-        Instantiate(stonePrefab[getIndex(hit.point + noiseOffset)], hit.point, rotation, foliageHandler.transform);
+        //Instantiate(stonePrefab[getIndex(hit.point + noiseOffset)], hit.point, rotation, foliageHandler.transform);
     }
 
 

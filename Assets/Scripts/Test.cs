@@ -17,7 +17,6 @@ public class Test : MonoBehaviour
     List<GameObject> mapList = new List<GameObject>();
     List<Vector3> positions = new List<Vector3>();
     List<Quaternion> rotations = new List<Quaternion>();
-    //public InstanceFoliage instanceFoliage;
 
     public GameObject[] trees;
     public GameObject[] rocks;
@@ -62,6 +61,7 @@ public class Test : MonoBehaviour
 
         InstanceFoliage.SetInstancingData(trees, rocks, material, positions, rotations, new List<Vector3>(), new List<Quaternion>());
         InstanceFoliage.instanceFoliage = true;
+        //instanceFoliage.CalculateMatrices(positions, rotations, new List<Vector3>(), new List<Quaternion>());
     }
 
     void Update()

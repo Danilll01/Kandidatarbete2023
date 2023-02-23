@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class InstanceFoliage : MonoBehaviour
+public static class InstanceFoliage
 {
     // List of planes that make up the cameras view
     private static Plane[] planes;
@@ -44,7 +44,7 @@ public class InstanceFoliage : MonoBehaviour
 
 
     // Update is called once per frame
-    public void Update()
+    public static void Run()
     {
         if (!instanceFoliage)
         {
@@ -99,7 +99,7 @@ public class InstanceFoliage : MonoBehaviour
 
     }
 
-    private  void DrawInstances()
+    private static void DrawInstances()
     {
         if (indexSeperationBetweenMeshesTrees.Count == 0)
         {
@@ -120,8 +120,31 @@ public class InstanceFoliage : MonoBehaviour
                 {
                     Graphics.DrawMeshInstanced(treeMeshes[j], 0, foliageMaterial, renderedPositionsTrees[i], renderedPositionsTrees[i].Length, block);
                 }
-            } 
+            }
         }
+
+        if (indexSeperationBetweenMeshesRocks.Count == 0)
+        {
+            for (int i = 0; i < renderedPositionsRocks.Count; i++)
+            {
+                Graphics.DrawMeshInstanced(rockMeshes[0], 0, foliageMaterial, renderedPositionsRocks[i], renderedPositionsRocks[i].Length, block);
+            }
+        }
+        for (int j = 0; j < indexSeperationBetweenMeshesRocks.Count; j++)
+        {
+            for (int i = 0; i < renderedPositionsRocks.Count; i++)
+            {
+                if (j == 0 && i < indexSeperationBetweenMeshesRocks[j])
+                {
+                    Graphics.DrawMeshInstanced(rockMeshes[j], 0, foliageMaterial, renderedPositionsRocks[i], renderedPositionsRocks[i].Length, block);
+                }
+                else if (i < indexSeperationBetweenMeshesRocks[j] && i >= indexSeperationBetweenMeshesRocks[j - 1])
+                {
+                    Graphics.DrawMeshInstanced(rockMeshes[j], 0, foliageMaterial, renderedPositionsRocks[i], renderedPositionsRocks[i].Length, block);
+                }
+            }
+        }
+
 
         /*
         for (int j = 0; j < indexSeperationBetweenMeshesRocks.Count; j++)
@@ -137,7 +160,7 @@ public class InstanceFoliage : MonoBehaviour
         */
     }
 
-    private  void CalculateFrustumPlanes()
+    private static void CalculateFrustumPlanes()
     {
         var oldPlanes = planes;
         const float MinAbsTest = 0;
@@ -175,7 +198,7 @@ public class InstanceFoliage : MonoBehaviour
         }
     }
 
-    private  void CalculatePositionsToRender()
+    private static void CalculatePositionsToRender()
     {
         if (!isDirty)
         {
@@ -252,32 +275,32 @@ public class InstanceFoliage : MonoBehaviour
         isDirty = false;
     }
 
-    private  void MakeDirty()
+    private static void MakeDirty()
     {
         isDirty = true;
         lastCameraPosition = camera.transform.position;
         lastCameraRotation = camera.transform.rotation;
     }
 
-    private  void CalculateMatrices()
+    private static void CalculateMatrices()
     {
         List<Matrix4x4> treesMatrices = new List<Matrix4x4>();
         List<Matrix4x4> rocksMatrices = new List<Matrix4x4>();
 
         for (int i = 0; i < culledPositionsForTrees.Count; i++)
         {
-            treesMatrices.Add(Matrix4x4.TRS(culledPositionsForTrees[i], culledRotationsForTrees[i], Vector3.one));
+            treesMatrices.Add(Matrix4x4.TRS(culledPositionsForTrees[i], culledRotationsForTrees[i], new Vector3(2, 2, 2)));
         }
         for (int i = 0; i < culledPositionsForRocks.Count; i++)
         {
-            rocksMatrices.Add(Matrix4x4.TRS(culledPositionsForRocks[i], culledRotationsForRocks[i], Vector3.one));
+            rocksMatrices.Add(Matrix4x4.TRS(culledPositionsForRocks[i], culledRotationsForRocks[i], new Vector3(2, 2, 2)));
         }
 
         RandomizeMeshesForPositions();
         GroupMatrices(treesMatrices, rocksMatrices);
     }
 
-    private  void RandomizeMeshesForPositions()
+    private static void RandomizeMeshesForPositions()
     {
         int amountOfTreeMeshes = treeMeshes.Length;
         int amountOfRockMeshes = rockMeshes.Length;
@@ -294,7 +317,7 @@ public class InstanceFoliage : MonoBehaviour
         }
     }
 
-    private  void GroupMatrices(List<Matrix4x4> treesMatrices, List<Matrix4x4> rocksMatrices)
+    private static void GroupMatrices(List<Matrix4x4> treesMatrices, List<Matrix4x4> rocksMatrices)
     {
         List<Matrix4x4> treesGroup = new List<Matrix4x4>();
         List<Matrix4x4> rocksGroup = new List<Matrix4x4>();
@@ -307,6 +330,9 @@ public class InstanceFoliage : MonoBehaviour
 
         indexSeperationBetweenMeshesTrees.Clear();
         indexSeperationBetweenMeshesRocks.Clear();
+
+        renderedPositionsTrees.Clear();
+        renderedPositionsRocks.Clear();
 
         if (treesMatrices.Count > 0)
         {
