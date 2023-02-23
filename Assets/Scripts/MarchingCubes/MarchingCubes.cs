@@ -16,7 +16,7 @@ public class MarchingCubes
     readonly int frequency;
     readonly float amplitude;
 
-    readonly int chunkResolution;
+    public int chunkResolution;
 
     /// <summary>
     /// Initializes the MarchingCubes script

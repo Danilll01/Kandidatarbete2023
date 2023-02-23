@@ -10,7 +10,7 @@ public class SpawnPlanet : MonoBehaviour
 
     Planet planet;
 
-    void OnValidate()
+    void Start()
     {
         Planet planet = Instantiate(prefab);
 

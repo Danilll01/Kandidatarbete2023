@@ -59,6 +59,13 @@ public class Planet : MonoBehaviour
 
     void createMeshes(int chunkResolution)
     {
+        Destroy(chunksParent);
+
+        chunksParent = new GameObject();
+        chunksParent.name = "chunks";
+        chunksParent.transform.parent = transform;
+        chunksParent.transform.localPosition = Vector3.zero;
+
         // Initialize the meshgenerator
         if (marchingCubes == null)
         {
@@ -69,6 +76,10 @@ public class Planet : MonoBehaviour
             amplitude = 1.2f + (float)rand.NextDouble() * 0.4f;
             marchingCubes = new MarchingCubes(chunkResolution, meshGenerator, threshold, radius, frequency, amplitude);
         }
+
+        marchingCubes.chunkResolution = chunkResolution;
+
+        
 
         chunks = new List<Chunk>();
         int noChunks = (1 << chunkResolution) * (1 << chunkResolution) * (1 << chunkResolution);
