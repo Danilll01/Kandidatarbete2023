@@ -61,7 +61,6 @@ public class SpawnFoliage : MonoBehaviour
     private float waterLevel;
     private Vector3 noiseOffset;
 
-    [SerializeField] private InstanceFoliage instanceFoliage;
     private bool setUpInstancing = false;
 
 
@@ -91,7 +90,7 @@ public class SpawnFoliage : MonoBehaviour
 
                 if (treeIndex <= treeSpawnIndex && bushIndex <= bushSpawnIndex && stoneIndex <= stoneSpawnIndex && !setUpInstancing)
                 {
-                    instanceFoliage.CalculateMatrices(treeInstancingPositions, treeInstancingRotations, stoneInstancingPositions, stoneInstancingRotations);
+                    InstanceFoliage.CalculateMatrices(treeInstancingPositions, treeInstancingRotations, stoneInstancingPositions, stoneInstancingRotations);
                     setUpInstancing = true;
                 }
             }
@@ -112,6 +111,8 @@ public class SpawnFoliage : MonoBehaviour
                     stoneSpawnIndex = 0;
                 }
             }
+
+            InstanceFoliage.Run();
             
         }
     }
@@ -140,8 +141,8 @@ public class SpawnFoliage : MonoBehaviour
         foliageHandler = new GameObject("Foliage");
         foliageHandler.transform.parent = planet.transform;
         foliageHandler.transform.localPosition = new Vector3(0, 0, 0);
-        
 
+        InstanceFoliage.SetInstancingData(treePrefabs, stonePrefab, treePrefabs[0].GetComponent<MeshRenderer>().sharedMaterial);
         generateSpawnPoints();
     }
 
@@ -216,8 +217,13 @@ public class SpawnFoliage : MonoBehaviour
         // Sets a random rotation for more variation
         rotation *= Quaternion.Euler(0, Random.value * 360, 0);
 
-        treeInstancingPositions.Add(hit.point + (ray.direction.normalized * 0.2f));
-        treeInstancingRotations.Add(rotation);
+        Vector3 position = hit.point + (ray.direction.normalized * 0.2f);
+        if (!treeInstancingPositions.Contains(position))
+        {
+            treeInstancingPositions.Add(position);
+            treeInstancingRotations.Add(rotation);
+
+        }
         //Instantiate(treePrefabs[getIndex(hit.point + noiseOffset)], hit.point + (ray.direction.normalized * 0.2f), rotation, foliageHandler.transform);
     }
 
@@ -241,6 +247,7 @@ public class SpawnFoliage : MonoBehaviour
         {
             return;
         }
+
 
         // Sets the corret rotation for the prefabs
         Quaternion rotation = Quaternion.LookRotation(hit.normal) * Quaternion.Euler(90, 0, 0);
@@ -276,8 +283,15 @@ public class SpawnFoliage : MonoBehaviour
         // Sets a random rotation for more variation
         rotation *= Quaternion.Euler(0, Random.value * 360, 0);
 
-        stoneInstancingPositions.Add(hit.point);
-        stoneInstancingRotations.Add(rotation);
+
+        Vector3 position = hit.point + (ray.direction.normalized * 0.2f);
+        if (!stoneInstancingPositions.Contains(position))
+        {
+            stoneInstancingPositions.Add(position);
+            stoneInstancingRotations.Add(rotation);
+        }
+
+        
         //Instantiate(stonePrefab[getIndex(hit.point + noiseOffset)], hit.point, rotation, foliageHandler.transform);
     }
 
