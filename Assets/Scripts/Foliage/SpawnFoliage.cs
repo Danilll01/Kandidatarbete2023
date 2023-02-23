@@ -90,14 +90,14 @@ public class SpawnFoliage : MonoBehaviour
 
                 if (treeIndex <= treeSpawnIndex && bushIndex <= bushSpawnIndex && stoneIndex <= stoneSpawnIndex && !setUpInstancing)
                 {
-                    InstanceFoliage.SetInstancingData(treePrefabs, stonePrefab, treePrefabs[0].GetComponent<MeshRenderer>().sharedMaterial, treeInstancingPositions, treeInstancingRotations, stoneInstancingPositions, stoneInstancingRotations);
-                    InstanceFoliage.instanceFoliage = true;
+                    InstanceFoliage.CalculateMatrices(treeInstancingPositions, treeInstancingRotations, stoneInstancingPositions, stoneInstancingRotations);
                     setUpInstancing = true;
                 }
             }
             // Delets all foliage when leaving
             else if((player.transform.position - planet.transform.position).magnitude > 5000)
             {
+                setUpInstancing = false;
                 if (foliageHandler.transform.childCount > 0)
                 {
                     Destroy(foliageHandler);
@@ -109,8 +109,6 @@ public class SpawnFoliage : MonoBehaviour
                     treeSpawnIndex = 0;
                     bushSpawnIndex = 0;
                     stoneSpawnIndex = 0;
-                    //setUpInstancing = false;
-                    //InstanceFoliage.instanceFoliage = false;
                 }
             }
 
@@ -144,7 +142,7 @@ public class SpawnFoliage : MonoBehaviour
         foliageHandler.transform.parent = planet.transform;
         foliageHandler.transform.localPosition = new Vector3(0, 0, 0);
 
-        
+        InstanceFoliage.SetInstancingData(treePrefabs, stonePrefab, treePrefabs[0].GetComponent<MeshRenderer>().sharedMaterial);
         generateSpawnPoints();
     }
 
