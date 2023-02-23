@@ -51,10 +51,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   meshGenerator: {fileID: 7200000, guid: 2b54143d75bd2344bb987facb6cb4950, type: 3}
-  threshold: 26.284481
+  threshold: 24.067135
   resolution: 13
   frequency: 1
-  amplitude: 1.3047302
+  amplitude: 1.3607764
   bottomLevel: 1
   waterMaterial: {fileID: 2100000, guid: 417f8c1f207df654b84c6e8b4c0e8f0f, type: 2}
   water: {fileID: 5613251696109344692}
@@ -130,8 +130,8 @@ MonoBehaviour:
     m_Mode: 0
     m_NumColorKeys: 5
     m_NumAlphaKeys: 2
-  tempMin: 128.20854
-  tempMax: 135.0711
+  tempMin: 129.45634
+  tempMax: 137.28328
   angleCutOf: 114
   angleBlending: 0.46
 --- !u!120 &2865990664458296443
@@ -381,7 +381,7 @@ Transform:
   m_GameObject: {fileID: 5613251696109344692}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: -257.41708, y: -257.41708, z: -257.41708}
+  m_LocalScale: {x: -259.9127, y: -259.9127, z: -259.9127}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2176386958015389607}

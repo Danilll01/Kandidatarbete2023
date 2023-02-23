@@ -48,6 +48,7 @@ public class TerrainColor : MonoBehaviour {
     /// <param name="terrainLevel">The terrain level, this contains min and max hight for colors</param>
     public void ColorPlanet(MinMaxTerrainLevel terrainLevel) 
     {
+        System.Random r = new System.Random(2);
 
         if (terrainLevel != null) {
             tempMin = terrainLevel.GetMin();
