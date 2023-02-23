@@ -14,14 +14,15 @@ public class PillPlayerController : MonoBehaviour
 
     private Rigidbody body;
     // Start is called before the first frame update
-    void Start()
+    public void Initialize(GameObject planetToSpawnOn)
     {
         body = GetComponent<Rigidbody>();
         //A bit of a hack to give the player a starting planet
-        attractor = GameObject.Find("Sun").transform.parent.transform.GetChild(1).GetComponent<Planet>();
+        attractor = planetToSpawnOn.GetComponent<Planet>();
+        transform.parent = attractor.transform;
+        transform.position = planetToSpawnOn.transform.position + new Vector3(0, attractor.radius, 0);
         Vector3 directionNearestPlanet = attractor.transform.position - transform.position;
         Physics.Raycast(transform.position, directionNearestPlanet, out RaycastHit hit);
-        transform.SetParent(attractor.transform);
 
         //Put the player above the ground
         transform.position = hit.point - (directionNearestPlanet.normalized) * 5;

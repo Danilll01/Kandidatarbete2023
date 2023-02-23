@@ -26,6 +26,7 @@ public class Planet : MonoBehaviour
     [SerializeField] private bool willGenerateCreature = false;
     [SerializeField] private GenerateCreatures generateCreatures;
     [SerializeField] private TerrainColor terrainColor;
+    [SerializeField] private SpawnFoliage spawnFoliage;
 
     public void OnValidate() {
         Initialize();
@@ -90,6 +91,11 @@ public class Planet : MonoBehaviour
             if (generateCreatures != null && bodyName != "Sun" && !bodyName.Contains("Moon")) {
                 generateCreatures.Initialize(this);
             }
+        }
+
+        if (spawnFoliage != null && bodyName != "Sun" && !bodyName.Contains("Moon"))
+        {
+            spawnFoliage.Initialize(this, waterRadius);
         }
     }
 

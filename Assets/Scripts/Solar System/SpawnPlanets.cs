@@ -18,7 +18,9 @@ public class SpawnPlanets : MonoBehaviour
     [SerializeField] private int maxNumberOfMoons = 5;
 
     [SerializeField] private Material sunMaterial;
+    [SerializeField] private PillPlayerController player;
 
+    [HideInInspector] public bool solarySystemGenerated = false;
     private System.Random random;
 
     void Awake()
@@ -31,6 +33,8 @@ public class SpawnPlanets : MonoBehaviour
         random = Universe.random;
         GetValues();
         CreatePlanets();
+        player.Initialize(bodies[1].gameObject);
+        solarySystemGenerated = true;
     }
 
     private void GetValues()
@@ -56,6 +60,15 @@ public class SpawnPlanets : MonoBehaviour
         SunPlanetBody.SetUpPlanetValues();
         SunPlanetBody.Initialize();
         bodies.Add(SunPlanetBody);
+        GameObject velocityHelper = new GameObject();
+        velocityHelper.gameObject.name = "VelocityHelper";
+        velocityHelper.transform.parent = Sun.transform;
+        velocityHelper.transform.localPosition = new Vector3(-100, 0, 0);
+        Sun.AddComponent<KeplerOrbitMover>();
+        Sun.AddComponent<KeplerOrbitLineDisplay>();
+        Sun.GetComponent<KeplerOrbitMover>().enabled = false;
+        Sun.GetComponent<KeplerOrbitLineDisplay>().enabled = false;
+        Sun.GetComponent<KeplerOrbitMover>().VelocityHandle = velocityHelper.transform;
         InstantiatePlanets(Sun);
 
     }
