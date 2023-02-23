@@ -293,7 +293,7 @@ public class Creature : MonoBehaviour
             //transform.rotation = Quaternion.FromToRotation(Vector3.up, hit.normal) * rotation; // Typ works
             //Quaternion.AngleAxis(Quaternion.Angle(transform.rotation, rotation), hit.normal);
 
-            /*
+            
             Vector3 newUp = hit.normal;
             Vector3 oldForward = transform.forward;
 
@@ -301,8 +301,8 @@ public class Creature : MonoBehaviour
             Vector3 newForward = Vector3.Cross(newRight, newUp);
 
             transform.rotation = Quaternion.LookRotation(newForward, newUp);
-
-            */
+            /*
+            
             Vector3 terrainNormal = hit.normal;
 
             // Calculate the forward direction towards the target point
@@ -323,6 +323,7 @@ public class Creature : MonoBehaviour
 
             // Apply the final rotation to the object
             transform.rotation = finalRotation;
+            */
         }
 
         // https://stackoverflow.com/questions/61852558/unity-rotating-object-around-y-axis-while-constantly-setting-up-different-rot
