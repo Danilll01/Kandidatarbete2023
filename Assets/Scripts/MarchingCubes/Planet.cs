@@ -5,11 +5,12 @@ using UnityEngine;
 public class Planet : MonoBehaviour
 {
     [SerializeField] ComputeShader meshGenerator;
+    MarchingCubes marchingCubes;
+
     [SerializeField] Material waterMaterial;
     [SerializeField] Material planetMaterial;
-    //[SerializeField, Range(1, 25)] int frequency;
-    [SerializeField] GameObject water;
 
+    [SerializeField] GameObject water;
 
     float threshold;
     float amplitude;
@@ -22,13 +23,12 @@ public class Planet : MonoBehaviour
     [SerializeField, Range(1, 4)] int chunkResolution = 3; //This is 2^chunkResolution
     [SerializeField, Range(1, 14)] int resolution = 5;
     List<Chunk> chunks;
-    MarchingCubes marchingCubes;
-    PillPlayerController player;
-
     [SerializeField] Chunk chunkPrefab;
     [SerializeField] GameObject chunksParent;
+
     [SerializeField] private GenerateCreatures generateCreatures;
     [SerializeField] private SpawnFoliage spawnFoliage;
+    PillPlayerController player;
 
 
     /// <summary>
@@ -37,12 +37,13 @@ public class Planet : MonoBehaviour
     public void Initialize(PillPlayerController player)
     {
         this.player = player;
+
+        // Create all meshes
         createMeshes(chunkResolution);
 
+        // Init water
         float waterDiameter = -(threshold / 255 - 1) * diameter;
-
         water.transform.localScale = new Vector3(waterDiameter, waterDiameter, waterDiameter);
-
         water.GetComponent<Renderer>().material = waterMaterial;
 
         // Generate the creatures
@@ -79,10 +80,9 @@ public class Planet : MonoBehaviour
 
         marchingCubes.chunkResolution = chunkResolution;
 
+        // Create all chunks
         chunks = new List<Chunk>();
         int noChunks = (1 << chunkResolution) * (1 << chunkResolution) * (1 << chunkResolution);
-
-        // Create all chunks
         for (int i = 0; i < noChunks; i++)
         {
             Chunk chunk = Instantiate(chunkPrefab);
