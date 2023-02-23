@@ -30,20 +30,7 @@ public class MenuManager : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            bool isActive = pausContainer.activeSelf;
-            if (!isActive)
-            {
-                Cursor.lockState = CursorLockMode.Confined;
-                Cursor.visible = true;
-                Time.timeScale = 0;
-            }
-            else
-            {
-                Cursor.lockState = CursorLockMode.Locked;
-                Cursor.visible = false;
-                Time.timeScale = 1;
-            }
-            pausContainer.SetActive(!isActive);
+            PausGame();
         }
 
         if (debugContainer.activeSelf)
@@ -60,11 +47,30 @@ public class MenuManager : MonoBehaviour
         }
     }
 
+    private void PausGame()
+    {
+        bool isActive = pausContainer.activeSelf;
+        if (!isActive)
+        {
+            Cursor.lockState = CursorLockMode.Confined;
+            Cursor.visible = true;
+            Time.timeScale = 0;
+        }
+        else
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+            Time.timeScale = 1;
+        }
+        pausContainer.SetActive(!isActive);
+    }
+
     /// <summary>
     /// Loads the start menu
     /// </summary>
     public void BackToStart()
     {
+        Time.timeScale = 1;
         SceneManager.LoadScene("Start Menu");
     }
 
