@@ -51,7 +51,7 @@ public class RandomMap : MonoBehaviour
             rotations.Add(Quaternion.identity);
         }
 
-        InstanceFoliage.CalculateMatrices(positions,rotations,new List<Vector3>(), new List<Quaternion>());
+        //InstanceFoliage.CalculateMatrices(positions,rotations,new List<Vector3>(), new List<Quaternion>());
     }
 
 }

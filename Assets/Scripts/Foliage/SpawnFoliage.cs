@@ -112,7 +112,7 @@ public class SpawnFoliage : MonoBehaviour
                 }
             }
 
-            InstanceFoliage.Run();
+            //InstanceFoliage.Run();
             
         }
     }
@@ -142,7 +142,7 @@ public class SpawnFoliage : MonoBehaviour
         foliageHandler.transform.parent = planet.transform;
         foliageHandler.transform.localPosition = new Vector3(0, 0, 0);
 
-        InstanceFoliage.SetInstancingData(treePrefabs, stonePrefab, treePrefabs[0].GetComponent<MeshRenderer>().sharedMaterial);
+        //InstanceFoliage.SetInstancingData(treePrefabs, stonePrefab, treePrefabs[0].GetComponent<MeshRenderer>().sharedMaterial);
         generateSpawnPoints();
     }
 
