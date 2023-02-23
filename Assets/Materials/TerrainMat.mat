@@ -117,12 +117,12 @@ Material:
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
-    - _AngleCutAndBlend: {r: 0.45, g: 0.5, b: 0, a: 0}
+    - _AngleCutAndBlend: {r: 0.34199998, g: 0.6333333, b: 0, a: 0}
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _GroundColor: {r: 0, g: 0.36430502, b: 1, a: 1}
-    - _HightMinMax: {r: 107.8, g: 114.8, b: 0, a: 0}
+    - _GroundColor: {r: 0.5, g: 0.5, b: 0.5, a: 0}
+    - _HightMinMax: {r: 375.03708, g: 387.65155, b: 0, a: 0}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
     - _TopColor: {r: 1, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []

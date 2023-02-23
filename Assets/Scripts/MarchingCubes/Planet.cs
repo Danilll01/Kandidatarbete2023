@@ -80,8 +80,8 @@ public class Planet : MonoBehaviour
             marchingCubes.generateMesh(terrainLevel);
             terrainColor.ColorPlanet(terrainLevel);
 
-            //MeshCollider meshCollider = meshFilter.gameObject.AddComponent<MeshCollider>();
-            //meshCollider.sharedMesh = meshFilter.sharedMesh;
+            MeshCollider meshCollider = meshFilter.gameObject.AddComponent<MeshCollider>();
+            meshCollider.sharedMesh = meshFilter.sharedMesh;
         }
 
         if (willGenerateCreature) 
