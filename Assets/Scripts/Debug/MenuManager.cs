@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 public class MenuManager : MonoBehaviour
 {
@@ -12,6 +13,7 @@ public class MenuManager : MonoBehaviour
 
     [SerializeField] private GameObject debugContainer;
     [SerializeField] private GameObject pausContainer;
+    [SerializeField] private TextMeshProUGUI seedText;
     [SerializeField] private PillPlayerController playerController;
 
 
@@ -19,6 +21,8 @@ public class MenuManager : MonoBehaviour
     {
         DisplayDebug.Initalize(debugContainer);
         debugContainer.SetActive(false);
+        pausContainer.SetActive(false);
+        seedText.text = "Seed: " + Universe.seed;
     }
 
     void Update()
