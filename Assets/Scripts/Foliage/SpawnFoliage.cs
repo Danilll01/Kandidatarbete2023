@@ -91,7 +91,7 @@ public class SpawnFoliage : MonoBehaviour
 
                 if (treeIndex <= treeSpawnIndex && bushIndex <= bushSpawnIndex && stoneIndex <= stoneSpawnIndex && !setUpInstancing)
                 {
-                    instanceFoliage.CalculateMatrices(treeInstancingPositions, treeInstancingRotations, stoneInstancingPositions, stoneInstancingRotations);
+                    //instanceFoliage.CalculateMatrices(treeInstancingPositions, treeInstancingRotations, stoneInstancingPositions, stoneInstancingRotations);
                     setUpInstancing = true;
                 }
             }
@@ -167,7 +167,7 @@ public class SpawnFoliage : MonoBehaviour
         RaycastHit hit;
         float maxRayDistance = (planetRadius - waterLevel);
 
-        for (int i = 0; i < limit && i < prefabLimit; i++)
+        for (int i = 0; i < limit; i++)
         {
             // Tries 20 times
             for (int j = 0; j < 20; j++)
@@ -218,7 +218,7 @@ public class SpawnFoliage : MonoBehaviour
 
         treeInstancingPositions.Add(hit.point + (ray.direction.normalized * 0.2f));
         treeInstancingRotations.Add(rotation);
-        //Instantiate(treePrefabs[getIndex(hit.point + noiseOffset)], hit.point + (ray.direction.normalized * 0.2f), rotation, foliageHandler.transform);
+        Instantiate(treePrefabs[getIndex(hit.point + noiseOffset)], hit.point + (ray.direction.normalized * 0.2f), rotation, foliageHandler.transform);
     }
 
     /// <summary>
@@ -278,7 +278,7 @@ public class SpawnFoliage : MonoBehaviour
 
         stoneInstancingPositions.Add(hit.point);
         stoneInstancingRotations.Add(rotation);
-        //Instantiate(stonePrefab[getIndex(hit.point + noiseOffset)], hit.point, rotation, foliageHandler.transform);
+        Instantiate(stonePrefab[getIndex(hit.point + noiseOffset)], hit.point, rotation, foliageHandler.transform);
     }
 
 

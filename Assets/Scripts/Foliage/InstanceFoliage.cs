@@ -29,7 +29,6 @@ public class InstanceFoliage : MonoBehaviour
     {
         block = new MaterialPropertyBlock();
         planes = new Plane[6];
-        instanceFoliage = false;
         treeMeshes = prefabMeshes[0];
         rockMeshes = prefabMeshes[1];
     }
@@ -103,12 +102,12 @@ public class InstanceFoliage : MonoBehaviour
         {
             if ((i % 1023) == 0 && rocksCount > 0)
             {
-                renderedPositionsTrees.Add(rocksGroup.ToArray());
+                renderedPositionsRocks.Add(rocksGroup.ToArray());
                 rocksGroup.Clear();
             }
-            else if (i == treesMatrices.Count - 1)
+            else if (i == rocksMatrices.Count - 1)
             {
-                renderedPositionsTrees.Add(rocksGroup.ToArray());
+                renderedPositionsRocks.Add(rocksGroup.ToArray());
             }
             rocksGroup.Add(rocksMatrices[i]);
             rocksCount++;
