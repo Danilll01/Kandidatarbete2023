@@ -14,7 +14,13 @@ public class Chunk : MonoBehaviour
     MarchingCubes marchingCubes;
     PillPlayerController player;
 
-    // Start is called before the first frame update
+    /// <summary>
+    /// Initialize
+    /// </summary>
+    /// <param name="index"></param>
+    /// <param name="resolution"></param>
+    /// <param name="marchingCubes"></param>
+    /// <param name="player"></param>
     public void Initialize(int index, int resolution, MarchingCubes marchingCubes, PillPlayerController player)
     {
         this.index = index;

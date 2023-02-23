@@ -5,7 +5,6 @@ using UnityEngine;
 public class SpawnPlanet : MonoBehaviour
 {
     [SerializeField] Planet prefab;
-    [SerializeField, Range(0, 1)] int update = 0;
     [SerializeField] PillPlayerController player;
 
     Planet planet;
@@ -14,7 +13,7 @@ public class SpawnPlanet : MonoBehaviour
     {
         Planet planet = Instantiate(prefab);
 
-        planet.radius = 1000;
+        planet.diameter = 1000;
 
         planet.transform.position = new Vector3(100, 0, 0);
 

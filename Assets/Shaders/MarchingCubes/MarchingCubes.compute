@@ -6,7 +6,7 @@
 #include "Includes/PerlinNoise.compute"
 
 // Helper functions declaration
-float4 getTexturePoint(uint3 pos, uint resolution, float radius);
+float4 getTexturePoint(uint3 pos, uint resolution, float diameter);
 float3 interpolateVerts(float4 v1, float4 v2);
 int indexFromCoord(uint x, uint y, uint z);
 
@@ -22,7 +22,7 @@ AppendStructuredBuffer<Triangle> triangles;
 
 uint resolution;
 float threshold;
-float radius;
+float diameter;
 uint frequency;
 float amplitude;
 int chunkIndex;
@@ -52,14 +52,14 @@ void GenerateMesh(uint3 id : SV_DispatchThreadID)
     // Get the value for each of the 8 corners in current cube
     float4 cubeCorners[8] =
     {
-        getTexturePoint(id, resolution, radius),
-        getTexturePoint(uint3(id.x + 1, id.y, id.z), resolution, radius),
-        getTexturePoint(uint3(id.x + 1, id.y, id.z + 1), resolution, radius),
-        getTexturePoint(uint3(id.x, id.y, id.z + 1), resolution, radius),
-        getTexturePoint(uint3(id.x, id.y + 1, id.z), resolution, radius),
-        getTexturePoint(uint3(id.x + 1, id.y + 1, id.z), resolution, radius),
-        getTexturePoint(uint3(id.x + 1, id.y + 1, id.z + 1), resolution, radius),
-        getTexturePoint(uint3(id.x, id.y + 1, id.z + 1), resolution, radius)
+        getTexturePoint(id, resolution, diameter),
+        getTexturePoint(uint3(id.x + 1, id.y, id.z), resolution, diameter),
+        getTexturePoint(uint3(id.x + 1, id.y, id.z + 1), resolution, diameter),
+        getTexturePoint(uint3(id.x, id.y, id.z + 1), resolution, diameter),
+        getTexturePoint(uint3(id.x, id.y + 1, id.z), resolution, diameter),
+        getTexturePoint(uint3(id.x + 1, id.y + 1, id.z), resolution, diameter),
+        getTexturePoint(uint3(id.x + 1, id.y + 1, id.z + 1), resolution, diameter),
+        getTexturePoint(uint3(id.x, id.y + 1, id.z + 1), resolution, diameter)
     };
     
     // Find the unique index for which cube config. we are dealing with, each bit in cubeindex represent a corner
@@ -122,7 +122,7 @@ int indexFromCoord(uint x, uint y, uint z)
 
 
 //Create a sphere on a 3D texture
-float4 getTexturePoint(uint3 pos, uint resolution, float radius)
+float4 getTexturePoint(uint3 pos, uint resolution, float diameter)
 {
     int index =
     pos.x +
@@ -131,7 +131,7 @@ float4 getTexturePoint(uint3 pos, uint resolution, float radius)
     
     float mid = (resolution >> 1) - .5;
     
-    float3 relPos = (mid - pos) * radius / resolution;
+    float3 relPos = (mid - pos) * diameter / resolution;
     
     float3 vec = (pos / mid) - 1;
     

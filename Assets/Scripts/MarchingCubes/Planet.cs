@@ -13,18 +13,18 @@ public class Planet : MonoBehaviour
 
     float threshold;
     float amplitude;
-    public float radius;
+    public float diameter;
     public float surfaceGravity;
     public string bodyName = "TBT";
     public float mass;
     public List<Planet> moons;
-    //readonly int chunkResolution = 3; //This is 2^chunkResolution
-    readonly int resolution = 5;
 
-
+    [SerializeField, Range(1, 4)] int chunkResolution = 3; //This is 2^chunkResolution
+    [SerializeField, Range(1, 14)] int resolution = 5;
     List<Chunk> chunks;
     MarchingCubes marchingCubes;
     PillPlayerController player;
+
     [SerializeField] Chunk chunkPrefab;
     [SerializeField] GameObject chunksParent;
     [SerializeField] private GenerateCreatures generateCreatures;
@@ -37,11 +37,11 @@ public class Planet : MonoBehaviour
     public void Initialize(PillPlayerController player)
     {
         this.player = player;
-        createMeshes(3);
+        createMeshes(chunkResolution);
 
-        float waterRadius = (threshold / 255 - 1) * radius;
+        float waterDiameter = -(threshold / 255 - 1) * diameter;
 
-        water.transform.localScale = new Vector3(waterRadius, waterRadius, waterRadius);
+        water.transform.localScale = new Vector3(waterDiameter, waterDiameter, waterDiameter);
 
         water.GetComponent<Renderer>().material = waterMaterial;
 
@@ -53,11 +53,11 @@ public class Planet : MonoBehaviour
 
         if (spawnFoliage != null && bodyName != "Sun" && !bodyName.Contains("Moon"))
         {
-            spawnFoliage.Initialize(this, waterRadius);
+            spawnFoliage.Initialize(this, waterDiameter);
         }
     }
 
-    void createMeshes(int chunkResolution)
+    private void createMeshes(int chunkResolution)
     {
         Destroy(chunksParent);
 
@@ -74,16 +74,15 @@ public class Planet : MonoBehaviour
             threshold = 23 + (float)rand.NextDouble() * 4;
             int frequency = rand.Next(2) + 3;
             amplitude = 1.2f + (float)rand.NextDouble() * 0.4f;
-            marchingCubes = new MarchingCubes(chunkResolution, meshGenerator, threshold, radius, frequency, amplitude);
+            marchingCubes = new MarchingCubes(chunkResolution, meshGenerator, threshold, diameter, frequency, amplitude);
         }
 
         marchingCubes.chunkResolution = chunkResolution;
 
-        
-
         chunks = new List<Chunk>();
         int noChunks = (1 << chunkResolution) * (1 << chunkResolution) * (1 << chunkResolution);
 
+        // Create all chunks
         for (int i = 0; i < noChunks; i++)
         {
             Chunk chunk = Instantiate(chunkPrefab);
@@ -100,7 +99,7 @@ public class Planet : MonoBehaviour
     /// </summary>
     public void SetUpPlanetValues()
     {
-        mass = surfaceGravity * radius * radius / Universe.gravitationalConstant;
+        mass = surfaceGravity * diameter * diameter / Universe.gravitationalConstant;
         gameObject.name = bodyName;
     }
 }
