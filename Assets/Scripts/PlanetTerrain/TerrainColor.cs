@@ -47,7 +47,6 @@ public class TerrainColor : MonoBehaviour {
     /// <param name="randomSeedGen">Random seed to be used when creating new random</param>
     public Material GetPlanetMaterial(MinMaxTerrainLevel terrainLevel, int randomSeedGen) 
     {
-        Debug.Log($"Nu är vi här !!!!: {randomSeedGen}");
         random = new System.Random(randomSeedGen);
 
         material = new Material(shader);

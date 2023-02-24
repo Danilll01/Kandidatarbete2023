@@ -73,15 +73,15 @@ public class Planet : MonoBehaviour
 
         terrainLevel.SetMin(Mathf.Abs((waterDiameter + 1) / 2));
         planetMaterial = terrainColor.GetPlanetMaterial(terrainLevel, rand.Next());
-        //planetMaterial = waterMaterial;
+
         // Sets the material of all chuncks
-        foreach (Chunk chunk in chunks) {
+        foreach (Chunk chunk in chunks) 
+        {
             chunk.SetMaterial(planetMaterial);
         }
 
         if (willGenerateCreature) 
         {
-
             // Generate the creatures
             if (generateCreatures != null && bodyName != "Sun" && !bodyName.Contains("Moon")) {
                 generateCreatures.Initialize(this, rand.Next());
@@ -126,7 +126,6 @@ public class Planet : MonoBehaviour
             chunk.transform.localPosition = Vector3.zero;
             chunk.name = "chunk" + i;
             chunk.Initialize(i, resolution, marchingCubes, player, terrainLevel);
-
             chunks.Add(chunk);
         }
     }
