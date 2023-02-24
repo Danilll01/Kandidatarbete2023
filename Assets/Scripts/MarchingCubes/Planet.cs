@@ -15,6 +15,7 @@ public class Planet : MonoBehaviour
     float threshold;
     float amplitude;
     public float diameter;
+    public float radius;
     public float surfaceGravity;
     public string bodyName = "TBT";
     public float mass;
@@ -36,6 +37,8 @@ public class Planet : MonoBehaviour
     /// </summary>
     public void Initialize(PillPlayerController player)
     {
+        radius = diameter / 2;
+
         this.player = player;
 
         // Create all meshes
