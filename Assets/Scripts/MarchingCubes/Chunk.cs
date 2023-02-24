@@ -36,6 +36,13 @@ public class Chunk : MonoBehaviour
         updateMesh(resolution);
     }
 
+    /// <summary>
+    /// Sets the material of the chunk
+    /// </summary>
+    public void SetMaterial(Material material) {
+        GetComponent<MeshRenderer>().material = material;
+    }
+
     private void Update()
     {
         // TODO: Update the size of the mesh according to the distance to the player.

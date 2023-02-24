@@ -55,18 +55,6 @@ public class MarchingCubes
         meshGenerator.SetFloat("amplitude", amplitude);
         meshGenerator.SetInt("chunkIndex", index);
         meshGenerator.SetInt("chunkResolution", chunkResolution);
-
-        if(index == 6 || index == 5)
-        {
-            MonoBehaviour.print("chunkIndex: " + index);
-            MonoBehaviour.print("chunkResolution: " + chunkResolution);
-            MonoBehaviour.print("resolution: " + (resolution << 3));
-            MonoBehaviour.print("frequency: " + frequency);
-            MonoBehaviour.print("amplitude: " + amplitude);
-            MonoBehaviour.print("threshold: " + threshold);
-            MonoBehaviour.print("diameter: " + diameter);
-        }
-
         meshGenerator.SetInt("resolution", resolution << 3);
         meshGenerator.SetFloat("threshold", threshold);
         meshGenerator.SetFloat("diameter", diameter);

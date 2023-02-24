@@ -10,9 +10,10 @@ GameObject:
   m_Component:
   - component: {fileID: 2176386958015389607}
   - component: {fileID: 8085060048720669979}
-  - component: {fileID: 2865990664458296443}
+  - component: {fileID: 3175307376905995560}
   - component: {fileID: 7065241369011201559}
   - component: {fileID: 2855617038713985127}
+  - component: {fileID: 2865990664458296443}
   m_Layer: 0
   m_Name: Planet
   m_TagString: Untagged
@@ -50,10 +51,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   meshGenerator: {fileID: 7200000, guid: 2b54143d75bd2344bb987facb6cb4950, type: 3}
+  threshold: 200
+  frequency: 20
+  amplitude: 1
+  bottomLevel: 1
   waterMaterial: {fileID: 2100000, guid: 417f8c1f207df654b84c6e8b4c0e8f0f, type: 2}
-  planetMaterial: {fileID: 2100000, guid: df41b9edb600ab046bbaeafd0aa07486, type: 2}
   water: {fileID: 5613251696109344692}
   diameter: 0
+  radius: 0
   surfaceGravity: 10
   bodyName: TBT
   mass: 429245
@@ -63,8 +68,114 @@ MonoBehaviour:
   chunkPrefab: {fileID: 5146216955868432244, guid: 8531586e98093b342af8fdd2a736c017,
     type: 3}
   chunksParent: {fileID: 3939805141923606249}
+  willGenerateCreature: 0
   generateCreatures: {fileID: 7065241369011201559}
+  terrainColor: {fileID: 3175307376905995560}
   spawnFoliage: {fileID: 2855617038713985127}
+--- !u!114 &3175307376905995560
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 938852981703260768}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e5a3ed9939778d3439761b2c939e896c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gradient:
+    serializedVersion: 2
+    key0: {r: 1, g: 1, b: 1, a: 1}
+    key1: {r: 1, g: 1, b: 1, a: 1}
+    key2: {r: 0, g: 0, b: 0, a: 0}
+    key3: {r: 0, g: 0, b: 0, a: 0}
+    key4: {r: 0, g: 0, b: 0, a: 0}
+    key5: {r: 0, g: 0, b: 0, a: 0}
+    key6: {r: 0, g: 0, b: 0, a: 0}
+    key7: {r: 0, g: 0, b: 0, a: 0}
+    ctime0: 0
+    ctime1: 65535
+    ctime2: 0
+    ctime3: 0
+    ctime4: 0
+    ctime5: 0
+    ctime6: 0
+    ctime7: 0
+    atime0: 0
+    atime1: 65535
+    atime2: 0
+    atime3: 0
+    atime4: 0
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_Mode: 0
+    m_NumColorKeys: 2
+    m_NumAlphaKeys: 2
+  tempMin: 200
+  tempMax: 300
+  angleCutOf: 90
+  angleBlending: 0.5
+  shader: {fileID: -6465566751694194690, guid: 582627e993e00c442b71e98ced60fb20, type: 3}
+--- !u!114 &7065241369011201559
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 938852981703260768}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e711f09e57fe0846be5f77dc317df2b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  creature: {fileID: 1804619385181138144, guid: 02ede06db9fc4944faf96463db22788b,
+    type: 3}
+  seed: 1234
+  maxPackCount: 1000
+  minPackSize: 2
+  maxPackSize: 10
+  packRadius: 50
+  terrainSteepnesAngle: 30
+  DEBUG: 0
+--- !u!114 &2855617038713985127
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 938852981703260768}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8931a0870bcc7e48a77bf4dba98a375, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  treeLimit: 10000
+  treeLine: 25
+  treeAngleLimit: 30
+  treePrefabs:
+  - {fileID: 9069115365609291303, guid: 60f79905accf3b24fa0114b941f1aac0, type: 3}
+  - {fileID: 4661435515762455780, guid: e289bf5debb17f6459818c207d781953, type: 3}
+  - {fileID: 2222111361404534124, guid: 88f2fd29f58b9734683512546acec310, type: 3}
+  - {fileID: 2807449429036958551, guid: f0c16f0ea935ea64297ca1d4d55d9746, type: 3}
+  bushLimit: 20000
+  bushLine: 35
+  bushAngleLimit: 30
+  bushPrefab:
+  - {fileID: 38335279662140195, guid: 34d3f526198dae440bb2ce6005d86055, type: 3}
+  - {fileID: 6239969156481229051, guid: b71b0f8d2f881c743a85228f3030d1cb, type: 3}
+  - {fileID: 38335279662140195, guid: 34d3f526198dae440bb2ce6005d86055, type: 3}
+  - {fileID: 6239969156481229051, guid: b71b0f8d2f881c743a85228f3030d1cb, type: 3}
+  stoneLimit: 20000
+  stoneLine: 36
+  stoneAngleLimit: 30
+  stonePrefab:
+  - {fileID: 7405846476849542632, guid: c6308cb7062fac34e8e50600086b12a1, type: 3}
+  - {fileID: 1576488453971893466, guid: a778b631c6253a04899cb31bad047c81, type: 3}
+  - {fileID: 7405846476849542632, guid: c6308cb7062fac34e8e50600086b12a1, type: 3}
+  - {fileID: 1576488453971893466, guid: a778b631c6253a04899cb31bad047c81, type: 3}
+  DEBUG: 0
 --- !u!120 &2865990664458296443
 LineRenderer:
   m_ObjectHideFlags: 0
@@ -164,64 +275,6 @@ LineRenderer:
     generateLightingData: 0
   m_UseWorldSpace: 1
   m_Loop: 0
---- !u!114 &7065241369011201559
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 938852981703260768}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0e711f09e57fe0846be5f77dc317df2b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  creature: {fileID: 1804619385181138144, guid: 02ede06db9fc4944faf96463db22788b,
-    type: 3}
-  seed: 1234
-  maxPackCount: 1000
-  minPackSize: 2
-  maxPackSize: 10
-  packRadius: 50
-  terrainSteepnesAngle: 30
-  DEBUG: 0
---- !u!114 &2855617038713985127
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 938852981703260768}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8931a0870bcc7e48a77bf4dba98a375, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  treeLimit: 10000
-  treeLine: 25
-  treeAngleLimit: 30
-  treePrefabs:
-  - {fileID: 9069115365609291303, guid: 60f79905accf3b24fa0114b941f1aac0, type: 3}
-  - {fileID: 4661435515762455780, guid: e289bf5debb17f6459818c207d781953, type: 3}
-  - {fileID: 2222111361404534124, guid: 88f2fd29f58b9734683512546acec310, type: 3}
-  - {fileID: 2807449429036958551, guid: f0c16f0ea935ea64297ca1d4d55d9746, type: 3}
-  bushLimit: 20000
-  bushLine: 35
-  bushAngleLimit: 30
-  bushPrefab:
-  - {fileID: 38335279662140195, guid: 34d3f526198dae440bb2ce6005d86055, type: 3}
-  - {fileID: 6239969156481229051, guid: b71b0f8d2f881c743a85228f3030d1cb, type: 3}
-  - {fileID: 38335279662140195, guid: 34d3f526198dae440bb2ce6005d86055, type: 3}
-  - {fileID: 6239969156481229051, guid: b71b0f8d2f881c743a85228f3030d1cb, type: 3}
-  stoneLimit: 20000
-  stoneLine: 36
-  stoneAngleLimit: 30
-  stonePrefab:
-  - {fileID: 7405846476849542632, guid: c6308cb7062fac34e8e50600086b12a1, type: 3}
-  - {fileID: 1576488453971893466, guid: a778b631c6253a04899cb31bad047c81, type: 3}
-  - {fileID: 7405846476849542632, guid: c6308cb7062fac34e8e50600086b12a1, type: 3}
-  - {fileID: 1576488453971893466, guid: a778b631c6253a04899cb31bad047c81, type: 3}
-  DEBUG: 0
 --- !u!1 &3939805141923606249
 GameObject:
   m_ObjectHideFlags: 0

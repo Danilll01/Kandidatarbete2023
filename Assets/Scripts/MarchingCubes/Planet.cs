@@ -14,7 +14,6 @@ public class Planet : MonoBehaviour
     [SerializeField, Range(0, 1)] private float bottomLevel = 1;
     [SerializeField] private Material waterMaterial;
     [SerializeField] private GameObject water;
-    [SerializeField] private GameObject meshObj;
 
     public float diameter;
     public float radius;
@@ -23,18 +22,22 @@ public class Planet : MonoBehaviour
     public float mass;
     public List<Planet> moons;
 
+    private List<Chunk> chunks;
+    private PillPlayerController player;
+    private Material planetMaterial;
+    private MarchingCubes marchingCubes;
+
     [SerializeField, Range(1, 4)] private int chunkResolution = 3; //This is 2^chunkResolution
     [SerializeField, Range(1, 14)] private int resolution = 5;
-    List<Chunk> chunks;
     [SerializeField] private Chunk chunkPrefab;
     [SerializeField] private GameObject chunksParent;
 
-    private MarchingCubes marchingCubes;
+
     [SerializeField] private bool willGenerateCreature = false;
     [SerializeField] private GenerateCreatures generateCreatures;
     [SerializeField] private TerrainColor terrainColor;
     [SerializeField] private SpawnFoliage spawnFoliage;
-    PillPlayerController player;
+    
 
     void Start() {
         if (generateCreatures == null) { 
@@ -69,7 +72,12 @@ public class Planet : MonoBehaviour
         water.GetComponent<Renderer>().material = waterMaterial;
 
         terrainLevel.SetMin(Mathf.Abs((waterDiameter + 1) / 2));
-        terrainColor.ColorPlanet(terrainLevel, rand.Next());
+        planetMaterial = terrainColor.GetPlanetMaterial(terrainLevel, rand.Next());
+        //planetMaterial = waterMaterial;
+        // Sets the material of all chuncks
+        foreach (Chunk chunk in chunks) {
+            chunk.SetMaterial(planetMaterial);
+        }
 
         if (willGenerateCreature) 
         {
@@ -117,7 +125,8 @@ public class Planet : MonoBehaviour
             chunk.transform.parent = chunksParent.transform;
             chunk.transform.localPosition = Vector3.zero;
             chunk.name = "chunk" + i;
-            chunk.Initialize(i, resolution, marchingCubes, player, terrainLevel); 
+            chunk.Initialize(i, resolution, marchingCubes, player, terrainLevel);
+
             chunks.Add(chunk);
         }
     }
