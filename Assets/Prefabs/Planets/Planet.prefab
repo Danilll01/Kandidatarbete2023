@@ -53,13 +53,13 @@ MonoBehaviour:
   waterMaterial: {fileID: 2100000, guid: 417f8c1f207df654b84c6e8b4c0e8f0f, type: 2}
   planetMaterial: {fileID: 2100000, guid: df41b9edb600ab046bbaeafd0aa07486, type: 2}
   water: {fileID: 5613251696109344692}
-  radius: 293
+  diameter: 0
   surfaceGravity: 10
   bodyName: TBT
   mass: 429245
   moons: []
-  chunkResolution: 2
-  resolution: 7
+  chunkResolution: 3
+  resolution: 3
   chunkPrefab: {fileID: 5146216955868432244, guid: 8531586e98093b342af8fdd2a736c017,
     type: 3}
   chunksParent: {fileID: 3939805141923606249}

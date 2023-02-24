@@ -28,10 +28,17 @@ public class Chunk : MonoBehaviour
         this.marchingCubes = marchingCubes;
         this.player = player;
 
-        meshFilter = transform.GetChild(0).GetComponent<MeshFilter>();
-        meshCollider = transform.GetChild(0).GetComponent<MeshCollider>();
+        meshFilter = transform.GetComponent<MeshFilter>();
+        meshCollider = transform.GetComponent<MeshCollider>();
 
-        updateMesh(resolution);
+        if(index == 19)
+        {
+            updateMesh(7);
+        }
+        else
+        {
+            updateMesh(resolution);
+        }
     }
 
     private void Update()
