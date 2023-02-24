@@ -56,8 +56,6 @@ public class Planet : MonoBehaviour
         // Initialize the meshgenerator
         if (meshGenerator != null)
         {
-            
-
             threshold = 23 + (float)rand.NextDouble() * 4;
             int frequency = rand.Next(2) + 3;
             amplitude = 1.2f + (float)rand.NextDouble() * 0.4f;

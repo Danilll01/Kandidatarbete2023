@@ -6,7 +6,7 @@ using TMPro;
 public static class DisplayDebug
 {
     private static TextMeshProUGUI debugTextContainer;
-    private static List<KeyValuePair<string, int>> debugList;
+    private static List<KeyValuePair<string, string>> debugList;
 
     /// <summary>
     /// Initialize the parameters
@@ -40,7 +40,23 @@ public static class DisplayDebug
     /// <param name="indexInList">What order in the debug text it should be displayed (optional)</param>
     public static void AddOrSetDebugVariable(string text, int variableValue, int indexInList = -1)
     {
-        KeyValuePair<string, int> debugVariable = new KeyValuePair<string, int>(text, variableValue);
+        UpdateOrAddToList(text, variableValue.ToString(), indexInList);
+    }
+
+    /// <summary>
+    /// Overload of other method, this one takes in a string instead of an int
+    /// </summary>
+    /// <param name="text"></param>
+    /// <param name="variableValue"></param>
+    /// <param name="indexInList"></param>
+    public static void AddOrSetDebugVariable(string text, string variableValue, int indexInList = -1)
+    {
+        UpdateOrAddToList(text, variableValue, indexInList);
+    }
+
+    private static void UpdateOrAddToList(string text, string variableValue, int indexInList)
+    {
+        KeyValuePair<string, string> debugVariable = new KeyValuePair<string, string>(text, variableValue);
         if (debugList == null)
         {
             InitializeDictionary();
@@ -49,7 +65,7 @@ public static class DisplayDebug
         int existingIndex = -1;
         for (int i = 0; i < debugList.Count; i++)
         {
-            KeyValuePair<string, int> pair = debugList[i];
+            KeyValuePair<string, string> pair = debugList[i];
             if (pair.Key == text)
             {
                 existingIndex = i;
@@ -80,7 +96,7 @@ public static class DisplayDebug
             return;
         }
 
-        debugList = new List<KeyValuePair<string, int>>();
+        debugList = new List<KeyValuePair<string, string>>();
     }
 
 }
