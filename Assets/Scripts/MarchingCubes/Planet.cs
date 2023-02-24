@@ -1,19 +1,22 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEngine;
 
+[RequireComponent(typeof(GenerateCreatures))]
+[RequireComponent(typeof(TerrainColor))]
 public class Planet : MonoBehaviour
 {
-    [SerializeField] ComputeShader meshGenerator;
-    MarchingCubes marchingCubes;
+    [SerializeField] private ComputeShader meshGenerator;
+    [SerializeField, Range(0, 255)] private float threshold = 200;
+    [SerializeField, Range(1, 28)] private int resolution = 20;
+    [SerializeField, Range(1, 25)] private int frequency = 20;
+    [SerializeField, Range(0, 5)] private float amplitude = 1;
+    [SerializeField, Range(0, 1)] private float bottomLevel = 1;
+    [SerializeField] private Material waterMaterial;
+    [SerializeField] private GameObject water;
+    [SerializeField] private GameObject meshObj;
 
-    [SerializeField] Material waterMaterial;
-    [SerializeField] Material planetMaterial;
-
-    [SerializeField] GameObject water;
-
-    float threshold;
-    float amplitude;
     public float diameter;
     public float radius;
     public float surfaceGravity;
@@ -27,16 +30,30 @@ public class Planet : MonoBehaviour
     [SerializeField] Chunk chunkPrefab;
     [SerializeField] GameObject chunksParent;
 
+    private MarchingCubes marchingCubes;
+    [SerializeField] private bool willGenerateCreature = false;
     [SerializeField] private GenerateCreatures generateCreatures;
+    [SerializeField] private TerrainColor terrainColor;
     [SerializeField] private SpawnFoliage spawnFoliage;
     PillPlayerController player;
 
+    void Start() {
+        if (generateCreatures == null) { 
+            generateCreatures = GetComponent<GenerateCreatures>();
+        }
+
+        if (terrainColor == null) {
+            terrainColor = GetComponent<TerrainColor>();
+        }
+    }
 
     /// <summary>
     /// Initialize mesh for marching cubes
     /// </summary>
-    public void Initialize(PillPlayerController player)
+    public void Initialize(PillPlayerController player, int randomSeed)
     {
+        System.Random rand = new System.Random(randomSeed);
+
         radius = diameter / 2;
 
         this.player = player;
@@ -49,15 +66,24 @@ public class Planet : MonoBehaviour
         water.transform.localScale = new Vector3(waterDiameter, waterDiameter, waterDiameter);
         water.GetComponent<Renderer>().material = waterMaterial;
 
-        // Generate the creatures
-        if (generateCreatures != null && bodyName != "Sun" && !bodyName.Contains("Moon"))
+
+        MinMaxTerrainLevel terrainLevel = new MinMaxTerrainLevel();
+        terrainLevel.SetMin(Mathf.Abs((waterRadius + 1) / 2));
+        terrainColor.ColorPlanet(terrainLevel, rand.Next());
+        marchingCubes.generateMesh(terrainLevel);
+
+        if (willGenerateCreature) 
         {
-            generateCreatures.Initialize(this);
+
+            // Generate the creatures
+            if (generateCreatures != null && bodyName != "Sun" && !bodyName.Contains("Moon")) {
+                generateCreatures.Initialize(this, rand.Next());
+            }
         }
 
         if (spawnFoliage != null && bodyName != "Sun" && !bodyName.Contains("Moon"))
         {
-            spawnFoliage.Initialize(this, waterDiameter);
+            spawnFoliage.Initialize(this, waterRadius, rand.Next());
         }
     }
 

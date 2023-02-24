@@ -36,7 +36,7 @@ public class MarchingCubes
     /// <summary>
     /// Generate the mesh from the given parameters in the constructor
     /// </summary>
-    public void generateMesh(int index, int resolution, Mesh mesh)
+    public void generateMesh(MinMaxTerrainLevel hightFillerTerrainLevel, int index, int resolution, Mesh mesh)
     {
         resolution *= 1 << chunkResolution;
 
@@ -91,6 +91,8 @@ public class MarchingCubes
             for (int j = 0; j < 3; j++)
             {
                 meshTriangles[i * 3 + j] = i * 3 + j;
+                hightFillerTerrainLevel.UpdateMinMax(triangles[i][j]);
+
                 meshVertices[i * 3 + j] = triangles[i][j];
             }
         }
