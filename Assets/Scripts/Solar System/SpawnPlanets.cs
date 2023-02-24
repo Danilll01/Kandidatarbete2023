@@ -58,12 +58,24 @@ public class SpawnPlanets : MonoBehaviour
         SunPlanetBody.bodyName = "Sun";
         SunPlanetBody.radius = radiusMaxValue * 2;
         SunPlanetBody.SetUpPlanetValues();
-        SunPlanetBody.Initialize();
         bodies.Add(SunPlanetBody);
+
+        // Creates a sphere to be able to use the mesh for the sun
+        GameObject sphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+        Sun.GetComponentInChildren<MeshFilter>().sharedMesh = sphere.GetComponent<MeshFilter>().sharedMesh;
+        Sun.transform.GetChild(0).localScale = new Vector3(SunPlanetBody.radius, SunPlanetBody.radius, SunPlanetBody.radius);
+        GameObject water = Sun.transform.GetChild(1).gameObject;
+        Destroy(water);
+        Destroy(sphere);
+
+        Destroy(Sun.GetComponent<SpawnFoliage>());
+        Destroy(Sun.GetComponent<GenerateCreatures>());
+
         GameObject velocityHelper = new GameObject();
         velocityHelper.gameObject.name = "VelocityHelper";
         velocityHelper.transform.parent = Sun.transform;
         velocityHelper.transform.localPosition = new Vector3(-100, 0, 0);
+
         Sun.AddComponent<KeplerOrbitMover>();
         Sun.AddComponent<KeplerOrbitLineDisplay>();
         Sun.GetComponent<KeplerOrbitMover>().enabled = false;
@@ -93,7 +105,7 @@ public class SpawnPlanets : MonoBehaviour
 
 
             planetBody.SetUpPlanetValues();
-            planetBody.Initialize();
+            planetBody.Initialize(random.Next());
             InstantiateMoons(planetBody, nrOfMoonsForPlanet);
             bodies.Add(planetBody);
 
@@ -162,7 +174,7 @@ public class SpawnPlanets : MonoBehaviour
             moonBody.bodyName = "Moon " + i;
             moonBody.radius = random.Next((int)(parentPlanet.radius / 5), (int)((parentPlanet.radius / 2) + 1));
             moonBody.SetUpPlanetValues();
-            moonBody.Initialize();
+            moonBody.Initialize(random.Next());
             parentPlanet.moons.Add(moonBody);
             SetupOrbitComponents(parentPlanet.gameObject, moon);
         }

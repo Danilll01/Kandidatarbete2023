@@ -16,7 +16,14 @@ public class StartManager : MonoBehaviour
     /// <param name="slider"></param>
     public void UpdatePlanetInputValue(Slider slider)
     {
-        nrOfPlanetsText.text = slider.value.ToString();
+        if (slider.value == 0)
+        {
+            nrOfPlanetsText.text = "X";
+        }
+        else
+        {
+            nrOfPlanetsText.text = slider.value.ToString();
+        }
     }
 
     /// <summary>

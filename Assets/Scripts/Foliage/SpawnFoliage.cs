@@ -106,7 +106,7 @@ public class SpawnFoliage : MonoBehaviour
     /// </summary>
     /// <param name="planet"> A reference to the planet the script should be run on</param>
     /// <param name="waterLevel"> Radius (diameter) of the water level of the planet </param>
-    public void Initialize(Planet planet, float waterLevel)
+    public void Initialize(Planet planet, float waterLevel, int seed)
     {
         // Gets the parameters for the planets
         this.planet = planet;

@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Materials/TerrainMat.mat.meta
+guid: 8d8eeb6d5285f3041ac278db6f825c36
+NativeFormatImporter:
+========
+guid: ebd0c7628a0bc5c46ae2844a084ac953
+folderAsset: yes
+DefaultImporter:
+>>>>>>>> main:Assets/Materials/Water.meta
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

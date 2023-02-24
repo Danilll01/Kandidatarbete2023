@@ -30,10 +30,11 @@ public class GenerateCreatures : MonoBehaviour
     /// Initializes creature generation
     /// </summary>
     /// <param name="planet">The planet script found on a planet</param>
-    public void Initialize(Planet planet)
+    /// <param name="randomSeed">The random seed to spawn things with</param>
+    public void Initialize(Planet planet, int randomSeed)
     {
         this.planet = planet;
-
+        this.seed= randomSeed;
         planetCenter = planet.transform.position;
 
         // Create a gameobject to hold all creatures
@@ -43,7 +44,7 @@ public class GenerateCreatures : MonoBehaviour
 
         // This is how system random works where we dont share Random instances
         //System.Random rand1 = new System.Random(1234);
-        Random.InitState(seed);
+        Random.InitState(randomSeed);
 
         GenerateCreaturesOnPlanet();
         if (DEBUG) Debug.Log("Spawning");
