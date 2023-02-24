@@ -29,21 +29,15 @@ public class Planet : MonoBehaviour
     [SerializeField] private TerrainColor terrainColor;
     [SerializeField] private SpawnFoliage spawnFoliage;
 
-    void Start() {
-        if (generateCreatures == null) { 
-            generateCreatures = GetComponent<GenerateCreatures>();
-        }
-
-        if (terrainColor == null) {
-            terrainColor = GetComponent<TerrainColor>();
-        }
-    }
-
     /// <summary>
     /// Initialize mesh for marching cubes
     /// </summary>
     public void Initialize(int randomSeed)
     {
+        if (bodyName == "Sun")
+        {
+            return;
+        }
         System.Random rand = new System.Random(randomSeed);
 
         // Get meshfilter and create new mesh if it doesn't exist

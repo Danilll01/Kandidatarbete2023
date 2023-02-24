@@ -5,6 +5,7 @@ using SimpleKeplerOrbits;
 
 public class SpawnPlanets : MonoBehaviour
 {
+    [HideInInspector] public Sun sun;
     [HideInInspector] public List<Planet> bodies;
     [SerializeField] private GameObject planetsPrefab;
     [SerializeField] private GameObject planetsParent;
@@ -33,7 +34,7 @@ public class SpawnPlanets : MonoBehaviour
         random = Universe.random;
         GetValues();
         CreatePlanets();
-        player.Initialize(bodies[1].gameObject);
+        player.Initialize(bodies[0].gameObject);
         solarySystemGenerated = true;
     }
 
@@ -48,40 +49,38 @@ public class SpawnPlanets : MonoBehaviour
         bodies = new List<Planet>();
 
         // Create a sun object
-        GameObject Sun = Instantiate(planetsPrefab);
-        Sun.transform.parent = planetsParent.transform;
-        Sun.transform.localPosition = new Vector3(0, 0, 0);
-        Sun.gameObject.name = "Sun";
-        Sun.GetComponentInChildren<MeshRenderer>().material = sunMaterial;
+        //GameObject Sun = Instantiate(planetsPrefab);
 
-        Planet SunPlanetBody = Sun.GetComponent<Planet>();
+        // Creates a sphere to be able to use the mesh for the sun
+        GameObject sunObject = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+        sunObject.transform.parent = planetsParent.transform;
+        sunObject.transform.localPosition = new Vector3(0, 0, 0);
+        sunObject.gameObject.name = "Sun";
+        sunObject.GetComponentInChildren<MeshRenderer>().material = sunMaterial;
+        sunObject.GetComponentInChildren<MeshFilter>().sharedMesh = sunObject.GetComponent<MeshFilter>().sharedMesh;
+
+        Sun SunPlanetBody = sunObject.AddComponent<Sun>();
         SunPlanetBody.bodyName = "Sun";
         SunPlanetBody.radius = radiusMaxValue * 2;
         SunPlanetBody.SetUpPlanetValues();
-        bodies.Add(SunPlanetBody);
+        sunObject.transform.localScale = new Vector3(SunPlanetBody.radius, SunPlanetBody.radius, SunPlanetBody.radius);
 
-        // Creates a sphere to be able to use the mesh for the sun
-        GameObject sphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-        Sun.GetComponentInChildren<MeshFilter>().sharedMesh = sphere.GetComponent<MeshFilter>().sharedMesh;
-        Sun.transform.GetChild(0).localScale = new Vector3(SunPlanetBody.radius, SunPlanetBody.radius, SunPlanetBody.radius);
-        GameObject water = Sun.transform.GetChild(1).gameObject;
-        Destroy(water);
-        Destroy(sphere);
-
-        Destroy(Sun.GetComponent<SpawnFoliage>());
-        Destroy(Sun.GetComponent<GenerateCreatures>());
+        sun = SunPlanetBody;
 
         GameObject velocityHelper = new GameObject();
         velocityHelper.gameObject.name = "VelocityHelper";
-        velocityHelper.transform.parent = Sun.transform;
+        velocityHelper.transform.parent = sunObject.transform;
         velocityHelper.transform.localPosition = new Vector3(-100, 0, 0);
 
-        Sun.AddComponent<KeplerOrbitMover>();
-        Sun.AddComponent<KeplerOrbitLineDisplay>();
-        Sun.GetComponent<KeplerOrbitMover>().enabled = false;
-        Sun.GetComponent<KeplerOrbitLineDisplay>().enabled = false;
-        Sun.GetComponent<KeplerOrbitMover>().VelocityHandle = velocityHelper.transform;
-        InstantiatePlanets(Sun);
+        SphereCollider collider = sun.GetComponent<SphereCollider>();
+        Destroy(collider);
+        sunObject.AddComponent<KeplerOrbitMover>();
+        sunObject.AddComponent<KeplerOrbitLineDisplay>();
+        sunObject.GetComponent<KeplerOrbitMover>().enabled = false;
+        sunObject.GetComponent<KeplerOrbitLineDisplay>().enabled = false;
+        sunObject.GetComponent<KeplerOrbitMover>().VelocityHandle = velocityHelper.transform;
+
+        InstantiatePlanets(sunObject);
 
     }
 
@@ -89,7 +88,7 @@ public class SpawnPlanets : MonoBehaviour
     private void InstantiatePlanets(GameObject Sun)
     {
         // Create all other planets and helpers
-        for (int i = 1; i < numberOfPlanets + 1; i++)
+        for (int i = 0; i < numberOfPlanets; i++)
         {
             GameObject planet = Instantiate(planetsPrefab);
             planet.transform.parent = planetsParent.transform;
@@ -119,10 +118,10 @@ public class SpawnPlanets : MonoBehaviour
         Vector3 pos = Vector3.one;
 
         // Calculates the position from the sun given the number of moons 
-        if (index == 1)
+        if (index == 0)
         {
             float totalRadiusOfCurrentPlanet = planet.radius + (planet.radius * moonsNumber);
-            float sunRadius = bodies[0].radius;
+            float sunRadius = sun.radius;
             float offset = random.Next(radiusMinValue, radiusMaxValue) * 1.2f;
             float distanceFromSun = sunRadius + totalRadiusOfCurrentPlanet + offset;
 
@@ -208,7 +207,15 @@ public class SpawnPlanets : MonoBehaviour
         // Setup settings for the orbit script with the sun as the central body
         KeplerOrbitMover planetOrbitMover = planet.GetComponent<KeplerOrbitMover>();
         planetOrbitMover.AttractorSettings.AttractorObject = Attractor.transform;
-        planetOrbitMover.AttractorSettings.AttractorMass = Attractor.GetComponent<Planet>().mass;
+
+        if (Attractor.name.Contains("Sun"))
+        {
+            planetOrbitMover.AttractorSettings.AttractorMass = Attractor.GetComponent<Sun>().mass;
+        }
+        else
+        {
+            planetOrbitMover.AttractorSettings.AttractorMass = Attractor.GetComponent<Planet>().mass;
+        }
         planetOrbitMover.AttractorSettings.GravityConstant = Universe.gravitationalConstant;
         planetOrbitMover.VelocityHandle = velocityHelper.transform;
         planetOrbitMover.SetUp();
