@@ -38,12 +38,6 @@ public class TerrainColor : MonoBehaviour {
       new Color[] { new Color(140/255f, 140 / 255f, 140 / 255f), new Color(180/255f, 179/255f, 20/255f), new Color(73/255f, 200/255f, 40/255f), new Color(149 / 255f, 149 / 255f, 149 / 255f), new Color(1, 1, 1) } // Earth like palette
     };
 
-
-    //public void OnValidate() {
-    //    MinMaxTerrainLevel terrainLevel = null;
-    //    ColorPlanet(terrainLevel, UnityEngine.Random.Range(0, 1000000000));
-    //}
-
     /// <summary>
     /// Will color the planet with a random color
     /// </summary>

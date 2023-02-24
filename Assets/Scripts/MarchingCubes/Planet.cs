@@ -29,10 +29,6 @@ public class Planet : MonoBehaviour
     [SerializeField] private TerrainColor terrainColor;
     [SerializeField] private SpawnFoliage spawnFoliage;
 
-    //public void OnValidate() {
-    //    Initialize(UnityEngine.Random.Range(0, 100000000));
-    //}
-
     void Start() {
         if (generateCreatures == null) { 
             generateCreatures = GetComponent<GenerateCreatures>();
@@ -92,13 +88,13 @@ public class Planet : MonoBehaviour
 
             // Generate the creatures
             if (generateCreatures != null && bodyName != "Sun" && !bodyName.Contains("Moon")) {
-                generateCreatures.Initialize(this);
+                generateCreatures.Initialize(this, rand.Next());
             }
         }
 
         if (spawnFoliage != null && bodyName != "Sun" && !bodyName.Contains("Moon"))
         {
-            spawnFoliage.Initialize(this, waterRadius);
+            spawnFoliage.Initialize(this, waterRadius, rand.Next());
         }
     }
 
