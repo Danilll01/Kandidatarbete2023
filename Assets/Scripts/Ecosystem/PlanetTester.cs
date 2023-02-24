@@ -11,7 +11,7 @@ public class PlanetTester : MonoBehaviour
     void Start()
     {
         Universe.InitializeRandomWithSeed();
-        planet.Initialize();
+        planet.Initialize(Universe.random.Next());
         planet.SetUpPlanetValues();
     }
 
