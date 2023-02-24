@@ -58,7 +58,7 @@ public class Creature : MonoBehaviour
         renderer = lodGroup.transform.GetComponent<Renderer>();
 
         // Teleport the creature 2 meters up in correct direction based on position on planet
-        transform.position += -(planet.meshObj.transform.position - transform.position).normalized;
+        transform.position += -(planet.transform.position - transform.position).normalized;
 
     }
 
@@ -249,8 +249,8 @@ public class Creature : MonoBehaviour
     private bool IsCloseToDestination(Vector3 pos)
     {
         // transform.position += -(planet.meshObj.transform.position - transform.position).normalized;
-        Vector3 creatureToPlanetCenter = (planet.meshObj.transform.position - transform.position);
-        Vector3 posToPlanetCenter = planet.meshObj.transform.position - pos;
+        Vector3 creatureToPlanetCenter = (planet.transform.position - transform.position);
+        Vector3 posToPlanetCenter = planet.transform.position - pos;
 
         float angle = Vector3.Angle(creatureToPlanetCenter, posToPlanetCenter);
         if (DEBUG) Debug.Log("Angle:" + angle);
@@ -274,7 +274,7 @@ public class Creature : MonoBehaviour
         }
         
         
-        Vector3 directionFromCenter = transform.position - planet.meshObj.transform.position;
+        Vector3 directionFromCenter = transform.position - planet.transform.position;
 
         //directionFromCenter = directionFromCenter.normalized;
         //transform.rotation = Quaternion.FromToRotation(transform.up, directionFromCenter) * transform.rotation;
@@ -285,7 +285,7 @@ public class Creature : MonoBehaviour
         RaycastHit hit;
         
         // Cast a ray down to get the normal of the terrain
-        if (Physics.Linecast(transform.position, planet.meshObj.transform.position, out hit))
+        if (Physics.Linecast(transform.position, planet.transform.position, out hit))
         {
             if (DEBUG) Debug.Log("Hit: " + hit.collider.gameObject.name);
             //Quaternion grndTilt = 
@@ -332,7 +332,7 @@ public class Creature : MonoBehaviour
     private void AttractToPlanet()
     {
         float gravity = -9.82f;
-        Vector3 targetDirection = (transform.position - planet.meshObj.transform.position).normalized;
+        Vector3 targetDirection = (transform.position - planet.transform.position).normalized;
         Vector3 bodyUp = transform.up;
 
         rigidbody.AddForce(targetDirection * gravity);
