@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.Mathematics;
 using UnityEngine;
 
@@ -86,18 +87,17 @@ public class TerrainColor : MonoBehaviour {
 
         // Gets color palette and puts it into a gradient
         Color[] takePalette = crazyColorPaletts[random.Next(crazyColorPaletts.Length - 1)];
-        float[] keyPos = new float[] { 0f, 0,015f, 0.144f, 0.618f, 1f };
-        List<GradientColorKey> gradientKeys = new List<GradientColorKey>();
+        float[] keyPos = new float[] { 0f, 0.015f, 0.144f, 0.618f, 1f };
+        GradientColorKey[] gradientKeys = new GradientColorKey[takePalette.Length];
+        Color[] takePaletteRand = takePalette.OrderBy(x => random.Next()).ToArray();
 
-        // Randomizes order of color in the palette
+
         for (int i = 0; i < takePalette.Length; i++) {
-            int index = random.Next(0, gradientKeys.Count + 1);
-            gradientKeys.Insert(index, new GradientColorKey(takePalette[i], keyPos[i]));
+            gradientKeys[i] = new GradientColorKey(takePaletteRand[i], keyPos[i]);
         }
 
         GradientAlphaKey[] alphaKey = new GradientAlphaKey[1];
-        alphaKey[0] = new GradientAlphaKey(1, 0);
-        gradient.SetKeys(gradientKeys.ToArray(), alphaKey);
+        gradient.SetKeys(gradientKeys, alphaKey);
 
         // Use the gradient to sample the 50 values into the color texture
         for (int i = 0; i < textureRes; i++) {
