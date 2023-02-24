@@ -143,9 +143,9 @@ float4 getTexturePoint(uint3 pos)
     
     // Add noise to current point
     float density = (1 - length(relPos)) * 255;
-    float noiseOctave0 = (calculateNoise((relPos + 1) * .5 * (frequency << 0)) + 1) * .5 * amplitude;
-    float noiseOctave1 = (calculateNoise((relPos + 1) * .5 * (frequency << 1)) + 1) * .5 * amplitude * amplitude;
-    float noiseOctave2 = (calculateNoise((relPos + 1) * .5 * (frequency << 2)) + 1) * .5 * amplitude * amplitude * amplitude;
+    float noiseOctave0 = (calculateNoise(normPos * 1 * (frequency << 0)) + 1) * .5 * amplitude;
+    float noiseOctave1 = (calculateNoise(normPos * 1 * (frequency << 1)) + 1) * .5 * amplitude * amplitude;
+    float noiseOctave2 = (calculateNoise(normPos * 1 * (frequency << 2)) + 1) * .5 * amplitude * amplitude * amplitude;
     density *= noiseOctave0 * noiseOctave1 * noiseOctave2;
         
     // Return the noised value
