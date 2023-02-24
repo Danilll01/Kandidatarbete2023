@@ -13,6 +13,7 @@ public class Chunk : MonoBehaviour
     Mesh mesh;
     MarchingCubes marchingCubes;
     PillPlayerController player;
+    MinMaxTerrainLevel terrainLevel;
 
     /// <summary>
     /// Initialize
@@ -21,24 +22,18 @@ public class Chunk : MonoBehaviour
     /// <param name="resolution"></param>
     /// <param name="marchingCubes"></param>
     /// <param name="player"></param>
-    public void Initialize(int index, int resolution, MarchingCubes marchingCubes, PillPlayerController player)
+    public void Initialize(int index, int resolution, MarchingCubes marchingCubes, PillPlayerController player, MinMaxTerrainLevel terrainLevel)
     {
         this.index = index;
         this.resolution = resolution;
         this.marchingCubes = marchingCubes;
         this.player = player;
+        this.terrainLevel = terrainLevel;
 
         meshFilter = transform.GetComponent<MeshFilter>();
         meshCollider = transform.GetComponent<MeshCollider>();
 
-        if(index == 19)
-        {
-            updateMesh(7);
-        }
-        else
-        {
-            updateMesh(resolution);
-        }
+        updateMesh(resolution);
     }
 
     private void Update()
@@ -49,7 +44,7 @@ public class Chunk : MonoBehaviour
     private void updateMesh(int resolution)
     {
         mesh = new Mesh();
-        marchingCubes.generateMesh(index, resolution, mesh);
+        marchingCubes.generateMesh(terrainLevel, index, resolution, mesh);
 
         meshFilter.sharedMesh = mesh;
 

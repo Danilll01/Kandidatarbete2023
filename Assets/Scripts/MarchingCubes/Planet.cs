@@ -9,7 +9,6 @@ public class Planet : MonoBehaviour
 {
     [SerializeField] private ComputeShader meshGenerator;
     [SerializeField, Range(0, 255)] private float threshold = 200;
-    [SerializeField, Range(1, 28)] private int resolution = 20;
     [SerializeField, Range(1, 25)] private int frequency = 20;
     [SerializeField, Range(0, 5)] private float amplitude = 1;
     [SerializeField, Range(0, 1)] private float bottomLevel = 1;
@@ -24,11 +23,11 @@ public class Planet : MonoBehaviour
     public float mass;
     public List<Planet> moons;
 
-    [SerializeField, Range(1, 4)] int chunkResolution = 3; //This is 2^chunkResolution
-    [SerializeField, Range(1, 14)] int resolution = 5;
+    [SerializeField, Range(1, 4)] private int chunkResolution = 3; //This is 2^chunkResolution
+    [SerializeField, Range(1, 14)] private int resolution = 5;
     List<Chunk> chunks;
-    [SerializeField] Chunk chunkPrefab;
-    [SerializeField] GameObject chunksParent;
+    [SerializeField] private Chunk chunkPrefab;
+    [SerializeField] private GameObject chunksParent;
 
     private MarchingCubes marchingCubes;
     [SerializeField] private bool willGenerateCreature = false;
@@ -58,19 +57,19 @@ public class Planet : MonoBehaviour
 
         this.player = player;
 
+        MinMaxTerrainLevel terrainLevel = new MinMaxTerrainLevel();
+        
+
         // Create all meshes
-        createMeshes(chunkResolution);
+        createMeshes(chunkResolution, terrainLevel);
 
         // Init water
         float waterDiameter = -(threshold / 255 - 1) * diameter;
         water.transform.localScale = new Vector3(waterDiameter, waterDiameter, waterDiameter);
         water.GetComponent<Renderer>().material = waterMaterial;
 
-
-        MinMaxTerrainLevel terrainLevel = new MinMaxTerrainLevel();
-        terrainLevel.SetMin(Mathf.Abs((waterRadius + 1) / 2));
+        terrainLevel.SetMin(Mathf.Abs((waterDiameter + 1) / 2));
         terrainColor.ColorPlanet(terrainLevel, rand.Next());
-        marchingCubes.generateMesh(terrainLevel);
 
         if (willGenerateCreature) 
         {
@@ -83,11 +82,11 @@ public class Planet : MonoBehaviour
 
         if (spawnFoliage != null && bodyName != "Sun" && !bodyName.Contains("Moon"))
         {
-            spawnFoliage.Initialize(this, waterRadius, rand.Next());
+            spawnFoliage.Initialize(this, waterDiameter, rand.Next());
         }
     }
 
-    private void createMeshes(int chunkResolution)
+    private void createMeshes(int chunkResolution, MinMaxTerrainLevel terrainLevel)
     {
         Destroy(chunksParent);
 
@@ -118,7 +117,7 @@ public class Planet : MonoBehaviour
             chunk.transform.parent = chunksParent.transform;
             chunk.transform.localPosition = Vector3.zero;
             chunk.name = "chunk" + i;
-            chunk.Initialize(i, resolution, marchingCubes, player); 
+            chunk.Initialize(i, resolution, marchingCubes, player, terrainLevel); 
             chunks.Add(chunk);
         }
     }

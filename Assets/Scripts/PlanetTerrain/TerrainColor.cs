@@ -14,7 +14,7 @@ public class TerrainColor : MonoBehaviour {
 
     private Texture2D texture;
     private const int textureRes = 50;
-    private Material material;
+    private Material[] materials;
     private System.Random random;
 
     private Color[][] crazyColorPaletts =
@@ -44,7 +44,7 @@ public class TerrainColor : MonoBehaviour {
     /// </summary>
     /// <param name="terrainLevel">The terrain level, this contains min and max hight for colors</param>
     /// <param name="randomSeedGen">Random seed to be used when creating new random</param>
-    public void ColorPlanet(MinMaxTerrainLevel terrainLevel, int randomSeedGen) 
+    public void ColorPlanet(MinMaxTerrainLevel terrainLevel, int randomSeedGen, Material[] materials) 
     {
         random = new System.Random(randomSeedGen);
 
@@ -56,9 +56,10 @@ public class TerrainColor : MonoBehaviour {
         if (texture == null) {
             texture = new Texture2D(textureRes, 1);
         }
-        if (material == null) {
-            material = transform.GetChild(0).GetComponent<MeshRenderer>().material;
+        if (materials == null) {
+            this.materials = materials;
         }
+
 
         UpdateMinMaxHight();
         SetMaterialColor();
