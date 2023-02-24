@@ -42,7 +42,7 @@ public class MarchingCubes
     /// <summary>
     /// Generate the mesh from the given parameters in the constructor
     /// </summary>
-    public void generateMesh()
+    public void generateMesh(MinMaxTerrainLevel hightFillerTerrainLevel)
     {
         // Calculate the total number of voxels and the max triangle count possible
         int numVoxelsPerAxis = (resolution << 3) - 1;
@@ -82,6 +82,8 @@ public class MarchingCubes
             for (int j = 0; j < 3; j++)
             {
                 meshTriangles[i * 3 + j] = i * 3 + j;
+                hightFillerTerrainLevel.UpdateMinMax(triangles[i][j]);
+
                 meshVertices[i * 3 + j] = triangles[i][j];
             }
         }
