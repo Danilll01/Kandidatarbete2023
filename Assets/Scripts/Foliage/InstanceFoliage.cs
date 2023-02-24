@@ -99,6 +99,8 @@ public static class InstanceFoliage
             rockMeshes[i] = rocks[i].GetComponent<MeshFilter>().sharedMesh;
         }
 
+        RandomizeMeshesForPositions();
+
     }
 
     private static void DrawInstances()
@@ -107,29 +109,40 @@ public static class InstanceFoliage
         {
             for (int i = 0; i < renderedPositionsTrees.Count; i++)
             {
-                Graphics.DrawMeshInstanced(treeMeshes[0], 0, foliageMaterial, renderedPositionsTrees[i], renderedPositionsTrees[i].Length, block);
+                Graphics.DrawMeshInstanced(treeMeshes[meshesIndexforTreePosition[i]], 0, foliageMaterial, renderedPositionsTrees[i], renderedPositionsTrees[i].Length, block);
             }
         }
+        int startIndex = 0;
         for (int j = 0; j < indexSeperationBetweenMeshesTrees.Count; j++)
         {
-            for (int i = 0; i < renderedPositionsTrees.Count; i++)
+            for (int i = startIndex; i < renderedPositionsTrees.Count; i++)
             {
-                if (j == 0 && i < indexSeperationBetweenMeshesTrees[j])
+                if (i == indexSeperationBetweenMeshesTrees[j])
+                {
+                    startIndex = i;
+                    break;
+                }
+                else if (j == 0 && i < indexSeperationBetweenMeshesTrees[j])
                 {
                     Graphics.DrawMeshInstanced(treeMeshes[j], 0, foliageMaterial, renderedPositionsTrees[i], renderedPositionsTrees[i].Length, block);
                 }
                 else if (i < indexSeperationBetweenMeshesTrees[j] && i >= indexSeperationBetweenMeshesTrees[j - 1])
                 {
-                    Graphics.DrawMeshInstanced(treeMeshes[j], 0, foliageMaterial, renderedPositionsTrees[i], renderedPositionsTrees[i].Length, block);
+                    if (j >= treeMeshes.Length || i >= renderedPositionsTrees.Count)
+                    {
+                        Debug.Log("Error");
+                    }
+                    //Graphics.DrawMeshInstanced(treeMeshes[j], 0, foliageMaterial, renderedPositionsTrees[i], renderedPositionsTrees[i].Length, block);
                 }
             }
         }
 
+        /*
         if (indexSeperationBetweenMeshesRocks.Count == 0)
         {
             for (int i = 0; i < renderedPositionsRocks.Count; i++)
             {
-                Graphics.DrawMeshInstanced(rockMeshes[0], 0, foliageMaterial, renderedPositionsRocks[i], renderedPositionsRocks[i].Length, block);
+                Graphics.DrawMeshInstanced(rockMeshes[meshesIndexforRockPosition[i]], 0, foliageMaterial, renderedPositionsRocks[i], renderedPositionsRocks[i].Length, block);
             }
         }
         for (int j = 0; j < indexSeperationBetweenMeshesRocks.Count; j++)
@@ -146,6 +159,7 @@ public static class InstanceFoliage
                 }
             }
         }
+        */
     }
 
     private static void CalculateFrustumPlanes()
@@ -199,7 +213,7 @@ public static class InstanceFoliage
         for (int i = 0; i < positionsForTrees.Count; i++)
         {
             bool isBelowHalfWayPoint = CheckIfPointBIsBelowA(halfWayPointNormal,positionsForTrees[i],halfWayPointNormal.normalized);
-            Bounds bound = new Bounds(positionsForTrees[i], Vector3.one);
+            Bounds bound = new Bounds(positionsForTrees[i], new Vector3(2,2,2));
             if (GeometryUtility.TestPlanesAABB(planes, bound) && !isBelowHalfWayPoint)
             {
                 culledPositionsTrees.Add(positionsForTrees[i]);
@@ -288,7 +302,7 @@ public static class InstanceFoliage
             rocksMatrices.Add(Matrix4x4.TRS(culledPositionsForRocks[i], culledRotationsForRocks[i], new Vector3(2, 2, 2)));
         }
 
-        RandomizeMeshesForPositions();
+        
         GroupMatrices(treesMatrices, rocksMatrices);
     }
 
@@ -297,12 +311,14 @@ public static class InstanceFoliage
         int amountOfTreeMeshes = treeMeshes.Length;
         int amountOfRockMeshes = rockMeshes.Length;
 
-        for (int i = 0; i < culledPositionsForTrees.Count; i++)
+        meshesIndexforTreePosition.Clear();
+        meshesIndexforRockPosition.Clear();
+        for (int i = 0; i < positionsForTrees.Count; i++)
         {
             int meshIndex = Universe.random.Next(0, amountOfTreeMeshes);
             meshesIndexforTreePosition.Add(meshIndex);
         }
-        for (int i = 0; i < culledPositionsForRocks.Count; i++)
+        for (int i = 0; i < positionsForRocks.Count; i++)
         {
             int meshIndex = Universe.random.Next(0, amountOfRockMeshes);
             meshesIndexforRockPosition.Add(meshIndex);
@@ -326,38 +342,59 @@ public static class InstanceFoliage
         renderedPositionsTrees.Clear();
         renderedPositionsRocks.Clear();
 
+        int[] mesheIndexesTrees = new int[treesMatrices.Count];
+        for (int i = 0; i < treesMatrices.Count; i++)
+        {
+            meshesIndexforRockPosition[i] = meshesIndexforTreePosition[i];
+        }
+
+        float divideIndex = Mathf.Ceil((float)mesheIndexesTrees.Length / (float)numberOfTreemeshes);
+        int divideCount = 1;
+
+        for (int i = 0; i < mesheIndexesTrees.Length; i++)
+        {
+            if ((treesCount == divideIndex * divideCount) && treesCount > 0)
+            {
+                renderedPositionsTrees.Add(treesGroup.ToArray());
+                treesGroup.Clear();
+                indexSeperationBetweenMeshesTrees.Add(renderedPositionsTrees.Count);
+                if (indexSeperationBetweenMeshesTrees.Count >= 6)
+                {
+                    Debug.Log("Too big!");
+                }
+                divideCount++;
+            }
+            else if ((treesCount % 1023) == 0 && treesCount > 0)
+            {
+                renderedPositionsTrees.Add(treesGroup.ToArray());
+                treesGroup.Clear();
+            }
+            else if (treesCount == treesMatrices.Count - 1)
+            {
+                renderedPositionsTrees.Add(treesGroup.ToArray());
+                treesGroup.Clear();
+                break;
+            }
+
+            treesGroup.Add(treesMatrices[treesCount]);
+            treesCount++;
+        }
+
+        if (treesCount == treesMatrices.Count - 1)
+        {
+            renderedPositionsTrees.Add(treesGroup.ToArray());
+            treesGroup.Clear();
+        }
+
+        
+
+
+        /*
         if (treesMatrices.Count > 0)
         {
             for (int j = 0; j < numberOfTreemeshes; j++)
             {
-                for (int i = 0; i < meshesIndexforTreePosition.Count; i++)
-                {
-                    if (meshesIndexforTreePosition[i] == j)
-                    {
-
-                        if ((treesCount % 1023) == 0 && treesCount > 0)
-                        {
-                            renderedPositionsTrees.Add(treesGroup.ToArray());
-                            treesGroup.Clear();
-                        }
-                        else if (treesCount == treesMatrices.Count - 1)
-                        {
-                            renderedPositionsTrees.Add(treesGroup.ToArray());
-                            treesGroup.Clear();
-                            break;
-                        }
-
-                        treesGroup.Add(treesMatrices[treesCount]);
-                        treesCount++;
-                    }
-                }
-                if (treesCount == treesMatrices.Count - 1)
-                {
-                    renderedPositionsTrees.Add(treesGroup.ToArray());
-                    treesGroup.Clear();
-                    break;
-                }
-                indexSeperationBetweenMeshesTrees.Add(renderedPositionsTrees.Count);
+                
             }
         }
 
@@ -394,5 +431,6 @@ public static class InstanceFoliage
                 indexSeperationBetweenMeshesRocks.Add(renderedPositionsRocks.Count);
             }
         }
+        */
     }
 }
