@@ -29,9 +29,9 @@ public class Planet : MonoBehaviour
     [SerializeField] private TerrainColor terrainColor;
     [SerializeField] private SpawnFoliage spawnFoliage;
 
-    public void OnValidate() {
-        Initialize(UnityEngine.Random.Range(0, 100000000));
-    }
+    //public void OnValidate() {
+    //    Initialize(UnityEngine.Random.Range(0, 100000000));
+    //}
 
     void Start() {
         if (generateCreatures == null) { 
@@ -80,10 +80,11 @@ public class Planet : MonoBehaviour
             MinMaxTerrainLevel terrainLevel = new MinMaxTerrainLevel();
             terrainLevel.SetMin(Mathf.Abs((waterRadius + 1) / 2));
             marchingCubes.generateMesh(terrainLevel);
-            terrainColor.ColorPlanet(terrainLevel, rand.Next());
+            
 
             MeshCollider meshCollider = meshFilter.gameObject.AddComponent<MeshCollider>();
             meshCollider.sharedMesh = meshFilter.sharedMesh;
+            terrainColor.ColorPlanet(terrainLevel, rand.Next());
         }
 
         if (willGenerateCreature) 

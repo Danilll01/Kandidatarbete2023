@@ -39,10 +39,10 @@ public class TerrainColor : MonoBehaviour {
     };
 
 
-    public void OnValidate() {
-        MinMaxTerrainLevel terrainLevel = null;
-        ColorPlanet(terrainLevel, UnityEngine.Random.Range(0, 1000000000));
-    }
+    //public void OnValidate() {
+    //    MinMaxTerrainLevel terrainLevel = null;
+    //    ColorPlanet(terrainLevel, UnityEngine.Random.Range(0, 1000000000));
+    //}
 
     /// <summary>
     /// Will color the planet with a random color
