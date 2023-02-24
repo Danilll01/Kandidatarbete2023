@@ -58,7 +58,7 @@ public class Creature : MonoBehaviour
         lodGroup = meshObj.GetComponent<LODGroup>();
         renderer = lodGroup.transform.GetComponent<Renderer>();
 
-        // Teleport the creature 2 meters up in correct direction based on position on planet
+        // Teleport the creature 1 meter up in correct direction based on position on planet
         transform.position += -(planet.transform.position - transform.position).normalized;
 
     }
@@ -150,13 +150,6 @@ public class Creature : MonoBehaviour
 
     private void RandomWalking()
     {
-        if (false)
-        {
-            Debug.Log("dest: " + destination);
-            Debug.Log("pos: " + transform.position);
-            Debug.Log("Is at dest: " + atDestination);
-        }
-
         if (atDestination)
         {
             // Randomly walk around
@@ -334,8 +327,15 @@ public class Creature : MonoBehaviour
             Vector3 newRight = Vector3.Cross(newUp, oldForward);
             Vector3 newForward = Vector3.Cross(newRight, newUp);
 
-            transform.rotation = Quaternion.LookRotation(newForward, newUp);
+            //transform.rotation = Quaternion.LookRotation(newForward, newUp) * Quaternion.Euler(0, direction.y, 0);
+            Vector3 vect = Quaternion.LookRotation(newForward, newUp).eulerAngles;
+            //vect.y = direction.y;
+            transform.rotation = Quaternion.Euler(vect);
+
+            //transform.Rotate(0, direction.y, 0);
             /*
+            
+            // Quaternion.LookRotation(newForward, newUp) *
             
             Vector3 terrainNormal = hit.normal;
 
@@ -391,8 +391,20 @@ public class Creature : MonoBehaviour
     private Vector3 GetRandomPoint()
     {
         Quaternion rotation = Quaternion.FromToRotation(Vector3.forward, transform.position);
+        Vector3 randomPoint;
+        int tries = 0;
+        do
+        {
+            randomPoint = transform.position + rotation * Random.insideUnitCircle * detectionRadius;
+            tries++;
+            
+            Debug.Log("Distance: " + Vector3.Distance(randomPoint, planet.transform.position));
+            Debug.Log("Water: " + Mathf.Abs(planet.waterRadius) / 2);
+        } while (Vector3.Distance(randomPoint, planet.transform.position) < Mathf.Abs(planet.waterRadius) / 2);
 
-        return transform.position + rotation * Random.insideUnitCircle * detectionRadius;
+        Debug.Log("Tries: " + tries);
+
+        return randomPoint;
     }
 
     private void InteractWithResourceAction()
