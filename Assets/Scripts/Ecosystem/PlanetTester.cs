@@ -13,6 +13,7 @@ public class PlanetTester : MonoBehaviour
         Universe.InitializeRandomWithSeed();
         planet.Initialize(Universe.random.Next());
         planet.SetUpPlanetValues();
+        planet.ShowCreatures(true);
     }
 
     void Update()
