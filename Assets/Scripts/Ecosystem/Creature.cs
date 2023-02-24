@@ -33,9 +33,12 @@ public class Creature : MonoBehaviour
     [SerializeField] private CreatureState currentState;
     [SerializeField] private bool DEBUG = false;
     [SerializeField] private bool isSleeping;
+    
 
+    // Normal destination for every state
     private bool atDestination = false;
-    private Vector3 destination = Vector3.zero;
+    [SerializeField] private Vector3 destination = Vector3.zero;
+
     private Planet planet;
 
     private Collider collider;
@@ -50,8 +53,6 @@ public class Creature : MonoBehaviour
 
         planet = transform.parent.parent.GetComponent<Planet>();
 
-        //collider = meshObj.GetComponent<Collider>();
-        //rigidbody = meshObj.GetComponent<Rigidbody>();
         collider = GetComponent<Collider>();
         rigidbody = GetComponent<Rigidbody>();
         lodGroup = meshObj.GetComponent<LODGroup>();
@@ -84,7 +85,6 @@ public class Creature : MonoBehaviour
             if (!isSleeping) rigidbody.Sleep();
             isSleeping = true;
             return;
-            //Debug.Log("Name:");
         } else
         {
             isSleeping = false;
@@ -160,9 +160,7 @@ public class Creature : MonoBehaviour
         if (atDestination)
         {
             // Randomly walk around
-            Quaternion rotation = Quaternion.FromToRotation(Vector3.forward, transform.position);
-
-            destination = transform.position + rotation * Random.insideUnitCircle * detectionRadius;
+            destination = GetRandomPoint();
             atDestination = false;
         } else
         {
@@ -191,19 +189,18 @@ public class Creature : MonoBehaviour
                 hunger = Mathf.Min(maxHunger, hunger + hungerIncrease);
             }
             
-            currentState = CreatureState.Idle;
+            currentState = CreatureState.Walking;
             Destroy(nearestResource);
         }
         else if (nearestResource != null && Vector3.Distance(transform.position, nearestResource.transform.position) > consumeRadius)
         {
-            atDestination = true;
+            atDestination = false;
             destination = nearestResource.transform.position;
             GotoPosition(destination);
         }
         else
         {
-            atDestination = false;
-            destination = Vector3.zero;
+            RandomWalking();
         }
 
 
@@ -352,6 +349,13 @@ public class Creature : MonoBehaviour
 
         rigidbody.velocity += attractionDirection * (float)((attractingBodyMass * Time.deltaTime) / r2);
         */
+    }
+
+    private Vector3 GetRandomPoint()
+    {
+        Quaternion rotation = Quaternion.FromToRotation(Vector3.forward, transform.position);
+
+        return transform.position + rotation * Random.insideUnitCircle * detectionRadius;
     }
 
     private void InteractWithResourceAction()

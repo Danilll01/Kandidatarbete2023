@@ -388,7 +388,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 1
   detectionRadius: 35
-  consumeRadius: 0.3
+  consumeRadius: 0.1
   meshObj: {fileID: 1055748561691468}
   hunger: 100
   thirst: 100
@@ -403,6 +403,7 @@ MonoBehaviour:
   currentState: 0
   DEBUG: 0
   isSleeping: 0
+  destination: {x: 0, y: 0, z: 0}
 --- !u!65 &6449783939063798092
 BoxCollider:
   m_ObjectHideFlags: 0
