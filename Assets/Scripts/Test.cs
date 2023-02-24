@@ -59,8 +59,8 @@ public class Test : MonoBehaviour
             rotations.Add(Quaternion.identity);
         }
 
-        InstanceFoliage.SetInstancingData(trees, rocks, material, positions, rotations, new List<Vector3>(), new List<Quaternion>());
-        InstanceFoliage.instanceFoliage = true;
+        //InstanceFoliage.SetInstancingData(trees, rocks, material, positions, rotations, new List<Vector3>(), new List<Quaternion>());
+        //InstanceFoliage.instanceFoliage = true;
         //instanceFoliage.CalculateMatrices(positions, rotations, new List<Vector3>(), new List<Quaternion>());
     }
 

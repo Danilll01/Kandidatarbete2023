@@ -13,7 +13,7 @@ public class PillPlayerController : MonoBehaviour
     public float maxSpeed;
 
     private Rigidbody body;
-    public bool paused;
+    [HideInInspector] public bool paused;
     // Start is called before the first frame update
     public void Initialize(GameObject planetToSpawnOn)
     {

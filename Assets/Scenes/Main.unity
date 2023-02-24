@@ -864,7 +864,7 @@ PrefabInstance:
     - target: {fileID: 776431053636631548, guid: 93094628cce30c64195c2ae1633e7e60,
         type: 3}
       propertyPath: numberOfPlanets
-      value: 3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 776431053636631548, guid: 93094628cce30c64195c2ae1633e7e60,
         type: 3}

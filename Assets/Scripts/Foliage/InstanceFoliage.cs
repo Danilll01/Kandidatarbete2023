@@ -29,7 +29,6 @@ public static class InstanceFoliage
 
     private static Mesh[] treeMeshes;
     private static Mesh[] rockMeshes;
-    private static bool isDirty;
     private static Camera camera;
     private static Vector3 lastCameraPosition;
     private static Quaternion lastCameraRotation;
@@ -41,6 +40,7 @@ public static class InstanceFoliage
 
     private static List<int> indexSeperationBetweenMeshesTrees = new List<int>();
     private static List<int> indexSeperationBetweenMeshesRocks = new List<int>();
+    private static Planet currentPlanet;
 
 
     // Update is called once per frame
@@ -51,14 +51,14 @@ public static class InstanceFoliage
             return;
         }
 
-        CalculateFrustumPlanes();
+        //CalculateFrustumPlanes();
         CalculatePositionsToRender();
         CalculateMatrices();
         DrawInstances();
 
     }
 
-    public static void SetInstancingData(GameObject[] trees, GameObject[] rocks, Material material, List<Vector3> positionsTrees, List<Quaternion> rotationsTrees, List<Vector3> positionsRocks, List<Quaternion> rotationsRocks)
+    public static void SetInstancingData(GameObject[] trees, GameObject[] rocks, Material material, Planet planet, List<Vector3> positionsTrees, List<Quaternion> rotationsTrees, List<Vector3> positionsRocks, List<Quaternion> rotationsRocks)
     {
         block = new MaterialPropertyBlock();
         planes = new Plane[6];
@@ -67,6 +67,8 @@ public static class InstanceFoliage
         rockMeshes = new Mesh[rocks.Length];
         foliageMaterial = material;
         camera = Camera.main;
+
+        currentPlanet = planet;
 
         renderedPositionsTrees.Clear();
         renderedPositionsRocks.Clear();
@@ -144,20 +146,6 @@ public static class InstanceFoliage
                 }
             }
         }
-
-
-        /*
-        for (int j = 0; j < indexSeperationBetweenMeshesRocks.Count; j++)
-        {
-            for (int i = 0; i < renderedPositionsRocks.Count; i++)
-            {
-                if (i < indexSeperationBetweenMeshesRocks[j])
-                {
-                    Graphics.DrawMeshInstanced(rockMeshes[j], 0, foliageMaterial, renderedPositionsRocks[i], renderedPositionsRocks[i].Length, block);
-                }
-            }
-        }
-        */
     }
 
     private static void CalculateFrustumPlanes()
@@ -200,17 +188,19 @@ public static class InstanceFoliage
 
     private static void CalculatePositionsToRender()
     {
-        if (!isDirty)
-        {
-            return;
-        }
+        planes = GeometryUtility.CalculateFrustumPlanes(camera);
+        Vector3 playerPos = camera.transform.position;
+        Vector3 planetCenter = currentPlanet.gameObject.transform.GetChild(0).position;
+        Vector3 playerToPlanetCenter = playerPos - planetCenter;
+        Vector3 halfWayPointNormal = new Vector3(playerToPlanetCenter.x/1.2f, playerToPlanetCenter.y/1.2f, playerToPlanetCenter.z/1.2f);
 
         List<Vector3> culledPositionsTrees = new List<Vector3>();
         List<Quaternion> culledRotationsTrees = new List<Quaternion>();
         for (int i = 0; i < positionsForTrees.Count; i++)
         {
+            bool isBelowHalfWayPoint = CheckIfPointBIsBelowA(halfWayPointNormal,positionsForTrees[i],halfWayPointNormal.normalized);
             Bounds bound = new Bounds(positionsForTrees[i], Vector3.one);
-            if (GeometryUtility.TestPlanesAABB(planes, bound))
+            if (GeometryUtility.TestPlanesAABB(planes, bound) && !isBelowHalfWayPoint)
             {
                 culledPositionsTrees.Add(positionsForTrees[i]);
                 culledRotationsTrees.Add(rotationsForTrees[i]);
@@ -271,13 +261,15 @@ public static class InstanceFoliage
             culledRotationsForRocks = culledRotationsRocks;
 
         }
+    }
 
-        isDirty = false;
+    public static bool CheckIfPointBIsBelowA(Vector3 a, Vector3 b, Vector3 up)
+    {
+        return (Vector3.Dot(b - a, up) <= 0) ? true : false;
     }
 
     private static void MakeDirty()
     {
-        isDirty = true;
         lastCameraPosition = camera.transform.position;
         lastCameraRotation = camera.transform.rotation;
     }
@@ -359,6 +351,12 @@ public static class InstanceFoliage
                         treesCount++;
                     }
                 }
+                if (treesCount == treesMatrices.Count - 1)
+                {
+                    renderedPositionsTrees.Add(treesGroup.ToArray());
+                    treesGroup.Clear();
+                    break;
+                }
                 indexSeperationBetweenMeshesTrees.Add(renderedPositionsTrees.Count);
             }
         }
@@ -386,6 +384,12 @@ public static class InstanceFoliage
                         rocksGroup.Add(rocksMatrices[rocksCount]);
                         rocksCount++;
                     }
+                }
+                if (rocksCount == rocksMatrices.Count - 1)
+                {
+                    renderedPositionsRocks.Add(rocksGroup.ToArray());
+                    rocksGroup.Clear();
+                    break;
                 }
                 indexSeperationBetweenMeshesRocks.Add(renderedPositionsRocks.Count);
             }

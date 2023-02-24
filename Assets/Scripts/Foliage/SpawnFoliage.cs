@@ -90,7 +90,7 @@ public class SpawnFoliage : MonoBehaviour
 
                 if (treeIndex <= treeSpawnIndex && bushIndex <= bushSpawnIndex && stoneIndex <= stoneSpawnIndex && !setUpInstancing)
                 {
-                    InstanceFoliage.SetInstancingData(treePrefabs, stonePrefab, treePrefabs[0].GetComponent<MeshRenderer>().sharedMaterial, treeInstancingPositions, treeInstancingRotations, stoneInstancingPositions, stoneInstancingRotations);
+                    InstanceFoliage.SetInstancingData(treePrefabs, stonePrefab, treePrefabs[0].GetComponent<MeshRenderer>().sharedMaterial, planet, treeInstancingPositions, treeInstancingRotations, stoneInstancingPositions, stoneInstancingRotations);
                     InstanceFoliage.instanceFoliage = true;
                     setUpInstancing = true;
                 }
