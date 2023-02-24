@@ -171,32 +171,48 @@ public class Creature : MonoBehaviour
 
     private void LookingForResource(ResourceType resource)
     {
-        
         GameObject nearestResource = GetNearestGameobject(resource.ToString());
+        Vector3 resourcePos = Vector3.zero;
         
-        if (nearestResource != null && IsCloseToDestination(nearestResource.transform.position))
+        if (resource == ResourceType.Food)
         {
-            //Debug.Log("Found it " + Vector3.Distance(transform.position, nearestResource.transform.position) + " away");
-            atDestination = true;
-            InteractWithResourceAction();
-
-            if (resource == ResourceType.Water)
-            {
-                thirst = Mathf.Min(maxThirst, thirst + thirstIncrease);
-            }
-            else if (resource == ResourceType.Food)
-            {
-                hunger = Mathf.Min(maxHunger, hunger + hungerIncrease);
-            }
+            if (nearestResource != null)
+                resourcePos = nearestResource.transform.position;
+        } else
+        {
+            Vector3 nearestWater = GetNearestWaterSource();
+            print(nearestWater);
             
-            currentState = CreatureState.Walking;
-            Destroy(nearestResource);
+            resourcePos = nearestWater;
         }
-        else if (nearestResource != null && Vector3.Distance(transform.position, nearestResource.transform.position) > consumeRadius)
+
+        if (nearestResource != null && resourcePos != Vector3.zero)
         {
-            atDestination = false;
-            destination = nearestResource.transform.position;
-            GotoPosition(destination);
+            if (IsCloseToDestination(resourcePos))
+            {
+                //Debug.Log("Found it " + Vector3.Distance(transform.position, nearestResource.transform.position) + " away");
+                atDestination = true;
+                InteractWithResourceAction();
+
+                if (resource == ResourceType.Water)
+                {
+                    thirst = Mathf.Min(maxThirst, thirst + thirstIncrease);
+                }
+                else if (resource == ResourceType.Food)
+                {
+                    hunger = Mathf.Min(maxHunger, hunger + hungerIncrease);
+                    Destroy(nearestResource);
+                }
+
+                currentState = CreatureState.Walking;
+            }
+            else if (Vector3.Distance(transform.position, resourcePos) > consumeRadius)
+            {
+                atDestination = false;
+                destination = resourcePos;
+                GotoPosition(destination);
+            }
+
         }
         else
         {
@@ -230,6 +246,27 @@ public class Creature : MonoBehaviour
         return nearestObject;
     }
 
+    private Vector3 GetNearestWaterSource()
+    {
+        Vector3 closestWaterSource = Vector3.zero;
+        float closestDistance = Mathf.Infinity;
+
+        // We can implement caching here to get faster results. Ex save the 40 closest sources and only update when we are searching for water again
+        
+        foreach (Vector3 pos in planet.waterPoints)
+        {
+            // Calculate distance from creature to pos
+            float distance = Vector3.Distance(transform.position, pos);
+            if (distance < closestDistance)
+            {
+                closestDistance = distance;
+                closestWaterSource = pos;
+            }
+        }
+
+        return closestWaterSource;
+    }
+
     private void GotoPosition(Vector3 pos)
     {
         if (!pos.Equals(Vector2.zero) && !IsCloseToDestination(pos))
@@ -250,7 +287,7 @@ public class Creature : MonoBehaviour
         Vector3 posToPlanetCenter = planet.transform.position - pos;
 
         float angle = Vector3.Angle(creatureToPlanetCenter, posToPlanetCenter);
-        if (DEBUG) Debug.Log("Angle:" + angle);
+        //if (DEBUG) Debug.Log("Angle:" + angle);
         return angle < consumeRadius;
     }
 
