@@ -69,7 +69,7 @@ public class SpawnPlanets : MonoBehaviour
         Destroy(sphere);
 
         Destroy(Sun.GetComponent<SpawnFoliage>());
-        Destroy(Sun.GetComponent<GenerateCreatures>());
+        //Destroy(Sun.GetComponent<GenerateCreatures>());
 
         GameObject velocityHelper = new GameObject();
         velocityHelper.gameObject.name = "VelocityHelper";

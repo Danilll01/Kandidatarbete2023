@@ -14,6 +14,7 @@ public class Planet : MonoBehaviour
     [SerializeField, Range(0, 5)] private float amplitude = 1;
     [SerializeField, Range(0, 1)] private float bottomLevel = 1;
     [SerializeField] private Material waterMaterial;
+    [HideInInspector] public float waterRadius;
     [SerializeField] private GameObject water;
     [SerializeField] private GameObject meshObj;
 
@@ -30,10 +31,6 @@ public class Planet : MonoBehaviour
     [SerializeField] private SpawnFoliage spawnFoliage;
 
     void Start() {
-        if (generateCreatures == null) { 
-            generateCreatures = GetComponent<GenerateCreatures>();
-        }
-
         if (terrainColor == null) {
             terrainColor = GetComponent<TerrainColor>();
         }
