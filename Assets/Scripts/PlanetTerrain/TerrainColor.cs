@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEngine;
 
 public class TerrainColor : MonoBehaviour {
@@ -13,6 +14,7 @@ public class TerrainColor : MonoBehaviour {
     private Texture2D texture;
     private const int textureRes = 50;
     private Material material;
+    private System.Random random;
 
     private Color[][] crazyColorPaletts =
     {
@@ -39,16 +41,17 @@ public class TerrainColor : MonoBehaviour {
 
     public void OnValidate() {
         MinMaxTerrainLevel terrainLevel = null;
-        ColorPlanet(terrainLevel);
+        ColorPlanet(terrainLevel, UnityEngine.Random.Range(0, 1000000000));
     }
 
     /// <summary>
     /// Will color the planet with a random color
     /// </summary>
     /// <param name="terrainLevel">The terrain level, this contains min and max hight for colors</param>
-    public void ColorPlanet(MinMaxTerrainLevel terrainLevel) 
+    /// <param name="randomSeedGen">Random seed to be used when creating new random</param>
+    public void ColorPlanet(MinMaxTerrainLevel terrainLevel, int randomSeedGen) 
     {
-        System.Random r = new System.Random(2);
+        random = new System.Random(randomSeedGen);
 
         if (terrainLevel != null) {
             tempMin = terrainLevel.GetMin();
@@ -63,9 +66,8 @@ public class TerrainColor : MonoBehaviour {
         }
 
         UpdateMinMaxHight();
-        UpdateAngleColorCutOf();
         SetMaterialColor();
-        
+        UpdateAngleColorCutOf();
     }
 
     // Updates the min and max color hight
@@ -89,7 +91,7 @@ public class TerrainColor : MonoBehaviour {
         Color[] colors = new Color[textureRes]; // Creates a color array to be sent to texture
 
         // Gets color palette and puts it into a gradient
-        Color[] takePalette = crazyColorPaletts[Random.Range(0, crazyColorPaletts.Length - 1)];
+        Color[] takePalette = crazyColorPaletts[random.Next(crazyColorPaletts.Length - 1)];
         float[] keyPos = new float[] { 0f, 0,015f, 0.144f, 0.618f, 1f };
         GradientColorKey[] gradientKeys = new GradientColorKey[takePalette.Length];
 

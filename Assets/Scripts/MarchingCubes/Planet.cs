@@ -1,20 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEngine;
 
 [RequireComponent(typeof(GenerateCreatures))]
 [RequireComponent(typeof(TerrainColor))]
 public class Planet : MonoBehaviour
 {
-    [SerializeField] ComputeShader meshGenerator;
-    [SerializeField, Range(0, 255)] float threshold = 200;
-    [SerializeField, Range(1, 28)] int resolution = 20;
-    [SerializeField, Range(1, 25)] int frequency = 20;
-    [SerializeField, Range(0, 5)] float amplitude = 1;
-    [SerializeField, Range(0, 1)] float bottomLevel = 1;
-    [SerializeField] Material waterMaterial;
-    [SerializeField] GameObject water;
-    [SerializeField] GameObject meshObj;
+    [SerializeField] private ComputeShader meshGenerator;
+    [SerializeField, Range(0, 255)] private float threshold = 200;
+    [SerializeField, Range(1, 28)] private int resolution = 20;
+    [SerializeField, Range(1, 25)] private int frequency = 20;
+    [SerializeField, Range(0, 5)] private float amplitude = 1;
+    [SerializeField, Range(0, 1)] private float bottomLevel = 1;
+    [SerializeField] private Material waterMaterial;
+    [SerializeField] private GameObject water;
+    [SerializeField] private GameObject meshObj;
 
     public float radius;
     public float surfaceGravity;
@@ -22,14 +23,14 @@ public class Planet : MonoBehaviour
     public float mass;
     public List<Planet> moons;
 
-    MarchingCubes marchingCubes;
+    private MarchingCubes marchingCubes;
     [SerializeField] private bool willGenerateCreature = false;
     [SerializeField] private GenerateCreatures generateCreatures;
     [SerializeField] private TerrainColor terrainColor;
     [SerializeField] private SpawnFoliage spawnFoliage;
 
     public void OnValidate() {
-        Initialize();
+        Initialize(UnityEngine.Random.Range(0, 100000000));
     }
 
     void Start() {
@@ -45,8 +46,10 @@ public class Planet : MonoBehaviour
     /// <summary>
     /// Initialize mesh for marching cubes
     /// </summary>
-    public void Initialize()
+    public void Initialize(int randomSeed)
     {
+        System.Random rand = new System.Random(randomSeed);
+
         // Get meshfilter and create new mesh if it doesn't exist
         MeshFilter meshFilter = meshObj.GetComponent<MeshFilter>();
         if (meshFilter.sharedMesh == null)
@@ -57,7 +60,7 @@ public class Planet : MonoBehaviour
         // Initialize the meshgenerator
         if (meshGenerator != null)
         {
-            System.Random rand = Universe.random;
+            
 
             threshold = 23 + (float)rand.NextDouble() * 4;
             int frequency = rand.Next(2) + 3;
@@ -77,7 +80,7 @@ public class Planet : MonoBehaviour
             MinMaxTerrainLevel terrainLevel = new MinMaxTerrainLevel();
             terrainLevel.SetMin(Mathf.Abs((waterRadius + 1) / 2));
             marchingCubes.generateMesh(terrainLevel);
-            terrainColor.ColorPlanet(terrainLevel);
+            terrainColor.ColorPlanet(terrainLevel, rand.Next());
 
             MeshCollider meshCollider = meshFilter.gameObject.AddComponent<MeshCollider>();
             meshCollider.sharedMesh = meshFilter.sharedMesh;
