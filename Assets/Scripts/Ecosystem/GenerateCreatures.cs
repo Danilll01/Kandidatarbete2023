@@ -17,7 +17,7 @@ public class GenerateCreatures : MonoBehaviour
     [Header("Misc")]
     [SerializeField] private bool DEBUG = false;
 
-    private static int seed = Universe.seed;
+    private int seed;
     private Planet planet;
     private Vector3 planetCenter;
 
@@ -34,7 +34,7 @@ public class GenerateCreatures : MonoBehaviour
     public void Initialize(Planet planet, int randomSeed)
     {
         this.planet = planet;
-        this.seed= randomSeed;
+        seed = randomSeed;
         planetCenter = planet.transform.position;
 
         // Create a gameobject to hold all creatures
@@ -44,7 +44,7 @@ public class GenerateCreatures : MonoBehaviour
 
         // This is how system random works where we dont share Random instances
         //System.Random rand1 = new System.Random(1234);
-        Random.InitState(randomSeed);
+        Random.InitState(seed);
 
         GenerateCreaturesOnPlanet();
         if (DEBUG) Debug.Log("Spawning");
