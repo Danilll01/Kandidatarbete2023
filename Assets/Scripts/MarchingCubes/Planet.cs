@@ -23,6 +23,8 @@ public class Planet : MonoBehaviour
     public string bodyName = "TBT";
     public float mass;
     public List<Planet> moons;
+    
+    public List<Vector3> waterPoints;
 
     private MarchingCubes marchingCubes;
     [SerializeField] private bool willGenerateCreature = false;
