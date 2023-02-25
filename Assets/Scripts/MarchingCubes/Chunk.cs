@@ -12,17 +12,18 @@ public class Chunk : MonoBehaviour
     MeshCollider meshCollider;
     Mesh mesh;
     MarchingCubes marchingCubes;
-    PillPlayerController player;
+    Transform player;
     MinMaxTerrainLevel terrainLevel;
 
     /// <summary>
-    /// Initialize
+    /// Initalizes a given chunk
     /// </summary>
-    /// <param name="index"></param>
+    /// <param name="index">Chunk index</param>
     /// <param name="resolution"></param>
-    /// <param name="marchingCubes"></param>
+    /// <param name="marchingCubes">An instance of marching cubes</param>
     /// <param name="player"></param>
-    public void Initialize(int index, int resolution, MarchingCubes marchingCubes, PillPlayerController player, MinMaxTerrainLevel terrainLevel)
+    /// <param name="terrainLevel"></param>
+    public void Initialize(int index, int resolution, MarchingCubes marchingCubes, Transform player, MinMaxTerrainLevel terrainLevel)
     {
         this.index = index;
         this.resolution = resolution;

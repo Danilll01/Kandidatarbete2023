@@ -23,7 +23,7 @@ public class Planet : MonoBehaviour
     public List<Planet> moons;
 
     private List<Chunk> chunks;
-    private PillPlayerController player;
+    private Transform player;
     private Material planetMaterial;
     private MarchingCubes marchingCubes;
 
@@ -52,7 +52,7 @@ public class Planet : MonoBehaviour
     /// <summary>
     /// Initialize mesh for marching cubes
     /// </summary>
-    public void Initialize(PillPlayerController player, int randomSeed)
+    public void Initialize(Transform player, int randomSeed)
     {
         System.Random rand = new System.Random(randomSeed);
 

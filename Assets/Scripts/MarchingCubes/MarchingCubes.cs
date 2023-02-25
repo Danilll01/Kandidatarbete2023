@@ -19,9 +19,8 @@ public class MarchingCubes
     /// <summary>
     /// Initializes the MarchingCubes script
     /// </summary>
-    /// <param name="mesh"></param>
-    /// <param name="meshGenerator"></param>
-    /// <param name="threshold"></param>
+    /// <param name="meshGenerator">The meshgenerator compute shader</param>
+    /// <param name="threshold">The cut off threshold to be used</param>
     /// <param name="diameter"></param>
     public MarchingCubes(int chunkResolution, ComputeShader meshGenerator, float threshold, float diameter, int frequency, float amplitude)
     {
@@ -101,7 +100,6 @@ public class MarchingCubes
         ComputeBuffer.CopyCount(buffer, counter, 0);
         counter.GetData(count);
         counter.Release();
-        //MonoBehaviour.print(count[0]);
         return count[0];
     }
 
