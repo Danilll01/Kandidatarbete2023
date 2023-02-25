@@ -87,13 +87,6 @@ public class SpawnFoliage : MonoBehaviour
                     if (stoneIndex > stoneSpawnIndex) plantStone();
                     else j = 0;
                 }
-
-                if (treeIndex <= treeSpawnIndex && bushIndex <= bushSpawnIndex && stoneIndex <= stoneSpawnIndex && !setUpInstancing)
-                {
-                    InstanceFoliage.SetInstancingData(treePrefabs, stonePrefab, treePrefabs[0].GetComponent<MeshRenderer>().sharedMaterial, planet, treeInstancingPositions, treeInstancingRotations, stoneInstancingPositions, stoneInstancingRotations);
-                    InstanceFoliage.instanceFoliage = true;
-                    setUpInstancing = true;
-                }
             }
             // Delets all foliage when leaving
             else if((player.transform.position - planet.transform.position).magnitude > 5000)
@@ -112,9 +105,6 @@ public class SpawnFoliage : MonoBehaviour
                     stoneSpawnIndex = 0;
                 }
             }
-
-            InstanceFoliage.Run();
-            
         }
     }
 
@@ -143,7 +133,6 @@ public class SpawnFoliage : MonoBehaviour
         foliageHandler.transform.parent = planet.transform;
         foliageHandler.transform.localPosition = new Vector3(0, 0, 0);
 
-        //InstanceFoliage.SetInstancingData(treePrefabs, stonePrefab, treePrefabs[0].GetComponent<MeshRenderer>().sharedMaterial);
         generateSpawnPoints();
     }
 
@@ -218,9 +207,7 @@ public class SpawnFoliage : MonoBehaviour
         // Sets a random rotation for more variation
         rotation *= Quaternion.Euler(0, Random.value * 360, 0);
 
-        treeInstancingPositions.Add(hit.point + (ray.direction.normalized * 0.2f));
-        treeInstancingRotations.Add(rotation);
-        //Instantiate(treePrefabs[getIndex(hit.point + noiseOffset)], hit.point + (ray.direction.normalized * 0.2f), rotation, foliageHandler.transform);
+        Instantiate(treePrefabs[getIndex(hit.point + noiseOffset)], hit.point + (ray.direction.normalized * 0.2f), rotation, hit.transform);
     }
 
     /// <summary>
@@ -250,7 +237,7 @@ public class SpawnFoliage : MonoBehaviour
         // Sets a random rotation for more variation
         rotation *= Quaternion.Euler(0, Random.value * 360, 0);
 
-        Instantiate(bushPrefab[getIndex(hit.point + noiseOffset)], hit.point, rotation, foliageHandler.transform);
+        Instantiate(bushPrefab[getIndex(hit.point + noiseOffset)], hit.point, rotation, hit.transform);
     }
 
     /// <summary>
@@ -279,9 +266,7 @@ public class SpawnFoliage : MonoBehaviour
         // Sets a random rotation for more variation
         rotation *= Quaternion.Euler(0, Random.value * 360, 0);
 
-        stoneInstancingPositions.Add(hit.point);
-        stoneInstancingRotations.Add(rotation);
-        //Instantiate(stonePrefab[getIndex(hit.point + noiseOffset)], hit.point, rotation, foliageHandler.transform);
+        Instantiate(stonePrefab[getIndex(hit.point + noiseOffset)], hit.point, rotation, hit.transform);
     }
 
 

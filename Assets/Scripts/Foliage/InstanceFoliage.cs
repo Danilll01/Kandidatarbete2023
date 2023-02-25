@@ -40,7 +40,6 @@ public static class InstanceFoliage
 
     private static List<int> indexSeperationBetweenMeshesTrees = new List<int>();
     private static List<int> indexSeperationBetweenMeshesRocks = new List<int>();
-    private static Planet currentPlanet;
 
 
     // Update is called once per frame
@@ -58,7 +57,7 @@ public static class InstanceFoliage
 
     }
 
-    public static void SetInstancingData(GameObject[] trees, GameObject[] rocks, Material material, Planet planet, List<Vector3> positionsTrees, List<Quaternion> rotationsTrees, List<Vector3> positionsRocks, List<Quaternion> rotationsRocks)
+    public static void SetInstancingData(GameObject[] trees, GameObject[] rocks, Material material, List<Vector3> positionsTrees, List<Quaternion> rotationsTrees, List<Vector3> positionsRocks, List<Quaternion> rotationsRocks)
     {
         block = new MaterialPropertyBlock();
         planes = new Plane[6];
@@ -67,8 +66,6 @@ public static class InstanceFoliage
         rockMeshes = new Mesh[rocks.Length];
         foliageMaterial = material;
         camera = Camera.main;
-
-        currentPlanet = planet;
 
         renderedPositionsTrees.Clear();
         renderedPositionsRocks.Clear();
@@ -132,7 +129,7 @@ public static class InstanceFoliage
                     {
                         Debug.Log("Error");
                     }
-                    //Graphics.DrawMeshInstanced(treeMeshes[j], 0, foliageMaterial, renderedPositionsTrees[i], renderedPositionsTrees[i].Length, block);
+                    Graphics.DrawMeshInstanced(treeMeshes[j], 0, foliageMaterial, renderedPositionsTrees[i], renderedPositionsTrees[i].Length, block);
                 }
             }
         }
@@ -204,17 +201,17 @@ public static class InstanceFoliage
     {
         planes = GeometryUtility.CalculateFrustumPlanes(camera);
         Vector3 playerPos = camera.transform.position;
-        Vector3 planetCenter = currentPlanet.gameObject.transform.GetChild(0).position;
+        Vector3 planetCenter = Vector3.zero;
         Vector3 playerToPlanetCenter = playerPos - planetCenter;
-        Vector3 halfWayPointNormal = new Vector3(playerToPlanetCenter.x/1.2f, playerToPlanetCenter.y/1.2f, playerToPlanetCenter.z/1.2f);
+        Vector3 halfWayPointNormal = new Vector3(playerToPlanetCenter.x/1.2f, playerToPlanetCenter.y/ 1.2f, playerToPlanetCenter.z/ 1.2f);
 
         List<Vector3> culledPositionsTrees = new List<Vector3>();
         List<Quaternion> culledRotationsTrees = new List<Quaternion>();
         for (int i = 0; i < positionsForTrees.Count; i++)
         {
             bool isBelowHalfWayPoint = CheckIfPointBIsBelowA(halfWayPointNormal,positionsForTrees[i],halfWayPointNormal.normalized);
-            Bounds bound = new Bounds(positionsForTrees[i], new Vector3(2,2,2));
-            if (GeometryUtility.TestPlanesAABB(planes, bound) && !isBelowHalfWayPoint)
+            Bounds bound = new Bounds(positionsForTrees[i] + new Vector3(0,5,0), new Vector3(4, 10, 4));
+            if (!isBelowHalfWayPoint)//GeometryUtility.TestPlanesAABB(planes, bound)) //&&)
             {
                 culledPositionsTrees.Add(positionsForTrees[i]);
                 culledRotationsTrees.Add(rotationsForTrees[i]);
@@ -345,7 +342,7 @@ public static class InstanceFoliage
         int[] mesheIndexesTrees = new int[treesMatrices.Count];
         for (int i = 0; i < treesMatrices.Count; i++)
         {
-            meshesIndexforRockPosition[i] = meshesIndexforTreePosition[i];
+            mesheIndexesTrees[i] = meshesIndexforTreePosition[i];
         }
 
         float divideIndex = Mathf.Ceil((float)mesheIndexesTrees.Length / (float)numberOfTreemeshes);
