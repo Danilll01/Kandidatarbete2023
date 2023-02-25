@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -35,6 +36,7 @@ public class Chunk : MonoBehaviour
         meshCollider = transform.GetComponent<MeshCollider>();
 
         updateMesh(resolution);
+
     }
 
     /// <summary>
@@ -52,7 +54,10 @@ public class Chunk : MonoBehaviour
     private void updateMesh(int resolution)
     {
         mesh = new Mesh();
+
+        
         marchingCubes.generateMesh(terrainLevel, index, resolution, mesh);
+        
 
         meshFilter.sharedMesh = mesh;
 
