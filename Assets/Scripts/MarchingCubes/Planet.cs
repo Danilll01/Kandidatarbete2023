@@ -9,25 +9,35 @@ public class Planet : MonoBehaviour
 {
     [SerializeField] private ComputeShader meshGenerator;
     [SerializeField, Range(0, 255)] private float threshold = 200;
-    [SerializeField, Range(1, 28)] private int resolution = 20;
     [SerializeField, Range(1, 25)] private int frequency = 20;
     [SerializeField, Range(0, 5)] private float amplitude = 1;
     [SerializeField, Range(0, 1)] private float bottomLevel = 1;
     [SerializeField] private Material waterMaterial;
     [SerializeField] private GameObject water;
-    [SerializeField] private GameObject meshObj;
 
+    public float diameter;
     public float radius;
     public float surfaceGravity;
     public string bodyName = "TBT";
     public float mass;
     public List<Planet> moons;
 
+    private List<Chunk> chunks;
+    private Transform player;
+    private Material planetMaterial;
     private MarchingCubes marchingCubes;
+
+    [SerializeField, Range(1, 4)] private int chunkResolution = 3; //This is 2^chunkResolution
+    [SerializeField, Range(1, 14)] private int resolution = 5;
+    [SerializeField] private Chunk chunkPrefab;
+    [SerializeField] private GameObject chunksParent;
+
+
     [SerializeField] private bool willGenerateCreature = false;
     [SerializeField] private GenerateCreatures generateCreatures;
     [SerializeField] private TerrainColor terrainColor;
     [SerializeField] private SpawnFoliage spawnFoliage;
+    
 
     void Start() {
         if (generateCreatures == null) { 
@@ -42,48 +52,36 @@ public class Planet : MonoBehaviour
     /// <summary>
     /// Initialize mesh for marching cubes
     /// </summary>
-    public void Initialize(int randomSeed)
+    public void Initialize(Transform player, int randomSeed)
     {
         System.Random rand = new System.Random(randomSeed);
 
-        // Get meshfilter and create new mesh if it doesn't exist
-        MeshFilter meshFilter = meshObj.GetComponent<MeshFilter>();
-        if (meshFilter.sharedMesh == null)
-        {
-            meshFilter.sharedMesh = new Mesh();
-        }
+        radius = diameter / 2;
 
-        // Initialize the meshgenerator
-        if (meshGenerator != null)
-        {
-            threshold = 23 + (float)rand.NextDouble() * 4;
-            int frequency = rand.Next(2) + 3;
-            amplitude = 1.2f + (float)rand.NextDouble() * 0.4f;
-            bottomLevel = 1;
-            marchingCubes = new MarchingCubes(meshFilter.sharedMesh, meshGenerator, threshold, resolution, radius, frequency, amplitude, bottomLevel);
-        }
+        this.player = player;
 
-        float waterRadius = (threshold / 255 - bottomLevel) * radius;
+        MinMaxTerrainLevel terrainLevel = new MinMaxTerrainLevel();
+        
 
-        water.transform.localScale = new Vector3(waterRadius, waterRadius, waterRadius);
+        // Create all meshes
+        createMeshes(chunkResolution, terrainLevel);
 
+        // Init water
+        float waterDiameter = -(threshold / 255 - 1) * diameter;
+        water.transform.localScale = new Vector3(waterDiameter, waterDiameter, waterDiameter);
         water.GetComponent<Renderer>().material = waterMaterial;
 
-        // Generates the mesh
-        if (marchingCubes != null) {
-            MinMaxTerrainLevel terrainLevel = new MinMaxTerrainLevel();
-            terrainLevel.SetMin(Mathf.Abs((waterRadius + 1) / 2));
-            marchingCubes.generateMesh(terrainLevel);
-            
+        terrainLevel.SetMin(Mathf.Abs((waterDiameter + 1) / 2));
+        planetMaterial = terrainColor.GetPlanetMaterial(terrainLevel, rand.Next());
 
-            MeshCollider meshCollider = meshFilter.gameObject.AddComponent<MeshCollider>();
-            meshCollider.sharedMesh = meshFilter.sharedMesh;
-            terrainColor.ColorPlanet(terrainLevel, rand.Next());
+        // Sets the material of all chuncks
+        foreach (Chunk chunk in chunks) 
+        {
+            chunk.SetMaterial(planetMaterial);
         }
 
         if (willGenerateCreature) 
         {
-
             // Generate the creatures
             if (generateCreatures != null && bodyName != "Sun" && !bodyName.Contains("Moon")) {
                 generateCreatures.Initialize(this, rand.Next());
@@ -92,7 +90,43 @@ public class Planet : MonoBehaviour
 
         if (spawnFoliage != null && bodyName != "Sun" && !bodyName.Contains("Moon"))
         {
-            spawnFoliage.Initialize(this, waterRadius, rand.Next());
+            spawnFoliage.Initialize(this, waterDiameter, rand.Next());
+        }
+    }
+
+    private void createMeshes(int chunkResolution, MinMaxTerrainLevel terrainLevel)
+    {
+        Destroy(chunksParent);
+
+        chunksParent = new GameObject();
+        chunksParent.name = "chunks";
+        chunksParent.transform.parent = transform;
+        chunksParent.transform.localPosition = Vector3.zero;
+
+        // Initialize the meshgenerator
+        if (marchingCubes == null)
+        {
+            System.Random rand = Universe.random;
+
+            threshold = 23 + (float)rand.NextDouble() * 4;
+            int frequency = rand.Next(2) + 3;
+            amplitude = 1.2f + (float)rand.NextDouble() * 0.4f;
+            marchingCubes = new MarchingCubes(chunkResolution, meshGenerator, threshold, diameter, frequency, amplitude);
+        }
+
+        marchingCubes.chunkResolution = chunkResolution;
+
+        // Create all chunks
+        chunks = new List<Chunk>();
+        int noChunks = (1 << chunkResolution) * (1 << chunkResolution) * (1 << chunkResolution);
+        for (int i = 0; i < noChunks; i++)
+        {
+            Chunk chunk = Instantiate(chunkPrefab);
+            chunk.transform.parent = chunksParent.transform;
+            chunk.transform.localPosition = Vector3.zero;
+            chunk.name = "chunk" + i;
+            chunk.Initialize(i, resolution, marchingCubes, player, terrainLevel);
+            chunks.Add(chunk);
         }
     }
 
@@ -101,7 +135,7 @@ public class Planet : MonoBehaviour
     /// </summary>
     public void SetUpPlanetValues()
     {
-        mass = surfaceGravity * radius * radius / Universe.gravitationalConstant;
+        mass = surfaceGravity * diameter * diameter / Universe.gravitationalConstant;
         gameObject.name = bodyName;
     }
 }

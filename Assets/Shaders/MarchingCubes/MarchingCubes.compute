@@ -6,9 +6,8 @@
 #include "Includes/PerlinNoise.compute"
 
 // Helper functions declaration
-float4 getTexturePoint(uint3 pos, uint resolution, float radius);
+float4 getTexturePoint(uint3 pos, int3 chunkId, float maxPos);
 float3 interpolateVerts(float4 v1, float4 v2);
-int indexFromCoord(uint x, uint y, uint z);
 
 struct Triangle
 {
@@ -22,10 +21,11 @@ AppendStructuredBuffer<Triangle> triangles;
 
 uint resolution;
 float threshold;
-float radius;
+float diameter;
 uint frequency;
 float amplitude;
-float planetBottom;
+int chunkIndex;
+int chunkResolution;
 
 [numthreads(8, 8, 8)]
 void GenerateMesh(uint3 id : SV_DispatchThreadID)
@@ -36,18 +36,33 @@ void GenerateMesh(uint3 id : SV_DispatchThreadID)
     {
         return;
     }
+    
+    int mask = 0;
+    for (int i = 0; i < chunkResolution; i++)
+    {
+        mask += 1 << i;
+    }
+    
+    int3 chunkId =
+    {
+        (chunkIndex & (mask << (chunkResolution * 0))) >> (chunkResolution * 0),
+        (chunkIndex & (mask << (chunkResolution * 1))) >> (chunkResolution * 1),
+        (chunkIndex & (mask << (chunkResolution * 2))) >> (chunkResolution * 2)
+    };
      
+    float maxPos = ((resolution >> 3) >> chunkResolution) * 8;
+    
     // Get the value for each of the 8 corners in current cube
     float4 cubeCorners[8] =
     {
-        getTexturePoint(id, resolution, radius),
-        getTexturePoint(uint3(id.x + 1, id.y, id.z), resolution, radius),
-        getTexturePoint(uint3(id.x + 1, id.y, id.z + 1), resolution, radius),
-        getTexturePoint(uint3(id.x, id.y, id.z + 1), resolution, radius),
-        getTexturePoint(uint3(id.x, id.y + 1, id.z), resolution, radius),
-        getTexturePoint(uint3(id.x + 1, id.y + 1, id.z), resolution, radius),
-        getTexturePoint(uint3(id.x + 1, id.y + 1, id.z + 1), resolution, radius),
-        getTexturePoint(uint3(id.x, id.y + 1, id.z + 1), resolution, radius)
+        getTexturePoint(id, chunkId, maxPos),
+        getTexturePoint(uint3(id.x + 1, id.y, id.z), chunkId, maxPos),
+        getTexturePoint(uint3(id.x + 1, id.y, id.z + 1), chunkId, maxPos),
+        getTexturePoint(uint3(id.x, id.y, id.z + 1), chunkId, maxPos),
+        getTexturePoint(uint3(id.x, id.y + 1, id.z), chunkId, maxPos),
+        getTexturePoint(uint3(id.x + 1, id.y + 1, id.z), chunkId, maxPos),
+        getTexturePoint(uint3(id.x + 1, id.y + 1, id.z + 1), chunkId, maxPos),
+        getTexturePoint(uint3(id.x, id.y + 1, id.z + 1), chunkId, maxPos)
     };
     
     // Find the unique index for which cube config. we are dealing with, each bit in cubeindex represent a corner
@@ -102,45 +117,30 @@ float3 interpolateVerts(float4 v1, float4 v2)
     return v1.xyz + t * (v2.xyz - v1.xyz);
 }
 
-// Get an index from the coord given
-int indexFromCoord(uint x, uint y, uint z)
-{
-    return x + y * resolution + z * resolution * resolution;
-}
-
-
 //Create a sphere on a 3D texture
-float4 getTexturePoint(uint3 pos, uint resolution, float radius)
+float4 getTexturePoint(uint3 pos, int3 chunkId, float maxPos)
 {
-    int index =
-    pos.x +
-    pos.y * resolution +
-    pos.z * resolution * resolution;
+    float3 normPos = (pos / maxPos);
     
-    float mid = (resolution >> 1) - .5;
+    normPos /= (1 << chunkResolution);
     
-    float3 relPos = (mid - pos) * radius / resolution;
+    normPos += chunkId * (1.0 / (1 << chunkResolution));
     
-    float3 vec = (pos / mid) - 1;
+    float3 relPos = (.5 - normPos) * 2; // relPos goes between [-1, 1]
+    float lengthPos = length(relPos);
+    
     
     // If outside circle return 0
-    if (length(vec) > 1)
-        return float4(relPos, 0);
+    if (lengthPos > 1)
+        return float4(relPos * (diameter / 2), 0);
     
     // Add noise to current point
-    float density = (1 - length(vec)) * 255;
-    float3 normPos = pos / (resolution - 1.0);
-    float noiseOctave0 = (calculateNoise(normPos * (frequency << 0)) + 1) * 0.5f * amplitude;
-    float noiseOctave1 = (calculateNoise(normPos * (frequency << 1)) + 1) * 0.5f * amplitude * amplitude;
-    float noiseOctave2 = (calculateNoise(normPos * (frequency << 2)) + 1) * 0.5f * amplitude * amplitude * amplitude;
+    float density = (1 - lengthPos) * 255;
+    float noiseOctave0 = (calculateNoise(normPos * (frequency << 0)) + 1) * .5 * amplitude;
+    float noiseOctave1 = (calculateNoise(normPos * (frequency << 1)) + 1) * .5 * amplitude * amplitude;
+    float noiseOctave2 = (calculateNoise(normPos * (frequency << 2)) + 1) * .5 * amplitude * amplitude * amplitude;
     density *= noiseOctave0 * noiseOctave1 * noiseOctave2;
-    
-    float innerSphereDensity = (planetBottom - length(vec)) * 255;
-    
-    // If we are subtracting noise from the innersphere, then don't, and return the inner sphere
-    //if (density < innerSphereDensity)
-        //return float4(relPos, innerSphereDensity);
         
     // Return the noised value
-    return float4(relPos, density);
+    return float4(relPos * (diameter / 2), density);
 }
