@@ -45,6 +45,7 @@ public class Creature : MonoBehaviour
     private Rigidbody rigidbody;
     private LODGroup lodGroup;
     private Renderer renderer;
+    private Animator animator;
 
     // Start is called before the first frame update
     void Start()
@@ -57,6 +58,7 @@ public class Creature : MonoBehaviour
         rigidbody = GetComponent<Rigidbody>();
         lodGroup = meshObj.GetComponent<LODGroup>();
         renderer = lodGroup.transform.GetComponent<Renderer>();
+        animator = GetComponent<Animator>();
 
         // Teleport the creature 1 meter up in correct direction based on position on planet
         transform.position += -(planet.transform.position - transform.position).normalized;
@@ -90,6 +92,9 @@ public class Creature : MonoBehaviour
             isSleeping = false;
         }
 
+        if (currentState == CreatureState.PerformingAction)
+            return;
+            
         if (hunger < hungerThreshold)
         {
             currentState = CreatureState.LookingForFood;
@@ -118,7 +123,7 @@ public class Creature : MonoBehaviour
                 LookingForResource(ResourceType.Water);
                 break;
             case CreatureState.PerformingAction:
-                InteractWithResourceAction();
+                //InteractWithResourceAction();
                 break;
             case CreatureState.LookingForPartner:
                 //LookingForPartner();
@@ -174,8 +179,6 @@ public class Creature : MonoBehaviour
         } else
         {
             Vector3 nearestWater = GetNearestWaterSource();
-            print(nearestWater);
-            
             resourcePos = nearestWater;
         }
 
@@ -196,8 +199,6 @@ public class Creature : MonoBehaviour
                     hunger = Mathf.Min(maxHunger, hunger + hungerIncrease);
                     Destroy(nearestResource);
                 }
-
-                currentState = CreatureState.Walking;
             }
             else if (Vector3.Distance(transform.position, resourcePos) > consumeRadius)
             {
@@ -205,14 +206,11 @@ public class Creature : MonoBehaviour
                 destination = resourcePos;
                 GotoPosition(destination);
             }
-
         }
         else
         {
             RandomWalking();
         }
-
-
     }
 
     private GameObject GetNearestGameobject(string tagname)
@@ -398,11 +396,14 @@ public class Creature : MonoBehaviour
             randomPoint = transform.position + rotation * Random.insideUnitCircle * detectionRadius;
             tries++;
             
-            Debug.Log("Distance: " + Vector3.Distance(randomPoint, planet.transform.position));
-            Debug.Log("Water: " + Mathf.Abs(planet.waterRadius) / 2);
-        } while (Vector3.Distance(randomPoint, planet.transform.position) < Mathf.Abs(planet.waterRadius) / 2);
+            if (DEBUG) Debug.Log("Distance: " + Vector3.Distance(randomPoint, planet.transform.position));
+            if (DEBUG) Debug.Log("Water: " + Mathf.Abs(planet.waterRadius) / 2);
 
-        Debug.Log("Tries: " + tries);
+            if (tries > 100)
+            {
+                return transform.position - transform.forward * 4f;
+            }
+        } while (Vector3.Distance(randomPoint, planet.transform.position) < Mathf.Abs(planet.waterRadius) / 2);
 
         return randomPoint;
     }
@@ -410,5 +411,28 @@ public class Creature : MonoBehaviour
     private void InteractWithResourceAction()
     {
         currentState = CreatureState.PerformingAction;
+        animator.SetBool("Walk", false);
+        animator.SetBool("Eat", true);
+        StartCoroutine(InteractWithResource());
+    }
+
+    // Create a coroutine
+    IEnumerator InteractWithResource()
+    {
+        // Wait for 3 seconds
+        yield return new WaitForSeconds(animator.GetCurrentAnimatorStateInfo(0).length * 2);
+
+        // Set the state to idle
+        animator.SetBool("Eat", false);
+        animator.SetBool("Walk", true);
+
+        yield return new WaitForSeconds(1);
+
+        currentState = CreatureState.Walking;
+    }
+
+    public void EndEatAnimation()
+    {
+        
     }
 }

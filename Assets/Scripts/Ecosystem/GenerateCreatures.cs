@@ -165,7 +165,7 @@ public class GenerateCreatures : MonoBehaviour
 
     private void GatherWaterPoints()
     {
-        float rayOffset = 2f;
+        float rayOffset = 1f;
         float minRayDist = 1.3f;
         float maxRayDist = 2f;
 
@@ -188,11 +188,6 @@ public class GenerateCreatures : MonoBehaviour
                     waterPoints.Add(hit.point - planetCenter);
                 }
             }
-        }
-        for (int i = 0; i < 15; i++)
-        {
-            Debug.Log(waterPoints[i]);
-
         }
 
         planet.waterPoints = waterPoints;
