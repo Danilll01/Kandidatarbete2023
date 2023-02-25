@@ -63,7 +63,7 @@ public class SpawnPlanets : MonoBehaviour
         SunPlanetBody.bodyName = "Sun";
         SunPlanetBody.diameter = radiusMaxValue * 2;
         SunPlanetBody.SetUpPlanetValues();
-        sunObject.transform.localScale = new Vector3(SunPlanetBody.radius, SunPlanetBody.radius, SunPlanetBody.radius);
+        sunObject.transform.localScale = new Vector3(SunPlanetBody.diameter, SunPlanetBody.diameter, SunPlanetBody.diameter);
 
         sun = SunPlanetBody;
 

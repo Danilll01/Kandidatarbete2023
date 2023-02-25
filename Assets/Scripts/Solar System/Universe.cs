@@ -7,7 +7,7 @@ public static class Universe
     public const float gravitationalConstant = 2f;
     public static int nrOfPlanets = 3;
     public static int seed = 100;
-    public static System.Random random = new System.Random(seed);
+    public static System.Random random;
 
     /// <summary>
     /// Initializes the System.Random with the given seed

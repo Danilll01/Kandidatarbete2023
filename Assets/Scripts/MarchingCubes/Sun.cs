@@ -6,6 +6,7 @@ using UnityEngine;
 
 public class Sun : MonoBehaviour
 {
+    public float diameter;
     public float radius;
     public float surfaceGravity = 10;
     public string bodyName = "TBT";
@@ -16,7 +17,8 @@ public class Sun : MonoBehaviour
     /// </summary>
     public void SetUpPlanetValues()
     {
-        mass = surfaceGravity * radius * radius / Universe.gravitationalConstant;
+        mass = surfaceGravity * diameter * diameter / Universe.gravitationalConstant;
         gameObject.name = bodyName;
+        radius = diameter / 2;
     }
 }
