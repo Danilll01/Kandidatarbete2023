@@ -22,7 +22,7 @@ public class Planet : MonoBehaviour
     public float mass;
     public List<Planet> moons;
 
-    private List<Chunk> chunks;
+    public List<Chunk> chunks;
     private Transform player;
     private Material planetMaterial;
     private MarchingCubes marchingCubes;

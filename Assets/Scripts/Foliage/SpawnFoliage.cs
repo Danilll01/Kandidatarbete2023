@@ -91,7 +91,6 @@ public class SpawnFoliage : MonoBehaviour
             // Delets all foliage when leaving
             else if((player.transform.position - planet.transform.position).magnitude > 5000)
             {
-                setUpInstancing = false;
                 if (foliageHandler.transform.childCount > 0)
                 {
                     Destroy(foliageHandler);
@@ -105,7 +104,43 @@ public class SpawnFoliage : MonoBehaviour
                     stoneSpawnIndex = 0;
                 }
             }
+
+            if (treeIndex <= treeSpawnIndex && bushIndex <= bushSpawnIndex && stoneIndex <= stoneSpawnIndex)
+            {
+                UpdateChunks();
+            }
         }
+    }
+
+    private void UpdateChunks()
+    {
+        Vector3 playerPos = player.transform.position;
+        Vector3 planetCenter = Vector3.zero;
+        Vector3 playerToPlanetCenter = playerPos - planetCenter;
+        Vector3 halfWayPointNormal = new Vector3(playerToPlanetCenter.x / 1.5f, playerToPlanetCenter.y / 1.5f, playerToPlanetCenter.z / 1.5f);
+
+        for (int i = 0; i < planet.chunks.Count; i++)
+        {
+            bool isBelowHalfWayPoint = CheckIfPointBIsBelowA(halfWayPointNormal, planet.chunks[i].transform.GetComponent<MeshRenderer>().bounds.center, halfWayPointNormal.normalized);
+            if (isBelowHalfWayPoint)
+            {
+                planet.chunks[i].gameObject.SetActive(false);
+            }
+            else
+            {
+                planet.chunks[i].gameObject.SetActive(true);
+            }
+        }
+    }
+
+    private bool CheckIfPointBIsBelowA(Vector3 a, Vector3 b, Vector3 up)
+    {
+        return (Vector3.Dot(b - a, up) <= 0) ? true : false;
+    }
+
+    private void CalculateIfChunkShouldBeActive()
+    {
+
     }
 
     /// <summary>
