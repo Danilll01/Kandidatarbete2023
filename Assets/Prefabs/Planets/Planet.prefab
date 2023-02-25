@@ -176,6 +176,9 @@ MonoBehaviour:
   - {fileID: 7405846476849542632, guid: c6308cb7062fac34e8e50600086b12a1, type: 3}
   - {fileID: 1576488453971893466, guid: a778b631c6253a04899cb31bad047c81, type: 3}
   DEBUG: 0
+  approximateObjectsPerChunk: 100
+  colliderPrefab: {fileID: 968663006770860244, guid: fbfc60fbc01eea645a3eb6d35d027827,
+    type: 3}
 --- !u!1 &3939805141923606249
 GameObject:
   m_ObjectHideFlags: 0

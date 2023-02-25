@@ -33,6 +33,9 @@ public class SpawnFoliage : MonoBehaviour
     [Header("Misc")]
     [SerializeField] private bool DEBUG = false;
 
+    [SerializeField] private int approximateObjectsPerChunk = 100;
+    [SerializeField] private GameObject colliderPrefab;
+
 
     private int treeIndex = 0;
     private int treeSpawnIndex = 0;
@@ -51,6 +54,7 @@ public class SpawnFoliage : MonoBehaviour
     private List<Quaternion> stoneInstancingRotations = new List<Quaternion>();
 
     private GameObject foliageHandler;
+    private GameObject colliderObjects;
     private GameObject player;
 
     private static int seed = Universe.seed;
@@ -108,7 +112,7 @@ public class SpawnFoliage : MonoBehaviour
 
                 if (!mergedMeshes)
                 {
-                    CombineStaticMeshesOfChunsk();
+                    CombineStaticMeshesOfChunks();
                 }
             }
         }
@@ -140,7 +144,7 @@ public class SpawnFoliage : MonoBehaviour
         return (Vector3.Dot(b - a, up) <= 0) ? true : false;
     }
 
-    private void CombineStaticMeshesOfChunsk()
+    private void CombineStaticMeshesOfChunks()
     {
         List<GameObject> objectsInChunk = new List<GameObject>();
 
@@ -160,6 +164,16 @@ public class SpawnFoliage : MonoBehaviour
 
         }
         mergedMeshes = true;
+
+        colliderObjects = new GameObject("Colliders parent");
+        colliderObjects.transform.parent = planet.transform;
+        colliderObjects.transform.localPosition = new Vector3(0, 0, 0);
+
+        for (int i = 0; i < approximateObjectsPerChunk; i++)
+        {
+            GameObject colliderObject = Instantiate(colliderPrefab);
+            colliderObject.transform.parent = colliderObjects.transform;
+        }
     }
 
     /// <summary>
