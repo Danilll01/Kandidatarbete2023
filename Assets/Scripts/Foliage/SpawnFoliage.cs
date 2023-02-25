@@ -55,15 +55,12 @@ public class SpawnFoliage : MonoBehaviour
 
     private static int seed = Universe.seed;
 
-
     private Planet planet;
     private float planetRadius;
     private float waterLevel;
     private Vector3 noiseOffset;
 
-    private bool setUpInstancing = false;
-
-
+    private bool mergedMeshes = false;
 
     void Update()
     {
@@ -108,6 +105,11 @@ public class SpawnFoliage : MonoBehaviour
             if (treeIndex <= treeSpawnIndex && bushIndex <= bushSpawnIndex && stoneIndex <= stoneSpawnIndex)
             {
                 UpdateChunks();
+
+                if (!mergedMeshes)
+                {
+                    CombineStaticMeshesOfChunsk();
+                }
             }
         }
     }
@@ -138,9 +140,26 @@ public class SpawnFoliage : MonoBehaviour
         return (Vector3.Dot(b - a, up) <= 0) ? true : false;
     }
 
-    private void CalculateIfChunkShouldBeActive()
+    private void CombineStaticMeshesOfChunsk()
     {
+        List<GameObject> objectsInChunk = new List<GameObject>();
 
+        for (int i = 0; i < planet.chunks.Count; i++)
+        {
+            GameObject meshParent = new GameObject("Mesh parent");
+            meshParent.transform.parent = planet.chunks[i].transform;
+
+            int childCount = planet.chunks[i].transform.childCount;
+            for (int j = 0; j < childCount; j++)
+            {
+                objectsInChunk.Add(planet.chunks[i].transform.GetChild(j).gameObject);
+            }
+
+            StaticBatchingUtility.Combine(planet.chunks[i].gameObject);
+            objectsInChunk.Clear();
+
+        }
+        mergedMeshes = true;
     }
 
     /// <summary>
