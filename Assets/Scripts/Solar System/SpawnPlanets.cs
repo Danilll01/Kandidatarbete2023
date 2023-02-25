@@ -61,7 +61,7 @@ public class SpawnPlanets : MonoBehaviour
 
         Sun SunPlanetBody = sunObject.AddComponent<Sun>();
         SunPlanetBody.bodyName = "Sun";
-        SunPlanetBody.radius = radiusMaxValue * 2;
+        SunPlanetBody.diameter = radiusMaxValue * 2;
         SunPlanetBody.SetUpPlanetValues();
         sunObject.transform.localScale = new Vector3(SunPlanetBody.radius, SunPlanetBody.radius, SunPlanetBody.radius);
 
@@ -95,7 +95,7 @@ public class SpawnPlanets : MonoBehaviour
 
             Planet planetBody = planet.GetComponent<Planet>();
             planetBody.bodyName = "Planet " + i;
-            planetBody.radius = random.Next(radiusMinValue, radiusMaxValue);
+            planetBody.diameter = random.Next(radiusMinValue, radiusMaxValue);
 
 
             int nrOfMoonsForPlanet = GetNrOfMoonsToGenerate();
@@ -104,7 +104,7 @@ public class SpawnPlanets : MonoBehaviour
 
 
             planetBody.SetUpPlanetValues();
-            planetBody.Initialize(random.Next());
+            planetBody.Initialize(player.transform, random.Next());
             InstantiateMoons(planetBody, nrOfMoonsForPlanet);
             bodies.Add(planetBody);
 
@@ -120,8 +120,8 @@ public class SpawnPlanets : MonoBehaviour
         // Calculates the position from the sun given the number of moons 
         if (index == 0)
         {
-            float totalRadiusOfCurrentPlanet = planet.radius + (planet.radius * moonsNumber);
-            float sunRadius = sun.radius;
+            float totalRadiusOfCurrentPlanet = planet.diameter + (planet.diameter * moonsNumber);
+            float sunRadius = sun.diameter;
             float offset = random.Next(radiusMinValue, radiusMaxValue) * 1.2f;
             float distanceFromSun = sunRadius + totalRadiusOfCurrentPlanet + offset;
 
@@ -133,10 +133,10 @@ public class SpawnPlanets : MonoBehaviour
         {
             Planet previousPlanet = bodies[index - 1];
             int nrOfMoonsOnPreviousPlanet = previousPlanet.moons.Count;
-            float totalRadiusOfPreviousPlanet = previousPlanet.radius + (previousPlanet.radius * nrOfMoonsOnPreviousPlanet);
+            float totalRadiusOfPreviousPlanet = previousPlanet.diameter + (previousPlanet.diameter * nrOfMoonsOnPreviousPlanet);
             float previousPlanetPosMagnitude = previousPlanet.gameObject.transform.position.magnitude;
 
-            float totalRadiusOfCurrentPlanet = planet.radius + (planet.radius * moonsNumber);
+            float totalRadiusOfCurrentPlanet = planet.diameter + (planet.diameter * moonsNumber);
 
             float offset = random.Next(radiusMinValue, radiusMaxValue + 1) * 1.2f;
             float distanceFromSun = previousPlanetPosMagnitude + totalRadiusOfPreviousPlanet + totalRadiusOfCurrentPlanet + offset;
@@ -166,14 +166,14 @@ public class SpawnPlanets : MonoBehaviour
         {
             GameObject moon = Instantiate(planetsPrefab);
             moon.transform.parent = parentPlanet.transform;
-            moon.transform.localPosition = RandomPointOnCircleEdge(parentPlanet.radius * i);
+            moon.transform.localPosition = RandomPointOnCircleEdge(parentPlanet.diameter * i);
             moon.gameObject.name = "Moon " + i;
 
             Planet moonBody = moon.GetComponent<Planet>();
             moonBody.bodyName = "Moon " + i;
-            moonBody.radius = random.Next((int)(parentPlanet.radius / 5), (int)((parentPlanet.radius / 2) + 1));
+            moonBody.diameter = random.Next((int)(parentPlanet.diameter / 5), (int)((parentPlanet.diameter / 2) + 1));
             moonBody.SetUpPlanetValues();
-            moonBody.Initialize(random.Next());
+            moonBody.Initialize(player.transform, random.Next());
             parentPlanet.moons.Add(moonBody);
             SetupOrbitComponents(parentPlanet.gameObject, moon);
         }
