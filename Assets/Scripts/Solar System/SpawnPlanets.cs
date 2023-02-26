@@ -49,7 +49,6 @@ public class SpawnPlanets : MonoBehaviour
         bodies = new List<Planet>();
 
         // Create a sun object
-        //GameObject Sun = Instantiate(planetsPrefab);
 
         // Creates a sphere to be able to use the mesh for the sun
         GameObject sunObject = GameObject.CreatePrimitive(PrimitiveType.Sphere);
