@@ -1,20 +1,23 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.UIElements;
 
 public class Chunk : MonoBehaviour
 {
 
-    int index;
-    int resolution;
-    MeshFilter meshFilter;
-    MeshCollider meshCollider;
-    Mesh mesh;
-    MarchingCubes marchingCubes;
-    Transform player;
-    MinMaxTerrainLevel terrainLevel;
+    private int index;
+    private int resolution;
+    private MeshFilter meshFilter;
+    private MeshCollider meshCollider;
+    private Mesh mesh;
+    private MarchingCubes marchingCubes;
+    private Transform player;
+    private MinMaxTerrainLevel terrainLevel;
+    private Vector3 chunkPosition;
 
     /// <summary>
     /// Initalizes a given chunk
@@ -35,8 +38,10 @@ public class Chunk : MonoBehaviour
         meshFilter = transform.GetComponent<MeshFilter>();
         meshCollider = transform.GetComponent<MeshCollider>();
 
-        updateMesh(resolution);
+        calculateChunkPosition();
 
+        //Set lowest resolution as default
+        updateMesh(10);
     }
 
     /// <summary>
@@ -46,13 +51,53 @@ public class Chunk : MonoBehaviour
         GetComponent<MeshRenderer>().material = material;
     }
 
+    private void calculateChunkPosition()
+    {
+        // Extra the chunkindex in terms of x,y,z
+        int mask = 0;
+        for (int i = 0; i < marchingCubes.chunkResolution; i++)
+        {
+            mask += 1 << i;
+        }
+
+        Vector3 chunkIndex = 
+            new Vector3(
+                (index & (mask << (marchingCubes.chunkResolution * 0))) >> (marchingCubes.chunkResolution * 0),
+                (index & (mask << (marchingCubes.chunkResolution * 1))) >> (marchingCubes.chunkResolution * 1),
+                (index & (mask << (marchingCubes.chunkResolution * 2))) >> (marchingCubes.chunkResolution * 2)
+            );
+
+        // Use the chunkindex to calculate the position of the chunk
+        chunkPosition = -(chunkIndex - 1.5f * Vector3.one) * (marchingCubes.diameter / (1 << (marchingCubes.chunkResolution)));
+    }
+
     private void Update()
     {
-        // TODO: Update the size of the mesh according to the distance to the player.
+        /*
+        // Check if the player is on the planet
+        if (!ReferenceEquals(player.parent, transform.parent.parent))
+            return;
+
+        if (Vector3.Magnitude(chunkPosition - player.localPosition) < marchingCubes.diameter * .20f)
+        {
+            updateMesh(10);
+            return;
+        }
+
+        if (Vector3.Magnitude(chunkPosition - player.localPosition) > marchingCubes.diameter * .35f)
+        {
+            updateMesh(1);
+            return;
+        }*/
     }
 
     private void updateMesh(int resolution)
     {
+        if (this.resolution == resolution)
+            return;
+
+        this.resolution = resolution;
+
         mesh = new Mesh();
 
         

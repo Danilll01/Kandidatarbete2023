@@ -14,7 +14,7 @@ public class MarchingCubes
 {
     readonly ComputeShader meshGenerator;
     readonly float threshold;
-    readonly float diameter;
+    public readonly float diameter;
     readonly int frequency;
     readonly float amplitude;
     public int chunkResolution;
