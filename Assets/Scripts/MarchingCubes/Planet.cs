@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
 
-[RequireComponent(typeof(GenerateCreatures))]
-[RequireComponent(typeof(TerrainColor))]
 public class Planet : MonoBehaviour
 {
     [SerializeField] private ComputeShader meshGenerator;
@@ -39,7 +37,6 @@ public class Planet : MonoBehaviour
     [SerializeField] private SpawnFoliage spawnFoliage;
     [SerializeField] private ChunksHandler chunksHandler;
 
-
     /// <summary>
     /// Initialize mesh for marching cubes
     /// </summary>
@@ -52,8 +49,11 @@ public class Planet : MonoBehaviour
         this.player = player;
 
         MinMaxTerrainLevel terrainLevel = new MinMaxTerrainLevel();
-        
 
+        if (bodyName == "Sun")
+        {
+            return;
+        }
         // Create all meshes
         createMeshes(chunkResolution, terrainLevel);
 

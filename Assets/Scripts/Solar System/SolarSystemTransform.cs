@@ -6,18 +6,18 @@ using SimpleKeplerOrbits;
 public class SolarSystemTransform : MonoBehaviour
 {
     [SerializeField] private SpawnPlanets spawnPlanets;
-    [SerializeField] private int activePlanetIndex = 0;
+    [SerializeField] private int activePlanetIndex = 1;
     private GameObject sun;
     private GameObject planetsParent;
     [SerializeField] private GameObject player;
-    private int playerOnPlanetIndex = 0;
+    private int playerOnPlanetIndex = 1;
 
 
     void Start()
     {
         if (spawnPlanets.bodies != null)
         {
-            sun = spawnPlanets.sun.gameObject;
+            sun = spawnPlanets.bodies[0].gameObject;
         }
         planetsParent = this.gameObject;
     }
@@ -28,7 +28,7 @@ public class SolarSystemTransform : MonoBehaviour
     {
         if (sun == null && spawnPlanets.bodies != null)
         {
-            sun = spawnPlanets.sun.gameObject;
+            sun = spawnPlanets.bodies[0].gameObject;
         }
         if (!spawnPlanets.solarySystemGenerated)
         {
@@ -119,7 +119,7 @@ public class SolarSystemTransform : MonoBehaviour
         sunOrbitMover.AttractorSettings.AttractorObject = planetToOrbit.transform;
 
         // AttractorMass is set to be the same mass as the sun to get the same velocity the planet had.
-        sunOrbitMover.AttractorSettings.AttractorMass = sun.GetComponent<Sun>().mass;
+        sunOrbitMover.AttractorSettings.AttractorMass = sun.GetComponent<Planet>().mass;
         sunOrbitMover.AttractorSettings.GravityConstant = 2;
         TurnOnOrbit(sun);
 
