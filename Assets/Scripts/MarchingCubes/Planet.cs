@@ -37,7 +37,8 @@ public class Planet : MonoBehaviour
     [SerializeField] private GenerateCreatures generateCreatures;
     [SerializeField] private TerrainColor terrainColor;
     [SerializeField] private SpawnFoliage spawnFoliage;
-    
+    [SerializeField] private ChunksHandler chunksHandler;
+
 
     /// <summary>
     /// Initialize mesh for marching cubes
@@ -85,6 +86,11 @@ public class Planet : MonoBehaviour
         if (spawnFoliage != null && bodyName != "Sun" && !bodyName.Contains("Moon"))
         {
             spawnFoliage.Initialize(this, waterDiameter, rand.Next());
+        }
+
+        if (chunksHandler != null)
+        {
+            chunksHandler.Initialize(this, player);
         }
     }
 

@@ -33,7 +33,6 @@ public class SpawnFoliage : MonoBehaviour
     [Header("Misc")]
     [SerializeField] private bool DEBUG = false;
 
-    [SerializeField] private int approximateObjectsPerChunk = 100;
     private List<GameObject> foliageObjects = new List<GameObject>();
 
 
@@ -102,8 +101,6 @@ public class SpawnFoliage : MonoBehaviour
 
             if (treeIndex <= treeSpawnIndex && bushIndex <= bushSpawnIndex && stoneIndex <= stoneSpawnIndex)
             {
-                UpdateChunks();
-
                 if (!mergedMeshes)
                 {
                     CombineStaticMeshesOfChunks();
@@ -112,50 +109,14 @@ public class SpawnFoliage : MonoBehaviour
         }
     }
 
-    private void UpdateChunks()
-    {
-        Vector3 playerPos = player.transform.position;
-        Vector3 planetCenter = Vector3.zero;
-        Vector3 playerToPlanetCenter = playerPos - planetCenter;
-        Vector3 halfWayPointNormal = new Vector3(playerToPlanetCenter.x / 1.5f, playerToPlanetCenter.y / 1.5f, playerToPlanetCenter.z / 1.5f);
-
-        for (int i = 0; i < planet.chunks.Count; i++)
-        {
-            bool isBelowHalfWayPoint = CheckIfPointBIsBelowA(halfWayPointNormal, planet.chunks[i].transform.GetComponent<MeshRenderer>().bounds.center, halfWayPointNormal.normalized);
-            if (isBelowHalfWayPoint)
-            {
-                planet.chunks[i].gameObject.SetActive(false);
-            }
-            else
-            {
-                planet.chunks[i].gameObject.SetActive(true);
-            }
-        }
-    }
-
-    private bool CheckIfPointBIsBelowA(Vector3 a, Vector3 b, Vector3 up)
-    {
-        return (Vector3.Dot(b - a, up) <= 0) ? true : false;
-    }
-
     private void CombineStaticMeshesOfChunks()
     {
-        List<GameObject> objectsInChunk = new List<GameObject>();
-
         for (int i = 0; i < planet.chunks.Count; i++)
         {
             GameObject meshParent = new GameObject("Mesh parent");
             meshParent.transform.parent = planet.chunks[i].transform;
 
-            int childCount = planet.chunks[i].transform.childCount;
-            for (int j = 0; j < childCount; j++)
-            {
-                objectsInChunk.Add(planet.chunks[i].transform.GetChild(j).gameObject);
-            }
-
             StaticBatchingUtility.Combine(planet.chunks[i].gameObject);
-            objectsInChunk.Clear();
-
         }
         mergedMeshes = true;
     }

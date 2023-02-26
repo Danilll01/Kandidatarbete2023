@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 3175307376905995560}
   - component: {fileID: 7065241369011201559}
   - component: {fileID: 2855617038713985127}
+  - component: {fileID: 6742904736247445569}
   m_Layer: 0
   m_Name: Planet
   m_TagString: Untagged
@@ -72,6 +73,7 @@ MonoBehaviour:
   generateCreatures: {fileID: 7065241369011201559}
   terrainColor: {fileID: 3175307376905995560}
   spawnFoliage: {fileID: 2855617038713985127}
+  chunksHandler: {fileID: 6742904736247445569}
 --- !u!114 &3175307376905995560
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -177,8 +179,18 @@ MonoBehaviour:
   - {fileID: 1576488453971893466, guid: a778b631c6253a04899cb31bad047c81, type: 3}
   DEBUG: 0
   approximateObjectsPerChunk: 100
-  colliderPrefab: {fileID: 968663006770860244, guid: fbfc60fbc01eea645a3eb6d35d027827,
-    type: 3}
+--- !u!114 &6742904736247445569
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 938852981703260768}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a74dae873f525754f8bfc5552f8e48e1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3939805141923606249
 GameObject:
   m_ObjectHideFlags: 0
