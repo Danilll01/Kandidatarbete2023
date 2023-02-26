@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 3252779917094484695}
   - component: {fileID: 52386005884151534}
   - component: {fileID: 4217182805032589942}
+  - component: {fileID: 7890936597704357180}
   m_Layer: 0
   m_Name: Tree_03
   m_TagString: Foliage
@@ -103,3 +104,17 @@ LODGroup:
     renderers:
     - renderer: {fileID: 52386005884151534}
   m_Enabled: 1
+--- !u!136 &7890936597704357180
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6941765000743290380}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.5
+  m_Height: 4.950701
+  m_Direction: 1
+  m_Center: {x: 0.10087067, y: 2.4756033, z: -0.120905876}
