@@ -61,26 +61,13 @@ public class Creature : MonoBehaviour
         animator = GetComponent<Animator>();
 
         // Teleport the creature 1 meter up in correct direction based on position on planet
-        transform.position += -(planet.transform.position - transform.position).normalized;
+        transform.position += -(planet.transform.position - transform.position).normalized * 0.3f;
 
     }
-
-    /*
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, detectionRadius);
-        Gizmos.color = Color.green;
-        Gizmos.DrawWireSphere(transform.position, consumeRadius);
-    }
-    */
 
     // Update is called once per frame
     void Update()
     {
-        //KeepUpRight();
-        //AttractToPlanet();
-        //print(rigidbody.IsSleeping());
 
         if (!renderer.isVisible)
         {
@@ -147,9 +134,8 @@ public class Creature : MonoBehaviour
     {
         if (!isSleeping)
         {
-            //print("Rendering");
             AttractToPlanet();
-            KeepUpRight();
+            Rotate();
         }
     }
 
@@ -278,94 +264,34 @@ public class Creature : MonoBehaviour
         Vector3 posToPlanetCenter = planet.transform.position - pos;
 
         float angle = Vector3.Angle(creatureToPlanetCenter, posToPlanetCenter);
-        //if (DEBUG) Debug.Log("Angle:" + angle);
         return angle < consumeRadius;
     }
 
-    private void KeepUpRight()
+    private void Rotate()
     {
-        // Look at the walking direction and have the create follow the terrain
-
         Vector3 direction = destination - transform.position;
-
-        Quaternion rotation;
-
-        if (direction != Vector3.zero)
-        {
-            rotation = Quaternion.LookRotation(direction);
-        } else
-        {
-            rotation = Quaternion.FromToRotation(Vector3.forward, transform.position);
-        }
-        
-        
-        Vector3 directionFromCenter = transform.position - planet.transform.position;
-
-        //directionFromCenter = directionFromCenter.normalized;
-        //transform.rotation = Quaternion.FromToRotation(transform.up, directionFromCenter) * transform.rotation;
-
-        // Make the caracter also look a the direction it is walking
-        //transform.rotation = Quaternion.Lerp(transform.rotation, rotation, Time.fixedDeltaTime * 0.2f);
 
         RaycastHit hit;
         
         // Cast a ray down to get the normal of the terrain
         if (Physics.Linecast(transform.position, planet.transform.position, out hit))
         {
-            if (DEBUG) Debug.Log("Hit: " + hit.collider.gameObject.name);
-            //Quaternion grndTilt = 
-            // Set rotation of creature to the normal of hit
-            //transform.rotation = Quaternion.FromToRotation(Vector3.up, hit.normal) * rotation; // Typ works
-            //Quaternion.AngleAxis(Quaternion.Angle(transform.rotation, rotation), hit.normal);
-
-            
             Vector3 newUp = hit.normal;
             Vector3 oldForward = transform.forward;
 
             Vector3 newRight = Vector3.Cross(newUp, oldForward);
             Vector3 newForward = Vector3.Cross(newRight, newUp);
-
-            //transform.rotation = Quaternion.LookRotation(newForward, newUp) * Quaternion.Euler(0, direction.y, 0);
+            
             // Caluculate angle between the creature and destination
             float angle = Vector3.SignedAngle(newForward, direction, newUp);
-            print("Angle: " + angle);
 
+            // Set rotation of creature to the normal of hit
+            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(newForward, newUp), Time.fixedDeltaTime * 10f);
 
-            //Vector3 vect = Quaternion.LookRotation(newForward, newUp) * Quaternion.Euler(0, angle, 0).eulerAngles;
-            //vect.y = direction.y;
-            transform.rotation = Quaternion.LookRotation(newForward, newUp);
-
+            // Rotate the creature to the direction it is walking
             transform.Rotate(new (0, angle * Time.fixedDeltaTime, 0));
-            //transform.Rotate(0, direction.y, 0);
-            /*
             
-            // Quaternion.LookRotation(newForward, newUp) *
-            
-            Vector3 terrainNormal = hit.normal;
-
-            // Calculate the forward direction towards the target point
-            Vector3 targetPoint = destination;
-            Vector3 forwardDirection = (targetPoint - transform.position).normalized;
-
-            // Calculate the right direction using the cross product of the forward direction and the terrain normal
-            Vector3 rightDirection = Vector3.Cross(forwardDirection, terrainNormal);
-
-            // Calculate the new up direction using the cross product of the right and forward directions
-            Vector3 upDirection = Vector3.Cross(rightDirection, forwardDirection);
-
-            // Create a new rotation using the forward and up directions
-            Quaternion targetRotation = Quaternion.LookRotation(forwardDirection, upDirection);
-
-            // Combine the new rotation with the rotation that keeps the object aligned with the terrain normal
-            Quaternion finalRotation = Quaternion.FromToRotation(transform.up, terrainNormal) * targetRotation;
-
-            // Apply the final rotation to the object
-            transform.rotation = finalRotation;
-            */
         }
-
-        // https://stackoverflow.com/questions/61852558/unity-rotating-object-around-y-axis-while-constantly-setting-up-different-rot
-
     }
     private void AttractToPlanet()
     {
