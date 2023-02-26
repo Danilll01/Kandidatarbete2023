@@ -326,10 +326,16 @@ public class Creature : MonoBehaviour
             Vector3 newForward = Vector3.Cross(newRight, newUp);
 
             //transform.rotation = Quaternion.LookRotation(newForward, newUp) * Quaternion.Euler(0, direction.y, 0);
-            Vector3 vect = Quaternion.LookRotation(newForward, newUp).eulerAngles;
-            //vect.y = direction.y;
-            transform.rotation = Quaternion.Euler(vect);
+            // Caluculate angle between the creature and destination
+            float angle = Vector3.SignedAngle(newForward, direction, newUp);
+            print("Angle: " + angle);
 
+
+            //Vector3 vect = Quaternion.LookRotation(newForward, newUp) * Quaternion.Euler(0, angle, 0).eulerAngles;
+            //vect.y = direction.y;
+            transform.rotation = Quaternion.LookRotation(newForward, newUp);
+
+            transform.Rotate(new (0, angle * Time.fixedDeltaTime, 0));
             //transform.Rotate(0, direction.y, 0);
             /*
             
@@ -429,10 +435,5 @@ public class Creature : MonoBehaviour
         yield return new WaitForSeconds(1);
 
         currentState = CreatureState.Walking;
-    }
-
-    public void EndEatAnimation()
-    {
-        
     }
 }
