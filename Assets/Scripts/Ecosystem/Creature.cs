@@ -1,8 +1,5 @@
 using System.Collections;
-using System.Collections.Generic;
-using Unity.Burst.CompilerServices;
 using UnityEngine;
-using static UnityEngine.EventSystems.EventTrigger;
 
 public class Creature : MonoBehaviour
 {
@@ -35,7 +32,6 @@ public class Creature : MonoBehaviour
     [SerializeField] private bool isSleeping;
     
 
-    // Normal destination for every state
     private bool atDestination = false;
     [SerializeField] private Vector3 destination = Vector3.zero;
 
@@ -62,13 +58,12 @@ public class Creature : MonoBehaviour
 
         // Teleport the creature 1 meter up in correct direction based on position on planet
         transform.position += -(planet.transform.position - transform.position).normalized * 0.3f;
-
     }
 
     // Update is called once per frame
     void Update()
     {
-
+        // If creature is not visible, dont perform physics update
         if (!renderer.isVisible)
         {
             if (!isSleeping) rigidbody.Sleep();
@@ -79,12 +74,14 @@ public class Creature : MonoBehaviour
             isSleeping = false;
         }
 
+        // If the creature is performing animation, dont do anything
         if (currentState == CreatureState.PerformingAction)
             return;
 
+        // Update creatures state if needed
         UpdateCreatureState();
 
-
+        // Act on current state of the creature
         switch (currentState)
         {
             case CreatureState.Idle:
@@ -99,17 +96,15 @@ public class Creature : MonoBehaviour
             case CreatureState.LookingForWater:
                 LookingForResource(ResourceType.Water);
                 break;
-            case CreatureState.PerformingAction:
-                //InteractWithResourceAction();
-                break;
             case CreatureState.LookingForPartner:
                 //LookingForPartner();
                 break;
             case CreatureState.Breeding:
-                // Bredding();
+                //Bredding();
                 break;
         }
 
+        // Decrease hunger and thirst
         hunger -= hungerDecrease * Time.deltaTime;
         thirst -= thirstDecrease * Time.deltaTime;
 
@@ -165,22 +160,24 @@ public class Creature : MonoBehaviour
     {
         GameObject nearestResource = GetNearestGameobject(resource.ToString());
         Vector3 resourcePos = Vector3.zero;
-        
+
+        // Get position of nearest resource
         if (resource == ResourceType.Food)
         {
             if (nearestResource != null)
                 resourcePos = nearestResource.transform.position;
         } else
         {
-            Vector3 nearestWater = GetNearestWaterSource();
-            resourcePos = nearestWater;
+            resourcePos = GetNearestWaterSource();        
         }
 
+        // If there is no resource, walk around randomly
         if (nearestResource != null && resourcePos != Vector3.zero)
         {
+            // If the resource is within consume radius, consume it
             if (IsCloseToDestination(resourcePos))
             {
-                //Debug.Log("Found it " + Vector3.Distance(transform.position, nearestResource.transform.position) + " away");
+                if (DEBUG) Debug.Log("Found it " + Vector3.Distance(transform.position, nearestResource.transform.position) + " away");
                 atDestination = true;
                 
                 bool destory = false;
@@ -216,6 +213,7 @@ public class Creature : MonoBehaviour
         GameObject nearestObject = null;
         float nearestDistance = Mathf.Infinity;
 
+        // Find nearest object with tag
         foreach (Collider coll in hitColliders)
         {
             if (coll != collider && coll.gameObject.CompareTag(tagname))
@@ -245,7 +243,7 @@ public class Creature : MonoBehaviour
         {
             // Calculate distance from creature to pos
             float distance = Vector3.Distance(transform.position, pos);
-            if (distance < closestDistance)
+            if (distance < closestDistance && distance < detectionRadius * 4)
             {
                 closestDistance = distance;
                 closestWaterSource = pos;
@@ -270,7 +268,6 @@ public class Creature : MonoBehaviour
 
     private bool IsCloseToDestination(Vector3 pos)
     {
-        // transform.position += -(planet.meshObj.transform.position - transform.position).normalized;
         Vector3 creatureToPlanetCenter = (planet.transform.position - transform.position);
         Vector3 posToPlanetCenter = planet.transform.position - pos;
 
@@ -306,27 +303,10 @@ public class Creature : MonoBehaviour
     }
     private void AttractToPlanet()
     {
-        float gravity = -9.82f;
+        float gravity = -9.82f; // May want different gravity in the future
         Vector3 targetDirection = (transform.position - planet.transform.position).normalized;
-        Vector3 bodyUp = transform.up;
 
         rigidbody.AddForce(targetDirection * gravity);
-        //transform.rotation = Quaternion.FromToRotation(bodyUp, targetDirection) * transform.rotation;
-
-        /*
-        float attractingBodyMass = planet.mass / 1000;
-        Vector3 planetPosition = planet.meshObj.transform.position;
-
-        double r2 = Vector3.Distance(transform.position, planetPosition);
-        r2 *= r2;
-
-        if (DEBUG) Debug.Log("Distance" + transform.position + " : " + planetPosition);
-
-        //THE DIVIDED BY TEN IS A HOTFIX TO KEEP GRAVITY DOWN
-        Vector3 attractionDirection = (planetPosition - transform.position).normalized / 10;
-
-        rigidbody.velocity += attractionDirection * (float)((attractingBodyMass * Time.deltaTime) / r2);
-        */
     }
 
     private Vector3 GetRandomPoint()
@@ -334,14 +314,14 @@ public class Creature : MonoBehaviour
         Quaternion rotation = Quaternion.FromToRotation(Vector3.forward, transform.position);
         Vector3 randomPoint;
         int tries = 0;
+
+        // Get a random point on the planet, if it fails try again
         do
         {
             randomPoint = transform.position + rotation * Random.insideUnitCircle * detectionRadius;
             tries++;
-            
-            if (DEBUG) Debug.Log("Distance: " + Vector3.Distance(randomPoint, planet.transform.position));
-            if (DEBUG) Debug.Log("Water: " + Mathf.Abs(planet.waterDiameter) / 2);
 
+            // At 100 tries, just walk back the way you came
             if (tries > 100)
             {
                 return transform.position - transform.forward * 4f;
@@ -351,6 +331,7 @@ public class Creature : MonoBehaviour
         return randomPoint;
     }
 
+    // Interacts with a resource and plays eat animation
     private void InteractWithResourceAction(GameObject resource, bool destroy)
     {
         currentState = CreatureState.PerformingAction;
@@ -359,8 +340,7 @@ public class Creature : MonoBehaviour
         StartCoroutine(InteractWithResource(resource, destroy));
     }
 
-    // Create a coroutine
-    IEnumerator InteractWithResource(GameObject resource, bool destroy)
+    private IEnumerator InteractWithResource(GameObject resource, bool destroy)
     {
         // Animation clip length
         float clipLength = animator.GetCurrentAnimatorStateInfo(0).length;
