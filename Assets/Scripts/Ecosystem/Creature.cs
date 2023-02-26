@@ -81,18 +81,8 @@ public class Creature : MonoBehaviour
 
         if (currentState == CreatureState.PerformingAction)
             return;
-            
-        if (hunger < hungerThreshold)
-        {
-            currentState = CreatureState.LookingForFood;
-            
-        } else if (thirst < thirstThreshold)
-        {
-            currentState = CreatureState.LookingForWater;
-        } else
-        {
-            currentState = CreatureState.Walking;
-        }
+
+        UpdateCreatureState();
 
 
         switch (currentState)
@@ -139,6 +129,24 @@ public class Creature : MonoBehaviour
         }
     }
 
+    private void UpdateCreatureState()
+    {
+        // If hunger is below threshold, look for food
+        if (hunger < hungerThreshold)
+        {
+            currentState = CreatureState.LookingForFood;
+
+        }
+        else if (thirst < thirstThreshold) // If thirst is below threshold, look for water
+        {
+            currentState = CreatureState.LookingForWater;
+        }
+        else
+        {
+            currentState = CreatureState.Walking;
+        }
+    }
+
     private void RandomWalking()
     {
         if (atDestination)
@@ -174,8 +182,9 @@ public class Creature : MonoBehaviour
             {
                 //Debug.Log("Found it " + Vector3.Distance(transform.position, nearestResource.transform.position) + " away");
                 atDestination = true;
-                InteractWithResourceAction();
-
+                
+                bool destory = false;
+                
                 if (resource == ResourceType.Water)
                 {
                     thirst = Mathf.Min(maxThirst, thirst + thirstIncrease);
@@ -183,8 +192,10 @@ public class Creature : MonoBehaviour
                 else if (resource == ResourceType.Food)
                 {
                     hunger = Mathf.Min(maxHunger, hunger + hungerIncrease);
-                    Destroy(nearestResource);
+                    destory = true;
                 }
+
+                InteractWithResourceAction(nearestResource, destory);
             }
             else if (Vector3.Distance(transform.position, resourcePos) > consumeRadius)
             {
@@ -340,19 +351,26 @@ public class Creature : MonoBehaviour
         return randomPoint;
     }
 
-    private void InteractWithResourceAction()
+    private void InteractWithResourceAction(GameObject resource, bool destroy)
     {
         currentState = CreatureState.PerformingAction;
         animator.SetBool("Walk", false);
         animator.SetBool("Eat", true);
-        StartCoroutine(InteractWithResource());
+        StartCoroutine(InteractWithResource(resource, destroy));
     }
 
     // Create a coroutine
-    IEnumerator InteractWithResource()
+    IEnumerator InteractWithResource(GameObject resource, bool destroy)
     {
+        // Animation clip length
+        float clipLength = animator.GetCurrentAnimatorStateInfo(0).length;
+
         // Wait for 3 seconds
-        yield return new WaitForSeconds(animator.GetCurrentAnimatorStateInfo(0).length * 2);
+        yield return new WaitForSeconds(clipLength);
+        
+        if (destroy) Destroy(resource);
+        
+        yield return new WaitForSeconds(clipLength);
 
         // Set the state to idle
         animator.SetBool("Eat", false);
