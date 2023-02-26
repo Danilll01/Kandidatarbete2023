@@ -21,7 +21,7 @@ public class PillPlayerController : MonoBehaviour
         //A bit of a hack to give the player a starting planet
         attractor = planetToSpawnOn.GetComponent<Planet>();
         transform.parent = attractor.transform;
-        transform.position = planetToSpawnOn.transform.position + new Vector3(0, attractor.radius, 0);
+        transform.position = planetToSpawnOn.transform.position + new Vector3(0, attractor.diameter, 0);
         Vector3 directionNearestPlanet = attractor.transform.position - transform.position;
         Physics.Raycast(transform.position, directionNearestPlanet, out RaycastHit hit);
 
@@ -46,7 +46,7 @@ public class PillPlayerController : MonoBehaviour
         Gravity.KeepUpright(transform, attractor.transform);
         Gravity.Attract(transform.position, body, attractor.transform.position, attractor.mass);
         DisplayDebug.AddOrSetDebugVariable("Current planet", attractor.bodyName);
-        DisplayDebug.AddOrSetDebugVariable("Planet radius", attractor.radius.ToString());
+        DisplayDebug.AddOrSetDebugVariable("Planet radius", attractor.diameter.ToString());
         DisplayDebug.AddOrSetDebugVariable("Planet mass", attractor.mass.ToString());
         DisplayDebug.AddOrSetDebugVariable("Planet surface gravity", attractor.surfaceGravity.ToString());
     }

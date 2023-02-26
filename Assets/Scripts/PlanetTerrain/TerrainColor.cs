@@ -11,10 +11,11 @@ public class TerrainColor : MonoBehaviour {
     [SerializeField] private float tempMax = 300;
     [SerializeField][Range(0, 180)] private float angleCutOf = 90;
     [SerializeField][Range(0, 1)] private float angleBlending = 0.5f;
+    [SerializeField] private Shader shader;
 
+    private Material material;
     private Texture2D texture;
     private const int textureRes = 50;
-    private Material material;
     private System.Random random;
 
     private Color[][] crazyColorPaletts =
@@ -44,9 +45,11 @@ public class TerrainColor : MonoBehaviour {
     /// </summary>
     /// <param name="terrainLevel">The terrain level, this contains min and max hight for colors</param>
     /// <param name="randomSeedGen">Random seed to be used when creating new random</param>
-    public void ColorPlanet(MinMaxTerrainLevel terrainLevel, int randomSeedGen) 
+    public Material GetPlanetMaterial(MinMaxTerrainLevel terrainLevel, int randomSeedGen) 
     {
         random = new System.Random(randomSeedGen);
+
+        material = new Material(shader);
 
         if (terrainLevel != null) {
             tempMin = terrainLevel.GetMin();
@@ -56,13 +59,12 @@ public class TerrainColor : MonoBehaviour {
         if (texture == null) {
             texture = new Texture2D(textureRes, 1);
         }
-        if (material == null) {
-            material = transform.GetChild(0).GetComponent<MeshRenderer>().material;
-        }
 
         UpdateMinMaxHight();
         SetMaterialColor();
         UpdateAngleColorCutOf();
+
+        return material;
     }
 
     // Updates the min and max color hight
@@ -82,8 +84,9 @@ public class TerrainColor : MonoBehaviour {
     }
 
     // Sets the material color bands to use based on hight
-    private void SetMaterialColor() {
-        Color[] colors = new Color[textureRes]; // Creates a color array to be sent to texture
+    private void SetMaterialColor() 
+    {
+        Color[] colors = new Color[textureRes];
 
         // Gets color palette and puts it into a gradient
         Color[] takePalette = crazyColorPaletts[random.Next(crazyColorPaletts.Length - 1)];
@@ -107,6 +110,7 @@ public class TerrainColor : MonoBehaviour {
         // Applies all to material
         texture.SetPixels(colors);
         texture.Apply();
+
         material.SetColor("_GroundColor", colors[0]);
         material.SetTexture("_ColorGradient", texture);
     }
