@@ -13,6 +13,7 @@ public class Creature : MonoBehaviour
     [Header("Creature food and water needs")]
     [SerializeField] private float hunger = 100f;
     [SerializeField] private float thirst = 100f;
+    [SerializeField] private bool randomizeStats = true;
 
     [SerializeField] private float maxHunger = 100f;
     [SerializeField] private float maxThirst = 100f;
@@ -58,6 +59,13 @@ public class Creature : MonoBehaviour
 
         // Teleport the creature 1 meter up in correct direction based on position on planet
         transform.position += -(planet.transform.position - transform.position).normalized * 0.3f;
+
+        // Randomize stats
+        if (randomizeStats)
+        {
+            hunger = Random.Range(30, maxHunger);
+            thirst = Random.Range(30, maxThirst);
+        }
     }
 
     // Update is called once per frame
@@ -318,7 +326,7 @@ public class Creature : MonoBehaviour
         // Get a random point on the planet, if it fails try again
         do
         {
-            randomPoint = transform.position + rotation * Random.insideUnitCircle * detectionRadius;
+            randomPoint = transform.position + rotation * Random.insideUnitCircle * detectionRadius * 2;
             tries++;
 
             // At 100 tries, just walk back the way you came
