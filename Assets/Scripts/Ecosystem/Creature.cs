@@ -340,13 +340,13 @@ public class Creature : MonoBehaviour
             tries++;
             
             if (DEBUG) Debug.Log("Distance: " + Vector3.Distance(randomPoint, planet.transform.position));
-            if (DEBUG) Debug.Log("Water: " + Mathf.Abs(planet.waterRadius) / 2);
+            if (DEBUG) Debug.Log("Water: " + Mathf.Abs(planet.waterDiameter) / 2);
 
             if (tries > 100)
             {
                 return transform.position - transform.forward * 4f;
             }
-        } while (Vector3.Distance(randomPoint, planet.transform.position) < Mathf.Abs(planet.waterRadius) / 2);
+        } while (Vector3.Distance(randomPoint, planet.transform.position) < Mathf.Abs(planet.waterDiameter) / 2);
 
         return randomPoint;
     }

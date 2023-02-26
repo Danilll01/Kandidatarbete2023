@@ -122,7 +122,7 @@ public class GenerateCreatures : MonoBehaviour
                 }
 
                 // Check if the hit is coliiding with water
-                if (Mathf.Abs(planet.waterRadius)/2 > Vector3.Distance(hit.point, planetCenter))
+                if (Mathf.Abs(planet.waterDiameter)/2 > Vector3.Distance(hit.point, planetCenter))
                 {
                     if (DEBUG) Debug.Log("Hit water");
                     continue;
@@ -169,7 +169,7 @@ public class GenerateCreatures : MonoBehaviour
         float minRayDist = 1.3f;
         float maxRayDist = 2f;
 
-        float maxRayDistance = (planet.radius - Mathf.Abs(planet.waterRadius) / 2) + rayOffset;
+        float maxRayDistance = (planet.radius - Mathf.Abs(planet.waterDiameter) / 2) + rayOffset;
         
         Vector3 rayOrigin;
         Vector3 planetCenter = planet.transform.position;
