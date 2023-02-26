@@ -133,10 +133,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   creature: {fileID: 1311290861401530, guid: 5904fbfe921140647a4ebddf4adda389, type: 3}
-  maxPackCount: 1000
-  minPackSize: 2
+  maxPackCount: 5000
+  minPackSize: 3
   maxPackSize: 10
-  packRadius: 50
+  packRadius: 40
   terrainSteepnesAngle: 30
   DEBUG: 0
 --- !u!114 &2855617038713985127
