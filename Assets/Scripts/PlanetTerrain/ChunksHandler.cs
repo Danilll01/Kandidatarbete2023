@@ -9,6 +9,11 @@ public class ChunksHandler : MonoBehaviour
     private Vector3 playerLastPosition;
     private bool initialized = false;
 
+    /// <summary>
+    /// Initialize the values
+    /// </summary>
+    /// <param name="planet"></param>
+    /// <param name="player"></param>
     public void Initialize(Planet planet, Transform player)
     {
         this.planet = planet;
@@ -21,6 +26,7 @@ public class ChunksHandler : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // Only update the chunks if the player is close to the planet
         if (initialized && (player.position - planet.transform.position).magnitude < 3000)
         {
             UpdateChunksVisibility();

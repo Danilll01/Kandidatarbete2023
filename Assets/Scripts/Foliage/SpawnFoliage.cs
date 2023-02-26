@@ -111,6 +111,7 @@ public class SpawnFoliage : MonoBehaviour
 
     private void CombineStaticMeshesOfChunks()
     {
+        // Loops through every chunk and combines all the foliage meshes into one mesh
         for (int i = 0; i < planet.chunks.Count; i++)
         {
             GameObject meshParent = new GameObject("Mesh parent");
