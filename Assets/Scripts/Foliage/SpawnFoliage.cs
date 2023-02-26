@@ -10,7 +10,7 @@ using System.Linq;
 
 public class SpawnFoliage : MonoBehaviour
 {
-    const int prefabLimit = 20000;
+    const int prefabLimit = 40000;
 
     [Header("Trees")]
     [SerializeField] private int treeLimit = 1000;

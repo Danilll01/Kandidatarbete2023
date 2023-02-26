@@ -5,10 +5,8 @@ using UnityEngine;
 public class Planet : MonoBehaviour
 {
     [SerializeField] ComputeShader meshGenerator;
-    [SerializeField] Material waterMaterial;
     [SerializeField, Range(1, 28)] int resolution = 20;
     //[SerializeField, Range(1, 25)] int frequency;
-    [SerializeField] GameObject water;
     [SerializeField] GameObject meshObj;
 
 
@@ -24,6 +22,7 @@ public class Planet : MonoBehaviour
     MarchingCubes marchingCubes;
     [SerializeField] private GenerateCreatures generateCreatures;
     [SerializeField] private SpawnFoliage spawnFoliage;
+    [SerializeField] private WaterHandler waterHandler;
 
 
     /// <summary>
@@ -52,10 +51,6 @@ public class Planet : MonoBehaviour
 
         float waterRadius = (threshold / 255 - bottomLevel) * radius;
 
-        water.transform.localScale = new Vector3(waterRadius, waterRadius, waterRadius);
-
-        water.GetComponent<Renderer>().material = waterMaterial;
-
         // Generates the mesh
         if (marchingCubes != null)
         {
@@ -74,6 +69,12 @@ public class Planet : MonoBehaviour
         {
             spawnFoliage.Initialize(this, waterRadius);
         }
+
+        if (waterHandler != null && bodyName != "Sun")
+        {
+            waterHandler.Initialize(this, waterRadius);
+        }
+
     }
 
     /// <summary>

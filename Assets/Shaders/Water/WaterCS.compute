@@ -1,0 +1,56 @@
+// Each #kernel tells which function to compile; you can have many kernels
+#pragma kernel CSMesh
+//#pragma kernel CSPerlin
+
+#include "../MarchingCubes/Includes/PerlinNoise.compute"
+
+struct Vector3
+{
+    float x, y, z;
+};
+
+RWStructuredBuffer<Vector3> vertices;
+RWStructuredBuffer<int> triangles;
+
+int resolution;
+float radius;
+float frequency = 1;
+float amplitude = 1;
+
+float3 localUp, axisA, axisB;
+
+[numthreads(32, 32, 1)]
+void CSMesh(uint3 id : SV_DispatchThreadID)
+{
+    int x = id.x;
+    int y = id.y;
+    int index = x + y * resolution;
+    int triIndex = 6 * x + y * 6 * (resolution - 1);
+    
+    float2 percent =
+    {
+        x / (resolution - 1.0),
+        y / (resolution - 1.0)
+    };
+    
+    float3 pointOnUnitCube = localUp + (percent.x - .5) * 2 * axisA + (percent.y - .5) * 2 * axisB;
+    float3 pointOnUnitSphere = normalize(pointOnUnitCube);
+
+    pointOnUnitSphere = ((calculateNoise(pointOnUnitSphere * frequency) + 1) * 0.5f * amplitude) * pointOnUnitSphere + pointOnUnitSphere * radius;
+    
+    vertices[index].x = pointOnUnitSphere.x;
+    vertices[index].y = pointOnUnitSphere.y;
+    vertices[index].z = pointOnUnitSphere.z;
+    
+    if (x != resolution - 1 && y != resolution - 1)
+    {
+        triangles[triIndex] = index;
+        triangles[triIndex + 1] = index + resolution + 1;
+        triangles[triIndex + 2] = index + resolution;
+    
+        triangles[triIndex + 3] = index;
+        triangles[triIndex + 4] = index + 1;
+        triangles[triIndex + 5] = index + resolution + 1;
+    }
+}
+
