@@ -45,10 +45,6 @@ public class Planet : MonoBehaviour
     /// </summary>
     public void Initialize(Transform player, int randomSeed)
     {
-        if (bodyName == "Sun")
-        {
-            return;
-        }
         System.Random rand = new System.Random(randomSeed);
 
         radius = diameter / 2;
@@ -78,12 +74,12 @@ public class Planet : MonoBehaviour
         if (willGenerateCreature) 
         {
             // Generate the creatures
-            if (generateCreatures != null && bodyName != "Sun" && !bodyName.Contains("Moon")) {
+            if (generateCreatures != null && !bodyName.Contains("Moon")) {
                 generateCreatures.Initialize(this, rand.Next());
             }
         }
 
-        if (spawnFoliage != null && bodyName != "Sun" && !bodyName.Contains("Moon"))
+        if (spawnFoliage != null && !bodyName.Contains("Moon"))
         {
             spawnFoliage.Initialize(this, waterDiameter, rand.Next());
         }
