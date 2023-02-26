@@ -23,15 +23,16 @@ public class GenerateCreatures : MonoBehaviour
 
     private float creatureSize = 20f; // Make so it fit creature size
     private GameObject creatureParent;
-    
+
     /// <summary>
     /// Initializes creature generation
     /// </summary>
     /// <param name="planet">The planet script found on a planet</param>
-    public void Initialize(Planet planet)
+    /// <param name="randomSeed">The random seed to spawn things with</param>
+    public void Initialize(Planet planet, int randomSeed)
     {
         this.planet = planet;
-
+        this.seed= randomSeed;
         planetCenter = planet.transform.position;
 
         // Create a gameobject to hold all creatures
@@ -41,7 +42,7 @@ public class GenerateCreatures : MonoBehaviour
 
         // This is how system random works where we dont share Random instances
         //System.Random rand1 = new System.Random(1234);
-        Random.InitState(seed);
+        Random.InitState(randomSeed);
 
         GenerateCreaturesOnPlanet();
         if (DEBUG) Debug.Log("Spawning");
@@ -51,14 +52,14 @@ public class GenerateCreatures : MonoBehaviour
     private void GenerateCreaturesOnPlanet()
     {
         // How far do we raycast
-        float distance = planet.radius;
+        float distance = planet.diameter;
 
         Vector3[] packPositions = new Vector3[maxPackCount];
 
         for (int i = 0; i < maxPackCount; i++)
         {
 
-            Vector3 randPoint = planetCenter + Random.onUnitSphere * (planet.radius * 0.7f);
+            Vector3 randPoint = planetCenter + Random.onUnitSphere * (planet.diameter * 0.7f);
 
             // The ray that will be cast
             Ray ray = new Ray(randPoint, planetCenter - randPoint);
@@ -105,7 +106,7 @@ public class GenerateCreatures : MonoBehaviour
             RaycastHit hit;
             
             // Registered a hit
-            if (Physics.Raycast(ray, out hit, planet.radius))
+            if (Physics.Raycast(ray, out hit, planet.diameter))
             {
                 // Check if the hit colliding with a creature
                 if (hit.transform.CompareTag("Creature"))
