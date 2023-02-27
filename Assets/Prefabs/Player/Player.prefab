@@ -136,8 +136,10 @@ MonoBehaviour:
   jumpForce: 20
   maxSpeed: 40
   paused: 0
+  shipMesh: {fileID: 944696844918605244, guid: 27b85f5d7f4eef648865f111ecf9ff47, type: 3}
   shipMovespeed: 30
   shipRotationSpeed: 90
+  landingTime: 1
 --- !u!1 &4197161890332043643
 GameObject:
   m_ObjectHideFlags: 0
