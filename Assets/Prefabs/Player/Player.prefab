@@ -136,6 +136,8 @@ MonoBehaviour:
   jumpForce: 20
   maxSpeed: 40
   paused: 0
+  shipMovespeed: 30
+  shipRotationSpeed: 90
 --- !u!1 &4197161890332043643
 GameObject:
   m_ObjectHideFlags: 0

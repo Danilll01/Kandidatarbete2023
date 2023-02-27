@@ -15,9 +15,12 @@ public class PillPlayerController : MonoBehaviour
     private Rigidbody body;
     public bool paused;
 
+    [Header("Ship")]
+    [SerializeField] private float shipMovespeed;
+    [SerializeField] private float shipRotationSpeed;
     private Transform shipTransform;
-    private Rigidbody shipBody;
     private bool boarded = false;
+    private bool shipHoldingUprightRotation = false;
     Vector3 mountedPos = new Vector3(0, 1.6f, -1.4f);
     Vector3 dismountedPos = new Vector3(-2.6f, 2, -2f);
     // Start is called before the first frame update
@@ -27,7 +30,6 @@ public class PillPlayerController : MonoBehaviour
 
         GameObject ship = GameObject.Find("Spaceship");
         shipTransform = ship.transform;
-        shipBody = ship.GetComponent<Rigidbody>();
 
         //A bit of a hack to give the player a starting planet
         attractor = planetToSpawnOn.GetComponent<Planet>();
@@ -50,7 +52,7 @@ public class PillPlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!paused)
+        if (!paused && !boarded)
         {
             HandleMovement();
         }
@@ -74,21 +76,47 @@ public class PillPlayerController : MonoBehaviour
             if (boarded)
             {
                 //Disembark
-                gameObject.transform.SetParent(attractor.gameObject.transform);
-                transform.position = shipTransform.position + dismountedPos;
+                shipTransform.SetParent(attractor.gameObject.transform);
+                transform.position = shipTransform.position + (shipTransform.rotation * dismountedPos);
                 transform.rotation = shipTransform.rotation;
                 boarded = false;
             }
             else
             {
                 //Embark
-                gameObject.transform.SetParent(shipTransform);
-                transform.position = shipTransform.position + mountedPos;
+                transform.position = shipTransform.position + (shipTransform.rotation * mountedPos);
                 transform.rotation = shipTransform.rotation;
+                firstPersonCamera.transform.rotation = Quaternion.identity;
                 body.velocity = Vector3.zero;
+                shipTransform.SetParent(transform);
                 boarded = true;
             }
         }
+
+        //Controling ship
+        if (!boarded)
+        {
+            return;
+        }
+        //Controls
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            shipHoldingUprightRotation = !shipHoldingUprightRotation;
+        }
+        //Rotation
+        float pitch = Input.GetAxis("Mouse Y") * -1;
+        float yaw = Input.GetAxis("Mouse X");
+        float roll = Input.GetAxis("Spaceship Roll");
+        transform.Rotate(new Vector3(pitch, yaw, roll) * Time.deltaTime * shipRotationSpeed);
+        if (shipHoldingUprightRotation)
+        {
+            Gravity.KeepUpright(transform, attractor.transform);
+        }
+        //Translation
+        float strafe = Input.GetAxis("Spaceship Strafe");
+        float lift = Input.GetAxis("Spaceship Lift");
+        float thrust = Input.GetAxis("Spaceship Thrust");
+        body.velocity += shipTransform.rotation * new Vector3(strafe, lift, thrust) * Time.deltaTime * shipMovespeed;
     }
 
     private void HandleCamera()
