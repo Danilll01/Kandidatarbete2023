@@ -50,7 +50,7 @@ public class Creature : MonoBehaviour
     {
         currentState = CreatureState.Walking;
 
-        planet = transform.parent.parent.GetComponent<Planet>();
+        planet = transform.parent.parent.parent.GetComponent<Planet>();
 
         collider = GetComponent<Collider>();
         rigidbody = GetComponent<Rigidbody>();
@@ -72,6 +72,12 @@ public class Creature : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (!isSleeping)
+        {
+            AttractToPlanet();
+            Rotate();
+        }
+
         // If creature is not visible, dont perform physics update
         if (!renderer.isVisible)
         {
@@ -121,15 +127,6 @@ public class Creature : MonoBehaviour
         if (hunger <= 0 || thirst <= 0)
         {
             Destroy(gameObject);
-        }
-    }
-
-    void FixedUpdate()
-    {
-        if (!isSleeping)
-        {
-            AttractToPlanet();
-            Rotate();
         }
     }
 
