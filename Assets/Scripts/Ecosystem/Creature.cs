@@ -1,4 +1,5 @@
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Creature : MonoBehaviour
@@ -356,7 +357,7 @@ public class Creature : MonoBehaviour
         // Wait for 3 seconds
         yield return new WaitForSeconds(clipLength);
         
-        if (disable) resource.SetActive(false);
+        if (disable) resource.GetComponent<Resource>().ConsumeResource();
         
         yield return new WaitForSeconds(clipLength);
 
