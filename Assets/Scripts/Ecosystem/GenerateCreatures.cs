@@ -3,6 +3,7 @@ using System;
 using Random = UnityEngine.Random;
 using System.Linq;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 
 public class GenerateCreatures : MonoBehaviour
 {
@@ -17,7 +18,9 @@ public class GenerateCreatures : MonoBehaviour
 
     [Header("Misc")]
     [SerializeField] private bool DEBUG = false;
-
+    [SerializeField] private int spawnedCreatures = 0;
+    public List<Renderer> creatureRenderers = new List<Renderer>();
+    
     private int seed;
     private Planet planet;
     private Vector3 planetCenter;
@@ -53,6 +56,8 @@ public class GenerateCreatures : MonoBehaviour
 
         GatherWaterPoints();
     }
+
+    
 
     // Raycasts where all the packs should be created and calls CreateRandomPack to create the packs
     private void GenerateCreaturesOnPlanet()
@@ -147,6 +152,12 @@ public class GenerateCreatures : MonoBehaviour
                 //Quaternion rotation2 = Quaternion.LookRotation(hit.point) * Quaternion.Euler(90, 0, 0);
                 GameObject newObject = Instantiate(creature, hit.point, rotation2, hit.transform);
                 newObject.transform.rotation = rotation2;
+                spawnedCreatures++;
+
+                GameObject creatureMesh = newObject.GetComponent<Creature>().meshObj;
+
+                Renderer renderer = creatureMesh.GetComponent<LODGroup>().transform.GetComponent<Renderer>();
+                creatureRenderers.Add(renderer);
 
                 if (DEBUG) Debug.DrawLine(randomOrigin, hit.point, Color.cyan, 10f);
 
@@ -156,6 +167,7 @@ public class GenerateCreatures : MonoBehaviour
         }
 
         creatureParent.SetActive(false);
+        DisplayDebug.AddOrSetDebugVariable("Spawned creatures", spawnedCreatures.ToString());
     }
 
     private void GatherWaterPoints()

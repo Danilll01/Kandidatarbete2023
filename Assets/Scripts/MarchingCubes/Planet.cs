@@ -123,6 +123,22 @@ public class Planet : MonoBehaviour
         }
     }
 
+    void Update()
+    {
+        if (generateCreatures.creatureRenderers.Count == 0) return;
+
+        int activeRenderers = 0;
+        foreach (Renderer creature in generateCreatures.creatureRenderers)
+        {
+            if (creature.isVisible)
+            {
+                activeRenderers++;
+                Debug.Log("Active");
+            }
+        }
+        DisplayDebug.AddOrSetDebugVariable("Active creature renderers", activeRenderers.ToString());
+    }
+
     /// <summary>
     /// Set up the values for the planets
     /// </summary>

@@ -9,7 +9,7 @@ public class Creature : MonoBehaviour
     [SerializeField] private float detectionRadius = 30f;
     [SerializeField] private float consumeRadius = 0.5f;
 
-    [SerializeField] private GameObject meshObj;
+    [SerializeField] public GameObject meshObj;
 
     [Header("Creature food and water needs")]
     [SerializeField] private float hunger = 100f;
