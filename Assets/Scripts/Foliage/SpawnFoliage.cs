@@ -247,8 +247,9 @@ public class SpawnFoliage : MonoBehaviour
         Quaternion rotation = Quaternion.LookRotation(hit.normal) * Quaternion.Euler(90, 0, 0);
         // Sets a random rotation for more variation
         rotation *= Quaternion.Euler(0, Random.value * 360, 0);
-
-        foliageObjects.Add(Instantiate(bushPrefab[getIndex(hit.point + noiseOffset)], hit.point, rotation, hit.transform));
+        GameObject bushObj = Instantiate(bushPrefab[getIndex(hit.point + noiseOffset)], hit.point, rotation, hit.transform);
+        bushObj.tag = "Food";
+        foliageObjects.Add(bushObj);
     }
 
     /// <summary>
