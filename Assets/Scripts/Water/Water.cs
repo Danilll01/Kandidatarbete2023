@@ -24,18 +24,15 @@ public class Water
         axisB = Vector3.Cross(localUp, axisA);
     }
 
-    public void ConstructMesh(float frequency, float amplitude)
+    public void ConstructMesh()
     {
         Mesh mesh = new Mesh();
 
         Vector3[] vertices = new Vector3[resolution * resolution];
         int[] triangles = new int[(resolution - 1) * (resolution - 1) * 2 * 3];
 
-        constructUnitSphere(vertices, triangles, frequency, amplitude);
+        constructUnitSphere(vertices, triangles);
 
-        //generatePerlin(vertices);
-
-        mesh.Clear();
         mesh.vertices = vertices;
         mesh.triangles = triangles;
         mesh.RecalculateBounds();
@@ -43,7 +40,7 @@ public class Water
         meshFilter.sharedMesh = mesh;
     }
 
-    private void constructUnitSphere(Vector3[] vertices, int[] triangles, float frequency, float amplitude)
+    private void constructUnitSphere(Vector3[] vertices, int[] triangles)
     {
         //Calculate the vertices on the GPU
         ComputeBuffer bufferVertices = new ComputeBuffer(resolution * resolution, 3 * sizeof(float));
@@ -59,9 +56,6 @@ public class Water
 
         computeShader.SetInt("resolution", resolution);
         computeShader.SetFloat("radius", waterRadius);
-
-        computeShader.SetFloat("frequency", frequency);
-        computeShader.SetFloat("amplitude", amplitude);
 
         computeShader.SetFloats("localUp", new float[] { localUp.x, localUp.y, localUp.z });
         computeShader.SetFloats("axisA", new float[] { axisA.x, axisA.y, axisA.z });

@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 7065241369011201559}
   - component: {fileID: 2855617038713985127}
   - component: {fileID: 2865990664458296443}
+  - component: {fileID: 370972816571065598}
   m_Layer: 0
   m_Name: Planet
   m_TagString: Untagged
@@ -72,6 +73,7 @@ MonoBehaviour:
   generateCreatures: {fileID: 7065241369011201559}
   terrainColor: {fileID: 3175307376905995560}
   spawnFoliage: {fileID: 2855617038713985127}
+  waterHandler: {fileID: 370972816571065598}
 --- !u!114 &3175307376905995560
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -275,6 +277,23 @@ LineRenderer:
     generateLightingData: 0
   m_UseWorldSpace: 1
   m_Loop: 0
+--- !u!114 &370972816571065598
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 938852981703260768}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e5afd10aafb50748a86c734411262e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  resolution: 8
+  computeShader: {fileID: 7200000, guid: a3ea61cf1daaef9468701842c0c49e63, type: 3}
+  material: {fileID: 2100000, guid: 48318166b444fbc4d8b5127fa927247b, type: 2}
+  frequency: 0
+  amplitude: 0
 --- !u!1 &3939805141923606249
 GameObject:
   m_ObjectHideFlags: 0

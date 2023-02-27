@@ -14,8 +14,6 @@ RWStructuredBuffer<int> triangles;
 
 int resolution;
 float radius;
-float frequency = 1;
-float amplitude = 1;
 
 float3 localUp, axisA, axisB;
 
@@ -34,9 +32,7 @@ void CSMesh(uint3 id : SV_DispatchThreadID)
     };
     
     float3 pointOnUnitCube = localUp + (percent.x - .5) * 2 * axisA + (percent.y - .5) * 2 * axisB;
-    float3 pointOnUnitSphere = normalize(pointOnUnitCube);
-
-    pointOnUnitSphere = ((calculateNoise(pointOnUnitSphere * frequency) + 1) * 0.5f * amplitude) * pointOnUnitSphere + pointOnUnitSphere * radius;
+    float3 pointOnUnitSphere = normalize(pointOnUnitCube) * radius;
     
     vertices[index].x = pointOnUnitSphere.x;
     vertices[index].y = pointOnUnitSphere.y;

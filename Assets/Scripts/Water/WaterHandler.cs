@@ -10,8 +10,8 @@ public class WaterHandler : MonoBehaviour
     [SerializeField, Range(1, 8)] private int resolution = 1;
     [SerializeField] private ComputeShader computeShader;
     [SerializeField] private Material material;
-    [SerializeField] private float frequency;
-    [SerializeField] private float amplitude;
+    [SerializeField] private float frequency = 1;
+    [SerializeField] private float amplitude = 1;
 
     readonly private Vector3[] directions = { Vector3.forward, Vector3.back, Vector3.left, Vector3.right, Vector3.up, Vector3.down };
     private MeshFilter[] meshFilters;
@@ -21,15 +21,6 @@ public class WaterHandler : MonoBehaviour
     private Planet planet;
     private float waterRadius;
     private bool init = false;
-
-    void Update()
-    {
-        if (init)
-        {
-
-            GenerateMesh();
-        }
-    }
 
     public void Initialize(Planet planet, float waterRadius)
     {
@@ -66,14 +57,13 @@ public class WaterHandler : MonoBehaviour
 
         GenerateMesh();
         GenerateColour();
-        init = true;
     }
 
     private void GenerateMesh()
     {
         foreach (Water waterface in waterfaces)
         {
-            waterface.ConstructMesh(frequency, amplitude);
+            waterface.ConstructMesh();
         }
     }
 
