@@ -188,7 +188,7 @@ public class Creature : MonoBehaviour
                 if (DEBUG) Debug.Log("Found it " + Vector3.Distance(transform.position, nearestResource.transform.position) + " away");
                 atDestination = true;
                 
-                bool destory = false;
+                bool disable = false;
                 
                 if (resource == ResourceType.Water)
                 {
@@ -197,10 +197,10 @@ public class Creature : MonoBehaviour
                 else if (resource == ResourceType.Food)
                 {
                     hunger = Mathf.Min(maxHunger, hunger + hungerIncrease);
-                    destory = true;
+                    disable = true;
                 }
 
-                InteractWithResourceAction(nearestResource, destory);
+                InteractWithResourceAction(nearestResource, disable);
             }
             else if (Vector3.Distance(transform.position, resourcePos) > consumeRadius)
             {
@@ -340,15 +340,15 @@ public class Creature : MonoBehaviour
     }
 
     // Interacts with a resource and plays eat animation
-    private void InteractWithResourceAction(GameObject resource, bool destroy)
+    private void InteractWithResourceAction(GameObject resource, bool disable)
     {
         currentState = CreatureState.PerformingAction;
         animator.SetBool("Walk", false);
         animator.SetBool("Eat", true);
-        StartCoroutine(InteractWithResource(resource, destroy));
+        StartCoroutine(InteractWithResource(resource, disable));
     }
 
-    private IEnumerator InteractWithResource(GameObject resource, bool destroy)
+    private IEnumerator InteractWithResource(GameObject resource, bool disable)
     {
         // Animation clip length
         float clipLength = animator.GetCurrentAnimatorStateInfo(0).length;
@@ -356,7 +356,7 @@ public class Creature : MonoBehaviour
         // Wait for 3 seconds
         yield return new WaitForSeconds(clipLength);
         
-        if (destroy) Destroy(resource);
+        if (disable) resource.SetActive(false);
         
         yield return new WaitForSeconds(clipLength);
 
