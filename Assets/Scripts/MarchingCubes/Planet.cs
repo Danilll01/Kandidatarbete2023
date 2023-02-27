@@ -16,12 +16,12 @@ public class Planet : MonoBehaviour
     [SerializeField] private Material waterMaterial;
     [SerializeField] private GameObject water;
 
-    public float diameter;
-    public float radius;
-    public float surfaceGravity;
-    public string bodyName = "TBT";
-    public float mass;
-    public List<Planet> moons;
+    [HideInInspector] public float diameter;
+    [HideInInspector] public float radius;
+    [HideInInspector] public float surfaceGravity;
+    [HideInInspector] public string bodyName = "TBT";
+    [HideInInspector] public float mass;
+    [HideInInspector] public List<Planet> moons;
 
     public List<Chunk> chunks;
     public Transform player;
@@ -41,9 +41,12 @@ public class Planet : MonoBehaviour
     
 
     /// <summary>
-    /// Initialize mesh for marching cubes
+    /// Initializes the planet
     /// </summary>
-    public void Initialize(Transform player, int randomSeed)
+    /// <param name="player">The player</param>
+    /// <param name="randomSeed">Seed to be used</param>
+    /// <param name="spawn">True if the player will spawn on the planet</param>
+    public void Initialize(Transform player, int randomSeed, bool spawn)
     {
         System.Random rand = new System.Random(randomSeed);
 
@@ -53,8 +56,14 @@ public class Planet : MonoBehaviour
 
         MinMaxTerrainLevel terrainLevel = new MinMaxTerrainLevel();
 
-        // Create all meshes
-        createMeshes(chunkResolution, terrainLevel);
+        if(spawn)
+        {
+            createMeshes(4, terrainLevel);
+        }
+        else 
+        {
+            createMeshes(1, terrainLevel);
+        }
 
         // Init water
         float waterDiameter = -(threshold / 255 - 1) * diameter;
@@ -84,7 +93,7 @@ public class Planet : MonoBehaviour
         }
     }
 
-    private void createMeshes(int chunkResolution, MinMaxTerrainLevel terrainLevel)
+    public void createMeshes(int chunkResolution, MinMaxTerrainLevel terrainLevel)
     {
         Destroy(chunksParent);
 

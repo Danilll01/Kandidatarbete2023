@@ -65,7 +65,7 @@ MonoBehaviour:
   moons: []
   chunks: []
   player: {fileID: 0}
-  chunkResolution: 2
+  chunkResolution: 3
   resolution: 7
   chunkPrefab: {fileID: 5146216955868432244, guid: 8531586e98093b342af8fdd2a736c017,
     type: 3}

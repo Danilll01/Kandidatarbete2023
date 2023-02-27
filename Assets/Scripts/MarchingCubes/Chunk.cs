@@ -41,7 +41,7 @@ public class Chunk : MonoBehaviour
         calculateChunkPosition();
 
         //Set lowest resolution as default
-        updateMesh(10);
+        updateMesh(4);
     }
 
     /// <summary>
@@ -73,11 +73,14 @@ public class Chunk : MonoBehaviour
 
     private void Update()
     {
-        /*
+        
         // Check if the player is on the planet
         if (!ReferenceEquals(player.parent, transform.parent.parent))
             return;
 
+        //updateMesh(4);
+
+        /*
         if (Vector3.Magnitude(chunkPosition - player.localPosition) < marchingCubes.diameter * .20f)
         {
             updateMesh(10);
