@@ -31,8 +31,6 @@ public class PillPlayerController : MonoBehaviour
 
         //A bit of a hack to give the player a starting planet
         attractor = planetToSpawnOn.GetComponent<Planet>();
-        Debug.Log(attractor);
-        Debug.Log(planetToSpawnOn);
         transform.parent = attractor.transform;
         transform.position = planetToSpawnOn.transform.position + new Vector3(0, attractor.radius, 0);
         Vector3 directionNearestPlanet = attractor.transform.position - transform.position;
