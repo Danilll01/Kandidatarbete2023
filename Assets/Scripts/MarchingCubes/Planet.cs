@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
 
+[RequireComponent(typeof(GenerateCreatures))]
+[RequireComponent(typeof(TerrainColor))]
+[RequireComponent(typeof(SpawnFoliage))]
 public class Planet : MonoBehaviour
 {
     [SerializeField] private ComputeShader meshGenerator;
@@ -50,10 +53,6 @@ public class Planet : MonoBehaviour
 
         MinMaxTerrainLevel terrainLevel = new MinMaxTerrainLevel();
 
-        if (bodyName == "Sun")
-        {
-            return;
-        }
         // Create all meshes
         createMeshes(chunkResolution, terrainLevel);
 

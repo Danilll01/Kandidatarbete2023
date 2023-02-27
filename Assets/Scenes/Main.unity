@@ -842,6 +842,12 @@ PrefabInstance:
       objectReference: {fileID: 1376926153}
     - target: {fileID: 776431053636631548, guid: 93094628cce30c64195c2ae1633e7e60,
         type: 3}
+      propertyPath: sunPrefab
+      value: 
+      objectReference: {fileID: 2953080420391832282, guid: 6a6d6f237df81984a8500d5732188d1b,
+        type: 3}
+    - target: {fileID: 776431053636631548, guid: 93094628cce30c64195c2ae1633e7e60,
+        type: 3}
       propertyPath: planetsParent
       value: 
       objectReference: {fileID: 210303240}
