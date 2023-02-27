@@ -5,6 +5,7 @@ using UnityEngine;
 
 [RequireComponent(typeof(GenerateCreatures))]
 [RequireComponent(typeof(TerrainColor))]
+[RequireComponent(typeof(SpawnFoliage))]
 public class Planet : MonoBehaviour
 {
     [SerializeField] private ComputeShader meshGenerator;
@@ -22,8 +23,8 @@ public class Planet : MonoBehaviour
     public float mass;
     public List<Planet> moons;
 
-    private List<Chunk> chunks;
-    private Transform player;
+    public List<Chunk> chunks;
+    public Transform player;
     private Material planetMaterial;
     private MarchingCubes marchingCubes;
 
@@ -39,16 +40,6 @@ public class Planet : MonoBehaviour
     [SerializeField] private SpawnFoliage spawnFoliage;
     
 
-    void Start() {
-        if (generateCreatures == null) { 
-            generateCreatures = GetComponent<GenerateCreatures>();
-        }
-
-        if (terrainColor == null) {
-            terrainColor = GetComponent<TerrainColor>();
-        }
-    }
-
     /// <summary>
     /// Initialize mesh for marching cubes
     /// </summary>
@@ -61,7 +52,6 @@ public class Planet : MonoBehaviour
         this.player = player;
 
         MinMaxTerrainLevel terrainLevel = new MinMaxTerrainLevel();
-        
 
         // Create all meshes
         createMeshes(chunkResolution, terrainLevel);
@@ -83,12 +73,12 @@ public class Planet : MonoBehaviour
         if (willGenerateCreature) 
         {
             // Generate the creatures
-            if (generateCreatures != null && bodyName != "Sun" && !bodyName.Contains("Moon")) {
+            if (generateCreatures != null && !bodyName.Contains("Moon")) {
                 generateCreatures.Initialize(this, rand.Next());
             }
         }
 
-        if (spawnFoliage != null && bodyName != "Sun" && !bodyName.Contains("Moon"))
+        if (spawnFoliage != null && !bodyName.Contains("Moon"))
         {
             spawnFoliage.Initialize(this, waterDiameter, rand.Next());
         }
