@@ -38,7 +38,7 @@ public class ChunksHandler : MonoBehaviour
         Vector3 playerPos = player.position;
 
         // Only update chunks if player has moved a certain distance
-        if (Mathf.Abs(Vector3.Distance(playerPos, playerLastPosition)) < 100 || !initialized)
+        if (Mathf.Abs(Vector3.Distance(playerPos, playerLastPosition)) < 50 || !initialized)
         {
             return;
         }
