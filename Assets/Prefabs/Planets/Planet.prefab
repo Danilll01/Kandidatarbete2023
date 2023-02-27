@@ -64,6 +64,7 @@ MonoBehaviour:
   mass: 429245
   moons: []
   chunks: []
+  player: {fileID: 0}
   chunkResolution: 2
   resolution: 7
   chunkPrefab: {fileID: 5146216955868432244, guid: 8531586e98093b342af8fdd2a736c017,
@@ -73,7 +74,6 @@ MonoBehaviour:
   generateCreatures: {fileID: 7065241369011201559}
   terrainColor: {fileID: 3175307376905995560}
   spawnFoliage: {fileID: 2855617038713985127}
-  chunksHandler: {fileID: 6742904736247445569}
 --- !u!114 &3175307376905995560
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -178,6 +178,7 @@ MonoBehaviour:
   - {fileID: 7405846476849542632, guid: c6308cb7062fac34e8e50600086b12a1, type: 3}
   - {fileID: 1576488453971893466, guid: a778b631c6253a04899cb31bad047c81, type: 3}
   DEBUG: 0
+  chunksHandler: {fileID: 6742904736247445569}
 --- !u!114 &6742904736247445569
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -18,7 +18,7 @@ public class ChunksHandler : MonoBehaviour
     {
         this.planet = planet;
         this.player = player;
-        playerLastPosition = player.position;
+        playerLastPosition = Vector3.zero;
         UpdateChunksVisibility();
         initialized = true;
     }
