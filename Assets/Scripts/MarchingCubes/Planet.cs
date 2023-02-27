@@ -14,6 +14,7 @@ public class Planet : MonoBehaviour
     [SerializeField, Range(0, 5)] private float amplitude = 1;
     [SerializeField, Range(0, 1)] private float bottomLevel = 1;
     [SerializeField] private Material waterMaterial;
+    [HideInInspector] public float waterDiameter;
     [SerializeField] private GameObject water;
 
     public float diameter;
@@ -22,6 +23,8 @@ public class Planet : MonoBehaviour
     public string bodyName = "TBT";
     public float mass;
     public List<Planet> moons;
+    
+    public List<Vector3> waterPoints;
 
     public List<Chunk> chunks;
     public Transform player;
@@ -57,7 +60,7 @@ public class Planet : MonoBehaviour
         createMeshes(chunkResolution, terrainLevel);
 
         // Init water
-        float waterDiameter = -(threshold / 255 - 1) * diameter;
+        waterDiameter = -(threshold / 255 - 1) * diameter;
         water.transform.localScale = new Vector3(waterDiameter, waterDiameter, waterDiameter);
         water.GetComponent<Renderer>().material = waterMaterial;
 
@@ -127,5 +130,13 @@ public class Planet : MonoBehaviour
     {
         mass = surfaceGravity * diameter * diameter / Universe.gravitationalConstant;
         gameObject.name = bodyName;
+    }
+
+    public void ShowCreatures(bool show)
+    {
+        if (generateCreatures != null)
+        {
+            generateCreatures.ShowCreatures(show);
+        }
     }
 }
