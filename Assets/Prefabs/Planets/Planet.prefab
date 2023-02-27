@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 7065241369011201559}
   - component: {fileID: 2855617038713985127}
   - component: {fileID: 6742904736247445569}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Planet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -178,7 +178,6 @@ MonoBehaviour:
   - {fileID: 7405846476849542632, guid: c6308cb7062fac34e8e50600086b12a1, type: 3}
   - {fileID: 1576488453971893466, guid: a778b631c6253a04899cb31bad047c81, type: 3}
   DEBUG: 0
-  approximateObjectsPerChunk: 100
 --- !u!114 &6742904736247445569
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -200,7 +199,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 478650547306934036}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: chunks
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -233,7 +232,7 @@ GameObject:
   - component: {fileID: 393410517558776663}
   - component: {fileID: 8814299198411775970}
   - component: {fileID: 1253117720345471613}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: water
   m_TagString: Untagged
   m_Icon: {fileID: 0}
