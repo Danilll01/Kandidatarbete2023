@@ -11,6 +11,9 @@ GameObject:
   - component: {fileID: 8893583788200273171}
   - component: {fileID: 5531406331842833078}
   - component: {fileID: 7721271518185283196}
+  - component: {fileID: 4181454971944797218}
+  - component: {fileID: 6829154278086644410}
+  - component: {fileID: 1742721160409974857}
   m_Layer: 0
   m_Name: Spaceship
   m_TagString: Untagged
@@ -88,3 +91,42 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &4181454971944797218
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8081581959268663209}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 2.15, y: 0.92, z: 17.8}
+  m_Center: {x: 0, y: 0.7, z: 1.51}
+--- !u!65 &6829154278086644410
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8081581959268663209}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 2.01, y: 0.92, z: 7.66}
+  m_Center: {x: 0, y: 1.61, z: -3.46}
+--- !u!65 &1742721160409974857
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8081581959268663209}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 9.78, y: 0.85, z: 6.39}
+  m_Center: {x: 0, y: 0.6, z: -1.84}
