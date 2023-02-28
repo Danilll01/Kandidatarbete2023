@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 public class ChunksHandler : MonoBehaviour
@@ -31,6 +32,18 @@ public class ChunksHandler : MonoBehaviour
         {
             UpdateChunksVisibility();
         }
+
+        if(!ReferenceEquals(planet.transform, player.transform.parent))
+        {
+            MinMaxTerrainLevel needed = new MinMaxTerrainLevel();
+            planet.createMeshes(1, needed);
+        } 
+        else
+        {
+            MinMaxTerrainLevel needed = new MinMaxTerrainLevel();
+            planet.createMeshes(3, needed);
+        }
+
     }
 
     private void UpdateChunksVisibility()

@@ -31,7 +31,8 @@ public class Planet : MonoBehaviour
     private Material planetMaterial;
     private MarchingCubes marchingCubes;
 
-    [SerializeField, Range(1, 4)] private int chunkResolution = 3; //This is 2^chunkResolution
+    //[SerializeField, Range(1, 4)] 
+    private int chunkResolution; //This is 2^chunkResolution
     [SerializeField, Range(1, 14)] private int resolution = 5;
     [SerializeField] private Chunk chunkPrefab;
     [SerializeField] private GameObject chunksParent;
@@ -61,7 +62,7 @@ public class Planet : MonoBehaviour
 
         if(spawn)
         {
-            createMeshes(4, terrainLevel);
+            createMeshes(3, terrainLevel);
         }
         else 
         {
@@ -92,12 +93,18 @@ public class Planet : MonoBehaviour
 
         if (spawnFoliage != null && !bodyName.Contains("Moon"))
         {
-            spawnFoliage.Initialize(this, waterDiameter, rand.Next());
+            spawnFoliage.Initialize(this, waterDiameter, rand.Next(), player);
         }
     }
 
     public void createMeshes(int chunkResolution, MinMaxTerrainLevel terrainLevel)
     {
+        if(chunkResolution == this.chunkResolution)
+        {
+            return;
+        }
+        this.chunkResolution = chunkResolution;
+
         Destroy(chunksParent);
 
         chunksParent = new GameObject();

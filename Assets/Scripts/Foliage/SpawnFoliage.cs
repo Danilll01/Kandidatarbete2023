@@ -50,7 +50,7 @@ public class SpawnFoliage : MonoBehaviour
     private Vector3[] stonePositions = new Vector3[prefabLimit];
 
     private GameObject foliageHandler;
-    private GameObject player;
+    private Transform player;
 
     private static int seed = Universe.seed;
 
@@ -67,7 +67,7 @@ public class SpawnFoliage : MonoBehaviour
         if(generatedSpawnPoints)
         {
             // Tries to spawn 100 of each every frame we are near the planet
-            if ((player.transform.position - planet.transform.position).magnitude < 3000)
+            if (ReferenceEquals(planet.transform, player.transform.parent))
             {
                 for (int j = 100; j > 0; j--)
                 {
@@ -86,7 +86,7 @@ public class SpawnFoliage : MonoBehaviour
                 }
             }
             // Delets all foliage when leaving
-            else if((player.transform.position - planet.transform.position).magnitude > 5000)
+            else if(!ReferenceEquals(planet.transform, player.transform.parent))
             {
                 for (int i = 0; i < foliageObjects.Count; i++)
                 {
@@ -104,7 +104,7 @@ public class SpawnFoliage : MonoBehaviour
             {
                 if (!mergedMeshes)
                 {
-                    CombineStaticMeshesOfChunks();
+                    //CombineStaticMeshesOfChunks();
                     chunksHandler.Initialize(planet, planet.player);
                 }
             }
@@ -129,7 +129,7 @@ public class SpawnFoliage : MonoBehaviour
     /// </summary>
     /// <param name="planet"> A reference to the planet the script should be run on</param>
     /// <param name="waterLevel"> Radius (diameter) of the water level of the planet </param>
-    public void Initialize(Planet planet, float waterLevel, int seed)
+    public void Initialize(Planet planet, float waterLevel, int seed, Transform player)
     {
         // Gets the parameters for the planets
         this.planet = planet;
@@ -137,8 +137,7 @@ public class SpawnFoliage : MonoBehaviour
         this.waterLevel = Mathf.Abs(waterLevel / 2);
         noiseOffset = planet.transform.position;
 
-        GameObject[] cameras = GameObject.FindGameObjectsWithTag("MainCamera");
-        player = cameras[0];
+        this.player = player;
 
         // Makes the script seedable
         Random.InitState(seed);
@@ -224,7 +223,7 @@ public class SpawnFoliage : MonoBehaviour
     /// <summary>
     /// Plants a bush from the bush array
     /// </summary>
-    private void plantBush()
+    private void plantBush() 
     {
 
         Vector3 planetCenter = planet.transform.position;
