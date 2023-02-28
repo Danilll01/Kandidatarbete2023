@@ -177,7 +177,7 @@ MonoBehaviour:
   - {fileID: 1576488453971893466, guid: a778b631c6253a04899cb31bad047c81, type: 3}
   - {fileID: 7405846476849542632, guid: c6308cb7062fac34e8e50600086b12a1, type: 3}
   - {fileID: 1576488453971893466, guid: a778b631c6253a04899cb31bad047c81, type: 3}
-  DEBUG: 0
+  DEBUG: 1
 --- !u!120 &2865990664458296443
 LineRenderer:
   m_ObjectHideFlags: 0

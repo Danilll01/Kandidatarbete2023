@@ -29,7 +29,7 @@ public class Water
         Mesh mesh = new Mesh();
 
         Vector3[] vertices = new Vector3[resolution * resolution];
-        int[] triangles = new int[(resolution - 1) * (resolution - 1) * 2 * 3];
+        int[] triangles = new int[(resolution - 1) * (resolution - 1) * 2 * 3 * 2];
 
         constructUnitSphere(vertices, triangles);
 
@@ -44,7 +44,7 @@ public class Water
     {
         //Calculate the vertices on the GPU
         ComputeBuffer bufferVertices = new ComputeBuffer(resolution * resolution, 3 * sizeof(float));
-        ComputeBuffer bufferTriangles = new ComputeBuffer((resolution - 1) * (resolution - 1) * 2 * 3, sizeof(int));
+        ComputeBuffer bufferTriangles = new ComputeBuffer((resolution - 1) * (resolution - 1) * 2 * 3 * 2, sizeof(int));
 
         bufferVertices.SetData(vertices);
         bufferTriangles.SetData(triangles);
