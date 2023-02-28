@@ -156,7 +156,11 @@ public class Planet : MonoBehaviour
 
     void Update()
     {
-        if (player.GetComponent<PillPlayerController>().attractor != this)
+        if (player.parent == null)
+        {
+            RotateAroundAxis();
+        }
+        else if (player.parent.GetComponent<Planet>() != this)
         {
             RotateAroundAxis();
         }
