@@ -72,20 +72,20 @@ public class Creature : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!isSleeping)
-        {
-            AttractToPlanet();
-            Rotate();
-        }
 
         // If creature is not visible, dont perform physics update
         if (!renderer.isVisible)
         {
-            if (!isSleeping) rigidbody.Sleep();
+            if (!isSleeping)
+            {
+                rigidbody.Sleep();
+                collider.enabled = false;
+            }
             isSleeping = true;
             return;
         } else
         {
+            collider.enabled = true;
             isSleeping = false;
         }
 
@@ -127,6 +127,14 @@ public class Creature : MonoBehaviour
         if (hunger <= 0 || thirst <= 0)
         {
             Destroy(gameObject);
+        }
+    }
+    private void FixedUpdate()
+    {
+        if (!isSleeping)
+        {
+            AttractToPlanet();
+            Rotate();
         }
     }
 

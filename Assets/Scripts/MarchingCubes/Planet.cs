@@ -127,16 +127,21 @@ public class Planet : MonoBehaviour
     {
         if (generateCreatures.creatureRenderers.Count == 0) return;
 
-        int activeRenderers = 0;
-        foreach (Renderer creature in generateCreatures.creatureRenderers)
+        if ((player.transform.position - transform.position).magnitude < 3000)
         {
-            if (creature.isVisible)
+            print("NOW" + generateCreatures.creatureRenderers.Count);
+            int activeRenderers = 0;
+            foreach (Renderer creature in generateCreatures.creatureRenderers)
             {
-                activeRenderers++;
-                Debug.Log("Active");
+                if (creature.isVisible)
+                {
+                    activeRenderers++;
+                }
             }
+        
+            DisplayDebug.AddOrSetDebugVariable("Spawned creatures", generateCreatures.spawnedCreatures.ToString());
+            DisplayDebug.AddOrSetDebugVariable("Active creature renderers", activeRenderers.ToString());
         }
-        DisplayDebug.AddOrSetDebugVariable("Active creature renderers", activeRenderers.ToString());
     }
 
     /// <summary>

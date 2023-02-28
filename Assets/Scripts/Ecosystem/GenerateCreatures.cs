@@ -18,7 +18,7 @@ public class GenerateCreatures : MonoBehaviour
 
     [Header("Misc")]
     [SerializeField] private bool DEBUG = false;
-    [SerializeField] private int spawnedCreatures = 0;
+    [SerializeField] public int spawnedCreatures = 0;
     public List<Renderer> creatureRenderers = new List<Renderer>();
     
     private int seed;
@@ -167,7 +167,6 @@ public class GenerateCreatures : MonoBehaviour
         }
 
         creatureParent.SetActive(false);
-        DisplayDebug.AddOrSetDebugVariable("Spawned creatures", spawnedCreatures.ToString());
     }
 
     private void GatherWaterPoints()
