@@ -56,6 +56,7 @@ MonoBehaviour:
   amplitude: 1
   bottomLevel: 1
   waterMaterial: {fileID: 2100000, guid: 417f8c1f207df654b84c6e8b4c0e8f0f, type: 2}
+  waterDiameter: 0
   water: {fileID: 5613251696109344692}
   diameter: 0
   radius: 0
@@ -63,6 +64,7 @@ MonoBehaviour:
   bodyName: TBT
   mass: 429245
   moons: []
+  waterPoints: []
   chunks: []
   player: {fileID: 0}
   chunkResolution: 3
@@ -70,7 +72,7 @@ MonoBehaviour:
   chunkPrefab: {fileID: 5146216955868432244, guid: 8531586e98093b342af8fdd2a736c017,
     type: 3}
   chunksParent: {fileID: 3939805141923606249}
-  willGenerateCreature: 0
+  willGenerateCreature: 1
   generateCreatures: {fileID: 7065241369011201559}
   terrainColor: {fileID: 3175307376905995560}
   spawnFoliage: {fileID: 2855617038713985127}
@@ -132,13 +134,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e711f09e57fe0846be5f77dc317df2b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  creature: {fileID: 1804619385181138144, guid: 02ede06db9fc4944faf96463db22788b,
-    type: 3}
-  seed: 1234
-  maxPackCount: 1000
-  minPackSize: 2
+  creature: {fileID: 1311290861401530, guid: 5904fbfe921140647a4ebddf4adda389, type: 3}
+  maxPackCount: 5000
+  minPackSize: 3
   maxPackSize: 10
-  packRadius: 50
+  packRadius: 40
   terrainSteepnesAngle: 30
   DEBUG: 0
 --- !u!114 &2855617038713985127
