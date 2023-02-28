@@ -8,6 +8,7 @@ public class ChunksHandler : MonoBehaviour
     private Transform player;
     private Vector3 playerLastPosition;
     private bool initialized = false;
+    private List<Vector3> chunkPositions;
 
     /// <summary>
     /// Initialize the values
@@ -19,6 +20,8 @@ public class ChunksHandler : MonoBehaviour
         this.planet = planet;
         this.player = player;
         playerLastPosition = Vector3.zero;
+        chunkPositions = new List<Vector3>();
+        InitializeChunkPositions();
         UpdateChunksVisibility();
         initialized = true;
     }
@@ -30,6 +33,14 @@ public class ChunksHandler : MonoBehaviour
         if (initialized && (player.position - planet.transform.position).magnitude < 3000)
         {
             UpdateChunksVisibility();
+        }
+    }
+
+    private void InitializeChunkPositions()
+    {
+        for (int i = 0; i < planet.chunks.Count; i++)
+        {
+            chunkPositions.Add(planet.chunks[i].transform.GetComponent<MeshRenderer>().bounds.center);
         }
     }
 
@@ -48,9 +59,9 @@ public class ChunksHandler : MonoBehaviour
         Vector3 playerToPlanetCenter = playerPos - planetCenter;
         Vector3 cutoffPoint = new Vector3(playerToPlanetCenter.x / 1.5f, playerToPlanetCenter.y / 1.5f, playerToPlanetCenter.z / 1.5f);
 
-        for (int i = 0; i < planet.chunks.Count; i++)
+        for (int i = 0; i < chunkPositions.Count; i++)
         {
-            bool isBelowHalfWayPoint = CheckIfPointBIsBelowPointA(cutoffPoint, planet.chunks[i].transform.GetComponent<MeshRenderer>().bounds.center, cutoffPoint.normalized);
+            bool isBelowHalfWayPoint = CheckIfPointBIsBelowPointA(cutoffPoint, chunkPositions[i], cutoffPoint.normalized);
             if (isBelowHalfWayPoint)
             {
                 planet.chunks[i].gameObject.SetActive(false);
