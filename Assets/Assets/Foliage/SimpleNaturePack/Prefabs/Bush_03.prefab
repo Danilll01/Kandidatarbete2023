@@ -12,12 +12,14 @@ GameObject:
   - component: {fileID: 38335279661274915}
   - component: {fileID: 38335279660144099}
   - component: {fileID: 3855991088703246588}
+  - component: {fileID: 2084149400441558892}
+  - component: {fileID: 3814104077942432876}
   m_Layer: 0
   m_Name: Bush_03
   m_TagString: Foliage
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &38335279662569219
 Transform:
@@ -103,3 +105,29 @@ LODGroup:
     renderers:
     - renderer: {fileID: 38335279660144099}
   m_Enabled: 1
+--- !u!65 &2084149400441558892
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 38335279662140195}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.5026932, y: 0.51553077, z: 1.5134847}
+  m_Center: {x: -0.07779816, y: 0.23830992, z: -0.14249325}
+--- !u!114 &3814104077942432876
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 38335279662140195}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68ed64c35becbb049aa29469bebc8dfe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  respawnTime: 30

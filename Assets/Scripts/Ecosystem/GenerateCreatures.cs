@@ -2,11 +2,11 @@ using UnityEngine;
 using System;
 using Random = UnityEngine.Random;
 using System.Linq;
+using System.Collections.Generic;
 
 public class GenerateCreatures : MonoBehaviour
 {
     [SerializeField] GameObject creature;
-    [SerializeField] private int seed = 1234;
 
     [Header("Creature Generation")]
     [SerializeField] private int maxPackCount = 100;
@@ -18,20 +18,25 @@ public class GenerateCreatures : MonoBehaviour
     [Header("Misc")]
     [SerializeField] private bool DEBUG = false;
 
+    private int seed;
     private Planet planet;
     private Vector3 planetCenter;
 
-    private float creatureSize = 20f; // Make so it fit creature size
+    private float creatureSize = 1.5f; // Make so it fit creature size
     private GameObject creatureParent;
-    
+
+    private List<Vector3> waterPoints = new List<Vector3>();
+
+
     /// <summary>
     /// Initializes creature generation
     /// </summary>
     /// <param name="planet">The planet script found on a planet</param>
-    public void Initialize(Planet planet)
+    /// <param name="randomSeed">The random seed to spawn things with</param>
+    public void Initialize(Planet planet, int randomSeed)
     {
         this.planet = planet;
-
+        seed = randomSeed;
         planetCenter = planet.transform.position;
 
         // Create a gameobject to hold all creatures
@@ -45,20 +50,22 @@ public class GenerateCreatures : MonoBehaviour
 
         GenerateCreaturesOnPlanet();
         if (DEBUG) Debug.Log("Spawning");
+
+        GatherWaterPoints();
     }
 
     // Raycasts where all the packs should be created and calls CreateRandomPack to create the packs
     private void GenerateCreaturesOnPlanet()
     {
         // How far do we raycast
-        float distance = planet.radius;
+        float distance = planet.diameter;
 
         Vector3[] packPositions = new Vector3[maxPackCount];
 
         for (int i = 0; i < maxPackCount; i++)
         {
 
-            Vector3 randPoint = planetCenter + Random.onUnitSphere * (planet.radius * 0.7f);
+            Vector3 randPoint = planetCenter + Random.onUnitSphere * (planet.diameter * 0.7f);
 
             // The ray that will be cast
             Ray ray = new Ray(randPoint, planetCenter - randPoint);
@@ -105,12 +112,19 @@ public class GenerateCreatures : MonoBehaviour
             RaycastHit hit;
             
             // Registered a hit
-            if (Physics.Raycast(ray, out hit, planet.radius))
+            if (Physics.Raycast(ray, out hit, planet.diameter))
             {
                 // Check if the hit colliding with a creature
                 if (hit.transform.CompareTag("Creature"))
                 {
                     if (DEBUG) Debug.Log("Hit creature");
+                    continue;
+                }
+
+                // Check if the hit is coliiding with water
+                if (Mathf.Abs(planet.waterDiameter)/2 > Vector3.Distance(hit.point, planetCenter))
+                {
+                    if (DEBUG) Debug.Log("Hit water");
                     continue;
                 }
 
@@ -133,7 +147,11 @@ public class GenerateCreatures : MonoBehaviour
                 //Quaternion rotation2 = Quaternion.LookRotation(hit.point) * Quaternion.Euler(90, 0, 0);
                 GameObject newObject = Instantiate(creature, hit.point, rotation2, creatureParent.transform);
                 newObject.transform.rotation = rotation2;
-
+                
+                if (Random.Range(0, 2) == 0)
+                {
+                    newObject.tag = "Water";
+                }
 
                 if (DEBUG) Debug.DrawLine(randomOrigin, hit.point, Color.cyan, 10f);
 
@@ -141,7 +159,42 @@ public class GenerateCreatures : MonoBehaviour
             }
 
         }
+
+        creatureParent.SetActive(false);
     }
+
+    private void GatherWaterPoints()
+    {
+        float rayOffset = 1f;
+        float minRayDist = 1.3f;
+        float maxRayDist = 2f;
+
+        float maxRayDistance = (planet.radius - Mathf.Abs(planet.waterDiameter) / 2) + rayOffset;
+        
+        Vector3 rayOrigin;
+        Vector3 planetCenter = planet.transform.position;
+        RaycastHit hit;
+
+        for (int i = 0; i < 150000; i++)
+        {
+            rayOrigin = planetCenter + Random.onUnitSphere * planet.radius;
+            Ray ray = new Ray(rayOrigin, planetCenter - rayOrigin);
+
+            if (Physics.Raycast(ray, out hit, maxRayDistance + maxRayDist))
+            {
+                if (hit.distance > maxRayDistance + minRayDist)
+                {
+                    if (DEBUG) Debug.DrawLine(rayOrigin, hit.point, Color.blue, 10);
+                    waterPoints.Add(hit.point - planetCenter);
+                }
+            }
+        }
+
+        planet.waterPoints = waterPoints;
+    }
+    
+
+    // Helper methods
 
     // Check if a point is near other points in an array
     private bool CloseToListOfPoints(Vector3[] positions, Vector3 newPoint, float minDistance)
@@ -168,5 +221,14 @@ public class GenerateCreatures : MonoBehaviour
             return true;
         }
         return false;
+    }
+
+    /// <summary>
+    /// Enable or disable the creature parent
+    /// </summary>
+    /// <param name="show"></param>
+    public void ShowCreatures(bool show)
+    {
+        creatureParent.SetActive(show);
     }
 }

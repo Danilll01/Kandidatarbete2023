@@ -13,7 +13,7 @@ public class PillPlayerController : MonoBehaviour
     public float maxSpeed;
 
     private Rigidbody body;
-    public bool paused;
+    [HideInInspector] public bool paused;
 
     [Header("Ship")]
     [SerializeField] private float shipMovespeed;
@@ -31,7 +31,7 @@ public class PillPlayerController : MonoBehaviour
     private Quaternion transitionFromRot = Quaternion.identity;
     private Vector3 transitionToPos = Vector3.zero;
     private Quaternion transitionToRot = Quaternion.identity;
-
+    
     // Start is called before the first frame update
     public void Initialize(GameObject planetToSpawnOn)
     {
@@ -43,7 +43,7 @@ public class PillPlayerController : MonoBehaviour
         //A bit of a hack to give the player a starting planet
         attractor = planetToSpawnOn.GetComponent<Planet>();
         transform.parent = attractor.transform;
-        transform.position = planetToSpawnOn.transform.position + new Vector3(0, attractor.radius, 0);
+        transform.position = planetToSpawnOn.transform.position + new Vector3(0, attractor.diameter, 0);
         Vector3 directionNearestPlanet = attractor.transform.position - transform.position;
         Physics.Raycast(transform.position, directionNearestPlanet, out RaycastHit hit);
 
@@ -55,6 +55,8 @@ public class PillPlayerController : MonoBehaviour
         //Lock the mouse inside of the game
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+
+        attractor.ShowCreatures(true);
         paused = false;
     }
 
@@ -78,7 +80,7 @@ public class PillPlayerController : MonoBehaviour
             }
         }
         DisplayDebug.AddOrSetDebugVariable("Current planet", attractor.bodyName);
-        DisplayDebug.AddOrSetDebugVariable("Planet radius", attractor.radius.ToString());
+        DisplayDebug.AddOrSetDebugVariable("Planet radius", attractor.diameter.ToString());
         DisplayDebug.AddOrSetDebugVariable("Planet mass", attractor.mass.ToString());
         DisplayDebug.AddOrSetDebugVariable("Planet surface gravity", attractor.surfaceGravity.ToString());
     }
