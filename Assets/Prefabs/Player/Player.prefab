@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 4197161889152382806}
   - component: {fileID: 4197161889152382802}
   - component: {fileID: 4197161889152382803}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -136,7 +136,6 @@ MonoBehaviour:
   jumpForce: 20
   maxSpeed: 40
   paused: 0
-  shipMesh: {fileID: 944696844918605244, guid: 27b85f5d7f4eef648865f111ecf9ff47, type: 3}
   shipMovespeed: 30
   shipRotationSpeed: 90
   landingTime: 1
@@ -152,7 +151,7 @@ GameObject:
   - component: {fileID: 4197161890332043641}
   - component: {fileID: 4197161890332043640}
   - component: {fileID: 4197161890332043639}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: First Person Camera
   m_TagString: MainCamera
   m_Icon: {fileID: 0}

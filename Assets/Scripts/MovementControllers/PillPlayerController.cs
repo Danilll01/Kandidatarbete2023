@@ -121,7 +121,7 @@ public class PillPlayerController : MonoBehaviour
             if (boarded)
             {
                 //Disembark
-                Physics.Raycast(transform.position, -Up, out RaycastHit hit, 20);
+                Physics.Raycast(transform.position, -Up, out RaycastHit hit, 20,  1 << (LayerMask.NameToLayer("Planet")));
 
                 if (hit.collider != null)
                 {
