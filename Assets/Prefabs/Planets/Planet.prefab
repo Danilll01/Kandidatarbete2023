@@ -67,8 +67,8 @@ MonoBehaviour:
   waterPoints: []
   chunks: []
   player: {fileID: 0}
-  chunkResolution: 4
-  resolution: 1
+  chunkResolution: 2
+  resolution: 7
   chunkPrefab: {fileID: 5146216955868432244, guid: 8531586e98093b342af8fdd2a736c017,
     type: 3}
   chunksParent: {fileID: 3939805141923606249}
