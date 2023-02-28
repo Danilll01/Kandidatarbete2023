@@ -336,9 +336,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   orbitObject: {fileID: 742789582}
-  rotationAxis: {x: 0, y: 0, z: 5}
+  rotationAxis: {x: 1, y: 0, z: 1}
   objectRadius: 0.5
-  offset: 1
+  offset: 2
+  Target: {fileID: 742789586}
+  RotationSpeed: 1
+  CircleRadius: 2
+  ElevationOffset: 0
+  StartAngle: 0
+  UseTargetCoordinateSystem: 0
+  LookAtTarget: 0
+  relativeDistance: {x: 0, y: 0, z: 0}
+  orbitDistance: 2
+  once: 1
 --- !u!135 &897438363
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -409,8 +419,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 897438361}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.07905749, y: -1.4979151, z: -0.000000052366357}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -1.422, y: 0.740126, z: 1.984}
   m_LocalScale: {x: 0.69067, y: 0.69067, z: 0.69067}
   m_ConstrainProportionsScale: 0
   m_Children: []
