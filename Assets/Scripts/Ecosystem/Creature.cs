@@ -50,7 +50,7 @@ public class Creature : MonoBehaviour
     {
         currentState = CreatureState.Walking;
 
-        planet = transform.parent.parent.GetComponent<Planet>();
+        planet = transform.parent.parent.parent.GetComponent<Planet>();
 
         collider = GetComponent<Collider>();
         rigidbody = GetComponent<Rigidbody>();
