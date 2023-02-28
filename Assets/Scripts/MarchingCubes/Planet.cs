@@ -43,15 +43,16 @@ public class Planet : MonoBehaviour
     [SerializeField] private GenerateCreatures generateCreatures;
     [SerializeField] private TerrainColor terrainColor;
     [SerializeField] private SpawnFoliage spawnFoliage;
-    
+
+    private System.Random rand;
+
 
     /// <summary>
     /// Initialize mesh for marching cubes
     /// </summary>
     public void Initialize(Transform player, int randomSeed)
     {
-        System.Random rand = new System.Random(randomSeed);
-        UnityEngine.Random.InitState(randomSeed);
+        rand = new System.Random(randomSeed);
 
         radius = diameter / 2;
 
@@ -59,7 +60,7 @@ public class Planet : MonoBehaviour
 
         MinMaxTerrainLevel terrainLevel = new MinMaxTerrainLevel();
 
-        rotationAxis = RandomPointOnCircleEdge(radius) - Vector3.zero;
+        rotationAxis = RandomPointOnSphereEdge(radius) - Vector3.zero;
 
         // Create all meshes
         createMeshes(chunkResolution, terrainLevel);
@@ -93,10 +94,11 @@ public class Planet : MonoBehaviour
     }
 
     // Gives back a random position on the edge of a circle given the radius of the circle
-    private Vector3 RandomPointOnCircleEdge(float radius)
+    private Vector3 RandomPointOnSphereEdge(float radius)
     {
-        var vector2 = UnityEngine.Random.insideUnitCircle.normalized * radius;
-        return new Vector3(vector2.x, 0, vector2.y);
+        Vector3 randomVector = new Vector3(rand.Next(1, 360), rand.Next(1, 360), rand.Next(1, 360));
+        var vector3 = randomVector.normalized * radius;
+        return new Vector3(vector3.x, vector3.y, vector3.z);
     }
 
     private void createMeshes(int chunkResolution, MinMaxTerrainLevel terrainLevel)

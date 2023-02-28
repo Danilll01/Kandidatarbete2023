@@ -33,7 +33,6 @@ public class SpawnPlanets : MonoBehaviour
             Universe.InitializeRandomWithSeed();
         }
         random = Universe.random;
-        Random.InitState(Universe.seed);
         GetValues();
         CreatePlanets();
         player.Initialize(bodies[0].gameObject);
@@ -171,7 +170,8 @@ public class SpawnPlanets : MonoBehaviour
     // Gives back a random position on the edge of a circle given the radius of the circle
     private Vector3 RandomPointOnCircleEdge(float radius)
     {
-        var vector2 = Random.insideUnitCircle.normalized * radius;
+        Vector2 randomVector = new Vector2(random.Next(1,360), random.Next(1, 360));
+        var vector2 = randomVector.normalized * radius;
         return new Vector3(vector2.x, 0, vector2.y);
     }
 
