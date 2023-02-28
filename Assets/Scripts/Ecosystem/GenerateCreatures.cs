@@ -2,11 +2,11 @@ using UnityEngine;
 using System;
 using Random = UnityEngine.Random;
 using System.Linq;
+using System.Collections.Generic;
 
 public class GenerateCreatures : MonoBehaviour
 {
     [SerializeField] GameObject creature;
-    [SerializeField] private int seed = 1234;
 
     [Header("Creature Generation")]
     [SerializeField] private int maxPackCount = 100;
@@ -18,11 +18,15 @@ public class GenerateCreatures : MonoBehaviour
     [Header("Misc")]
     [SerializeField] private bool DEBUG = false;
 
+    private int seed;
     private Planet planet;
     private Vector3 planetCenter;
 
-    private float creatureSize = 20f; // Make so it fit creature size
+    private float creatureSize = 1.5f; // Make so it fit creature size
     private GameObject creatureParent;
+
+    private List<Vector3> waterPoints = new List<Vector3>();
+
 
     /// <summary>
     /// Initializes creature generation
@@ -32,7 +36,7 @@ public class GenerateCreatures : MonoBehaviour
     public void Initialize(Planet planet, int randomSeed)
     {
         this.planet = planet;
-        this.seed= randomSeed;
+        seed = randomSeed;
         planetCenter = planet.transform.position;
 
         // Create a gameobject to hold all creatures
@@ -42,10 +46,12 @@ public class GenerateCreatures : MonoBehaviour
 
         // This is how system random works where we dont share Random instances
         //System.Random rand1 = new System.Random(1234);
-        Random.InitState(randomSeed);
+        Random.InitState(seed);
 
         GenerateCreaturesOnPlanet();
         if (DEBUG) Debug.Log("Spawning");
+
+        GatherWaterPoints();
     }
 
     // Raycasts where all the packs should be created and calls CreateRandomPack to create the packs
@@ -115,6 +121,13 @@ public class GenerateCreatures : MonoBehaviour
                     continue;
                 }
 
+                // Check if the hit is coliiding with water
+                if (Mathf.Abs(planet.waterDiameter)/2 > Vector3.Distance(hit.point, planetCenter))
+                {
+                    if (DEBUG) Debug.Log("Hit water");
+                    continue;
+                }
+
                 // Check if "hit.point" is close to a point in positions
                 if (CloseToListOfPoints(positions, hit.point, creatureSize))
                 {
@@ -134,7 +147,11 @@ public class GenerateCreatures : MonoBehaviour
                 //Quaternion rotation2 = Quaternion.LookRotation(hit.point) * Quaternion.Euler(90, 0, 0);
                 GameObject newObject = Instantiate(creature, hit.point, rotation2, creatureParent.transform);
                 newObject.transform.rotation = rotation2;
-
+                
+                if (Random.Range(0, 2) == 0)
+                {
+                    newObject.tag = "Water";
+                }
 
                 if (DEBUG) Debug.DrawLine(randomOrigin, hit.point, Color.cyan, 10f);
 
@@ -142,7 +159,42 @@ public class GenerateCreatures : MonoBehaviour
             }
 
         }
+
+        creatureParent.SetActive(false);
     }
+
+    private void GatherWaterPoints()
+    {
+        float rayOffset = 1f;
+        float minRayDist = 1.3f;
+        float maxRayDist = 2f;
+
+        float maxRayDistance = (planet.radius - Mathf.Abs(planet.waterDiameter) / 2) + rayOffset;
+        
+        Vector3 rayOrigin;
+        Vector3 planetCenter = planet.transform.position;
+        RaycastHit hit;
+
+        for (int i = 0; i < 150000; i++)
+        {
+            rayOrigin = planetCenter + Random.onUnitSphere * planet.radius;
+            Ray ray = new Ray(rayOrigin, planetCenter - rayOrigin);
+
+            if (Physics.Raycast(ray, out hit, maxRayDistance + maxRayDist))
+            {
+                if (hit.distance > maxRayDistance + minRayDist)
+                {
+                    if (DEBUG) Debug.DrawLine(rayOrigin, hit.point, Color.blue, 10);
+                    waterPoints.Add(hit.point - planetCenter);
+                }
+            }
+        }
+
+        planet.waterPoints = waterPoints;
+    }
+    
+
+    // Helper methods
 
     // Check if a point is near other points in an array
     private bool CloseToListOfPoints(Vector3[] positions, Vector3 newPoint, float minDistance)
@@ -169,5 +221,14 @@ public class GenerateCreatures : MonoBehaviour
             return true;
         }
         return false;
+    }
+
+    /// <summary>
+    /// Enable or disable the creature parent
+    /// </summary>
+    /// <param name="show"></param>
+    public void ShowCreatures(bool show)
+    {
+        creatureParent.SetActive(show);
     }
 }
