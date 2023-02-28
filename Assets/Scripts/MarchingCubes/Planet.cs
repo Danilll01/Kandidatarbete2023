@@ -31,6 +31,8 @@ public class Planet : MonoBehaviour
     private Material planetMaterial;
     private MarchingCubes marchingCubes;
 
+    private Vector3 rotationAxis;
+
     [SerializeField, Range(1, 4)] private int chunkResolution = 3; //This is 2^chunkResolution
     [SerializeField, Range(1, 14)] private int resolution = 5;
     [SerializeField] private Chunk chunkPrefab;
@@ -49,12 +51,15 @@ public class Planet : MonoBehaviour
     public void Initialize(Transform player, int randomSeed)
     {
         System.Random rand = new System.Random(randomSeed);
+        UnityEngine.Random.InitState(randomSeed);
 
         radius = diameter / 2;
 
         this.player = player;
 
         MinMaxTerrainLevel terrainLevel = new MinMaxTerrainLevel();
+
+        rotationAxis = RandomPointOnCircleEdge(radius) - Vector3.zero;
 
         // Create all meshes
         createMeshes(chunkResolution, terrainLevel);
@@ -85,6 +90,13 @@ public class Planet : MonoBehaviour
         {
             spawnFoliage.Initialize(this, waterDiameter, rand.Next());
         }
+    }
+
+    // Gives back a random position on the edge of a circle given the radius of the circle
+    private Vector3 RandomPointOnCircleEdge(float radius)
+    {
+        var vector2 = UnityEngine.Random.insideUnitCircle.normalized * radius;
+        return new Vector3(vector2.x, 0, vector2.y);
     }
 
     private void createMeshes(int chunkResolution, MinMaxTerrainLevel terrainLevel)
@@ -138,5 +150,19 @@ public class Planet : MonoBehaviour
         {
             generateCreatures.ShowCreatures(show);
         }
+    }
+
+    void Update()
+    {
+        if (player.GetComponent<PillPlayerController>().attractor != this)
+        {
+            RotateAroundAxis();
+        }
+    }
+
+
+    private void RotateAroundAxis()
+    {
+        transform.RotateAround(transform.position, rotationAxis, 10 * Time.deltaTime);
     }
 }
