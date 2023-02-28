@@ -15,6 +15,11 @@ public class OrbitTest : MonoBehaviour
         transform.position = orbitObject.transform.position + RandomPointOnCircleEdge(objectRadius + offset);
     }
 
+    void Update()
+    {
+        RotateAroundAxis();
+    }
+
     // Gives back a random position on the edge of a circle given the radius of the circle
     private Vector3 RandomPointOnCircleEdge(float radius)
     {
@@ -23,5 +28,10 @@ public class OrbitTest : MonoBehaviour
         Vector3 randomVector = Vector3.Scale(anotherOrthogonalVector, new Vector3(UnityEngine.Random.Range(1, 360), UnityEngine.Random.Range(1, 360), UnityEngine.Random.Range(1, 360)));
         var vector3 = randomVector.normalized * radius;
         return new Vector3(vector3.x, vector3.y, vector3.z);
+    }
+
+    private void RotateAroundAxis()
+    {
+        transform.RotateAround(orbitObject.transform.position, rotationAxis, 10 * Time.deltaTime);
     }
 }
