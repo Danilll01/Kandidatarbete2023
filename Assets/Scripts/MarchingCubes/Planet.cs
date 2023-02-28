@@ -31,7 +31,7 @@ public class Planet : MonoBehaviour
     private Material planetMaterial;
     private MarchingCubes marchingCubes;
 
-    private Vector3 rotationAxis;
+    public Vector3 rotationAxis;
 
     [SerializeField, Range(1, 4)] private int chunkResolution = 3; //This is 2^chunkResolution
     [SerializeField, Range(1, 14)] private int resolution = 5;
@@ -148,7 +148,7 @@ public class Planet : MonoBehaviour
 
     public void ShowCreatures(bool show)
     {
-        if (generateCreatures != null)
+        if (generateCreatures != null && willGenerateCreature)
         {
             generateCreatures.ShowCreatures(show);
         }
