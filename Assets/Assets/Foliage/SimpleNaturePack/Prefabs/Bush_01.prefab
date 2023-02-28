@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 4263922822446936359}
   - component: {fileID: 966848114563231922}
   - component: {fileID: 5444046037981940213}
+  - component: {fileID: 6769750603635666191}
   m_Layer: 9
   m_Name: Bush_01
   m_TagString: Food
@@ -111,3 +112,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   respawnTime: 30
+--- !u!205 &6769750603635666191
+LODGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4263922822445002727}
+  serializedVersion: 2
+  m_LocalReferencePoint: {x: 0, y: 0, z: 0}
+  m_Size: 1
+  m_FadeMode: 0
+  m_AnimateCrossFading: 0
+  m_LastLODIsBillboard: 0
+  m_LODs:
+  - screenRelativeHeight: 0.011471334
+    fadeTransitionWidth: 0
+    renderers: []
+  - screenRelativeHeight: 0.011471334
+    fadeTransitionWidth: 0
+    renderers: []
+  - screenRelativeHeight: 0.011471334
+    fadeTransitionWidth: 0
+    renderers: []
+  m_Enabled: 1
