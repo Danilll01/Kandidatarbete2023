@@ -336,9 +336,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   orbitObject: {fileID: 742789582}
-  rotationAxis: {x: 0, y: 0, z: 10}
+  rotationAxis: {x: 0, y: 0, z: 5}
   objectRadius: 0.5
-  offset: 0.2
+  offset: 1
 --- !u!135 &897438363
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -410,7 +410,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 897438361}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.55, y: -0.643, z: 0}
+  m_LocalPosition: {x: 0.07905749, y: -1.4979151, z: -0.000000052366357}
   m_LocalScale: {x: 0.69067, y: 0.69067, z: 0.69067}
   m_ConstrainProportionsScale: 0
   m_Children: []
