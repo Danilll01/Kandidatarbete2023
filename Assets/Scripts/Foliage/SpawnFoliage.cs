@@ -104,8 +104,9 @@ public class SpawnFoliage : MonoBehaviour
             {
                 if (!mergedMeshes)
                 {
-                    CombineStaticMeshesOfChunks();
+                    //CombineStaticMeshesOfChunks();
                     chunksHandler.Initialize(planet, planet.player);
+                    mergedMeshes = true;
                 }
             }
         }
@@ -137,8 +138,7 @@ public class SpawnFoliage : MonoBehaviour
         this.waterLevel = Mathf.Abs(waterLevel / 2);
         noiseOffset = planet.transform.position;
 
-        GameObject[] cameras = GameObject.FindGameObjectsWithTag("MainCamera");
-        player = cameras[0];
+        player = Camera.main.gameObject;
 
         // Makes the script seedable
         Random.InitState(seed);
@@ -248,7 +248,6 @@ public class SpawnFoliage : MonoBehaviour
         // Sets a random rotation for more variation
         rotation *= Quaternion.Euler(0, Random.value * 360, 0);
         GameObject bushObj = Instantiate(bushPrefab[getIndex(hit.point + noiseOffset)], hit.point, rotation, hit.transform);
-        bushObj.tag = "Food";
         foliageObjects.Add(bushObj);
     }
 
