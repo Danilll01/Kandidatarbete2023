@@ -20,14 +20,13 @@ public class WaterHandler : MonoBehaviour
     readonly private Vector3[] directions = { Vector3.forward, Vector3.back, Vector3.left, Vector3.right, Vector3.up, Vector3.down };
     private MeshFilter[] meshFilters;
     private Water[] waterfaces;
-    private GameObject player;
+    private PlayerWater playerWater;
     private Planet planet = null;
     private float waterRadius;
 
     public void Initialize(Planet planet, float waterDiameter, Color color)
     {
-
-        player = Camera.main.gameObject;
+        playerWater = Camera.main.gameObject.transform.parent.GetComponent<PlayerWater>();
 
         this.planet = planet;
         waterRadius = Mathf.Abs(waterDiameter / 2);
@@ -89,12 +88,11 @@ public class WaterHandler : MonoBehaviour
 
     void Update()
     {
-        PlayerWater pw = player.transform.GetComponent<PlayerWater>();
 
-        if(pw != null)
+        if(playerWater != null)
         {
             // Vet inte om det är best att köra denna här.
-            if (pw.underWater)
+            if (playerWater.underWater)
             {
                 material.SetInt("_IsUnderWater", 1);
             }
