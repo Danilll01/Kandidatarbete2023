@@ -6,8 +6,8 @@ TagManager:
   tags:
   - Foliage
   - Creature
-  - Water
   - Food
+  - Water
   layers:
   - Default
   - TransparentFX
@@ -15,9 +15,9 @@ TagManager:
   - Post
   - Water
   - UI
-  - Foliage
-  - Player
-  - Planet
+  - 
+  - 
+  - 
   - 
   - 
   - 
