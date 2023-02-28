@@ -12,6 +12,8 @@ public class PillPlayerController : MonoBehaviour
     public float jumpForce;
     public float maxSpeed;
 
+    [SerializeField] private PlayerWater playerWater;
+
     private Rigidbody body;
     [HideInInspector] public bool paused;
     // Start is called before the first frame update
@@ -34,6 +36,8 @@ public class PillPlayerController : MonoBehaviour
 
         attractor.ShowCreatures(true);
         paused = false;
+
+        playerWater.Initialize(attractor);
     }
 
     // Update is called once per frame
@@ -42,6 +46,7 @@ public class PillPlayerController : MonoBehaviour
         if (!paused)
         {
             HandleInput();
+            playerWater.UpdateWater(transform.position);
         }
         Gravity.KeepUpright(transform, attractor.transform);
         Gravity.Attract(transform.position, body, attractor.transform.position, attractor.mass);
@@ -49,8 +54,8 @@ public class PillPlayerController : MonoBehaviour
         DisplayDebug.AddOrSetDebugVariable("Planet radius", attractor.diameter.ToString());
         DisplayDebug.AddOrSetDebugVariable("Planet mass", attractor.mass.ToString());
         DisplayDebug.AddOrSetDebugVariable("Planet surface gravity", attractor.surfaceGravity.ToString());
+
         
-    
     }
 
     private void HandleInput()

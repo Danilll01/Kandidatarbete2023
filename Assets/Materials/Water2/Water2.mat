@@ -34,6 +34,14 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
+    - _Normal1:
+        m_Texture: {fileID: 2800000, guid: c21511cdc86c86847bdae740c8b071da, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Normal2:
+        m_Texture: {fileID: 2800000, guid: 9f04018992f98ef4997b6883c48cc0f8, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _T1:
         m_Texture: {fileID: 2800000, guid: c21511cdc86c86847bdae740c8b071da, type: 3}
         m_Scale: {x: 1, y: 1}
@@ -56,18 +64,19 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _Alpha: 0.06
-    - _Depth: 22.5
-    - _Displacement: 2.51
-    - _Frequency: 0.36
+    - _Alpha: 0.2
+    - _Depth: 26.2
+    - _Displacement: 0
+    - _Frequency: 0
     - _IsUnderWater: 0
     - _Noise_Slider: 100
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _Speed: 20.69
-    - _Strength: 0.052
+    - _Radius: 500
+    - _Speed: 0
+    - _Strength: 0.006
     m_Colors:
-    - _Deep_Water_Color: {r: 0, g: 0.83137256, b: 0.5902866, a: 0.9843137}
+    - _Deep_Water_Color: {r: 0, g: 0.73, b: 0.5199528, a: 0.9843137}
     - _Shallow_Water_Color: {r: 0.39215684, g: 1, b: 0.71058166, a: 1}
     - _Tiling: {r: 100, g: 100, b: 0, a: 0}
   m_BuildTextureStacks: []

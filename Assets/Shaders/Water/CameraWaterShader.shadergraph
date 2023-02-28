@@ -25,16 +25,10 @@
             "m_Id": "43bfa125b8d04a5eb4550da9238ba74e"
         },
         {
-            "m_Id": "3c5c452e07e14c7691bf593397fc8a58"
-        },
-        {
             "m_Id": "24dec670b32c45dbbf717be4a8c4605d"
         },
         {
             "m_Id": "077ca64848f04ecaa30a570b4458815d"
-        },
-        {
-            "m_Id": "03512ece15a24ec3b364433d96249cb0"
         }
     ],
     "m_Keywords": [],
@@ -142,7 +136,7 @@
             "m_Id": "d69e5d6297ce415fae806076aef109be"
         },
         {
-            "m_Id": "576bda056c074f4b9badb76462bf6626"
+            "m_Id": "1b27fa4e50bb43e7a0e75f2913975440"
         }
     ],
     "m_GroupDatas": [],
@@ -604,33 +598,6 @@
 
 {
     "m_SGVersion": 1,
-    "m_Type": "UnityEditor.ShaderGraph.Internal.Vector1ShaderProperty",
-    "m_ObjectId": "03512ece15a24ec3b364433d96249cb0",
-    "m_Guid": {
-        "m_GuidSerialized": "cc3b6f82-df44-4b24-8637-a25586761aaf"
-    },
-    "m_Name": "WaterRadius",
-    "m_DefaultRefNameVersion": 1,
-    "m_RefNameGeneratedByDisplayName": "WaterRadius",
-    "m_DefaultReferenceName": "_WaterRadius",
-    "m_OverrideReferenceName": "",
-    "m_GeneratePropertyBlock": true,
-    "m_UseCustomSlotLabel": false,
-    "m_CustomSlotLabel": "",
-    "m_Precision": 0,
-    "overrideHLSLDeclaration": false,
-    "hlslDeclarationOverride": 0,
-    "m_Hidden": false,
-    "m_Value": 600.0,
-    "m_FloatType": 0,
-    "m_RangeValues": {
-        "x": 0.0,
-        "y": 1.0
-    }
-}
-
-{
-    "m_SGVersion": 1,
     "m_Type": "UnityEditor.Rendering.Universal.ShaderGraph.UniversalTarget",
     "m_ObjectId": "04f4d896c6b8492b92282d954a053236",
     "m_ActiveSubTarget": {
@@ -656,10 +623,10 @@
     "m_Guid": {
         "m_GuidSerialized": "ba75c863-3bdf-4c36-858b-9f7c42037dfd"
     },
-    "m_Name": "FullscreenIntensity",
+    "m_Name": "UnderWater",
     "m_DefaultRefNameVersion": 1,
-    "m_RefNameGeneratedByDisplayName": "FullscreenIntensity",
-    "m_DefaultReferenceName": "_FullscreenIntensity",
+    "m_RefNameGeneratedByDisplayName": "UnderWater",
+    "m_DefaultReferenceName": "_UnderWater",
     "m_OverrideReferenceName": "",
     "m_GeneratePropertyBlock": true,
     "m_UseCustomSlotLabel": false,
@@ -1117,6 +1084,48 @@
     "m_TextureType": 0,
     "m_NormalMapSpace": 0,
     "m_EnableGlobalMipBias": true
+}
+
+{
+    "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.Vector1Node",
+    "m_ObjectId": "1b27fa4e50bb43e7a0e75f2913975440",
+    "m_Group": {
+        "m_Id": ""
+    },
+    "m_Name": "Float",
+    "m_DrawState": {
+        "m_Expanded": true,
+        "m_Position": {
+            "serializedVersion": "2",
+            "x": -366.0000305175781,
+            "y": -1066.0,
+            "width": 142.00001525878907,
+            "height": 34.0
+        }
+    },
+    "m_Slots": [
+        {
+            "m_Id": "d6776dbbda154376a7ad3daff6db4f83"
+        },
+        {
+            "m_Id": "6abd9876ff714eeaaa29518380d86bbf"
+        }
+    ],
+    "synonyms": [
+        "Vector 1",
+        "1",
+        "v1",
+        "vec1",
+        "scalar"
+    ],
+    "m_Precision": 0,
+    "m_PreviewExpanded": true,
+    "m_PreviewMode": 0,
+    "m_CustomColors": {
+        "m_SerializableColors": []
+    },
+    "m_Value": 0.0
 }
 
 {
@@ -1646,28 +1655,6 @@
 
 {
     "m_SGVersion": 0,
-    "m_Type": "UnityEditor.ShaderGraph.Internal.BooleanShaderProperty",
-    "m_ObjectId": "3c5c452e07e14c7691bf593397fc8a58",
-    "m_Guid": {
-        "m_GuidSerialized": "4a44d490-969e-4353-8f23-236f2a614321"
-    },
-    "m_Name": "UnderWater",
-    "m_DefaultRefNameVersion": 1,
-    "m_RefNameGeneratedByDisplayName": "UnderWater",
-    "m_DefaultReferenceName": "_UnderWater",
-    "m_OverrideReferenceName": "",
-    "m_GeneratePropertyBlock": true,
-    "m_UseCustomSlotLabel": false,
-    "m_CustomSlotLabel": "",
-    "m_Precision": 0,
-    "overrideHLSLDeclaration": false,
-    "hlslDeclarationOverride": 0,
-    "m_Hidden": false,
-    "m_Value": false
-}
-
-{
-    "m_SGVersion": 0,
     "m_Type": "UnityEditor.ShaderGraph.DynamicValueMaterialSlot",
     "m_ObjectId": "3c988665519e4bf887d5e777aab4ebf7",
     "m_Id": 0,
@@ -1882,16 +1869,10 @@
             "m_Id": "43bfa125b8d04a5eb4550da9238ba74e"
         },
         {
-            "m_Id": "3c5c452e07e14c7691bf593397fc8a58"
-        },
-        {
             "m_Id": "24dec670b32c45dbbf717be4a8c4605d"
         },
         {
             "m_Id": "077ca64848f04ecaa30a570b4458815d"
-        },
-        {
-            "m_Id": "03512ece15a24ec3b364433d96249cb0"
         }
     ]
 }
@@ -2054,41 +2035,6 @@
 
 {
     "m_SGVersion": 0,
-    "m_Type": "UnityEditor.ShaderGraph.PropertyNode",
-    "m_ObjectId": "576bda056c074f4b9badb76462bf6626",
-    "m_Group": {
-        "m_Id": ""
-    },
-    "m_Name": "Property",
-    "m_DrawState": {
-        "m_Expanded": true,
-        "m_Position": {
-            "serializedVersion": "2",
-            "x": -366.0000305175781,
-            "y": -1066.0,
-            "width": 142.00001525878907,
-            "height": 34.0
-        }
-    },
-    "m_Slots": [
-        {
-            "m_Id": "585caf0f2ea64ce6b61b1138f9af477e"
-        }
-    ],
-    "synonyms": [],
-    "m_Precision": 0,
-    "m_PreviewExpanded": true,
-    "m_PreviewMode": 0,
-    "m_CustomColors": {
-        "m_SerializableColors": []
-    },
-    "m_Property": {
-        "m_Id": "03512ece15a24ec3b364433d96249cb0"
-    }
-}
-
-{
-    "m_SGVersion": 0,
     "m_Type": "UnityEditor.ShaderGraph.Vector3MaterialSlot",
     "m_ObjectId": "57932d777b234d20837fd94483913bab",
     "m_Id": 0,
@@ -2107,21 +2053,6 @@
         "y": 0.0,
         "z": 0.0
     },
-    "m_Labels": []
-}
-
-{
-    "m_SGVersion": 0,
-    "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
-    "m_ObjectId": "585caf0f2ea64ce6b61b1138f9af477e",
-    "m_Id": 0,
-    "m_DisplayName": "WaterRadius",
-    "m_SlotType": 1,
-    "m_Hidden": false,
-    "m_ShaderOutputName": "Out",
-    "m_StageCapability": 3,
-    "m_Value": 0.0,
-    "m_DefaultValue": 0.0,
     "m_Labels": []
 }
 
@@ -2323,6 +2254,21 @@
     "m_SlotType": 1,
     "m_Hidden": false,
     "m_ShaderOutputName": "B",
+    "m_StageCapability": 3,
+    "m_Value": 0.0,
+    "m_DefaultValue": 0.0,
+    "m_Labels": []
+}
+
+{
+    "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
+    "m_ObjectId": "6abd9876ff714eeaaa29518380d86bbf",
+    "m_Id": 0,
+    "m_DisplayName": "Out",
+    "m_SlotType": 1,
+    "m_Hidden": false,
+    "m_ShaderOutputName": "Out",
     "m_StageCapability": 3,
     "m_Value": 0.0,
     "m_DefaultValue": 0.0,
@@ -3305,10 +3251,10 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": -1212.0,
-            "y": -185.0000457763672,
-            "width": 91.0,
-            "height": 34.0
+            "x": -937.0,
+            "y": -47.999996185302737,
+            "width": 91.00006103515625,
+            "height": 34.000038146972659
         }
     },
     "m_Slots": [
@@ -3553,6 +3499,21 @@
 
 {
     "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
+    "m_ObjectId": "d6776dbbda154376a7ad3daff6db4f83",
+    "m_Id": 1,
+    "m_DisplayName": "X",
+    "m_SlotType": 0,
+    "m_Hidden": false,
+    "m_ShaderOutputName": "X",
+    "m_StageCapability": 3,
+    "m_Value": 600.0,
+    "m_DefaultValue": 0.0,
+    "m_Labels": []
+}
+
+{
+    "m_SGVersion": 0,
     "m_Type": "UnityEditor.ShaderGraph.DynamicVectorMaterialSlot",
     "m_ObjectId": "d693befaab2a43f6a916a151b00968ac",
     "m_Id": 1,
@@ -3664,7 +3625,7 @@
     "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
     "m_ObjectId": "dc75fbff4bce470ea0a31bc7beaf3b58",
     "m_Id": 0,
-    "m_DisplayName": "FullscreenIntensity",
+    "m_DisplayName": "UnderWater",
     "m_SlotType": 1,
     "m_Hidden": false,
     "m_ShaderOutputName": "Out",
@@ -3775,10 +3736,10 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": -1168.0,
-            "y": -285.0000305175781,
+            "x": -891.9999389648438,
+            "y": -150.99996948242188,
             "width": 92.0,
-            "height": 33.99998474121094
+            "height": 33.999969482421878
         }
     },
     "m_Slots": [

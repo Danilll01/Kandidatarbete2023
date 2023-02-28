@@ -6,6 +6,7 @@ using UnityEngine;
 [RequireComponent(typeof(GenerateCreatures))]
 [RequireComponent(typeof(TerrainColor))]
 [RequireComponent(typeof(SpawnFoliage))]
+[RequireComponent(typeof(SpawnFoliage))]
 public class Planet : MonoBehaviour
 {
     [SerializeField] private ComputeShader meshGenerator;
@@ -13,9 +14,7 @@ public class Planet : MonoBehaviour
     [SerializeField, Range(1, 25)] private int frequency = 20;
     [SerializeField, Range(0, 5)] private float amplitude = 1;
     [SerializeField, Range(0, 1)] private float bottomLevel = 1;
-    [SerializeField] private Material waterMaterial;
     [HideInInspector] public float waterDiameter;
-    [SerializeField] private GameObject water;
 
     public float diameter;
     public float radius;
@@ -62,8 +61,7 @@ public class Planet : MonoBehaviour
 
         // Init water
         waterDiameter = -(threshold / 255 - 1) * diameter;
-        water.transform.localScale = new Vector3(waterDiameter, waterDiameter, waterDiameter);
-        water.GetComponent<Renderer>().material = waterMaterial;
+
 
         terrainLevel.SetMin(Mathf.Abs((waterDiameter + 1) / 2));
         planetMaterial = terrainColor.GetPlanetMaterial(terrainLevel, rand.Next());
@@ -89,7 +87,7 @@ public class Planet : MonoBehaviour
 
         if (waterHandler != null && bodyName != "Sun")
         {
-            waterHandler.Initialize(this, waterDiameter);
+            waterHandler.Initialize(this, waterDiameter, terrainColor.bottomColor);
         }
     }
 

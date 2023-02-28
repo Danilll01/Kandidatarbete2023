@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 4197161889152382806}
   - component: {fileID: 4197161889152382802}
   - component: {fileID: 4197161889152382803}
+  - component: {fileID: 1902293947857691221}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -135,6 +136,22 @@ MonoBehaviour:
   airControlFactor: 1
   jumpForce: 20
   maxSpeed: 40
+  playerWater: {fileID: 1902293947857691221}
+  paused: 0
+--- !u!114 &1902293947857691221
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4197161889152382809}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d280eb6c0773ade418785a1017001e48, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  water: {fileID: 2100000, guid: 980d82d2001113c4f8f2220385312c2b, type: 2}
+  underWater: 0
 --- !u!1 &4197161890332043643
 GameObject:
   m_ObjectHideFlags: 0
