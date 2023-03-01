@@ -42,12 +42,14 @@ public class SolarSystemTransform : MonoBehaviour
         {
             ResetPlanetOrbit(activePlanetIndex);
             activePlanetIndex = -1;
+            player.GetComponent<PillPlayerController>().Planet = null;
         }
         // If the player has entered a new planet, move the solar system accordingly
         else if (playerOnPlanetIndex != activePlanetIndex)
         {
             MovePlanets(playerOnPlanetIndex);
             activePlanetIndex = playerOnPlanetIndex;
+            player.GetComponent<PillPlayerController>().Planet = spawnPlanets.bodies[playerOnPlanetIndex];
         }
     }
 
