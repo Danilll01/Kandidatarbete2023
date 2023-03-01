@@ -20,7 +20,7 @@ RenderSettings:
   m_FogDensity: 0.01
   m_LinearFogStart: 0
   m_LinearFogEnd: 300
-  m_AmbientSkyColor: {r: 0.7830189, g: 0.7830189, b: 0.7830189, a: 1}
+  m_AmbientSkyColor: {r: 0.24117647, g: 0.24117647, b: 0.24117647, a: 1}
   m_AmbientEquatorColor: {r: 0.114, g: 0.125, b: 0.133, a: 1}
   m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
   m_AmbientIntensity: 1
@@ -849,6 +849,11 @@ PrefabInstance:
         type: 3}
     - target: {fileID: 776431053636631548, guid: 93094628cce30c64195c2ae1633e7e60,
         type: 3}
+      propertyPath: sunLightning
+      value: 
+      objectReference: {fileID: 1676012113}
+    - target: {fileID: 776431053636631548, guid: 93094628cce30c64195c2ae1633e7e60,
+        type: 3}
       propertyPath: planetsParent
       value: 
       objectReference: {fileID: 210303240}
@@ -1628,6 +1633,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a06957ffefbd4a24aa9146fc52b81dc0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!4 &1376926158 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4197161889152382805, guid: a27088cae5f8b5549bde9f1342be2696,
+    type: 3}
+  m_PrefabInstance: {fileID: 1073200472}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1414091875
 GameObject:
   m_ObjectHideFlags: 0
@@ -1851,6 +1862,7 @@ GameObject:
   - component: {fileID: 1676012111}
   - component: {fileID: 1676012110}
   - component: {fileID: 1676012112}
+  - component: {fileID: 1676012113}
   m_Layer: 0
   m_Name: Directional Light
   m_TagString: Untagged
@@ -1955,6 +1967,19 @@ MonoBehaviour:
   m_ShadowLayerMask: 1
   m_LightCookieSize: {x: 1, y: 1}
   m_LightCookieOffset: {x: 0, y: 0}
+--- !u!114 &1676012113
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1676012109}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e988d458eb574b1448b81ea359a80e1a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 1376926158}
 --- !u!1 &2035558019
 GameObject:
   m_ObjectHideFlags: 0
