@@ -51,10 +51,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   meshGenerator: {fileID: 7200000, guid: 2b54143d75bd2344bb987facb6cb4950, type: 3}
-  threshold: 200
-  frequency: 20
-  amplitude: 1
-  bottomLevel: 1
   waterMaterial: {fileID: 2100000, guid: 417f8c1f207df654b84c6e8b4c0e8f0f, type: 2}
   waterDiameter: 0
   water: {fileID: 5613251696109344692}
@@ -66,7 +62,7 @@ MonoBehaviour:
   moons: []
   waterPoints: []
   player: {fileID: 0}
-  resolution: 9
+  resolution: 4
   willGenerateCreature: 1
   generateCreatures: {fileID: 7065241369011201559}
   spawnFoliage: {fileID: 2855617038713985127}
@@ -173,7 +169,6 @@ MonoBehaviour:
   - {fileID: 7405846476849542632, guid: c6308cb7062fac34e8e50600086b12a1, type: 3}
   - {fileID: 1576488453971893466, guid: a778b631c6253a04899cb31bad047c81, type: 3}
   DEBUG: 0
-  chunksHandler: {fileID: 0}
   foliageSpawned: 0
 --- !u!114 &6742904736247445569
 MonoBehaviour:

@@ -31,8 +31,10 @@ public class ChunksHandler : MonoBehaviour
     /// </summary>
     /// <param name="planet"></param>
     /// <param name="player"></param>
-    public void Initialize(Planet planet, MinMaxTerrainLevel terrainLevel, bool spawn)
+    public void Initialize(Planet planet, MinMaxTerrainLevel terrainLevel, bool spawn, int seed)
     {
+        System.Random rand = new System.Random(seed);
+
         this.planet = planet;
         player = planet.player;
         playerLastPosition = Vector3.zero;
@@ -52,13 +54,10 @@ public class ChunksHandler : MonoBehaviour
             chunksGenerated = false;
         }
 
-        planetMaterial = terrainColor.GetPlanetMaterial(terrainLevel, 1); //change to random
+        planetMaterial = terrainColor.GetPlanetMaterial(terrainLevel, rand.Next()); //change to random
 
         // Sets the material of all chuncks
-        foreach (Chunk chunk in chunks)
-        {
-            chunk.SetMaterial(planetMaterial);
-        }
+        setChunksMaterials();
     }
 
     // Update is called once per frame
@@ -82,21 +81,30 @@ public class ChunksHandler : MonoBehaviour
             Resetchunks();
         }
 
-        
         // Check if player is on the planet
         if (!ReferenceEquals(transform, player.transform.parent))
         {
             CreateMeshes(1, 1, terrainLevel);
+            setChunksMaterials();
             chunksGenerated = false;
         } 
         else
         {
             CreateMeshes(3, planet.resolution, terrainLevel);
+            setChunksMaterials();
             chunksGenerated = true;
         }
     }
 
-    public void CreateMeshes(int chunkResolution, int resolution, MinMaxTerrainLevel terrainLevel)
+    private void setChunksMaterials()
+    {
+        foreach(Chunk chunk in chunks)
+        {
+            chunk.SetMaterial(planetMaterial);
+        }
+    }
+
+    private void CreateMeshes(int chunkResolution, int resolution, MinMaxTerrainLevel terrainLevel)
     {
         if (chunkResolution == this.chunkResolution)
         {

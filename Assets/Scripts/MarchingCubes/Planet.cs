@@ -67,7 +67,7 @@ public class Planet : MonoBehaviour
         water.GetComponent<Renderer>().material = waterMaterial;
         terrainLevel.SetMin(Mathf.Abs((waterDiameter + 1) / 2));
 
-        chunksHandler.Initialize(this, terrainLevel, spawn);
+        chunksHandler.Initialize(this, terrainLevel, spawn, rand.Next());
 
         if (willGenerateCreature) 
         {
