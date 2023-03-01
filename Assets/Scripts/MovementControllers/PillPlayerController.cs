@@ -128,8 +128,7 @@ public class PillPlayerController : MonoBehaviour
                     transitionFromPos = transform.position;
                     transitionFromRot = transform.rotation;
                     transitionToPos = hit.point - Quaternion.FromToRotation(Vector3.up, Up) * Vector3.up * shipTransform.localPosition.y;
-                    //Leaves some to be desired when it comes to rotation direction but I'll be back
-                    transitionToRot = Quaternion.FromToRotation(Vector3.up, hit.normal);
+                    transitionToRot = Quaternion.LookRotation(Vector3.ProjectOnPlane(shipTransform.TransformVector(Vector3.forward), hit.normal), hit.normal);
                     transitioning = true;
                 }
             }
