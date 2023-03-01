@@ -48,6 +48,7 @@ public class PillPlayerController : MonoBehaviour
         if (!paused)
         {
             HandleInput();
+            if(!ReferenceEquals(attractor, playerWater.planet)) playerWater.UpdatePlanet(attractor);
             playerWater.UpdateWater(transform.position);
         }
         Gravity.KeepUpright(transform, attractor.transform);

@@ -7,7 +7,7 @@ public class PlayerWater : MonoBehaviour
 {
     
     [SerializeField] private Material water;
-    private Planet planet = null;
+    [HideInInspector] public Planet planet = null;
     [HideInInspector] public bool underWater;
 
     public void Initialize(Planet planet)
