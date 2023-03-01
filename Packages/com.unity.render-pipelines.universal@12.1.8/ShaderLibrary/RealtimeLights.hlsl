@@ -89,7 +89,7 @@ float DistanceAttenuation(float distanceSqr, half2 distanceAttenuation)
     half smoothFactor = half(saturate(distanceSqr * distanceAttenuationFloat.x + distanceAttenuationFloat.y));
 #endif
 
-    return 1; //lightAtten * smoothFactor;
+    return 1; //lightAtten * smoothFactor; PLAN: Ha point light i solen med svagt ljus. Ha sedan directional light från solen mot spelaren
 }
 
 half AngleAttenuation(half3 spotDirection, half3 lightDirection, half2 spotAttenuation)
