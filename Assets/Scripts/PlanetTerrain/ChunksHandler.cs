@@ -8,6 +8,8 @@ public class ChunksHandler : MonoBehaviour
     private Transform player;
     private Vector3 playerLastPosition;
     private bool initialized = false;
+    private bool resetchunks = false;
+    private List<Vector3> chunkPositions;
 
     /// <summary>
     /// Initialize the values
@@ -19,6 +21,8 @@ public class ChunksHandler : MonoBehaviour
         this.planet = planet;
         this.player = player;
         playerLastPosition = Vector3.zero;
+        chunkPositions = new List<Vector3>();
+        InitializeChunkPositions();
         UpdateChunksVisibility();
         initialized = true;
     }
@@ -30,27 +34,61 @@ public class ChunksHandler : MonoBehaviour
         if (initialized && (player.position - planet.transform.position).magnitude < 3000)
         {
             UpdateChunksVisibility();
+            resetchunks = false;
         }
+        else if (initialized && !resetchunks && (player.position - planet.transform.position).magnitude >= 3000)
+        {
+            Resetchunks();
+        }
+    }
+
+    private void InitializeChunkPositions()
+    {
+        for (int i = 0; i < planet.chunks.Count; i++)
+        {
+            chunkPositions.Add(planet.chunks[i].transform.GetComponent<MeshRenderer>().bounds.center);
+        }
+    }
+
+    private void Resetchunks()
+    {
+        for (int i = 0; i < chunkPositions.Count; i++)
+        {
+            planet.chunks[i].gameObject.SetActive(true);
+        }
+        resetchunks = true;
     }
 
     private void UpdateChunksVisibility()
     {
         Vector3 playerPos = player.position;
+        Vector3 planetCenter = Vector3.zero;
+        Vector3 playerToPlanetCenter = playerPos - planetCenter;
+        float planetRadius = planet.radius;
 
         // Only update chunks if player has moved a certain distance
-        if (Mathf.Abs(Vector3.Distance(playerPos, playerLastPosition)) < 50 || !initialized)
+        if ((Mathf.Abs(Vector3.Distance(playerPos, playerLastPosition)) < 50 || !initialized) && playerToPlanetCenter.magnitude > (planetRadius + 30f))
         {
             return;
         }
 
         playerLastPosition = playerPos;
-        Vector3 planetCenter = Vector3.zero;
-        Vector3 playerToPlanetCenter = playerPos - planetCenter;
-        Vector3 cutoffPoint = new Vector3(playerToPlanetCenter.x / 1.5f, playerToPlanetCenter.y / 1.5f, playerToPlanetCenter.z / 1.5f);
+        
 
-        for (int i = 0; i < planet.chunks.Count; i++)
+        Vector3 cutoffPoint = new Vector3();
+        if (playerToPlanetCenter.magnitude > (planetRadius + 30f))
         {
-            bool isBelowHalfWayPoint = CheckIfPointBIsBelowPointA(cutoffPoint, planet.chunks[i].transform.GetComponent<MeshRenderer>().bounds.center, cutoffPoint.normalized);
+            cutoffPoint = new Vector3(playerToPlanetCenter.x / 10000f, playerToPlanetCenter.y / 10000f, playerToPlanetCenter.z / 10000f);
+        }
+        else
+        {
+            cutoffPoint = new Vector3(playerToPlanetCenter.x / 1.5f , playerToPlanetCenter.y / 1.5f, playerToPlanetCenter.z / 1.5f);
+        }
+
+
+        for (int i = 0; i < chunkPositions.Count; i++)
+        {
+            bool isBelowHalfWayPoint = CheckIfPointBIsBelowPointA(cutoffPoint, chunkPositions[i], cutoffPoint.normalized);
             if (isBelowHalfWayPoint)
             {
                 planet.chunks[i].gameObject.SetActive(false);

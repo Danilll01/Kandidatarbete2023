@@ -3,6 +3,7 @@ using System;
 using Random = UnityEngine.Random;
 using System.Linq;
 using System.Collections.Generic;
+using UnityEditor;
 
 /// <summary>
 /// Script which spawns given foliage on a planet
@@ -49,7 +50,6 @@ public class SpawnFoliage : MonoBehaviour
     private int stoneSpawnIndex = 0;
     private Vector3[] stonePositions = new Vector3[prefabLimit];
 
-    private GameObject foliageHandler;
     private GameObject player;
 
     private static int seed = Universe.seed;
@@ -59,7 +59,7 @@ public class SpawnFoliage : MonoBehaviour
     private float waterLevel;
     private Vector3 noiseOffset;
 
-    private bool mergedMeshes = false;
+    private bool chunksInitialized = false;
     private bool generatedSpawnPoints = false;
 
     void Update()
@@ -102,26 +102,13 @@ public class SpawnFoliage : MonoBehaviour
 
             if (treeIndex <= treeSpawnIndex && bushIndex <= bushSpawnIndex && stoneIndex <= stoneSpawnIndex)
             {
-                if (!mergedMeshes)
+                if (!chunksInitialized)
                 {
-                    CombineStaticMeshesOfChunks();
                     chunksHandler.Initialize(planet, planet.player);
+                    chunksInitialized = true;
                 }
             }
         }
-    }
-
-    private void CombineStaticMeshesOfChunks()
-    {
-        // Loops through every chunk and combines all the foliage meshes into one mesh
-        for (int i = 0; i < planet.chunks.Count; i++)
-        {
-            GameObject meshParent = new GameObject("Mesh parent");
-            meshParent.transform.parent = planet.chunks[i].transform;
-
-            StaticBatchingUtility.Combine(planet.chunks[i].gameObject);
-        }
-        mergedMeshes = true;
     }
 
     /// <summary>
@@ -137,8 +124,7 @@ public class SpawnFoliage : MonoBehaviour
         this.waterLevel = Mathf.Abs(waterLevel / 2);
         noiseOffset = planet.transform.position;
 
-        GameObject[] cameras = GameObject.FindGameObjectsWithTag("MainCamera");
-        player = cameras[0];
+        player = Camera.main.gameObject;
 
         // Makes the script seedable
         Random.InitState(seed);
@@ -248,7 +234,6 @@ public class SpawnFoliage : MonoBehaviour
         // Sets a random rotation for more variation
         rotation *= Quaternion.Euler(0, Random.value * 360, 0);
         GameObject bushObj = Instantiate(bushPrefab[getIndex(hit.point + noiseOffset)], hit.point, rotation, hit.transform);
-        bushObj.tag = "Food";
         foliageObjects.Add(bushObj);
     }
 
