@@ -306,8 +306,18 @@ public class Creature : MonoBehaviour
             transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(newForward, newUp), Time.fixedDeltaTime * 10f);
 
             // Rotate the creature to the direction it is walking
-            transform.Rotate(new (0, angle * Time.fixedDeltaTime, 0));
+            transform.Rotate(new (0, angle * Time.fixedDeltaTime * 2f, 0));
+
+            GameObject hitChunk = hit.transform.gameObject;
+
+            // Switches chunk if entered into new chunk
+            if (hitChunk != transform.parent.gameObject)
+            {
+                transform.parent = hitChunk.transform;
+            }
+
             
+
         }
     }
     private void AttractToPlanet()
