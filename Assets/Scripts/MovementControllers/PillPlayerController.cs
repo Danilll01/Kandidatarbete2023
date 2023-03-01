@@ -72,13 +72,11 @@ public class PillPlayerController : MonoBehaviour
         if(Input.GetKey(KeyCode.Space) && playerWater.underWater)
         {
             movementVector.y += (oldY.magnitude * oldY.normalized.y > maxSwimSpeed) ? 0 : swimForce;
-            Debug.Log(movementVector.y);
         }
         //Jumping
         else if (Input.GetKeyDown(KeyCode.Space) && Grounded)
         {
             movementVector.y += jumpForce;
-            Debug.Log(movementVector.y);
         }
         
         //Input recieved
