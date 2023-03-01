@@ -145,7 +145,7 @@ public class GenerateCreatures : MonoBehaviour
                 // Creates a rotation for the new object that always is rotated towards the planet
                 Quaternion rotation2 = Quaternion.FromToRotation(Vector3.forward, hit.normal) * Quaternion.Euler(90, 0, 0);
                 //Quaternion rotation2 = Quaternion.LookRotation(hit.point) * Quaternion.Euler(90, 0, 0);
-                GameObject newObject = Instantiate(creature, hit.point, rotation2, hit.transform);
+                GameObject newObject = Instantiate(creature, hit.point, rotation2, hit.transform.GetComponent<Chunk>().creatures);
                 newObject.transform.rotation = rotation2;
 
                 bool isSpawnPlanet = planet.gameObject == planet.transform.parent.GetChild(1).gameObject;

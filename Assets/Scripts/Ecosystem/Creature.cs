@@ -50,7 +50,7 @@ public class Creature : MonoBehaviour
     {
         currentState = CreatureState.Walking;
 
-        planet = transform.parent.parent.parent.GetComponent<Planet>();
+        planet = transform.parent.parent.parent.parent.GetComponent<Planet>();
 
         collider = GetComponent<Collider>();
         rigidbody = GetComponent<Rigidbody>();
@@ -309,13 +309,20 @@ public class Creature : MonoBehaviour
             transform.Rotate(new (0, angle * Time.fixedDeltaTime * 2f, 0));
 
             GameObject hitChunk = hit.transform.gameObject;
+            GameObject currentChunk = transform.parent.parent.gameObject;
 
-            // Switches chunk if entered into new chunk
-            if (hitChunk != transform.parent.gameObject)
+            if (hitChunk != null && currentChunk != null)
             {
-                transform.parent = hitChunk.transform;
+                // Switches chunk if entered into new chunk
+                if (hitChunk != currentChunk)
+                {
+                    Chunk newChunk = hitChunk.transform.GetComponent<Chunk>();
+                    if (newChunk != null)
+                    {
+                        transform.parent = newChunk.creatures;
+                    }
+                }
             }
-
             
 
         }
