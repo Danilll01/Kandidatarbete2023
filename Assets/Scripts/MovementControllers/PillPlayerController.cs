@@ -98,10 +98,7 @@ public class PillPlayerController : MonoBehaviour
             transitioning = false;
             if (boarded)
             {
-                //Disembark
-                shipTransform.SetParent(attractor.gameObject.transform);
-                transform.position = shipTransform.position + (shipTransform.rotation * dismountedPos);
-                transform.rotation = shipTransform.rotation;
+                DisembarkFromShip();
             }
             transitionProgress = 0;
             boarded = !boarded;
@@ -125,22 +122,22 @@ public class PillPlayerController : MonoBehaviour
 
                 if (hit.collider != null)
                 {
+                    //Set up transition to/from
                     transitionFromPos = transform.position;
                     transitionFromRot = transform.rotation;
                     transitionToPos = hit.point - Quaternion.FromToRotation(Vector3.up, Up) * Vector3.up * shipTransform.localPosition.y;
                     transitionToRot = Quaternion.LookRotation(Vector3.ProjectOnPlane(shipTransform.TransformVector(Vector3.forward), hit.normal), hit.normal);
                     transitioning = true;
+                    //Transition method handles moving the player out of the ship
                 }
             }
             else
             {
                 //Embark
-                transform.position = shipTransform.position + (shipTransform.rotation * mountedPos);
-                transform.rotation = shipTransform.rotation;
-                firstPersonCamera.transform.localRotation = Quaternion.identity;
-                body.velocity = Vector3.zero;
-                shipTransform.SetParent(transform);
+                //Move player into ship
+                EmbarkInShip();
 
+                //Set up transition to/from
                 transitionFromPos = transform.position;
                 transitionFromRot = transform.rotation;
                 transitionToPos = transitionFromPos + Up * 10;
@@ -232,6 +229,22 @@ public class PillPlayerController : MonoBehaviour
             Gravity.KeepUpright(transform, attractor.transform);
             Gravity.Attract(transform.position, body, attractor.transform.position, attractor.mass);
         }
+    }
+
+    private void DisembarkFromShip()
+    {
+        shipTransform.SetParent(attractor.gameObject.transform);
+        transform.position = shipTransform.position + (shipTransform.rotation * dismountedPos);
+        transform.rotation = shipTransform.rotation;
+    }
+
+    private void EmbarkInShip()
+    {
+        transform.position = shipTransform.position + (shipTransform.rotation * mountedPos);
+        transform.rotation = shipTransform.rotation;
+        firstPersonCamera.transform.localRotation = Quaternion.identity;
+        body.velocity = Vector3.zero;
+        shipTransform.SetParent(transform);
     }
 
     /// <summary>
