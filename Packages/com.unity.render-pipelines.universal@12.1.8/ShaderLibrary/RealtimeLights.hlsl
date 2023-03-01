@@ -68,6 +68,7 @@ struct Light
 // Attenuation smoothly decreases to light range.
 float DistanceAttenuation(float distanceSqr, half2 distanceAttenuation)
 {
+    distanceSqr /= 10000;
     // We use a shared distance attenuation for additional directional and puctual lights
     // for directional lights attenuation will be 1
     float lightAtten = rcp(distanceSqr);
@@ -89,7 +90,7 @@ float DistanceAttenuation(float distanceSqr, half2 distanceAttenuation)
     half smoothFactor = half(saturate(distanceSqr * distanceAttenuationFloat.x + distanceAttenuationFloat.y));
 #endif
 
-    return 1; //lightAtten * smoothFactor; PLAN: Ha point light i solen med svagt ljus. Ha sedan directional light från solen mot spelaren
+    return lightAtten * smoothFactor; //PLAN: Ha point light i solen med svagt ljus. Ha sedan directional light från solen mot spelaren
 }
 
 half AngleAttenuation(half3 spotDirection, half3 lightDirection, half2 spotAttenuation)
