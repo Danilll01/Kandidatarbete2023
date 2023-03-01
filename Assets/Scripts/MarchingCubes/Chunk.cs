@@ -31,7 +31,6 @@ public class Chunk : MonoBehaviour
     public void Initialize(int index, int resolution, MarchingCubes marchingCubes, Transform player, MinMaxTerrainLevel terrainLevel)
     {
         this.index = index;
-        this.resolution = resolution;
         this.marchingCubes = marchingCubes;
         this.player = player;
         this.terrainLevel = terrainLevel;
@@ -42,7 +41,7 @@ public class Chunk : MonoBehaviour
         calculateChunkPosition();
 
         //Set lowest resolution as default
-        updateMesh(4);
+        updateMesh(resolution);
     }
 
     /// <summary>

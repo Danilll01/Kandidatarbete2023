@@ -35,7 +35,6 @@ public class SpawnFoliage : MonoBehaviour
     [SerializeField] private bool DEBUG = false;
 
     private List<GameObject> foliageObjects = new List<GameObject>();
-    [SerializeField] private ChunksHandler chunksHandler;
 
 
     private int treeIndex = 0;

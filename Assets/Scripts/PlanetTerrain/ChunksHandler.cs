@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
@@ -14,15 +15,16 @@ public class ChunksHandler : MonoBehaviour
     private int chunkResolution; //This is 2^chunkResolution
     private MarchingCubes marchingCubes;
     private Material planetMaterial;
-    private int resolution;
     private float planetRadius;
+    private MinMaxTerrainLevel terrainLevel;
 
     [HideInInspector] public bool chunksGenerated;
     [SerializeField] private Chunk chunkPrefab;
     [SerializeField] private GameObject chunksParent;
     [HideInInspector] private List<Chunk> chunks;
     [SerializeField] private TerrainColor terrainColor;
-    
+
+   
 
     /// <summary>
     /// Initialize the values
@@ -35,18 +37,18 @@ public class ChunksHandler : MonoBehaviour
         player = planet.player;
         playerLastPosition = Vector3.zero;
         marchingCubes = planet.marchingCubes;
-        resolution = planet.resolution;
         planetRadius = planet.radius;
+        this.terrainLevel = terrainLevel;
 
         // If this is the current planet, generate in high res
         if (spawn)
         {
-            CreateMeshes(3, terrainLevel);
+            CreateMeshes(3, planet.resolution, terrainLevel);
             chunksGenerated = true;
         }
         else
         {
-            CreateMeshes(1, terrainLevel);
+            CreateMeshes(1, 1, terrainLevel);
             chunksGenerated = false;
         }
 
@@ -57,8 +59,6 @@ public class ChunksHandler : MonoBehaviour
         {
             chunk.SetMaterial(planetMaterial);
         }
-
-        
     }
 
     // Update is called once per frame
@@ -86,19 +86,17 @@ public class ChunksHandler : MonoBehaviour
         // Check if player is on the planet
         if (!ReferenceEquals(transform, player.transform.parent))
         {
-            MinMaxTerrainLevel needed = new MinMaxTerrainLevel();
-            CreateMeshes(1, needed);
+            CreateMeshes(1, 1, terrainLevel);
             chunksGenerated = false;
         } 
         else
         {
-            MinMaxTerrainLevel needed = new MinMaxTerrainLevel();
-            CreateMeshes(3, needed);
+            CreateMeshes(3, planet.resolution, terrainLevel);
             chunksGenerated = true;
         }
     }
 
-    public void CreateMeshes(int chunkResolution, MinMaxTerrainLevel terrainLevel)
+    public void CreateMeshes(int chunkResolution, int resolution, MinMaxTerrainLevel terrainLevel)
     {
         if (chunkResolution == this.chunkResolution)
         {

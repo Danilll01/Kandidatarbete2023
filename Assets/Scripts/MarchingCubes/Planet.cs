@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Mathematics;
@@ -9,22 +10,18 @@ using UnityEngine;
 public class Planet : MonoBehaviour
 {
     [SerializeField] private ComputeShader meshGenerator;
-    [SerializeField, Range(0, 255)] private float threshold = 200;
-    [SerializeField, Range(1, 25)] private int frequency = 20;
-    [SerializeField, Range(0, 5)] private float amplitude = 1;
-    [SerializeField, Range(0, 1)] private float bottomLevel = 1;
     [SerializeField] private Material waterMaterial;
     [HideInInspector] public float waterDiameter;
     [SerializeField] private GameObject water;
 
-    public float diameter;
-    public float radius;
-    public float surfaceGravity;
-    public string bodyName = "TBT";
-    public float mass;
-    public List<Planet> moons;
+    [HideInInspector, Obsolete]public float diameter;
+    [HideInInspector] public float radius;
+    [HideInInspector] public float surfaceGravity;
+    [HideInInspector] public string bodyName = "TBT";
+    [HideInInspector] public float mass;
+    [HideInInspector] public List<Planet> moons;
     
-    public List<Vector3> waterPoints;
+    [HideInInspector] public List<Vector3> waterPoints;
 
     [HideInInspector] public Transform player;
     [HideInInspector] public MarchingCubes marchingCubes;
@@ -36,6 +33,8 @@ public class Planet : MonoBehaviour
     [SerializeField] private GenerateCreatures generateCreatures;
     [SerializeField] public SpawnFoliage spawnFoliage;
     [SerializeField] public ChunksHandler chunksHandler;
+
+    private float threshold;
 
     /// <summary>
     /// Initializes the planet
@@ -58,7 +57,7 @@ public class Planet : MonoBehaviour
         {
             threshold = 23 + (float)rand.NextDouble() * 4;
             int frequency = rand.Next(2) + 3;
-            amplitude = 1.2f + (float)rand.NextDouble() * 0.4f;
+            float amplitude = 1.2f + (float)rand.NextDouble() * 0.4f;
             marchingCubes = new MarchingCubes(1, meshGenerator, threshold, diameter, frequency, amplitude);
         }
 
