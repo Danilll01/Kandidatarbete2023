@@ -67,7 +67,7 @@ public class SpawnFoliage : MonoBehaviour
         if(generatedSpawnPoints)
         {
             // Tries to spawn 100 of each every frame we are near the planet
-            if (ReferenceEquals(planet.transform, player.transform.parent))
+            if (ReferenceEquals(planet.transform, player.transform.parent) && chunksHandler.chunksGenerated)
             {
                 for (int j = 100; j > 0; j--)
                 {

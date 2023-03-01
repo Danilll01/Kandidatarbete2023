@@ -10,6 +10,8 @@ public class ChunksHandler : MonoBehaviour
     private Vector3 playerLastPosition;
     private bool initialized = false;
 
+    [HideInInspector] public bool chunksGenerated;
+
     /// <summary>
     /// Initialize the values
     /// </summary>
@@ -37,11 +39,13 @@ public class ChunksHandler : MonoBehaviour
         {
             MinMaxTerrainLevel needed = new MinMaxTerrainLevel();
             planet.createMeshes(1, needed);
+            chunksGenerated = false;
         } 
         else
         {
             MinMaxTerrainLevel needed = new MinMaxTerrainLevel();
             planet.createMeshes(3, needed);
+            chunksGenerated = true;
         }
 
     }
