@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,7 +6,8 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class PillPlayerController : MonoBehaviour
 {
-    public Planet attractor;
+    public Planet attractor = null;
+    private Planet[] potentialPlanets;
     public Camera firstPersonCamera;
     public float movementSpeed;
     public float airControlFactor;
@@ -41,8 +43,8 @@ public class PillPlayerController : MonoBehaviour
         shipTransform = ship.transform;
 
         //A bit of a hack to give the player a starting planet
-        attractor = planetToSpawnOn.GetComponent<Planet>();
-        transform.parent = attractor.transform;
+        potentialPlanets = new Planet[] { planetToSpawnOn.GetComponent<Planet>() };
+        CheckPlanetChange();
         transform.position = planetToSpawnOn.transform.position + new Vector3(0, attractor.diameter, 0);
         Vector3 directionNearestPlanet = attractor.transform.position - transform.position;
         Physics.Raycast(transform.position, directionNearestPlanet, out RaycastHit hit);
@@ -79,10 +81,33 @@ public class PillPlayerController : MonoBehaviour
                 HandleShip();
             }
         }
+        CheckPlanetChange();
         DisplayDebug.AddOrSetDebugVariable("Current planet", attractor.bodyName);
         DisplayDebug.AddOrSetDebugVariable("Planet radius", attractor.diameter.ToString());
         DisplayDebug.AddOrSetDebugVariable("Planet mass", attractor.mass.ToString());
         DisplayDebug.AddOrSetDebugVariable("Planet surface gravity", attractor.surfaceGravity.ToString());
+    }
+
+    private void CheckPlanetChange()
+    {
+        if (attractor != null)
+        {
+
+        }
+        else if (potentialPlanets.Length > 0)
+        {
+            attractor = potentialPlanets[0];
+            List<Planet> newPlanets = new List<Planet>();
+            newPlanets.Add(attractor);
+            Debug.Log("FOUND " + attractor.transform.childCount + " CHILDREN");
+            for (int i = 0; i < attractor.transform.childCount; i++)
+            {
+
+            }
+        }
+        else {
+            Debug.LogError("No planets provided to Player!");
+        }
     }
 
     private void HandleTransition()
