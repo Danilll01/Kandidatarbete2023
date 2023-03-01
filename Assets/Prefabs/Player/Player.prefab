@@ -135,6 +135,7 @@ MonoBehaviour:
   movementSpeed: 20
   airControlFactor: 1
   jumpForce: 20
+  swimForce: 1
   maxSpeed: 40
   playerWater: {fileID: 1902293947857691221}
   paused: 0

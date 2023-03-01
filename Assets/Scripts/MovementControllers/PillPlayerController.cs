@@ -10,6 +10,8 @@ public class PillPlayerController : MonoBehaviour
     public float movementSpeed;
     public float airControlFactor;
     public float jumpForce;
+    [SerializeField] private float swimForce;
+    private float maxSwimSpeed = 10;
     public float maxSpeed;
 
     [SerializeField] private PlayerWater playerWater;
@@ -64,16 +66,25 @@ public class PillPlayerController : MonoBehaviour
         Vector3 oldY = transform.rotation * new Vector3(0, (Quaternion.Inverse(transform.rotation) * body.velocity).y);
         //New movement
         Vector3 movementVector = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical")) * movementSpeed;
+        
+        //Swiming
+        if(Input.GetKey(KeyCode.Space) && playerWater.underWater)
+        {
+            movementVector.y += (oldY.magnitude * oldY.normalized.y > maxSwimSpeed) ? 0 : swimForce;
+            Debug.Log(movementVector.y);
+        }
         //Jumping
-        if (Input.GetKeyDown(KeyCode.Space) && Grounded)
+        else if (Input.GetKeyDown(KeyCode.Space) && Grounded)
         {
             movementVector.y += jumpForce;
+            Debug.Log(movementVector.y);
         }
+        
         //Input recieved
         if (movementVector.magnitude != 0)
         {
-            //Ground controls
-            if (Grounded)
+            //Ground controls + swim controls
+            if (Grounded || playerWater.underWater)
             {
                 body.velocity = transform.rotation * movementVector;
                 body.velocity += oldY;

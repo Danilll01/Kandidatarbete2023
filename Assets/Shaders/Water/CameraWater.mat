@@ -46,7 +46,8 @@ Material:
     - _Blend: 0
     - _CastShadows: 1
     - _Cull: 2
-    - _Depth: 47.9
+    - _Darkness: 0.31
+    - _Depth: 42.6
     - _DstBlend: 10
     - _FullscreenIntensity: 1
     - _Intensity: 0.351
@@ -54,16 +55,16 @@ Material:
     - _QueueOffset: 0
     - _RadiusPower: 2.58
     - _SrcBlend: 5
-    - _Strength: 0.034
+    - _Strength: 0.049
     - _Surface: 1
-    - _UnderWater: 0
+    - _UnderWater: 1
     - _VignetIntensity: 0.738
     - _WaterRadius: 1
     - _ZTest: 4
     - _ZWrite: 0
     - _ZWriteControl: 0
     m_Colors:
-    - _C1: {r: 0, g: 0.83137256, b: 0.5921569, a: 1}
+    - _C1: {r: 0.5568628, g: 0.92941177, b: 0.96862745, a: 0}
     - _C2: {r: 0.39215684, g: 1, b: 0.6918673, a: 1}
   m_BuildTextureStacks: []
 --- !u!114 &939980034609435459

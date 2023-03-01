@@ -10,26 +10,52 @@ public class WaterHandler : MonoBehaviour
     [SerializeField, Range(1, 8)] private int resolution = 1;
     [SerializeField] private ComputeShader computeShader;
     [SerializeField] private Shader waterShader;
-    [SerializeField] private float frequency = 1;
-    [SerializeField] private float amplitude = 1;
     [SerializeField] private Texture2D normal1;
     [SerializeField] private Texture2D normal2;
 
     private Material material;
-
     readonly private Vector3[] directions = { Vector3.forward, Vector3.back, Vector3.left, Vector3.right, Vector3.up, Vector3.down };
     private MeshFilter[] meshFilters;
     private Water[] waterfaces;
     private PlayerWater playerWater;
     private Planet planet = null;
     private float waterRadius;
+    private bool underWaterState = false;
 
+    /// <summary>
+    /// Checks if the plater is under water
+    /// </summary>
+    void Update()
+    {
+
+        if (playerWater != null && underWaterState != playerWater.underWater)
+        {
+            if (playerWater.underWater)
+            {
+                SetWaterOnMesh(true);
+                material.SetInt("_IsUnderWater", 1);
+            }
+            else
+            {
+                SetWaterOnMesh(false);
+                material.SetInt("_IsUnderWater", 0);
+            }
+            underWaterState = playerWater.underWater;
+        }
+    }
+
+    /// <summary>
+    /// Initializes the water handler and all meshes
+    /// </summary>
+    /// <param name="planet"></param>
+    /// <param name="waterDiameter"></param>
+    /// <param name="color"></param>
     public void Initialize(Planet planet, float waterDiameter, Color color)
     {
         playerWater = Camera.main.gameObject.transform.parent.GetComponent<PlayerWater>();
 
         this.planet = planet;
-        waterRadius = Mathf.Abs(waterDiameter / 2);
+        waterRadius = Mathf.Abs(waterDiameter / 2) - 1;
 
         GenerateMaterial(color);
         GenerateWater();
@@ -46,7 +72,9 @@ public class WaterHandler : MonoBehaviour
         material.SetColor("_DeepWaterColor", color);
         material.SetInt("_IsUnderWater", 0);
     }
-
+    /// <summary>
+    /// Generates separate game object for the different meshes
+    /// </summary>
     private void GenerateWater()
     {
         if (meshFilters == null || meshFilters.Length == 0)
@@ -70,6 +98,9 @@ public class WaterHandler : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Constructs the meshes
+    /// </summary>
     private void GenerateMesh()
     {
         foreach (Water waterface in waterfaces)
@@ -77,7 +108,9 @@ public class WaterHandler : MonoBehaviour
             waterface.ConstructMesh();
         }
     }
-
+    /// <summary>
+    /// Applies the material to the meshes
+    /// </summary>
     private void GenerateColour()
     {
         foreach (MeshFilter meshFilter in meshFilters)
@@ -86,21 +119,15 @@ public class WaterHandler : MonoBehaviour
         }
     }
 
-    void Update()
+    /// <summary>
+    /// Applies water to the meshes
+    /// </summary>
+    /// <param name="underWater"></param>
+    private void SetWaterOnMesh(bool underWater)
     {
-
-        if(playerWater != null)
+        foreach (Water waterface in waterfaces)
         {
-            // Vet inte om det är best att köra denna här.
-            if (playerWater.underWater)
-            {
-                material.SetInt("_IsUnderWater", 1);
-            }
-            else
-            {
-                material.SetInt("_IsUnderWater", 0);
-            }
+            waterface.UnderWater(underWater);
         }
-        
     }
 }

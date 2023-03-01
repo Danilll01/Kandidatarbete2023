@@ -146,4 +146,9 @@ public class Planet : MonoBehaviour
             generateCreatures.ShowCreatures(show);
         }
     }
+
+    public Color GetGroundColor()
+    {
+        return terrainColor.bottomColor;
+    }
 }
