@@ -71,29 +71,6 @@ public class Chunk : MonoBehaviour
         position = -(chunkIndex - 1.5f * Vector3.one) * (marchingCubes.diameter / (1 << (marchingCubes.chunkResolution)));
     }
 
-    private void Update()
-    {
-        
-        // Check if the player is on the planet
-        //if (!ReferenceEquals(player.parent, transform.parent.parent))
-        //    return;
-
-        //updateMesh(4);
-
-        /*
-        if (Vector3.Magnitude(chunkPosition - player.localPosition) < marchingCubes.diameter * .20f)
-        {
-            updateMesh(10);
-            return;
-        }
-
-        if (Vector3.Magnitude(chunkPosition - player.localPosition) > marchingCubes.diameter * .35f)
-        {
-            updateMesh(1);
-            return;
-        }*/
-    }
-
     private void updateMesh(int resolution)
     {
         if (this.resolution == resolution)
