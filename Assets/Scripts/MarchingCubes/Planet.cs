@@ -26,23 +26,16 @@ public class Planet : MonoBehaviour
     
     public List<Vector3> waterPoints;
 
-    public List<Chunk> chunks;
-    public Transform player;
-    private Material planetMaterial;
-    private MarchingCubes marchingCubes;
+    [HideInInspector] public Transform player;
+    [HideInInspector] public MarchingCubes marchingCubes;
 
     //[SerializeField, Range(1, 4)] 
-    private int chunkResolution; //This is 2^chunkResolution
-    [SerializeField, Range(1, 14)] private int resolution = 5;
-    [SerializeField] private Chunk chunkPrefab;
-    [SerializeField] private GameObject chunksParent;
-
+    [SerializeField, Range(1, 14)] public int resolution = 5;
 
     [SerializeField] private bool willGenerateCreature = false;
     [SerializeField] private GenerateCreatures generateCreatures;
-    [SerializeField] private TerrainColor terrainColor;
     [SerializeField] private SpawnFoliage spawnFoliage;
-    
+    [SerializeField] private ChunksHandler chunksHandler;
 
     /// <summary>
     /// Initializes the planet
@@ -60,28 +53,22 @@ public class Planet : MonoBehaviour
 
         MinMaxTerrainLevel terrainLevel = new MinMaxTerrainLevel();
 
-        if(spawn)
+        // Initialize the meshgenerator
+        if (marchingCubes == null)
         {
-            createMeshes(3, terrainLevel);
-        }
-        else 
-        {
-            createMeshes(1, terrainLevel);
+            threshold = 23 + (float)rand.NextDouble() * 4;
+            int frequency = rand.Next(2) + 3;
+            amplitude = 1.2f + (float)rand.NextDouble() * 0.4f;
+            marchingCubes = new MarchingCubes(1, meshGenerator, threshold, diameter, frequency, amplitude);
         }
 
         // Init water
         waterDiameter = -(threshold / 255 - 1) * diameter;
         water.transform.localScale = new Vector3(waterDiameter, waterDiameter, waterDiameter);
         water.GetComponent<Renderer>().material = waterMaterial;
-
         terrainLevel.SetMin(Mathf.Abs((waterDiameter + 1) / 2));
-        planetMaterial = terrainColor.GetPlanetMaterial(terrainLevel, rand.Next());
 
-        // Sets the material of all chuncks
-        foreach (Chunk chunk in chunks) 
-        {
-            chunk.SetMaterial(planetMaterial);
-        }
+        chunksHandler.Initialize(player, this, terrainLevel, spawn);
 
         if (willGenerateCreature) 
         {
@@ -93,49 +80,7 @@ public class Planet : MonoBehaviour
 
         if (spawnFoliage != null && !bodyName.Contains("Moon"))
         {
-            spawnFoliage.Initialize(this, waterDiameter, rand.Next(), player);
-        }
-    }
-
-    public void createMeshes(int chunkResolution, MinMaxTerrainLevel terrainLevel)
-    {
-        if(chunkResolution == this.chunkResolution)
-        {
-            return;
-        }
-        this.chunkResolution = chunkResolution;
-
-        Destroy(chunksParent);
-
-        chunksParent = new GameObject();
-        chunksParent.name = "chunks";
-        chunksParent.transform.parent = transform;
-        chunksParent.transform.localPosition = Vector3.zero;
-
-        // Initialize the meshgenerator
-        if (marchingCubes == null)
-        {
-            System.Random rand = Universe.random;
-
-            threshold = 23 + (float)rand.NextDouble() * 4;
-            int frequency = rand.Next(2) + 3;
-            amplitude = 1.2f + (float)rand.NextDouble() * 0.4f;
-            marchingCubes = new MarchingCubes(chunkResolution, meshGenerator, threshold, diameter, frequency, amplitude);
-        }
-
-        marchingCubes.chunkResolution = chunkResolution;
-
-        // Create all chunks
-        chunks = new List<Chunk>();
-        int noChunks = (1 << chunkResolution) * (1 << chunkResolution) * (1 << chunkResolution);
-        for (int i = 0; i < noChunks; i++)
-        {
-            Chunk chunk = Instantiate(chunkPrefab);
-            chunk.transform.parent = chunksParent.transform;
-            chunk.transform.localPosition = Vector3.zero;
-            chunk.name = "chunk" + i;
-            chunk.Initialize(i, resolution, marchingCubes, player, terrainLevel);
-            chunks.Add(chunk);
+            spawnFoliage.Initialize(this, waterDiameter, rand.Next());
         }
     }
 

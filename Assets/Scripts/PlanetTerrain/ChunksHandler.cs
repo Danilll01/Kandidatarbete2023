@@ -11,19 +11,49 @@ public class ChunksHandler : MonoBehaviour
     private bool initialized = false;
     private bool resetchunks = false;
     private List<Vector3> chunkPositions;
+    private int chunkResolution; //This is 2^chunkResolution
+    private MarchingCubes marchingCubes;
+    private Material planetMaterial;
+    private int resolution;
 
     [HideInInspector] public bool chunksGenerated;
+    [SerializeField] private Chunk chunkPrefab;
+    [SerializeField] private GameObject chunksParent;
+    [HideInInspector] private List<Chunk> chunks;
+    [SerializeField] private TerrainColor terrainColor;
+    
 
     /// <summary>
     /// Initialize the values
     /// </summary>
     /// <param name="planet"></param>
     /// <param name="player"></param>
-    public void Initialize(Planet planet, Transform player)
+    public void Initialize(Transform player, Planet planet, MinMaxTerrainLevel terrainLevel, bool spawn)
     {
         this.planet = planet;
-        this.player = player;
+        this.player = planet.player;
         playerLastPosition = Vector3.zero;
+        marchingCubes = planet.marchingCubes;
+        resolution = planet.resolution;
+
+        // If this is the current planet, generate in high res
+        if (spawn)
+        {
+            CreateMeshes(3, terrainLevel);
+        }
+        else
+        {
+            CreateMeshes(1, terrainLevel);
+        }
+
+        planetMaterial = terrainColor.GetPlanetMaterial(terrainLevel, 1); //change to random
+
+        // Sets the material of all chuncks
+        foreach (Chunk chunk in chunks)
+        {
+            chunk.SetMaterial(planetMaterial);
+        }
+
         chunkPositions = new List<Vector3>();
         InitializeChunkPositions();
         UpdateChunksVisibility();
@@ -44,27 +74,58 @@ public class ChunksHandler : MonoBehaviour
             Resetchunks();
         }
 
-
+        /*
         // Check if player is on the planet
-        if(!ReferenceEquals(planet.transform, player.transform.parent))
+        if (!ReferenceEquals(transform, player.transform.parent))
         {
             MinMaxTerrainLevel needed = new MinMaxTerrainLevel();
-            planet.createMeshes(1, needed);
+            CreateMeshes(1, needed);
             chunksGenerated = false;
         } 
         else
         {
             MinMaxTerrainLevel needed = new MinMaxTerrainLevel();
-            planet.createMeshes(3, needed);
+            CreateMeshes(3, needed);
             chunksGenerated = true;
+        }*/
+    }
+
+    public void CreateMeshes(int chunkResolution, MinMaxTerrainLevel terrainLevel)
+    {
+        if (chunkResolution == this.chunkResolution)
+        {
+            return;
+        }
+        this.chunkResolution = chunkResolution;
+
+        Destroy(chunksParent);
+
+        chunksParent = new GameObject();
+        chunksParent.name = "chunks";
+        chunksParent.transform.parent = transform;
+        chunksParent.transform.localPosition = Vector3.zero;
+
+        marchingCubes.chunkResolution = chunkResolution;
+
+        // Create all chunks
+        chunks = new List<Chunk>();
+        int noChunks = (1 << chunkResolution) * (1 << chunkResolution) * (1 << chunkResolution);
+        for (int i = 0; i < noChunks; i++)
+        {
+            Chunk chunk = Instantiate(chunkPrefab);
+            chunk.transform.parent = chunksParent.transform;
+            chunk.transform.localPosition = Vector3.zero;
+            chunk.name = "chunk" + i;
+            chunk.Initialize(i, resolution, marchingCubes, player, terrainLevel);
+            chunks.Add(chunk);
         }
     }
 
     private void InitializeChunkPositions()
     {
-        for (int i = 0; i < planet.chunks.Count; i++)
+        for (int i = 0; i < chunks.Count; i++)
         {
-            chunkPositions.Add(planet.chunks[i].transform.GetComponent<MeshRenderer>().bounds.center);
+            chunkPositions.Add(chunks[i].transform.GetComponent<MeshRenderer>().bounds.center);
         }
     }
 
@@ -72,7 +133,7 @@ public class ChunksHandler : MonoBehaviour
     {
         for (int i = 0; i < chunkPositions.Count; i++)
         {
-            planet.chunks[i].gameObject.SetActive(true);
+            chunks[i].gameObject.SetActive(true);
         }
         resetchunks = true;
     }
@@ -91,7 +152,7 @@ public class ChunksHandler : MonoBehaviour
         }
 
         playerLastPosition = playerPos;
-        
+
 
         Vector3 cutoffPoint = new Vector3();
         if (playerToPlanetCenter.magnitude > (planetRadius + 30f))
@@ -100,7 +161,7 @@ public class ChunksHandler : MonoBehaviour
         }
         else
         {
-            cutoffPoint = new Vector3(playerToPlanetCenter.x / 1.5f , playerToPlanetCenter.y / 1.5f, playerToPlanetCenter.z / 1.5f);
+            cutoffPoint = new Vector3(playerToPlanetCenter.x / 1.5f, playerToPlanetCenter.y / 1.5f, playerToPlanetCenter.z / 1.5f);
         }
 
 
@@ -109,11 +170,11 @@ public class ChunksHandler : MonoBehaviour
             bool isBelowHalfWayPoint = CheckIfPointBIsBelowPointA(cutoffPoint, chunkPositions[i], cutoffPoint.normalized);
             if (isBelowHalfWayPoint)
             {
-                planet.chunks[i].gameObject.SetActive(false);
+                chunks[i].gameObject.SetActive(false);
             }
             else
             {
-                planet.chunks[i].gameObject.SetActive(true);
+                chunks[i].gameObject.SetActive(true);
             }
         }
     }

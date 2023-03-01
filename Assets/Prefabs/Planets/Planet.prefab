@@ -65,17 +65,12 @@ MonoBehaviour:
   mass: 429245
   moons: []
   waterPoints: []
-  chunks: []
   player: {fileID: 0}
-  chunkResolution: 3
   resolution: 7
-  chunkPrefab: {fileID: 5146216955868432244, guid: 8531586e98093b342af8fdd2a736c017,
-    type: 3}
-  chunksParent: {fileID: 3939805141923606249}
   willGenerateCreature: 1
   generateCreatures: {fileID: 7065241369011201559}
-  terrainColor: {fileID: 3175307376905995560}
   spawnFoliage: {fileID: 2855617038713985127}
+  chunksHandler: {fileID: 6742904736247445569}
 --- !u!114 &3175307376905995560
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -178,7 +173,6 @@ MonoBehaviour:
   - {fileID: 7405846476849542632, guid: c6308cb7062fac34e8e50600086b12a1, type: 3}
   - {fileID: 1576488453971893466, guid: a778b631c6253a04899cb31bad047c81, type: 3}
   DEBUG: 0
-  chunksHandler: {fileID: 6742904736247445569}
 --- !u!114 &6742904736247445569
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -191,6 +185,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a74dae873f525754f8bfc5552f8e48e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  chunksGenerated: 0
+  chunkPrefab: {fileID: 5146216955868432244, guid: 8531586e98093b342af8fdd2a736c017,
+    type: 3}
+  chunksParent: {fileID: 3939805141923606249}
+  terrainColor: {fileID: 3175307376905995560}
+  planet: {fileID: 8085060048720669979}
 --- !u!1 &3939805141923606249
 GameObject:
   m_ObjectHideFlags: 0
@@ -200,6 +200,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 478650547306934036}
+  - component: {fileID: 4738158016431837610}
   m_Layer: 8
   m_Name: chunks
   m_TagString: Untagged
@@ -222,6 +223,23 @@ Transform:
   m_Father: {fileID: 2176386958015389607}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4738158016431837610
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3939805141923606249}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a74dae873f525754f8bfc5552f8e48e1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  chunksGenerated: 0
+  chunkPrefab: {fileID: 0}
+  chunksParent: {fileID: 0}
+  terrainColor: {fileID: 0}
+  planet: {fileID: 0}
 --- !u!1 &5613251696109344692
 GameObject:
   m_ObjectHideFlags: 0

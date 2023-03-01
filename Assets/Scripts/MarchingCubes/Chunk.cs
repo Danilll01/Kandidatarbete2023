@@ -17,7 +17,8 @@ public class Chunk : MonoBehaviour
     private MarchingCubes marchingCubes;
     private Transform player;
     private MinMaxTerrainLevel terrainLevel;
-    private Vector3 chunkPosition;
+
+    [HideInInspector] public Vector3 chunkPosition;
 
     /// <summary>
     /// Initalizes a given chunk
@@ -75,8 +76,8 @@ public class Chunk : MonoBehaviour
     {
         
         // Check if the player is on the planet
-        if (!ReferenceEquals(player.parent, transform.parent.parent))
-            return;
+        //if (!ReferenceEquals(player.parent, transform.parent.parent))
+        //    return;
 
         //updateMesh(4);
 

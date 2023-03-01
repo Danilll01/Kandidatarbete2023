@@ -64,10 +64,10 @@ public class SpawnFoliage : MonoBehaviour
 
     void Update()
     {
-        if(generatedSpawnPoints)
+        if (generatedSpawnPoints)
         {
             // Tries to spawn 100 of each every frame we are near the planet
-            if (ReferenceEquals(planet.transform, player.transform.parent) && chunksHandler.chunksGenerated)
+            if ((player.transform.position - planet.transform.position).magnitude < 3000)
             {
                 for (int j = 100; j > 0; j--)
                 {
@@ -86,7 +86,7 @@ public class SpawnFoliage : MonoBehaviour
                 }
             }
             // Delets all foliage when leaving
-            else if(!ReferenceEquals(planet.transform, player.transform.parent))
+            else if ((player.transform.position - planet.transform.position).magnitude > 5000)
             {
                 for (int i = 0; i < foliageObjects.Count; i++)
                 {
@@ -100,6 +100,7 @@ public class SpawnFoliage : MonoBehaviour
                 generatedSpawnPoints = false;
             }
 
+            /*
             if (treeIndex <= treeSpawnIndex && bushIndex <= bushSpawnIndex && stoneIndex <= stoneSpawnIndex)
             {
                 if (!chunksInitialized)
@@ -107,7 +108,7 @@ public class SpawnFoliage : MonoBehaviour
                     chunksHandler.Initialize(planet, planet.player);
                     chunksInitialized = true;
                 }
-            }
+            }*/
         }
     }
 
@@ -116,7 +117,7 @@ public class SpawnFoliage : MonoBehaviour
     /// </summary>
     /// <param name="planet"> A reference to the planet the script should be run on</param>
     /// <param name="waterLevel"> Radius (diameter) of the water level of the planet </param>
-    public void Initialize(Planet planet, float waterLevel, int seed, Transform player)
+    public void Initialize(Planet planet, float waterLevel, int seed)
     {
         // Gets the parameters for the planets
         this.planet = planet;
@@ -124,7 +125,7 @@ public class SpawnFoliage : MonoBehaviour
         this.waterLevel = Mathf.Abs(waterLevel / 2);
         noiseOffset = planet.transform.position;
 
-        this.player = player;
+        player = Camera.main.gameObject;
 
         // Makes the script seedable
         Random.InitState(seed);
@@ -178,7 +179,7 @@ public class SpawnFoliage : MonoBehaviour
             }
         }
     }
-    
+
     /// <summary>
     /// Plants a tree from the tree array
     /// </summary>
@@ -210,7 +211,7 @@ public class SpawnFoliage : MonoBehaviour
     /// <summary>
     /// Plants a bush from the bush array
     /// </summary>
-    private void plantBush() 
+    private void plantBush()
     {
 
         Vector3 planetCenter = planet.transform.position;
