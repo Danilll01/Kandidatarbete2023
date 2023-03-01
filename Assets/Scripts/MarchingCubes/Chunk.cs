@@ -18,7 +18,7 @@ public class Chunk : MonoBehaviour
     private Transform player;
     private MinMaxTerrainLevel terrainLevel;
 
-    [HideInInspector] public Vector3 chunkPosition;
+    [HideInInspector] public Vector3 position;
 
     /// <summary>
     /// Initalizes a given chunk
@@ -69,7 +69,7 @@ public class Chunk : MonoBehaviour
             );
 
         // Use the chunkindex to calculate the position of the chunk
-        chunkPosition = -(chunkIndex - 1.5f * Vector3.one) * (marchingCubes.diameter / (1 << (marchingCubes.chunkResolution)));
+        position = -(chunkIndex - 1.5f * Vector3.one) * (marchingCubes.diameter / (1 << (marchingCubes.chunkResolution)));
     }
 
     private void Update()

@@ -66,7 +66,7 @@ MonoBehaviour:
   moons: []
   waterPoints: []
   player: {fileID: 0}
-  resolution: 7
+  resolution: 9
   willGenerateCreature: 1
   generateCreatures: {fileID: 7065241369011201559}
   spawnFoliage: {fileID: 2855617038713985127}
@@ -173,6 +173,8 @@ MonoBehaviour:
   - {fileID: 7405846476849542632, guid: c6308cb7062fac34e8e50600086b12a1, type: 3}
   - {fileID: 1576488453971893466, guid: a778b631c6253a04899cb31bad047c81, type: 3}
   DEBUG: 0
+  chunksHandler: {fileID: 0}
+  foliageSpawned: 0
 --- !u!114 &6742904736247445569
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -190,7 +192,6 @@ MonoBehaviour:
     type: 3}
   chunksParent: {fileID: 3939805141923606249}
   terrainColor: {fileID: 3175307376905995560}
-  planet: {fileID: 8085060048720669979}
 --- !u!1 &3939805141923606249
 GameObject:
   m_ObjectHideFlags: 0
@@ -239,7 +240,6 @@ MonoBehaviour:
   chunkPrefab: {fileID: 0}
   chunksParent: {fileID: 0}
   terrainColor: {fileID: 0}
-  planet: {fileID: 0}
 --- !u!1 &5613251696109344692
 GameObject:
   m_ObjectHideFlags: 0

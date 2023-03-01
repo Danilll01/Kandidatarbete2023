@@ -15,6 +15,7 @@ public class ChunksHandler : MonoBehaviour
     private MarchingCubes marchingCubes;
     private Material planetMaterial;
     private int resolution;
+    private float planetRadius;
 
     [HideInInspector] public bool chunksGenerated;
     [SerializeField] private Chunk chunkPrefab;
@@ -28,22 +29,25 @@ public class ChunksHandler : MonoBehaviour
     /// </summary>
     /// <param name="planet"></param>
     /// <param name="player"></param>
-    public void Initialize(Transform player, Planet planet, MinMaxTerrainLevel terrainLevel, bool spawn)
+    public void Initialize(Planet planet, MinMaxTerrainLevel terrainLevel, bool spawn)
     {
         this.planet = planet;
-        this.player = planet.player;
+        player = planet.player;
         playerLastPosition = Vector3.zero;
         marchingCubes = planet.marchingCubes;
         resolution = planet.resolution;
+        planetRadius = planet.radius;
 
         // If this is the current planet, generate in high res
         if (spawn)
         {
             CreateMeshes(3, terrainLevel);
+            chunksGenerated = true;
         }
         else
         {
             CreateMeshes(1, terrainLevel);
+            chunksGenerated = false;
         }
 
         planetMaterial = terrainColor.GetPlanetMaterial(terrainLevel, 1); //change to random
@@ -54,17 +58,21 @@ public class ChunksHandler : MonoBehaviour
             chunk.SetMaterial(planetMaterial);
         }
 
-        chunkPositions = new List<Vector3>();
-        InitializeChunkPositions();
-        UpdateChunksVisibility();
-        initialized = true;
+        
     }
 
     // Update is called once per frame
     void Update()
     {
+        if(!initialized && planet.spawnFoliage.foliageSpawned)
+        {
+            InitializeChunkPositions();
+            UpdateChunksVisibility();
+            initialized = true;
+        }
+
         // Only update the chunks if the player is close to the planet
-        if (initialized && (player.position - planet.transform.position).magnitude < 3000)
+        if (planet.spawnFoliage.foliageSpawned && initialized && (player.position - planet.transform.position).magnitude < 3000)
         {
             UpdateChunksVisibility();
             resetchunks = false;
@@ -74,7 +82,7 @@ public class ChunksHandler : MonoBehaviour
             Resetchunks();
         }
 
-        /*
+        
         // Check if player is on the planet
         if (!ReferenceEquals(transform, player.transform.parent))
         {
@@ -87,7 +95,7 @@ public class ChunksHandler : MonoBehaviour
             MinMaxTerrainLevel needed = new MinMaxTerrainLevel();
             CreateMeshes(3, needed);
             chunksGenerated = true;
-        }*/
+        }
     }
 
     public void CreateMeshes(int chunkResolution, MinMaxTerrainLevel terrainLevel)
@@ -123,6 +131,7 @@ public class ChunksHandler : MonoBehaviour
 
     private void InitializeChunkPositions()
     {
+        chunkPositions = new List<Vector3>();
         for (int i = 0; i < chunks.Count; i++)
         {
             chunkPositions.Add(chunks[i].transform.GetComponent<MeshRenderer>().bounds.center);
@@ -131,7 +140,7 @@ public class ChunksHandler : MonoBehaviour
 
     private void Resetchunks()
     {
-        for (int i = 0; i < chunkPositions.Count; i++)
+        for (int i = 0; i < chunks.Count; i++)
         {
             chunks[i].gameObject.SetActive(true);
         }
@@ -143,7 +152,6 @@ public class ChunksHandler : MonoBehaviour
         Vector3 playerPos = player.position;
         Vector3 planetCenter = Vector3.zero;
         Vector3 playerToPlanetCenter = playerPos - planetCenter;
-        float planetRadius = planet.radius;
 
         // Only update chunks if player has moved a certain distance
         if ((Mathf.Abs(Vector3.Distance(playerPos, playerLastPosition)) < 50 || !initialized) && playerToPlanetCenter.magnitude > (planetRadius + 30f))
@@ -153,8 +161,7 @@ public class ChunksHandler : MonoBehaviour
 
         playerLastPosition = playerPos;
 
-
-        Vector3 cutoffPoint = new Vector3();
+        Vector3 cutoffPoint;
         if (playerToPlanetCenter.magnitude > (planetRadius + 30f))
         {
             cutoffPoint = new Vector3(playerToPlanetCenter.x / 10000f, playerToPlanetCenter.y / 10000f, playerToPlanetCenter.z / 10000f);
@@ -165,7 +172,7 @@ public class ChunksHandler : MonoBehaviour
         }
 
 
-        for (int i = 0; i < chunkPositions.Count; i++)
+        for (int i = 0; i < chunks.Count; i++)
         {
             bool isBelowHalfWayPoint = CheckIfPointBIsBelowPointA(cutoffPoint, chunkPositions[i], cutoffPoint.normalized);
             if (isBelowHalfWayPoint)
@@ -181,6 +188,6 @@ public class ChunksHandler : MonoBehaviour
 
     private bool CheckIfPointBIsBelowPointA(Vector3 a, Vector3 b, Vector3 up)
     {
-        return (Vector3.Dot(b - a, up) <= 0) ? true : false;
+        return (Vector3.Dot(b - a, up) <= 0);
     }
 }

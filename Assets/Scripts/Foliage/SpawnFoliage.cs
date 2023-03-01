@@ -50,7 +50,7 @@ public class SpawnFoliage : MonoBehaviour
     private int stoneSpawnIndex = 0;
     private Vector3[] stonePositions = new Vector3[prefabLimit];
 
-    private GameObject player;
+    private Transform player;
 
     private static int seed = Universe.seed;
 
@@ -59,15 +59,15 @@ public class SpawnFoliage : MonoBehaviour
     private float waterLevel;
     private Vector3 noiseOffset;
 
-    private bool chunksInitialized = false;
     private bool generatedSpawnPoints = false;
+    [HideInInspector] public bool foliageSpawned;
 
     void Update()
-    {
+    { 
         if (generatedSpawnPoints)
         {
             // Tries to spawn 100 of each every frame we are near the planet
-            if ((player.transform.position - planet.transform.position).magnitude < 3000)
+            if (ReferenceEquals(player.parent, planet.transform) && planet.chunksHandler.chunksGenerated)
             {
                 for (int j = 100; j > 0; j--)
                 {
@@ -86,29 +86,19 @@ public class SpawnFoliage : MonoBehaviour
                 }
             }
             // Delets all foliage when leaving
-            else if ((player.transform.position - planet.transform.position).magnitude > 5000)
+            else if (!ReferenceEquals(player.parent, planet.transform))
             {
                 for (int i = 0; i < foliageObjects.Count; i++)
                 {
                     Destroy(foliageObjects[i]);
                 }
-
                 foliageObjects.Clear();
                 treeSpawnIndex = 0;
                 bushSpawnIndex = 0;
                 stoneSpawnIndex = 0;
-                generatedSpawnPoints = false;
             }
 
-            /*
-            if (treeIndex <= treeSpawnIndex && bushIndex <= bushSpawnIndex && stoneIndex <= stoneSpawnIndex)
-            {
-                if (!chunksInitialized)
-                {
-                    chunksHandler.Initialize(planet, planet.player);
-                    chunksInitialized = true;
-                }
-            }*/
+            foliageSpawned = treeIndex <= treeSpawnIndex && bushIndex <= bushSpawnIndex && stoneIndex <= stoneSpawnIndex;
         }
     }
 
@@ -125,13 +115,13 @@ public class SpawnFoliage : MonoBehaviour
         this.waterLevel = Mathf.Abs(waterLevel / 2);
         noiseOffset = planet.transform.position;
 
-        player = Camera.main.gameObject;
-
-        // Makes the script seedable
-        Random.InitState(seed);
+        player = planet.player;
 
         generateSpawnPoints();
         generatedSpawnPoints = true;
+
+        // Makes the script seedable
+        Random.InitState(seed);
     }
 
     private void generateSpawnPoints()

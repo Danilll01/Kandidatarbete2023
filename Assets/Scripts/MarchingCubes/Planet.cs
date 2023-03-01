@@ -34,8 +34,8 @@ public class Planet : MonoBehaviour
 
     [SerializeField] private bool willGenerateCreature = false;
     [SerializeField] private GenerateCreatures generateCreatures;
-    [SerializeField] private SpawnFoliage spawnFoliage;
-    [SerializeField] private ChunksHandler chunksHandler;
+    [SerializeField] public SpawnFoliage spawnFoliage;
+    [SerializeField] public ChunksHandler chunksHandler;
 
     /// <summary>
     /// Initializes the planet
@@ -68,7 +68,7 @@ public class Planet : MonoBehaviour
         water.GetComponent<Renderer>().material = waterMaterial;
         terrainLevel.SetMin(Mathf.Abs((waterDiameter + 1) / 2));
 
-        chunksHandler.Initialize(player, this, terrainLevel, spawn);
+        chunksHandler.Initialize(this, terrainLevel, spawn);
 
         if (willGenerateCreature) 
         {
