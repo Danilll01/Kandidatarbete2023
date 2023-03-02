@@ -7,6 +7,8 @@ public class ShipController : MonoBehaviour
     [HideInInspector] public bool boarded = false;
     private bool transitioning = false;
     private bool shipHoldingUprightRotation = false;
+    private Planet holdingOverPlanet = null;
+    private float shipHoldingAltitude;
     private Vector3 mountedPos = new Vector3(0, 1.6f, -1.4f);
     private Vector3 dismountedPos = new Vector3(-2.6f, 2, -2f);
 
@@ -69,7 +71,13 @@ public class ShipController : MonoBehaviour
 
     private void HandleShip()
     {
-        //TODO check ability to board
+        //Left planet and should no longer hold altitude
+        if (shipHoldingUprightRotation && (holdingOverPlanet != player.Planet))
+        {
+            shipHoldingUprightRotation = false;
+        }
+
+        //TODO check ability to board. Will do this after the ability to lose ship is mitigated
         if (Input.GetKeyDown(KeyCode.F))
         {
             if (boarded)
@@ -110,9 +118,14 @@ public class ShipController : MonoBehaviour
             return;
         }
         //Controls
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space) && player.Planet != null)
         {
+            holdingOverPlanet = player.Planet;
             shipHoldingUprightRotation = !shipHoldingUprightRotation;
+            if (shipHoldingUprightRotation)
+            {
+                shipHoldingAltitude = Vector3.Distance(player.Planet.transform.position, player.transform.position);
+            }
         }
         //Rotation
         float pitch = Input.GetAxis("Mouse Y") * -1;
@@ -122,6 +135,21 @@ public class ShipController : MonoBehaviour
         if (shipHoldingUprightRotation)
         {
             Gravity.KeepUpright(player.transform, player.Planet.transform);
+            player.transform.position = player.transform.position / (player.Altitude / shipHoldingAltitude);
+
+            //This may lead to slowly slipping away from planet. Hasn't noticed so maybe so minute that it may be ignored :)
+            Vector3 velocity = player.transform.InverseTransformDirection(body.velocity);
+            velocity.y = 0;
+            body.velocity = player.transform.TransformDirection(velocity);
+
+            //Not moving up/down. Hold altitude
+            if (Input.GetAxisRaw("Spaceship Lift") != 0)
+            {
+                shipHoldingAltitude += Input.GetAxis("Spaceship Lift") * shipMovespeed * Time.deltaTime;
+            }
+            player.transform.rotation *= Quaternion.Euler(30, 0, 0);
+
+            holdingOverPlanet = player.Planet;
         }
         //Translation
         float strafe = Input.GetAxis("Spaceship Strafe");
