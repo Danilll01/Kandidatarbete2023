@@ -65,12 +65,18 @@ public class PillPlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!paused && !boarded)
+        if (!paused)
         {
-            HandleMovement();
-            HandleCamera();
-            if(!ReferenceEquals(attractor, playerWater.planet)) playerWater.UpdatePlanet(attractor);
-            playerWater.UpdateWater(transform.position);
+            if (!boarded)
+            {
+                HandleMovement();
+                HandleCamera();
+            }
+            if (attractor != null)
+            {
+                if (!ReferenceEquals(attractor, playerWater.planet)) playerWater.UpdatePlanet(attractor);
+                playerWater.UpdateWater(transform.position);
+            }
         }
         if (attractor != null)
         {
