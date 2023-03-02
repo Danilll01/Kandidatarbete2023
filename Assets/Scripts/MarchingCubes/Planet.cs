@@ -33,8 +33,7 @@ public class Planet : MonoBehaviour
     [SerializeField] private GenerateCreatures generateCreatures;
     [SerializeField] public SpawnFoliage spawnFoliage;
     [SerializeField] public ChunksHandler chunksHandler;
-    [SerializeField] private WaterHandler waterHandler;
-    [SerializeField] private TerrainColor terrainColor;
+    [SerializeField] public WaterHandler waterHandler;
 
     private float threshold;
 
@@ -66,7 +65,6 @@ public class Planet : MonoBehaviour
         // Init water
         waterDiameter = -(threshold / 255 - 1) * diameter;
 
-
         terrainLevel.SetMin(Mathf.Abs((waterDiameter + 1) / 2));
 
         chunksHandler.Initialize(this, terrainLevel, spawn, rand.Next());
@@ -86,7 +84,7 @@ public class Planet : MonoBehaviour
 
         if (waterHandler != null && bodyName != "Sun")
         {
-            waterHandler.Initialize(this, waterDiameter, terrainColor.bottomColor);
+            waterHandler.Initialize(this, waterDiameter, GetGroundColor());
         }
     }
 
@@ -109,6 +107,6 @@ public class Planet : MonoBehaviour
 
     public Color GetGroundColor()
     {
-        return terrainColor.bottomColor;
+        return chunksHandler.terrainColor.bottomColor;
     }
 }
