@@ -25,6 +25,13 @@ public class ShipController : MonoBehaviour
         player = Universe.player;
         this.body = body;
         this.camera = camera;
+
+        //Place ship next to player and make ship child to planets
+        Physics.Raycast(player.transform.position, player.attractor.transform.position - player.transform.position, out RaycastHit hit, 20, 1 << (LayerMask.NameToLayer("Planet")));
+        transform.position = hit.point;
+        transform.rotation = Quaternion.LookRotation(Vector3.ProjectOnPlane(transform.TransformVector(Vector3.forward), hit.normal), hit.normal);
+        transform.position += transform.TransformDirection(Vector3.right * 5);
+        transform.SetParent(player.Planet.transform);
     }
 
     // Update is called once per frame

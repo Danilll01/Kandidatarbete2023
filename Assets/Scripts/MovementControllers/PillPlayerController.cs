@@ -18,9 +18,16 @@ public class PillPlayerController : MonoBehaviour
     private ShipController ship;
     [HideInInspector] public bool boarded = false;
 
+    private void Awake()
+    {
+        Universe.player = this;
+    }
+
     // Start is called before the first frame update
     public void Initialize(GameObject planetToSpawnOn)
     {
+        Universe.player = this;
+
         if (attractor == null)
         {
             attractor = planetToSpawnOn.GetComponent<Planet>();
@@ -31,9 +38,7 @@ public class PillPlayerController : MonoBehaviour
         }
 
         body = GetComponent<Rigidbody>();
-
         ship = GameObject.Find("Spaceship").GetComponent<ShipController>();
-        ship.Initialize(body, firstPersonCamera);
 
         //A bit of a hack to give the player a starting planet
         transform.position = planetToSpawnOn.transform.position + new Vector3(0, attractor.diameter, 0);
@@ -42,8 +47,7 @@ public class PillPlayerController : MonoBehaviour
 
         //Put the player above the ground
         transform.position = hit.point - (directionNearestPlanet.normalized) * 5;
-        ship.transform.position = transform.position - (directionNearestPlanet.normalized) * 10;
-        ship.transform.SetParent(attractor.transform);
+        ship.Initialize(body, firstPersonCamera);
 
         //Lock the mouse inside of the game
         Cursor.lockState = CursorLockMode.Locked;
