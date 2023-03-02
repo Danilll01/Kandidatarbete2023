@@ -51,10 +51,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   meshGenerator: {fileID: 7200000, guid: 2b54143d75bd2344bb987facb6cb4950, type: 3}
-  threshold: 200
-  frequency: 20
-  amplitude: 1
-  bottomLevel: 1
   waterDiameter: 0
   diameter: 0
   radius: 0
@@ -63,18 +59,13 @@ MonoBehaviour:
   mass: 429245
   moons: []
   waterPoints: []
-  chunks: []
   player: {fileID: 0}
-  chunkResolution: 2
-  resolution: 7
-  chunkPrefab: {fileID: 5146216955868432244, guid: 8531586e98093b342af8fdd2a736c017,
-    type: 3}
-  chunksParent: {fileID: 3939805141923606249}
+  resolution: 4
   willGenerateCreature: 1
   generateCreatures: {fileID: 7065241369011201559}
-  terrainColor: {fileID: 3175307376905995560}
   spawnFoliage: {fileID: 2855617038713985127}
   waterHandler: {fileID: 7974886500941765792}
+  chunksHandler: {fileID: 6742904736247445569}
 --- !u!114 &3175307376905995560
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -178,7 +169,7 @@ MonoBehaviour:
   - {fileID: 7405846476849542632, guid: c6308cb7062fac34e8e50600086b12a1, type: 3}
   - {fileID: 1576488453971893466, guid: a778b631c6253a04899cb31bad047c81, type: 3}
   DEBUG: 0
-  chunksHandler: {fileID: 6742904736247445569}
+  foliageSpawned: 0
 --- !u!114 &6742904736247445569
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -243,6 +234,11 @@ MonoBehaviour:
   amplitude: 1
   normal1: {fileID: 2800000, guid: c21511cdc86c86847bdae740c8b071da, type: 3}
   normal2: {fileID: 2800000, guid: 9f04018992f98ef4997b6883c48cc0f8, type: 3}
+  chunksGenerated: 0
+  chunkPrefab: {fileID: 5146216955868432244, guid: 8531586e98093b342af8fdd2a736c017,
+    type: 3}
+  chunksParent: {fileID: 3939805141923606249}
+  terrainColor: {fileID: 3175307376905995560}
 --- !u!1 &3939805141923606249
 GameObject:
   m_ObjectHideFlags: 0
@@ -252,6 +248,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 478650547306934036}
+  - component: {fileID: 4738158016431837610}
   m_Layer: 8
   m_Name: chunks
   m_TagString: Untagged
@@ -269,6 +266,55 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2176386958015389607}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4738158016431837610
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3939805141923606249}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a74dae873f525754f8bfc5552f8e48e1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  chunksGenerated: 0
+  chunkPrefab: {fileID: 0}
+  chunksParent: {fileID: 0}
+  terrainColor: {fileID: 0}
+--- !u!1 &5613251696109344692
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 393410517558776663}
+  - component: {fileID: 8814299198411775970}
+  - component: {fileID: 1253117720345471613}
+  m_Layer: 8
+  m_Name: water
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &393410517558776663
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5613251696109344692}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: -262.12, y: -262.12, z: -262.12}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2176386958015389607}
