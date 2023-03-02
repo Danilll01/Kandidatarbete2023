@@ -125,7 +125,7 @@ public class ShipController : MonoBehaviour
 
     private void DisembarkFromShip()
     {
-        transform.SetParent(player.Planet.gameObject.transform);    
+        transform.SetParent(player.Planet.gameObject.transform);
         player.transform.position = transform.position + (transform.rotation * dismountedPos);
         player.transform.rotation = transform.rotation;
     }
