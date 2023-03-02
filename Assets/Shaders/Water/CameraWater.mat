@@ -54,11 +54,12 @@ Material:
     - _QueueControl: 0
     - _QueueOffset: 0
     - _RadiusPower: 2.58
+    - _Seafloor: 0.93
     - _SrcBlend: 5
     - _Strength: 0.049
     - _Surface: 1
-    - _UnderWater: 1
-    - _VignetIntensity: 0.738
+    - _UnderWater: 0
+    - _VignetIntensity: 0.791
     - _WaterRadius: 1
     - _ZTest: 4
     - _ZWrite: 0
