@@ -27,16 +27,16 @@ public class WaterHandler : MonoBehaviour
     /// </summary>
     void Update()
     {
-        if (playerWater != null && underWaterState != playerWater.underWater && ReferenceEquals(planet, playerWater.planet))
+        if (playerWater != null && underWaterState != playerWater.underWater) //&& ReferenceEquals(planet, playerWater.planet))
         {
             if (playerWater.underWater)
             {
-                SetWaterOnMesh(true);
+                if(ReferenceEquals(planet, playerWater.planet)) SetWaterOnMesh(true);
                 material.SetInt("_IsUnderWater", 1);
             }
             else
             {
-                SetWaterOnMesh(false);
+                if (ReferenceEquals(planet, playerWater.planet)) SetWaterOnMesh(false);
                 material.SetInt("_IsUnderWater", 0);
             }
             underWaterState = playerWater.underWater;
