@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class Water
 {
@@ -40,6 +41,7 @@ public class Water
     public void ConstructMesh()
     {
         mesh = new Mesh();
+        mesh.indexFormat = IndexFormat.UInt32;
 
         Vector3[] vertices = new Vector3[resolution * resolution];
 
