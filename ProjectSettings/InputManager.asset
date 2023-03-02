@@ -489,8 +489,8 @@ InputManager:
     m_Name: Spaceship Lift
     descriptiveName: 
     descriptiveNegativeName: 
-    negativeButton: c
-    positiveButton: v
+    negativeButton: left ctrl
+    positiveButton: left shift
     altNegativeButton: 
     altPositiveButton: 
     gravity: 3
