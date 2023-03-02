@@ -111,10 +111,6 @@ public class ShipController : MonoBehaviour
         float pitch = Input.GetAxis("Mouse Y") * -1;
         float yaw = Input.GetAxis("Mouse X");
         float roll = Input.GetAxis("Spaceship Roll");
-        //Debug.Log(new Vector3(pitch, yaw, roll) * Time.deltaTime * shipRotationSpeed);
-        Debug.Log(shipRotationSpeed.ToString() + Time.deltaTime.ToString());
-        //Debug.Log(new Vector3(pitch, yaw, roll));
-        Debug.Log(Input.GetAxis("Mouse X"));
         player.transform.Rotate(new Vector3(pitch, yaw, roll) * Time.deltaTime * shipRotationSpeed);
         if (shipHoldingUprightRotation)
         {
