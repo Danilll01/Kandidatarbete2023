@@ -8,6 +8,7 @@ using UnityEngine.UIElements;
 
 public class Chunk : MonoBehaviour
 {
+    [SerializeField] public Transform creatures;
 
     private int index;
     private int resolution;
