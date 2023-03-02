@@ -881,12 +881,12 @@ PrefabInstance:
     - target: {fileID: 776431053636631548, guid: 93094628cce30c64195c2ae1633e7e60,
         type: 3}
       propertyPath: maxNumberOfMoons
-      value: 0
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 776431053636631548, guid: 93094628cce30c64195c2ae1633e7e60,
         type: 3}
       propertyPath: minNumberOfMoons
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 776431053636631548, guid: 93094628cce30c64195c2ae1633e7e60,
         type: 3}
@@ -896,12 +896,12 @@ PrefabInstance:
     - target: {fileID: 776431053636631548, guid: 93094628cce30c64195c2ae1633e7e60,
         type: 3}
       propertyPath: orbitOffsetMaxValue
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 776431053636631548, guid: 93094628cce30c64195c2ae1633e7e60,
         type: 3}
       propertyPath: orbitOffsetMinValue
-      value: -1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 93094628cce30c64195c2ae1633e7e60, type: 3}
