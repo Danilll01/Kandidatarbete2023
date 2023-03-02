@@ -46,7 +46,7 @@ Material:
     - _Blend: 0
     - _CastShadows: 1
     - _Cull: 2
-    - _Darkness: 0.31
+    - _Darkness: 0.22
     - _Depth: 42.6
     - _DstBlend: 10
     - _FullscreenIntensity: 1
