@@ -6,7 +6,10 @@ using System.Collections.Generic;
 
 public class GenerateCreatures : MonoBehaviour
 {
-    [SerializeField] GameObject creature;
+    [SerializeField] GameObject[] creatures;
+    [SerializeField]
+    [Range(1.0f, 10.0f)]
+    float[] ratios;
 
     [Header("Creature Generation")]
     [SerializeField] private int maxPackCount = 100;
@@ -86,7 +89,7 @@ public class GenerateCreatures : MonoBehaviour
 
                 // Get correct rotation from the normal of the hit point
                 Quaternion rotation = Quaternion.FromToRotation(Vector3.forward, hit.normal);
-                CreateRandomPack(randPoint, rotation);
+                CreateRandomPack(randPoint, rotation, GetCreatureToSpawn());
 
                 packPositions[i] = hit.point;
             }
@@ -94,7 +97,7 @@ public class GenerateCreatures : MonoBehaviour
     }
 
     // Raycasts around the center point of a pack and creates a random amount of creatures around that point
-    private void CreateRandomPack(Vector3 centerPoint, Quaternion rotation)
+    private void CreateRandomPack(Vector3 centerPoint, Quaternion rotation, GameObject prefab)
     {
         
         // How many creatures in this pack
@@ -145,7 +148,7 @@ public class GenerateCreatures : MonoBehaviour
                 // Creates a rotation for the new object that always is rotated towards the planet
                 Quaternion rotation2 = Quaternion.FromToRotation(Vector3.forward, hit.normal) * Quaternion.Euler(90, 0, 0);
                 //Quaternion rotation2 = Quaternion.LookRotation(hit.point) * Quaternion.Euler(90, 0, 0);
-                GameObject newObject = Instantiate(creature, hit.point, rotation2, hit.transform.GetComponent<Chunk>().creatures);
+                GameObject newObject = Instantiate(prefab, hit.point, rotation2, hit.transform.GetComponent<Chunk>().creatures);
                 newObject.transform.rotation = rotation2;
 
                 bool isSpawnPlanet = planet.gameObject == planet.transform.parent.GetChild(1).gameObject;
@@ -190,6 +193,33 @@ public class GenerateCreatures : MonoBehaviour
         }
 
         planet.waterPoints = waterPoints;
+    }
+
+    private GameObject GetCreatureToSpawn()
+    {
+        float total = 0;
+
+        foreach (float ratio in ratios)
+        {
+            total += ratio;
+        }
+
+        float randomNum = Random.Range(0, total);
+
+        float accumulatedSum = 0;
+
+        for (int i = 0; i < ratios.Length; i++)
+        {
+            if (randomNum > accumulatedSum)
+            {
+                accumulatedSum += ratios[i];
+            } else
+            {
+                return creatures[i];
+            }
+        }
+        
+        return creatures[0];
     }
     
 
