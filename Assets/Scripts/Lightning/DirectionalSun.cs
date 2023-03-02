@@ -23,12 +23,20 @@ public class DirectionalSun : MonoBehaviour
     // Update is called once per frame
     void Update() {
         UpdateDirection();
+
+        // This probably will need more work when the player can move between different planets as I think the ambient light will "jump" hard between
+        // light levels right now. Some kind of lerp to a fixed "space" ambient color could be used.
         UpdateAmbientLight();
     }
 
     private void UpdateAmbientLight() {
+
+        // This basicly works by calculating the distance to the planet light edge and the shortest distance to the sun.
+        // Then whatever the player distance falls in between these values that is whats is looked up in the gradient and set as the color
+        // Therefore when the player is on the back half of the planet the ambient light will be low and the more near the sun the lighter the light will be
         if (playerScriptToGetPlanet != null) {
             Vector3 planetPosition = playerScriptToGetPlanet.attractor.transform.position;
+
             float sunPlanetDistance = Vector3.Distance(sun.transform.position, planetPosition);
             float planetRadius = playerScriptToGetPlanet.attractor.radius;
 
