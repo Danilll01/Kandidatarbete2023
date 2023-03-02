@@ -15,24 +15,9 @@ public class PillPlayerController : MonoBehaviour
 
     private Rigidbody body;
     [HideInInspector] public bool paused;
+    private ShipController ship;
+    [HideInInspector] public bool boarded = false;
 
-    [Header("Ship")]
-    [SerializeField] private float shipMovespeed;
-    [SerializeField] private float shipRotationSpeed;
-    private Transform shipTransform;
-    private bool boarded = false;
-    private bool transitioning = false;
-    private bool shipHoldingUprightRotation = false;
-    private Vector3 mountedPos = new Vector3(0, 1.6f, -1.4f);
-    private Vector3 dismountedPos = new Vector3(-2.6f, 2, -2f);
-
-    [SerializeField] private float landingTime;
-    private float transitionProgress = 0;
-    private Vector3 transitionFromPos = Vector3.zero;
-    private Quaternion transitionFromRot = Quaternion.identity;
-    private Vector3 transitionToPos = Vector3.zero;
-    private Quaternion transitionToRot = Quaternion.identity;
-    
     // Start is called before the first frame update
     public void Initialize(GameObject planetToSpawnOn)
     {
@@ -44,11 +29,11 @@ public class PillPlayerController : MonoBehaviour
                 Debug.LogError("Planet player spawned on has no Planet script");
             }
         }
-        
+
         body = GetComponent<Rigidbody>();
 
-        GameObject ship = GameObject.Find("Spaceship");
-        shipTransform = ship.transform;
+        ship = GameObject.Find("Spaceship").GetComponent<ShipController>();
+        ship.Initialize(this, body, firstPersonCamera);
 
         //A bit of a hack to give the player a starting planet
         transform.position = planetToSpawnOn.transform.position + new Vector3(0, attractor.diameter, 0);
@@ -57,8 +42,8 @@ public class PillPlayerController : MonoBehaviour
 
         //Put the player above the ground
         transform.position = hit.point - (directionNearestPlanet.normalized) * 5;
-        shipTransform.position = transform.position - (directionNearestPlanet.normalized) * 10;
-        shipTransform.SetParent(attractor.transform);
+        ship.transform.position = transform.position - (directionNearestPlanet.normalized) * 10;
+        ship.transform.SetParent(attractor.transform);
 
         //Lock the mouse inside of the game
         Cursor.lockState = CursorLockMode.Locked;
@@ -71,21 +56,10 @@ public class PillPlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!paused)
+        if (!paused && !boarded)
         {
-            if (transitioning)
-            {
-                HandleTransition();
-            }
-            else
-            {
-                if (!boarded)
-                {
-                    HandleMovement();
-                    HandleCamera();
-                }
-                HandleShip();
-            }
+            HandleMovement();
+            HandleCamera();
         }
         if (attractor != null)
         {
@@ -101,93 +75,6 @@ public class PillPlayerController : MonoBehaviour
             DisplayDebug.AddOrSetDebugVariable("Planet mass", "N/A");
             DisplayDebug.AddOrSetDebugVariable("Planet surface gravity", "N/A");
         }
-    }
-
-    private void HandleTransition()
-    {
-        // For now basic linear interpolation
-        transitionProgress += Time.deltaTime;
-
-        transform.position = Vector3.Lerp(transitionFromPos, transitionToPos, transitionProgress);
-        transform.rotation = Quaternion.Lerp(transitionFromRot, transitionToRot, transitionProgress);
-
-        if (transitionProgress >= 1)
-        {
-            transitioning = false;
-            if (boarded)
-            {
-                DisembarkFromShip();
-            }
-            transitionProgress = 0;
-            boarded = !boarded;
-        }
-    }
-
-    private void HandleShip()
-    {
-        //TODO check ability to board
-        //Boarding
-        if (transitioning)
-        {
-            return;
-        }
-        if (Input.GetKeyDown(KeyCode.F))
-        {
-            if (boarded)
-            {
-                //Disembark
-                Physics.Raycast(transform.position, -Up, out RaycastHit hit, 20,  1 << (LayerMask.NameToLayer("Planet")));
-
-                if (hit.collider != null)
-                {
-                    //Set up transition to/from
-                    transitionFromPos = transform.position;
-                    transitionFromRot = transform.rotation;
-                    transitionToPos = hit.point - Quaternion.FromToRotation(Vector3.up, Up) * Vector3.up * shipTransform.localPosition.y;
-                    transitionToRot = Quaternion.LookRotation(Vector3.ProjectOnPlane(shipTransform.TransformVector(Vector3.forward), hit.normal), hit.normal);
-                    transitioning = true;
-                    //Transition method handles moving the player out of the ship
-                }
-            }
-            else
-            {
-                //Embark
-                //Move player into ship
-                EmbarkInShip();
-
-                //Set up transition to/from
-                transitionFromPos = transform.position;
-                transitionFromRot = transform.rotation;
-                transitionToPos = transitionFromPos + Up * 10;
-                transitionToRot = Gravity.UprightRotation(transform, attractor.transform);
-                transitioning = true;
-            }
-        }
-
-        //Controling ship
-        if (!boarded)
-        {
-            return;
-        }
-        //Controls
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            shipHoldingUprightRotation = !shipHoldingUprightRotation;
-        }
-        //Rotation
-        float pitch = Input.GetAxis("Mouse Y") * -1;
-        float yaw = Input.GetAxis("Mouse X");
-        float roll = Input.GetAxis("Spaceship Roll");
-        transform.Rotate(new Vector3(pitch, yaw, roll) * Time.deltaTime * shipRotationSpeed);
-        if (shipHoldingUprightRotation)
-        {
-            Gravity.KeepUpright(transform, attractor.transform);
-        }
-        //Translation
-        float strafe = Input.GetAxis("Spaceship Strafe");
-        float lift = Input.GetAxis("Spaceship Lift");
-        float thrust = Input.GetAxis("Spaceship Thrust");
-        body.velocity += shipTransform.rotation * new Vector3(strafe, lift, thrust) * Time.deltaTime * shipMovespeed;
     }
 
     private void HandleCamera()
@@ -249,22 +136,6 @@ public class PillPlayerController : MonoBehaviour
         }
     }
 
-    private void DisembarkFromShip()
-    {
-        shipTransform.SetParent(attractor.gameObject.transform);
-        transform.position = shipTransform.position + (shipTransform.rotation * dismountedPos);
-        transform.rotation = shipTransform.rotation;
-    }
-
-    private void EmbarkInShip()
-    {
-        transform.position = shipTransform.position + (shipTransform.rotation * mountedPos);
-        transform.rotation = shipTransform.rotation;
-        firstPersonCamera.transform.localRotation = Quaternion.identity;
-        body.velocity = Vector3.zero;
-        shipTransform.SetParent(transform);
-    }
-
     public Planet Planet
     {
         get { return attractor; }
@@ -281,7 +152,7 @@ public class PillPlayerController : MonoBehaviour
 
     public bool Grounded
     {
-        get { return Physics.Raycast(transform.position,  attractor.transform.position  - transform.position, 2f); }
+        get { return Physics.Raycast(transform.position, attractor.transform.position - transform.position, 2f); }
     }
 
     public Vector3 Up
