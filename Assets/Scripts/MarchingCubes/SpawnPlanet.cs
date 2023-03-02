@@ -15,10 +15,10 @@ public class SpawnPlanet : MonoBehaviour
 
         planet.diameter = 1000;
 
-        planet.transform.position = new Vector3(500, 0, 0);
+        planet.transform.position = new Vector3(0, 0, 0);
 
         Universe.InitializeRandomWithSeed();
-        planet.Initialize(player.transform, 1, true);
+        planet.Initialize(player.transform, 1);
         planet.SetUpPlanetValues();
 
         player.Initialize(planet.gameObject);

@@ -36,6 +36,7 @@ public class PillPlayerController : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
 
+        attractor.ShowCreatures(true);
         paused = false;
 
         playerWater.Initialize(attractor);
