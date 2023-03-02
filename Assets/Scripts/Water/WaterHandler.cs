@@ -7,7 +7,7 @@ public class WaterHandler : MonoBehaviour
 {
 
     [Header("Settings")]
-    [SerializeField, Range(1, 8)] private int resolution = 1;
+    [SerializeField, Range(1, 12)] private int resolution = 1;
     [SerializeField] private ComputeShader computeShader;
     [SerializeField] private Shader waterShader;
     [SerializeField] private Texture2D normal1;
