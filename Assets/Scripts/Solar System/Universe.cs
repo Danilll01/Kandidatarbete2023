@@ -9,6 +9,9 @@ public static class Universe
     public static int seed = 123;
     public static System.Random random;
 
+    //Set after Awake()
+    public static PillPlayerController player = null;
+
     /// <summary>
     /// Initializes the System.Random with the given seed
     /// </summary>

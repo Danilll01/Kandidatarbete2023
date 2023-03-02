@@ -20,9 +20,9 @@ public class ShipController : MonoBehaviour
     private Rigidbody body;
     private new Camera camera;
 
-    public void Initialize(PillPlayerController player, Rigidbody body, Camera camera)
+    public void Initialize(Rigidbody body, Camera camera)
     {
-        this.player = player;
+        player = Universe.player;
         this.body = body;
         this.camera = camera;
     }

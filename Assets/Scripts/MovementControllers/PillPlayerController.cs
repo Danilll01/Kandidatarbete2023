@@ -33,7 +33,7 @@ public class PillPlayerController : MonoBehaviour
         body = GetComponent<Rigidbody>();
 
         ship = GameObject.Find("Spaceship").GetComponent<ShipController>();
-        ship.Initialize(this, body, firstPersonCamera);
+        ship.Initialize(body, firstPersonCamera);
 
         //A bit of a hack to give the player a starting planet
         transform.position = planetToSpawnOn.transform.position + new Vector3(0, attractor.diameter, 0);
