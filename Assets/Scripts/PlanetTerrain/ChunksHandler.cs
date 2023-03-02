@@ -22,7 +22,7 @@ public class ChunksHandler : MonoBehaviour
     [SerializeField] private Chunk chunkPrefab;
     [SerializeField] private GameObject chunksParent;
     [HideInInspector] private List<Chunk> chunks;
-    [SerializeField] private TerrainColor terrainColor;
+    [SerializeField] public TerrainColor terrainColor;
 
    
 

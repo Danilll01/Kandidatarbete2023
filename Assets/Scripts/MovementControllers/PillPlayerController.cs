@@ -11,7 +11,11 @@ public class PillPlayerController : MonoBehaviour
     public float movementSpeed;
     public float airControlFactor;
     public float jumpForce;
+    [SerializeField] private float swimForce;
+    [SerializeField] private float maxSwimSpeed = 10;
     public float maxSpeed;
+
+    [SerializeField] private PlayerWater playerWater;
 
     private Rigidbody body;
     [HideInInspector] public bool paused;
@@ -54,6 +58,8 @@ public class PillPlayerController : MonoBehaviour
         Cursor.visible = false;
 
         paused = false;
+
+        playerWater.Initialize(attractor);
     }
 
     // Update is called once per frame
@@ -63,6 +69,8 @@ public class PillPlayerController : MonoBehaviour
         {
             HandleMovement();
             HandleCamera();
+            if(!ReferenceEquals(attractor, playerWater.planet)) playerWater.UpdatePlanet(attractor);
+            playerWater.UpdateWater(transform.position);
         }
         if (attractor != null)
         {
@@ -95,16 +103,47 @@ public class PillPlayerController : MonoBehaviour
         Vector3 oldY = transform.rotation * new Vector3(0, (Quaternion.Inverse(transform.rotation) * body.velocity).y);
         //New movement
         Vector3 movementVector = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical")) * movementSpeed;
+        
+        //Swiming
+        if(Swimming)
+        {
+            if (Input.GetKey(KeyCode.Space))
+            {
+                movementVector.y += swimForce * 10 * Time.deltaTime;
+            }
+            else
+            {
+                movementVector.y += 0.0001f;
+            }
+            
+        }
         //Jumping
-        if (Input.GetKeyDown(KeyCode.Space) && Grounded)
+        else if (Input.GetKeyDown(KeyCode.Space) && Grounded)
         {
             movementVector.y += jumpForce;
         }
+        
         //Input recieved
         if (movementVector.magnitude != 0)
         {
-            //Ground controls
-            if (Grounded)
+            //Ground controls + swim controls
+            if(Swimming)
+            {
+                float currentUppSpeed = (Quaternion.Inverse(transform.rotation) * body.velocity).y + movementVector.y;
+
+                if (Mathf.Abs(currentUppSpeed) > maxSwimSpeed)
+                {
+                    movementVector.y = maxSwimSpeed * Mathf.Sign(currentUppSpeed);
+                }
+                else
+                {
+                    movementVector.y = currentUppSpeed;
+                }
+                body.velocity = transform.rotation * movementVector;
+
+
+            }
+            else if (Grounded)
             {
                 body.velocity = transform.rotation * movementVector;
                 body.velocity += oldY;
@@ -162,4 +201,10 @@ public class PillPlayerController : MonoBehaviour
     {
         get { return (transform.position - attractor.transform.position).normalized; }
     }
+
+    private bool Swimming
+    {
+        get { return playerWater.underWater; }
+    }
+
 }
