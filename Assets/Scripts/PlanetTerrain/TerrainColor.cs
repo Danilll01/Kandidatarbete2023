@@ -13,6 +13,7 @@ public class TerrainColor : MonoBehaviour {
     [SerializeField][Range(0, 1)] private float angleBlending = 0.5f;
     [SerializeField] private Shader shader;
 
+    [HideInInspector] public Color bottomColor;
     private Material material;
     private Texture2D texture;
     private const int textureRes = 50;
@@ -113,8 +114,9 @@ public class TerrainColor : MonoBehaviour {
 
         material.SetColor("_GroundColor", colors[0]);
         material.SetTexture("_ColorGradient", texture);
+
+        // Use this for water
+        bottomColor = colors[0];
+
     }
-
-
-
 }
