@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Mathematics;
@@ -14,27 +15,23 @@ public class Planet : MonoBehaviour
     [SerializeField, Range(1, 25)] private int frequency = 20;
     [SerializeField, Range(0, 5)] private float amplitude = 1;
     [SerializeField, Range(0, 1)] private float bottomLevel = 1;
+    [SerializeField] private Material waterMaterial;
     [HideInInspector] public float waterDiameter;
 
-    public float diameter;
-    public float radius;
-    public float surfaceGravity;
-    public string bodyName = "TBT";
-    public float mass;
-    public List<Planet> moons;
+    [HideInInspector, Obsolete]public float diameter;
+    [HideInInspector] public float radius;
+    [HideInInspector] public float surfaceGravity;
+    [HideInInspector] public string bodyName = "TBT";
+    [HideInInspector] public float mass;
+    [HideInInspector] public List<Planet> moons;
     
-    public List<Vector3> waterPoints;
+    [HideInInspector] public List<Vector3> waterPoints;
 
-    public List<Chunk> chunks;
-    public Transform player;
-    private Material planetMaterial;
-    private MarchingCubes marchingCubes;
+    [HideInInspector] public Transform player;
+    [HideInInspector] public MarchingCubes marchingCubes;
 
-    [SerializeField, Range(1, 4)] private int chunkResolution = 3; //This is 2^chunkResolution
-    [SerializeField, Range(1, 14)] private int resolution = 5;
-    [SerializeField] private Chunk chunkPrefab;
-    [SerializeField] private GameObject chunksParent;
-
+    //[SerializeField, Range(1, 4)] 
+    [SerializeField, Range(1, 14)] public int resolution = 5;
 
     [SerializeField] private bool willGenerateCreature = false;
     [SerializeField] private GenerateCreatures generateCreatures;
@@ -42,11 +39,18 @@ public class Planet : MonoBehaviour
     [SerializeField] private SpawnFoliage spawnFoliage;
     [SerializeField] private WaterHandler waterHandler;
     
+    [SerializeField] public SpawnFoliage spawnFoliage;
+    [SerializeField] public ChunksHandler chunksHandler;
+
+    private float threshold;
 
     /// <summary>
-    /// Initialize mesh for marching cubes
+    /// Initializes the planet
     /// </summary>
-    public void Initialize(Transform player, int randomSeed)
+    /// <param name="player">The player</param>
+    /// <param name="randomSeed">Seed to be used</param>
+    /// <param name="spawn">True if the player will spawn on the planet</param>
+    public void Initialize(Transform player, int randomSeed, bool spawn)
     {
         System.Random rand = new System.Random(randomSeed);
 
@@ -56,21 +60,22 @@ public class Planet : MonoBehaviour
 
         MinMaxTerrainLevel terrainLevel = new MinMaxTerrainLevel();
 
-        // Create all meshes
-        createMeshes(chunkResolution, terrainLevel);
+        // Initialize the meshgenerator
+        if (marchingCubes == null)
+        {
+            threshold = 23 + (float)rand.NextDouble() * 4;
+            int frequency = rand.Next(2) + 3;
+            float amplitude = 1.2f + (float)rand.NextDouble() * 0.4f;
+            marchingCubes = new MarchingCubes(1, meshGenerator, threshold, diameter, frequency, amplitude);
+        }
 
         // Init water
         waterDiameter = -(threshold / 255 - 1) * diameter;
-
-
+        water.transform.localScale = new Vector3(waterDiameter, waterDiameter, waterDiameter);
+        water.GetComponent<Renderer>().material = waterMaterial;
         terrainLevel.SetMin(Mathf.Abs((waterDiameter + 1) / 2));
-        planetMaterial = terrainColor.GetPlanetMaterial(terrainLevel, rand.Next());
 
-        // Sets the material of all chuncks
-        foreach (Chunk chunk in chunks) 
-        {
-            chunk.SetMaterial(planetMaterial);
-        }
+        chunksHandler.Initialize(this, terrainLevel, spawn, rand.Next());
 
         if (willGenerateCreature) 
         {
