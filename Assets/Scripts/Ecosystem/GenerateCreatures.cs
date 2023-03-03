@@ -8,8 +8,8 @@ public class GenerateCreatures : MonoBehaviour
 {
     [SerializeField] GameObject[] creatures;
     [SerializeField]
-    [Range(1.0f, 10.0f)]
-    float[] ratios;
+    [Range(1, 20)]
+    int[] ratios;
 
     [Header("Creature Generation")]
     [SerializeField] private int maxPackCount = 100;
@@ -197,9 +197,11 @@ public class GenerateCreatures : MonoBehaviour
 
     private GameObject GetCreatureToSpawn()
     {
-        float total = 0;
+        if (ratios.Length != creatures.Length) Debug.Log("Creatures and ratios needs to be the same size");
 
-        foreach (float ratio in ratios)
+        int total = 0;
+
+        foreach (int ratio in ratios)
         {
             total += ratio;
         }
