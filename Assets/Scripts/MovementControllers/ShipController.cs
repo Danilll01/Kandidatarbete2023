@@ -134,7 +134,6 @@ public class ShipController : MonoBehaviour
         player.transform.Rotate(new Vector3(pitch, yaw, roll) * Time.deltaTime * shipRotationSpeed);
         if (shipHoldingUprightRotation)
         {
-            Gravity.KeepUpright(player.transform, player.Planet.transform);
             player.transform.position = player.transform.position / (player.Altitude / shipHoldingAltitude);
 
             //This may lead to slowly slipping away from planet. Hasn't noticed so maybe so minute that it may be ignored :)
@@ -147,7 +146,6 @@ public class ShipController : MonoBehaviour
             {
                 shipHoldingAltitude += Input.GetAxis("Spaceship Lift") * shipMovespeed * Time.deltaTime;
             }
-            player.transform.rotation *= Quaternion.Euler(30, 0, 0);
 
             holdingOverPlanet = player.Planet;
         }
