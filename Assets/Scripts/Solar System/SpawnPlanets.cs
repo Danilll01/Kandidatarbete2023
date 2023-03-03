@@ -20,6 +20,7 @@ public class SpawnPlanets : MonoBehaviour
 
     [SerializeField] private Material sunMaterial;
     [SerializeField] private PillPlayerController player;
+    [SerializeField] private DirectionalSun sunLightning;
     [HideInInspector] public GameObject sun;
 
     [HideInInspector] public bool solarySystemGenerated = false;
@@ -37,6 +38,7 @@ public class SpawnPlanets : MonoBehaviour
         random = Universe.random;
         GetValues();
         CreatePlanets();
+        sunLightning.Initialize(sun.transform);
         player.Initialize(bodies[spawnPlanetIndex].gameObject);
         solarySystemGenerated = true;
     }
