@@ -128,8 +128,8 @@ public class ShipController : MonoBehaviour
             }
         }
         //Rotation
-        float pitch = Input.GetAxis("Controller Vertical Look");
-        float yaw = Input.GetAxis("Controller Horizontal Look");
+        float pitch = Input.GetAxis("Mouse Y") * -1;
+        float yaw = Input.GetAxis("Mouse X");
         float roll = Input.GetAxis("Spaceship Roll");
         player.transform.Rotate(new Vector3(pitch, yaw, roll) * Time.deltaTime * shipRotationSpeed);
         if (shipHoldingUprightRotation)
@@ -156,14 +156,6 @@ public class ShipController : MonoBehaviour
         float lift = Input.GetAxis("Spaceship Lift");
         float thrust = Input.GetAxis("Spaceship Thrust");
         body.velocity += transform.rotation * new Vector3(strafe, lift, thrust) * Time.deltaTime * shipMovespeed;
-        //Slowdown due to being inside of a planet
-        //TODO. Maybe integrate with actual air resistance
-        if (player.Planet != null)
-        {
-            float altitudeFactor = player.Altitude / player.Planet.radius;
-            float divideFactor = altitudeFactor / (altitudeFactor + 1);
-            body.velocity /= divideFactor * Time.deltaTime + 1;
-        }
     }
 
     private void DisembarkFromShip()

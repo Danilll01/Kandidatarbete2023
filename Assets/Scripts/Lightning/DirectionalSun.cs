@@ -34,7 +34,7 @@ public class DirectionalSun : MonoBehaviour
         // This basicly works by calculating the distance to the planet light edge and the shortest distance to the sun.
         // Then whatever the player distance falls in between these values that is whats is looked up in the gradient and set as the color
         // Therefore when the player is on the back half of the planet the ambient light will be low and the more near the sun the lighter the light will be
-        if (playerScriptToGetPlanet != null && playerScriptToGetPlanet.attractor != null) {
+        if (playerScriptToGetPlanet != null) {
             Vector3 planetPosition = playerScriptToGetPlanet.attractor.transform.position;
 
             float sunPlanetDistance = Vector3.Distance(sun.transform.position, planetPosition);
