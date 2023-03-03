@@ -19,11 +19,11 @@ public class Gravity
     /// </summary>
     public static void Attract(Vector3 entityPos, Rigidbody entityRigidbody, Vector3 attractingBodyPos, float attractingBodyMass)
     {
-        double r2 = Vector3.Distance(entityPos, attractingBodyPos);
+        float r2 = Vector3.Distance(entityPos, attractingBodyPos);
         r2 *= r2;
 
         Vector3 attractionDirection = (attractingBodyPos - entityPos).normalized;
 
-        entityRigidbody.velocity += attractionDirection * (float)((attractingBodyMass * Time.deltaTime) / r2);
+        entityRigidbody.velocity += attractionDirection * ((attractingBodyMass * Time.deltaTime) / r2);
     }
 }
