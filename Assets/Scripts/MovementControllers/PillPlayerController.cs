@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
@@ -13,6 +14,8 @@ public class PillPlayerController : MonoBehaviour
     [SerializeField] private float swimForce;
     [SerializeField] private float maxSwimSpeed = 10;
     public float maxSpeed;
+
+    private bool jump = false; // Used for creating a rising trigger for jump
 
     [SerializeField] private PlayerWater playerWater;
 
@@ -58,6 +61,8 @@ public class PillPlayerController : MonoBehaviour
         DisplayDebug.AddOrSetDebugVariable("Planet surface gravity", attractor.surfaceGravity.ToString());
     }
 
+    
+
     private void HandleInput()
     {
         //Keep old Y velocity. Rotates to world space, grabs y velocity and rotates back to planet orientation
@@ -68,7 +73,7 @@ public class PillPlayerController : MonoBehaviour
         //Swiming
         if(Swimming)
         {
-            if (Input.GetKey(KeyCode.Space))
+            if (Input.GetAxisRaw("Jump") == 1)
             {
                 movementVector.y += swimForce * 10 * Time.deltaTime;
             }
@@ -78,12 +83,16 @@ public class PillPlayerController : MonoBehaviour
             }
             
         }
-        //Jumping
-        else if (Input.GetKeyDown(KeyCode.Space) && Grounded)
+        else if (Input.GetAxisRaw("Jump") == 1 && !jump && Grounded) //Jumping
         {
             movementVector.y += jumpForce;
+            jump = true;
         }
-        
+        if(Input.GetAxisRaw("Jump") == 0 && jump) //Resets the jump when jump is released
+        {
+            jump = false;
+        }
+
         //Input recieved
         if (movementVector.magnitude != 0)
         {
@@ -133,8 +142,8 @@ public class PillPlayerController : MonoBehaviour
         }
 
         //Rotate player and camera
-        Vector3 cameraRotationVector = new Vector3(Input.GetAxis("Mouse Y") * -1, 0);
-        Vector3 playerRotationVector = new Vector3(0, Input.GetAxis("Mouse X"));
+        Vector3 cameraRotationVector = new Vector3(Input.GetAxis("Vertical Look") + Input.GetAxisRaw("Controller Vertical Look") * 3, 0);
+        Vector3 playerRotationVector = new Vector3(0, Input.GetAxis("Horizontal Look") + Input.GetAxisRaw("Controller Horizontal Look") * 4);
         firstPersonCamera.transform.Rotate(cameraRotationVector);
         transform.Rotate(playerRotationVector);
     }
