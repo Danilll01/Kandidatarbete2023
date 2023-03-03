@@ -8,6 +8,7 @@ public class PillPlayerController : MonoBehaviour
 {
     public Planet attractor;
     public Camera firstPersonCamera;
+    public GameObject flashLight;
     public float movementSpeed;
     public float airControlFactor;
     public float jumpForce;
@@ -145,6 +146,7 @@ public class PillPlayerController : MonoBehaviour
         Vector3 cameraRotationVector = new Vector3(Input.GetAxis("Vertical Look") + Input.GetAxisRaw("Controller Vertical Look") * 3, 0);
         Vector3 playerRotationVector = new Vector3(0, Input.GetAxis("Horizontal Look") + Input.GetAxisRaw("Controller Horizontal Look") * 4);
         firstPersonCamera.transform.Rotate(cameraRotationVector);
+        flashLight.transform.Rotate(cameraRotationVector);
         transform.Rotate(playerRotationVector);
     }
 
