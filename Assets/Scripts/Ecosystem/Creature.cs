@@ -32,7 +32,8 @@ public class Creature : MonoBehaviour
     [SerializeField] private CreatureState currentState;
     [SerializeField] private bool DEBUG = false;
     [SerializeField] private bool isSleeping;
-    
+    [SerializeField] private bool animate = true;
+
 
     private bool atDestination = false;
     [SerializeField] private Vector3 destination = Vector3.zero;
@@ -201,7 +202,13 @@ public class Creature : MonoBehaviour
                     disable = true;
                 }
 
-                InteractWithResourceAction(nearestResource, disable);
+                if (animate)
+                {
+                    InteractWithResourceAction(nearestResource, disable);
+                } else
+                {
+                    if (disable) nearestResource.GetComponent<Resource>().ConsumeResource();
+                }
             }
             else if (Vector3.Distance(transform.position, resourcePos) > consumeRadius)
             {

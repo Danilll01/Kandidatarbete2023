@@ -129,7 +129,7 @@ MonoBehaviour:
   creatures:
   - {fileID: 1311290861401530, guid: 5904fbfe921140647a4ebddf4adda389, type: 3}
   - {fileID: 6704398087555418744, guid: 98b69a73001690e4abe90392f2aa4aac, type: 3}
-  ratios: 0300000001000000
+  ratios: 0100000002000000
   maxPackCount: 5000
   minPackSize: 3
   maxPackSize: 10

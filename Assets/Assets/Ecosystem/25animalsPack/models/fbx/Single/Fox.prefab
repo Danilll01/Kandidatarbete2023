@@ -130,6 +130,7 @@ MonoBehaviour:
   currentState: 0
   DEBUG: 0
   isSleeping: 0
+  animate: 0
   destination: {x: 0, y: 0, z: 0}
 --- !u!205 &3427573710299147061
 LODGroup:
