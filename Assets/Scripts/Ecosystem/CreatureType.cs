@@ -2,9 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum ResourceType
+public enum CreatureType
 {
-    Water,
-    Plant,
-    Creature
+    Small,
+    Medium,
+    Large,
+    Bird,
+    Fish
 }
