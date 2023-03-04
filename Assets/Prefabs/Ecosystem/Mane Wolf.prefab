@@ -1094,10 +1094,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc2db926f95bed34580350e7d08b7a3a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 1
-  detectionRadius: 30
+  speed: 0.9
+  detectionRadius: 50
   consumeRadius: 0.5
   meshObj: {fileID: 1697995523432054}
+  creatureType: 1
   hunger: 100
   thirst: 100
   randomizeStats: 1
@@ -1109,6 +1110,8 @@ MonoBehaviour:
   thirstDecrease: 0.1
   hungerIncrease: 20
   thirstIncrease: 20
+  resourceTypes: 02000000
+  creatureDiet: 0
   currentState: 0
   DEBUG: 0
   isSleeping: 0

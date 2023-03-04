@@ -390,6 +390,7 @@ MonoBehaviour:
   detectionRadius: 35
   consumeRadius: 0.05
   meshObj: {fileID: 1055748561691468}
+  creatureType: 0
   hunger: 100
   thirst: 100
   randomizeStats: 1
@@ -401,6 +402,8 @@ MonoBehaviour:
   thirstDecrease: 0.1
   hungerIncrease: 20
   thirstIncrease: 20
+  resourceTypes: 01000000
+  creatureDiet: 0
   currentState: 0
   DEBUG: 0
   isSleeping: 0
