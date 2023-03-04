@@ -86,6 +86,18 @@ public class Planet : MonoBehaviour
         {
             waterHandler.Initialize(this, waterDiameter, GetGroundColor());
         }
+
+        /*
+        // presentation seed
+        if(Universe.seed == 407022)
+        {
+            GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            cube.transform.parent = transform;
+            cube.transform.localScale = new Vector3(10, 10, 10);
+            cube.transform.localPosition = new Vector3(-58.54f, 686.35f, -41.89f);
+            cube.transform.Rotate(-1.562f, 39.147f, -1.146f);
+        }*/
+
     }
 
     /// <summary>
