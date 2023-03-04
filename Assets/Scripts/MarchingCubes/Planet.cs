@@ -35,6 +35,9 @@ public class Planet : MonoBehaviour
     [SerializeField] public ChunksHandler chunksHandler;
     [SerializeField] public WaterHandler waterHandler;
 
+    [SerializeField] private GameObject billBoard;
+    [SerializeField] private List<Material> slidesMaterials;
+
     private float threshold;
 
     /// <summary>
@@ -98,6 +101,50 @@ public class Planet : MonoBehaviour
             cube.transform.Rotate(-1.562f, 39.147f, -1.146f);
         }*/
 
+    }
+
+
+    private bool spawnedSlides = false;
+    private const int presentationSeed = 407022;
+
+    private Vector3[] positions = 
+    {
+        new Vector3(-62.172f, 683.511f, -40.614f),
+        new Vector3(-91.02f, 682.58f, -63.53f),
+        new Vector3(-121.03f, 680.19f, -65.34f),
+        new Vector3(-153.65f, 676.68f, -66.86f),
+        new Vector3(-182.763f, 672.556f, -50.687f),
+        new Vector3(-204.982f, 666.163f, -4.122f),
+        new Vector3(-231.9233f, 660.034f, 18.583f)
+    };
+
+    private Vector3[] rotations =
+    {
+        new Vector3(2.132f, -54.961f, 5.461f),
+        new Vector3(-5.903f, 2.13f, 7.63f),
+        new Vector3(-5.862f, 1.739f, 9.434f),
+        new Vector3(-8.118f, 11.326f, 12.246f),
+        new Vector3(-14.948f, 55.852f, 5.426f),
+        new Vector3(-11.193f, 38.911f, 12.826f),
+        new Vector3(-2.68f, 11.503f, 19.7f)
+    };
+
+    private void Update()
+    {
+        if(!spawnedSlides && spawnFoliage.foliageSpawned && Universe.seed == presentationSeed)
+        {
+            //Spawn slides
+            for(int i = 0; i < slidesMaterials.Count; i++)
+            {
+                GameObject billBoard = Instantiate(this.billBoard);
+                billBoard.transform.parent = transform;
+                billBoard.transform.localPosition = positions[i];
+                billBoard.transform.Rotate(rotations[i]);
+                billBoard.GetComponent<Renderer>().material = slidesMaterials[i];
+            }
+
+            spawnedSlides = true;
+        }
     }
 
     /// <summary>

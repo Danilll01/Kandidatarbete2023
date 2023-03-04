@@ -67,6 +67,16 @@ MonoBehaviour:
   spawnFoliage: {fileID: 2855617038713985127}
   chunksHandler: {fileID: 6742904736247445569}
   waterHandler: {fileID: 7974886500941765792}
+  billBoard: {fileID: 2580861300283731558, guid: c5c5c4d0f82ada5458a619adc72c2261,
+    type: 3}
+  slidesMaterials:
+  - {fileID: 2100000, guid: 82c983773a51cce4fa1c80d50ec4015e, type: 2}
+  - {fileID: 2100000, guid: 65fc9e288f6a2424c82667847b7fcd0b, type: 2}
+  - {fileID: 2100000, guid: 5c8a4edcf944efe45bdec97d92ee4b3f, type: 2}
+  - {fileID: 2100000, guid: 82cab99ca3fad7f43bf2196651d1bbb9, type: 2}
+  - {fileID: 2100000, guid: 68d65d8e0d9e47a4a9762ae489f0708c, type: 2}
+  - {fileID: 2100000, guid: 318e421f1c20cef48bb81cd3fd72e662, type: 2}
+  - {fileID: 2100000, guid: d32cd94193c92dc4d93655c288bd0d19, type: 2}
 --- !u!114 &3175307376905995560
 MonoBehaviour:
   m_ObjectHideFlags: 0
