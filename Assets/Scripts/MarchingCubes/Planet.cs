@@ -107,7 +107,7 @@ public class Planet : MonoBehaviour
     private bool spawnedSlides = false;
     private const int presentationSeed = 407022;
 
-    private Vector3[] positions = 
+    private Vector3[] positions =
     {
         new Vector3(-62.172f, 683.511f, -40.614f),
         new Vector3(-91.02f, 682.58f, -63.53f),
@@ -115,7 +115,12 @@ public class Planet : MonoBehaviour
         new Vector3(-153.65f, 676.68f, -66.86f),
         new Vector3(-182.763f, 672.556f, -50.687f),
         new Vector3(-204.982f, 666.163f, -4.122f),
-        new Vector3(-231.9233f, 660.034f, 18.583f)
+        new Vector3(-231.9233f, 660.034f, 18.583f),
+        new Vector3(-269.9434f, 649.2246f, 37.159f),
+        new Vector3(-297.703f, 638.159f, 62.155f),
+        new Vector3(-301.477f, 628.867f, 104.649f),
+        new Vector3(-315.889f, 609.280f, 147.48f),
+        new Vector3(-343.974f, 579.361f, 174.995f)
     };
 
     private Vector3[] rotations =
@@ -126,7 +131,12 @@ public class Planet : MonoBehaviour
         new Vector3(-8.118f, 11.326f, 12.246f),
         new Vector3(-14.948f, 55.852f, 5.426f),
         new Vector3(-11.193f, 38.911f, 12.826f),
-        new Vector3(-2.68f, 11.503f, 19.7f)
+        new Vector3(-2.68f, 11.503f, 19.7f),
+        new Vector3(-9.434f, 31.009f, 21.373f),
+        new Vector3(-12.929f, 40.441f, 21.952f),
+        new Vector3(-23.18f, 76.569f, 14.008f),
+        new Vector3(-10.829f, 44.225f, 27.784f),
+        new Vector3(-9.747f, 42.134f, 31.892f)
     };
 
     private void Update()
