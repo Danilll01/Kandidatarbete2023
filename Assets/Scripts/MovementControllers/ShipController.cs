@@ -5,6 +5,7 @@ public class ShipController : MonoBehaviour
     [SerializeField] private float shipMovespeed;
     [SerializeField] private float shipRotationSpeed;
     [HideInInspector] public bool boarded = false;
+    private bool[] wantToTransition = new bool[2];
     private bool transitioning = false;
     private bool shipHoldingUprightRotation = false;
     private Planet holdingOverPlanet = null;
@@ -49,36 +50,18 @@ public class ShipController : MonoBehaviour
         }
     }
 
-    private void HandleTransition()
+    private void FixedUpdate()
     {
-        // For now basic linear interpolation
-        transitionProgress += Time.deltaTime;
-
-        player.transform.localPosition = Vector3.Lerp(transitionFromPos, transitionToPos, transitionProgress / landingTime);
-        player.transform.rotation = Quaternion.Lerp(transitionFromRot, transitionToRot, transitionProgress / landingTime);
-
-        if (transitionProgress / landingTime >= 1)
+        /* Hack to make the colliders be where the planet is.
+        This is due to colliders not updating every time an objects transform is edited directly. */
+        //First frame. Stops orbit to enable colliders to catch up
+        if (wantToTransition[0] == true && wantToTransition[1] == false)
         {
-            transitioning = false;
-            if (boarded)
-            {
-                DisembarkFromShip();
-            }
-            transitionProgress = 0;
-            Boarded = !boarded;
+            player.Planet.GetComponent<SimpleKeplerOrbits.KeplerOrbitMover>().enabled = false;
+            wantToTransition[1] = true;
         }
-    }
-
-    private void HandleShip()
-    {
-        //Left planet and should no longer hold altitude
-        if (shipHoldingUprightRotation && (holdingOverPlanet != player.Planet))
-        {
-            shipHoldingUprightRotation = false;
-        }
-
-        //TODO check ability to board. Will do this after the ability to lose ship is mitigated
-        if (Input.GetKeyDown(KeyCode.F))
+        //Second frame. Get the landing position from the new updated colliders
+        else if (wantToTransition[1] == true)
         {
             if (boarded)
             {
@@ -110,6 +93,44 @@ public class ShipController : MonoBehaviour
                 transitioning = true;
                 player.boarded = true;
             }
+            wantToTransition[0] = false;
+            wantToTransition[1] = false;
+            player.Planet.GetComponent<SimpleKeplerOrbits.KeplerOrbitMover>().enabled = true;
+        }
+    }
+
+    private void HandleTransition()
+    {
+        // For now basic linear interpolation
+        transitionProgress += Time.deltaTime;
+
+        player.transform.localPosition = Vector3.Lerp(transitionFromPos, transitionToPos, transitionProgress / landingTime);
+        player.transform.rotation = Quaternion.Lerp(transitionFromRot, transitionToRot, transitionProgress / landingTime);
+
+        if (transitionProgress / landingTime >= 1)
+        {
+            transitioning = false;
+            if (boarded)
+            {
+                DisembarkFromShip();
+            }
+            transitionProgress = 0;
+            Boarded = !boarded;
+        }
+    }
+
+    private void HandleShip()
+    {
+        //Left planet and should no longer hold altitude
+        if (shipHoldingUprightRotation && (holdingOverPlanet != player.Planet))
+        {
+            shipHoldingUprightRotation = false;
+        }
+
+        //TODO check ability to board. Will do this after the ability to lose ship is mitigated
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            wantToTransition[0] = true;
         }
 
         //Controling ship
