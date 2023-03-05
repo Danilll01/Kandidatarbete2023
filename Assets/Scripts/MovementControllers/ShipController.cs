@@ -54,8 +54,8 @@ public class ShipController : MonoBehaviour
         // For now basic linear interpolation
         transitionProgress += Time.deltaTime;
 
-        player.transform.position = Vector3.Lerp(transitionFromPos, transitionToPos, transitionProgress);
         player.transform.rotation = Quaternion.Lerp(transitionFromRot, transitionToRot, transitionProgress);
+        player.transform.localPosition = Vector3.Lerp(transitionFromPos, transitionToPos, transitionProgress);
 
         if (transitionProgress >= 1)
         {
@@ -88,9 +88,9 @@ public class ShipController : MonoBehaviour
                 if (hit.collider != null)
                 {
                     //Set up transition to/from
-                    transitionFromPos = player.transform.position;
-                    transitionFromRot = player.transform.rotation;
-                    transitionToPos = hit.point - Quaternion.FromToRotation(Vector3.up, player.Up) * Vector3.up * transform.localPosition.y;
+                    transitionFromPos = player.transform.localPosition;
+                    transitionFromRot = player.transform.localRotation;
+                    transitionToPos = player.Planet.transform.InverseTransformPoint(hit.point - Quaternion.FromToRotation(Vector3.up, player.Up) * (Vector3.up * transform.localPosition.y));
                     transitionToRot = Quaternion.LookRotation(Vector3.ProjectOnPlane(transform.TransformVector(Vector3.forward), hit.normal), hit.normal);
                     transitioning = true;
                     //Transition method handles moving the player out of the ship
@@ -103,8 +103,8 @@ public class ShipController : MonoBehaviour
                 EmbarkInShip();
 
                 //Set up transition to/from
-                transitionFromPos = player.transform.position;
-                transitionFromRot = player.transform.rotation;
+                transitionFromPos = player.transform.localPosition;
+                transitionFromRot = player.transform.localRotation;
                 transitionToPos = transitionFromPos + player.Up * 10;
                 transitionToRot = Gravity.UprightRotation(player.transform, player.Planet.transform);
                 transitioning = true;
@@ -134,12 +134,12 @@ public class ShipController : MonoBehaviour
         player.transform.Rotate(new Vector3(pitch, yaw, roll) * Time.deltaTime * shipRotationSpeed);
         if (shipHoldingUprightRotation)
         {
-            player.transform.position = player.transform.position / (player.Altitude / shipHoldingAltitude);
+            player.transform.localPosition = player.transform.localPosition / (player.Altitude / shipHoldingAltitude);
 
             //This may lead to slowly slipping away from planet. Hasn't noticed so maybe so minute that it may be ignored :)
-            Vector3 velocity = player.transform.InverseTransformDirection(body.velocity);
+            Vector3 velocity = player.Planet.transform.InverseTransformDirection(body.velocity);
             velocity.y = 0;
-            body.velocity = player.transform.TransformDirection(velocity);
+            body.velocity = player.Planet.transform.TransformDirection(velocity);
 
             //Not moving up/down. Hold altitude
             if (Input.GetAxisRaw("Spaceship Lift") != 0)
