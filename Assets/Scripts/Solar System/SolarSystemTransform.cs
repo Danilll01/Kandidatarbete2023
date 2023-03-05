@@ -42,14 +42,12 @@ public class SolarSystemTransform : MonoBehaviour
         // If the player is not on any planet, reset the solar system
         if (activePlanet != oldActivePlanet && activePlanet == null)
         {
-            Debug.Log("BEEP");
             ResetPlanetOrbit(oldActivePlanet.gameObject);
             oldActivePlanet = activePlanet;
         }
         // If the player has entered a new planet, move the solar system accordingly
         else if (activePlanet != oldActivePlanet)
         {
-            Debug.Log("BOOP");
             MovePlanets(activePlanet);
             oldActivePlanet = activePlanet;
         }
@@ -102,13 +100,11 @@ public class SolarSystemTransform : MonoBehaviour
 
     private void MovePlanets(Planet planet)
     {
-        Debug.Log("Trying to move to " + planet.gameObject.name);
         Planet parentPlanet = planet.transform.parent.GetComponent<Planet>();
         //Only move to planets, not to moons. I've already lost my mind to the thought of faking a double jointed orbit.
         //KEPLER BE DAMNED
         if (planet.transform.parent.GetComponent<SolarSystemTransform>() == null)
         {
-            Debug.Log("Moving not working, has parent " + planet.transform.parent.name);
             MovePlanets(parentPlanet);
         }
         //You are a planet. You are welcome to being the center of the universe
