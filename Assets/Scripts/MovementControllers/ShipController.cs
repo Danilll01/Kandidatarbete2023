@@ -5,7 +5,6 @@ public class ShipController : MonoBehaviour
     [SerializeField] private float shipMovespeed;
     [SerializeField] private float shipRotationSpeed;
     [HideInInspector] public bool boarded = false;
-    private bool[] wantToTransition = new bool[2];
     private bool transitioning = false;
     private bool shipHoldingUprightRotation = false;
     private Planet holdingOverPlanet = null;
@@ -50,55 +49,6 @@ public class ShipController : MonoBehaviour
         }
     }
 
-    private void FixedUpdate()
-    {
-        /* Hack to make the colliders be where the planet is.
-        This is due to colliders not updating every time an objects transform is edited directly. */
-        //First frame. Stops orbit to enable colliders to catch up
-        if (wantToTransition[0] == true && wantToTransition[1] == false)
-        {
-            player.Planet.GetComponent<SimpleKeplerOrbits.KeplerOrbitMover>().enabled = false;
-            wantToTransition[1] = true;
-        }
-        //Second frame. Get the landing position from the new updated colliders
-        else if (wantToTransition[1] == true)
-        {
-            if (boarded)
-            {
-                //Disembark
-                Physics.Raycast(player.transform.position, -player.Up, out RaycastHit hit, 20, 1 << (LayerMask.NameToLayer("Planet")));
-
-                if (hit.collider != null)
-                {
-                    //Set up transition to/from
-                    transitionFromPos = player.transform.localPosition;
-                    transitionFromRot = player.transform.localRotation;
-                    transitionToPos = player.Planet.transform.InverseTransformPoint(hit.point - Quaternion.FromToRotation(Vector3.up, player.Up) * (Vector3.up * transform.localPosition.y));
-                    transitionToRot = Quaternion.LookRotation(Vector3.ProjectOnPlane(transform.TransformVector(Vector3.forward), hit.normal), hit.normal);
-                    transitioning = true;
-                    //Transition method handles moving the player out of the ship
-                }
-            }
-            else
-            {
-                //Embark
-                //Move player into ship
-                EmbarkInShip();
-
-                //Set up transition to/from
-                transitionFromPos = player.transform.localPosition;
-                transitionFromRot = player.transform.localRotation;
-                transitionToPos = transitionFromPos + player.Up * 10;
-                transitionToRot = Gravity.UprightRotation(player.transform, player.Planet.transform);
-                transitioning = true;
-                player.boarded = true;
-            }
-            wantToTransition[0] = false;
-            wantToTransition[1] = false;
-            player.Planet.GetComponent<SimpleKeplerOrbits.KeplerOrbitMover>().enabled = true;
-        }
-    }
-
     private void HandleTransition()
     {
         // For now basic linear interpolation
@@ -130,7 +80,36 @@ public class ShipController : MonoBehaviour
         //TODO check ability to board. Will do this after the ability to lose ship is mitigated
         if (Input.GetKeyDown(KeyCode.F))
         {
-            wantToTransition[0] = true;
+            if (boarded)
+            {
+                //Disembark
+                Physics.Raycast(player.transform.position, -player.Up, out RaycastHit hit, 20, 1 << (LayerMask.NameToLayer("Planet")));
+
+                if (hit.collider != null)
+                {
+                    //Set up transition to/from
+                    transitionFromPos = player.transform.localPosition;
+                    transitionFromRot = player.transform.localRotation;
+                    transitionToPos = player.Planet.transform.InverseTransformPoint(hit.point - Quaternion.FromToRotation(Vector3.up, player.Up) * (Vector3.up * transform.localPosition.y));
+                    transitionToRot = Quaternion.LookRotation(Vector3.ProjectOnPlane(transform.TransformVector(Vector3.forward), hit.normal), hit.normal);
+                    transitioning = true;
+                    //Transition method handles moving the player out of the ship
+                }
+            }
+            else
+            {
+                //Embark
+                //Move player into ship
+                EmbarkInShip();
+
+                //Set up transition to/from
+                transitionFromPos = player.transform.localPosition;
+                transitionFromRot = player.transform.localRotation;
+                transitionToPos = transitionFromPos + player.Up * 10;
+                transitionToRot = Gravity.UprightRotation(player.transform, player.Planet.transform);
+                transitioning = true;
+                player.boarded = true;
+            }
         }
 
         //Controling ship
