@@ -158,9 +158,12 @@ public class ShipController : MonoBehaviour
             player.transform.localPosition = player.transform.localPosition / (player.Altitude / shipHoldingAltitude);
 
             //This may lead to slowly slipping away from planet. Hasn't noticed so maybe so minute that it may be ignored :)
-            Vector3 velocity = player.Planet.transform.InverseTransformDirection(body.velocity);
+            Quaternion rot = player.transform.rotation;
+            Gravity.KeepUpright(player.transform, player.Planet.transform);
+            Vector3 velocity = player.transform.InverseTransformDirection(body.velocity);
             velocity.y = 0;
-            body.velocity = player.Planet.transform.TransformDirection(velocity);
+            body.velocity = player.transform.TransformDirection(velocity);
+            player.transform.rotation = rot;
 
             //Not moving up/down. Hold altitude
             if (Input.GetAxisRaw("Spaceship Lift") != 0)
