@@ -54,10 +54,10 @@ public class ShipController : MonoBehaviour
         // For now basic linear interpolation
         transitionProgress += Time.deltaTime;
 
-        player.transform.rotation = Quaternion.Lerp(transitionFromRot, transitionToRot, transitionProgress);
-        player.transform.localPosition = Vector3.Lerp(transitionFromPos, transitionToPos, transitionProgress);
+        player.transform.localPosition = Vector3.Lerp(transitionFromPos, transitionToPos, transitionProgress / landingTime);
+        player.transform.rotation = Quaternion.Lerp(transitionFromRot, transitionToRot, transitionProgress / landingTime);
 
-        if (transitionProgress >= 1)
+        if (transitionProgress / landingTime >= 1)
         {
             transitioning = false;
             if (boarded)
