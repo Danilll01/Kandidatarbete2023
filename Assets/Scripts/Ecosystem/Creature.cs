@@ -392,19 +392,24 @@ public class Creature : MonoBehaviour
     private void InteractWithResourceAction(GameObject resource, bool disable, ResourceType type)
     {
         currentState = CreatureState.PerformingAction;
-        animator.SetBool("Walk", false);
         animator.SetBool("Eat", true);
+        
         StartCoroutine(InteractWithResource(resource, disable, type));
     }
 
     private IEnumerator InteractWithResource(GameObject resource, bool disable, ResourceType type)
     {
+        // Wait until walk animation is done
+        yield return new WaitForSeconds(0.1f);
+        animator.SetBool("Walk", false);
+        
         // Animation clip length
         float clipLength = animator.GetCurrentAnimatorStateInfo(0).length;
 
-        // Wait for 3 seconds
-        yield return new WaitForSeconds(clipLength);
+        // Wait for duration of eat animation
+        yield return new WaitForSeconds(clipLength - 0.1f);
 
+        // Destroy / consume resource
         if (disable)
         {
             if (type == ResourceType.Creature)
@@ -415,8 +420,6 @@ public class Creature : MonoBehaviour
                 resource.GetComponent<Resource>().ConsumeResource();
             }
         }
-
-        yield return new WaitForSeconds(clipLength);
 
         // Set the state to idle
         animator.SetBool("Eat", false);
