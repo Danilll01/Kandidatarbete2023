@@ -329,7 +329,7 @@ GameObject:
   - component: {fileID: 3924574600151282789}
   m_Layer: 10
   m_Name: Chicken
-  m_TagString: Untagged
+  m_TagString: Creature
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -408,6 +408,7 @@ MonoBehaviour:
   DEBUG: 0
   isSleeping: 0
   animate: 1
+  foundFood: 0
   destination: {x: 0, y: 0, z: 0}
 --- !u!65 &6449783939063798092
 BoxCollider:
