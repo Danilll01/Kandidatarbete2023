@@ -15,6 +15,16 @@ public class Gravity
     }
 
     /// <summary>
+    /// Returns the upright Vector rotation in global space.
+    /// </summary>
+    public static Quaternion UprightRotation(Transform entity, Transform centerOfGravity)
+    {
+        Vector3 directionFromCenter = entity.position - centerOfGravity.transform.position;
+        directionFromCenter = directionFromCenter.normalized;
+        return Quaternion.FromToRotation(entity.up, directionFromCenter) * entity.rotation;
+    }
+
+    /// <summary>
     /// Attracts an entity towards a body. The attracting body is not affected.
     /// </summary>
     public static void Attract(Vector3 entityPos, Rigidbody entityRigidbody, Vector3 attractingBodyPos, float attractingBodyMass)

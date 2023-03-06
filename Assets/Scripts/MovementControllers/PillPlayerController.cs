@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Security.Cryptography;
@@ -6,7 +7,7 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class PillPlayerController : MonoBehaviour
 {
-    public Planet attractor;
+    public Planet attractor = null;
     public Camera firstPersonCamera;
     public float movementSpeed;
     public float airControlFactor;
@@ -21,19 +22,39 @@ public class PillPlayerController : MonoBehaviour
 
     private Rigidbody body;
     [HideInInspector] public bool paused;
+    private ShipController ship;
+    [HideInInspector] public bool boarded = false;
+
+    private void Awake()
+    {
+        Universe.player = this;
+    }
+
     // Start is called before the first frame update
     public void Initialize(GameObject planetToSpawnOn)
     {
+        Universe.player = this;
+
+        if (attractor == null)
+        {
+            attractor = planetToSpawnOn.GetComponent<Planet>();
+            if (attractor == null)
+            {
+                Debug.LogError("Planet player spawned on has no Planet script");
+            }
+        }
+
         body = GetComponent<Rigidbody>();
+        ship = GameObject.Find("Spaceship").GetComponent<ShipController>();
+
         //A bit of a hack to give the player a starting planet
-        attractor = planetToSpawnOn.GetComponent<Planet>();
-        transform.parent = attractor.transform;
         transform.position = planetToSpawnOn.transform.position + new Vector3(0, attractor.diameter, 0);
         Vector3 directionNearestPlanet = attractor.transform.position - transform.position;
         Physics.Raycast(transform.position, directionNearestPlanet, out RaycastHit hit);
 
         //Put the player above the ground
         transform.position = hit.point - (directionNearestPlanet.normalized) * 5;
+        ship.Initialize(body, firstPersonCamera);
 
         //Lock the mouse inside of the game
         Cursor.lockState = CursorLockMode.Locked;
@@ -49,21 +70,43 @@ public class PillPlayerController : MonoBehaviour
     {
         if (!paused)
         {
-            HandleInput();
-            if(!ReferenceEquals(attractor, playerWater.planet)) playerWater.UpdatePlanet(attractor);
-            playerWater.UpdateWater(transform.position);
+            if (!boarded)
+            {
+                HandleMovement();
+                HandleCamera();
+            }
+            if (attractor != null)
+            {
+                if (!ReferenceEquals(attractor, playerWater.planet)) playerWater.UpdatePlanet(attractor);
+                playerWater.UpdateWater(transform.position);
+            }
         }
-        Gravity.KeepUpright(transform, attractor.transform);
-        Gravity.Attract(transform.position, body, attractor.transform.position, attractor.mass);
-        DisplayDebug.AddOrSetDebugVariable("Current planet", attractor.bodyName);
-        DisplayDebug.AddOrSetDebugVariable("Planet radius", attractor.diameter.ToString());
-        DisplayDebug.AddOrSetDebugVariable("Planet mass", attractor.mass.ToString());
-        DisplayDebug.AddOrSetDebugVariable("Planet surface gravity", attractor.surfaceGravity.ToString());
+        if (attractor != null)
+        {
+            DisplayDebug.AddOrSetDebugVariable("Current planet", attractor.bodyName);
+            DisplayDebug.AddOrSetDebugVariable("Planet radius", attractor.diameter.ToString());
+            DisplayDebug.AddOrSetDebugVariable("Planet mass", attractor.mass.ToString());
+            DisplayDebug.AddOrSetDebugVariable("Planet surface gravity", attractor.surfaceGravity.ToString());
+        }
+        else
+        {
+            DisplayDebug.AddOrSetDebugVariable("Current planet", "Sun");
+            DisplayDebug.AddOrSetDebugVariable("Planet radius", "N/A");
+            DisplayDebug.AddOrSetDebugVariable("Planet mass", "N/A");
+            DisplayDebug.AddOrSetDebugVariable("Planet surface gravity", "N/A");
+        }
     }
 
-    
+    private void HandleCamera()
+    {
+        //Rotate player and camera
+        Vector3 cameraRotationVector = new Vector3(Input.GetAxis("Vertical Look") + Input.GetAxisRaw("Controller Vertical Look") * 3, 0);
+        Vector3 playerRotationVector = new Vector3(0, Input.GetAxis("Horizontal Look") + Input.GetAxisRaw("Controller Horizontal Look") * 4);
+        firstPersonCamera.transform.Rotate(cameraRotationVector);
+        transform.Rotate(playerRotationVector);
+    }
 
-    private void HandleInput()
+    private void HandleMovement()
     {
         //Keep old Y velocity. Rotates to world space, grabs y velocity and rotates back to planet orientation
         Vector3 oldY = transform.rotation * new Vector3(0, (Quaternion.Inverse(transform.rotation) * body.velocity).y);
@@ -141,11 +184,17 @@ public class PillPlayerController : MonoBehaviour
             body.velocity += oldY;
         }
 
-        //Rotate player and camera
-        Vector3 cameraRotationVector = new Vector3(Input.GetAxis("Vertical Look") + Input.GetAxisRaw("Controller Vertical Look") * 3, 0);
-        Vector3 playerRotationVector = new Vector3(0, Input.GetAxis("Horizontal Look") + Input.GetAxisRaw("Controller Horizontal Look") * 4);
-        firstPersonCamera.transform.Rotate(cameraRotationVector);
-        transform.Rotate(playerRotationVector);
+        if (!boarded)
+        {
+            Gravity.KeepUpright(transform, attractor.transform);
+            Gravity.Attract(transform.position, body, attractor.transform.position, attractor.mass);
+        }
+    }
+
+    public Planet Planet
+    {
+        get { return attractor; }
+        set { attractor = value; }
     }
 
     /// <summary>
@@ -158,7 +207,12 @@ public class PillPlayerController : MonoBehaviour
 
     public bool Grounded
     {
-        get { return Physics.Raycast(transform.position,  attractor.transform.position  - transform.position, 2f); }
+        get { return Physics.Raycast(transform.position, attractor.transform.position - transform.position, 2f); }
+    }
+
+    public Vector3 Up
+    {
+        get { return (transform.position - attractor.transform.position).normalized; }
     }
 
     private bool Swimming
