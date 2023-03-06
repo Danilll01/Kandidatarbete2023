@@ -6,22 +6,6 @@ InputManager:
   serializedVersion: 2
   m_Axes:
   - serializedVersion: 3
-    m_Name: Horizontal
-    descriptiveName: 
-    descriptiveNegativeName: 
-    negativeButton: left
-    positiveButton: right
-    altNegativeButton: a
-    altPositiveButton: d
-    gravity: 3
-    dead: 0.001
-    sensitivity: 3
-    snap: 1
-    invert: 0
-    type: 0
-    axis: 0
-    joyNum: 0
-  - serializedVersion: 3
     m_Name: Vertical
     descriptiveName: 
     descriptiveNegativeName: 
@@ -86,23 +70,7 @@ InputManager:
     axis: 0
     joyNum: 0
   - serializedVersion: 3
-    m_Name: Jump
-    descriptiveName: 
-    descriptiveNegativeName: 
-    negativeButton: 
-    positiveButton: space
-    altNegativeButton: 
-    altPositiveButton: 
-    gravity: 1000
-    dead: 0.001
-    sensitivity: 1000
-    snap: 0
-    invert: 0
-    type: 0
-    axis: 0
-    joyNum: 0
-  - serializedVersion: 3
-    m_Name: Mouse X
+    m_Name: Horizontal Look
     descriptiveName: 
     descriptiveNegativeName: 
     negativeButton: 
@@ -118,7 +86,23 @@ InputManager:
     axis: 0
     joyNum: 0
   - serializedVersion: 3
-    m_Name: Mouse Y
+    m_Name: Controller Horizontal Look
+    descriptiveName: 
+    descriptiveNegativeName: 
+    negativeButton: 
+    positiveButton: 
+    altNegativeButton: 
+    altPositiveButton: 
+    gravity: 0
+    dead: 0.19
+    sensitivity: 1
+    snap: 0
+    invert: 0
+    type: 2
+    axis: 3
+    joyNum: 0
+  - serializedVersion: 3
+    m_Name: Vertical Look
     descriptiveName: 
     descriptiveNegativeName: 
     negativeButton: 
@@ -129,9 +113,25 @@ InputManager:
     dead: 0
     sensitivity: 0.1
     snap: 0
-    invert: 0
+    invert: 1
     type: 1
     axis: 1
+    joyNum: 0
+  - serializedVersion: 3
+    m_Name: Controller Vertical Look
+    descriptiveName: 
+    descriptiveNegativeName: 
+    negativeButton: 
+    positiveButton: 
+    altNegativeButton: 
+    altPositiveButton: 
+    gravity: 0
+    dead: 0.19
+    sensitivity: 1
+    snap: 0
+    invert: 0
+    type: 2
+    axis: 4
     joyNum: 0
   - serializedVersion: 3
     m_Name: Mouse ScrollWheel
@@ -166,6 +166,22 @@ InputManager:
     axis: 0
     joyNum: 0
   - serializedVersion: 3
+    m_Name: Horizontal
+    descriptiveName: 
+    descriptiveNegativeName: 
+    negativeButton: a
+    positiveButton: d
+    altNegativeButton: 
+    altPositiveButton: 
+    gravity: 0
+    dead: 0.19
+    sensitivity: 1
+    snap: 0
+    invert: 0
+    type: 0
+    axis: 0
+    joyNum: 0
+  - serializedVersion: 3
     m_Name: Vertical
     descriptiveName: 
     descriptiveNegativeName: 
@@ -179,6 +195,22 @@ InputManager:
     snap: 0
     invert: 1
     type: 2
+    axis: 1
+    joyNum: 0
+  - serializedVersion: 3
+    m_Name: Vertical
+    descriptiveName: 
+    descriptiveNegativeName: 
+    negativeButton: s
+    positiveButton: w
+    altNegativeButton: 
+    altPositiveButton: 
+    gravity: 0
+    dead: 0.19
+    sensitivity: 1
+    snap: 0
+    invert: 1
+    type: 0
     axis: 1
     joyNum: 0
   - serializedVersion: 3
@@ -234,9 +266,9 @@ InputManager:
     descriptiveName: 
     descriptiveNegativeName: 
     negativeButton: 
-    positiveButton: joystick button 3
+    positiveButton: space
     altNegativeButton: 
-    altPositiveButton: 
+    altPositiveButton: joystick button 0
     gravity: 1000
     dead: 0.001
     sensitivity: 1000
@@ -454,6 +486,70 @@ InputManager:
     axis: 0
     joyNum: 0
   - serializedVersion: 3
+    m_Name: Spaceship Roll
+    descriptiveName: 
+    descriptiveNegativeName: 
+    negativeButton: e
+    positiveButton: q
+    altNegativeButton: 
+    altPositiveButton: 
+    gravity: 3
+    dead: 0.001
+    sensitivity: 1000
+    snap: 0
+    invert: 0
+    type: 0
+    axis: 6
+    joyNum: 0
+  - serializedVersion: 3
+    m_Name: Spaceship Strafe
+    descriptiveName: 
+    descriptiveNegativeName: 
+    negativeButton: a
+    positiveButton: d
+    altNegativeButton: 
+    altPositiveButton: 
+    gravity: 3
+    dead: 0.001
+    sensitivity: 1000
+    snap: 0
+    invert: 0
+    type: 0
+    axis: 5
+    joyNum: 0
+  - serializedVersion: 3
+    m_Name: Spaceship Lift
+    descriptiveName: 
+    descriptiveNegativeName: 
+    negativeButton: left ctrl
+    positiveButton: left shift
+    altNegativeButton: 
+    altPositiveButton: 
+    gravity: 3
+    dead: 0.001
+    sensitivity: 1000
+    snap: 0
+    invert: 0
+    type: 0
+    axis: 5
+    joyNum: 0
+  - serializedVersion: 3
+    m_Name: Spaceship Thrust
+    descriptiveName: 
+    descriptiveNegativeName: 
+    negativeButton: s
+    positiveButton: w
+    altNegativeButton: 
+    altPositiveButton: 
+    gravity: 3
+    dead: 0.001
+    sensitivity: 1000
+    snap: 0
+    invert: 0
+    type: 0
+    axis: 5
+    joyNum: 0
+  - serializedVersion: 3
     m_Name: Debug Vertical
     descriptiveName: 
     descriptiveNegativeName: 
@@ -485,3 +581,4 @@ InputManager:
     type: 2
     axis: 5
     joyNum: 0
+  m_UsePhysicalKeys: 0
