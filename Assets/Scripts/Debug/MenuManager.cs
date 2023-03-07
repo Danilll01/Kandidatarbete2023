@@ -10,6 +10,7 @@ public class MenuManager : MonoBehaviour
     private float timer = 0.5f;
     private float timelapse = 0;
     private int fps;
+    private bool pause = false;
 
     [SerializeField] private GameObject debugContainer;
     [SerializeField] private GameObject pausContainer;
@@ -33,9 +34,14 @@ public class MenuManager : MonoBehaviour
             debugContainer.SetActive(!isActive);
         }
 
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetAxisRaw("Pause") == 1 && !pause)
         {
             PausGame();
+            pause = true;
+        }
+        if (Input.GetAxisRaw("Pause") == 0 && pause) //Resets the jump when jump is released
+        {
+            pause = false;
         }
 
         if (debugContainer.activeSelf)
