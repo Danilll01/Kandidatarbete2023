@@ -126,10 +126,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e711f09e57fe0846be5f77dc317df2b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  creatures:
-  - {fileID: 1311290861401530, guid: 5904fbfe921140647a4ebddf4adda389, type: 3}
-  - {fileID: 1655403738057260, guid: dcc3bfa5cf419b64e86c7effdae2b6f2, type: 3}
-  ratios: 0100000002000000
+  packs:
+  - prefab: {fileID: 1311290861401530, guid: 5904fbfe921140647a4ebddf4adda389, type: 3}
+    ratio: 1
+    minPackSize: 10
+    maxPackSize: 23
+    packRadius: 40
+    prefabRadius: 1
+  - prefab: {fileID: 1655403738057260, guid: dcc3bfa5cf419b64e86c7effdae2b6f2, type: 3}
+    ratio: 1
+    minPackSize: 2
+    maxPackSize: 5
+    packRadius: 30
+    prefabRadius: 1
   maxPackCount: 5000
   minPackSize: 3
   maxPackSize: 10

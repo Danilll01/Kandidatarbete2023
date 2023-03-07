@@ -7,12 +7,13 @@ public struct CreaturePack
 {
     public GameObject prefab;
     [Range(0, 20)]
-    public float ratio;
+    public int ratio;
     [Range(1, 100)]
     public int minPackSize;
     [Range(1, 100)]
     public int maxPackSize;
     [Range(1, 100)]
     public float packRadius;
-
+    [Range(0, 20)]
+    public float prefabRadius;
 }
