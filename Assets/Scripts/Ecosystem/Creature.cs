@@ -407,7 +407,7 @@ public class Creature : MonoBehaviour
         float clipLength = animator.GetCurrentAnimatorStateInfo(0).length;
 
         // Wait for duration of eat animation
-        yield return new WaitForSeconds(clipLength - 0.1f);
+        yield return new WaitForSeconds(clipLength + 0.1f);
 
         // Destroy / consume resource
         if (disable)
