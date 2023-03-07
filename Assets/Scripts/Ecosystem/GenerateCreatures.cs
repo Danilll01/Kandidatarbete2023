@@ -7,9 +7,7 @@ using System.Collections.Generic;
 public class GenerateCreatures : MonoBehaviour
 {
     [SerializeField] GameObject[] creatures;
-    [SerializeField]
-    [Range(1, 20)]
-    int[] ratios;
+    [SerializeField] CreaturePack[] creatures2;
 
     [Header("Creature Generation")]
     [SerializeField] private int maxPackCount = 100;
@@ -26,11 +24,10 @@ public class GenerateCreatures : MonoBehaviour
     private Vector3 planetCenter;
 
     private float creatureSize = 1.5f; // Make so it fit creature size
-    private GameObject creatureParent;
-
+    private int[] spawningRatios;
+    
     private List<Vector3> waterPoints = new List<Vector3>();
-
-
+    
     /// <summary>
     /// Initializes creature generation
     /// </summary>
@@ -42,18 +39,13 @@ public class GenerateCreatures : MonoBehaviour
         seed = randomSeed;
         planetCenter = planet.transform.position;
 
-        // Create a gameobject to hold all creatures
-        creatureParent = new GameObject("Creatures");
-        creatureParent.transform.parent = planet.transform;
-        creatureParent.transform.localPosition = new Vector3(0,0,0);
-
         // This is how system random works where we dont share Random instances
         //System.Random rand1 = new System.Random(1234);
         Random.InitState(seed);
 
         GenerateCreaturesOnPlanet();
         if (DEBUG) Debug.Log("Spawning");
-
+        
         GatherWaterPoints();
     }
 
@@ -161,8 +153,6 @@ public class GenerateCreatures : MonoBehaviour
             }
 
         }
-
-        creatureParent.SetActive(false);
     }
 
     private void GatherWaterPoints()
@@ -197,11 +187,11 @@ public class GenerateCreatures : MonoBehaviour
 
     private GameObject GetCreatureToSpawn()
     {
-        if (ratios.Length != creatures.Length) Debug.Log("Creatures and ratios needs to be the same size");
+        if (spawningRatios.Length != creatures.Length) Debug.Log("Creatures and ratios needs to be the same size");
 
         int total = 0;
 
-        foreach (int ratio in ratios)
+        foreach (int ratio in spawningRatios)
         {
             total += ratio;
         }
@@ -210,11 +200,11 @@ public class GenerateCreatures : MonoBehaviour
 
         float accumulatedSum = 0;
 
-        for (int i = 0; i < ratios.Length; i++)
+        for (int i = 0; i < spawningRatios.Length; i++)
         {
             if (randomNum > accumulatedSum)
             {
-                accumulatedSum += ratios[i];
+                accumulatedSum += spawningRatios[i];
             } else
             {
                 return creatures[i];
@@ -252,14 +242,5 @@ public class GenerateCreatures : MonoBehaviour
             return true;
         }
         return false;
-    }
-
-    /// <summary>
-    /// Enable or disable the creature parent
-    /// </summary>
-    /// <param name="show"></param>
-    public void ShowCreatures(bool show)
-    {
-        creatureParent.SetActive(show);
     }
 }
