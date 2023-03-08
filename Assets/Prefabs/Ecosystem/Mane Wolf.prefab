@@ -1073,8 +1073,8 @@ Animator:
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: b4dc3c74541def84191303ea727d9a51, type: 3}
   m_Controller: {fileID: 9100000, guid: caf30c45ceb6a9e4cb5eb9f924f6ed46, type: 2}
-  m_CullingMode: 1
-  m_UpdateMode: 1
+  m_CullingMode: 2
+  m_UpdateMode: 0
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
@@ -1116,7 +1116,6 @@ MonoBehaviour:
   DEBUG: 0
   isSleeping: 0
   animate: 1
-  foundFood: 0
   destination: {x: 0, y: 0, z: 0}
 --- !u!65 &5967490473235420340
 BoxCollider:
