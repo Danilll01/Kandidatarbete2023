@@ -129,8 +129,8 @@ MonoBehaviour:
   packs:
   - prefab: {fileID: 1311290861401530, guid: 5904fbfe921140647a4ebddf4adda389, type: 3}
     ratio: 1
-    minPackSize: 7
-    maxPackSize: 15
+    minPackSize: 5
+    maxPackSize: 12
     packRadius: 40
     prefabRadius: 1
   - prefab: {fileID: 1655403738057260, guid: dcc3bfa5cf419b64e86c7effdae2b6f2, type: 3}
