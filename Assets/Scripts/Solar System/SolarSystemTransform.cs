@@ -178,7 +178,7 @@ public class SolarSystemTransform : MonoBehaviour
 
     private void RotateAroundAxis()
     {
-        spawnPlanets.bodies[activePlanetIndex].transform.RotateAround(spawnPlanets.bodies[activePlanetIndex].transform.position, spawnPlanets.bodies[activePlanetIndex].GetComponent<Planet>().rotationAxis, 5 * Time.deltaTime);
+        //spawnPlanets.bodies[activePlanetIndex].transform.RotateAround(spawnPlanets.bodies[activePlanetIndex].transform.position, spawnPlanets.bodies[activePlanetIndex].GetComponent<Planet>().rotationAxis, 5 * Time.deltaTime);
     }
 
     private void ActivateSunOrbit(GameObject planetToOrbit)
