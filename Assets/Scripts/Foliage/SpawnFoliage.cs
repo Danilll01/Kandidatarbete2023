@@ -4,6 +4,7 @@ using Random = UnityEngine.Random;
 using System.Linq;
 using System.Collections.Generic;
 using UnityEditor;
+using Noise;
 
 /// <summary>
 /// Script which spawns given foliage on a planet

@@ -3,7 +3,7 @@
 
 #include "Includes/MarchTables.compute"
 //#include "Includes/TextureGenerator.compute"
-#include "Includes/PerlinNoise.compute"
+#include "Includes/Noise.compute"
 
 // Helper functions declaration
 float4 getTexturePoint(uint3 pos, int3 chunkId, float maxPos);
