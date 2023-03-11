@@ -110,12 +110,12 @@ void EvaluatePerlin_float(float2 UV, float Scale, out float Out)
     Out = perlin.Evaluate(UV * Scale);
 }
 
+// Helper functions
 float lerp(float a, float b, float t)
 {
     return a + t * (b - a);
 }
 
-// Helper functions
 float2 fade(float2 t)
 {
     return t * t * t * (t * (t * 6 - 15) + 10);
