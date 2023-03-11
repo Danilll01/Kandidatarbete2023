@@ -1,6 +1,14 @@
 #ifndef __noise_hlsl_
 #define __noise_hlsl_
 
+void CalculateNoise_float(float3 UV, float Scale, out float Out);
+float calculateNoise(float3 pos);
+float calculateNoise(float x, float y, float z);
+
+float calculateNoise(float2 pos);
+float calculateNoise(float x, float y);
+
+float2 fade(float2 t);
 float3 fade(float3 t);
 float grad(int hash, float x, float y);
 float grad(int hash, float x, float y, float z);
@@ -22,6 +30,16 @@ static const int p[257] =
     151
 };
 
+void CalculateNoise_float(float3 UV, float Scale, out float Out)
+{
+    Out = calculateNoise(Scale * UV);
+}
+
+float calculateNoise(float x, float y, float z)
+{
+    return calculateNoise(float3(x, y, z));
+}
+
 float calculateNoise(float3 pos)
 {
     int3 cube = (int3) floor(pos) & 255;
@@ -39,14 +57,50 @@ float calculateNoise(float3 pos)
     
     
     return lerp(lerp(lerp(grad(p[AA], pos.x, pos.y, pos.z), // Add
-			grad(p[BA], pos.x - 1, pos.y, pos.z), f.x),     // blended
-			lerp(grad(p[AB], pos.x, pos.y - 1, pos.z),  // results
+			grad(p[BA], pos.x - 1, pos.y, pos.z), f.x), // blended
+			lerp(grad(p[AB], pos.x, pos.y - 1, pos.z), // results
 				grad(p[BB], pos.x - 1, pos.y - 1, pos.z), f.x), f.y), // from 8
 			lerp(lerp(grad(p[AA + 1], pos.x, pos.y, pos.z - 1), // corners
 				grad(p[BA + 1], pos.x - 1, pos.y, pos.z - 1), f.x), // of cube
 				lerp(grad(p[AB + 1], pos.x, pos.y - 1, pos.z - 1),
 					grad(p[BB + 1], pos.x - 1, pos.y - 1, pos.z - 1), f.x), f.y), f.z);
-    
+}
+
+void CalculateNoise_float(float2 UV, float Scale, out float Out)
+{
+    Out = calculateNoise(Scale * UV);
+}
+
+float calculateNoise(float x, float y)
+{
+    return calculateNoise(float2(x, y));
+}
+
+float calculateNoise(float2 pos)
+{
+    //Find unit square that contains x, y
+    int2 square = (int2) floor(pos) & 255;
+
+	//Find relative point in this square
+    pos -= floor(pos);
+
+	//Compute fade curves for each x, y
+    float2 f = fade(pos);
+
+	//Hash coordinates for each of the four corners
+    int A = p[square.x] + square.y & 255;
+    int B = p[square.x + 1] + square.y & 255;
+
+	//Add blended results from 4 corners of square
+    return lerp(lerp(grad(p[A], pos.x, pos.y),
+			grad(p[B], pos.x - 1, pos.y), f.x),
+			lerp(grad(p[A + 1], pos.x, pos.y - 1),
+				grad(p[B + 1], pos.x - 1, pos.y - 1), f.x), f.y);
+}
+
+float2 fade(float2 t)
+{
+    return t * t * t * (t * (t * 6 - 15) + 10);
 }
 
 float3 fade(float3 t)

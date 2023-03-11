@@ -2,8 +2,7 @@
 #pragma kernel GenerateMesh
 
 #include "Includes/MarchTables.compute"
-//#include "Includes/TextureGenerator.compute"
-#include "Includes/Noise.compute"
+#include "../Tools/Noise/Noise.hlsl"
 
 // Helper functions declaration
 float4 getTexturePoint(uint3 pos, int3 chunkId, float maxPos);
@@ -86,7 +85,7 @@ void GenerateMesh(uint3 id : SV_DispatchThreadID)
         cubeindex |= 1 << 7;
     
     // Create triangles from the cube
-    for (int i = 0; triangulation[cubeindex][i] != -1; i += 3)
+    for (i = 0; triangulation[cubeindex][i] != -1; i += 3)
     {
         // Get edge from corner a0 -> b0 one on which point 0 in triangle i lies
         int a0 = cornerIndexAFromEdge[triangulation[cubeindex][i]];
