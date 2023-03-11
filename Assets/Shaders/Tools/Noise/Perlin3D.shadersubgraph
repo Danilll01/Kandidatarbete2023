@@ -281,7 +281,7 @@
     "m_Group": {
         "m_Id": ""
     },
-    "m_Name": "CalculateNoise (Custom Function)",
+    "m_Name": "EvaluatePerlin (Custom Function)",
     "m_DrawState": {
         "m_Expanded": true,
         "m_Position": {
@@ -314,7 +314,7 @@
         "m_SerializableColors": []
     },
     "m_SourceType": 0,
-    "m_FunctionName": "CalculateNoise",
+    "m_FunctionName": "EvaluatePerlin",
     "m_FunctionSource": "80b6a7b7033ea6646a057b21b91f2733",
     "m_FunctionBody": "Enter function body here..."
 }

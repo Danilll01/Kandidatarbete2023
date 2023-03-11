@@ -260,7 +260,7 @@ public class SpawnFoliage : MonoBehaviour
 
     private int getIndex(Vector3 pos)
     {
-        float noise = Perlin.Noise(pos);
+        float noise = PerlinNoise.Evaluate(pos);
 
         if (noise < 0)
         {

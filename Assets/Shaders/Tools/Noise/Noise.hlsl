@@ -1,17 +1,12 @@
 #ifndef __noise_hlsl_
 #define __noise_hlsl_
 
-void CalculateNoise_float(float3 UV, float Scale, out float Out);
-float calculateNoise(float3 pos);
-float calculateNoise(float x, float y, float z);
-
-float calculateNoise(float2 pos);
-float calculateNoise(float x, float y);
-
+float lerp(float a, float b, float t);
 float2 fade(float2 t);
 float3 fade(float3 t);
 float grad(int hash, float x, float y);
 float grad(int hash, float x, float y, float z);
+
 static const int p[257] =
 {
     151, 160, 137, 91, 90, 15,
@@ -30,33 +25,44 @@ static const int p[257] =
     151
 };
 
-void CalculateNoise_float(float3 UV, float Scale, out float Out)
+class Perlin
 {
-    Out = calculateNoise(Scale * UV);
-}
-
-float calculateNoise(float x, float y, float z)
-{
-    return calculateNoise(float3(x, y, z));
-}
-
-float calculateNoise(float3 pos)
-{
-    int3 cube = (int3) floor(pos) & 255;
-
-    pos -= floor(pos);
-
-    float3 f = fade(pos);
+    // Function declarations
+    float Evaluate(float x, float y, float z);
+    float Evaluate(float x, float y);
+    float Evaluate(float3 pos);
+    float Evaluate(float2 pos);
     
-    int A = p[cube.x] + cube.y & 255;
-    int B = p[cube.x + 1] + cube.y & 255;
-    int AA = p[A] + cube.z & 255;
-    int AB = p[A + 1] + cube.z & 255;
-    int BA = p[B] + cube.z & 255;
-    int BB = p[B + 1] + cube.z & 255;
+    // Evaluate at point (x, y, z)
+    float Evaluate(float x, float y, float z)
+    {
+        return Evaluate(float3(x, y, z));
+    }
+    
+    // Evaluate at point (x, y)
+    float Evaluate(float x, float y)
+    {
+        return Evaluate(float2(x, y));
+    }
+    
+    // Evaluate at pos
+    float Evaluate(float3 pos)
+    {
+        int3 cube = (int3) floor(pos) & 255;
+
+        pos -= floor(pos);
+
+        float3 f = fade(pos);
+    
+        int A = p[cube.x] + cube.y & 255;
+        int B = p[cube.x + 1] + cube.y & 255;
+        int AA = p[A] + cube.z & 255;
+        int AB = p[A + 1] + cube.z & 255;
+        int BA = p[B] + cube.z & 255;
+        int BB = p[B + 1] + cube.z & 255;
     
     
-    return lerp(lerp(lerp(grad(p[AA], pos.x, pos.y, pos.z), // Add
+        return lerp(lerp(lerp(grad(p[AA], pos.x, pos.y, pos.z), // Add
 			grad(p[BA], pos.x - 1, pos.y, pos.z), f.x), // blended
 			lerp(grad(p[AB], pos.x, pos.y - 1, pos.z), // results
 				grad(p[BB], pos.x - 1, pos.y - 1, pos.z), f.x), f.y), // from 8
@@ -64,40 +70,52 @@ float calculateNoise(float3 pos)
 				grad(p[BA + 1], pos.x - 1, pos.y, pos.z - 1), f.x), // of cube
 				lerp(grad(p[AB + 1], pos.x, pos.y - 1, pos.z - 1),
 					grad(p[BB + 1], pos.x - 1, pos.y - 1, pos.z - 1), f.x), f.y), f.z);
-}
+    }
+    
+    // Evaluate at pos
+    float Evaluate(float2 pos)
+    {
+        //Find unit square that contains x, y
+        int2 square = (int2) floor(pos) & 255;
 
-void CalculateNoise_float(float2 UV, float Scale, out float Out)
-{
-    Out = calculateNoise(Scale * UV);
-}
+	    //Find relative point in this square
+        pos -= floor(pos);
 
-float calculateNoise(float x, float y)
-{
-    return calculateNoise(float2(x, y));
-}
+	    //Compute fade curves for each x, y
+        float2 f = fade(pos);
 
-float calculateNoise(float2 pos)
-{
-    //Find unit square that contains x, y
-    int2 square = (int2) floor(pos) & 255;
+	    //Hash coordinates for each of the four corners
+        int A = p[square.x] + square.y & 255;
+        int B = p[square.x + 1] + square.y & 255;
 
-	//Find relative point in this square
-    pos -= floor(pos);
-
-	//Compute fade curves for each x, y
-    float2 f = fade(pos);
-
-	//Hash coordinates for each of the four corners
-    int A = p[square.x] + square.y & 255;
-    int B = p[square.x + 1] + square.y & 255;
-
-	//Add blended results from 4 corners of square
-    return lerp(lerp(grad(p[A], pos.x, pos.y),
+	    //Add blended results from 4 corners of square
+        return lerp(lerp(grad(p[A], pos.x, pos.y),
 			grad(p[B], pos.x - 1, pos.y), f.x),
 			lerp(grad(p[A + 1], pos.x, pos.y - 1),
 				grad(p[B + 1], pos.x - 1, pos.y - 1), f.x), f.y);
+    }
+};
+
+Perlin perlin;
+
+// Evaluate at point UV using Scale
+void EvaluatePerlin_float(float3 UV, float Scale, out float Out)
+{
+    Out = perlin.Evaluate(UV * Scale);
+}
+    
+// Evaluate at point UV using Scale
+void EvaluatePerlin_float(float2 UV, float Scale, out float Out)
+{
+    Out = perlin.Evaluate(UV * Scale);
 }
 
+float lerp(float a, float b, float t)
+{
+    return a + t * (b - a);
+}
+
+// Helper functions
 float2 fade(float2 t)
 {
     return t * t * t * (t * (t * 6 - 15) + 10);
