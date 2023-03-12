@@ -606,8 +606,6 @@ MonoBehaviour:
   speed: 1
   detectionRadius: 30
   consumeRadius: 0.5
-  isChild: 1
-  growUpTime: 60
   meshObj: {fileID: 1487214972516236}
   creatureType: 0
   hunger: 100
@@ -621,8 +619,20 @@ MonoBehaviour:
   thirstDecrease: 0.1
   hungerIncrease: 20
   thirstIncrease: 20
-  resourceTypes: 
+  resourceTypes: 01000000
   creatureDiet: 0
+  childPrefab: {fileID: 0}
+  canReproduce: 1
+  wantToReproduce: 0
+  reproductionThreshold: 80
+  reproductionCooldown: 10
+  reproductionTimer: 0
+  reproductionCost: 50
+  reproductionChance: 0.5
+  maxChildren: 2
+  childrenCount: 0
+  isChild: 1
+  growUpTime: 60
   currentState: 0
   DEBUG: 0
   isSleeping: 0

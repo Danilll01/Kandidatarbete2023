@@ -1,4 +1,5 @@
 using System.Collections;
+using Unity.Burst.CompilerServices;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -40,9 +41,9 @@ public class Creature : MonoBehaviour
     [SerializeField] private bool canReproduce = true;
     [SerializeField] public bool wantToReproduce = false;
     [SerializeField] private float reproductionThreshold = 80f;
-    [SerializeField] private float reproductionCooldown = 10f;
+    [SerializeField] private float reproductionCooldown = 100f;
     [SerializeField] private float reproductionTimer = 0f;
-    [SerializeField] private float reproductionCost = 50f;
+    [SerializeField] private float reproductionCost = 30f;
     [SerializeField] private float reproductionChance = 0.5f;
     [SerializeField] private int maxChildren = 2;
     [SerializeField] private int childrenCount = 0;
@@ -142,7 +143,7 @@ public class Creature : MonoBehaviour
                 LookingForPartner();
                 break;
             case CreatureState.Breeding:
-                //Bredding();
+                Bredding();
                 break;
         }
 
@@ -155,6 +156,13 @@ public class Creature : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
+        // Decrese timer for reproduction
+        if (canReproduce && reproductionTimer > 0)
+        {
+            reproductionTimer -= Time.deltaTime;
+        }
+        
     }
 
     void FixedUpdate()
@@ -181,6 +189,9 @@ public class Creature : MonoBehaviour
         }
         else if (canReproduce) 
         {
+            // Dont try to find a new partner if ones already found
+            if (currentState == CreatureState.Breeding) return;
+
             if (reproductionTimer <= 0 && hunger > reproductionThreshold && thirst > thirstThreshold)
             {
                 wantToReproduce = true;
@@ -246,10 +257,7 @@ public class Creature : MonoBehaviour
                 if (animate)
                 {
                     InteractWithResourceAction(nearestResource, disable, resource);
-                } else if (resource == ResourceType.Creature)
-                {
-                    // Do stuff
-                } else
+                } else 
                 {
                     if (disable) nearestResource.GetComponent<Resource>().ConsumeResource();
                 }
@@ -292,13 +300,41 @@ public class Creature : MonoBehaviour
 
         if (nearestObject != null)
         {
-            atDestination = false;
-            GotoPosition(nearestObject.transform.position);
+            if (IsCloseToDestination(nearestObject.transform.position))
+            {
+                atDestination = true;
+
+                currentState = CreatureState.Breeding;
+
+            } else
+            {
+                atDestination = false;
+                destination = nearestObject.transform.position;
+                GotoPosition(destination);
+            }
+            
         } else
         {
-            atDestination = true;
+            RandomWalking();
         }
 
+    }
+
+    private void Bredding()
+    {
+        if (reproductionChance < Random.Range(0f,1f))
+        {
+            GameObject newObject = Instantiate(childPrefab, transform.position - transform.forward, transform.rotation, transform.parent);
+
+            childrenCount++;
+
+            if (childrenCount >= maxChildren) canReproduce = false;
+
+            reproductionTimer = reproductionCooldown;
+        }
+        
+        
+        currentState = CreatureState.Walking;
     }
 
     private GameObject GetNearestGameobject(ResourceType type)

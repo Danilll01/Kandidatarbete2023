@@ -404,11 +404,23 @@ MonoBehaviour:
   thirstIncrease: 20
   resourceTypes: 01000000
   creatureDiet: 0
+  childPrefab: {fileID: 1767663768970106, guid: ca9fda2f4d77c4d4f88d4ed8b939f69b,
+    type: 3}
+  canReproduce: 1
+  wantToReproduce: 0
+  reproductionThreshold: 50
+  reproductionCooldown: 10
+  reproductionTimer: 0
+  reproductionCost: 50
+  reproductionChance: 0.5
+  maxChildren: 2
+  childrenCount: 0
+  isChild: 0
+  growUpTime: 60
   currentState: 0
   DEBUG: 0
   isSleeping: 0
   animate: 1
-  foundFood: 0
   destination: {x: 0, y: 0, z: 0}
 --- !u!65 &6449783939063798092
 BoxCollider:
