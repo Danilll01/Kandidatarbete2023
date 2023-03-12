@@ -1112,6 +1112,20 @@ MonoBehaviour:
   thirstIncrease: 20
   resourceTypes: 02000000
   creatureDiet: 0
+  childPrefab: {fileID: 1077125651660242, guid: e8d93c1335d64374fbd2377caa9fb167,
+    type: 3}
+  parentPrefab: {fileID: 1655403738057260}
+  canReproduce: 1
+  wantToReproduce: 0
+  reproductionThreshold: 80
+  reproductionCooldown: 100
+  reproductionTimer: 0
+  reproductionCost: 30
+  reproductionChance: 0.5
+  maxChildren: 2
+  childrenCount: 0
+  isChild: 0
+  growUpTime: 60
   currentState: 0
   DEBUG: 0
   isSleeping: 0

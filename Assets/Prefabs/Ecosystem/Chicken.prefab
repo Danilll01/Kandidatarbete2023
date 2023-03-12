@@ -546,7 +546,7 @@ GameObject:
   - component: {fileID: 7690074285048803708}
   m_Layer: 0
   m_Name: Chicken
-  m_TagString: Untagged
+  m_TagString: Creature
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -621,7 +621,9 @@ MonoBehaviour:
   thirstIncrease: 20
   resourceTypes: 01000000
   creatureDiet: 0
-  childPrefab: {fileID: 0}
+  childPrefab: {fileID: 1767663768970106}
+  parentPrefab: {fileID: 1311290861401530, guid: 5904fbfe921140647a4ebddf4adda389,
+    type: 3}
   canReproduce: 1
   wantToReproduce: 0
   reproductionThreshold: 80
