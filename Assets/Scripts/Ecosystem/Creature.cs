@@ -38,6 +38,7 @@ public class Creature : MonoBehaviour
 
     [Header("Reproduction")]
     [SerializeField] private GameObject childPrefab;
+    [SerializeField] private GameObject parentPrefab;
     [SerializeField] private bool canReproduce = true;
     [SerializeField] public bool wantToReproduce = false;
     [SerializeField] private float reproductionThreshold = 80f;
@@ -162,7 +163,22 @@ public class Creature : MonoBehaviour
         {
             reproductionTimer -= Time.deltaTime;
         }
+
         
+        if (isChild)
+        {
+            // Decrease grow-up timer
+            if (growUpTime > 0)
+            {
+                growUpTime -= Time.deltaTime;
+            } else
+            {
+                isChild = false;
+                GameObject newChild = Instantiate(parentPrefab, transform.position, transform.rotation, transform.parent);
+                newChild.name = newChild.name.Replace("(Clone)", "").Trim(); 
+                Destroy(gameObject);
+            }
+        }
     }
 
     void FixedUpdate()
@@ -285,7 +301,7 @@ public class Creature : MonoBehaviour
         {
             if (coll != collider && coll.gameObject.CompareTag("Creature")) 
             {
-                bool foundPartner = coll.GetComponent<Creature>().wantToReproduce;
+                bool foundPartner = coll.GetComponent<Creature>().wantToReproduce && coll.name.Contains(gameObject.name);
                 if (!foundPartner) continue;
 
                 float distanceToGameObject = Vector3.Distance(transform.position, coll.transform.position);
@@ -324,7 +340,7 @@ public class Creature : MonoBehaviour
     {
         if (reproductionChance < Random.Range(0f,1f))
         {
-            GameObject newObject = Instantiate(childPrefab, transform.position - transform.forward, transform.rotation, transform.parent);
+            Instantiate(childPrefab, transform.position - transform.forward, transform.rotation, transform.parent);
 
             childrenCount++;
 
