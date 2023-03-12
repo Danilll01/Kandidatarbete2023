@@ -282,7 +282,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1487214972516236}
   m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -0, y: 0.0000000072630106, z: 0}
+  m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -606,6 +606,8 @@ MonoBehaviour:
   speed: 1
   detectionRadius: 30
   consumeRadius: 0.5
+  isChild: 1
+  growUpTime: 60
   meshObj: {fileID: 1487214972516236}
   creatureType: 0
   hunger: 100

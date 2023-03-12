@@ -35,6 +35,21 @@ public class Creature : MonoBehaviour
     [Header("If resource type == creature, select type of creature")]
     [SerializeField] private CreatureType creatureDiet;
 
+    [Header("Reproduction")]
+    [SerializeField] private GameObject childPrefab;
+    [SerializeField] private bool canReproduce = true;
+    [SerializeField] public bool wantToReproduce = false;
+    [SerializeField] private float reproductionThreshold = 80f;
+    [SerializeField] private float reproductionCooldown = 10f;
+    [SerializeField] private float reproductionTimer = 0f;
+    [SerializeField] private float reproductionCost = 50f;
+    [SerializeField] private float reproductionChance = 0.5f;
+    [SerializeField] private int maxChildren = 2;
+    [SerializeField] private int childrenCount = 0;
+    
+    [SerializeField] private bool isChild = false;
+    [SerializeField] private float growUpTime = 60f;
+
     [Header("Debug")]
     [SerializeField] private CreatureState currentState;
     [SerializeField] private bool DEBUG = false;
@@ -77,6 +92,8 @@ public class Creature : MonoBehaviour
         }
 
         animator.SetFloat("Speed", speed);
+
+        if (isChild) canReproduce = false;
     }
 
     // Update is called once per frame
@@ -122,7 +139,7 @@ public class Creature : MonoBehaviour
                 LookingForResource(ResourceType.Water);
                 break;
             case CreatureState.LookingForPartner:
-                //LookingForPartner();
+                LookingForPartner();
                 break;
             case CreatureState.Breeding:
                 //Bredding();
@@ -154,12 +171,21 @@ public class Creature : MonoBehaviour
         // If hunger is below threshold, look for food
         if (hunger < hungerThreshold)
         {
+            wantToReproduce = false;
             currentState = CreatureState.LookingForFood;
-
         }
         else if (thirst < thirstThreshold) // If thirst is below threshold, look for water
         {
+            wantToReproduce = false;
             currentState = CreatureState.LookingForWater;
+        }
+        else if (canReproduce) 
+        {
+            if (reproductionTimer <= 0 && hunger > reproductionThreshold && thirst > thirstThreshold)
+            {
+                wantToReproduce = true;
+                currentState = CreatureState.LookingForPartner;
+            }
         }
         else
         {
@@ -239,6 +265,40 @@ public class Creature : MonoBehaviour
         {
             RandomWalking();
         }
+    }
+
+    private void LookingForPartner()
+    {
+        Collider[] hitColliders = Physics.OverlapSphere(transform.position, detectionRadius);
+        GameObject nearestObject = null;
+        float nearestDistance = Mathf.Infinity;
+
+        foreach (Collider coll in hitColliders)
+        {
+            if (coll != collider && coll.gameObject.CompareTag("Creature")) 
+            {
+                bool foundPartner = coll.GetComponent<Creature>().wantToReproduce;
+                if (!foundPartner) continue;
+
+                float distanceToGameObject = Vector3.Distance(transform.position, coll.transform.position);
+
+                if (nearestDistance > distanceToGameObject)
+                {
+                    nearestDistance = distanceToGameObject;
+                    nearestObject = coll.gameObject;
+                }
+            }
+        }
+
+        if (nearestObject != null)
+        {
+            atDestination = false;
+            GotoPosition(nearestObject.transform.position);
+        } else
+        {
+            atDestination = true;
+        }
+
     }
 
     private GameObject GetNearestGameobject(ResourceType type)
