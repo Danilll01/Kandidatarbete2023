@@ -2,8 +2,6 @@
 #pragma kernel CSMesh
 //#pragma kernel CSPerlin
 
-#include "../MarchingCubes/Includes/PerlinNoise.compute"
-
 struct Vector3
 {
     float x, y, z;
