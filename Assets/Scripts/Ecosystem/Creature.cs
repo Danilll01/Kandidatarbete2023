@@ -12,6 +12,8 @@ public class Creature : MonoBehaviour
     [SerializeField] private GameObject meshObj;
 
     [Header("Creature food and water needs")]
+    [SerializeField] private CreatureType creatureType = CreatureType.Small;
+
     [SerializeField] private float hunger = 100f;
     [SerializeField] private float thirst = 100f;
     [SerializeField] private bool randomizeStats = true;
@@ -28,11 +30,17 @@ public class Creature : MonoBehaviour
     [SerializeField] private float hungerIncrease = 20f;
     [SerializeField] private float thirstIncrease = 20f;
 
+    [Header("Diet")]
+    [SerializeField] private ResourceType[] resourceTypes;
+    [Header("If resource type == creature, select type of creature")]
+    [SerializeField] private CreatureType creatureDiet;
+
     [Header("Debug")]
     [SerializeField] private CreatureState currentState;
     [SerializeField] private bool DEBUG = false;
     [SerializeField] private bool isSleeping;
-    
+    [SerializeField] private bool animate = true;
+
 
     private bool atDestination = false;
     [SerializeField] private Vector3 destination = Vector3.zero;
@@ -67,6 +75,8 @@ public class Creature : MonoBehaviour
             hunger = Random.Range(30, maxHunger);
             thirst = Random.Range(30, maxThirst);
         }
+
+        animator.SetFloat("Speed", speed);
     }
 
     // Update is called once per frame
@@ -100,7 +110,13 @@ public class Creature : MonoBehaviour
                 RandomWalking();
                 break;
             case CreatureState.LookingForFood:
-                LookingForResource(ResourceType.Food);
+                foreach (ResourceType resource in resourceTypes)
+                {
+                    if (resource == ResourceType.Water) continue;
+                    
+                    LookingForResource(resource);
+                }
+                
                 break;
             case CreatureState.LookingForWater:
                 LookingForResource(ResourceType.Water);
@@ -167,11 +183,11 @@ public class Creature : MonoBehaviour
 
     private void LookingForResource(ResourceType resource)
     {
-        GameObject nearestResource = GetNearestGameobject(resource.ToString());
+        GameObject nearestResource = GetNearestGameobject(resource);
         Vector3 resourcePos = Vector3.zero;
 
         // Get position of nearest resource
-        if (resource == ResourceType.Food)
+        if (resource != ResourceType.Water)
         {
             if (nearestResource != null)
                 resourcePos = nearestResource.transform.position;
@@ -195,13 +211,22 @@ public class Creature : MonoBehaviour
                 {
                     thirst = Mathf.Min(maxThirst, thirst + thirstIncrease);
                 }
-                else if (resource == ResourceType.Food)
+                else
                 {
                     hunger = Mathf.Min(maxHunger, hunger + hungerIncrease);
                     disable = true;
                 }
 
-                InteractWithResourceAction(nearestResource, disable);
+                if (animate)
+                {
+                    InteractWithResourceAction(nearestResource, disable, resource);
+                } else if (resource == ResourceType.Creature)
+                {
+                    // Do stuff
+                } else
+                {
+                    if (disable) nearestResource.GetComponent<Resource>().ConsumeResource();
+                }
             }
             else if (Vector3.Distance(transform.position, resourcePos) > consumeRadius)
             {
@@ -216,7 +241,7 @@ public class Creature : MonoBehaviour
         }
     }
 
-    private GameObject GetNearestGameobject(string tagname)
+    private GameObject GetNearestGameobject(ResourceType type)
     {
         Collider[] hitColliders = Physics.OverlapSphere(transform.position, detectionRadius);
         GameObject nearestObject = null;
@@ -225,8 +250,14 @@ public class Creature : MonoBehaviour
         // Find nearest object with tag
         foreach (Collider coll in hitColliders)
         {
-            if (coll != collider && coll.gameObject.CompareTag(tagname))
+            if (coll != collider && coll.gameObject.CompareTag(type.ToString()))
             {
+                if (type == ResourceType.Creature)
+                {
+                    CreatureType creatureType = coll.gameObject.GetComponent<Creature>().GetCreatureType;
+                    if (creatureDiet != creatureType) continue;
+                }
+                
                 float distanceToGameObject = Vector3.Distance(transform.position, coll.transform.position);
 
                 if (nearestDistance > distanceToGameObject)
@@ -358,25 +389,37 @@ public class Creature : MonoBehaviour
     }
 
     // Interacts with a resource and plays eat animation
-    private void InteractWithResourceAction(GameObject resource, bool disable)
+    private void InteractWithResourceAction(GameObject resource, bool disable, ResourceType type)
     {
         currentState = CreatureState.PerformingAction;
-        animator.SetBool("Walk", false);
         animator.SetBool("Eat", true);
-        StartCoroutine(InteractWithResource(resource, disable));
+        
+        StartCoroutine(InteractWithResource(resource, disable, type));
     }
 
-    private IEnumerator InteractWithResource(GameObject resource, bool disable)
+    private IEnumerator InteractWithResource(GameObject resource, bool disable, ResourceType type)
     {
+        // Wait until walk animation is done
+        yield return new WaitForSeconds(0.1f);
+        animator.SetBool("Walk", false);
+        
         // Animation clip length
         float clipLength = animator.GetCurrentAnimatorStateInfo(0).length;
 
-        // Wait for 3 seconds
-        yield return new WaitForSeconds(clipLength);
-        
-        if (disable) resource.GetComponent<Resource>().ConsumeResource();
-        
-        yield return new WaitForSeconds(clipLength);
+        // Wait for duration of eat animation
+        yield return new WaitForSeconds(clipLength + 0.1f);
+
+        // Destroy / consume resource
+        if (disable)
+        {
+            if (type == ResourceType.Creature)
+            {
+                Destroy(resource);
+            } else
+            {
+                resource.GetComponent<Resource>().ConsumeResource();
+            }
+        }
 
         // Set the state to idle
         animator.SetBool("Eat", false);
@@ -385,5 +428,15 @@ public class Creature : MonoBehaviour
         yield return new WaitForSeconds(1);
 
         currentState = CreatureState.Walking;
+    }
+
+    public CreatureType GetCreatureType
+    {
+        get { return creatureType; }
+    }
+    
+    public CreatureType GetCreatureDiet
+    {
+        get { return creatureDiet; }
     }
 }
