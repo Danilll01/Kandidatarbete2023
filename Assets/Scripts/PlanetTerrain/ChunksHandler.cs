@@ -24,8 +24,6 @@ public class ChunksHandler : MonoBehaviour
     [HideInInspector] private List<Chunk> chunks;
     [SerializeField] public TerrainColor terrainColor;
 
-   
-
     /// <summary>
     /// Initialize the values
     /// </summary>
@@ -63,7 +61,7 @@ public class ChunksHandler : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(!initialized && planet.spawnFoliage.foliageSpawned)
+        if(!initialized)
         {
             InitializeChunkPositions();
             UpdateChunksVisibility();
@@ -71,7 +69,7 @@ public class ChunksHandler : MonoBehaviour
         }
 
         // Only update the chunks if the player is close to the planet
-        if (planet.spawnFoliage.foliageSpawned && initialized && (player.position - planet.transform.position).magnitude < 3000)
+        if (initialized && (player.position - planet.transform.position).magnitude < 3000)
         {
             UpdateChunksVisibility();
             resetchunks = false;
@@ -188,6 +186,7 @@ public class ChunksHandler : MonoBehaviour
             else
             {
                 chunks[i].gameObject.SetActive(true);
+                chunks[i].foliage.SpawnFoliageOnChunk();
             }
         }
     }

@@ -37,6 +37,7 @@ public class PillPlayerController : MonoBehaviour
 
         if (attractor == null)
         {
+            
             attractor = planetToSpawnOn.GetComponent<Planet>();
             if (attractor == null)
             {
@@ -48,7 +49,7 @@ public class PillPlayerController : MonoBehaviour
         ship = GameObject.Find("Spaceship").GetComponent<ShipController>();
 
         //A bit of a hack to give the player a starting planet
-        transform.position = planetToSpawnOn.transform.position + new Vector3(0, attractor.diameter, 0);
+        transform.position = planetToSpawnOn.transform.position + new Vector3(0, attractor.diameter + 100, 0);
         Vector3 directionNearestPlanet = attractor.transform.position - transform.position;
         Physics.Raycast(transform.position, directionNearestPlanet, out RaycastHit hit);
 

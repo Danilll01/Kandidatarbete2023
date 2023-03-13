@@ -9,6 +9,7 @@ using UnityEngine.UIElements;
 public class Chunk : MonoBehaviour
 {
     [SerializeField] public Transform creatures;
+    [SerializeField] public Foliage foliage;
 
     private int index;
     private int resolution;
@@ -39,10 +40,15 @@ public class Chunk : MonoBehaviour
         meshFilter = transform.GetComponent<MeshFilter>();
         meshCollider = transform.GetComponent<MeshCollider>();
 
-        calculateChunkPosition();
-
+        CalculateChunkPosition();
+        
         //Set lowest resolution as default
-        updateMesh(resolution);
+        Vector3[] meshVertices = UpdateMesh(resolution);
+        if (meshVertices.Length > 0 && marchingCubes.chunkResolution == 3)
+        {
+            foliage.Initialize(meshVertices, position);
+        }
+
     }
 
     /// <summary>
@@ -52,7 +58,7 @@ public class Chunk : MonoBehaviour
         GetComponent<MeshRenderer>().material = material;
     }
 
-    private void calculateChunkPosition()
+    private void CalculateChunkPosition()
     {
         // Extra the chunkindex in terms of x,y,z
         int mask = 0;
@@ -68,25 +74,26 @@ public class Chunk : MonoBehaviour
                 (index & (mask << (marchingCubes.chunkResolution * 2))) >> (marchingCubes.chunkResolution * 2)
             );
 
-        // Use the chunkindex to calculate the position of the chunk
-        position = -(chunkIndex - 1.5f * Vector3.one) * (marchingCubes.diameter / (1 << (marchingCubes.chunkResolution)));
+        position = -(chunkIndex - (Mathf.Pow(2, marchingCubes.chunkResolution) - 1) / 2 * Vector3.one) * (marchingCubes.diameter / (1 << (marchingCubes.chunkResolution)));
     }
 
-    private void updateMesh(int resolution)
+    
+
+    private Vector3[] UpdateMesh(int resolution)
     {
         if (this.resolution == resolution)
-            return;
+            return null;
 
         this.resolution = resolution;
 
         mesh = new Mesh();
 
-        
-        marchingCubes.generateMesh(terrainLevel, index, resolution, mesh);
-        
-
+        Vector3[] meshVertices =  marchingCubes.generateMesh(terrainLevel, index, resolution, mesh);
+       
         meshFilter.sharedMesh = mesh;
 
         meshCollider.sharedMesh = mesh;
+
+        return meshVertices;
     }
 }
