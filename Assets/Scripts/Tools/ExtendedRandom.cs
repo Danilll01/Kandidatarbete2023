@@ -34,6 +34,19 @@ namespace ExtendedRandom
         }
 
         /// <summary>
+        /// Returns a random point on the edge of a circle with radius 1.0
+        /// </summary>
+        public Vector2 OnUnitCircle()
+        {
+            float angle = Value(0, 2) * Mathf.PI; // Generate angle between [0, 2*Pi]
+
+            // Convert to from polar coordinates to regular coordinates
+            return new Vector2(
+                x: Mathf.Cos(angle),
+                y: Mathf.Sin(angle));
+        }
+
+        /// <summary>
         /// Returns a random point inside or on a sphere with radius 1.0
         /// </summary>
         public Vector3 InsideUnitSphere()
@@ -83,6 +96,14 @@ namespace ExtendedRandom
         public float Value()
         {
             return (float)random.NextDouble();
+        }
+
+        /// <summary>
+        /// Returns a random float within [0, a]
+        /// </summary>
+        public float Value(float a)
+        {
+            return Value(0, a);
         }
 
         /// <summary>
