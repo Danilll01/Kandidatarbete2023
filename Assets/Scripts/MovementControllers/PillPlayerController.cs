@@ -31,7 +31,7 @@ public class PillPlayerController : MonoBehaviour
     }
 
     // Start is called before the first frame update
-    public void Initialize(GameObject planetToSpawnOn)
+    public void Initialize(Planet planetToSpawnOn)
     {
         Universe.player = this;
 
