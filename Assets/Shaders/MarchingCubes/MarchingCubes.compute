@@ -8,8 +8,6 @@
 float4 getTexturePoint(uint3 pos, int3 chunkId, float maxPos);
 float3 interpolateVerts(float4 v1, float4 v2);
 
-Perlin noise;
-
 struct Triangle
 {
     float3 vertexA;
@@ -137,9 +135,9 @@ float4 getTexturePoint(uint3 pos, int3 chunkId, float maxPos)
     
     // Add noise to current point
     float density = (1 - lengthPos) * 255;
-    float noiseOctave0 = (noise.Evaluate(normPos * (frequency << 0)) + 1) * .5 * amplitude;
-    float noiseOctave1 = (noise.Evaluate(normPos * (frequency << 1)) + 1) * .5 * amplitude * amplitude;
-    float noiseOctave2 = (noise.Evaluate(normPos * (frequency << 2)) + 1) * .5 * amplitude * amplitude * amplitude;
+    float noiseOctave0 = (perlin.Evaluate(normPos * (frequency << 0)) + 1) * .5 * amplitude;
+    float noiseOctave1 = (perlin.Evaluate(normPos * (frequency << 1)) + 1) * .5 * amplitude * amplitude;
+    float noiseOctave2 = (perlin.Evaluate(normPos * (frequency << 2)) + 1) * .5 * amplitude * amplitude * amplitude;
     density *= noiseOctave0 * noiseOctave1 * noiseOctave2;
         
     // Return the noised value
