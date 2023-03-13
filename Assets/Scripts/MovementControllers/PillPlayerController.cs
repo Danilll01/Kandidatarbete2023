@@ -10,6 +10,7 @@ public class PillPlayerController : MonoBehaviour
     public Planet attractor = null;
     public Camera firstPersonCamera;
     public float movementSpeed;
+    [SerializeField] private float sprintFactor;
     public float airControlFactor;
     public float jumpForce;
     [SerializeField] private float swimForce;
@@ -104,7 +105,15 @@ public class PillPlayerController : MonoBehaviour
         Vector3 oldY = Vector3.Project(body.velocity, yGround);
         //New movement
         Vector3 movementVector = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical")) * movementSpeed;
-        
+        if (Input.GetAxisRaw("Sprint") == 1)  
+        {
+            movementVector *= sprintFactor;
+        }
+        else if(Input.GetAxisRaw("Sprint") == -1)
+        {
+            movementVector /= sprintFactor;
+        }
+
         //Swiming
         if(Swimming)
         {
