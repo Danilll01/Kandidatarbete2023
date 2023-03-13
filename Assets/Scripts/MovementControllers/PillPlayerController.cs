@@ -100,7 +100,8 @@ public class PillPlayerController : MonoBehaviour
     private void HandleMovement()
     {
         //Keep old Y velocity. Rotates to world space, grabs y velocity and rotates back to planet orientation
-        Vector3 oldY = transform.rotation * new Vector3(0, (Quaternion.Inverse(transform.rotation) * body.velocity).y);
+        Vector3 yGround = Grounded ? GroundNormal : transform.rotation * transform.up;
+        Vector3 oldY = Vector3.Project(body.velocity, yGround);
         //New movement
         Vector3 movementVector = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical")) * movementSpeed;
         
@@ -117,14 +118,17 @@ public class PillPlayerController : MonoBehaviour
             }
             
         }
-        else if (Input.GetAxisRaw("Jump") == 1 && !jump && Grounded) //Jumping
+        else if (Input.GetAxisRaw("Jump") == 1 && Grounded) //Jumping
         {
-            movementVector.y += jumpForce;
             jump = true;
         }
-        if(Input.GetAxisRaw("Jump") == 0 && jump) //Resets the jump when jump is released
+        if(!Grounded || Input.GetAxisRaw("Jump") == 0) //Resets the jump when jump is released or left the ground
         {
             jump = false;
+        }
+        if (jump)
+        {
+            movementVector.y = jumpForce;
         }
 
         //Input recieved
@@ -149,8 +153,15 @@ public class PillPlayerController : MonoBehaviour
             }
             else if (Grounded)
             {
-                body.velocity = transform.rotation * movementVector;
-                body.velocity += oldY;
+                movementVector = transform.rotation * movementVector;
+
+                //Remove any movement that would make the player leave the ground unless the player is jumping
+                if (!jump)
+                {
+                    movementVector -= Vector3.Project(movementVector, yGround);
+                }
+
+                body.velocity = movementVector;
             }
             //Air controls
             else
@@ -238,6 +249,27 @@ public class PillPlayerController : MonoBehaviour
     {
         get { return (attractor.transform.position - transform.position).magnitude; }
     }
+
+
+    /// <summary>
+    /// The Vector3 of the normal ground the player is standing on. Returns Vector3.Zero if not on ground.
+    /// </summary>
+    public Vector3 GroundNormal
+    {
+        get
+        {
+            Physics.Raycast(transform.position, attractor.transform.position - transform.position, out RaycastHit hit, 2f);
+            if (hit.collider == null)
+            {
+                return Vector3.zero;
+            }
+            else
+            {
+                return hit.normal;
+            }
+        }
+    }
+
 
     public bool Grounded
     {
