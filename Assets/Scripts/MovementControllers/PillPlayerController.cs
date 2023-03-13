@@ -46,16 +46,7 @@ public class PillPlayerController : MonoBehaviour
 
         body = GetComponent<Rigidbody>();
         ship = GameObject.Find("Spaceship").GetComponent<ShipController>();
-
-        //A bit of a hack to give the player a starting planet
-        transform.position = planetToSpawnOn.transform.position + new Vector3(0, attractor.diameter, 0);
-        Vector3 directionNearestPlanet = attractor.transform.position - transform.position;
-        Physics.Raycast(transform.position, directionNearestPlanet, out RaycastHit hit);
-
-        //Put the player above the ground
-        transform.position = hit.point - (directionNearestPlanet.normalized) * 5;
-        ship.Initialize(body, firstPersonCamera);
-
+        Spawn(planetToSpawnOn);
         //Lock the mouse inside of the game
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
@@ -188,6 +179,49 @@ public class PillPlayerController : MonoBehaviour
         {
             Gravity.KeepUpright(transform, attractor.transform);
             Gravity.Attract(transform.position, body, attractor.transform.position, attractor.mass);
+        }
+    }
+
+    private void Spawn(Planet planet)
+    {
+        UnityEngine.Random.InitState(Universe.random.Next());
+        int failCount = 0;
+        bool foundSpawnLocation = false;
+        //Try to find suitable spawn location
+        while (!foundSpawnLocation)
+        {
+            if (failCount > 1000)
+            {
+                Debug.LogError("Unable to find suitable spawn position for player on planet: " + planet.bodyName);
+                return;
+            }
+
+            //Try to find a suitable spawn position
+            Vector3 spawnLocationAbovePlanet = planet.transform.position + (UnityEngine.Random.onUnitSphere * planet.radius);
+            Vector3 directionNearestPlanet = (planet.transform.position - spawnLocationAbovePlanet).normalized;
+            bool hitPlanet = Physics.Raycast(spawnLocationAbovePlanet, directionNearestPlanet, out RaycastHit spawnLocation, planet.radius);
+
+            if (!hitPlanet)
+            {
+                Debug.LogError("Unable to hit planet: " + planet.bodyName + " with spawn ray at " + planet.transform.position.ToString());
+                Debug.DrawLine(spawnLocationAbovePlanet, spawnLocationAbovePlanet + directionNearestPlanet * planet.radius, Color.red, 1000000);
+                Debug.Break();
+                return;
+            }
+
+            bool onGround = spawnLocation.transform.gameObject.layer == LayerMask.NameToLayer("Planet");
+            bool aboveWater = Vector3.Distance(spawnLocation.point, planet.transform.position) > planet.waterDiameter / 2;
+            foundSpawnLocation = onGround && aboveWater;
+
+            if (!foundSpawnLocation)
+            {
+                failCount++;
+                continue;
+            }
+
+            //Put the player above the ground
+            transform.position = spawnLocation.point - directionNearestPlanet.normalized * 5;
+            ship.Initialize(body, firstPersonCamera);
         }
     }
 
