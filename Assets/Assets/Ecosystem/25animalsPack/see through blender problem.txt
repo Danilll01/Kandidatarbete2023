@@ -1,0 +1,32 @@
+25 unique low poly animals made in blender. All objects have one texture. Can be used for games, animations, 3D priniting and more
+Includes : 3d model, uv unwrap, bake simple color and original blender file with final animals (and animals that dont have modifiers applied)
+
+01fox - Faces 498, Vertices 506
+02cat - Faces 464, Vertices 466	
+03duck - Faces 396, Vertices 398 
+04bizon - Faces 540, Vertices 565 (American bison)
+05deer - Faces 460, Vertices 572
+06penguin - Faces 266, Vertices 278
+07shark - Faces 694, Vertices 737 (Great White Shark)
+08bear - Faces 465, Vertices 472 (Grizzly Bear)
+09deer - Faces 730, Vertices 682 (Elk)
+10sheep - Faces 494, Vertices 492 
+11frog - Faces 612, Vertices 634 
+12dog - Faces 528, Vertices 530 (Doberman)
+13cow - Faces 642, Vertices 656 
+14dog - Faces 421, Vertices 417 (Welsh Corgi)
+15lizard - Faces 666, Vertices 676 (Spotted Salamander)
+16rabbit - Faces 637,Vertices 631 
+17horse - Faces 496, Vertices 489
+18giraf - Faces 492, Vertices 494
+19dof - Faces 452, Vertices 460 (Shiba inu)
+20dog - Faces 396, Vertices 400 (Beagle)	
+21chiken - Faces 372, Vertices 390 
+22smolchiken - Faces 268, Vertices 278 
+23smolbird - Faces 423, Vertices 516
+24bird - Faces 748, Vertices 644 (Parrot)
+25dog - Faces 964, Vertices 706 (German Shepherd)
+
+Why are my textures see through blender?
+To fix that problem, go into the Material Settings and check if the Blend Mode is on Alpha Blend. If it is then switch it to Opaque.
+Some files may need textures adjusted or added depending on the program there imported into. If you liked this set, please leave a review.
