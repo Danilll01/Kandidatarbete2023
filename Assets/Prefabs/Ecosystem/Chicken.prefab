@@ -605,7 +605,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 1
   detectionRadius: 30
-  consumeRadius: 0.2
+  consumeRadius: 0.02
   meshObj: {fileID: 1487214972516236}
   creatureType: 0
   hunger: 100
