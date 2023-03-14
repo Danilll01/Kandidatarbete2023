@@ -83,7 +83,7 @@ namespace ExtendedRandom
         public Vector3 OnUnitSphere()
         {
             float phi = Value(0, 2) * Mathf.PI; // Generates angle between [0, 2*Pi]
-            float theta = Mathf.Acos(Value() * Mathf.PI); // Generates angle between [0, Pi]
+            float theta = Value() * Mathf.PI; // Generates angle between [0, Pi]
 
             // Convert from spherical coordinates to regular coordinates
             return new Vector3(
