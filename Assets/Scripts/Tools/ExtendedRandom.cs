@@ -20,7 +20,8 @@ namespace ExtendedRandom
         }
 
         /// <summary>
-        /// Returns a random point inside or on a circle with radius 1.0
+        /// <para>Returns a random point inside or on a circle with radius 1.0</para>
+        /// <i>Disclaimer: This function is not uniformly distributed</i> 
         /// </summary>
         public Vector2 InsideUnitCircle()
         {
@@ -49,7 +50,7 @@ namespace ExtendedRandom
         }
 
         /// <summary>
-        /// Returns a random point on the edge of a circle with radius 1.0
+        /// Returns a uniformly random point on the edge of a circle with radius 1.0
         /// </summary>
         public Vector2 OnUnitCircle()
         {
@@ -62,7 +63,8 @@ namespace ExtendedRandom
         }
 
         /// <summary>
-        /// Returns a random point inside or on a sphere with radius 1.0
+        /// <para>Returns a random point inside or on a sphere with radius 1.0</para>
+        /// <i>Disclaimer: This function is not uniformly distributed</i> 
         /// </summary>
         public Vector3 InsideUnitSphere()
         {
@@ -78,7 +80,25 @@ namespace ExtendedRandom
         }
 
         /// <summary>
-        /// Returns a random point on the surface of a sphere with radius 1.0
+        /// <para>Returns a uniformly distributed random point inside or on a sphere with radius 1.0</para>
+        /// <i>Note: This function is slower than <see cref="InsideUnitSphere()">InsideUnitSphere()</see></i>
+        /// </summary>
+        public Vector3 InsideUnitSphereUniform()
+        {
+            float phi = Mathf.Acos(Value(0, 2) - 1); // Generates angle between [0, 2*Pi)
+            float theta = Value(0, 2) * Mathf.PI; // Generates angle between [0, Pi)
+            float radius = Mathf.Pow(Value(), 1.0f / 3); // Generates radius between [0, 1]
+
+            // Convert from spherical coordinates to regular coordinates
+            return new Vector3(
+                x: radius * Mathf.Sin(phi) * Mathf.Cos(theta),
+                y: radius * Mathf.Sin(phi) * Mathf.Sin(theta),
+                z: radius * Mathf.Cos(phi));
+        }
+
+        /// <summary>
+        /// <para>Returns a random point on the surface of a sphere with radius 1.0</para>
+        /// <i>Disclaimer: This function is not uniformly distributed</i> 
         /// </summary>
         public Vector3 OnUnitSphere()
         {
