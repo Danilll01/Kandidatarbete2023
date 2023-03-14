@@ -63,7 +63,7 @@ public class Planet : MonoBehaviour
         }
 
         // Init water
-        waterDiameter = -(threshold / 255 - 1) * diameter;
+        waterDiameter = -(threshold / 255 - 1) * diameter * 0.93f;
 
         terrainLevel.SetMin(Mathf.Abs((waterDiameter + 1) / 2));
 
