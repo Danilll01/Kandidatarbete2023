@@ -34,6 +34,21 @@ namespace ExtendedRandom
         }
 
         /// <summary>
+        /// <para>Returns a uniformly distributed random point inside or on a circle with radius 1.0</para>
+        /// <i>Note: This function is slower than <see cref="InsideUnitCircle()">InsideUnitCircle()</see></i>
+        /// </summary>
+        public Vector2 InsideUnitCircleUniform()
+        {
+            float angle = Value(0, 2) * Mathf.PI; // Generate angle between [0, 2*Pi]
+            float radius = Mathf.Sqrt(Value()); // Generate radius between [0, 1]
+
+            // Convert to from polar coordinates to regular coordinates
+            return new Vector2(
+                x: radius * Mathf.Cos(angle),
+                y: radius * Mathf.Sin(angle));
+        }
+
+        /// <summary>
         /// Returns a random point on the edge of a circle with radius 1.0
         /// </summary>
         public Vector2 OnUnitCircle()
@@ -68,7 +83,23 @@ namespace ExtendedRandom
         public Vector3 OnUnitSphere()
         {
             float phi = Value(0, 2) * Mathf.PI; // Generates angle between [0, 2*Pi]
-            float theta = Value() * Mathf.PI; // Generates angle between [0, Pi]
+            float theta = Mathf.Acos(Value() * Mathf.PI); // Generates angle between [0, Pi]
+
+            // Convert from spherical coordinates to regular coordinates
+            return new Vector3(
+                x: Mathf.Sin(theta) * Mathf.Cos(phi),
+                y: Mathf.Sin(theta) * Mathf.Sin(phi),
+                z: Mathf.Cos(theta));
+        }
+
+        /// <summary>
+        /// <para>Returns a uniformly distributed random point on the surface of a sphere with radius 1.0</para>
+        /// <i>Note: This function is slower than <see cref="OnUnitSphere()">OnUnitSphere()</see></i>
+        /// </summary>
+        public Vector3 OnUnitSphereUniform()
+        {
+            float phi = Value(0, 2) * Mathf.PI; // Generates angle between [0, 2*Pi]
+            float theta = Mathf.Acos(1 - 2 * Value()); // Generates angle between [0, Pi]
 
             // Convert from spherical coordinates to regular coordinates
             return new Vector3(
@@ -91,7 +122,7 @@ namespace ExtendedRandom
         }
 
         /// <summary>
-        /// Returns a random float within [0, 1]
+        /// Returns a random float within [0, 1)
         /// </summary>
         public float Value()
         {
@@ -99,7 +130,7 @@ namespace ExtendedRandom
         }
 
         /// <summary>
-        /// Returns a random float within [0, a]
+        /// Returns a random float within [0, a)
         /// </summary>
         public float Value(float a)
         {
@@ -107,7 +138,7 @@ namespace ExtendedRandom
         }
 
         /// <summary>
-        /// Returns a random float within [a, b]
+        /// Returns a random float within [a, b)
         /// </summary>
         public float Value(float a, float b)
         {
@@ -118,7 +149,7 @@ namespace ExtendedRandom
         }
 
         /// <summary>
-        /// Returns random integer value
+        /// Returns a non-negative random integer.
         /// </summary>
         public int Next()
         {
@@ -126,7 +157,7 @@ namespace ExtendedRandom
         }
 
         /// <summary>
-        /// Returns random integer value in range [0, maxValue]
+        /// Returns a non-negative random integer that is less than the specified maximum.
         /// </summary>
         public int Next(int maxValue)
         {
@@ -134,7 +165,7 @@ namespace ExtendedRandom
         }
 
         /// <summary>
-        /// Returns random integer value in range [minValue, maxValue]
+        /// Returns a random integer that is within a specified range.
         /// </summary>
         public int Next(int minValue, int maxValue)
         {
