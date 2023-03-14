@@ -391,7 +391,6 @@ MonoBehaviour:
   consumeRadius: 0.05
   meshObj: {fileID: 1055748561691468}
   creatureType: 0
-  hunger: 100
   thirst: 100
   randomizeStats: 1
   maxHunger: 100
@@ -412,8 +411,8 @@ MonoBehaviour:
   reproductionThreshold: 50
   reproductionCooldown: 10
   reproductionTimer: 0
-  reproductionCost: 50
-  reproductionChance: 0.5
+  reproductionCost: 15
+  reproductionChance: 0.9
   maxChildren: 2
   childrenCount: 0
   isChild: 0

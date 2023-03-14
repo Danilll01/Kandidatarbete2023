@@ -8,7 +8,7 @@ using UnityEngine;
 [RequireComponent(typeof(Animator))]
 public class Creature : MonoBehaviour
 {
-    
+
     [SerializeField] private float speed = 1f;
     [SerializeField] private float detectionRadius = 30f;
     [SerializeField] private float consumeRadius = 0.5f;
@@ -18,7 +18,7 @@ public class Creature : MonoBehaviour
     [Header("Creature food and water needs")]
     [SerializeField] private CreatureType creatureType = CreatureType.Small;
 
-    [SerializeField] private float hunger = 100f;
+    [SerializeField] private float hunger { get; set; } = 100f;
     [SerializeField] private float thirst = 100f;
     [SerializeField] private bool randomizeStats = true;
 
@@ -72,6 +72,8 @@ public class Creature : MonoBehaviour
     private LODGroup lodGroup;
     private Renderer renderer;
     private Animator animator;
+
+    private Creature breedingPartner;
 
     // Start is called before the first frame update
     void Start()
@@ -322,7 +324,7 @@ public class Creature : MonoBehaviour
             if (IsCloseToDestination(nearestObject.transform.position))
             {
                 atDestination = true;
-
+                breedingPartner = nearestObject.GetComponent<Creature>();
                 currentState = CreatureState.Breeding;
 
             } else
@@ -341,18 +343,18 @@ public class Creature : MonoBehaviour
 
     private void Bredding()
     {
-        if (reproductionChance < Random.Range(0f,1f))
+        if (reproductionChance > Random.Range(0f,1f) && breedingPartner.hunger < hunger)
         {
             GameObject newObject = Instantiate(childPrefab, transform.position - transform.forward, transform.rotation, transform.parent);
             newObject.name = newObject.name.Replace("(Clone)", "").Trim();
 
             childrenCount++;
+            hunger -= reproductionCost;
 
             if (childrenCount >= maxChildren) canReproduce = false;
 
             reproductionTimer = reproductionCooldown;
         }
-        
         
         currentState = CreatureState.Walking;
     }
