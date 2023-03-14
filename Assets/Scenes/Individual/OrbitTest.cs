@@ -41,8 +41,8 @@ public class OrbitTest : MonoBehaviour
     void Update()
     {
         planetToSun = sun.transform.position - target.transform.position;
-        var orthogonalVector = Vector3.RotateTowards(planetToSun, -planetToSun, Mathf.PI / 2f, 0f);
-        orthogonalVector.y = 0;
+        var orthogonalVector = rotationAxis;//Vector3.RotateTowards(planetToSun, -planetToSun, Mathf.PI / 2f, 0f);
+        //orthogonalVector.y = 0;
         transform.RotateAround(target.transform.position, orthogonalVector, degreesPerSecond * Time.deltaTime);
     }
 

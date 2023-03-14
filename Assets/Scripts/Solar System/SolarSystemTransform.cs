@@ -99,7 +99,8 @@ public class SolarSystemTransform : MonoBehaviour
 
     private void RotateSolarSystem()
     {
-
+        transform.RotateAround(transform.position, spawnPlanets.bodies[activePlanetIndex].GetComponent<Planet>().rotationAxis, 5f * Time.deltaTime);
+        /*
         // Keep us at the last known relative position
         Vector3 planetPosition = spawnPlanets.bodies[activePlanetIndex].transform.position;
         planetsParent.transform.position = RotateAroundModified(planetPosition, spawnPlanets.bodies[activePlanetIndex].GetComponent<Planet>().rotationAxis, 5 * Time.deltaTime);
@@ -113,8 +114,9 @@ public class SolarSystemTransform : MonoBehaviour
             once = false;
         }
         relativeDistance = transform.position - planetPosition;
+        */
 
-        
+
     }
 
     private Vector3 RotateAroundModified(Vector3 center, Vector3 axis, float angle)

@@ -245,7 +245,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!135 &368019390
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -340,7 +340,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   orbitObject: {fileID: 368019388}
-  rotationAxis: {x: 1, y: 0, z: 1}
+  rotationAxis: {x: 1, y: 0, z: 0}
   objectRadius: 1
   offset: 1
   Target: {fileID: 742789586}
@@ -457,7 +457,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!135 &742789583
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -606,7 +606,7 @@ PrefabInstance:
     - target: {fileID: 4197161889152382809, guid: a27088cae5f8b5549bde9f1342be2696,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a27088cae5f8b5549bde9f1342be2696, type: 3}
@@ -1054,7 +1054,7 @@ PrefabInstance:
     - target: {fileID: 776431053636631425, guid: 93094628cce30c64195c2ae1633e7e60,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 776431053636631427, guid: 93094628cce30c64195c2ae1633e7e60,
         type: 3}
@@ -1219,7 +1219,7 @@ PrefabInstance:
     - target: {fileID: 8157375954420172327, guid: d9aa2365836edc946afc563b765ba551,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d9aa2365836edc946afc563b765ba551, type: 3}
