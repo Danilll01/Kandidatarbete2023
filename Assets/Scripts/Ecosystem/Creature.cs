@@ -17,9 +17,9 @@ public class Creature : MonoBehaviour
 
     [Header("Creature food and water needs")]
     [SerializeField] private CreatureType creatureType = CreatureType.Small;
-
-    [SerializeField] private float hunger { get; set; } = 100f;
-    [SerializeField] private float thirst { get; set; } = 100f;
+    
+    [SerializeField] public float hunger = 100f;
+    [SerializeField] public float thirst = 100f;
     [SerializeField] private bool randomizeStats = true;
 
     [SerializeField] private float maxHunger = 100f;
