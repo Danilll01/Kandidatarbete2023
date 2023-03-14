@@ -1,7 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Security.Cryptography;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
@@ -9,7 +5,10 @@ public class PillPlayerController : MonoBehaviour
 {
     public Planet attractor = null;
     public Camera firstPersonCamera;
-    
+    [SerializeField] private PlayerWater playerWater;
+    private Rigidbody body;
+    [HideInInspector] public bool paused;
+
     [Header("Movement")]
     public float movementSpeed;
     [SerializeField] private float sprintFactor;
@@ -20,13 +19,9 @@ public class PillPlayerController : MonoBehaviour
     [SerializeField] private float swimForce;
     [SerializeField] private float maxSwimSpeed = 10;
     public float maxSpeed;
-
     private bool jump = false; // Used for creating a rising trigger for jump
 
-    [SerializeField] private PlayerWater playerWater;
-
-    private Rigidbody body;
-    [HideInInspector] public bool paused;
+    [Header("Ship")]
     private ShipController ship;
     [HideInInspector] public bool boarded = false;
 
@@ -113,17 +108,17 @@ public class PillPlayerController : MonoBehaviour
         Vector3 oldY = Vector3.Project(body.velocity, yGround);
         //New movement
         Vector3 movementVector = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical")) * movementSpeed;
-        if (Input.GetAxisRaw("Sprint") == 1)  
+        if (Input.GetAxisRaw("Sprint") == 1)
         {
             movementVector *= sprintFactor;
         }
-        else if(Input.GetAxisRaw("Sprint") == -1)
+        else if (Input.GetAxisRaw("Sprint") == -1)
         {
             movementVector /= sprintFactor;
         }
 
         //Swiming
-        if(Swimming)
+        if (Swimming)
         {
             if (Input.GetAxisRaw("Jump") == 1)
             {
@@ -133,13 +128,13 @@ public class PillPlayerController : MonoBehaviour
             {
                 movementVector.y += 0.0001f;
             }
-            
+
         }
         else if (Input.GetAxisRaw("Jump") == 1 && coyoteTimer <= coyoteMax) //Jumping
         {
             jump = true;
         }
-        else if(!Grounded || Input.GetAxisRaw("Jump") == 0) //Resets the jump when jump is released or left the ground
+        else if (!Grounded || Input.GetAxisRaw("Jump") == 0) //Resets the jump when jump is released or left the ground
         {
             jump = false;
         }
@@ -152,7 +147,7 @@ public class PillPlayerController : MonoBehaviour
         if (movementVector.magnitude != 0)
         {
             //Ground controls + swim controls
-            if(Swimming)
+            if (Swimming)
             {
                 float currentUppSpeed = (Quaternion.Inverse(transform.rotation) * body.velocity).y + movementVector.y;
 
