@@ -195,6 +195,63 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a3c5d13200652224fa6b8ebdbf14d48a, type: 3}
+--- !u!1001 &183738557
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1147752367711628, guid: 2abf19653d633114faedf3b60dc6c39f, type: 3}
+      propertyPath: m_Name
+      value: PlayerAstronaut
+      objectReference: {fileID: 0}
+    - target: {fileID: 4268597916284530, guid: 2abf19653d633114faedf3b60dc6c39f, type: 3}
+      propertyPath: m_RootOrder
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 4268597916284530, guid: 2abf19653d633114faedf3b60dc6c39f, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 1.9052997
+      objectReference: {fileID: 0}
+    - target: {fileID: 4268597916284530, guid: 2abf19653d633114faedf3b60dc6c39f, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.67
+      objectReference: {fileID: 0}
+    - target: {fileID: 4268597916284530, guid: 2abf19653d633114faedf3b60dc6c39f, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 1.3691778
+      objectReference: {fileID: 0}
+    - target: {fileID: 4268597916284530, guid: 2abf19653d633114faedf3b60dc6c39f, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4268597916284530, guid: 2abf19653d633114faedf3b60dc6c39f, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4268597916284530, guid: 2abf19653d633114faedf3b60dc6c39f, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4268597916284530, guid: 2abf19653d633114faedf3b60dc6c39f, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4268597916284530, guid: 2abf19653d633114faedf3b60dc6c39f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4268597916284530, guid: 2abf19653d633114faedf3b60dc6c39f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4268597916284530, guid: 2abf19653d633114faedf3b60dc6c39f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 2abf19653d633114faedf3b60dc6c39f, type: 3}
 --- !u!1 &198957772
 GameObject:
   m_ObjectHideFlags: 0
@@ -417,8 +474,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spawnPlanets: {fileID: 882231452}
-  activePlanetIndex: -1
-  player: {fileID: 1376926152}
+  player: {fileID: 1898646049}
 --- !u!1 &459511075
 GameObject:
   m_ObjectHideFlags: 0
@@ -840,7 +896,7 @@ PrefabInstance:
         type: 3}
       propertyPath: player
       value: 
-      objectReference: {fileID: 1376926153}
+      objectReference: {fileID: 1898646053}
     - target: {fileID: 776431053636631548, guid: 93094628cce30c64195c2ae1633e7e60,
         type: 3}
       propertyPath: sunPrefab
@@ -1398,6 +1454,11 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 7
       objectReference: {fileID: 0}
+    - target: {fileID: 4197161889152382809, guid: a27088cae5f8b5549bde9f1342be2696,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4197161890332043641, guid: a27088cae5f8b5549bde9f1342be2696,
         type: 3}
       propertyPath: far clip plane
@@ -1615,30 +1676,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1216901250}
   m_CullTransparentMesh: 1
---- !u!1 &1376926152 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4197161889152382809, guid: a27088cae5f8b5549bde9f1342be2696,
-    type: 3}
-  m_PrefabInstance: {fileID: 1073200472}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1376926153 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4197161889152382803, guid: a27088cae5f8b5549bde9f1342be2696,
-    type: 3}
-  m_PrefabInstance: {fileID: 1073200472}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1376926152}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a06957ffefbd4a24aa9146fc52b81dc0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!4 &1376926158 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4197161889152382805, guid: a27088cae5f8b5549bde9f1342be2696,
-    type: 3}
-  m_PrefabInstance: {fileID: 1073200472}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1414091875
 GameObject:
   m_ObjectHideFlags: 0
@@ -1979,7 +2016,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e988d458eb574b1448b81ea359a80e1a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 1376926158}
+  player: {fileID: 1898646054}
   skyGradient:
     serializedVersion: 2
     key0: {r: 0.19103774, g: 0.21863209, b: 0.254717, a: 1}
@@ -2009,6 +2046,30 @@ MonoBehaviour:
     m_Mode: 0
     m_NumColorKeys: 4
     m_NumAlphaKeys: 2
+--- !u!1 &1898646049 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1147752367711628, guid: 2abf19653d633114faedf3b60dc6c39f,
+    type: 3}
+  m_PrefabInstance: {fileID: 183738557}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1898646053 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 755283109381456697, guid: 2abf19653d633114faedf3b60dc6c39f,
+    type: 3}
+  m_PrefabInstance: {fileID: 183738557}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1898646049}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a06957ffefbd4a24aa9146fc52b81dc0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &1898646054 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4268597916284530, guid: 2abf19653d633114faedf3b60dc6c39f,
+    type: 3}
+  m_PrefabInstance: {fileID: 183738557}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2035558019
 GameObject:
   m_ObjectHideFlags: 0
@@ -2227,4 +2288,4 @@ MonoBehaviour:
   debugContainer: {fileID: 1414091875}
   pausContainer: {fileID: 878722367}
   seedText: {fileID: 627717125}
-  playerController: {fileID: 1376926153}
+  playerController: {fileID: 1898646053}
