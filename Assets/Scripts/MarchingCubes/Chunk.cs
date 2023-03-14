@@ -69,7 +69,7 @@ public class Chunk : MonoBehaviour
             );
 
         // Use the chunkindex to calculate the position of the chunk
-        position = -(chunkIndex - 1.5f * Vector3.one) * (marchingCubes.diameter / (1 << (marchingCubes.chunkResolution)));
+        position = -(chunkIndex - 1.5f * Vector3.one) * (marchingCubes.radius * 2 / (1 << (marchingCubes.chunkResolution)));
     }
 
     private void updateMesh(int resolution)

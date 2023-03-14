@@ -14,7 +14,7 @@ public class MarchingCubes
 {
     readonly ComputeShader meshGenerator;
     readonly float threshold;
-    public readonly float diameter;
+    public readonly float radius;
     readonly int frequency;
     readonly float amplitude;
     public int chunkResolution;
@@ -26,13 +26,13 @@ public class MarchingCubes
     /// </summary>
     /// <param name="meshGenerator">The meshgenerator compute shader</param>
     /// <param name="threshold">The cut off threshold to be used</param>
-    /// <param name="diameter"></param>
-    public MarchingCubes(int chunkResolution, ComputeShader meshGenerator, float threshold, float diameter, int frequency, float amplitude)
+    /// <param name="radius"></param>
+    public MarchingCubes(int chunkResolution, ComputeShader meshGenerator, float threshold, float radius, int frequency, float amplitude)
     {
         this.chunkResolution = chunkResolution;
         this.meshGenerator = meshGenerator;
         this.threshold = threshold;
-        this.diameter = diameter;
+        this.radius = radius;
         this.amplitude = amplitude;
         this.frequency = frequency;
     }
@@ -62,7 +62,7 @@ public class MarchingCubes
         meshGenerator.SetInt("chunkResolution", chunkResolution);
         meshGenerator.SetInt("resolution", resolution << 3);
         meshGenerator.SetFloat("threshold", threshold);
-        meshGenerator.SetFloat("diameter", diameter);
+        meshGenerator.SetFloat("radius", radius);
         meshGenerator.SetBuffer(kernelIndex, "triangles", trianglesBuffer);
         meshGenerator.Dispatch(kernelIndex, resolution >> chunkResolution, resolution >> chunkResolution, resolution >> chunkResolution);
 
