@@ -3,6 +3,9 @@ using Unity.Burst.CompilerServices;
 using Unity.VisualScripting;
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody))]
+[RequireComponent(typeof(BoxCollider))]
+[RequireComponent(typeof(Animator))]
 public class Creature : MonoBehaviour
 {
     
@@ -174,8 +177,8 @@ public class Creature : MonoBehaviour
             } else
             {
                 isChild = false;
-                GameObject newChild = Instantiate(parentPrefab, transform.position, transform.rotation, transform.parent);
-                newChild.name = newChild.name.Replace("(Clone)", "").Trim(); 
+                GameObject newObject = Instantiate(parentPrefab, transform.position, transform.rotation, transform.parent);
+                newObject.name = newObject.name.Replace("(Clone)", "").Trim(); 
                 Destroy(gameObject);
             }
         }
@@ -340,7 +343,8 @@ public class Creature : MonoBehaviour
     {
         if (reproductionChance < Random.Range(0f,1f))
         {
-            Instantiate(childPrefab, transform.position - transform.forward, transform.rotation, transform.parent);
+            GameObject newObject = Instantiate(childPrefab, transform.position - transform.forward, transform.rotation, transform.parent);
+            newObject.name = newObject.name.Replace("(Clone)", "").Trim();
 
             childrenCount++;
 
@@ -368,6 +372,7 @@ public class Creature : MonoBehaviour
                 {
                     CreatureType creatureType = coll.gameObject.GetComponent<Creature>().GetCreatureType;
                     if (creatureDiet != creatureType) continue;
+                    if (SameSpecies(coll.gameObject.name)) continue;
                 }
                 
                 float distanceToGameObject = Vector3.Distance(transform.position, coll.transform.position);
@@ -540,6 +545,14 @@ public class Creature : MonoBehaviour
         yield return new WaitForSeconds(1);
 
         currentState = CreatureState.Walking;
+    }
+
+    private bool SameSpecies(string creatureName)
+    {
+        bool sameAsParent = parentPrefab.name == creatureName;
+        bool sameAsChild = childPrefab.name == creatureName;
+
+        return sameAsParent || sameAsChild;
     }
 
     public CreatureType GetCreatureType
