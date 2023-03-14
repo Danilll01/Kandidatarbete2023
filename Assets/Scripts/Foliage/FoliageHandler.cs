@@ -14,7 +14,7 @@ public class FoliageHandler
     {
         this.planet = planet;
         waterRadius = Mathf.Abs(planet.waterDiameter / 2);
-        density = (int)(planet.radius / 2 * (random.NextDouble()) - 0.5); // Magic numbers
+        density = (int)(planet.radius * (random.NextDouble()) - 0.5); // Magic numbers
     }
 
     public Vector3 PlanetPosition

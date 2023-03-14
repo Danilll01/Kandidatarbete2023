@@ -11,6 +11,7 @@ public class ChunksHandler : MonoBehaviour
     private Vector3 playerLastPosition;
     private bool initialized = false;
     private bool resetchunks = false;
+    private int foliageInitialized = 10;
     private List<Vector3> chunkPositions;
     private int chunkResolution; //This is 2^chunkResolution
     private MarchingCubes marchingCubes;
@@ -66,6 +67,11 @@ public class ChunksHandler : MonoBehaviour
             InitializeChunkPositions();
             UpdateChunksVisibility();
             initialized = true;
+        }
+
+        if (foliageInitialized != 0)
+        {
+            foliageInitialized--;
         }
 
         // Only update the chunks if the player is close to the planet
@@ -186,7 +192,8 @@ public class ChunksHandler : MonoBehaviour
             else
             {
                 chunks[i].gameObject.SetActive(true);
-                chunks[i].foliage.SpawnFoliageOnChunk();
+                if(foliageInitialized == 0) 
+                    chunks[i].foliage.SpawnFoliageOnChunk();
             }
         }
     }

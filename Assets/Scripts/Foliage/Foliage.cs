@@ -1,15 +1,21 @@
 using UnityEngine;
+using System.Runtime.CompilerServices;
 using Random = System.Random;
 
 public class Foliage : MonoBehaviour
 {
 
     [SerializeField] private bool debug = true;
-    [SerializeField] private GameObject tree;
-    [SerializeField] private GameObject bush;
-    [SerializeField] private GameObject waterBoi;
-    [SerializeField] private GameObject stone;
-    
+    [SerializeField] private GameObject fallenTree;
+    [SerializeField] private GameObject[] trees;
+    private int treeArrSize;
+    [SerializeField] private GameObject[] bushes;
+    private int bushArrSize;
+    [SerializeField] private GameObject[] waterBois;
+    private int waterArrSize;
+    [SerializeField] private GameObject[] stones;
+    private int stoneArrSize;
+
     private Vector3[] spots = null;
 
     private FoliageHandler foliageHandler;
@@ -19,18 +25,25 @@ public class Foliage : MonoBehaviour
 
     public void Initialize(Vector3[] meshVertices, Vector3 pos)
     {
+        
+        foliageHandler = transform.parent.parent.parent.GetComponent<Planet>().foliageHandler;
+        if (foliageHandler == null || !foliageHandler.IsPlanet) return;
+        
         // Seedar en random för denna chunken
         random = new Random(Universe.seed + (int)pos.x + (int)pos.y + (int)pos.z);
-        foliageHandler = transform.parent.parent.parent.GetComponent<Planet>().foliageHandler;
 
-        if (foliageHandler == null) return;
+        // Init array lengths
+        treeArrSize = trees.Length;
+        bushArrSize = bushes.Length;
+        waterArrSize = waterBois.Length;
+        stoneArrSize = stones.Length;
 
         // Checks if the chunk is on the surface
         Vector3 rayOrigin = pos.normalized * foliageHandler.PlanetRadius + foliageHandler.PlanetPosition;
         Ray ray = new (rayOrigin, foliageHandler.PlanetPosition - rayOrigin);
         Physics.Raycast(ray, out RaycastHit hit);
 
-        if(hit.transform == transform.parent && foliageHandler.IsPlanet)
+        if(hit.transform == transform.parent)
         {
             InitFoliage(meshVertices);
         }
@@ -62,70 +75,115 @@ public class Foliage : MonoBehaviour
 
         foreach(Vector3 spot in spots)
         {
+
             Vector3 rayOrigin = spot + planetPos;
             ray = new Ray(rayOrigin, planetPos - rayOrigin);
             Physics.Raycast(ray, out hit);
-            if (debug) Debug.DrawLine(rayOrigin, hit.point, Color.green, 10f);
 
+            if (debug)
+            {
+                if (hit.transform == transform.parent) Debug.DrawLine(rayOrigin, hit.point, Color.green, 10f);
+                else Debug.DrawLine(rayOrigin, hit.point, Color.red, 10f);
+            }
+
+            // Checks if the ray hit the correct chunk
             if (hit.transform == transform.parent)
             {
-                if (hit.distance < radius - waterRadius) // On land
+                // Checks if the ray hit land or water
+                if (hit.distance < radius - waterRadius) 
                 {
-                    SpawnOnLand(hit, rayOrigin, planetPos);
+                    SpawnOnLand(hit, rayOrigin, planetPos, waterRadius - hit.distance);
                 }
-                else // In water
+                else
                 {
-                    SpawnInWater(hit, rayOrigin, hit.distance - radius - waterRadius);
+                    SpawnInWater(hit, rayOrigin, hit.distance - (radius - waterRadius));
                 }
             }
         }
+        // Removes spots making the chunk unable to spawn new trees
         spots = null;
     }
 
-    private void SpawnOnLand(RaycastHit hit, Vector3 rayOrigin, Vector3 planetPosition)
+    //[MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private void SpawnOnLand(RaycastHit hit, Vector3 rayOrigin, Vector3 planetPosition, float heightAboveSea)
     {
-        if(Mathf.Abs(Vector3.Angle(rayOrigin - planetPosition, hit.normal)) > 30)
+        if(Mathf.Abs(Vector3.Angle(rayOrigin - planetPosition, hit.normal)) > 40)
         {
-            AboveAngle(hit, rayOrigin);
+            AboveAngle(hit, rayOrigin, heightAboveSea);
         }
         else
         {
-            BelowAngle(hit, rayOrigin);
+            BelowAngle(hit, rayOrigin, heightAboveSea);
         }
     }
 
-    private void AboveAngle(RaycastHit hit, Vector3 rayOrigin)
+    // Steep terrain
+    //[MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private void AboveAngle(RaycastHit hit, Vector3 rayOrigin, float heightAboveSea)
     {
-        Quaternion rotation = Quaternion.LookRotation(hit.normal) * Quaternion.Euler(90, 0, 0);
-        rotation *= Quaternion.Euler(0, random.Next(0, 360), 0);
-        Instantiate(stone, hit.point, rotation, transform);
-    }
-
-    private void BelowAngle(RaycastHit hit, Vector3 rayOrigin)
-    {
-        if (Perlin.Noise(hit.point * frequency) < 0)
-        {
-            Quaternion rotation = Quaternion.LookRotation(rayOrigin) * Quaternion.Euler(90, 0, 0);
-            rotation *= Quaternion.Euler(0, random.Next(0, 360), 0);
-            Instantiate(tree, hit.point, rotation, transform);
-        }
+        if(random.Next(7) == 0)
+            SpawnBushes(hit, rayOrigin);
         else
+            SpawnStones(hit, rayOrigin);
+    }
+
+    // Flat terrain
+    //[MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private void BelowAngle(RaycastHit hit, Vector3 rayOrigin, float heightAboveSea)
+    {
+        // 1 in 5 is a tree
+        if (random.Next(6) == 0)
+            SpawnTrees(hit, rayOrigin);
+        else
+            SpawnBushes(hit, rayOrigin);
+    }
+
+
+    //[MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private void SpawnTrees(RaycastHit hit, Vector3 rayOrigin)
+    {
+        if(random.Next(10) == 0)
         {
             Quaternion rotation = Quaternion.LookRotation(hit.normal) * Quaternion.Euler(90, 0, 0);
             rotation *= Quaternion.Euler(0, random.Next(0, 360), 0);
-            Instantiate(bush, hit.point, rotation, transform);
+            Instantiate(fallenTree, hit.point, rotation, transform);
         }
+        else
+        {
+            Quaternion rotation = Quaternion.LookRotation(rayOrigin) * Quaternion.Euler(90, 0, 0);
+            rotation *= Quaternion.Euler(0, random.Next(0, 360), 0);
+            Instantiate(trees[random.Next(treeArrSize)], hit.point - (hit.point.normalized), rotation, transform);
+        }
+        
+    }
+
+    //[MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private void SpawnBushes(RaycastHit hit, Vector3 rayOrigin)
+    {
+        Quaternion rotation = Quaternion.LookRotation(hit.normal) * Quaternion.Euler(90, 0, 0);
+        rotation *= Quaternion.Euler(0, random.Next(0, 360), 0);
+        Instantiate(bushes[random.Next(bushArrSize)], hit.point, rotation, transform);
     }
 
 
+    //[MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private void SpawnStones(RaycastHit hit, Vector3 rayOrigin)
+    {
+        Quaternion rotation = Quaternion.LookRotation(hit.normal) * Quaternion.Euler(90, 0, 0);
+        rotation *= Quaternion.Euler(0, random.Next(0, 360), 0);
+        Instantiate(stones[random.Next(stoneArrSize)], hit.point, rotation, transform);
+    }
+
+
+    //[MethodImpl(MethodImplOptions.AggressiveInlining)]
     private void SpawnInWater(RaycastHit hit, Vector3 rayOrigin, float depth)
     {
         if(depth < 6)
         {
             Quaternion rotation = Quaternion.LookRotation(rayOrigin) * Quaternion.Euler(90, 0, 0);
             rotation *= Quaternion.Euler(0, random.Next(0, 360), 0);
-            GameObject waterObject = Instantiate(waterBoi, hit.point, rotation, transform);
-            waterObject.transform.localScale = new Vector3(2, depth + 2, 2);
+            GameObject waterObject = Instantiate(waterBois[random.Next(waterArrSize)], hit.point, rotation, transform);
+            waterObject.transform.localScale = new Vector3(2, depth + 6, 2);
         }
     }
 }
