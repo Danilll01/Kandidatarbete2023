@@ -136,6 +136,7 @@ MonoBehaviour:
   sprintFactor: 2
   airControlFactor: 1
   jumpForce: 15
+  coyoteMax: 15
   swimForce: 20
   maxSwimSpeed: 15
   maxSpeed: 40

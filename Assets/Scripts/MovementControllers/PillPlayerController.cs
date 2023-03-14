@@ -9,10 +9,14 @@ public class PillPlayerController : MonoBehaviour
 {
     public Planet attractor = null;
     public Camera firstPersonCamera;
+    
+    [Header("Movement")]
     public float movementSpeed;
     [SerializeField] private float sprintFactor;
     public float airControlFactor;
     public float jumpForce;
+    private int coyoteTimer = 0;
+    [SerializeField] private int coyoteMax;
     [SerializeField] private float swimForce;
     [SerializeField] private float maxSwimSpeed = 10;
     public float maxSpeed;
@@ -89,6 +93,10 @@ public class PillPlayerController : MonoBehaviour
         }
     }
 
+    private void FixedUpdate()
+    {
+        coyoteTimer = Grounded ? 0 : coyoteTimer + 1;
+    }
     private void HandleCamera()
     {
         //Rotate player and camera
@@ -127,11 +135,11 @@ public class PillPlayerController : MonoBehaviour
             }
             
         }
-        else if (Input.GetAxisRaw("Jump") == 1 && Grounded) //Jumping
+        else if (Input.GetAxisRaw("Jump") == 1 && coyoteTimer <= coyoteMax) //Jumping
         {
             jump = true;
         }
-        if(!Grounded || Input.GetAxisRaw("Jump") == 0) //Resets the jump when jump is released or left the ground
+        else if(!Grounded || Input.GetAxisRaw("Jump") == 0) //Resets the jump when jump is released or left the ground
         {
             jump = false;
         }
