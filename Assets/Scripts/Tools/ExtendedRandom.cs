@@ -73,10 +73,7 @@ namespace ExtendedRandom
             float radius = Value(); // Generates radius between [0, 1]
 
             // Convert from spherical coordinates to regular coordinates
-            return new Vector3(
-                x: radius * Mathf.Sin(theta) * Mathf.Cos(phi),
-                y: radius * Mathf.Sin(theta) * Mathf.Sin(phi),
-                z: radius * Mathf.Cos(theta));
+            return convertSphericalToCartesianCoords(radius, theta, phi);
         }
 
         /// <summary>
@@ -85,15 +82,12 @@ namespace ExtendedRandom
         /// </summary>
         public Vector3 InsideUnitSphereUniform()
         {
-            float phi = Mathf.Acos(Value(0, 2) - 1); // Generates angle between [0, 2*Pi)
-            float theta = Value(0, 2) * Mathf.PI; // Generates angle between [0, Pi)
-            float radius = Mathf.Pow(Value(), 1.0f / 3); // Generates radius between [0, 1]
+            float phi = Value(0, 2) * Mathf.PI; // Generates angle between [0, 2*Pi)
+            float theta = Mathf.Acos(Value(0, 2) - 1); // Generates angle between [0, Pi)
+            float radius = Mathf.Pow(Value(), 1.0f / 3); // Generates radius between [0, 1)
 
             // Convert from spherical coordinates to regular coordinates
-            return new Vector3(
-                x: radius * Mathf.Sin(phi) * Mathf.Cos(theta),
-                y: radius * Mathf.Sin(phi) * Mathf.Sin(theta),
-                z: radius * Mathf.Cos(phi));
+            return convertSphericalToCartesianCoords(radius, theta, phi);
         }
 
         /// <summary>
@@ -106,10 +100,7 @@ namespace ExtendedRandom
             float theta = Value() * Mathf.PI; // Generates angle between [0, Pi)
 
             // Convert from spherical coordinates to regular coordinates
-            return new Vector3(
-                x: Mathf.Sin(theta) * Mathf.Cos(phi),
-                y: Mathf.Sin(theta) * Mathf.Sin(phi),
-                z: Mathf.Cos(theta));
+            return convertSphericalToCartesianCoords(1, theta, phi);
         }
 
         /// <summary>
@@ -122,10 +113,7 @@ namespace ExtendedRandom
             float theta = Mathf.Acos(1 - 2 * Value()); // Generates angle between [0, Pi)
 
             // Convert from spherical coordinates to regular coordinates
-            return new Vector3(
-                x: Mathf.Sin(theta) * Mathf.Cos(phi),
-                y: Mathf.Sin(theta) * Mathf.Sin(phi),
-                z: Mathf.Cos(theta));
+            return convertSphericalToCartesianCoords(1, theta, phi);
         }
 
         /// <summary>
@@ -190,6 +178,14 @@ namespace ExtendedRandom
         public int Next(int minValue, int maxValue)
         {
             return random.Next(minValue, maxValue);
+        }
+
+        private Vector3 convertSphericalToCartesianCoords(float radius, float theta, float phi)
+        {
+            return new Vector3(
+                x: radius * Mathf.Sin(theta) * Mathf.Cos(phi),
+                y: radius * Mathf.Sin(theta) * Mathf.Sin(phi),
+                z: radius * Mathf.Cos(theta));
         }
     }
 }
