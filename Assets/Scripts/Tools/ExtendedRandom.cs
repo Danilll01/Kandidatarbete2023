@@ -24,8 +24,8 @@ namespace ExtendedRandom
         /// </summary>
         public Vector2 InsideUnitCircle()
         {
-            float angle = Value(0, 2) * Mathf.PI; // Generate angle between [0, 2*Pi]
-            float radius = Value(); // Generate radius between [0, 1]
+            float angle = Value(0, 2) * Mathf.PI; // Generate angle between [0, 2*Pi)
+            float radius = Value(); // Generate radius between [0, 1)
 
             // Convert to from polar coordinates to regular coordinates
             return new Vector2(
@@ -39,8 +39,8 @@ namespace ExtendedRandom
         /// </summary>
         public Vector2 InsideUnitCircleUniform()
         {
-            float angle = Value(0, 2) * Mathf.PI; // Generate angle between [0, 2*Pi]
-            float radius = Mathf.Sqrt(Value()); // Generate radius between [0, 1]
+            float angle = Value(0, 2) * Mathf.PI; // Generate angle between [0, 2*Pi)
+            float radius = Mathf.Sqrt(Value()); // Generate radius between [0, 1)
 
             // Convert to from polar coordinates to regular coordinates
             return new Vector2(
@@ -53,7 +53,7 @@ namespace ExtendedRandom
         /// </summary>
         public Vector2 OnUnitCircle()
         {
-            float angle = Value(0, 2) * Mathf.PI; // Generate angle between [0, 2*Pi]
+            float angle = Value(0, 2) * Mathf.PI; // Generate angle between [0, 2*Pi)
 
             // Convert to from polar coordinates to regular coordinates
             return new Vector2(
@@ -66,8 +66,8 @@ namespace ExtendedRandom
         /// </summary>
         public Vector3 InsideUnitSphere()
         {
-            float phi = Value(0, 2) * Mathf.PI; // Generates angle between [0, 2*Pi]
-            float theta = Value() * Mathf.PI; // Generates angle between [0, Pi]
+            float phi = Value(0, 2) * Mathf.PI; // Generates angle between [0, 2*Pi)
+            float theta = Value() * Mathf.PI; // Generates angle between [0, Pi)
             float radius = Value(); // Generates radius between [0, 1]
 
             // Convert from spherical coordinates to regular coordinates
@@ -82,8 +82,8 @@ namespace ExtendedRandom
         /// </summary>
         public Vector3 OnUnitSphere()
         {
-            float phi = Value(0, 2) * Mathf.PI; // Generates angle between [0, 2*Pi]
-            float theta = Value() * Mathf.PI; // Generates angle between [0, Pi]
+            float phi = Value(0, 2) * Mathf.PI; // Generates angle between [0, 2*Pi)
+            float theta = Value() * Mathf.PI; // Generates angle between [0, Pi)
 
             // Convert from spherical coordinates to regular coordinates
             return new Vector3(
@@ -98,8 +98,8 @@ namespace ExtendedRandom
         /// </summary>
         public Vector3 OnUnitSphereUniform()
         {
-            float phi = Value(0, 2) * Mathf.PI; // Generates angle between [0, 2*Pi]
-            float theta = Mathf.Acos(1 - 2 * Value()); // Generates angle between [0, Pi]
+            float phi = Value(0, 2) * Mathf.PI; // Generates angle between [0, 2*Pi)
+            float theta = Mathf.Acos(1 - 2 * Value()); // Generates angle between [0, Pi)
 
             // Convert from spherical coordinates to regular coordinates
             return new Vector3(
