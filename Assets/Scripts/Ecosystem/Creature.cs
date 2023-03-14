@@ -19,7 +19,7 @@ public class Creature : MonoBehaviour
     [SerializeField] private CreatureType creatureType = CreatureType.Small;
 
     [SerializeField] private float hunger { get; set; } = 100f;
-    [SerializeField] private float thirst = 100f;
+    [SerializeField] private float thirst { get; set; } = 100f;
     [SerializeField] private bool randomizeStats = true;
 
     [SerializeField] private float maxHunger = 100f;
@@ -54,6 +54,8 @@ public class Creature : MonoBehaviour
     
     [SerializeField] private bool isChild = false;
     [SerializeField] private float growUpTime = 60f;
+
+    [SerializeField] private GameObject breedingParticle;
 
     [Header("Debug")]
     [SerializeField] private CreatureState currentState;
@@ -343,9 +345,13 @@ public class Creature : MonoBehaviour
 
     private void Bredding()
     {
-        if (reproductionChance > Random.Range(0f,1f) && breedingPartner.hunger < hunger)
+        if (reproductionChance > Random.Range(0f,1f) && breedingPartner.thirst < thirst)
         {
-            GameObject newObject = Instantiate(childPrefab, transform.position - transform.forward, transform.rotation, transform.parent);
+            Vector3 childPos = transform.position - transform.forward;
+            
+            Instantiate(breedingParticle, childPos, transform.rotation, transform.parent);
+            
+            GameObject newObject = Instantiate(childPrefab, childPos, transform.rotation, transform.parent);
             newObject.name = newObject.name.Replace("(Clone)", "").Trim();
 
             childrenCount++;

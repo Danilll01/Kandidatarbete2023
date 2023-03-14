@@ -417,6 +417,8 @@ MonoBehaviour:
   childrenCount: 0
   isChild: 0
   growUpTime: 10
+  breedingParticle: {fileID: 6813416509558619124, guid: 3b7f2c753d435d647a80f1f047a113e3,
+    type: 3}
   currentState: 0
   DEBUG: 0
   isSleeping: 0

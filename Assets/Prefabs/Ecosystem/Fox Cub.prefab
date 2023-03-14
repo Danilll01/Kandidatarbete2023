@@ -250,7 +250,6 @@ MonoBehaviour:
   consumeRadius: 0.05
   meshObj: {fileID: 1716895368152690}
   creatureType: 0
-  hunger: 100
   thirst: 100
   randomizeStats: 1
   maxHunger: 100
@@ -277,6 +276,8 @@ MonoBehaviour:
   childrenCount: 0
   isChild: 1
   growUpTime: 60
+  breedingParticle: {fileID: 6813416509558619124, guid: 3b7f2c753d435d647a80f1f047a113e3,
+    type: 3}
   currentState: 0
   DEBUG: 0
   isSleeping: 0
