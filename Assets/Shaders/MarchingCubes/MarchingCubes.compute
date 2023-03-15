@@ -2,8 +2,7 @@
 #pragma kernel GenerateMesh
 
 #include "Includes/MarchTables.compute"
-//#include "Includes/TextureGenerator.compute"
-#include "Includes/PerlinNoise.compute"
+#include "../Tools/Noise/Noise.hlsl"
 
 // Helper functions declaration
 float4 getTexturePoint(uint3 pos, int3 chunkId, float maxPos);
@@ -86,7 +85,7 @@ void GenerateMesh(uint3 id : SV_DispatchThreadID)
         cubeindex |= 1 << 7;
     
     // Create triangles from the cube
-    for (int i = 0; triangulation[cubeindex][i] != -1; i += 3)
+    for (i = 0; triangulation[cubeindex][i] != -1; i += 3)
     {
         // Get edge from corner a0 -> b0 one on which point 0 in triangle i lies
         int a0 = cornerIndexAFromEdge[triangulation[cubeindex][i]];
@@ -136,9 +135,9 @@ float4 getTexturePoint(uint3 pos, int3 chunkId, float maxPos)
     
     // Add noise to current point
     float density = (1 - lengthPos) * 255;
-    float noiseOctave0 = (calculateNoise(normPos * (frequency << 0)) + 1) * .5 * amplitude;
-    float noiseOctave1 = (calculateNoise(normPos * (frequency << 1)) + 1) * .5 * amplitude * amplitude;
-    float noiseOctave2 = (calculateNoise(normPos * (frequency << 2)) + 1) * .5 * amplitude * amplitude * amplitude;
+    float noiseOctave0 = (perlin.Evaluate(normPos * (frequency << 0)) + 1) * .5 * amplitude;
+    float noiseOctave1 = (perlin.Evaluate(normPos * (frequency << 1)) + 1) * .5 * amplitude * amplitude;
+    float noiseOctave2 = (perlin.Evaluate(normPos * (frequency << 2)) + 1) * .5 * amplitude * amplitude * amplitude;
     density *= noiseOctave0 * noiseOctave1 * noiseOctave2;
         
     // Return the noised value

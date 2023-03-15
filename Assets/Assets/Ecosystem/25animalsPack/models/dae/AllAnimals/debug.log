@@ -1,0 +1,21 @@
+[1216/031449.456:INFO:CONSOLE(1)] "%cUnhandled rejection TypeError: Cannot read property 'playlistUUID' of undefined
+    at f.updateTracks (file:///D:/Program%20Files/Photoshop%202020/Adobe%20Photoshop%202020/Required/www-learn/build/main.js:1:88731)
+    at O.addContent (file:///D:/Program%20Files/Photoshop%202020/Adobe%20Photoshop%202020/Required/www-learn/build/main.js:1:79602)
+    at s.forEach.e (file:///D:/Program%20Files/Photoshop%202020/Adobe%20Photoshop%202020/Required/www-learn/build/main.js:1:78692)
+    at Array.forEach (<anonymous>)
+    at O.<anonymous> (file:///D:/Program%20Files/Photoshop%202020/Adobe%20Photoshop%202020/Required/www-learn/build/main.js:1:78675)
+    at O.<anonymous> (file:///D:/Program%20Files/Photoshop%202020/Adobe%20Photoshop%202020/Required/www-learn/build/main.js:1:79233)
+    at l (file:///D:/Program%20Files/Photoshop%202020/Adobe%20Photoshop%202020/Required/www-learn/build/external.js:1:215141)
+    at j._settlePromiseFromHandler (file:///D:/Program%20Files/Photoshop%202020/Adobe%20Photoshop%202020/Required/www-learn/build/external.js:1:188262)
+    at j._settlePromise (file:///D:/Program%20Files/Photoshop%202020/Adobe%20Photoshop%202020/Required/www-learn/build/external.js:1:189062)
+    at j._settlePromise0 (file:///D:/Program%20Files/Photoshop%202020/Adobe%20Photoshop%202020/Required/www-learn/build/external.js:1:189761)
+    at j._settlePromises (file:///D:/Program%20Files/Photoshop%202020/Adobe%20Photoshop%202020/Required/www-learn/build/external.js:1:191088)
+    at file:///D:/Program%20Files/Photoshop%202020/Adobe%20Photoshop%202020/Required/www-learn/build/external.js:1:145301
+From previous event:
+    at j.I [as _captureStackTrace] (file:///D:/Program%20Files/Photoshop%202020/Adobe%20Photoshop%202020/Required/www-learn/build/external.js:1:158681)
+    at j._then (file:///D:/Program%20Files/Photoshop%202020/Adobe%20Photoshop%202020/Required/www-learn/build/external.js:1:183730)
+    at j.then (file:///D:/Program%20Files/Photoshop%202020/Adobe%20Photoshop%202020/Required/www-learn/build/external.js:1:182086)
+    at Object.<anonymous> (file:///D:/Program%20Files/Photoshop%202020/Adobe%20Photoshop%202020/Required/www-learn/build/main.js:1:69843)
+    at o (file:///D:/Program%20Files/Photoshop%202020/Adobe%20Photoshop%202020/Required/www-learn/build/spaces.js:1:410)
+    at window.webpackJsonp (file:///D:/Program%20Files/Photoshop%202020/Adobe%20Photoshop%202020/Required/www-learn/build/spaces.js:1:284)
+    at file:///D:/Program%20Files/Photoshop%202020/Adobe%20Photoshop%202020/Required/www-learn/build/main.js:1:1", source: file:///D:/Program%20Files/Photoshop%202020/Adobe%20Photoshop%202020/Required/www-learn/build/external.js (1)
