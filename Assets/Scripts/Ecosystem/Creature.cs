@@ -101,6 +101,7 @@ public class Creature : MonoBehaviour
         }
 
         animator.SetFloat("Speed", speed);
+        animator.keepAnimatorStateOnDisable = true;
 
         if (isChild) canReproduce = false;
     }
