@@ -163,6 +163,9 @@ public class Creature : MonoBehaviour
         // Die if hunger or thirst is 0
         if (hunger <= 0 || thirst <= 0)
         {
+            // Spawn a poof particle when the creature dies
+            Instantiate(breedingParticle, transform.position, transform.rotation, transform.parent);
+
             Destroy(gameObject);
         }
 
@@ -350,6 +353,7 @@ public class Creature : MonoBehaviour
         {
             Vector3 childPos = transform.position - transform.forward;
             
+            // Spawn a poof particle where the child is spawned
             Instantiate(breedingParticle, childPos, transform.rotation, transform.parent);
             
             GameObject newObject = Instantiate(childPrefab, childPos, transform.rotation, transform.parent);
