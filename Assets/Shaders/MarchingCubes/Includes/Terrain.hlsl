@@ -23,35 +23,47 @@ float getTerrain(Terrain terrain, float3 pos, RWStructuredBuffer<TerrainLayer> t
 {
     float3 pointOnSphere = pos / length(pos);
     /*
-    float noiseValues[numTerrainLayers];
+    
     
     
     for (int i = 0; i < numTerrainLayers; i++)
     {
         TerrainLayer terrainLayer = terrainLayers[i];
         
-        float amplitude = 1;
-        float frequency = terrainLayer.baseRoughness;
         
-        for (int j = 0; j < terrainLayer.numLayers; i++)
+    }*/
+   
+    float noiseValue = 0;
+    
+    for (int i = 0; i < 1; i++)
+    {
+        float amplitude = 1;
+        float frequency = terrainLayers[i].baseRoughness;
+        float noiseLayer;
+    
+        for (int j = 0; j < terrainLayers[i].numLayers; j++)
         {
-            noiseValues[i] += (simplex.Evaluate((pointOnSphere + terrainLayer.centre) * frequency) + 1) * 0.5f * amplitude;
-            frequency *= terrainLayer.roughness;
-            amplitude += terrainLayer.persistance;
+            noiseLayer += (simplex.Evaluate(pointOnSphere * frequency) + 1) * 0.5f * amplitude;
+            frequency *= terrainLayers[i].roughness;
+            amplitude *= terrainLayers[i].persistance;
         }
         
-        noiseValues[i] *= terrainLayer.strength;
-    }*/
+        noiseLayer *= terrainLayers[i].strength;
+        
+        noiseValue += noiseLayer;
+    }
     
-    
-    
+        
+
+   
+    /*
     float noiseOctave0 = (simplex.Evaluate(pointOnSphere * terrainLayers[0].baseRoughness) + 1) * 0.5f;
-    float noiseOctave1 = (simplex.Evaluate(pointOnSphere * 2*2.5) + 1) * 0.5f * terrainLayers[0].persistance;
-    float noiseOctave2 = (simplex.Evaluate(pointOnSphere * 2 * 2.5 * 2.5) + 1) * 0.5f * terrainLayers[0].persistance * terrainLayers[0].persistance;
+    float noiseOctave1 = (simplex.Evaluate(pointOnSphere * terrainLayers[0].baseRoughness * terrainLayers[0].roughness) + 1) * 0.5f * terrainLayers[0].persistance;
+    float noiseOctave2 = (simplex.Evaluate(pointOnSphere * terrainLayers[0].baseRoughness * terrainLayers[0].roughness * terrainLayers[0].roughness) + 1) * 0.5f * terrainLayers[0].persistance * terrainLayers[0].persistance;
     
-    float noiseValue = noiseOctave0 + noiseOctave1 + noiseOctave2;
+     = noiseOctave0 + noiseOctave1 + noiseOctave2;
     
-    noiseValue /= 16;
+    noiseValue *= terrainLayers[0].strength;*/
     
     return length(pos) < (1 - noiseValue) ? ((1 - noiseValue) - length(pos)) * 255 : 0;
     

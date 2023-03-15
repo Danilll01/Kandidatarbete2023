@@ -15,7 +15,7 @@ public class Chunk : MonoBehaviour
     private MeshFilter meshFilter;
     private MeshCollider meshCollider;
     private Mesh mesh;
-    private MarchingCubes marchingCubes;
+    public MarchingCubes marchingCubes;
     private Transform player;
     private MinMaxTerrainLevel terrainLevel;
 

@@ -155,11 +155,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gradient:
     serializedVersion: 2
-    key0: {r: 0.77254903, g: 0.77254903, b: 0.77254903, a: 0}
-    key1: {r: 0.50980395, g: 0.5686275, b: 0.5686275, a: 0}
-    key2: {r: 0.29803923, g: 0.35686275, b: 0.38039216, a: 0}
-    key3: {r: 0.17254902, g: 0.25882354, b: 0.24705882, a: 0}
-    key4: {r: 0.5803922, g: 0.60784316, b: 0.5882353, a: 0}
+    key0: {r: 0.95686275, g: 0.7490196, b: 0.85882354, a: 0}
+    key1: {r: 0.5294118, g: 0.7294118, b: 0.67058825, a: 0}
+    key2: {r: 1, g: 0.9137255, b: 0.9529412, a: 0}
+    key3: {r: 0.31764707, g: 0.1764706, b: 0.21960784, a: 0}
+    key4: {r: 0.69803923, g: 0.4392157, b: 0.57254905, a: 0}
     key5: {r: 0, g: 0, b: 0, a: 0}
     key6: {r: 0, g: 0, b: 0, a: 0}
     key7: {r: 0, g: 0, b: 0, a: 0}
@@ -182,12 +182,12 @@ MonoBehaviour:
     m_Mode: 0
     m_NumColorKeys: 5
     m_NumAlphaKeys: 2
-  tempMin: 417.46936
-  tempMax: 444.6321
+  tempMin: 425.83334
+  tempMax: 448.47626
   angleCutOf: 90
   angleBlending: 0.5
   shader: {fileID: -6465566751694194690, guid: 582627e993e00c442b71e98ced60fb20, type: 3}
-  bottomColor: {r: 0.77254903, g: 0.77254903, b: 0.77254903, a: 0}
+  bottomColor: {r: 0.95686275, g: 0.7490196, b: 0.85882354, a: 0}
 --- !u!114 &109251772
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -207,18 +207,24 @@ MonoBehaviour:
   waterCS: {fileID: 7200000, guid: a3ea61cf1daaef9468701842c0c49e63, type: 3}
   waterShader: {fileID: -6465566751694194690, guid: 1ce4e973287db1a4ea2f21145f0c4770,
     type: 3}
-  resolution: 10
+  resolution: 12
   terrainColor: {fileID: 109251771}
   normal1: {fileID: 2800000, guid: c21511cdc86c86847bdae740c8b071da, type: 3}
   normal2: {fileID: 2800000, guid: 9f04018992f98ef4997b6883c48cc0f8, type: 3}
   terrainLayers:
   - strength: 0.0625
-    baseRoughness: 2
-    roughness: 2.5
+    baseRoughness: 1.5
+    roughness: 2
     persistance: 0.5
     centre: {x: 0, y: 0, z: 0}
-    numLayers: 3
-  waterDiameter: 833.9387
+    numLayers: 5
+  - strength: 0.0625
+    baseRoughness: 1.1
+    roughness: 1.1
+    persistance: 0.5
+    centre: {x: 0, y: 0, z: 0}
+    numLayers: 2
+  waterDiameter: 850.6667
 --- !u!4 &109251773
 Transform:
   m_ObjectHideFlags: 0

@@ -61,7 +61,7 @@ MonoBehaviour:
   moons: []
   waterPoints: []
   player: {fileID: 0}
-  resolution: 4
+  resolution: 10
   willGenerateCreature: 1
   generateCreatures: {fileID: 7065241369011201559}
   spawnFoliage: {fileID: 2855617038713985127}
@@ -69,11 +69,11 @@ MonoBehaviour:
   waterHandler: {fileID: 7974886500941765792}
   terrainLayers:
   - strength: 0.0625
-    baseRoughness: 2
-    roughness: 2.5
+    baseRoughness: 1.5
+    roughness: 2
     persistance: 0.5
     centre: {x: 0, y: 0, z: 0}
-    numLayers: 3
+    numLayers: 6
 --- !u!114 &3175307376905995560
 MonoBehaviour:
   m_ObjectHideFlags: 0

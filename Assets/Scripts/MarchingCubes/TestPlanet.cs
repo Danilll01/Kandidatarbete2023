@@ -47,19 +47,23 @@ public class TestPlanet : MonoBehaviour
         }
 
         RandomX rand = new RandomX();
+        
+        if(terrainLevel == null)
+        {
+            terrainLevel = new MinMaxTerrainLevel();
+        }
 
-        terrainLevel = new MinMaxTerrainLevel();
-
-        float threshold = 23 + rand.Value() * 4;
-        int frequency = rand.Next(2) + 3;
-        float amplitude = 1.2f + rand.Value() * 0.4f;
-        marchingCubes = new MarchingCubes(1, meshGenerator, threshold, radius, frequency, amplitude, terrainLayers);
-
-        waterDiameter = -(threshold / 255 - 1) * radius * 2 * 0.93f;
+        if (marchingCubes == null)
+        {
+            marchingCubes = new MarchingCubes(1, meshGenerator, 23, radius, 0, 0, terrainLayers);
+        }
+        
+        waterDiameter = -(23.0f / 255 - 1) * radius * 2 * 0.935f;
 
         terrainLevel.SetMin(Mathf.Abs((waterDiameter + 1) / 2));
 
         CreateMeshes(3, resolution, terrainLevel);
+
 
         planetMaterial = terrainColor.GetPlanetMaterial(terrainLevel, rand.Next());
 

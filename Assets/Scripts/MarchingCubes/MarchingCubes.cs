@@ -20,7 +20,7 @@ public class MarchingCubes
     readonly float amplitude;
     public int chunkResolution;
 
-    private List<TerrainLayer> terrainLayers;
+    public List<TerrainLayer> terrainLayers;
 
     /// <summary>
     /// Initializes the MarchingCubes script
