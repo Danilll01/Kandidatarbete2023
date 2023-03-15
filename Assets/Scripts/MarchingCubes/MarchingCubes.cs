@@ -19,8 +19,6 @@ public class MarchingCubes
     readonly float amplitude;
     public int chunkResolution;
 
-    AsyncGPUReadbackRequest asyncRequest;
-
     /// <summary>
     /// Initializes the MarchingCubes script
     /// </summary>

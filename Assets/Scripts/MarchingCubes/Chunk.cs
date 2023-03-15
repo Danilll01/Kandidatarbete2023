@@ -72,7 +72,7 @@ public class Chunk : MonoBehaviour
         position = -(chunkIndex - 1.5f * Vector3.one) * (marchingCubes.radius * 2 / (1 << (marchingCubes.chunkResolution)));
     }
 
-    private void updateMesh(int resolution)
+    public void updateMesh(int resolution)
     {
         if (this.resolution == resolution)
             return;
