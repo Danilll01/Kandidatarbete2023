@@ -195,7 +195,7 @@ public class SpawnFoliage : MonoBehaviour
         {
             return;
         }
-        if (hit.transform.tag == "Foliage" || hit.transform.tag == "Creature" || hit.transform.tag == "Player" || hit.transform.tag == "Food" || Mathf.Abs(Vector3.Angle(rayOrigin - planetCenter, hit.normal)) > treeAngleLimit)
+        if (hit.transform.tag == "Foliage" || hit.transform.tag == "Creature" || hit.transform.tag == "Player" || hit.transform.tag == "Plant" || Mathf.Abs(Vector3.Angle(rayOrigin - planetCenter, hit.normal)) > treeAngleLimit)
         {
             return;
         }
@@ -223,7 +223,7 @@ public class SpawnFoliage : MonoBehaviour
         {
             return;
         }
-        if (hit.transform.tag == "Foliage" || hit.transform.tag == "Creature" || hit.transform.tag == "Player" || hit.transform.tag == "Food" || Mathf.Abs(Vector3.Angle(rayOrigin - planetCenter, hit.normal)) > bushAngleLimit)
+        if (hit.transform.tag == "Foliage" || hit.transform.tag == "Creature" || hit.transform.tag == "Player" || hit.transform.tag == "Plant" || Mathf.Abs(Vector3.Angle(rayOrigin - planetCenter, hit.normal)) > bushAngleLimit)
         {
             return;
         }
@@ -234,6 +234,7 @@ public class SpawnFoliage : MonoBehaviour
         // Sets a random rotation for more variation
         rotation *= Quaternion.Euler(0, Random.value * 360, 0);
         GameObject bushObj = Instantiate(bushPrefab[getIndex(hit.point + noiseOffset)], hit.point, rotation, hit.transform);
+        bushObj.tag = "Plant";
         foliageObjects.Add(bushObj);
     }
 
@@ -253,7 +254,7 @@ public class SpawnFoliage : MonoBehaviour
         {
             return;
         }
-        if (hit.transform.tag == "Foliage" || hit.transform.tag == "Creature" || hit.transform.tag == "Player" || hit.transform.tag == "Food" || Mathf.Abs(Vector3.Angle(rayOrigin - planetCenter, hit.normal)) < stoneAngleLimit)
+        if (hit.transform.tag == "Foliage" || hit.transform.tag == "Creature" || hit.transform.tag == "Player" || hit.transform.tag == "Plant" || Mathf.Abs(Vector3.Angle(rayOrigin - planetCenter, hit.normal)) < stoneAngleLimit)
         {
             return;
         }

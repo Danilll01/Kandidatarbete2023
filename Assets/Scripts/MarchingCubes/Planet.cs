@@ -91,14 +91,6 @@ public class Planet : MonoBehaviour
         gameObject.name = bodyName;
     }
 
-    public void ShowCreatures(bool show)
-    {
-        if (generateCreatures != null)
-        {
-            generateCreatures.ShowCreatures(show);
-        }
-    }
-
     public Color GetGroundColor()
     {
         return chunksHandler.terrainColor.bottomColor;
