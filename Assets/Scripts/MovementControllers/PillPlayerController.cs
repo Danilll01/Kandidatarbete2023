@@ -25,9 +25,13 @@ public class PillPlayerController : MonoBehaviour
     private ShipController ship;
     [HideInInspector] public bool boarded = false;
 
+    // Animations
+    private Animator animator;
+
     private void Awake()
     {
         Universe.player = this;
+        animator = GetComponent<Animator>();
     }
 
     // Start is called before the first frame update
@@ -285,7 +289,12 @@ public class PillPlayerController : MonoBehaviour
 
     public bool Grounded
     {
-        get { return Physics.Raycast(transform.position, attractor.transform.position - transform.position, 2f); }
+        get 
+        {
+            bool isGrounded = Physics.Raycast(transform.position, attractor.transform.position - transform.position, 2f);
+            animator.SetBool("Jump", isGrounded);
+            return isGrounded;       
+        }
     }
 
     public Vector3 Up
