@@ -35,6 +35,8 @@ public class Planet : MonoBehaviour
     [SerializeField] public ChunksHandler chunksHandler;
     [SerializeField] public WaterHandler waterHandler;
 
+    [SerializeField] private List<TerrainLayer> terrainLayers;
+
     private float threshold;
 
     /// <summary>
@@ -59,7 +61,7 @@ public class Planet : MonoBehaviour
             threshold = 23 + (float)rand.NextDouble() * 4;
             int frequency = rand.Next(2) + 3;
             float amplitude = 1.2f + (float)rand.NextDouble() * 0.4f;
-            marchingCubes = new MarchingCubes(1, meshGenerator, threshold, radius, frequency, amplitude);
+            marchingCubes = new MarchingCubes(1, meshGenerator, threshold, radius, frequency, amplitude, terrainLayers);
         }
 
         // Init water

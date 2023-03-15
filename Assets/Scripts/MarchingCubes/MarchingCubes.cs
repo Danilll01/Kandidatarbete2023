@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using Unity.Mathematics;
+using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.UI;
@@ -19,13 +20,15 @@ public class MarchingCubes
     readonly float amplitude;
     public int chunkResolution;
 
+    private List<TerrainLayer> terrainLayers;
+
     /// <summary>
     /// Initializes the MarchingCubes script
     /// </summary>
     /// <param name="meshGenerator">The meshgenerator compute shader</param>
     /// <param name="threshold">The cut off threshold to be used</param>
     /// <param name="radius"></param>
-    public MarchingCubes(int chunkResolution, ComputeShader meshGenerator, float threshold, float radius, int frequency, float amplitude)
+    public MarchingCubes(int chunkResolution, ComputeShader meshGenerator, float threshold, float radius, int frequency, float amplitude, List<TerrainLayer> terrainLayers)
     {
         this.chunkResolution = chunkResolution;
         this.meshGenerator = meshGenerator;
@@ -33,6 +36,7 @@ public class MarchingCubes
         this.radius = radius;
         this.amplitude = amplitude;
         this.frequency = frequency;
+        this.terrainLayers = terrainLayers;
     }
 
     /// <summary>
@@ -46,14 +50,20 @@ public class MarchingCubes
         int numVoxelsPerAxis = ((resolution << 3) >> chunkResolution) - 1;
         int numVoxels = numVoxelsPerAxis * numVoxelsPerAxis * numVoxelsPerAxis;
         int maxTriangleCount = numVoxels * 5;
+
         // Set up buffers for the triangles
         ComputeBuffer trianglesBuffer = new ComputeBuffer(maxTriangleCount, sizeof(int) * 3 * 3, ComputeBufferType.Append);
         trianglesBuffer.SetCounterValue(0);
+
+        // Set up buffer for the terrain layers
+        ComputeBuffer layersBuffer = new ComputeBuffer(terrainLayers.Count, sizeof(float) * 7 + sizeof(int));
+        layersBuffer.SetData(terrainLayers.ToArray());
 
         // Run generateMesh in compute shader
         int kernelIndex = meshGenerator.FindKernel("GenerateMesh");
 
         
+
         meshGenerator.SetInt("frequency", frequency);
         meshGenerator.SetFloat("amplitude", amplitude);
         meshGenerator.SetInt("chunkIndex", index);
@@ -62,8 +72,9 @@ public class MarchingCubes
         meshGenerator.SetFloat("threshold", threshold);
         meshGenerator.SetFloat("radius", radius);
         meshGenerator.SetBuffer(kernelIndex, "triangles", trianglesBuffer);
+        meshGenerator.SetInt("numTerrainLayers", terrainLayers.Count);
+        meshGenerator.SetBuffer(kernelIndex, "terrainLayers", layersBuffer);
         meshGenerator.Dispatch(kernelIndex, resolution >> chunkResolution, resolution >> chunkResolution, resolution >> chunkResolution);
-
         
         // Retrieve triangles
         int length = getLengthBuffer(ref trianglesBuffer); // This is slow!!!

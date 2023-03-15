@@ -4,11 +4,13 @@ using UnityEngine;
 using ExtendedRandom;
 using static UnityEngine.Rendering.PostProcessing.PostProcessResources;
 using Unity.VisualScripting;
+using System;
 
 public class TestPlanet : MonoBehaviour
 {
+
 #if UNITY_EDITOR
-    [SerializeField, Range(0, 1)] private int update = 0;
+    [SerializeField, Range(0, 1)] private int update = 1;
     [SerializeField] private Chunk chunkPrefab;
     [SerializeField] ComputeShader meshGenerator;
     [SerializeField] ComputeShader waterCS;
@@ -17,6 +19,8 @@ public class TestPlanet : MonoBehaviour
     [SerializeField] private TerrainColor terrainColor;
     [SerializeField] private Texture2D normal1;
     [SerializeField] private Texture2D normal2;
+
+    [SerializeField] private List<TerrainLayer> terrainLayers;
 
     private GameObject chunksParent;
     private GameObject waterParent;
@@ -49,7 +53,7 @@ public class TestPlanet : MonoBehaviour
         float threshold = 23 + rand.Value() * 4;
         int frequency = rand.Next(2) + 3;
         float amplitude = 1.2f + rand.Value() * 0.4f;
-        marchingCubes = new MarchingCubes(1, meshGenerator, threshold, radius, frequency, amplitude);
+        marchingCubes = new MarchingCubes(1, meshGenerator, threshold, radius, frequency, amplitude, terrainLayers);
 
         waterDiameter = -(threshold / 255 - 1) * radius * 2 * 0.93f;
 
