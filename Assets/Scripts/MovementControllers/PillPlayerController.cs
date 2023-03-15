@@ -269,6 +269,11 @@ public class PillPlayerController : MonoBehaviour
     {
         get
         {
+            if (attractor == null)
+            {
+                return Vector3.zero;
+            }
+
             Physics.Raycast(transform.position, attractor.transform.position - transform.position, out RaycastHit hit, 2f);
             if (hit.collider == null)
             {
@@ -284,7 +289,13 @@ public class PillPlayerController : MonoBehaviour
 
     public bool Grounded
     {
-        get { return Physics.Raycast(transform.position, attractor.transform.position - transform.position, 2f); }
+        get { 
+            if (attractor == null)
+            {
+                return false;
+            }
+            return Physics.Raycast(transform.position, attractor.transform.position - transform.position, 2f); 
+        }
     }
 
     public Vector3 Up
