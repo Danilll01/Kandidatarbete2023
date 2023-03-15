@@ -128,7 +128,6 @@ public class PillPlayerController : MonoBehaviour
             {
                 movementVector.y += 0.0001f;
             }
-
         }
         else if (Input.GetAxisRaw("Jump") == 1 && coyoteTimer <= coyoteMax) //Jumping
         {
