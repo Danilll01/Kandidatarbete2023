@@ -6,7 +6,7 @@ public class FoliageHandler
    
     private Planet planet;
     private float waterRadius;
-    private int density;
+    private float density;
     private float frequency = 0.01f;
     private readonly Random random = new (Universe.seed);
 
@@ -14,7 +14,7 @@ public class FoliageHandler
     {
         this.planet = planet;
         waterRadius = Mathf.Abs(planet.waterDiameter / 2);
-        density = (int)(planet.radius * (random.NextDouble()) - 0.5); // Magic numbers
+        density = planet.radius * 0.00005f; // Magic numbers * "random"
     }
 
     public Vector3 PlanetPosition
@@ -22,7 +22,7 @@ public class FoliageHandler
         get { return planet.transform.position; }
     }
 
-    public int Density
+    public float Density
     {
         get { return density; }
     }

@@ -62,7 +62,9 @@ public class ChunksHandler : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(!initialized)
+        //bool playerOnPlanet = ReferenceEquals(transform, player.transform.parent);
+
+        if (!initialized)
         {
             InitializeChunkPositions();
             UpdateChunksVisibility();
@@ -71,11 +73,11 @@ public class ChunksHandler : MonoBehaviour
 
         if (foliageInitialized != 0)
         {
-            foliageInitialized--;
+            //foliageInitialized--;
         }
 
         // Only update the chunks if the player is close to the planet
-        if (initialized && (player.position - planet.transform.position).magnitude < 3000)
+        if (initialized && (player.position - planet.transform.position).magnitude < 2000)
         {
             UpdateChunksVisibility();
             resetchunks = false;
@@ -85,8 +87,9 @@ public class ChunksHandler : MonoBehaviour
             Resetchunks();
         }
 
+        /*
         // Check if player is on the planet
-        if (!ReferenceEquals(transform, player.transform.parent))
+        if (!playerOnPlanet)
         {
             CreateMeshes(1, 1, terrainLevel);
             setChunksMaterials();
@@ -97,7 +100,7 @@ public class ChunksHandler : MonoBehaviour
             CreateMeshes(3, planet.resolution, terrainLevel);
             setChunksMaterials();
             chunksGenerated = true;
-        }
+        }*/
     }
 
     private void setChunksMaterials()

@@ -15,6 +15,8 @@ public class Foliage : MonoBehaviour
     private int waterArrSize;
     [SerializeField] private GameObject[] stones;
     private int stoneArrSize;
+    [SerializeField] private GameObject[] foragables;
+    private int foragablesArrSize;
 
     private Vector3[] spots = null;
 
@@ -30,13 +32,14 @@ public class Foliage : MonoBehaviour
         if (foliageHandler == null || !foliageHandler.IsPlanet) return;
         
         // Seedar en random för denna chunken
-        random = new Random(Universe.seed + (int)pos.x + (int)pos.y + (int)pos.z);
+        random = new Random(Universe.seed);
 
         // Init array lengths
         treeArrSize = trees.Length;
         bushArrSize = bushes.Length;
         waterArrSize = waterBois.Length;
         stoneArrSize = stones.Length;
+        foragablesArrSize = foragables.Length;
 
         // Checks if the chunk is on the surface
         Vector3 rayOrigin = pos.normalized * foliageHandler.PlanetRadius + foliageHandler.PlanetPosition;
@@ -53,7 +56,7 @@ public class Foliage : MonoBehaviour
     {
         int max = meshVertices.Length;
 
-        spots = new Vector3[Mathf.Min(foliageHandler.Density, meshVertices.Length)];
+        spots = new Vector3[(int)(max * foliageHandler.Density)];
 
         float radius = foliageHandler.PlanetRadius;
 
@@ -121,6 +124,8 @@ public class Foliage : MonoBehaviour
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
     private void AboveAngle(RaycastHit hit, Vector3 rayOrigin, float heightAboveSea)
     {
+
+        // 1/7 chance of spawning a bush in a steep area
         if(random.Next(7) == 0)
             SpawnBushes(hit, rayOrigin);
         else
@@ -131,8 +136,10 @@ public class Foliage : MonoBehaviour
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
     private void BelowAngle(RaycastHit hit, Vector3 rayOrigin, float heightAboveSea)
     {
-        // 1 in 5 is a tree
-        if (random.Next(6) == 0)
+        // 1 in 6 is a tree
+        if (random.Next(10) == 0)
+            SpawnForgables(hit, rayOrigin);
+        else if (random.Next(6) == 0)
             SpawnTrees(hit, rayOrigin);
         else
             SpawnBushes(hit, rayOrigin);
@@ -142,6 +149,7 @@ public class Foliage : MonoBehaviour
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
     private void SpawnTrees(RaycastHit hit, Vector3 rayOrigin)
     {
+        // 1/10 of spawning fallen tree
         if(random.Next(10) == 0)
         {
             Quaternion rotation = Quaternion.LookRotation(hit.normal) * Quaternion.Euler(90, 0, 0);
@@ -154,7 +162,6 @@ public class Foliage : MonoBehaviour
             rotation *= Quaternion.Euler(0, random.Next(0, 360), 0);
             Instantiate(trees[random.Next(treeArrSize)], hit.point - (hit.point.normalized), rotation, transform);
         }
-        
     }
 
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -174,11 +181,18 @@ public class Foliage : MonoBehaviour
         Instantiate(stones[random.Next(stoneArrSize)], hit.point, rotation, transform);
     }
 
+    private void SpawnForgables(RaycastHit hit, Vector3 rayOrigin)
+    {
+        Quaternion rotation = Quaternion.LookRotation(hit.normal) * Quaternion.Euler(90, 0, 0);
+        rotation *= Quaternion.Euler(0, random.Next(0, 360), 0);
+        Instantiate(foragables[random.Next(foragablesArrSize)], hit.point, rotation, transform);
+    }
+
 
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
     private void SpawnInWater(RaycastHit hit, Vector3 rayOrigin, float depth)
     {
-        if(depth < 6)
+        if(depth < 3)
         {
             Quaternion rotation = Quaternion.LookRotation(rayOrigin) * Quaternion.Euler(90, 0, 0);
             rotation *= Quaternion.Euler(0, random.Next(0, 360), 0);
