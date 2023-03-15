@@ -37,7 +37,7 @@ public class PillPlayerController : MonoBehaviour
 
         if (attractor == null)
         {
-            attractor = planetToSpawnOn.GetComponent<Planet>();
+            attractor = planetToSpawnOn;
             if (attractor == null)
             {
                 Debug.LogError("Planet player spawned on has no Planet script");
