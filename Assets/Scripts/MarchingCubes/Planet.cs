@@ -29,14 +29,12 @@ public class Planet : MonoBehaviour
     public Vector3 rotationAxis;
 
     [SerializeField, Range(1, 4)] private int chunkResolution = 3; //This is 2^chunkResolution
-    [SerializeField, Range(1, 14)] private int resolution = 5;
+    [SerializeField, Range(1, 14)] public int resolution = 5;
     [SerializeField] private Chunk chunkPrefab;
     [SerializeField] private GameObject chunksParent;
     [HideInInspector] public Transform player;
     [HideInInspector] public MarchingCubes marchingCubes;
 
-    //[SerializeField, Range(1, 4)] 
-    [SerializeField, Range(1, 14)] public int resolution = 5;
 
     [SerializeField] private bool willGenerateCreature = false;
     [SerializeField] private GenerateCreatures generateCreatures;
