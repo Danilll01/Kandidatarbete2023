@@ -155,11 +155,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gradient:
     serializedVersion: 2
-    key0: {r: 0.95686275, g: 0.7490196, b: 0.85882354, a: 0}
-    key1: {r: 0.5294118, g: 0.7294118, b: 0.67058825, a: 0}
-    key2: {r: 1, g: 0.9137255, b: 0.9529412, a: 0}
-    key3: {r: 0.31764707, g: 0.1764706, b: 0.21960784, a: 0}
-    key4: {r: 0.69803923, g: 0.4392157, b: 0.57254905, a: 0}
+    key0: {r: 0.5568628, g: 0.92941177, b: 0.96862745, a: 0}
+    key1: {r: 0.6313726, g: 0.8039216, b: 0.94509804, a: 0}
+    key2: {r: 0.6156863, g: 0.4117647, b: 0.3529412, a: 0}
+    key3: {r: 0.83137256, g: 0.5882353, b: 0.654902, a: 0}
+    key4: {r: 0.47058824, g: 0.8784314, b: 0.8627451, a: 0}
     key5: {r: 0, g: 0, b: 0, a: 0}
     key6: {r: 0, g: 0, b: 0, a: 0}
     key7: {r: 0, g: 0, b: 0, a: 0}
@@ -183,11 +183,11 @@ MonoBehaviour:
     m_NumColorKeys: 5
     m_NumAlphaKeys: 2
   tempMin: 425.83334
-  tempMax: 448.47626
+  tempMax: 450.00836
   angleCutOf: 90
   angleBlending: 0.5
   shader: {fileID: -6465566751694194690, guid: 582627e993e00c442b71e98ced60fb20, type: 3}
-  bottomColor: {r: 0.95686275, g: 0.7490196, b: 0.85882354, a: 0}
+  bottomColor: {r: 0.5568628, g: 0.92941177, b: 0.96862745, a: 0}
 --- !u!114 &109251772
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -200,7 +200,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f03426b9cfab89547904088ce4942ce1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  update: 0
+  update: 1
   chunkPrefab: {fileID: 5146216955868432244, guid: 8531586e98093b342af8fdd2a736c017,
     type: 3}
   meshGenerator: {fileID: 7200000, guid: 2b54143d75bd2344bb987facb6cb4950, type: 3}
@@ -214,16 +214,10 @@ MonoBehaviour:
   terrainLayers:
   - strength: 0.0625
     baseRoughness: 1.5
-    roughness: 2
+    roughness: 2.5
     persistance: 0.5
     centre: {x: 0, y: 0, z: 0}
     numLayers: 5
-  - strength: 0.0625
-    baseRoughness: 1.1
-    roughness: 1.1
-    persistance: 0.5
-    centre: {x: 0, y: 0, z: 0}
-    numLayers: 2
   waterDiameter: 850.6667
 --- !u!4 &109251773
 Transform:
