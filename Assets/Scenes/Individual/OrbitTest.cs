@@ -4,46 +4,14 @@ using UnityEngine;
 
 public class OrbitTest : MonoBehaviour
 {
-    public GameObject orbitObject;
     public Vector3 rotationAxis;
-    public float objectRadius;
-    public float offset;
-
-    public Transform Target;
-
-    public float RotationSpeed = 1;
-
-    public float CircleRadius = 1;
-
-    public float ElevationOffset = 0;
-
-    private Vector3 positionOffset;
-
-    [Range(0, 360)]
-    public float StartAngle = 0;
-
-    public bool UseTargetCoordinateSystem = false;
-
-    public bool LookAtTarget = false;
-
-    private float angle;
-    public Vector3 relativeDistance = Vector3.zero;
-    public float orbitDistance = 3.0f;
-    public bool once = true;
-
-    [SerializeField] private GameObject target;
-    [SerializeField] private float degreesPerSecond = 45;
-
-    private Vector3 planetToSun = new Vector3();
-    public GameObject sun;
 
     // Update is called once per frame
     void Update()
     {
-        planetToSun = sun.transform.position - target.transform.position;
         var orthogonalVector = rotationAxis;//Vector3.RotateTowards(planetToSun, -planetToSun, Mathf.PI / 2f, 0f);
         //orthogonalVector.y = 0;
-        transform.RotateAround(target.transform.position, orthogonalVector, degreesPerSecond * Time.deltaTime);
+        transform.RotateAround(transform.position, orthogonalVector, 10f * Time.deltaTime);
     }
 
     /*

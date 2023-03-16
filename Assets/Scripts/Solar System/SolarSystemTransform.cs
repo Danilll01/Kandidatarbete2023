@@ -11,9 +11,11 @@ public class SolarSystemTransform : MonoBehaviour
     private GameObject planetsParent;
     [SerializeField] private GameObject player;
     private int playerOnPlanetIndex = 0;
-    [SerializeField] private bool rotateSolarSystem = false;
+    private bool rotateSolarSystem = false;
     private GameObject fakeOrbitObject;
     private Vector3[] relativePlanetSunDistances;
+
+    public bool ResetMoons = false;
 
 
     void Start()
@@ -55,6 +57,13 @@ public class SolarSystemTransform : MonoBehaviour
         {
             MovePlanets(playerOnPlanetIndex);
             activePlanetIndex = playerOnPlanetIndex;
+        }
+
+        if (ResetMoons)
+        {
+            Planet planet = spawnPlanets.bodies[activePlanetIndex];
+            planet.ResetMoons();
+            ResetMoons = false;
         }
     }
 
@@ -140,6 +149,7 @@ public class SolarSystemTransform : MonoBehaviour
             sun.transform.position = Vector3.zero;
             planet.transform.parent = planetsParent.transform;
             player.transform.parent = null;
+            planet.ResetMoons();
         }
 
     }

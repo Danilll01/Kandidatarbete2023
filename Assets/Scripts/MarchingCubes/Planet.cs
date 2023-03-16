@@ -54,6 +54,8 @@ public class Planet : MonoBehaviour
 
     private float threshold;
 
+    private bool resetMoons = false;
+
     /// <summary>
     /// Initializes the planet
     /// </summary>
@@ -146,15 +148,13 @@ public class Planet : MonoBehaviour
     {
         if (player.parent == null)
         {
-            LockMoons(true);
             RotateAroundAxis();
         }
-        else if (player.parent.GetComponent<Planet>() != this)
+        else if (player.parent.GetComponent<Planet>() != this && player.parent != this.transform.parent.parent)
         {
-            LockMoons(true);
             RotateAroundAxis();
         }
-        else
+        else if(!bodyName.Contains("Moon") && !resetMoons)
         {
             RotateMoons();
         }
@@ -170,7 +170,7 @@ public class Planet : MonoBehaviour
     {
         LockMoons(false);
 
-        moonsParent.transform.RotateAround(moonsParent.transform.position, rotationAxis, Time.deltaTime);
+        moonsParent.transform.RotateAround(moonsParent.transform.position, rotationAxis, 5f * Time.deltaTime);
 
         for (int i = 0; i < moons.Count; i++)
         {
@@ -180,6 +180,46 @@ public class Planet : MonoBehaviour
             moon.transform.position = direction.normalized * moonsrelativeDistances[i].magnitude;
         } 
       
+    }
+
+    public void ResetMoons()
+    {
+        for (int j = 0; j < 5; j++)
+        {
+            for (int i = 0; i < moons.Count; i++)
+            {
+                Planet moon = moons[i];
+                moon.GetComponent<KeplerOrbitMover>().enabled = false;
+            }
+            resetMoons = true;
+            moonsParent.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
+            for (int i = 0; i < moons.Count; i++)
+            {
+                Planet moon = moons[i];
+                Vector3 direction = moon.transform.position - moonsParent.transform.position;
+                direction.y = 0;
+                moon.gameObject.GetComponent<KeplerOrbitMover>().SetAutoCircleOrbit();
+                moon.transform.position = direction.normalized * moonsrelativeDistances[i].magnitude;
+            }
+
+            ReactivateMoonOrbits();
+        }
+    }
+
+    private void ReactivateMoonOrbits()
+    {
+        for (int i = 0; i < moons.Count; i++)
+        {
+            Planet moon = moons[i];
+
+            KeplerOrbitMover orbitMover = moon.GetComponent<KeplerOrbitMover>();
+            orbitMover.LockOrbitEditing = false;
+            orbitMover.SetUp();
+            orbitMover.SetAutoCircleOrbit();
+            orbitMover.ForceUpdateOrbitData();
+            orbitMover.enabled = true;
+            orbitMover.LockOrbitEditing = true;
+        }
     }
 
     private void LockMoons(bool lockMoons)
