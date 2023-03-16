@@ -69,7 +69,7 @@ MonoBehaviour:
   waterHandler: {fileID: 7974886500941765792}
   terrainLayers:
   - strength: 0.0625
-    baseRoughness: 1.5
+    baseRoughness: 1.6
     roughness: 2
     persistance: 0.5
     centre: {x: 0, y: 0, z: 0}
