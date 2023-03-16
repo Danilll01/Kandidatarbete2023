@@ -99,7 +99,11 @@ public class SolarSystemTransform : MonoBehaviour
 
     private void RotateSolarSystem()
     {
-        transform.RotateAround(transform.position, spawnPlanets.bodies[activePlanetIndex].GetComponent<Planet>().rotationAxis, 5f * Time.deltaTime);
+        //orthogonalVector.y = 0;
+        sun.GetComponent<KeplerOrbitMover>().LockOrbitEditing = false;
+        sun.GetComponent<KeplerOrbitMover>().SetAutoCircleOrbit();
+        Vector3 planetPosition = spawnPlanets.bodies[activePlanetIndex].transform.position;
+        transform.RotateAround(planetPosition, -spawnPlanets.bodies[activePlanetIndex].GetComponent<Planet>().rotationAxis, 2f * Time.deltaTime);
         /*
         // Keep us at the last known relative position
         Vector3 planetPosition = spawnPlanets.bodies[activePlanetIndex].transform.position;
@@ -158,9 +162,10 @@ public class SolarSystemTransform : MonoBehaviour
         // Calculate the distance from the planet that should be centered and origo
         // Move the solar system by that distance to place planet in origo
         Vector3 distanceFromOrigin = planet.transform.GetChild(0).transform.position - Vector3.zero;
-        planetsParent.transform.position -= distanceFromOrigin;
-        fakeOrbitObject.transform.position = planet.transform.position;
+        sun.transform.position -= distanceFromOrigin;
         planet.gameObject.transform.parent = null;
+        planet.gameObject.transform.position = Vector3.zero;
+        fakeOrbitObject.transform.position = Vector3.zero;
 
         // Activate orbit on the sun to fake the movement of the planet
         ActivateSunOrbit(planet.gameObject);
@@ -180,7 +185,7 @@ public class SolarSystemTransform : MonoBehaviour
 
     private void RotateAroundAxis()
     {
-        //spawnPlanets.bodies[activePlanetIndex].transform.RotateAround(spawnPlanets.bodies[activePlanetIndex].transform.position, spawnPlanets.bodies[activePlanetIndex].GetComponent<Planet>().rotationAxis, 5 * Time.deltaTime);
+        spawnPlanets.bodies[activePlanetIndex].transform.RotateAround(spawnPlanets.bodies[activePlanetIndex].transform.position, spawnPlanets.bodies[activePlanetIndex].GetComponent<Planet>().rotationAxis, 2f * Time.deltaTime);
     }
 
     private void ActivateSunOrbit(GameObject planetToOrbit)
