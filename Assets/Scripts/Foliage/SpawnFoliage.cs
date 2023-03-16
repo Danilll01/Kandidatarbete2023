@@ -4,6 +4,7 @@ using Random = UnityEngine.Random;
 using System.Linq;
 using System.Collections.Generic;
 using UnityEditor;
+using Noise;
 
 public class SpawnFoliage : MonoBehaviour
 {
@@ -270,7 +271,7 @@ public class SpawnFoliage : MonoBehaviour
 
     private int getIndex(Vector3 pos)
     {
-        float noise = Perlin.Noise(pos);
+        float noise = Perlin.Evaluate(pos);
 
         if (noise < 0)
         {
