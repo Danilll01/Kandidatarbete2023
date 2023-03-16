@@ -43,10 +43,10 @@ public class Chunk : MonoBehaviour
         CalculateChunkPosition();
         
         //Set lowest resolution as default
-        Vector3[] meshVertices = UpdateMesh(resolution);
-        if (meshVertices.Length > 0 && marchingCubes.chunkResolution == 3)
+        int meshVerticesLength = UpdateMesh(resolution);
+        if (meshVerticesLength > 1000 && marchingCubes.chunkResolution == 3)
         {
-            foliage.Initialize(meshVertices, position);
+            foliage.Initialize(meshVerticesLength, position);
         }
 
     }
@@ -79,10 +79,10 @@ public class Chunk : MonoBehaviour
 
     
 
-    private Vector3[] UpdateMesh(int resolution)
+    private int UpdateMesh(int resolution)
     {
         if (this.resolution == resolution)
-            return null;
+            return 0;
 
         this.resolution = resolution;
 
@@ -94,6 +94,6 @@ public class Chunk : MonoBehaviour
 
         meshCollider.sharedMesh = mesh;
 
-        return meshVertices;
+        return meshVertices.Length;
     }
 }

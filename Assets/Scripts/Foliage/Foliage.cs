@@ -17,6 +17,10 @@ public class Foliage : MonoBehaviour
     private int stoneArrSize;
     [SerializeField] private GameObject[] foragables;
     private int foragablesArrSize;
+    [SerializeField]
+    private GameObject debugObject;
+
+    private const int MISS_COMPLIMENT = 600;
 
     private Vector3[] spots = null;
 
@@ -25,7 +29,11 @@ public class Foliage : MonoBehaviour
 
     [SerializeField] private float frequency = 0.1f;
 
-    public void Initialize(Vector3[] meshVertices, Vector3 pos)
+    private Vector3 position;
+
+    private int arrayLength;
+
+    public void Initialize(int meshVerticesLength, Vector3 pos)
     {
         
         foliageHandler = transform.parent.parent.parent.GetComponent<Planet>().foliageHandler;
@@ -34,6 +42,8 @@ public class Foliage : MonoBehaviour
         // Seedar en random för denna chunken
         random = new Random(Universe.seed);
 
+        arrayLength = (int)(meshVerticesLength * foliageHandler.Density);
+
         // Init array lengths
         treeArrSize = trees.Length;
         bushArrSize = bushes.Length;
@@ -41,34 +51,77 @@ public class Foliage : MonoBehaviour
         stoneArrSize = stones.Length;
         foragablesArrSize = foragables.Length;
 
-        // Checks if the chunk is on the surface
-        Vector3 rayOrigin = pos.normalized * foliageHandler.PlanetRadius + foliageHandler.PlanetPosition;
-        Ray ray = new (rayOrigin, foliageHandler.PlanetPosition - rayOrigin);
-        Physics.Raycast(ray, out RaycastHit hit);
+        position = pos;
 
-        if(hit.transform == transform.parent)
-        {
-            InitFoliage(meshVertices);
-        }
+        //TestSize();
+        InitFoliage();
+
+        //Debug.Log("Length: " + meshVerticesLength);
     }
 
-    private void InitFoliage(Vector3[] meshVertices)
+    private void TestSize()
     {
-        int max = meshVertices.Length;
 
-        spots = new Vector3[(int)(max * foliageHandler.Density)];
+        //spots = new Vector3[200];
 
-        float radius = foliageHandler.PlanetRadius;
+        //GameObject cube = Instantiate(go, Vector3.zero, rotation, transform);
 
-        for (int i = 0; i < spots.Length; i++)
+        //cube.transform.localPosition = position.normalized * foliageHandler.PlanetRadius;
+
+        //cube.transform.localScale = new Vector3(foliageHandler.PlanetRadius * foliageHandler.PlanetRadius / 2000, 1, foliageHandler.PlanetRadius * foliageHandler.PlanetRadius / 2000);
+
+        /*for (int i = 0; i < 200; i++)
         {
-            spots[i] = (meshVertices[random.Next(0, max)] + new Vector3(random.Next(-5, 5), random.Next(-5, 5), random.Next(5, 5))).normalized * radius;
+
+
+            float x = (float)random.NextDouble() * 16 - 8;
+            float y = (float)random.NextDouble() * 16 - 8;
+            float z = (float)random.NextDouble() * 16 - 8;
+
+
+            Vector3 localpos = Quaternion.Euler(x, y, z) * position.normalized * foliageHandler.PlanetRadius;
+            //Quaternion rotation = Quaternion.LookRotation(-localpos) * Quaternion.Euler(90, 0, 0);
+            //GameObject pog = Instantiate(go, transform);
+            //pog.transform.localPosition = localpos;
+            spots[i] = localpos;
+        }*/
+        for(int i = -8; i < 10; i += 2)
+            for (int j = -8; j < 10; j += 2)
+                for(int k = -8; k < 10; k += 2)
+                {
+                    Vector3 localpos = Quaternion.Euler(i, j, k) * position.normalized * foliageHandler.PlanetRadius;
+                    //Quaternion rotation = Quaternion.LookRotation(-localpos) * Quaternion.Euler(90, 0, 0);
+                    GameObject pog = Instantiate(debugObject, transform);
+                    pog.transform.localPosition = localpos;
+                    //Debug.DrawLine(pog.transform.position, foliageHandler.PlanetPosition, Color.green, 10f);
+                }
+        
+
+    }
+
+    private void InitFoliage()
+    {
+        
+
+        spots = new Vector3[arrayLength + MISS_COMPLIMENT];
+
+        Vector3 pos = foliageHandler.PlanetRadius * position.normalized;
+
+        for (int i = 0; i < arrayLength; i++)
+        {
+            float x = (float)random.NextDouble() * 18 - 9;
+            float y = (float)random.NextDouble() * 18 - 9;
+            float z = (float)random.NextDouble() * 18 - 9;
+            Vector3 localpos = Quaternion.Euler(x, y, z) * pos;
+            spots[i] = localpos;
         }
     }
 
     public void SpawnFoliageOnChunk()
     {
         if (spots == null) return;
+
+        int hits = 0;
 
         Ray ray;
         RaycastHit hit;
@@ -101,8 +154,16 @@ public class Foliage : MonoBehaviour
                 {
                     SpawnInWater(hit, rayOrigin, hit.distance - (radius - waterRadius));
                 }
+                hits++;
             }
+            if (hits == arrayLength)
+            {
+                Debug.Log("Foliage break");
+                break;
+            }
+                
         }
+        Debug.Log("Hits: " + hits + " %: " + hits / (float)arrayLength * 100f);
         // Removes spots making the chunk unable to spawn new trees
         spots = null;
     }
@@ -136,10 +197,10 @@ public class Foliage : MonoBehaviour
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
     private void BelowAngle(RaycastHit hit, Vector3 rayOrigin, float heightAboveSea)
     {
-        // 1 in 6 is a tree
+        // 1 in 5 is a tree
         if (random.Next(10) == 0)
             SpawnForgables(hit, rayOrigin);
-        else if (random.Next(6) == 0)
+        else if (random.Next(5) == 0)
             SpawnTrees(hit, rayOrigin);
         else
             SpawnBushes(hit, rayOrigin);
