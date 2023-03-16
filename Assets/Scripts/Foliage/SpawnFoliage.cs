@@ -6,6 +6,11 @@ using System.Collections.Generic;
 using UnityEditor;
 using Noise;
 
+public class SpawnFoliage : MonoBehaviour
+{
+}
+
+/*
 /// <summary>
 /// Script which spawns given foliage on a planet
 /// </summary>
@@ -117,11 +122,16 @@ public class SpawnFoliage : MonoBehaviour
 
         player = planet.player;
 
+        foliageSpawned = true;
+        return;
+
         generateSpawnPoints();
         generatedSpawnPoints = true;
 
         // Makes the script seedable
         Random.InitState(seed);
+
+
     }
 
     private void generateSpawnPoints()
@@ -275,4 +285,4 @@ public class SpawnFoliage : MonoBehaviour
         }
     }
 
-}
+}*/
