@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
+using SimpleKeplerOrbits;
 
 [RequireComponent(typeof(GenerateCreatures))]
 [RequireComponent(typeof(TerrainColor))]
@@ -44,6 +45,10 @@ public class Planet : MonoBehaviour
     [SerializeField] public SpawnFoliage spawnFoliage;
     [SerializeField] public ChunksHandler chunksHandler;
     [SerializeField] public WaterHandler waterHandler;
+
+    [HideInInspector] public GameObject moonsParent;
+
+    private bool moonsLocked = true;
 
     private float threshold;
 
@@ -127,11 +132,17 @@ public class Planet : MonoBehaviour
     {
         if (player.parent == null)
         {
+            LockMoons(true);
             RotateAroundAxis();
         }
         else if (player.parent.GetComponent<Planet>() != this)
         {
+            LockMoons(true);
             RotateAroundAxis();
+        }
+        else
+        {
+            RotateMoons();
         }
     }
 
@@ -139,5 +150,28 @@ public class Planet : MonoBehaviour
     private void RotateAroundAxis()
     {
         transform.RotateAround(transform.position, rotationAxis, Time.deltaTime);
+    }
+
+    private void RotateMoons()
+    {
+        LockMoons(false);
+
+        foreach (Planet moon in moons)
+        {
+            moon.gameObject.GetComponent<KeplerOrbitMover>().SetAutoCircleOrbit();
+        }
+        moonsParent.transform.RotateAround(moonsParent.transform.position, rotationAxis, Time.deltaTime);
+    }
+
+    private void LockMoons(bool lockMoons)
+    {
+        if (moonsLocked != lockMoons)
+        {
+            foreach (Planet moon in moons)
+            {
+                moon.gameObject.GetComponent<KeplerOrbitMover>().LockOrbitEditing = lockMoons;
+            }
+            moonsLocked = lockMoons;
+        }
     }
 }

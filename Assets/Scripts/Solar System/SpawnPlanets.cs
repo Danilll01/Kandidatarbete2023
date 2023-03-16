@@ -155,10 +155,14 @@ public class SpawnPlanets : MonoBehaviour
     // Instantiate moons for the given planet
     private void InstantiateMoons(Planet parentPlanet, int numberOfMoons)
     {
+        GameObject moonsParent = new GameObject("Moons Parent");
+        moonsParent.transform.parent = parentPlanet.transform;
+        moonsParent.transform.localPosition = Vector3.zero;
+
         for (int i = 1; i < numberOfMoons + 1; i++)
         {
             GameObject moon = Instantiate(planetsPrefab);
-            moon.transform.parent = parentPlanet.transform;
+            moon.transform.parent = moonsParent.transform;
             moon.transform.localPosition = RandomPointOnCircleEdge(parentPlanet.diameter * i);
             moon.gameObject.name = "Moon " + i;
 
@@ -170,6 +174,8 @@ public class SpawnPlanets : MonoBehaviour
             parentPlanet.moons.Add(moonBody);
             SetupOrbitComponents(parentPlanet.gameObject, moon);
         }
+
+        parentPlanet.moonsParent = moonsParent;
     }
 
     // Gives back a random position on the edge of a circle given the radius of the circle
