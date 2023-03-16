@@ -13,6 +13,7 @@ public class SolarSystemTransform : MonoBehaviour
     private int playerOnPlanetIndex = 0;
     [SerializeField] private bool rotateSolarSystem = false;
     private GameObject fakeOrbitObject;
+    private Vector3[] relativePlanetSunDistances;
 
 
     void Start()
@@ -36,6 +37,10 @@ public class SolarSystemTransform : MonoBehaviour
         {
             return;
         }
+        else
+        {
+            InitializeValues();
+        }
 
         CheckIfPlayerOnAnyPlanet();
 
@@ -50,6 +55,19 @@ public class SolarSystemTransform : MonoBehaviour
         {
             MovePlanets(playerOnPlanetIndex);
             activePlanetIndex = playerOnPlanetIndex;
+        }
+    }
+
+    private void InitializeValues()
+    {
+        if (relativePlanetSunDistances == null)
+        {
+            relativePlanetSunDistances = new Vector3[spawnPlanets.bodies.Count];
+            for (int i = 0; i < spawnPlanets.bodies.Count; i++)
+            {
+                Planet planet = spawnPlanets.bodies[i];
+                relativePlanetSunDistances[i] =  sun.transform.position - planet.transform.position;
+            }
         }
     }
 
@@ -100,7 +118,9 @@ public class SolarSystemTransform : MonoBehaviour
         sun.GetComponent<KeplerOrbitMover>().LockOrbitEditing = false;
         sun.GetComponent<KeplerOrbitMover>().SetAutoCircleOrbit();
         Vector3 planetPosition = spawnPlanets.bodies[activePlanetIndex].transform.position;
+        Vector3 direction = sun.transform.position - planetPosition;
         transform.RotateAround(planetPosition, -spawnPlanets.bodies[activePlanetIndex].GetComponent<Planet>().rotationAxis, Time.deltaTime);
+        sun.transform.position = direction.normalized * relativePlanetSunDistances[activePlanetIndex].magnitude;
     }
 
     private void ResetPlanetOrbit(int planetIndex)

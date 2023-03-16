@@ -100,7 +100,7 @@ public class SpawnPlanets : MonoBehaviour
             planetBody.Initialize(player.transform, random.Next(), i == spawnPlanetIndex);
             InstantiateMoons(planetBody, nrOfMoonsForPlanet);
             bodies.Add(planetBody);
-
+            planetBody.InitializeMoonsValues();
             SetupOrbitComponents(Sun, planet);
         }
     }

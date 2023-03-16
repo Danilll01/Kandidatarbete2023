@@ -48,6 +48,8 @@ public class Planet : MonoBehaviour
 
     [HideInInspector] public GameObject moonsParent;
 
+    private Vector3[] moonsrelativeDistances;
+
     private bool moonsLocked = true;
 
     private float threshold;
@@ -103,7 +105,19 @@ public class Planet : MonoBehaviour
         {
             waterHandler.Initialize(this, waterDiameter, GetGroundColor());
         }
+        
     }
+
+    public void InitializeMoonsValues()
+    {
+        moonsrelativeDistances = new Vector3[moons.Count];
+
+        for (int i = 0; i < moons.Count; i++)
+        {
+            moonsrelativeDistances[i] = moons[i].transform.position - this.transform.position;
+        }
+    }
+
 
     // Gives back a random position on the edge of a circle given the radius of the circle
     private Vector3 RandomPointOnSphereEdge(float radius)
@@ -156,11 +170,16 @@ public class Planet : MonoBehaviour
     {
         LockMoons(false);
 
-        foreach (Planet moon in moons)
-        {
-            moon.gameObject.GetComponent<KeplerOrbitMover>().SetAutoCircleOrbit();
-        }
         moonsParent.transform.RotateAround(moonsParent.transform.position, rotationAxis, Time.deltaTime);
+
+        for (int i = 0; i < moons.Count; i++)
+        {
+            Planet moon = moons[i];
+            Vector3 direction = moon.transform.position - transform.position;
+            moon.gameObject.GetComponent<KeplerOrbitMover>().SetAutoCircleOrbit();
+            moon.transform.position = direction.normalized * moonsrelativeDistances[i].magnitude;
+        } 
+      
     }
 
     private void LockMoons(bool lockMoons)
