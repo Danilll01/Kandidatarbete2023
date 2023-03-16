@@ -213,7 +213,7 @@ public class SpawnPlanets : MonoBehaviour
         planetOrbitMover.VelocityHandle = velocityHelper.transform;
         planetOrbitMover.SetUp();
         planetOrbitMover.SetAutoCircleOrbit();
-        if (Attractor.gameObject.name == "Sun")
+        if (Attractor.gameObject.name == "Sun" || Attractor.gameObject.name.Contains("Planet"))
         {
             planetOrbitMover.LockOrbitEditing = true;
         }
