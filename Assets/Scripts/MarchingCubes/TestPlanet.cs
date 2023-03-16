@@ -99,7 +99,7 @@ public class TestPlanet : MonoBehaviour
         {
             foreach(Chunk chunk in chunks)
             {
-                chunk.updateMesh(resolution);
+                chunk.UpdateMesh(resolution);
             }
         }
     }
