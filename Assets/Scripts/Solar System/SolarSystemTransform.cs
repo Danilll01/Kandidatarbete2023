@@ -13,9 +13,6 @@ public class SolarSystemTransform : MonoBehaviour
     private int playerOnPlanetIndex = 0;
     [SerializeField] private bool rotateSolarSystem = false;
     private GameObject fakeOrbitObject;
-    private System.Random random;
-    private bool once = true;
-    private Vector3 relativeDistance = Vector3.zero;
 
 
     void Start()
@@ -24,7 +21,6 @@ public class SolarSystemTransform : MonoBehaviour
         {
             sun = spawnPlanets.sun;
         }
-        random = new System.Random(Universe.seed);
         planetsParent = this.gameObject;
         fakeOrbitObject = new GameObject("fake orbit object");
         fakeOrbitObject.transform.parent = planetsParent.transform;
@@ -63,10 +59,12 @@ public class SolarSystemTransform : MonoBehaviour
         {
             RotateSolarSystem();
         }
+        /*
         else
         {
             RotateAroundAxis();
         }
+        */
     }
 
     private void CheckIfPlayerOnAnyPlanet()
@@ -99,44 +97,17 @@ public class SolarSystemTransform : MonoBehaviour
 
     private void RotateSolarSystem()
     {
-        //orthogonalVector.y = 0;
         sun.GetComponent<KeplerOrbitMover>().LockOrbitEditing = false;
         sun.GetComponent<KeplerOrbitMover>().SetAutoCircleOrbit();
         Vector3 planetPosition = spawnPlanets.bodies[activePlanetIndex].transform.position;
-        transform.RotateAround(planetPosition, -spawnPlanets.bodies[activePlanetIndex].GetComponent<Planet>().rotationAxis, 2f * Time.deltaTime);
-        /*
-        // Keep us at the last known relative position
-        Vector3 planetPosition = spawnPlanets.bodies[activePlanetIndex].transform.position;
-        planetsParent.transform.position = RotateAroundModified(planetPosition, spawnPlanets.bodies[activePlanetIndex].GetComponent<Planet>().rotationAxis, 5 * Time.deltaTime);
-
-        if (once)
-        {
-            // transform.position *= orbitDistance;
-            var newPos = (transform.position - planetPosition).normalized * Vector3.Distance(planetPosition, planetsParent.transform.position);
-            newPos += planetPosition;
-            transform.position = newPos;
-            once = false;
-        }
-        relativeDistance = transform.position - planetPosition;
-        */
-
-
-    }
-
-    private Vector3 RotateAroundModified(Vector3 center, Vector3 axis, float angle)
-    {
-        Vector3 pos = transform.position;
-        Quaternion rot = Quaternion.AngleAxis(angle, axis); // get the desired rotation
-        Vector3 dir = pos - center; // find current direction relative to center
-        dir = rot * dir; // rotate the direction
-        pos = center + dir; // define new position
-        return pos;
+        transform.RotateAround(planetPosition, -spawnPlanets.bodies[activePlanetIndex].GetComponent<Planet>().rotationAxis, Time.deltaTime);
     }
 
     private void ResetPlanetOrbit(int planetIndex)
     {
         if (planetIndex >= 0)
         {
+            rotateSolarSystem = false;
             // Turn on orbit again for the planet the player left
             Planet planet = spawnPlanets.bodies[planetIndex];
             TurnOnOrbit(planet.gameObject);
@@ -146,8 +117,7 @@ public class SolarSystemTransform : MonoBehaviour
             sunOrbitMover.enabled = false;
 
             // Center the solar system at origo again and remove player as a child of planet
-            planetsParent.transform.position = Vector3.zero;
-            planetsParent.transform.rotation = Quaternion.identity;
+            sun.transform.position = Vector3.zero;
             planet.transform.parent = planetsParent.transform;
             player.transform.parent = null;
         }
@@ -169,23 +139,12 @@ public class SolarSystemTransform : MonoBehaviour
 
         // Activate orbit on the sun to fake the movement of the planet
         ActivateSunOrbit(planet.gameObject);
-        
-        //rotateSolarSystem = true;
-    }
-
-    // Gives back a random position on the edge of a circle given the radius of the circle
-    private Vector3 RandomPointOnCircleEdge(float radius, Planet planet)
-    {
-        var orthogonalVector = Vector3.RotateTowards(planet.rotationAxis, -planet.rotationAxis, Mathf.PI / 2f, 0f);
-        var anotherOrthogonalVector = Quaternion.AngleAxis(random.Next(-1,1) * 360f, planet.rotationAxis) * orthogonalVector;
-        Vector3 randomVector = Vector3.Scale(anotherOrthogonalVector, new Vector3(random.Next(1, 360), random.Next(1, 360), random.Next(1, 360)));
-        var vector3 = randomVector.normalized * radius;
-        return new Vector3(vector3.x, vector3.y, vector3.z);
+        rotateSolarSystem = true;
     }
 
     private void RotateAroundAxis()
     {
-        spawnPlanets.bodies[activePlanetIndex].transform.RotateAround(spawnPlanets.bodies[activePlanetIndex].transform.position, spawnPlanets.bodies[activePlanetIndex].GetComponent<Planet>().rotationAxis, 2f * Time.deltaTime);
+        spawnPlanets.bodies[activePlanetIndex].transform.RotateAround(spawnPlanets.bodies[activePlanetIndex].transform.position, spawnPlanets.bodies[activePlanetIndex].GetComponent<Planet>().rotationAxis, 1f * Time.deltaTime);
     }
 
     private void ActivateSunOrbit(GameObject planetToOrbit)

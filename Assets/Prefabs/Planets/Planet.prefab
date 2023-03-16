@@ -73,7 +73,7 @@ MonoBehaviour:
   chunkPrefab: {fileID: 5146216955868432244, guid: 8531586e98093b342af8fdd2a736c017,
     type: 3}
   chunksParent: {fileID: 3939805141923606249}
-  willGenerateCreature: 0
+  willGenerateCreature: 1
   generateCreatures: {fileID: 7065241369011201559}
   terrainColor: {fileID: 3175307376905995560}
   spawnFoliage: {fileID: 2855617038713985127}
@@ -149,7 +149,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 938852981703260768}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a8931a0870bcc7e48a77bf4dba98a375, type: 3}
   m_Name: 

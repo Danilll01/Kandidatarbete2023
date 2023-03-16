@@ -169,6 +169,6 @@ public class Planet : MonoBehaviour
 
     private void RotateAroundAxis()
     {
-        transform.RotateAround(transform.position, rotationAxis, 10 * Time.deltaTime);
+        transform.RotateAround(transform.position, rotationAxis, Time.deltaTime);
     }
 }
