@@ -158,12 +158,12 @@ public class Foliage : MonoBehaviour
             }
             if (hits == arrayLength)
             {
-                Debug.Log("Foliage break");
+                //Debug.Log("Foliage break");
                 break;
             }
                 
         }
-        Debug.Log("Hits: " + hits + " %: " + hits / (float)arrayLength * 100f);
+        //Debug.Log("Hits: " + hits + " %: " + hits / (float)arrayLength * 100f);
         // Removes spots making the chunk unable to spawn new trees
         spots = null;
     }
