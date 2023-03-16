@@ -194,7 +194,7 @@ public class SpawnPlanets : MonoBehaviour
         velocityHelper.transform.parent = planet.transform;
 
         int orbitOffset = random.Next(orbitOffsetMinValue, orbitOffsetMaxValue);
-        velocityHelper.transform.localPosition = new Vector3(100, orbitOffset, orbitOffset);
+        velocityHelper.transform.localPosition = new Vector3(100, 0, 0);
 
         // Assign needed scripts to the planet
         planet.AddComponent<KeplerOrbitMover>();
