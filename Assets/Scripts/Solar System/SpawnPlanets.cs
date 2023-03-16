@@ -20,10 +20,13 @@ public class SpawnPlanets : MonoBehaviour
 
     [SerializeField] private Material sunMaterial;
     [SerializeField] private PillPlayerController player;
+    [SerializeField] private DirectionalSun sunLightning;
     [HideInInspector] public GameObject sun;
 
     [HideInInspector] public bool solarySystemGenerated = false;
     private System.Random random;
+
+    private int spawnPlanetIndex;
 
     void Awake()
     {
@@ -35,13 +38,15 @@ public class SpawnPlanets : MonoBehaviour
         random = Universe.random;
         GetValues();
         CreatePlanets();
-        player.Initialize(bodies[0].gameObject);
+        sunLightning.Initialize(sun.transform);
+        player.Initialize(bodies[spawnPlanetIndex].gameObject);
         solarySystemGenerated = true;
     }
 
     private void GetValues()
     {
         numberOfPlanets = Universe.nrOfPlanets;
+        spawnPlanetIndex = 0; //Here we may want to do random.Next(numberOfPlanets), this is nice for debugging though
     }
 
     // Creates all the planets 
@@ -92,7 +97,7 @@ public class SpawnPlanets : MonoBehaviour
 
 
             planetBody.SetUpPlanetValues();
-            planetBody.Initialize(player.transform, random.Next());
+            planetBody.Initialize(player.transform, random.Next(), i == spawnPlanetIndex);
             InstantiateMoons(planetBody, nrOfMoonsForPlanet);
             bodies.Add(planetBody);
 
@@ -161,7 +166,7 @@ public class SpawnPlanets : MonoBehaviour
             moonBody.bodyName = "Moon " + i;
             moonBody.diameter = random.Next((int)(parentPlanet.diameter / 5), (int)((parentPlanet.diameter / 2) + 1));
             moonBody.SetUpPlanetValues();
-            moonBody.Initialize(player.transform, random.Next());
+            moonBody.Initialize(player.transform, random.Next(), false); //False here beacause we don't spawn on moons
             parentPlanet.moons.Add(moonBody);
             SetupOrbitComponents(parentPlanet.gameObject, moon);
         }

@@ -5,5 +5,6 @@ using UnityEngine;
 public enum ResourceType
 {
     Water,
-    Food
+    Plant,
+    Creature
 }
