@@ -4,7 +4,6 @@ using Random = System.Random;
 
 public class Foliage : MonoBehaviour
 {
-
     [SerializeField] private bool debug = true;
     [SerializeField] private GameObject fallenTree;
     [SerializeField] private GameObject[] trees;
@@ -20,7 +19,7 @@ public class Foliage : MonoBehaviour
     [SerializeField]
     private GameObject debugObject;
 
-    private const int MISS_COMPLIMENT = 600;
+    private const int MISS_COMPLIMENT = 200;
 
     private Vector3[] spots = null;
 
@@ -35,7 +34,6 @@ public class Foliage : MonoBehaviour
 
     public void Initialize(int meshVerticesLength, Vector3 pos)
     {
-        
         foliageHandler = transform.parent.parent.parent.GetComponent<Planet>().foliageHandler;
         if (foliageHandler == null || !foliageHandler.IsPlanet) return;
         
@@ -101,13 +99,12 @@ public class Foliage : MonoBehaviour
 
     private void InitFoliage()
     {
-        
 
         spots = new Vector3[arrayLength + MISS_COMPLIMENT];
 
         Vector3 pos = foliageHandler.PlanetRadius * position.normalized;
 
-        for (int i = 0; i < arrayLength; i++)
+        for (int i = 0; i < arrayLength + MISS_COMPLIMENT; i++)
         {
             float x = (float)random.NextDouble() * 18 - 9;
             float y = (float)random.NextDouble() * 18 - 9;
@@ -115,6 +112,7 @@ public class Foliage : MonoBehaviour
             Vector3 localpos = Quaternion.Euler(x, y, z) * pos;
             spots[i] = localpos;
         }
+
     }
 
     public void SpawnFoliageOnChunk()
