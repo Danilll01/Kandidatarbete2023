@@ -79,7 +79,7 @@ public class ChunksHandler : MonoBehaviour
             setChunksMaterials();
             chunksGenerated = false;
         } 
-        else if(chunksGenerated)
+        else if(!chunksGenerated)
         {
             CreateMeshes(3, planet.resolution, terrainLevel);
             setChunksMaterials();
