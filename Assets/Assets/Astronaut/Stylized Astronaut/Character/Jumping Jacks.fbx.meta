@@ -16,7 +16,8 @@ ModelImporter:
     optimizeGameObjects: 0
     removeConstantScaleCurves: 1
     motionNodeName: 
-    rigImportErrors: 
+    rigImportErrors: "Invalid Avatar Rig Configuration. Missing or invalid transform:\n\tRequired
+      human bone 'LeftFoot' not found\n"
     rigImportWarnings: 
     animationImportErrors: 
     animationImportWarnings: 
@@ -80,7 +81,142 @@ ModelImporter:
   humanDescription:
     serializedVersion: 3
     human: []
-    skeleton: []
+    skeleton:
+    - name: Jumping Jacks(Clone)
+      parentName: 
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Armature
+      parentName: Jumping Jacks(Clone)
+      position: {x: -0.00015862547, y: 0.00465091, z: -0.00009715666}
+      rotation: {x: -0.7169826, y: 0.016817747, z: 0.020279616, w: 0.69659305}
+      scale: {x: 43.76699, y: 43.76699, z: 43.76699}
+    - name: Root
+      parentName: Armature
+      position: {x: -0, y: 0, z: 0.00000589963}
+      rotation: {x: 0.7071618, y: -0.01562109, z: -0.021831784, w: 0.706542}
+      scale: {x: 1, y: 1, z: 1.0000001}
+    - name: Body_Upper
+      parentName: Root
+      position: {x: 8.54925e-15, y: 0.00007792941, z: 3.799414e-14}
+      rotation: {x: 0.024847597, y: 0.0021082414, z: 0.0028308677, w: 0.99968505}
+      scale: {x: 1.0000001, y: 1, z: 1.0000001}
+    - name: Head
+      parentName: Body_Upper
+      position: {x: -5.3175488e-15, y: 0.00010091446, z: -1.9034773e-16}
+      rotation: {x: 0.0011705204, y: 0.9996681, z: 0.02566987, w: 0.0018410117}
+      scale: {x: 0.9999999, y: 1.0000001, z: 1.0000001}
+    - name: Head_end
+      parentName: Head
+      position: {x: -0, y: 0.0001252363, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Arm_1_Left
+      parentName: Body_Upper
+      position: {x: -0.00006022465, y: 0.000056583052, z: 0.000009382472}
+      rotation: {x: -0.02774955, y: -0.011998786, z: 0.7756315, w: 0.6304617}
+      scale: {x: 1.0000006, y: 0.9999998, z: 1.0000001}
+    - name: Arm_2_Left
+      parentName: Arm_1_Left
+      position: {x: 7.590279e-12, y: 0.00008253397, z: -7.4505804e-13}
+      rotation: {x: 0.07930277, y: 0.7170282, z: -0.025783906, w: 0.69203824}
+      scale: {x: 0.9999998, y: 1.0000005, z: 0.99999994}
+    - name: Arm_2_Left_end
+      parentName: Arm_2_Left
+      position: {x: -0, y: 0.000069896836, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Arm_1_Right
+      parentName: Body_Upper
+      position: {x: 0.000059938524, y: 0.000056290406, z: 0.000009817752}
+      rotation: {x: -0.085047185, y: -0.045467626, z: -0.770853, w: 0.6296708}
+      scale: {x: 1.0000005, y: 0.9999999, z: 1.0000002}
+    - name: Arm_2_Right
+      parentName: Arm_1_Right
+      position: {x: -9.126961e-12, y: 0.00008253402, z: 4.470348e-12}
+      rotation: {x: -0.04102503, y: 0.9048106, z: 0.066797726, w: 0.4185365}
+      scale: {x: 0.9999995, y: 1.0000001, z: 0.99999994}
+    - name: Arm_2_Right_end
+      parentName: Arm_2_Right
+      position: {x: -0, y: 0.00006989681, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: IK_Arm_Left
+      parentName: Body_Upper
+      position: {x: -0.00020406462, y: 0.00006475442, z: 0.00004128275}
+      rotation: {x: -0.7151052, y: -0.0009082684, z: -0.002648003, w: 0.6990113}
+      scale: {x: 1, y: 0.9999998, z: 1.0000001}
+    - name: IK_Arm_Left_end
+      parentName: IK_Arm_Left
+      position: {x: -0, y: 0.00004345518, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: IK_Arm_Right
+      parentName: Body_Upper
+      position: {x: 0.00020448543, y: 0.00006904722, z: 0.000042647975}
+      rotation: {x: -0.6819757, y: 0.20888393, z: -0.2151468, w: 0.6670746}
+      scale: {x: 1.0000001, y: 0.99999994, z: 1.0000002}
+    - name: IK_Arm_Right_end
+      parentName: IK_Arm_Right
+      position: {x: -0, y: 0.000043455162, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Foot_1_Left
+      parentName: Root
+      position: {x: -0.00004021712, y: -0.000027210092, z: -0.0000049442897}
+      rotation: {x: 0.0011516773, y: -0.003396605, z: 0.9982069, w: 0.059750147}
+      scale: {x: 1.0000057, y: 1.0000004, z: 1}
+    - name: Foot_2_Left
+      parentName: Foot_1_Left
+      position: {x: -1.2034704e-12, y: 0.00006507812, z: -4.5001798e-13}
+      rotation: {x: 0.02130041, y: 0.70461893, z: -0.019835912, w: 0.7089887}
+      scale: {x: 1.0000008, y: 1, z: 0.9999994}
+    - name: Foot_2_Left_end
+      parentName: Foot_2_Left
+      position: {x: -0, y: 0.00005353628, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Foot_1_Right
+      parentName: Root
+      position: {x: 0.000040382154, y: -0.000026956044, z: -0.00000499084}
+      rotation: {x: 0.7072003, y: 0.0469574, z: -0.704204, w: 0.041946627}
+      scale: {x: 0.999994, y: 1, z: 1.0000001}
+    - name: Foot_2_Right
+      parentName: Foot_1_Right
+      position: {x: -4.765752e-13, y: 0.000065078246, z: -2.493673e-12}
+      rotation: {x: -0.02127473, y: 0.709438, z: -0.019931206, w: 0.7041646}
+      scale: {x: 0.9999996, y: 0.9999959, z: 1.0000048}
+    - name: Foot_2_Right_end
+      parentName: Foot_2_Right
+      position: {x: -0, y: 0.000053536165, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: IK_Foot_Left
+      parentName: Root
+      position: {x: -0.00005802477, y: -0.00014863371, z: -0.00000026793856}
+      rotation: {x: -0.6832017, y: 0.0115772635, z: 0.014145677, w: 0.730001}
+      scale: {x: 0.9999999, y: 1, z: 1.0000001}
+    - name: IK_Foot_Left_end
+      parentName: IK_Foot_Left
+      position: {x: -0, y: 0.000040140236, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: IK_Foot_Right
+      parentName: Root
+      position: {x: 0.000058960508, y: -0.00014826498, z: -0.00000033549853}
+      rotation: {x: 0.014185451, y: 0.73009706, z: -0.68311733, w: 0.010384817}
+      scale: {x: 1.0000006, y: 1.0000002, z: 1.0000002}
+    - name: IK_Foot_Right_end
+      parentName: IK_Foot_Right
+      position: {x: -0, y: 0.00004014022, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Player
+      parentName: Jumping Jacks(Clone)
+      position: {x: 0.0005378514, y: 0.01144495, z: -0.0031659796}
+      rotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
+      scale: {x: 100, y: 100, z: 100}
     armTwist: 0.5
     foreArmTwist: 0.5
     upperLegTwist: 0.5
@@ -95,7 +231,7 @@ ModelImporter:
     skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {instanceID: 0}
   autoGenerateAvatarMappingIfUnspecified: 1
-  animationType: 3
+  animationType: 2
   humanoidOversampling: 1
   avatarSetup: 1
   addHumanoidExtraRootOnlyWhenUsingAvatar: 1
