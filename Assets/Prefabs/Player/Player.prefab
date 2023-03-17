@@ -132,17 +132,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attractor: {fileID: 0}
   firstPersonCamera: {fileID: 4197161890332043641}
-  movementSpeed: 20
+  movementSpeed: 8
+  sprintFactor: 2
   airControlFactor: 1
-  jumpForce: 20
+  jumpForce: 15
+  coyoteMax: 15
   swimForce: 20
   maxSwimSpeed: 15
   maxSpeed: 40
-  shipMovespeed: 30
-  shipRotationSpeed: 90
-  landingTime: 1
   playerWater: {fileID: 1902293947857691221}
   paused: 0
+  boarded: 0
 --- !u!114 &1902293947857691221
 MonoBehaviour:
   m_ObjectHideFlags: 0
