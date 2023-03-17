@@ -30,7 +30,7 @@ public class Chunk : MonoBehaviour
     /// <param name="marchingCubes">An instance of marching cubes</param>
     /// <param name="player"></param>
     /// <param name="terrainLevel"></param>
-    public void Initialize(int index, int resolution, MarchingCubes marchingCubes, Transform player, MinMaxTerrainLevel terrainLevel)
+    public int Initialize(int index, int resolution, MarchingCubes marchingCubes, Transform player, MinMaxTerrainLevel terrainLevel)
     {
         this.index = index;
         this.marchingCubes = marchingCubes;
@@ -49,6 +49,7 @@ public class Chunk : MonoBehaviour
             foliage.Initialize(meshVerticesLength, position);
         }
 
+        return meshVerticesLength;
     }
 
     /// <summary>
@@ -88,12 +89,12 @@ public class Chunk : MonoBehaviour
 
         mesh = new Mesh();
 
-        Vector3[] meshVertices =  marchingCubes.generateMesh(terrainLevel, index, resolution, mesh);
+        int numVerts = marchingCubes.generateMesh(terrainLevel, index, resolution, mesh);
        
         meshFilter.sharedMesh = mesh;
 
         meshCollider.sharedMesh = mesh;
 
-        return meshVertices.Length;
+        return numVerts;
     }
 }

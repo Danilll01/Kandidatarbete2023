@@ -115,26 +115,26 @@ public class ChunksHandler : MonoBehaviour
         // Create all chunks
         chunks = new List<Chunk>();
         int noChunks = (1 << chunkResolution) * (1 << chunkResolution) * (1 << chunkResolution);
+        int chunkNumber = 0;
         for (int i = 0; i < noChunks; i++)
         {
             Chunk chunk = Instantiate(chunkPrefab);
             chunk.transform.parent = chunksParent.transform;
             chunk.transform.localPosition = Vector3.zero;
-            chunk.name = "chunk" + i;
-            chunk.Initialize(i, resolution, marchingCubes, player, terrainLevel);
-            chunks.Add(chunk);
+            chunk.name = "chunk" + chunkNumber;
+
+            //Don't add chunk if it's empty
+            if (chunk.Initialize(i, resolution, marchingCubes, player, terrainLevel) == 0)
+            {
+                Destroy(chunk.gameObject);
+            }
+            else
+            {
+                chunkNumber++;
+                chunks.Add(chunk);
+            }
         }
     }
-    /*
-    private void Resetchunks()
-    {
-        for (int i = 0; i < chunks.Count; i++)
-        {
-            chunks[i].gameObject.SetActive(true);
-        }
-        resetchunks = true;
-    }*/
-
     private void UpdateChunksVisibility()
     {
         Vector3 playerPos = player.position;
@@ -160,18 +160,18 @@ public class ChunksHandler : MonoBehaviour
         }
 
 
-        for (int i = 0; i < chunks.Count; i++)
+        foreach (Chunk chunk in chunks)
         {
-            bool isBelowHalfWayPoint = CheckIfPointBIsBelowPointA(cutoffPoint, chunks[i].position, cutoffPoint.normalized);
+            bool isBelowHalfWayPoint = CheckIfPointBIsBelowPointA(cutoffPoint, chunk.position, cutoffPoint.normalized);
             if (isBelowHalfWayPoint)
             {
-                chunks[i].gameObject.SetActive(false);
+                chunk.gameObject.SetActive(false);
             }
             else
             {
-                chunks[i].gameObject.SetActive(true);
-                if(foliageInitialized == 0) 
-                    chunks[i].foliage.SpawnFoliageOnChunk();
+                chunk.gameObject.SetActive(true);
+                if(foliageInitialized == 0)
+                    chunk.foliage.SpawnFoliageOnChunk();
             }
         }
     }
