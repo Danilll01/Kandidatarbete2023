@@ -9,10 +9,7 @@ public class ChunksHandler : MonoBehaviour
     private Planet planet;
     private Transform player;
     private Vector3 playerLastPosition;
-    private bool initialized = false;
-    private bool resetchunks = false;
     private int foliageInitialized = 10;
-    private List<Vector3> chunkPositions;
     private int chunkResolution; //This is 2^chunkResolution
     private MarchingCubes marchingCubes;
     private Material planetMaterial;
@@ -64,30 +61,17 @@ public class ChunksHandler : MonoBehaviour
     {
         bool playerOnPlanet = ReferenceEquals(transform, player.transform.parent);
 
-        if (!initialized)
-        {
-            InitializeChunkPositions();
-            UpdateChunksVisibility();
-            initialized = true;
-        }
-
         if (foliageInitialized != 0)
         {
             foliageInitialized--;
         }
 
         // Only update the chunks if the player is close to the planet
-        if (initialized && (player.position - planet.transform.position).magnitude < 2000 && playerOnPlanet)
+        if (playerOnPlanet)
         {
             UpdateChunksVisibility();
-            resetchunks = false;
-        }
-        else if (initialized && !resetchunks && (player.position - planet.transform.position).magnitude >= 3000)
-        {
-            Resetchunks();
         }
 
-        
         // Check if player is on the planet
         if (!playerOnPlanet)
         {
@@ -95,7 +79,7 @@ public class ChunksHandler : MonoBehaviour
             setChunksMaterials();
             chunksGenerated = false;
         } 
-        else
+        else if(chunksGenerated)
         {
             CreateMeshes(3, planet.resolution, terrainLevel);
             setChunksMaterials();
@@ -141,16 +125,7 @@ public class ChunksHandler : MonoBehaviour
             chunks.Add(chunk);
         }
     }
-
-    private void InitializeChunkPositions()
-    {
-        chunkPositions = new List<Vector3>();
-        for (int i = 0; i < chunks.Count; i++)
-        {
-            chunkPositions.Add(chunks[i].transform.GetComponent<MeshRenderer>().bounds.center);
-        }
-    }
-
+    /*
     private void Resetchunks()
     {
         for (int i = 0; i < chunks.Count; i++)
@@ -158,7 +133,7 @@ public class ChunksHandler : MonoBehaviour
             chunks[i].gameObject.SetActive(true);
         }
         resetchunks = true;
-    }
+    }*/
 
     private void UpdateChunksVisibility()
     {
@@ -167,7 +142,7 @@ public class ChunksHandler : MonoBehaviour
         Vector3 playerToPlanetCenter = playerPos - planetCenter;
 
         // Only update chunks if player has moved a certain distance
-        if ((Mathf.Abs(Vector3.Distance(playerPos, playerLastPosition)) < 50 || !initialized) && playerToPlanetCenter.magnitude > (planetRadius + 30f))
+        if ((Mathf.Abs(Vector3.Distance(playerPos, playerLastPosition)) < 50) && playerToPlanetCenter.magnitude > (planetRadius + 30f))
         {
             return;
         }
@@ -187,7 +162,7 @@ public class ChunksHandler : MonoBehaviour
 
         for (int i = 0; i < chunks.Count; i++)
         {
-            bool isBelowHalfWayPoint = CheckIfPointBIsBelowPointA(cutoffPoint, chunkPositions[i], cutoffPoint.normalized);
+            bool isBelowHalfWayPoint = CheckIfPointBIsBelowPointA(cutoffPoint, chunks[i].position, cutoffPoint.normalized);
             if (isBelowHalfWayPoint)
             {
                 chunks[i].gameObject.SetActive(false);
