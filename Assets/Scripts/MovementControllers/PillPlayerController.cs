@@ -201,11 +201,9 @@ public class PillPlayerController : MonoBehaviour
             body.velocity += oldY;
         }
 
-        if (!boarded)
-        {
-            Gravity.KeepUpright(transform, attractor.transform);
-            Gravity.Attract(transform.position, body, attractor.transform.position, attractor.mass);
-        }
+        if (boarded) return;
+        Gravity.KeepUpright(transform, attractor.transform);
+        Gravity.Attract(transform.position, body, attractor.transform.position, attractor.mass);
     }
 
     private void Spawn(Planet planet)
@@ -221,7 +219,7 @@ public class PillPlayerController : MonoBehaviour
                 Debug.LogError("Unable to find suitable spawn position for player on planet: " + planet.bodyName);
                 return;
             }
-
+            
             //Try to find a suitable spawn position
             Vector3 spawnLocationAbovePlanet = planet.transform.position + (UnityEngine.Random.onUnitSphere * planet.radius);
             Vector3 directionNearestPlanet = (planet.transform.position - spawnLocationAbovePlanet).normalized;
@@ -278,6 +276,7 @@ public class PillPlayerController : MonoBehaviour
                 return Vector3.zero;
             }
 
+
             Physics.Raycast(transform.position, attractor.transform.position - transform.position, out RaycastHit hit, 2f);
             if (hit.collider == null)
             {
@@ -302,7 +301,7 @@ public class PillPlayerController : MonoBehaviour
             }
             
             bool isGrounded = Physics.Raycast(transform.position, attractor.transform.position - transform.position, 2f);
-            animator.SetBool("Jump", isGrounded);
+            animator.SetBool("Jump", !isGrounded);
             return isGrounded;      
         }
     }
