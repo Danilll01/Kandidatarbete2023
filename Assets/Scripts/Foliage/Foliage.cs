@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Runtime.CompilerServices;
 using Random = System.Random;
+using Noise;
 
 public class Foliage : MonoBehaviour
 {
@@ -18,6 +19,8 @@ public class Foliage : MonoBehaviour
     private int foragablesArrSize;
     [SerializeField]
     private GameObject debugObject;
+
+    private Vector3[] forests;
 
     private const int MISS_COMPLIMENT = 200;
 
@@ -37,26 +40,39 @@ public class Foliage : MonoBehaviour
         foliageHandler = transform.parent.parent.parent.GetComponent<Planet>().foliageHandler;
         if (foliageHandler == null || !foliageHandler.IsPlanet) return;
         
-        // Seedar en random för denna chunken
+        // Seedar en random för denna chunken // Här vill vi ha en bra random :)
         random = new Random(Universe.seed);
-
         arrayLength = (int)(meshVerticesLength * foliageHandler.Density);
+        position = pos;
 
+        InitLists();
+        InitForests();
+        InitFoliage();
+
+        //TestSize();
+    }
+
+    private void InitLists()
+    {
         // Init array lengths
         treeArrSize = trees.Length;
         bushArrSize = bushes.Length;
         waterArrSize = waterBois.Length;
         stoneArrSize = stones.Length;
         foragablesArrSize = foragables.Length;
-
-        position = pos;
-
-        //TestSize();
-        InitFoliage();
-
-        //Debug.Log("Length: " + meshVerticesLength);
     }
 
+    private void InitForests()
+    {
+        // Number of types of forests
+        forests = new Vector3[2];
+
+        // X value decides which kind of forest that should be planted
+        for (int i = 0; i < forests.Length; i++)
+        {
+            forests[i] = new Vector3(random.Next(1, treeArrSize), random.Next(200), random.Next(200));
+        }
+    }
     private void TestSize()
     {
 
@@ -156,12 +172,12 @@ public class Foliage : MonoBehaviour
             }
             if (hits == arrayLength)
             {
-                Debug.Log("Foliage break");
+                if (debug) Debug.Log("Foliage break");
                 break;
             }
                 
         }
-        Debug.Log("Hits: " + hits + " %: " + hits / (float)arrayLength * 100f);
+        if(debug)Debug.Log("Hits: " + hits + " %: " + hits / (float)arrayLength * 100f);
         // Removes spots making the chunk unable to spawn new trees
         spots = null;
     }
@@ -209,20 +225,71 @@ public class Foliage : MonoBehaviour
     private void SpawnTrees(RaycastHit hit, Vector3 rayOrigin)
     {
         // 1/10 of spawning fallen tree
-        if(random.Next(10) == 0)
+
+        int treeType = checkForestSpawn(hit.point);
+        //Debug.Log(treeType);
+
+        if (treeType != 0)
         {
-            Quaternion rotation = Quaternion.LookRotation(hit.normal) * Quaternion.Euler(90, 0, 0);
-            rotation *= Quaternion.Euler(0, random.Next(0, 360), 0);
-            Instantiate(fallenTree, hit.point, rotation, transform);
+            spawnTreesInForest(treeType, rayOrigin);
         }
         else
         {
-            Quaternion rotation = Quaternion.LookRotation(rayOrigin) * Quaternion.Euler(90, 0, 0);
-            rotation *= Quaternion.Euler(0, random.Next(0, 360), 0);
-            Instantiate(trees[random.Next(treeArrSize)], hit.point - (hit.point.normalized), rotation, transform);
+            if (random.Next(10) == 0)
+            {
+                Quaternion rotation = Quaternion.LookRotation(hit.normal) * Quaternion.Euler(90, 0, 0);
+                rotation *= Quaternion.Euler(0, random.Next(0, 360), 0);
+                Instantiate(fallenTree, hit.point, rotation, transform);
+            }
+            else
+            {
+                Quaternion rotation = Quaternion.LookRotation(rayOrigin) * Quaternion.Euler(90, 0, 0);
+                rotation *= Quaternion.Euler(0, random.Next(0, 360), 0);
+                Instantiate(trees[random.Next(treeArrSize)], hit.point - (hit.point.normalized), rotation, transform);
+            }
         }
     }
 
+    private void spawnTreesInForest(int treeType, Vector3 rayOrigin)
+    {
+
+        Ray ray;
+        RaycastHit hit;
+
+        for (int i = 0; i < 5; i++)
+        {
+            float x = (float)random.NextDouble()*2 - 1;
+            float y = (float)random.NextDouble()*2 - 1;
+            float z = (float)random.NextDouble()*2 - 1;
+            Vector3 localpos = Quaternion.Euler(x, y, z) * rayOrigin;
+
+            ray = new Ray(localpos, -localpos);
+            Physics.Raycast(ray, out hit);
+            if(hit.transform == transform.parent)
+            {
+                Quaternion rotation = Quaternion.LookRotation(rayOrigin) * Quaternion.Euler(90, 0, 0);
+                rotation *= Quaternion.Euler(0, random.Next(0, 360), 0);
+                Instantiate(trees[treeType], hit.point, rotation, transform);
+                Debug.DrawLine(localpos, hit.point, Color.yellow, 10f);
+            }
+        }
+    }
+
+    private int checkForestSpawn(Vector3 pos)
+    {
+        int len = forests.Length;
+
+        for (int i = 0; i < len; i++)
+        {
+            if(Mathf.Round((Simplex.Evaluate((pos + forests[i]) * 3) + 1) * (Simplex.Evaluate((pos + forests[i])) + 1) * 0.6f) == 0)
+            {
+                return (int)forests[i].x;
+            }
+        }
+        return 0;
+    }
+
+    
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
     private void SpawnBushes(RaycastHit hit, Vector3 rayOrigin)
     {

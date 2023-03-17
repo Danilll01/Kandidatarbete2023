@@ -191,7 +191,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c6724111ce5dca4aa5176b54e2bde61, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  debug: 1
+  debug: 0
   fallenTree: {fileID: 1493958779012120596, guid: b9de24523a11d714db3851b5f0f9d527,
     type: 3}
   trees:
@@ -222,5 +222,5 @@ MonoBehaviour:
   - {fileID: 1329430274803916, guid: 8c8c7d8f829a2d24ebe78eddb5eaff57, type: 3}
   - {fileID: 4385080170328260021, guid: ff62b58c5a9ea164fa8ddf8038e10cd1, type: 3}
   - {fileID: 5440707293445505367, guid: 494f6d43e170e9145bc7865d243ee00b, type: 3}
-  go: {fileID: 9103161053431881372, guid: 3d0d5ab07100a804ab34c91787727f8d, type: 3}
+  debugObject: {fileID: 0}
   frequency: 0.1
