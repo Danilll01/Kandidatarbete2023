@@ -44,7 +44,7 @@ public class PillPlayerController : MonoBehaviour
             attractor = planetToSpawnOn;
             if (attractor == null)
             {
-                Debug.LogError("Planet player spawned on has no Planet script");
+                Debug.LogError("Player spawned without a planet");
             }
         }
 
@@ -132,7 +132,6 @@ public class PillPlayerController : MonoBehaviour
             {
                 movementVector.y += 0.0001f;
             }
-
         }
         else if (Input.GetAxisRaw("Jump") == 1 && coyoteTimer <= coyoteMax) //Jumping
         {
@@ -274,6 +273,11 @@ public class PillPlayerController : MonoBehaviour
     {
         get
         {
+            if (attractor == null)
+            {
+                return Vector3.zero;
+            }
+
             Physics.Raycast(transform.position, attractor.transform.position - transform.position, out RaycastHit hit, 2f);
             if (hit.collider == null)
             {
@@ -289,11 +293,17 @@ public class PillPlayerController : MonoBehaviour
 
     public bool Grounded
     {
+   
         get 
-        {
+        { 
+            if (attractor == null)
+            {
+                return false;
+            }
+            
             bool isGrounded = Physics.Raycast(transform.position, attractor.transform.position - transform.position, 2f);
             animator.SetBool("Jump", isGrounded);
-            return isGrounded;       
+            return isGrounded;      
         }
     }
 
