@@ -111,7 +111,7 @@ public class SpawnFoliage : MonoBehaviour
     {
         // Gets the parameters for the planets
         this.planet = planet;
-        planetRadius = Mathf.Abs(planet.diameter / 2);
+        planetRadius = planet.radius;
         this.waterLevel = Mathf.Abs(waterLevel / 2);
         noiseOffset = planet.transform.position;
 

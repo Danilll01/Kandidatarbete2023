@@ -47,14 +47,14 @@ public class GenerateCreatures : MonoBehaviour
     private void GenerateCreaturesOnPlanet()
     {
         // How far do we raycast
-        float distance = planet.diameter;
+        float distance = planet.radius;
 
         Vector3[] packPositions = new Vector3[maxPackCount];
 
         for (int i = 0; i < maxPackCount; i++)
         {
 
-            Vector3 randPoint = planetCenter + rand.OnUnitSphere() * (planet.diameter * 0.7f);
+            Vector3 randPoint = planetCenter + rand.OnUnitSphere() * planet.radius;
 
             // The ray that will be cast
             Ray ray = new Ray(randPoint, planetCenter - randPoint);
@@ -103,7 +103,7 @@ public class GenerateCreatures : MonoBehaviour
             RaycastHit hit;
             
             // Registered a hit
-            if (Physics.Raycast(ray, out hit, planet.diameter))
+            if (Physics.Raycast(ray, out hit, planet.radius))
             {
                 // Check if the hit colliding with a creature
                 if (hit.transform.CompareTag("Creature"))

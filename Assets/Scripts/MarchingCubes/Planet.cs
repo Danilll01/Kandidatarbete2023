@@ -50,8 +50,6 @@ public class Planet : MonoBehaviour
     {
         RandomX rand = new RandomX(randomSeed);
 
-        radius = diameter / 2;
-
         this.player = player;
 
         MinMaxTerrainLevel terrainLevel = new MinMaxTerrainLevel();
@@ -64,13 +62,13 @@ public class Planet : MonoBehaviour
             threshold = 23 + (float) rand.Value() * 4;
             int frequency = rand.Next(2) + 3;
             float amplitude = 1.2f + (float) rand.Value() * 0.4f;
-            marchingCubes = new MarchingCubes(1, meshGenerator, threshold, diameter, frequency, amplitude);
+            marchingCubes = new MarchingCubes(1, meshGenerator, threshold, radius, frequency, amplitude);
         }
 
         // Init water
         if (willGeneratePlanetLife)
         {
-            waterDiameter = Mathf.Abs((threshold / 255 - 1) * diameter);
+            waterDiameter = Mathf.Abs((threshold / 255 - 1) * radius);
         }
         else
         {
@@ -107,7 +105,7 @@ public class Planet : MonoBehaviour
     /// </summary>
     public void SetUpPlanetValues()
     {
-        mass = surfaceGravity * diameter * diameter / Universe.gravitationalConstant;
+        mass = surfaceGravity * radius * radius / Universe.gravitationalConstant;
         gameObject.name = bodyName;
     }
 
