@@ -271,6 +271,11 @@ PrefabInstance:
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 9100000, guid: 6cdcb2e0f15b9ea4ebc074c72c3b6f57, type: 2}
+    - target: {fileID: 137579269714215424, guid: 2abf19653d633114faedf3b60dc6c39f,
+        type: 3}
+      propertyPath: m_CastShadows
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 755283109381456697, guid: 2abf19653d633114faedf3b60dc6c39f,
         type: 3}
       propertyPath: coyoteMax
@@ -289,6 +294,16 @@ PrefabInstance:
     - target: {fileID: 2343465825876684966, guid: 2abf19653d633114faedf3b60dc6c39f,
         type: 3}
       propertyPath: m_UseGravity
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6358708725161302742, guid: 2abf19653d633114faedf3b60dc6c39f,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6358708725161302742, guid: 2abf19653d633114faedf3b60dc6c39f,
+        type: 3}
+      propertyPath: m_LocalPosition.z
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
