@@ -27,6 +27,8 @@ public class PillPlayerController : MonoBehaviour
 
     // Animations
     private Animator animator;
+    private static readonly int Speed = Animator.StringToHash("Speed");
+    private static readonly int Direction = Animator.StringToHash("Direction");
 
     private void Awake()
     {
@@ -111,15 +113,27 @@ public class PillPlayerController : MonoBehaviour
         //Keep old Y velocity. Rotates to world space, grabs y velocity and rotates back to planet orientation
         Vector3 yGround = Grounded ? GroundNormal : transform.rotation * transform.up;
         Vector3 oldY = Vector3.Project(body.velocity, yGround);
+        
         //New movement
-        Vector3 movementVector = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical")) * movementSpeed;
-        if (Input.GetAxisRaw("Sprint") == 1)
+        float inputDirection = Input.GetAxisRaw("Horizontal");
+        float inputSpeed = Input.GetAxisRaw("Vertical");
+        Vector3 movementVector = new Vector3(inputDirection, 0, inputSpeed) * movementSpeed;
+        
+        // Used for animations
+        float direction = Mathf.Min(Mathf.Abs(inputDirection), 0.5f);
+        float speed = Mathf.Min(Mathf.Abs(inputSpeed), 0.5f);   
+        
+        if (Input.GetAxisRaw("Sprint") == 1) // Running
         {
             movementVector *= sprintFactor;
+            speed = Mathf.Min(Mathf.Abs(inputSpeed),1);
+            direction = Mathf.Min(Mathf.Abs(inputDirection),1); 
         }
-        else if (Input.GetAxisRaw("Sprint") == -1)
+        else if (Input.GetAxisRaw("Sprint") == -1) // Walking slow
         {
             movementVector /= sprintFactor;
+            direction = Mathf.Min(Mathf.Abs(inputDirection), 0.3f);
+            speed = Mathf.Min(Mathf.Abs(inputSpeed), 0.3f);
         }
 
         //Swiming
@@ -176,14 +190,13 @@ public class PillPlayerController : MonoBehaviour
                 {
                     movementVector -= Vector3.Project(movementVector, yGround);
                 }
-
                 body.velocity = movementVector;
             }
             //Air controls
             else
             {
                 //Add movement
-                body.velocity += transform.rotation * movementVector * Time.deltaTime * airControlFactor;
+                body.velocity += transform.rotation * movementVector * (Time.deltaTime * airControlFactor);
                 //Normalize to maxSpeed if necessary
                 Vector3 oldVelocity = (Quaternion.Inverse(transform.rotation) * body.velocity);
                 Vector3 oldHorizontalVelocity = new Vector3(oldVelocity.x, 0, oldVelocity.z);
@@ -198,10 +211,15 @@ public class PillPlayerController : MonoBehaviour
         //No input
         else if (Grounded)
         {
-            body.velocity = Vector3.zero;
-            body.velocity += oldY;
+            Vector3 velocity = Vector3.zero;
+            velocity += oldY;
+            body.velocity = velocity;
         }
 
+        // Sets animation state
+        animator.SetFloat(Speed, Mathf.Sign(inputSpeed) * speed);
+        animator.SetFloat(Direction, Mathf.Sign(inputDirection) * direction);  
+        
         if (boarded) return;
         Gravity.KeepUpright(transform, attractor.transform);
         Gravity.Attract(transform.position, body, attractor.transform.position, attractor.mass);
