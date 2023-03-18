@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using ExtendedRandom;
 using UnityEngine;
 using SimpleKeplerOrbits;
 
@@ -24,7 +25,9 @@ public class SpawnPlanets : MonoBehaviour
     [HideInInspector] public GameObject sun;
 
     [HideInInspector] public bool solarySystemGenerated = false;
-    private System.Random random;
+
+    [SerializeField] private bool randomizeSpawnPlanet = false;
+    private RandomX random;
 
     private int spawnPlanetIndex;
 
@@ -46,7 +49,9 @@ public class SpawnPlanets : MonoBehaviour
     private void GetValues()
     {
         numberOfPlanets = Universe.nrOfPlanets;
-        spawnPlanetIndex = 0; //Here we may want to do random.Next(numberOfPlanets), this is nice for debugging though
+
+        // Randomize player index
+        spawnPlanetIndex = randomizeSpawnPlanet ? random.Next(0,numberOfPlanets) : 0; 
     }
 
     // Creates all the planets 
