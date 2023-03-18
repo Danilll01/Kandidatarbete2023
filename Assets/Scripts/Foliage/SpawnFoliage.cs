@@ -1,6 +1,6 @@
 using UnityEngine;
 using System;
-using Random = UnityEngine.Random;
+using ExtendedRandom;
 using System.Linq;
 using System.Collections.Generic;
 using UnityEditor;
@@ -52,7 +52,7 @@ public class SpawnFoliage : MonoBehaviour
 
     private Transform player;
 
-    private static int seed = Universe.seed;
+    private RandomX rand;
 
     private Planet planet;
     private float planetRadius;
@@ -117,11 +117,11 @@ public class SpawnFoliage : MonoBehaviour
 
         player = planet.player;
 
+        // Makes the script seedable
+        rand = new RandomX(seed);
+
         generateSpawnPoints();
         generatedSpawnPoints = true;
-
-        // Makes the script seedable
-        Random.InitState(seed);
     }
 
     private void generateSpawnPoints()
@@ -151,7 +151,7 @@ public class SpawnFoliage : MonoBehaviour
             // Tries 20 times
             for (int j = 0; j < 20; j++)
             {
-                rayOrigin = planetCenter + Random.onUnitSphere * planetRadius;
+                rayOrigin = planetCenter + rand.OnUnitSphere() * planetRadius;
                 Ray ray = new Ray(rayOrigin, planetCenter - rayOrigin);
 
                 if (Physics.Raycast(ray, out hit, maxRayDistance))
@@ -193,7 +193,7 @@ public class SpawnFoliage : MonoBehaviour
         // Sets the corret rotation for the prefabs
         Quaternion rotation = Quaternion.LookRotation(rayOrigin - planetCenter) * Quaternion.Euler(90, 0, 0);
         // Sets a random rotation for more variation
-        rotation *= Quaternion.Euler(0, Random.value * 360, 0);
+        rotation *= Quaternion.Euler(0, rand.Value() * 360, 0);
 
         foliageObjects.Add(Instantiate(treePrefabs[getIndex(hit.point + noiseOffset)], hit.point + (ray.direction.normalized * 0.2f), rotation, hit.transform));
     }
@@ -223,7 +223,7 @@ public class SpawnFoliage : MonoBehaviour
         // Sets the corret rotation for the prefabs
         Quaternion rotation = Quaternion.LookRotation(hit.normal) * Quaternion.Euler(90, 0, 0);
         // Sets a random rotation for more variation
-        rotation *= Quaternion.Euler(0, Random.value * 360, 0);
+        rotation *= Quaternion.Euler(0, rand.Value() * 360, 0);
         GameObject bushObj = Instantiate(bushPrefab[getIndex(hit.point + noiseOffset)], hit.point, rotation, hit.transform);
         bushObj.tag = "Plant";
         foliageObjects.Add(bushObj);
@@ -253,7 +253,7 @@ public class SpawnFoliage : MonoBehaviour
         // Sets the corret rotation for the prefabs
         Quaternion rotation = Quaternion.LookRotation(hit.normal) * Quaternion.Euler(90, 0, 0);
         // Sets a random rotation for more variation
-        rotation *= Quaternion.Euler(0, Random.value * 360, 0);
+        rotation *= Quaternion.Euler(0, rand.Value() * 360, 0);
 
         foliageObjects.Add(Instantiate(stonePrefab[getIndex(hit.point + noiseOffset)], hit.point, rotation, hit.transform));
     }

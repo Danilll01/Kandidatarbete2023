@@ -1,6 +1,6 @@
 using UnityEngine;
 using System;
-using Random = UnityEngine.Random;
+using ExtendedRandom;
 using System.Linq;
 using System.Collections.Generic;
 
@@ -15,7 +15,7 @@ public class GenerateCreatures : MonoBehaviour
     [Header("Misc")]
     [SerializeField] private bool DEBUG = false;
 
-    private int seed;
+    private RandomX rand;
     private Planet planet;
     private Vector3 planetCenter;
 
@@ -31,13 +31,12 @@ public class GenerateCreatures : MonoBehaviour
     public void Initialize(Planet planet, int randomSeed)
     {
         this.planet = planet;
-        seed = randomSeed;
         planetCenter = planet.transform.position;
         spawningRatios = GetSpawningRatios();
 
         // This is how system random works where we dont share Random instances
         //System.Random rand1 = new System.Random(1234);
-        Random.InitState(seed);
+        rand = new RandomX(randomSeed);
 
         GenerateCreaturesOnPlanet();
         
@@ -55,7 +54,7 @@ public class GenerateCreatures : MonoBehaviour
         for (int i = 0; i < maxPackCount; i++)
         {
 
-            Vector3 randPoint = planetCenter + Random.onUnitSphere * (planet.diameter * 0.7f);
+            Vector3 randPoint = planetCenter + rand.OnUnitSphere() * (planet.diameter * 0.7f);
 
             // The ray that will be cast
             Ray ray = new Ray(randPoint, planetCenter - randPoint);
@@ -90,7 +89,7 @@ public class GenerateCreatures : MonoBehaviour
     {
         
         // How many creatures in this pack
-        int packSize = Random.Range(packData.minPackSize, packData.maxPackSize);
+        int packSize = rand.Next(packData.minPackSize, packData.maxPackSize);
 
         // Used to keep track of all creature positions in a pack
         Vector3[] positions = new Vector3[packSize];
@@ -98,7 +97,7 @@ public class GenerateCreatures : MonoBehaviour
         // Create the pack
         for (int i = 0; i < packSize; i++)
         {
-            Vector3 randomOrigin = centerPoint + rotation * Random.insideUnitCircle * packData.packRadius;
+            Vector3 randomOrigin = centerPoint + rotation * rand.InsideUnitCircle() * packData.packRadius;
 
             Ray ray = new(randomOrigin, planetCenter - randomOrigin);
             RaycastHit hit;
@@ -166,7 +165,7 @@ public class GenerateCreatures : MonoBehaviour
 
         for (int i = 0; i < 150000; i++)
         {
-            rayOrigin = planetCenter + Random.onUnitSphere * planet.radius;
+            rayOrigin = planetCenter + rand.OnUnitSphere() * planet.radius;
             Ray ray = new Ray(rayOrigin, planetCenter - rayOrigin);
 
             if (Physics.Raycast(ray, out hit, maxRayDistance + maxRayDist))
@@ -193,7 +192,7 @@ public class GenerateCreatures : MonoBehaviour
             total += ratio;
         }
 
-        float randomNum = Random.Range(0, total);
+        float randomNum = rand.Next(0, total);
 
         float accumulatedSum = 0;
 
