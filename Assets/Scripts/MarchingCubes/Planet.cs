@@ -56,6 +56,8 @@ public class Planet : MonoBehaviour
 
         MinMaxTerrainLevel terrainLevel = new MinMaxTerrainLevel();
 
+        willGeneratePlanetLife = rand.Value() < chanceToSpawnPlanetLife;
+
         // Initialize the meshgenerator
         if (marchingCubes == null)
         {
@@ -65,23 +67,21 @@ public class Planet : MonoBehaviour
             marchingCubes = new MarchingCubes(1, meshGenerator, threshold, diameter, frequency, amplitude);
         }
 
-        
-
-        terrainLevel.SetMin(Mathf.Abs((waterDiameter + 1) / 2));
-
         // Init water
         if (willGeneratePlanetLife)
         {
-            waterDiameter = -(threshold / 255 - 1) * diameter;
+            waterDiameter = Mathf.Abs((threshold / 255 - 1) * diameter);
         }
         else
         {
-            waterDiameter = 0;
+            waterDiameter = 0; 
         }
+
+        terrainLevel.SetMin(Mathf.Abs((waterDiameter + 1) / 2));
 
         chunksHandler.Initialize(this, terrainLevel, spawn, rand.Next());
 
-        willGeneratePlanetLife = rand.Value() < chanceToSpawnPlanetLife;
+        
 
         if (willGeneratePlanetLife) 
         {
