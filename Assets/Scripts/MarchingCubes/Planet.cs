@@ -61,7 +61,11 @@ public class Planet : MonoBehaviour
         }
 
         waterDiameter = -(threshold / 255 - 1) * diameter;
-        foliageHandler = new FoliageHandler(this);
+
+        if (foliageHandler != null && !bodyName.Contains("Moon"))
+        {
+            foliageHandler.Initialize(this);
+        }
 
         terrainLevel.SetMin(Mathf.Abs((waterDiameter + 1) / 2));
 
