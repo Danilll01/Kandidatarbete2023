@@ -1,6 +1,7 @@
 using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
+using ExtendedRandom;
 using UnityEditor;
 using UnityEngine;
 
@@ -33,7 +34,7 @@ public class ChunksHandler : MonoBehaviour
     /// <param name="player"></param>
     public void Initialize(Planet planet, MinMaxTerrainLevel terrainLevel, bool spawn, int seed)
     {
-        System.Random rand = new System.Random(seed);
+        RandomX rand = new RandomX(seed);
 
         this.planet = planet;
         player = planet.player;
