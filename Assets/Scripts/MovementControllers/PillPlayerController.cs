@@ -76,6 +76,7 @@ public class PillPlayerController : MonoBehaviour
                 playerWater.UpdateWater(transform.position);
             }
         }
+        
         if (attractor != null)
         {
             DisplayDebug.AddOrSetDebugVariable("Current planet", attractor.bodyName);
@@ -278,14 +279,7 @@ public class PillPlayerController : MonoBehaviour
 
 
             Physics.Raycast(transform.position, attractor.transform.position - transform.position, out RaycastHit hit, 2f);
-            if (hit.collider == null)
-            {
-                return Vector3.zero;
-            }
-            else
-            {
-                return hit.normal;
-            }
+            return hit.collider == null ? Vector3.zero : hit.normal;
         }
     }
 
