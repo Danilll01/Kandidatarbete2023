@@ -6,6 +6,7 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(BoxCollider))]
 [RequireComponent(typeof(Animator))]
+[RequireComponent(typeof(AudioSource))]
 public class Creature : MonoBehaviour
 {
 
@@ -57,6 +58,12 @@ public class Creature : MonoBehaviour
 
     [SerializeField] private GameObject breedingParticle;
 
+    [Header("Sound")]
+    [SerializeField] private AudioClip[] idleSounds;
+    [SerializeField] private AudioClip[] deathSounds;
+    [SerializeField] private float timeBetweenIdleSounds = 12f;
+    private float idleSoundTimer;
+
     [Header("Debug")]
     [SerializeField] private CreatureState currentState;
     [SerializeField] private bool DEBUG = false;
@@ -74,6 +81,7 @@ public class Creature : MonoBehaviour
     private LODGroup lodGroup;
     private Renderer renderer;
     private Animator animator;
+    private AudioSource audioSource;
 
     private Creature breedingPartner;
 
@@ -89,6 +97,8 @@ public class Creature : MonoBehaviour
         lodGroup = meshObj.GetComponent<LODGroup>();
         renderer = lodGroup.transform.GetComponent<Renderer>();
         animator = GetComponent<Animator>();
+        audioSource = GetComponent<AudioSource>();
+        audioSource.volume = 0.4f;
 
         // Teleport the creature 1 meter up in correct direction based on position on planet
         transform.position += -(planet.transform.position - transform.position).normalized * 0.3f;
@@ -104,6 +114,8 @@ public class Creature : MonoBehaviour
         animator.keepAnimatorStateOnDisable = true;
 
         if (isChild) canReproduce = false;
+
+        idleSoundTimer = timeBetweenIdleSounds + Random.Range(-2f,2f);
     }
 
     // Update is called once per frame
@@ -190,6 +202,19 @@ public class Creature : MonoBehaviour
                 Destroy(gameObject);
             }
         }
+
+        if (idleSounds.Length > 0)
+        {
+            if (idleSoundTimer > 0)
+            {
+                idleSoundTimer -= Time.deltaTime;
+            } else
+            {
+                audioSource.PlayOneShot(GetRandomClip(idleSounds));
+                idleSoundTimer = timeBetweenIdleSounds + Random.Range(-5f, 5f); ;
+            }
+        }
+        
     }
 
     void FixedUpdate()
@@ -559,6 +584,14 @@ public class Creature : MonoBehaviour
 
         currentState = CreatureState.Walking;
     }
+
+    private AudioClip GetRandomClip(AudioClip[] clips)
+    {
+        if (clips.Length == 0) return null;
+
+        return clips[Random.Range(0, clips.Length)];
+    }
+        
 
     private bool SameSpecies(string creatureName)
     {
