@@ -171,7 +171,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f308368d80fefe444b9ae38b36ce6b6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  debug: 1
+  debug: 0
+  debugObject: {fileID: 9103161053431881372, guid: 3d0d5ab07100a804ab34c91787727f8d,
+    type: 3}
   fallenTree: {fileID: 1493958779012120596, guid: b9de24523a11d714db3851b5f0f9d527,
     type: 3}
   trees:
@@ -239,8 +241,6 @@ MonoBehaviour:
   - {fileID: 5440707293445505367, guid: 494f6d43e170e9145bc7865d243ee00b, type: 3}
   - {fileID: 1127315056602366, guid: 3a9df2c30188f10438112114dc22bae1, type: 3}
   - {fileID: 1240686429475702, guid: da33a1bfeaaabaa4597896ca7003b785, type: 3}
-  debugObject: {fileID: 9103161053431881372, guid: 3d0d5ab07100a804ab34c91787727f8d,
-    type: 3}
   treeNr: 0
   bushNr: 0
   waterPlantNr: 0

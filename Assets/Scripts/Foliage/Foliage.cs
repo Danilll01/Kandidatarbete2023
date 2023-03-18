@@ -295,7 +295,8 @@ public class Foliage : MonoBehaviour
 
         GameObject treeObject = foliageHandler.GetForstetTree(treeType);
 
-        // Spawns 5 trees around a found forest spot!
+
+        // Spawns 5 trees around a found forest spot! Bigger number = denser forest
         for (int i = 0; i < 5; i++)
         {
             float x = (float)random.NextDouble()*2 - 1;
