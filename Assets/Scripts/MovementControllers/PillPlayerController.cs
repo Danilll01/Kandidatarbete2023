@@ -21,6 +21,7 @@ public class PillPlayerController : MonoBehaviour
     [SerializeField] private float maxSwimSpeed = 10;
     public float maxSpeed;
     private bool jump = false; // Used for creating a rising trigger for jump
+    private bool isSprinting = false;
 
     [Header("Ship")]
     private ShipController ship;
@@ -30,8 +31,8 @@ public class PillPlayerController : MonoBehaviour
     private Animator animator;
     private static readonly int Speed = Animator.StringToHash("Speed");
     private static readonly int Direction = Animator.StringToHash("Direction");
+    private Transform animationRig;
     
-    [FormerlySerializedAs("sensitivity")]
     [Header("Camera")]
     [SerializeField] [Range(0.2f, 5f)] private float mouseSensitivity = 1f;
     [SerializeField] private float lookLimitAngle = 80f;
@@ -41,6 +42,7 @@ public class PillPlayerController : MonoBehaviour
     {
         Universe.player = this;
         animator = transform.GetChild(0).GetComponent<Animator>();
+        animationRig = transform.GetChild(0);
     }
 
     // Start is called before the first frame update
@@ -120,6 +122,23 @@ public class PillPlayerController : MonoBehaviour
         firstPersonCamera.transform.localEulerAngles = new Vector3(pitch, 0 ,0);
     }
 
+    // Moves model back or forward depending on player speed
+    private void MoveModelWhileSprint(float speed)
+    {
+        if(speed > 0.5f)
+        {
+            if (isSprinting) return;
+            isSprinting = true;
+            animationRig.localPosition += new Vector3(0,0,-0.015f);
+        }
+        else
+        {
+            if (!isSprinting) return;
+            isSprinting = false;
+            animationRig.localPosition += new Vector3(0,0,0.015f);
+        }
+        
+    }
     private void HandleMovement()
     {
         //Keep old Y velocity. Rotates to world space, grabs y velocity and rotates back to planet orientation
@@ -138,16 +157,23 @@ public class PillPlayerController : MonoBehaviour
         if (Input.GetAxisRaw("Sprint") == 1) // Running
         {
             movementVector *= sprintFactor;
+            
+            // Animations
             speed = Mathf.Min(Mathf.Abs(inputSpeed),1);
             direction = Mathf.Min(Mathf.Abs(inputDirection),1); 
         }
         else if (Input.GetAxisRaw("Sprint") == -1) // Walking slow
         {
             movementVector /= sprintFactor;
+            
+            // Animations
             direction = Mathf.Min(Mathf.Abs(inputDirection), 0.3f);
             speed = Mathf.Min(Mathf.Abs(inputSpeed), 0.3f);
         }
 
+        // Decides if the model should be moved back because of sprinting
+        MoveModelWhileSprint(speed);
+        
         //Swiming
         if (Swimming)
         {
