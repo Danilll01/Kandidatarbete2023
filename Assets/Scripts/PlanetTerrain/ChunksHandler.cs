@@ -38,16 +38,15 @@ public class ChunksHandler : MonoBehaviour
         planetRadius = planet.radius;
         this.terrainLevel = terrainLevel;
 
-        // If this is the current planet, generate in high res
-        if (spawn)
-        {
-            CreateMeshes(3, planet.resolution, terrainLevel);
-            chunksGenerated = true;
-        }
-        else
+        // If this is not the spawn planet, all chunks can be created immediately
+        if (!spawn)
         {
             CreateMeshes(1, 1, terrainLevel);
             chunksGenerated = false;
+        }
+        else
+        {
+
         }
 
         planetMaterial = terrainColor.GetPlanetMaterial(terrainLevel, rand.Next()); //change to random
@@ -84,6 +83,22 @@ public class ChunksHandler : MonoBehaviour
             CreateMeshes(3, planet.resolution, terrainLevel);
             setChunksMaterials();
             chunksGenerated = true;
+        }
+    }
+
+    private void SetupChunks(int chunkResolution)
+    {
+        // Don't create new ones if they are to be the same as old ones.
+        if (this.chunkResolution == chunkResolution)
+            return;
+        this.chunkResolution = chunkResolution;
+
+        chunks = new List<Chunk>;
+
+        for(int i = 0; i <chunkResolution; i++)
+        {
+            Chunk chunk = Instantiate(chunkPrefab);
+
         }
     }
 
