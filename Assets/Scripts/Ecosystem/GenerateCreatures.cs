@@ -139,7 +139,6 @@ public class GenerateCreatures : MonoBehaviour
                 //Quaternion rotation2 = Quaternion.LookRotation(hit.point) * Quaternion.Euler(90, 0, 0);
                 GameObject newObject = Instantiate(packData.prefab, hit.point, rotation2, hit.transform.GetComponent<Chunk>().creatures);
                 newObject.transform.rotation = rotation2;
-                newObject.name = newObject.name.Replace("(Clone)", "").Trim();
 
                 bool isSpawnPlanet = planet.gameObject == planet.transform.parent.GetChild(1).gameObject;
 

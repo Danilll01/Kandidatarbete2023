@@ -10,10 +10,11 @@ public class PlanetTester : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+
         Universe.InitializeRandomWithSeed();
         planet.Initialize(player.transform, Universe.random.Next(), true);
         planet.SetUpPlanetValues();
-        player.Initialize(planet);
+        player.Initialize(planet.gameObject);
     }
 
 }

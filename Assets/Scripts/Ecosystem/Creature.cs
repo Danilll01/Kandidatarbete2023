@@ -1,14 +1,10 @@
 using System.Collections;
-using Unity.Burst.CompilerServices;
 using Unity.VisualScripting;
 using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody))]
-[RequireComponent(typeof(BoxCollider))]
-[RequireComponent(typeof(Animator))]
 public class Creature : MonoBehaviour
 {
-
+    
     [SerializeField] private float speed = 1f;
     [SerializeField] private float detectionRadius = 30f;
     [SerializeField] private float consumeRadius = 0.5f;
@@ -17,9 +13,9 @@ public class Creature : MonoBehaviour
 
     [Header("Creature food and water needs")]
     [SerializeField] private CreatureType creatureType = CreatureType.Small;
-    
-    [SerializeField] public float hunger = 100f;
-    [SerializeField] public float thirst = 100f;
+
+    [SerializeField] private float hunger = 100f;
+    [SerializeField] private float thirst = 100f;
     [SerializeField] private bool randomizeStats = true;
 
     [SerializeField] private float maxHunger = 100f;
@@ -39,24 +35,6 @@ public class Creature : MonoBehaviour
     [Header("If resource type == creature, select type of creature")]
     [SerializeField] private CreatureType creatureDiet;
 
-    [Header("Reproduction")]
-    [SerializeField] private GameObject childPrefab;
-    [SerializeField] private GameObject parentPrefab;
-    [SerializeField] private bool canReproduce = true;
-    [SerializeField] public bool wantToReproduce = false;
-    [SerializeField] private float reproductionThreshold = 80f;
-    [SerializeField] private float reproductionCooldown = 100f;
-    [SerializeField] private float reproductionTimer = 0f;
-    [SerializeField] private float reproductionCost = 30f;
-    [SerializeField] private float reproductionChance = 0.5f;
-    [SerializeField] private int maxChildren = 2;
-    [SerializeField] private int childrenCount = 0;
-    
-    [SerializeField] private bool isChild = false;
-    [SerializeField] private float growUpTime = 60f;
-
-    [SerializeField] private GameObject breedingParticle;
-
     [Header("Debug")]
     [SerializeField] private CreatureState currentState;
     [SerializeField] private bool DEBUG = false;
@@ -74,8 +52,6 @@ public class Creature : MonoBehaviour
     private LODGroup lodGroup;
     private Renderer renderer;
     private Animator animator;
-
-    private Creature breedingPartner;
 
     // Start is called before the first frame update
     void Start()
@@ -101,9 +77,6 @@ public class Creature : MonoBehaviour
         }
 
         animator.SetFloat("Speed", speed);
-        animator.keepAnimatorStateOnDisable = true;
-
-        if (isChild) canReproduce = false;
     }
 
     // Update is called once per frame
@@ -149,10 +122,10 @@ public class Creature : MonoBehaviour
                 LookingForResource(ResourceType.Water);
                 break;
             case CreatureState.LookingForPartner:
-                LookingForPartner();
+                //LookingForPartner();
                 break;
             case CreatureState.Breeding:
-                Bredding();
+                //Bredding();
                 break;
         }
 
@@ -163,32 +136,7 @@ public class Creature : MonoBehaviour
         // Die if hunger or thirst is 0
         if (hunger <= 0 || thirst <= 0)
         {
-            // Spawn a poof particle when the creature dies
-            Instantiate(breedingParticle, transform.position, transform.rotation, transform.parent);
-
             Destroy(gameObject);
-        }
-
-        // Decrese timer for reproduction
-        if (canReproduce && reproductionTimer > 0)
-        {
-            reproductionTimer -= Time.deltaTime;
-        }
-
-        
-        if (isChild)
-        {
-            // Decrease grow-up timer
-            if (growUpTime > 0)
-            {
-                growUpTime -= Time.deltaTime;
-            } else
-            {
-                isChild = false;
-                GameObject newObject = Instantiate(parentPrefab, transform.position, transform.rotation, transform.parent);
-                newObject.name = newObject.name.Replace("(Clone)", "").Trim(); 
-                Destroy(gameObject);
-            }
         }
     }
 
@@ -206,24 +154,12 @@ public class Creature : MonoBehaviour
         // If hunger is below threshold, look for food
         if (hunger < hungerThreshold)
         {
-            wantToReproduce = false;
             currentState = CreatureState.LookingForFood;
+
         }
         else if (thirst < thirstThreshold) // If thirst is below threshold, look for water
         {
-            wantToReproduce = false;
             currentState = CreatureState.LookingForWater;
-        }
-        else if (canReproduce) 
-        {
-            // Dont try to find a new partner if ones already found
-            if (currentState == CreatureState.Breeding) return;
-
-            if (reproductionTimer <= 0 && hunger > reproductionThreshold && thirst > thirstThreshold)
-            {
-                wantToReproduce = true;
-                currentState = CreatureState.LookingForPartner;
-            }
         }
         else
         {
@@ -284,7 +220,10 @@ public class Creature : MonoBehaviour
                 if (animate)
                 {
                     InteractWithResourceAction(nearestResource, disable, resource);
-                } else 
+                } else if (resource == ResourceType.Creature)
+                {
+                    // Do stuff
+                } else
                 {
                     if (disable) nearestResource.GetComponent<Resource>().ConsumeResource();
                 }
@@ -302,74 +241,6 @@ public class Creature : MonoBehaviour
         }
     }
 
-    private void LookingForPartner()
-    {
-        Collider[] hitColliders = Physics.OverlapSphere(transform.position, detectionRadius);
-        GameObject nearestObject = null;
-        float nearestDistance = Mathf.Infinity;
-
-        foreach (Collider coll in hitColliders)
-        {
-            if (coll != collider && coll.gameObject.CompareTag("Creature")) 
-            {
-                bool foundPartner = coll.GetComponent<Creature>().wantToReproduce && coll.name.Contains(gameObject.name);
-                if (!foundPartner) continue;
-
-                float distanceToGameObject = Vector3.Distance(transform.position, coll.transform.position);
-
-                if (nearestDistance > distanceToGameObject)
-                {
-                    nearestDistance = distanceToGameObject;
-                    nearestObject = coll.gameObject;
-                }
-            }
-        }
-
-        if (nearestObject != null)
-        {
-            if (IsCloseToDestination(nearestObject.transform.position))
-            {
-                atDestination = true;
-                breedingPartner = nearestObject.GetComponent<Creature>();
-                currentState = CreatureState.Breeding;
-
-            } else
-            {
-                atDestination = false;
-                destination = nearestObject.transform.position;
-                GotoPosition(destination);
-            }
-            
-        } else
-        {
-            RandomWalking();
-        }
-
-    }
-
-    private void Bredding()
-    {
-        if (reproductionChance > Random.Range(0f,1f) && breedingPartner.thirst < thirst)
-        {
-            Vector3 childPos = transform.position - transform.forward;
-            
-            // Spawn a poof particle where the child is spawned
-            Instantiate(breedingParticle, childPos, transform.rotation, transform.parent);
-            
-            GameObject newObject = Instantiate(childPrefab, childPos, transform.rotation, transform.parent);
-            newObject.name = newObject.name.Replace("(Clone)", "").Trim();
-
-            childrenCount++;
-            hunger -= reproductionCost;
-
-            if (childrenCount >= maxChildren) canReproduce = false;
-
-            reproductionTimer = reproductionCooldown;
-        }
-        
-        currentState = CreatureState.Walking;
-    }
-
     private GameObject GetNearestGameobject(ResourceType type)
     {
         Collider[] hitColliders = Physics.OverlapSphere(transform.position, detectionRadius);
@@ -385,7 +256,6 @@ public class Creature : MonoBehaviour
                 {
                     CreatureType creatureType = coll.gameObject.GetComponent<Creature>().GetCreatureType;
                     if (creatureDiet != creatureType) continue;
-                    if (SameSpecies(coll.gameObject.name)) continue;
                 }
                 
                 float distanceToGameObject = Vector3.Distance(transform.position, coll.transform.position);
@@ -558,14 +428,6 @@ public class Creature : MonoBehaviour
         yield return new WaitForSeconds(1);
 
         currentState = CreatureState.Walking;
-    }
-
-    private bool SameSpecies(string creatureName)
-    {
-        bool sameAsParent = parentPrefab.name == creatureName;
-        bool sameAsChild = childPrefab.name == creatureName;
-
-        return sameAsParent || sameAsChild;
     }
 
     public CreatureType GetCreatureType

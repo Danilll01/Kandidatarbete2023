@@ -1,3 +1,7 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Security.Cryptography;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
@@ -5,23 +9,19 @@ public class PillPlayerController : MonoBehaviour
 {
     public Planet attractor = null;
     public Camera firstPersonCamera;
-    [SerializeField] private PlayerWater playerWater;
-    private Rigidbody body;
-    [HideInInspector] public bool paused;
-
-    [Header("Movement")]
     public float movementSpeed;
-    [SerializeField] private float sprintFactor;
     public float airControlFactor;
     public float jumpForce;
-    private int coyoteTimer = 0;
-    [SerializeField] private int coyoteMax;
     [SerializeField] private float swimForce;
     [SerializeField] private float maxSwimSpeed = 10;
     public float maxSpeed;
+
     private bool jump = false; // Used for creating a rising trigger for jump
 
-    [Header("Ship")]
+    [SerializeField] private PlayerWater playerWater;
+
+    private Rigidbody body;
+    [HideInInspector] public bool paused;
     private ShipController ship;
     [HideInInspector] public bool boarded = false;
 
@@ -31,22 +31,31 @@ public class PillPlayerController : MonoBehaviour
     }
 
     // Start is called before the first frame update
-    public void Initialize(Planet planetToSpawnOn)
+    public void Initialize(GameObject planetToSpawnOn)
     {
         Universe.player = this;
 
         if (attractor == null)
         {
-            attractor = planetToSpawnOn;
+            attractor = planetToSpawnOn.GetComponent<Planet>();
             if (attractor == null)
             {
-                Debug.LogError("Player spawned without a planet");
+                Debug.LogError("Planet player spawned on has no Planet script");
             }
         }
 
         body = GetComponent<Rigidbody>();
         ship = GameObject.Find("Spaceship").GetComponent<ShipController>();
-        Spawn(planetToSpawnOn);
+
+        //A bit of a hack to give the player a starting planet
+        transform.position = planetToSpawnOn.transform.position + new Vector3(0, attractor.diameter, 0);
+        Vector3 directionNearestPlanet = attractor.transform.position - transform.position;
+        Physics.Raycast(transform.position, directionNearestPlanet, out RaycastHit hit);
+
+        //Put the player above the ground
+        transform.position = hit.point - (directionNearestPlanet.normalized) * 5;
+        ship.Initialize(body, firstPersonCamera);
+
         //Lock the mouse inside of the game
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
@@ -88,10 +97,6 @@ public class PillPlayerController : MonoBehaviour
         }
     }
 
-    private void FixedUpdate()
-    {
-        coyoteTimer = Grounded ? 0 : coyoteTimer + 1;
-    }
     private void HandleCamera()
     {
         //Rotate player and camera
@@ -104,21 +109,12 @@ public class PillPlayerController : MonoBehaviour
     private void HandleMovement()
     {
         //Keep old Y velocity. Rotates to world space, grabs y velocity and rotates back to planet orientation
-        Vector3 yGround = Grounded ? GroundNormal : transform.rotation * transform.up;
-        Vector3 oldY = Vector3.Project(body.velocity, yGround);
+        Vector3 oldY = transform.rotation * new Vector3(0, (Quaternion.Inverse(transform.rotation) * body.velocity).y);
         //New movement
         Vector3 movementVector = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical")) * movementSpeed;
-        if (Input.GetAxisRaw("Sprint") == 1)
-        {
-            movementVector *= sprintFactor;
-        }
-        else if (Input.GetAxisRaw("Sprint") == -1)
-        {
-            movementVector /= sprintFactor;
-        }
-
+        
         //Swiming
-        if (Swimming)
+        if(Swimming)
         {
             if (Input.GetAxisRaw("Jump") == 1)
             {
@@ -128,25 +124,23 @@ public class PillPlayerController : MonoBehaviour
             {
                 movementVector.y += 0.0001f;
             }
+            
         }
-        else if (Input.GetAxisRaw("Jump") == 1 && coyoteTimer <= coyoteMax) //Jumping
+        else if (Input.GetAxisRaw("Jump") == 1 && !jump && Grounded) //Jumping
         {
+            movementVector.y += jumpForce;
             jump = true;
         }
-        else if (!Grounded || Input.GetAxisRaw("Jump") == 0) //Resets the jump when jump is released or left the ground
+        if(Input.GetAxisRaw("Jump") == 0 && jump) //Resets the jump when jump is released
         {
             jump = false;
-        }
-        if (jump)
-        {
-            movementVector.y = jumpForce;
         }
 
         //Input recieved
         if (movementVector.magnitude != 0)
         {
             //Ground controls + swim controls
-            if (Swimming)
+            if(Swimming)
             {
                 float currentUppSpeed = (Quaternion.Inverse(transform.rotation) * body.velocity).y + movementVector.y;
 
@@ -164,15 +158,8 @@ public class PillPlayerController : MonoBehaviour
             }
             else if (Grounded)
             {
-                movementVector = transform.rotation * movementVector;
-
-                //Remove any movement that would make the player leave the ground unless the player is jumping
-                if (!jump)
-                {
-                    movementVector -= Vector3.Project(movementVector, yGround);
-                }
-
-                body.velocity = movementVector;
+                body.velocity = transform.rotation * movementVector;
+                body.velocity += oldY;
             }
             //Air controls
             else
@@ -204,49 +191,6 @@ public class PillPlayerController : MonoBehaviour
         }
     }
 
-    private void Spawn(Planet planet)
-    {
-        UnityEngine.Random.InitState(Universe.random.Next());
-        int failCount = 0;
-        bool foundSpawnLocation = false;
-        //Try to find suitable spawn location
-        while (!foundSpawnLocation)
-        {
-            if (failCount > 1000)
-            {
-                Debug.LogError("Unable to find suitable spawn position for player on planet: " + planet.bodyName);
-                return;
-            }
-
-            //Try to find a suitable spawn position
-            Vector3 spawnLocationAbovePlanet = planet.transform.position + (UnityEngine.Random.onUnitSphere * planet.radius);
-            Vector3 directionNearestPlanet = (planet.transform.position - spawnLocationAbovePlanet).normalized;
-            bool hitPlanet = Physics.Raycast(spawnLocationAbovePlanet, directionNearestPlanet, out RaycastHit spawnLocation, planet.radius);
-
-            if (!hitPlanet)
-            {
-                Debug.LogError("Unable to hit planet: " + planet.bodyName + " with spawn ray at " + planet.transform.position.ToString());
-                Debug.DrawLine(spawnLocationAbovePlanet, spawnLocationAbovePlanet + directionNearestPlanet * planet.radius, Color.red, 1000000);
-                Debug.Break();
-                return;
-            }
-
-            bool onGround = spawnLocation.transform.gameObject.layer == LayerMask.NameToLayer("Planet");
-            bool aboveWater = Vector3.Distance(spawnLocation.point, planet.transform.position) > planet.waterDiameter / 2;
-            foundSpawnLocation = onGround && aboveWater;
-
-            if (!foundSpawnLocation)
-            {
-                failCount++;
-                continue;
-            }
-
-            //Put the player above the ground
-            transform.position = spawnLocation.point - directionNearestPlanet.normalized * 5;
-            ship.Initialize(body, firstPersonCamera);
-        }
-    }
-
     public Planet Planet
     {
         get { return attractor; }
@@ -261,41 +205,9 @@ public class PillPlayerController : MonoBehaviour
         get { return (attractor.transform.position - transform.position).magnitude; }
     }
 
-
-    /// <summary>
-    /// The Vector3 of the normal ground the player is standing on. Returns Vector3.Zero if not on ground.
-    /// </summary>
-    public Vector3 GroundNormal
-    {
-        get
-        {
-            if (attractor == null)
-            {
-                return Vector3.zero;
-            }
-
-            Physics.Raycast(transform.position, attractor.transform.position - transform.position, out RaycastHit hit, 2f);
-            if (hit.collider == null)
-            {
-                return Vector3.zero;
-            }
-            else
-            {
-                return hit.normal;
-            }
-        }
-    }
-
-
     public bool Grounded
     {
-        get { 
-            if (attractor == null)
-            {
-                return false;
-            }
-            return Physics.Raycast(transform.position, attractor.transform.position - transform.position, 2f); 
-        }
+        get { return Physics.Raycast(transform.position, attractor.transform.position - transform.position, 2f); }
     }
 
     public Vector3 Up

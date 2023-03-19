@@ -417,6 +417,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spawnPlanets: {fileID: 882231452}
+  activePlanetIndex: -1
   player: {fileID: 1376926152}
 --- !u!1 &459511075
 GameObject:
