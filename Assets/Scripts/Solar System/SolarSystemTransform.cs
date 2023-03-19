@@ -17,6 +17,7 @@ public class SolarSystemTransform : MonoBehaviour
 
     public bool ResetSolarSystem = false;
     private bool reset = false;
+    private bool releasePlayer = false;
 
 
     void Start()
@@ -53,8 +54,6 @@ public class SolarSystemTransform : MonoBehaviour
             if (playerOnPlanetIndex != activePlanetIndex && playerOnPlanetIndex == -1)
             {
                 ResetPlanetOrbit(activePlanetIndex);
-                Planet planet = spawnPlanets.bodies[activePlanetIndex];
-                planet.ResetMoons();
                 activePlanetIndex = -1;
                 reset = true;
             }
@@ -68,10 +67,9 @@ public class SolarSystemTransform : MonoBehaviour
         else if(!reset)
         {
             ResetPlanetOrbit(activePlanetIndex);
-            Planet planet = spawnPlanets.bodies[activePlanetIndex];
-            planet.ResetMoons();
-            activePlanetIndex = -1;
+            releasePlayer = true;
             reset = true;
+            activePlanetIndex = -1;
         }
         else if (!ResetSolarSystem && reset)
         {
@@ -81,6 +79,21 @@ public class SolarSystemTransform : MonoBehaviour
                 MovePlanets(playerOnPlanetIndex);
                 activePlanetIndex = playerOnPlanetIndex;
             }
+        }
+
+        if (releasePlayer)
+        {
+            CheckWhenToReleasePlayer();
+        }
+    }
+
+    private void CheckWhenToReleasePlayer()
+    {
+        Vector3 distance = spawnPlanets.bodies[playerOnPlanetIndex].transform.position;
+        if (distance.magnitude > 100f)
+        {
+            player.transform.SetParent(null,true);
+            releasePlayer = false;
         }
     }
 
@@ -155,6 +168,7 @@ public class SolarSystemTransform : MonoBehaviour
         {
             rotateSolarSystem = false;
             Planet planet = spawnPlanets.bodies[planetIndex];
+            Vector3 directionPlayerToPlanet = planet.transform.position - player.transform.position;
 
             sun.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
             Vector3 direction = sun.transform.position - planet.transform.position;
@@ -168,11 +182,14 @@ public class SolarSystemTransform : MonoBehaviour
             //Turn of orbitig on the sun
             KeplerOrbitMover sunOrbitMover = sun.GetComponent<KeplerOrbitMover>();
             sunOrbitMover.enabled = false;
+            
 
             // Center the solar system at origo again and remove player as a child of planet
             sun.transform.position = Vector3.zero;
+            //player.transform.position = planet.transform.position + directionPlayerToPlanet;
+            Debug.Log("Given pos:" + (planet.transform.position + directionPlayerToPlanet));
             planet.transform.parent = planetsParent.transform;
-            player.transform.parent = null;
+            
             planet.ResetMoons();
         }
 
