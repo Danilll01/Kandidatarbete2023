@@ -53,7 +53,10 @@ public class SolarSystemTransform : MonoBehaviour
             if (playerOnPlanetIndex != activePlanetIndex && playerOnPlanetIndex == -1)
             {
                 ResetPlanetOrbit(activePlanetIndex);
+                Planet planet = spawnPlanets.bodies[activePlanetIndex];
+                planet.ResetMoons();
                 activePlanetIndex = -1;
+                reset = true;
             }
             // If the player has entered a new planet, move the solar system accordingly
             else if (playerOnPlanetIndex != activePlanetIndex)

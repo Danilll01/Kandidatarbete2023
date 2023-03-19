@@ -144,7 +144,7 @@ MonoBehaviour:
   spawnPlanets: {fileID: 1401488996}
   activePlanetIndex: -1
   player: {fileID: 1645583112}
-  ResetMoons: 0
+  ResetSolarSystem: 0
 --- !u!1 &65364430
 GameObject:
   m_ObjectHideFlags: 0
@@ -292,7 +292,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!135 &368019390
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -408,7 +408,7 @@ PrefabInstance:
     - target: {fileID: 8081581959268663209, guid: 817e184478ce3fd47bea48db42095bc5,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8893583788200273171, guid: 817e184478ce3fd47bea48db42095bc5,
         type: 3}
@@ -537,7 +537,7 @@ PrefabInstance:
     - target: {fileID: 4197161889152382809, guid: a27088cae5f8b5549bde9f1342be2696,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a27088cae5f8b5549bde9f1342be2696, type: 3}
@@ -1283,7 +1283,7 @@ PrefabInstance:
     - target: {fileID: 776431053636631425, guid: 93094628cce30c64195c2ae1633e7e60,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 776431053636631427, guid: 93094628cce30c64195c2ae1633e7e60,
         type: 3}
@@ -1528,7 +1528,7 @@ PrefabInstance:
     - target: {fileID: 8157375954420172327, guid: d9aa2365836edc946afc563b765ba551,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d9aa2365836edc946afc563b765ba551, type: 3}
