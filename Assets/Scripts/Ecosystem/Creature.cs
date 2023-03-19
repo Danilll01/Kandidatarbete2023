@@ -99,6 +99,7 @@ public class Creature : MonoBehaviour
         animator = GetComponent<Animator>();
         audioSource = GetComponent<AudioSource>();
         audioSource.volume = 0.4f;
+        audioSource.spatialBlend = 1.0f;
 
         // Teleport the creature 1 meter up in correct direction based on position on planet
         transform.position += -(planet.transform.position - transform.position).normalized * 0.3f;
@@ -203,7 +204,7 @@ public class Creature : MonoBehaviour
             }
         }
 
-        if (idleSounds.Length > 0)
+        if (!isSleeping && idleSounds.Length > 0)
         {
             if (idleSoundTimer > 0)
             {
