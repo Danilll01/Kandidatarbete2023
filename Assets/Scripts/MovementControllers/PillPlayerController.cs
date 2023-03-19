@@ -38,6 +38,7 @@ public class PillPlayerController : MonoBehaviour
     [SerializeField] private float lookLimitAngle = 80f;
     private float pitch = 0f;
     private static readonly int Swim = Animator.StringToHash("Swim");
+    private static readonly int Jump = Animator.StringToHash("Jump");
 
     private void Awake()
     {
@@ -352,7 +353,7 @@ public class PillPlayerController : MonoBehaviour
             }
             
             bool isGrounded = Physics.Raycast(transform.position, attractor.transform.position - transform.position, 2f);
-            animator.SetBool("Jump", !isGrounded);
+            animator.SetBool(Jump, !isGrounded);
             return isGrounded;      
         }
     }
