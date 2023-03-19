@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 [RequireComponent(typeof(Rigidbody))]
 public class PillPlayerController : MonoBehaviour
@@ -30,7 +31,10 @@ public class PillPlayerController : MonoBehaviour
     private static readonly int Speed = Animator.StringToHash("Speed");
     private static readonly int Direction = Animator.StringToHash("Direction");
     
-    // Camera
+    [FormerlySerializedAs("sensitivity")]
+    [Header("Camera")]
+    [SerializeField] [Range(0.2f, 5f)] private float mouseSensitivity = 1f;
+    [SerializeField] private float lookLimitAngle = 80f;
     private float pitch = 0f;
 
     private void Awake()
@@ -105,23 +109,15 @@ public class PillPlayerController : MonoBehaviour
     private void HandleCamera()
     {
         //Rotate player and camera
-        Vector3 cameraRotationVector = new Vector3(Input.GetAxis("Vertical Look") + Input.GetAxisRaw("Controller Vertical Look") * 3, 0);
-        Vector3 playerRotationVector = new Vector3(0, Input.GetAxis("Horizontal Look") + Input.GetAxisRaw("Controller Horizontal Look") * 4);
+        //Vector3 cameraRotationVector = new Vector3(Input.GetAxis("Vertical Look") + Input.GetAxisRaw("Controller Vertical Look") * 3, 0);
+        Vector3 playerRotationVector = new Vector3(0, (mouseSensitivity * Input.GetAxis("Horizontal Look")) + Input.GetAxisRaw("Controller Horizontal Look") * 4);
+        pitch += (mouseSensitivity * Input.GetAxis("Vertical Look")) + (Input.GetAxisRaw("Controller Vertical Look") * 3);
         
         // Clamp pitch between lookAngle
-        cameraRotationVector.x = Mathf.Clamp(cameraRotationVector.x, -180f, 180f);
+        pitch = Mathf.Clamp(pitch, -lookLimitAngle, lookLimitAngle);
         
-        Debug.Log("Rotatioon: " + cameraRotationVector);
-        
-        
-      
-        pitch += 1 * Input.GetAxis("Vertical Look");
-        // Clamp pitch between lookAngle
-        pitch = Mathf.Clamp(pitch, -90f, 90f);
-        
-        //firstPersonCamera.transform.Rotate(cameraRotationVector);
-        firstPersonCamera.transform.localEulerAngles = new Vector3(pitch, 0 ,0);
         transform.Rotate(playerRotationVector);
+        firstPersonCamera.transform.localEulerAngles = new Vector3(pitch, 0 ,0);
     }
 
     private void HandleMovement()

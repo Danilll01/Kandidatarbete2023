@@ -291,6 +291,11 @@ PrefabInstance:
       propertyPath: sprintFactor
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 755283109381456697, guid: 2abf19653d633114faedf3b60dc6c39f,
+        type: 3}
+      propertyPath: lookLimitAngle
+      value: 70
+      objectReference: {fileID: 0}
     - target: {fileID: 2343465825876684966, guid: 2abf19653d633114faedf3b60dc6c39f,
         type: 3}
       propertyPath: m_UseGravity
