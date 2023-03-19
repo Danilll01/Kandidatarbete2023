@@ -40,7 +40,7 @@ public class PillPlayerController : MonoBehaviour
     private void Awake()
     {
         Universe.player = this;
-        animator = GetComponent<Animator>();
+        animator = transform.GetChild(0).GetComponent<Animator>();
     }
 
     // Start is called before the first frame update
