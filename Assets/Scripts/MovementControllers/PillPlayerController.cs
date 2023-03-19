@@ -29,6 +29,9 @@ public class PillPlayerController : MonoBehaviour
     private Animator animator;
     private static readonly int Speed = Animator.StringToHash("Speed");
     private static readonly int Direction = Animator.StringToHash("Direction");
+    
+    // Camera
+    private float pitch = 0f;
 
     private void Awake()
     {
@@ -104,7 +107,20 @@ public class PillPlayerController : MonoBehaviour
         //Rotate player and camera
         Vector3 cameraRotationVector = new Vector3(Input.GetAxis("Vertical Look") + Input.GetAxisRaw("Controller Vertical Look") * 3, 0);
         Vector3 playerRotationVector = new Vector3(0, Input.GetAxis("Horizontal Look") + Input.GetAxisRaw("Controller Horizontal Look") * 4);
-        firstPersonCamera.transform.Rotate(cameraRotationVector);
+        
+        // Clamp pitch between lookAngle
+        cameraRotationVector.x = Mathf.Clamp(cameraRotationVector.x, -180f, 180f);
+        
+        Debug.Log("Rotatioon: " + cameraRotationVector);
+        
+        
+      
+        pitch += 1 * Input.GetAxis("Vertical Look");
+        // Clamp pitch between lookAngle
+        pitch = Mathf.Clamp(pitch, -90f, 90f);
+        
+        //firstPersonCamera.transform.Rotate(cameraRotationVector);
+        firstPersonCamera.transform.localEulerAngles = new Vector3(pitch, 0 ,0);
         transform.Rotate(playerRotationVector);
     }
 
