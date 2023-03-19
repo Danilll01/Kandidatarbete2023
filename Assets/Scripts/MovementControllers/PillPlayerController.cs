@@ -37,6 +37,7 @@ public class PillPlayerController : MonoBehaviour
     [SerializeField] [Range(0.2f, 5f)] private float mouseSensitivity = 1f;
     [SerializeField] private float lookLimitAngle = 80f;
     private float pitch = 0f;
+    private static readonly int Swim = Animator.StringToHash("Swim");
 
     private void Awake()
     {
@@ -363,7 +364,11 @@ public class PillPlayerController : MonoBehaviour
 
     private bool Swimming
     {
-        get { return playerWater.underWater; }
+        get
+        {
+            animator.SetBool(Swim, playerWater.underWater);
+            return playerWater.underWater;
+        }
     }
 
 }
