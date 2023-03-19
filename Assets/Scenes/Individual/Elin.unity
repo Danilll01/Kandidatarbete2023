@@ -266,7 +266,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 226718592}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.22, z: -0.2542319}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -292,7 +292,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!135 &368019390
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -388,6 +388,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rotationAxis: {x: 1, y: 0, z: 1}
+  moons:
+  - {fileID: 897438370}
+  - {fileID: 2054606928}
+  resetMoons: 0
+  moonsParent: {fileID: 368019388}
 --- !u!1001 &385276524
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -403,7 +408,7 @@ PrefabInstance:
     - target: {fileID: 8081581959268663209, guid: 817e184478ce3fd47bea48db42095bc5,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8893583788200273171, guid: 817e184478ce3fd47bea48db42095bc5,
         type: 3}
@@ -532,7 +537,7 @@ PrefabInstance:
     - target: {fileID: 4197161889152382809, guid: a27088cae5f8b5549bde9f1342be2696,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a27088cae5f8b5549bde9f1342be2696, type: 3}
@@ -817,6 +822,10 @@ GameObject:
   - component: {fileID: 897438368}
   - component: {fileID: 897438367}
   - component: {fileID: 897438369}
+  - component: {fileID: 897438373}
+  - component: {fileID: 897438372}
+  - component: {fileID: 897438371}
+  - component: {fileID: 897438370}
   m_Layer: 0
   m_Name: Orbiter
   m_TagString: Untagged
@@ -895,7 +904,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 897438361}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 3.31, y: 0, z: 0}
+  m_LocalPosition: {x: 2.146, y: 0, z: -2.234}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -933,7 +942,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 897438361}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 360a38c11d75bf24991bdc7b1fcddb56, type: 3}
   m_Name: 
@@ -948,54 +957,54 @@ MonoBehaviour:
   OrbitData:
     GravConst: 0.10000000149011612
     Position:
-      x: 2.2861177921295166
+      x: 1.482177734375
       y: 0
-      z: 0
-    AttractorDistance: 2.2861177921295166
+      z: -1.542956829071045
+    AttractorDistance: 2.1395248567506715
     AttractorMass: 1
     Velocity:
       x: 0
       y: 0
-      z: -0.20914654433727264
+      z: 0
     MG: 0.10000000149011612
-    SemiMinorAxis: 2.286117706323284
-    SemiMajorAxis: 2.2861177063232856
-    FocalParameter: 2.2861177063232825
-    Eccentricity: 0.000000037533601449091236
-    Period: 68.67959826557501
+    SemiMinorAxis: 0
+    SemiMajorAxis: 0
+    FocalParameter: 0
+    Eccentricity: 0
+    Period: 0
     TrueAnomaly: 3.141592680287989
-    MeanAnomaly: 3.1415926793993765
+    MeanAnomaly: 3.1415926793993756
     EccentricAnomaly: 3.1415926793993756
-    MeanMotion: 0.09148546971523254
+    MeanMotion: Infinity
     Periapsis:
-      x: -2.2861176205170546
-      y: 0
-      z: -0
-    PeriapsisDistance: 2.2861176205170546
-    Apoapsis:
-      x: 2.2861177921295166
-      y: -0
-      z: 0
-    ApoapsisDistance: 2.2861177921295166
-    CenterPoint:
-      x: 0.0000000858062308548488
-      y: -0
-      z: -0
-    OrbitCompressionRatio: 0.9999999999999986
-    OrbitNormal:
       x: -0
-      y: 1
+      y: 0
       z: 0
+    PeriapsisDistance: 0
+    Apoapsis:
+      x: 0
+      y: -0
+      z: -0
+    ApoapsisDistance: 0
+    CenterPoint:
+      x: -0
+      y: -0
+      z: -0
+    OrbitCompressionRatio: 1
+    OrbitNormal:
+      x: 0.7211679846591531
+      y: -0
+      z: 0.6927602311786204
     SemiMinorAxisBasis:
       x: 0
-      y: 0
-      z: -1
+      y: 1
+      z: 0
     SemiMajorAxisBasis:
-      x: -1
+      x: -0.6927602311786204
       y: 0
-      z: -0
-    OrbitNormalDotEclipticNormal: 0
-  LockOrbitEditing: 0
+      z: 0.7211679846591531
+    OrbitNormalDotEclipticNormal: 0.6927602311786204
+  LockOrbitEditing: 1
 --- !u!114 &897438369
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1008,6 +1017,142 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69b7421ceda62bb479b91c59cb45ca90, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &897438370
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 897438361}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 23acccfe94ebe8b44bd8e67461ed1723, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  meshGenerator: {fileID: 0}
+  waterMaterial: {fileID: 0}
+  waterDiameter: 0
+  diameter: 0
+  radius: 0
+  surfaceGravity: 0
+  bodyName: TBT
+  mass: 0
+  moons: []
+  waterPoints: []
+  chunks: []
+  rotationAxis: {x: 0, y: 0, z: 0}
+  chunkResolution: 3
+  resolution: 5
+  chunkPrefab: {fileID: 0}
+  chunksParent: {fileID: 0}
+  player: {fileID: 0}
+  willGenerateCreature: 0
+  generateCreatures: {fileID: 0}
+  spawnFoliage: {fileID: 0}
+  chunksHandler: {fileID: 0}
+  waterHandler: {fileID: 0}
+  moonsParent: {fileID: 0}
+--- !u!114 &897438371
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 897438361}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8931a0870bcc7e48a77bf4dba98a375, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  treeLimit: 1000
+  treeLine: 25
+  treeAngleLimit: 30
+  treePrefabs:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  bushLimit: 5000
+  bushLine: 35
+  bushAngleLimit: 30
+  bushPrefab:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  stoneLimit: 400
+  stoneLine: 36
+  stoneAngleLimit: 30
+  stonePrefab:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  DEBUG: 0
+  foliageSpawned: 0
+--- !u!114 &897438372
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 897438361}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e5a3ed9939778d3439761b2c939e896c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gradient:
+    serializedVersion: 2
+    key0: {r: 1, g: 1, b: 1, a: 1}
+    key1: {r: 1, g: 1, b: 1, a: 1}
+    key2: {r: 0, g: 0, b: 0, a: 0}
+    key3: {r: 0, g: 0, b: 0, a: 0}
+    key4: {r: 0, g: 0, b: 0, a: 0}
+    key5: {r: 0, g: 0, b: 0, a: 0}
+    key6: {r: 0, g: 0, b: 0, a: 0}
+    key7: {r: 0, g: 0, b: 0, a: 0}
+    ctime0: 0
+    ctime1: 65535
+    ctime2: 0
+    ctime3: 0
+    ctime4: 0
+    ctime5: 0
+    ctime6: 0
+    ctime7: 0
+    atime0: 0
+    atime1: 65535
+    atime2: 0
+    atime3: 0
+    atime4: 0
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_Mode: 0
+    m_NumColorKeys: 2
+    m_NumAlphaKeys: 2
+  tempMin: 200
+  tempMax: 300
+  angleCutOf: 90
+  angleBlending: 0.5
+  shader: {fileID: 0}
+  bottomColor: {r: 0, g: 0, b: 0, a: 0}
+--- !u!114 &897438373
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 897438361}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e711f09e57fe0846be5f77dc317df2b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  packs: []
+  maxPackCount: 100
+  terrainSteepnesAngle: 30
+  DEBUG: 0
 --- !u!1 &1237711156
 GameObject:
   m_ObjectHideFlags: 0
@@ -1138,7 +1283,7 @@ PrefabInstance:
     - target: {fileID: 776431053636631425, guid: 93094628cce30c64195c2ae1633e7e60,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 776431053636631427, guid: 93094628cce30c64195c2ae1633e7e60,
         type: 3}
@@ -1269,7 +1414,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1513665947}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -0.3028169}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1348,17 +1493,17 @@ PrefabInstance:
     - target: {fileID: 8157375954420172324, guid: d9aa2365836edc946afc563b765ba551,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 8157375954420172324, guid: d9aa2365836edc946afc563b765ba551,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 8157375954420172324, guid: d9aa2365836edc946afc563b765ba551,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 8157375954420172324, guid: d9aa2365836edc946afc563b765ba551,
         type: 3}
@@ -1383,7 +1528,7 @@ PrefabInstance:
     - target: {fileID: 8157375954420172327, guid: d9aa2365836edc946afc563b765ba551,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d9aa2365836edc946afc563b765ba551, type: 3}
@@ -1402,6 +1547,10 @@ GameObject:
   - component: {fileID: 2054606924}
   - component: {fileID: 2054606923}
   - component: {fileID: 2054606922}
+  - component: {fileID: 2054606931}
+  - component: {fileID: 2054606930}
+  - component: {fileID: 2054606929}
+  - component: {fileID: 2054606928}
   m_Layer: 0
   m_Name: Orbiter (1)
   m_TagString: Untagged
@@ -1467,7 +1616,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2054606920}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 360a38c11d75bf24991bdc7b1fcddb56, type: 3}
   m_Name: 
@@ -1490,46 +1639,46 @@ MonoBehaviour:
     Velocity:
       x: 0
       y: 0
-      z: -0.17559035122394562
+      z: 0
     MG: 0.10000000149011612
-    SemiMinorAxis: 3.2433864640013823
-    SemiMajorAxis: 3.2433864640013828
-    FocalParameter: 3.243386464001382
-    Eccentricity: 0.000000013267897669422268
-    Period: 116.0587570084875
+    SemiMinorAxis: 0
+    SemiMajorAxis: 0
+    FocalParameter: 0
+    Eccentricity: 0
+    Period: 0
     TrueAnomaly: 3.141592680287989
-    MeanAnomaly: 3.141592679399376
+    MeanAnomaly: 3.1415926793993756
     EccentricAnomaly: 3.1415926793993756
-    MeanMotion: 0.05413796829411247
+    MeanMotion: Infinity
     Periapsis:
-      x: -3.243386420968463
-      y: 0
-      z: -0
-    PeriapsisDistance: 3.243386420968463
-    Apoapsis:
-      x: 3.2433865070343026
-      y: -0
-      z: 0
-    ApoapsisDistance: 3.2433865070343026
-    CenterPoint:
-      x: 0.000000043032919706759675
-      y: -0
-      z: -0
-    OrbitCompressionRatio: 0.9999999999999998
-    OrbitNormal:
       x: -0
-      y: 1
+      y: 0
       z: 0
-    SemiMinorAxisBasis:
+    PeriapsisDistance: 0
+    Apoapsis:
+      x: 0
+      y: -0
+      z: -0
+    ApoapsisDistance: 0
+    CenterPoint:
+      x: -0
+      y: -0
+      z: -0
+    OrbitCompressionRatio: 1
+    OrbitNormal:
       x: 0
       y: 0
-      z: -1
+      z: 1
+    SemiMinorAxisBasis:
+      x: 0
+      y: 1
+      z: 0
     SemiMajorAxisBasis:
       x: -1
       y: 0
-      z: -0
-    OrbitNormalDotEclipticNormal: 0
-  LockOrbitEditing: 0
+      z: 0
+    OrbitNormalDotEclipticNormal: 1
+  LockOrbitEditing: 1
 --- !u!135 &2054606925
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -1593,6 +1742,142 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2054606920}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &2054606928
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2054606920}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 23acccfe94ebe8b44bd8e67461ed1723, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  meshGenerator: {fileID: 0}
+  waterMaterial: {fileID: 0}
+  waterDiameter: 0
+  diameter: 0
+  radius: 0
+  surfaceGravity: 0
+  bodyName: TBT
+  mass: 0
+  moons: []
+  waterPoints: []
+  chunks: []
+  rotationAxis: {x: 0, y: 0, z: 0}
+  chunkResolution: 3
+  resolution: 5
+  chunkPrefab: {fileID: 0}
+  chunksParent: {fileID: 0}
+  player: {fileID: 0}
+  willGenerateCreature: 0
+  generateCreatures: {fileID: 0}
+  spawnFoliage: {fileID: 0}
+  chunksHandler: {fileID: 0}
+  waterHandler: {fileID: 0}
+  moonsParent: {fileID: 0}
+--- !u!114 &2054606929
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2054606920}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8931a0870bcc7e48a77bf4dba98a375, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  treeLimit: 1000
+  treeLine: 25
+  treeAngleLimit: 30
+  treePrefabs:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  bushLimit: 5000
+  bushLine: 35
+  bushAngleLimit: 30
+  bushPrefab:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  stoneLimit: 400
+  stoneLine: 36
+  stoneAngleLimit: 30
+  stonePrefab:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  DEBUG: 0
+  foliageSpawned: 0
+--- !u!114 &2054606930
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2054606920}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e5a3ed9939778d3439761b2c939e896c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gradient:
+    serializedVersion: 2
+    key0: {r: 1, g: 1, b: 1, a: 1}
+    key1: {r: 1, g: 1, b: 1, a: 1}
+    key2: {r: 0, g: 0, b: 0, a: 0}
+    key3: {r: 0, g: 0, b: 0, a: 0}
+    key4: {r: 0, g: 0, b: 0, a: 0}
+    key5: {r: 0, g: 0, b: 0, a: 0}
+    key6: {r: 0, g: 0, b: 0, a: 0}
+    key7: {r: 0, g: 0, b: 0, a: 0}
+    ctime0: 0
+    ctime1: 65535
+    ctime2: 0
+    ctime3: 0
+    ctime4: 0
+    ctime5: 0
+    ctime6: 0
+    ctime7: 0
+    atime0: 0
+    atime1: 65535
+    atime2: 0
+    atime3: 0
+    atime4: 0
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_Mode: 0
+    m_NumColorKeys: 2
+    m_NumAlphaKeys: 2
+  tempMin: 200
+  tempMax: 300
+  angleCutOf: 90
+  angleBlending: 0.5
+  shader: {fileID: 0}
+  bottomColor: {r: 0, g: 0, b: 0, a: 0}
+--- !u!114 &2054606931
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2054606920}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e711f09e57fe0846be5f77dc317df2b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  packs: []
+  maxPackCount: 100
+  terrainSteepnesAngle: 30
+  DEBUG: 0
 --- !u!114 &2142011630 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4197161889152382803, guid: a27088cae5f8b5549bde9f1342be2696,
