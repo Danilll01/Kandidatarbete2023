@@ -22,9 +22,10 @@ public class Chunk : MonoBehaviour
 
     [HideInInspector] public Vector3 position;
 
-    public void Setup(int index)
+    public void Setup(int index, MarchingCubes marchingCubes)
     {
         this.index = index;
+        this.marchingCubes = marchingCubes;
     }
 
     /// <summary>
@@ -35,9 +36,8 @@ public class Chunk : MonoBehaviour
     /// <param name="marchingCubes">An instance of marching cubes</param>
     /// <param name="player"></param>
     /// <param name="terrainLevel"></param>
-    public int Initialize(int resolution, MarchingCubes marchingCubes, Transform player, MinMaxTerrainLevel terrainLevel)
+    public int Initialize(int resolution, Transform player, MinMaxTerrainLevel terrainLevel)
     {
-        this.marchingCubes = marchingCubes;
         this.player = player;
         this.terrainLevel = terrainLevel;
 

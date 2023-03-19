@@ -34,7 +34,7 @@ public class TestPlanet : MonoBehaviour
     
     private float radius = 500;
     [HideInInspector] public float waterDiameter;
-
+    /*
     private void OnValidate()
     { 
         if(chunksParent == null)
@@ -145,6 +145,6 @@ public class TestPlanet : MonoBehaviour
             waterfaces[i] = new Water(waterCS, meshFilters[i], resolution * 32, waterDiameter / 2, directions[i]);
             waterfaces[i].ConstructMesh();
         }
-    }
+    }*/
 #endif
 }

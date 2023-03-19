@@ -1,6 +1,8 @@
 using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
 using UnityEditor;
 using UnityEngine;
 
@@ -16,11 +18,13 @@ public class ChunksHandler : MonoBehaviour
     private float planetRadius;
     private MinMaxTerrainLevel terrainLevel;
 
-    [HideInInspector] public bool chunksGenerated;
     [SerializeField] private Chunk chunkPrefab;
     [SerializeField] private GameObject chunksParent;
     [HideInInspector] private List<Chunk> chunks;
     [SerializeField] public TerrainColor terrainColor;
+
+    private bool playerOnPlanet;
+    private bool updateChunks = false;
 
     /// <summary>
     /// Initialize the values
@@ -38,15 +42,18 @@ public class ChunksHandler : MonoBehaviour
         planetRadius = planet.radius;
         this.terrainLevel = terrainLevel;
 
+        playerOnPlanet = spawn;
+
         // If this is not the spawn planet, all chunks can be created immediately
-        if (!spawn)
+        if (!playerOnPlanet)
         {
-            CreateMeshes(1, 1, terrainLevel);
-            chunksGenerated = false;
+            SetupChunks(1);
+            CreateMeshes(1, terrainLevel);
         }
         else
         {
-
+            SetupChunks(3);
+            CreateMeshes(planet.resolution, terrainLevel);
         }
 
         planetMaterial = terrainColor.GetPlanetMaterial(terrainLevel, rand.Next()); //change to random
@@ -58,7 +65,11 @@ public class ChunksHandler : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        bool playerOnPlanet = ReferenceEquals(transform, player.transform.parent);
+        if(playerOnPlanet != ReferenceEquals(transform, player.transform.parent))
+        {
+            updateChunks = true;
+            playerOnPlanet = ReferenceEquals(transform, player.transform.parent);
+        }
 
         if (foliageInitialized != 0)
         {
@@ -71,47 +82,29 @@ public class ChunksHandler : MonoBehaviour
             UpdateChunksVisibility();
         }
 
+        
         // Check if player is on the planet
-        if (!playerOnPlanet)
+        if(updateChunks)
         {
-            CreateMeshes(1, 1, terrainLevel);
-            setChunksMaterials();
-            chunksGenerated = false;
-        } 
-        else if(!chunksGenerated)
-        {
-            CreateMeshes(3, planet.resolution, terrainLevel);
-            setChunksMaterials();
-            chunksGenerated = true;
+            if (!playerOnPlanet)
+            {
+                SetupChunks(1);
+                CreateMeshes(1, terrainLevel);
+                setChunksMaterials();
+            }
+            else
+            {
+                SetupChunks(3);
+                CreateMeshes(planet.resolution, terrainLevel);
+                setChunksMaterials();
+            }
         }
     }
 
+    
     private void SetupChunks(int chunkResolution)
     {
         // Don't create new ones if they are to be the same as old ones.
-        if (this.chunkResolution == chunkResolution)
-            return;
-        this.chunkResolution = chunkResolution;
-
-        chunks = new List<Chunk>;
-
-        for(int i = 0; i <chunkResolution; i++)
-        {
-            Chunk chunk = Instantiate(chunkPrefab);
-
-        }
-    }
-
-    private void setChunksMaterials()
-    {
-        foreach(Chunk chunk in chunks)
-        {
-            chunk.SetMaterial(planetMaterial);
-        }
-    }
-
-    private void CreateMeshes(int chunkResolution, int resolution, MinMaxTerrainLevel terrainLevel)
-    {
         if (chunkResolution == this.chunkResolution)
         {
             return;
@@ -130,23 +123,33 @@ public class ChunksHandler : MonoBehaviour
         // Create all chunks
         chunks = new List<Chunk>();
         int noChunks = (1 << chunkResolution) * (1 << chunkResolution) * (1 << chunkResolution);
-        int chunkNumber = 0;
         for (int i = 0; i < noChunks; i++)
         {
             Chunk chunk = Instantiate(chunkPrefab);
             chunk.transform.parent = chunksParent.transform;
             chunk.transform.localPosition = Vector3.zero;
-            chunk.name = "chunk" + chunkNumber;
+            chunk.name = "chunk" + i;
+            chunk.Setup(i, marchingCubes);
+            chunks.Add(chunk);  
+        }
+    }
 
-            //Don't add chunk if it's empty
-            if (chunk.Initialize(i, resolution, marchingCubes, player, terrainLevel) == 0)
+    private void setChunksMaterials()
+    {
+        foreach(Chunk chunk in chunks)
+        {
+            chunk.SetMaterial(planetMaterial);
+        }
+    }
+
+    private void CreateMeshes(int resolution, MinMaxTerrainLevel terrainLevel)
+    {
+        for(int i = chunks.Count - 1; i != -1; i--)
+        {
+            if (chunks[i].Initialize(resolution, player, terrainLevel) == 0)
             {
-                Destroy(chunk.gameObject);
-            }
-            else
-            {
-                chunkNumber++;
-                chunks.Add(chunk);
+                Destroy(chunks[i].gameObject);
+                chunks.RemoveAt(i);
             }
         }
     }
