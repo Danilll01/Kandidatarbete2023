@@ -15,7 +15,8 @@ public class SolarSystemTransform : MonoBehaviour
     private GameObject fakeOrbitObject;
     private Vector3[] relativePlanetSunDistances;
 
-    public bool ResetMoons = false;
+    public bool ResetSolarSystem = false;
+    private bool reset = false;
 
 
     void Start()
@@ -31,39 +32,52 @@ public class SolarSystemTransform : MonoBehaviour
     
     void Update()
     {
-        if (sun == null && spawnPlanets.bodies != null)
+        if (!ResetSolarSystem && !reset)
         {
-            sun = spawnPlanets.sun;
-        }
-        if (!spawnPlanets.solarySystemGenerated)
-        {
-            return;
-        }
-        else
-        {
-            InitializeValues();
-        }
+            if (sun == null && spawnPlanets.bodies != null)
+            {
+                sun = spawnPlanets.sun;
+            }
+            if (!spawnPlanets.solarySystemGenerated)
+            {
+                return;
+            }
+            else
+            {
+                InitializeValues();
+            }
 
-        CheckIfPlayerOnAnyPlanet();
+            CheckIfPlayerOnAnyPlanet();
 
-        // If the player is not on any planet, reset the solar system
-        if (playerOnPlanetIndex != activePlanetIndex && playerOnPlanetIndex == -1)
+            // If the player is not on any planet, reset the solar system
+            if (playerOnPlanetIndex != activePlanetIndex && playerOnPlanetIndex == -1)
+            {
+                ResetPlanetOrbit(activePlanetIndex);
+                activePlanetIndex = -1;
+            }
+            // If the player has entered a new planet, move the solar system accordingly
+            else if (playerOnPlanetIndex != activePlanetIndex)
+            {
+                MovePlanets(playerOnPlanetIndex);
+                activePlanetIndex = playerOnPlanetIndex;
+            }
+        }
+        else if(!reset)
         {
             ResetPlanetOrbit(activePlanetIndex);
-            activePlanetIndex = -1;
-        }
-        // If the player has entered a new planet, move the solar system accordingly
-        else if (playerOnPlanetIndex != activePlanetIndex)
-        {
-            MovePlanets(playerOnPlanetIndex);
-            activePlanetIndex = playerOnPlanetIndex;
-        }
-
-        if (ResetMoons)
-        {
             Planet planet = spawnPlanets.bodies[activePlanetIndex];
             planet.ResetMoons();
-            ResetMoons = false;
+            activePlanetIndex = -1;
+            reset = true;
+        }
+        else if (!ResetSolarSystem && reset)
+        {
+            playerOnPlanetIndex = 0;
+            if (playerOnPlanetIndex != activePlanetIndex)
+            {
+                MovePlanets(playerOnPlanetIndex);
+                activePlanetIndex = playerOnPlanetIndex;
+            }
         }
     }
 
@@ -137,8 +151,15 @@ public class SolarSystemTransform : MonoBehaviour
         if (planetIndex >= 0)
         {
             rotateSolarSystem = false;
-            // Turn on orbit again for the planet the player left
             Planet planet = spawnPlanets.bodies[planetIndex];
+
+            sun.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
+            Vector3 direction = sun.transform.position - planet.transform.position;
+            direction.y = 0;
+            sun.transform.position = direction.normalized * relativePlanetSunDistances[planetIndex].magnitude;
+            sun.gameObject.GetComponent<KeplerOrbitMover>().VelocityHandle.localPosition = new Vector3(100, 0, 0);
+
+            // Turn on orbit again for the planet the player left
             TurnOnOrbit(planet.gameObject);
 
             //Turn of orbitig on the sun
