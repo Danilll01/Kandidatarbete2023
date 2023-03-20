@@ -47,7 +47,7 @@ public class Chunk : MonoBehaviour
         
         //Set lowest resolution as default
         int meshVerticesLength = UpdateMesh(resolution);
-        if (meshVerticesLength > 1000 && marchingCubes.chunkResolution == 3)
+        if (meshVerticesLength > 500 && marchingCubes.chunkResolution == 3)
         {
             foliage.Initialize(meshVerticesLength, position);
         }

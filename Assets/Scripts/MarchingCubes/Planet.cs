@@ -62,9 +62,12 @@ public class Planet : MonoBehaviour
             marchingCubes = new MarchingCubes(1, meshGenerator, threshold, radius, frequency, amplitude, terrainLayers);
         }
 
-        // Init water
-        waterDiameter = -(threshold / 255 - 1) * diameter * 0.93f;
-        foliageHandler = new FoliageHandler(this);
+        waterDiameter = -(threshold / 255 - 1) * diameter;
+
+        if (foliageHandler != null && !bodyName.Contains("Moon"))
+        {
+            foliageHandler.Initialize(this);
+        }
 
         terrainLevel.SetMin(Mathf.Abs((waterDiameter + 1) / 2));
 
