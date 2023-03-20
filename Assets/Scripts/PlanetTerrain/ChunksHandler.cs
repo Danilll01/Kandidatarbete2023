@@ -101,7 +101,6 @@ public class ChunksHandler : MonoBehaviour
 
     }
 
-    
     private void SetupChunks(int chunkResolution)
     {
         // Don't create new ones if they are to be the same as old ones.
