@@ -330,7 +330,7 @@ public class PillPlayerController : MonoBehaviour
     {
         get
         {
-            if (attractor == null)
+            if (attractor.Equals(null))
             {
                 return Vector3.zero;
             }
