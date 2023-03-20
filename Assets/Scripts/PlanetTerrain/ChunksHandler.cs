@@ -65,7 +65,6 @@ public class ChunksHandler : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
         if(playerOnPlanet != ReferenceEquals(transform, player.transform.parent))
         {
             updateChunks = true;
@@ -190,18 +189,15 @@ public class ChunksHandler : MonoBehaviour
                 chunks[i].gameObject.SetActive(true);
                 if(!chunks[i].initialized)
                 {
-                    if(chunks[i].Initialize(planet.resolution, player, terrainLevel) == 0)
+                    if (chunks[i].Initialize(planet.resolution, player, terrainLevel) == 0)
                     {
                         Destroy(chunks[i].gameObject);
                         chunks.RemoveAt(i);
-                    }
-                    else
-                    {
-                        if (foliageInitialized == 0)
-                            chunks[i].foliage.SpawnFoliageOnChunk();
+                        continue;
                     }
                 }
-                
+                if (foliageInitialized == 0)
+                    chunks[i].foliage.SpawnFoliageOnChunk();
             }
         }
     }
