@@ -201,7 +201,7 @@ public class PillPlayerController : MonoBehaviour
             movementVector.y = jumpForce;
         }
 
-        //Input recieved
+        //Input received
         if (movementVector.magnitude != 0)
         {
             //Ground controls + swim controls
@@ -353,7 +353,7 @@ public class PillPlayerController : MonoBehaviour
             }
             
             bool isGrounded = Physics.Raycast(transform.position, attractor.transform.position - transform.position, 2f);
-            animator.SetBool(Jump, !isGrounded);
+            animator.SetBool(Jump, !isGrounded); // Sets animation
             return isGrounded;      
         }
     }
@@ -367,7 +367,7 @@ public class PillPlayerController : MonoBehaviour
     {
         get
         {
-            animator.SetBool(Swim, playerWater.underWater);
+            animator.SetBool(Swim, playerWater.underWater); // Sets animation
             return playerWater.underWater;
         }
     }
