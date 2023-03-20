@@ -11,6 +11,7 @@ public class ChunksHandler : MonoBehaviour
     private Vector3 playerLastPosition;
     private bool initialized = false;
     private bool resetchunks = false;
+    private int foliageInitialized = 10;
     private List<Vector3> chunkPositions;
     private int chunkResolution; //This is 2^chunkResolution
     private MarchingCubes marchingCubes;
@@ -23,8 +24,6 @@ public class ChunksHandler : MonoBehaviour
     [SerializeField] private GameObject chunksParent;
     [HideInInspector] private List<Chunk> chunks;
     [SerializeField] public TerrainColor terrainColor;
-
-   
 
     /// <summary>
     /// Initialize the values
@@ -63,15 +62,22 @@ public class ChunksHandler : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(!initialized && planet.spawnFoliage.foliageSpawned)
+        bool playerOnPlanet = ReferenceEquals(transform, player.transform.parent);
+
+        if (!initialized)
         {
             InitializeChunkPositions();
             UpdateChunksVisibility();
             initialized = true;
         }
 
+        if (foliageInitialized != 0)
+        {
+            foliageInitialized--;
+        }
+
         // Only update the chunks if the player is close to the planet
-        if (planet.spawnFoliage.foliageSpawned && initialized && (player.position - planet.transform.position).magnitude < 3000)
+        if (initialized && (player.position - planet.transform.position).magnitude < 2000 && playerOnPlanet)
         {
             UpdateChunksVisibility();
             resetchunks = false;
@@ -81,8 +87,9 @@ public class ChunksHandler : MonoBehaviour
             Resetchunks();
         }
 
+        
         // Check if player is on the planet
-        if (!ReferenceEquals(transform, player.transform.parent))
+        if (!playerOnPlanet)
         {
             CreateMeshes(1, 1, terrainLevel);
             setChunksMaterials();
@@ -188,6 +195,8 @@ public class ChunksHandler : MonoBehaviour
             else
             {
                 chunks[i].gameObject.SetActive(true);
+                if(foliageInitialized == 0) 
+                    chunks[i].foliage.SpawnFoliageOnChunk();
             }
         }
     }
