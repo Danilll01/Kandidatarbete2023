@@ -9,7 +9,7 @@ public class ShipController : MonoBehaviour
     private bool shipHoldingUprightRotation = false;
     private Planet holdingOverPlanet = null;
     private float shipHoldingAltitude;
-    private Vector3 mountedPos = new Vector3(0, 1.6f, -1.4f);
+    [SerializeField] private Transform mountedPos;
     private Vector3 dismountedPos = new Vector3(-2.6f, 2, -2f);
 
     [SerializeField] private float landingTime;
@@ -34,6 +34,12 @@ public class ShipController : MonoBehaviour
         transform.rotation = Quaternion.LookRotation(Vector3.ProjectOnPlane(transform.TransformVector(Vector3.forward), hit.normal), hit.normal);
         transform.position += transform.TransformDirection(Vector3.right * 5);
         transform.SetParent(player.Planet.transform);
+
+        // If mounted pos transform is not set in editor it will grab the object at least
+        if (mountedPos.Equals(null))
+        {
+            //mountedPos = transform.GetChild(0);
+        }
     }
 
     // Update is called once per frame
@@ -131,7 +137,7 @@ public class ShipController : MonoBehaviour
         float pitch = Input.GetAxis("Vertical Look");
         float yaw = Input.GetAxis("Horizontal Look");
         float roll = Input.GetAxis("Spaceship Roll");
-        player.transform.Rotate(new Vector3(pitch, yaw, roll) * Time.deltaTime * shipRotationSpeed);
+        player.transform.Rotate(new Vector3(pitch, yaw, roll) * (Time.deltaTime * shipRotationSpeed));
         if (shipHoldingUprightRotation)
         {
             player.transform.localPosition = player.transform.localPosition / (player.Altitude / shipHoldingAltitude);
@@ -156,14 +162,14 @@ public class ShipController : MonoBehaviour
         float strafe = Input.GetAxis("Spaceship Strafe");
         float lift = Input.GetAxis("Spaceship Lift");
         float thrust = Input.GetAxis("Spaceship Thrust");
-        body.velocity += transform.rotation * new Vector3(strafe, lift, thrust) * Time.deltaTime * shipMovespeed;
+        body.velocity += transform.rotation * new Vector3(strafe, lift, thrust) * (Time.deltaTime * shipMovespeed);
         //Slowdown due to being inside of a planet
         //TODO. Maybe integrate with actual air resistance
         if (player.Planet != null)
         {
             if (body.velocity.magnitude > shipMovespeed * 5)
             {
-                body.velocity = body.velocity.normalized * shipMovespeed * 5;
+                body.velocity = body.velocity.normalized * (shipMovespeed * 5);
             }
             float divideFactor = 1.2f;
             if (strafe == 0 && lift == 0 && thrust == 0)
@@ -188,7 +194,7 @@ public class ShipController : MonoBehaviour
 
     private void EmbarkInShip()
     {
-        player.transform.position = transform.position + (transform.rotation * mountedPos);
+        player.transform.position = transform.position + (transform.rotation * mountedPos.localPosition);
         player.transform.rotation = transform.rotation;
         camera.transform.localRotation = Quaternion.identity;
         body.velocity = Vector3.zero;
