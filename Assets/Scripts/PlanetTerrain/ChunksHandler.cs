@@ -65,6 +65,7 @@ public class ChunksHandler : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        
         if(playerOnPlanet != ReferenceEquals(transform, player.transform.parent))
         {
             updateChunks = true;
@@ -75,13 +76,6 @@ public class ChunksHandler : MonoBehaviour
         {
             foliageInitialized--;
         }
-
-        // Only update the chunks if the player is close to the planet
-        if (playerOnPlanet)
-        {
-            UpdateChunksVisibility();
-        }
-
         
         // Check if player is on the planet
         if(updateChunks)
@@ -95,10 +89,17 @@ public class ChunksHandler : MonoBehaviour
             else
             {
                 SetupChunks(3);
-                CreateMeshes(planet.resolution, terrainLevel);
                 setChunksMaterials();
             }
+            updateChunks = false;
         }
+
+        // Only update the chunks if the player is close to the planet
+        if (playerOnPlanet)
+        {
+            UpdateChunksVisibility();
+        }
+
     }
 
     
@@ -177,19 +178,30 @@ public class ChunksHandler : MonoBehaviour
             cutoffPoint = new Vector3(playerToPlanetCenter.x / 1.5f, playerToPlanetCenter.y / 1.5f, playerToPlanetCenter.z / 1.5f);
         }
 
-
-        foreach (Chunk chunk in chunks)
+        for(int i = chunks.Count - 1; i != -1; i--)
         {
-            bool isBelowHalfWayPoint = CheckIfPointBIsBelowPointA(cutoffPoint, chunk.position, cutoffPoint.normalized);
+            bool isBelowHalfWayPoint = CheckIfPointBIsBelowPointA(cutoffPoint, chunks[i].position, cutoffPoint.normalized);
             if (isBelowHalfWayPoint)
             {
-                chunk.gameObject.SetActive(false);
+                chunks[i].gameObject.SetActive(false);
             }
             else
             {
-                chunk.gameObject.SetActive(true);
-                if(foliageInitialized == 0)
-                    chunk.foliage.SpawnFoliageOnChunk();
+                chunks[i].gameObject.SetActive(true);
+                if(!chunks[i].initialized)
+                {
+                    if(chunks[i].Initialize(planet.resolution, player, terrainLevel) == 0)
+                    {
+                        Destroy(chunks[i].gameObject);
+                        chunks.RemoveAt(i);
+                    }
+                    else
+                    {
+                        if (foliageInitialized == 0)
+                            chunks[i].foliage.SpawnFoliageOnChunk();
+                    }
+                }
+                
             }
         }
     }

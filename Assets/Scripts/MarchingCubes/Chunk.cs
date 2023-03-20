@@ -21,19 +21,20 @@ public class Chunk : MonoBehaviour
     private MinMaxTerrainLevel terrainLevel;
 
     [HideInInspector] public Vector3 position;
+    [HideInInspector] public bool initialized = false;
 
     public void Setup(int index, MarchingCubes marchingCubes)
     {
         this.index = index;
         this.marchingCubes = marchingCubes;
+
+        CalculateChunkPosition();
     }
 
     /// <summary>
     /// Initalizes a given chunk
     /// </summary>
-    /// <param name="index">Chunk index</param>
     /// <param name="resolution"></param>
-    /// <param name="marchingCubes">An instance of marching cubes</param>
     /// <param name="player"></param>
     /// <param name="terrainLevel"></param>
     public int Initialize(int resolution, Transform player, MinMaxTerrainLevel terrainLevel)
@@ -43,8 +44,6 @@ public class Chunk : MonoBehaviour
 
         meshFilter = transform.GetComponent<MeshFilter>();
         meshCollider = transform.GetComponent<MeshCollider>();
-
-        CalculateChunkPosition();
         
         //Set lowest resolution as default
         int meshVerticesLength = UpdateMesh(resolution);
@@ -52,6 +51,8 @@ public class Chunk : MonoBehaviour
         {
             foliage.Initialize(meshVerticesLength, position);
         }
+
+        initialized = true;
 
         return meshVerticesLength;
     }
