@@ -15,7 +15,7 @@ public class ChunksHandler : MonoBehaviour
     private int chunkResolution; //This is 2^chunkResolution
     private MarchingCubes marchingCubes;
     private Material planetMaterial;
-    private float planetRadius;
+    [HideInInspector] public float planetRadius;
     private MinMaxTerrainLevel terrainLevel;
 
     [SerializeField] private Chunk chunkPrefab;
@@ -26,8 +26,13 @@ public class ChunksHandler : MonoBehaviour
     private bool playerOnPlanet;
     private bool updateChunks = false;
 
-    [SerializeField] private int lowChunkRes = 1;
-    [SerializeField] private int highChunkRes = 3;
+    // The amount of chunks
+    [SerializeField] public int lowChunkRes = 1;
+    [SerializeField] public int highChunkRes = 4;
+
+    // The resolution of the chunk
+    [SerializeField] public int highRes = 3;
+    [SerializeField] public int lowRes = 1;
 
 
     /// <summary>
@@ -52,12 +57,12 @@ public class ChunksHandler : MonoBehaviour
         if (!playerOnPlanet)
         {
             SetupChunks(lowChunkRes);
-            CreateMeshes(1, terrainLevel);
+            CreateMeshes(terrainLevel);
         }
         else
         {
             SetupChunks(highChunkRes);
-            CreateMeshes(planet.resolution, terrainLevel);
+            CreateMeshes(terrainLevel);
         }
 
         planetMaterial = terrainColor.GetPlanetMaterial(terrainLevel, rand.Next()); //change to random
@@ -86,7 +91,7 @@ public class ChunksHandler : MonoBehaviour
             if (!playerOnPlanet)
             {
                 SetupChunks(lowChunkRes);
-                CreateMeshes(1, terrainLevel);
+                CreateMeshes(terrainLevel);
                 setChunksMaterials();
             }
             else
@@ -133,8 +138,6 @@ public class ChunksHandler : MonoBehaviour
             chunk.transform.localPosition = Vector3.zero;
             chunk.name = "chunk" + i;
             chunk.Setup(i, marchingCubes);
-            if (chunkResolution == lowChunkRes)
-                chunk.GetComponent<MeshCollider>().enabled = false;
             chunks.Add(chunk);  
         }
     }
@@ -147,11 +150,11 @@ public class ChunksHandler : MonoBehaviour
         }
     }
 
-    private void CreateMeshes(int resolution, MinMaxTerrainLevel terrainLevel)
+    private void CreateMeshes(MinMaxTerrainLevel terrainLevel)
     {
         for(int i = chunks.Count - 1; i != -1; i--)
         {
-            if (chunks[i].Initialize(resolution, player, terrainLevel) == 0)
+            if (chunks[i].Initialize(player, terrainLevel, this) == 0)
             {
                 Destroy(chunks[i].gameObject);
                 chunks.RemoveAt(i);
@@ -194,7 +197,7 @@ public class ChunksHandler : MonoBehaviour
                 chunks[i].gameObject.SetActive(true);
                 if(!chunks[i].initialized)
                 {
-                    if (chunks[i].Initialize(planet.resolution, player, terrainLevel) == 0)
+                    if (chunks[i].Initialize(player, terrainLevel, this) == 0)
                     {
                         Destroy(chunks[i].gameObject);
                         chunks.RemoveAt(i);

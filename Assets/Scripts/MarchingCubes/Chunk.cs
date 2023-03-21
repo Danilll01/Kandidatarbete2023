@@ -12,13 +12,21 @@ public class Chunk : MonoBehaviour
     [SerializeField] public Foliage foliage;
 
     private int index;
-    private int resolution;
+
+    // Resolutions of chunk
+    private int currentRes;
+    private int highRes;
+    private int lowRes;
+
     private MeshFilter meshFilter;
     private MeshCollider meshCollider;
     private Mesh mesh;
     public MarchingCubes marchingCubes;
     private Transform player;
     private MinMaxTerrainLevel terrainLevel;
+    private float chunkSize;
+
+    ChunksHandler chunkHandler;
 
     [HideInInspector] public Vector3 position;
     [HideInInspector] public bool initialized = false;
@@ -37,24 +45,54 @@ public class Chunk : MonoBehaviour
     /// <param name="resolution"></param>
     /// <param name="player"></param>
     /// <param name="terrainLevel"></param>
-    public int Initialize(int resolution, Transform player, MinMaxTerrainLevel terrainLevel)
+    public int Initialize(Transform player, MinMaxTerrainLevel terrainLevel, ChunksHandler chunkHandler)
     {
+        highRes = chunkHandler.highRes;
+        lowRes = chunkHandler.lowRes;
+
+        this.chunkHandler = chunkHandler;
         this.player = player;
         this.terrainLevel = terrainLevel;
+        chunkSize = (2 * chunkHandler.planetRadius) / (1 << marchingCubes.chunkResolution);
 
         meshFilter = transform.GetComponent<MeshFilter>();
-        meshCollider = transform.GetComponent<MeshCollider>();
-        
-        //Set lowest resolution as default
-        int meshVerticesLength = UpdateMesh(resolution);
-        if (meshVerticesLength > 500 && marchingCubes.chunkResolution == 3)
+        if(marchingCubes.chunkResolution == 1)
         {
+            GetComponent<MeshCollider>().enabled = false;
+        }
+        else
+        {
+            meshCollider = transform.GetComponent<MeshCollider>();
+        }
+
+        //Set lowest resolution as default
+        int meshVerticesLength = UpdateMesh(highRes);
+        if (meshVerticesLength > 500 && marchingCubes.chunkResolution == chunkHandler.highChunkRes)
+        {
+            Debug.Log("Initialized foliage!");
             foliage.Initialize(meshVerticesLength, position);
         }
 
         initialized = true;
 
         return meshVerticesLength;
+    }
+
+    private void Update()
+    {
+        if(marchingCubes.chunkResolution == 4 && initialized)
+        {
+            float playerDistance = Vector3.Magnitude(player.localPosition - position);
+
+            if(playerDistance < 2 * chunkSize)
+            {
+                UpdateMesh(highRes);
+            }
+            else if(playerDistance > 3 * chunkSize)
+            {
+                UpdateMesh(lowRes);
+            }
+        }
     }
 
     /// <summary>
@@ -87,18 +125,18 @@ public class Chunk : MonoBehaviour
 
     public int UpdateMesh(int resolution)
     {
-        if (this.resolution == resolution)
+        if (currentRes == resolution)
             return 0;
 
-        this.resolution = resolution;
+        currentRes = resolution;
 
         mesh = new Mesh();
 
-        int numVerts = marchingCubes.generateMesh(terrainLevel, index, resolution, mesh);
+        int numVerts = marchingCubes.generateMesh(terrainLevel, index, currentRes, mesh);
        
         meshFilter.sharedMesh = mesh;
 
-        if(GetComponent<MeshCollider>().enabled)
+        if (marchingCubes.chunkResolution != 1)
             meshCollider.sharedMesh = mesh;
 
         return numVerts;

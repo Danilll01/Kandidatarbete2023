@@ -24,9 +24,6 @@ public class Planet : MonoBehaviour
     [HideInInspector] public Transform player;
     [HideInInspector] public MarchingCubes marchingCubes;
 
-    //[SerializeField, Range(1, 4)] 
-    [SerializeField, Range(1, 14)] public int resolution = 5;
-
     [SerializeField] private bool willGenerateCreature = false;
     [SerializeField] private GenerateCreatures generateCreatures;
     [SerializeField] public ChunksHandler chunksHandler;
