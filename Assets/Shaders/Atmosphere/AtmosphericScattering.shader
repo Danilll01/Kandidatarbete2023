@@ -7,11 +7,11 @@ Shader "Atmosphere/Atmospheric Scattering"
         _LightDirection("Light Direction", Vector) = (0,0,1)
         _PlanetRadius("Planet Radius", Float) = 47
         _AtmosphereRadius("Atmosphere Radius", Float) = 50
-        _Steps ("Steps", Int) = 20
-        _LightSteps ("Light Steps", Int) = 12
-        _RayleighScattering("Rayleigh Scattering", Vector) = (0.08,0.2,0.51,0.64)
-        _MieScattering("Mie Scattering", Vector) = (0.01, 0.9, 0, 0.8)
-        _ClipThreshold ("Clip Threshold", Range(0.0,1.0)) = 0.73 
+        _Steps ("Steps", Int) = 20                                                  // Standard: 20
+        _LightSteps ("Light Steps", Int) = 12                                       // Standard: 12
+        _RayleighScattering("Rayleigh Scattering", Vector) = (0.08,0.2,0.51,0.64)   // Standard: (0.08,0.2,0.51,0.64)
+        _MieScattering("Mie Scattering", Vector) = (0.01, 0.9, 0, 0.8)              // Standard: (0.01, 0.9, 0, 0.8)
+        _ClipThreshold ("Clip Threshold", Range(0.0,1.0)) = 0.73                    // Standard: 0.73
     }
     SubShader
     {
@@ -107,12 +107,12 @@ Shader "Atmosphere/Atmospheric Scattering"
                 o.viewDir = normalize(o.startPos - _WorldSpaceCameraPos.xyz);
                 v.normal *= -1;
                 o.normal = v.normal;
-                _PlanetCenter = mul(unity_ObjectToWorld, float4(0, 0, 0, 1));
                 return o;
             }
 
             fixed4 frag(v2f i) : SV_Target
             {
+                _PlanetCenter = mul(unity_ObjectToWorld, float4(0, 0, 0, 1));
                 if (_PlanetRadius > _AtmosphereRadius) _PlanetRadius = _AtmosphereRadius - 2;
                 if (_AtmosphereRadius < 0) _AtmosphereRadius = 1;
 
@@ -146,9 +146,9 @@ Shader "Atmosphere/Atmospheric Scattering"
 
                     float lt0, lt1;
                     SphereIntersect(p, lrd, lt0, lt1, false);
-                    float2 opticallightDepth;
+                    float2 opticalLightDepth;
                     float3 lp1 = p + lrd * lt0;
-                    if (LightMarch(lp1, lrd, lt1 - lt0, opticallightDepth)) {
+                    if (LightMarch(lp1, lrd, lt1 - lt0, opticalLightDepth)) {
                         float height = length(p - _PlanetCenter) - _PlanetRadius;
 
                         float hr = exp(-height / rSH) * ds;
@@ -157,7 +157,7 @@ Shader "Atmosphere/Atmospheric Scattering"
                         opticalDepth.x += hr;
                         opticalDepth.y += hm;
 
-                        float3 tau = rsRGB * (opticalDepth.x + opticallightDepth.x) + msRGB * 1.1 * (opticalDepth.y + opticallightDepth.y);
+                        float3 tau = rsRGB * (opticalDepth.x + opticalLightDepth.x) + msRGB * 1.1 * (opticalDepth.y + opticalLightDepth.y);
                         float3 attenuation = float3 (exp(-tau.x), exp(-tau.y), exp(-tau.z));
 
                         sumR += attenuation * hr;
