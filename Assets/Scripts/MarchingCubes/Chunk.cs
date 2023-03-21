@@ -98,7 +98,8 @@ public class Chunk : MonoBehaviour
        
         meshFilter.sharedMesh = mesh;
 
-        meshCollider.sharedMesh = mesh;
+        if(GetComponent<MeshCollider>().enabled)
+            meshCollider.sharedMesh = mesh;
 
         return numVerts;
     }

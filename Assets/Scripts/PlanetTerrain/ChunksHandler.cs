@@ -26,6 +26,10 @@ public class ChunksHandler : MonoBehaviour
     private bool playerOnPlanet;
     private bool updateChunks = false;
 
+    [SerializeField] private int lowChunkRes = 1;
+    [SerializeField] private int highChunkRes = 3;
+
+
     /// <summary>
     /// Initialize the values
     /// </summary>
@@ -47,12 +51,12 @@ public class ChunksHandler : MonoBehaviour
         // If this is not the spawn planet, all chunks can be created immediately
         if (!playerOnPlanet)
         {
-            SetupChunks(1);
+            SetupChunks(lowChunkRes);
             CreateMeshes(1, terrainLevel);
         }
         else
         {
-            SetupChunks(3);
+            SetupChunks(highChunkRes);
             CreateMeshes(planet.resolution, terrainLevel);
         }
 
@@ -81,13 +85,13 @@ public class ChunksHandler : MonoBehaviour
         {
             if (!playerOnPlanet)
             {
-                SetupChunks(1);
+                SetupChunks(lowChunkRes);
                 CreateMeshes(1, terrainLevel);
                 setChunksMaterials();
             }
             else
             {
-                SetupChunks(3);
+                SetupChunks(highChunkRes);
                 setChunksMaterials();
             }
             updateChunks = false;
@@ -129,6 +133,8 @@ public class ChunksHandler : MonoBehaviour
             chunk.transform.localPosition = Vector3.zero;
             chunk.name = "chunk" + i;
             chunk.Setup(i, marchingCubes);
+            if (chunkResolution == lowChunkRes)
+                chunk.GetComponent<MeshCollider>().enabled = false;
             chunks.Add(chunk);  
         }
     }
