@@ -59,6 +59,8 @@ public class Creature : MonoBehaviour
     [SerializeField] private GameObject breedingParticle;
 
     [Header("Sound")]
+    [Range(0f, 1f)]
+    [SerializeField] private float volume = 0.4f;
     [SerializeField] private AudioClip[] idleSounds;
     [SerializeField] private AudioClip[] deathSounds;
     [SerializeField] private float timeBetweenIdleSounds = 12f;
@@ -98,7 +100,7 @@ public class Creature : MonoBehaviour
         renderer = lodGroup.transform.GetComponent<Renderer>();
         animator = GetComponent<Animator>();
         audioSource = GetComponent<AudioSource>();
-        audioSource.volume = 0.4f;
+        audioSource.volume = volume;
         audioSource.spatialBlend = 1.0f;
 
         // Teleport the creature 1 meter up in correct direction based on position on planet
