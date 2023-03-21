@@ -419,6 +419,7 @@ MonoBehaviour:
   spawnPlanets: {fileID: 882231452}
   activePlanetIndex: -1
   player: {fileID: 1376926152}
+  ResetSolarSystem: 0
 --- !u!1 &459511075
 GameObject:
   m_ObjectHideFlags: 0

@@ -59,7 +59,7 @@ public class Planet : MonoBehaviour
     /// <param name="spawn">True if the player will spawn on the planet</param>
     public void Initialize(Transform player, int randomSeed, bool spawn)
     {
-        rand = new System.Random(randomSeed);
+        System.Random rand = new System.Random(randomSeed);
 
         radius = diameter / 2;
 
@@ -67,7 +67,7 @@ public class Planet : MonoBehaviour
 
         MinMaxTerrainLevel terrainLevel = new MinMaxTerrainLevel();
 
-        rotationAxis = RandomPointOnSphereEdge(radius) - Vector3.zero;
+        rotationAxis = RandomPointOnSphereEdge(radius, rand) - Vector3.zero;
         
         // Initialize the meshgenerator
         if (marchingCubes == null)
@@ -115,7 +115,7 @@ public class Planet : MonoBehaviour
 
 
     // Gives back a random position on the edge of a circle given the radius of the circle
-    private Vector3 RandomPointOnSphereEdge(float radius)
+    private Vector3 RandomPointOnSphereEdge(float radius, System.Random rand)
     {
         Vector3 randomVector = new Vector3(rand.Next(1, 360), rand.Next(1, 360), rand.Next(1, 360));
         var vector3 = randomVector.normalized * radius;
