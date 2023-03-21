@@ -32,6 +32,7 @@ public class ChunksHandler : MonoBehaviour
 
     // The resolution of the chunk
     [SerializeField] public int highRes = 3;
+    [SerializeField] public int mediumRes = 2;
     [SerializeField] public int lowRes = 1;
 
 

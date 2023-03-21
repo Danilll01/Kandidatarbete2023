@@ -28,6 +28,8 @@ public class Foliage : MonoBehaviour
     private Vector3 chunkPosition;
     private int positionArrayLength;
 
+    [HideInInspector] public bool initialized = false;
+
     // Updates the debug screen
     private void OnDisable()
     {
@@ -81,6 +83,8 @@ public class Foliage : MonoBehaviour
 
         // This is for angle debugging
         // TestSize();
+
+        initialized = true;
     }
     
     // Test fucntion to measure the angle required to hit the whole chunk
@@ -346,5 +350,5 @@ public class Foliage : MonoBehaviour
         
     }
 
-
+    
 }

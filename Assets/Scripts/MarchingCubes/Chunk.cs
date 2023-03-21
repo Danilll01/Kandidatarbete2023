@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.UI;
@@ -11,12 +12,17 @@ public class Chunk : MonoBehaviour
     [SerializeField] public Transform creatures;
     [SerializeField] public Foliage foliage;
 
+    [SerializeField] private GameObject foliageGameObject;
+    [SerializeField] private GameObject creatureGameObject;
+
     private int index;
 
     // Resolutions of chunk
     private int currentRes;
     private int highRes;
+    private int mediumRes;
     private int lowRes;
+    private bool updated = false;
 
     private MeshFilter meshFilter;
     private MeshCollider meshCollider;
@@ -48,6 +54,7 @@ public class Chunk : MonoBehaviour
     public int Initialize(Transform player, MinMaxTerrainLevel terrainLevel, ChunksHandler chunkHandler)
     {
         highRes = chunkHandler.highRes;
+        mediumRes = chunkHandler.mediumRes;
         lowRes = chunkHandler.lowRes;
 
         this.chunkHandler = chunkHandler;
@@ -66,30 +73,51 @@ public class Chunk : MonoBehaviour
         }
 
         //Set lowest resolution as default
-        int meshVerticesLength = UpdateMesh(highRes);
-        if (meshVerticesLength > 500 && marchingCubes.chunkResolution == chunkHandler.highChunkRes)
-        {
-            Debug.Log("Initialized foliage!");
-            foliage.Initialize(meshVerticesLength, position);
-        }
+        int numVerts = UpdateMesh(lowRes);
+        //if (meshVerticesLength > 500 && marchingCubes.chunkResolution == chunkHandler.highChunkRes)
+        //{
+        //    foliage.Initialize(meshVerticesLength, position);
+        //}
 
         initialized = true;
 
-        return meshVerticesLength;
+        return numVerts;
     }
 
     private void Update()
     {
-        if(marchingCubes.chunkResolution == 4 && initialized)
+        if(marchingCubes.chunkResolution == chunkHandler.highChunkRes && initialized)
         {
             float playerDistance = Vector3.Magnitude(player.localPosition - position);
 
-            if(playerDistance < 2 * chunkSize)
+            if (playerDistance < 1.3 * chunkSize)
             {
-                UpdateMesh(highRes);
+                meshCollider.enabled = true;
+                foliageGameObject.SetActive(true);
+                creatureGameObject.SetActive(true);
+                if (!foliage.initialized)
+                {
+                    int numVerts = UpdateMesh(highRes);
+                    if (numVerts > 500)
+                        foliage.Initialize(numVerts, position);
+                }
+                else
+                    UpdateMesh(highRes);
+                    
+            } 
+            else if (1.5 * chunkSize < playerDistance && playerDistance < 2 * chunkSize)
+            {
+                foliageGameObject.SetActive(false);
+                creatureGameObject.SetActive(false);
+                meshCollider.enabled = false;
+                UpdateMesh(mediumRes);
+                
             }
-            else if(playerDistance > 3 * chunkSize)
+            else if (2.3 * chunkSize < playerDistance)
             {
+                foliageGameObject.SetActive(false);
+                creatureGameObject.SetActive(false);
+                meshCollider.enabled = false;
                 UpdateMesh(lowRes);
             }
         }
@@ -121,8 +149,6 @@ public class Chunk : MonoBehaviour
         position = -(chunkIndex - (Mathf.Pow(2, marchingCubes.chunkResolution) - 1) / 2 * Vector3.one) * (marchingCubes.radius * 2 / (1 << (marchingCubes.chunkResolution)));
     }
 
-    
-
     public int UpdateMesh(int resolution)
     {
         if (currentRes == resolution)
@@ -136,7 +162,7 @@ public class Chunk : MonoBehaviour
        
         meshFilter.sharedMesh = mesh;
 
-        if (marchingCubes.chunkResolution != 1)
+        if (marchingCubes.chunkResolution != 1 && meshCollider.enabled)
             meshCollider.sharedMesh = mesh;
 
         return numVerts;
