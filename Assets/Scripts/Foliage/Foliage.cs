@@ -65,7 +65,7 @@ public class Foliage : MonoBehaviour
     {
         // Epic foliageHandler getter :O
         foliageHandler = transform.parent.parent.parent.GetComponent<Planet>().foliageHandler;
-        if (foliageHandler == null) return;
+        if (foliageHandler == null && foliageHandler.isInstantiated) return;
         
         // Seedar en random för denna chunken // Här vill vi ha bra random :)
         random = new RandomX(seed);
