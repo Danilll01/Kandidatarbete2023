@@ -280,8 +280,9 @@ MonoBehaviour:
   growUpTime: 60
   breedingParticle: {fileID: 6813416509558619124, guid: 3b7f2c753d435d647a80f1f047a113e3,
     type: 3}
+  volume: 0.4
   idleSounds:
-  - {fileID: 8300000, guid: 218230b48f2c2e34a8e668daea85536c, type: 3}
+  - {fileID: 8300000, guid: 21d8c5dacae94864196e0e78ba194cf3, type: 3}
   - {fileID: 8300000, guid: 7b421084ab471ca4999b90920a2ce299, type: 3}
   - {fileID: 8300000, guid: e8f79913c4e115948bb04e724f49fc7f, type: 3}
   - {fileID: 8300000, guid: 73ac96f4c5554394c973af928395ab64, type: 3}
