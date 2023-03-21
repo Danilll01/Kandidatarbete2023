@@ -19,6 +19,7 @@ public class Chunk : MonoBehaviour
     private Mesh mesh;
     private MarchingCubes marchingCubes;
     private Transform player;
+    private Planet planet;
     private MinMaxTerrainLevel terrainLevel;
     private RandomX random;
 
@@ -32,8 +33,9 @@ public class Chunk : MonoBehaviour
     /// <param name="marchingCubes">An instance of marching cubes</param>
     /// <param name="player"></param>
     /// <param name="terrainLevel"></param>
-    public void Initialize(int index, int resolution, MarchingCubes marchingCubes, Transform player, MinMaxTerrainLevel terrainLevel, int seed)
+    public void Initialize(Planet planet, int index, int resolution, MarchingCubes marchingCubes, Transform player, MinMaxTerrainLevel terrainLevel, int seed)
     {
+        this.planet = planet;
         this.index = index;
         this.marchingCubes = marchingCubes;
         this.player = player;
@@ -47,7 +49,7 @@ public class Chunk : MonoBehaviour
         
         //Set lowest resolution as default
         int meshVerticesLength = UpdateMesh(resolution);
-        if (meshVerticesLength > 500 && marchingCubes.chunkResolution == 3)
+        if (planet.willGeneratePlanetLife && meshVerticesLength > 500 && marchingCubes.chunkResolution == 3)
         {
             foliage.Initialize(meshVerticesLength, position, random.Next());
         }

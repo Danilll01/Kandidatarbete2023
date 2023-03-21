@@ -62,7 +62,8 @@ MonoBehaviour:
   waterPoints: []
   player: {fileID: 0}
   resolution: 4
-  willGenerateCreature: 1
+  willGeneratePlanetLife: 0
+  chanceToSpawnPlanetLife: 0.8
   generateCreatures: {fileID: 7065241369011201559}
   chunksHandler: {fileID: 6742904736247445569}
   waterHandler: {fileID: 7974886500941765792}
@@ -241,6 +242,7 @@ MonoBehaviour:
   - {fileID: 5440707293445505367, guid: 494f6d43e170e9145bc7865d243ee00b, type: 3}
   - {fileID: 1127315056602366, guid: 3a9df2c30188f10438112114dc22bae1, type: 3}
   - {fileID: 1240686429475702, guid: da33a1bfeaaabaa4597896ca7003b785, type: 3}
+  isInstantiated: 0
   treeNr: 0
   bushNr: 0
   waterPlantNr: 0

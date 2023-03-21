@@ -28,7 +28,7 @@ public class Planet : MonoBehaviour
     //[SerializeField, Range(1, 4)] 
     [SerializeField, Range(1, 14)] public int resolution = 5;
 
-    [SerializeField] private bool willGeneratePlanetLife = false;
+    [SerializeField] public bool willGeneratePlanetLife = false;
     [Range(0f, 1f)]
     [SerializeField] private float chanceToSpawnPlanetLife = 0.8f; 
     [SerializeField] private GenerateCreatures generateCreatures;
@@ -91,9 +91,10 @@ public class Planet : MonoBehaviour
                 generateCreatures.Initialize(this, rand.Next());
             }
 
-        if (waterHandler != null && bodyName != "Sun")
-        {
-            waterHandler.Initialize(this, waterDiameter, GetGroundColor());
+            if (waterHandler != null && bodyName != "Sun")
+            {
+                waterHandler.Initialize(this, waterDiameter, GetGroundColor());
+            }
         }
 
     }

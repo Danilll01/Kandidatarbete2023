@@ -139,7 +139,7 @@ public class ChunksHandler : MonoBehaviour
             chunk.transform.parent = chunksParent.transform;
             chunk.transform.localPosition = Vector3.zero;
             chunk.name = "chunk" + i;
-            chunk.Initialize(i, resolution, marchingCubes, player, terrainLevel, rand.seed + i);
+            chunk.Initialize(planet, i, resolution, marchingCubes, player, terrainLevel, rand.seed + i);
             chunks.Add(chunk);
         }
     }
