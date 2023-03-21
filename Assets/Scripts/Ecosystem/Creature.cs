@@ -176,10 +176,7 @@ public class Creature : MonoBehaviour
         // Die if hunger or thirst is 0
         if (hunger <= 0 || thirst <= 0)
         {
-            // Spawn a poof particle when the creature dies
-            Instantiate(breedingParticle, transform.position, transform.rotation, transform.parent);
-
-            Destroy(gameObject);
+            StartCoroutine(SelfDestruct());
         }
 
         // Decrese timer for reproduction
@@ -204,6 +201,7 @@ public class Creature : MonoBehaviour
             }
         }
 
+        // Only play sound if object is rendered
         if (!isSleeping && idleSounds.Length > 0)
         {
             if (idleSoundTimer > 0)
@@ -584,6 +582,22 @@ public class Creature : MonoBehaviour
         yield return new WaitForSeconds(1);
 
         currentState = CreatureState.Walking;
+    }
+
+    private IEnumerator SelfDestruct()
+    {
+        AudioClip deathSound = GetRandomClip(deathSounds);
+        if (deathSound != null)
+        {
+            audioSource.PlayOneShot(deathSound);
+
+            yield return new WaitForSeconds(deathSound.length);
+        }
+
+        // Spawn a poof particle when the creature dies
+        Instantiate(breedingParticle, transform.position, transform.rotation, transform.parent);
+
+        Destroy(gameObject);
     }
 
     private AudioClip GetRandomClip(AudioClip[] clips)
