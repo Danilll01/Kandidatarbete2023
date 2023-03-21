@@ -88,7 +88,7 @@ public class Planet : MonoBehaviour
         {
             // Generate the creatures
             if (generateCreatures != null && !bodyName.Contains("Moon")) {
-                generateCreatures.Initialize(this, rand.Next());
+                generateCreatures.Initialize(this, rand.Next(), spawn);
             }
 
             if (waterHandler != null && bodyName != "Sun")

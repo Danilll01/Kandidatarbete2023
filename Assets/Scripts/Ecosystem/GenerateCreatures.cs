@@ -18,6 +18,7 @@ public class GenerateCreatures : MonoBehaviour
     private RandomX rand;
     private Planet planet;
     private Vector3 planetCenter;
+    private bool isSpawnPlanet = false;
 
     private int[] spawningRatios;
     
@@ -28,9 +29,10 @@ public class GenerateCreatures : MonoBehaviour
     /// </summary>
     /// <param name="planet">The planet script found on a planet</param>
     /// <param name="randomSeed">The random seed to spawn things with</param>
-    public void Initialize(Planet planet, int randomSeed)
+    public void Initialize(Planet planet, int randomSeed, bool spawn)
     {
         this.planet = planet;
+        isSpawnPlanet = spawn;
         planetCenter = planet.transform.position;
         spawningRatios = GetSpawningRatios();
 
@@ -139,8 +141,8 @@ public class GenerateCreatures : MonoBehaviour
                 GameObject newObject = Instantiate(packData.prefab, hit.point, rotation2, hit.transform.GetComponent<Chunk>().creatures);
                 newObject.transform.rotation = rotation2;
                 newObject.name = newObject.name.Replace("(Clone)", "").Trim();
-
-                bool isSpawnPlanet = planet.gameObject == planet.transform.parent.GetChild(1).gameObject;
+                
+                //bool isSpawnPlanet = planet.gameObject == planet.transform.parent.GetChild(1).gameObject;
 
                 newObject.SetActive(isSpawnPlanet);
 
