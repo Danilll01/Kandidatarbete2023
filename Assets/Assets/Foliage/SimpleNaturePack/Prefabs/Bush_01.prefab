@@ -99,7 +99,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   respawnTime: 30
---- !u!205 &6769750603635666191
+--- !u!205 &-533825094164283763
 LODGroup:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -113,15 +113,10 @@ LODGroup:
   m_AnimateCrossFading: 0
   m_LastLODIsBillboard: 0
   m_LODs:
-  - screenRelativeHeight: 0.011471334
+  - screenRelativeHeight: 0.008
     fadeTransitionWidth: 0
-    renderers: []
-  - screenRelativeHeight: 0.011471334
-    fadeTransitionWidth: 0
-    renderers: []
-  - screenRelativeHeight: 0.011471334
-    fadeTransitionWidth: 0
-    renderers: []
+    renderers:
+    - renderer: {fileID: 4263922822446936359}
   m_Enabled: 1
 --- !u!136 &7717084306753335414
 CapsuleCollider:
