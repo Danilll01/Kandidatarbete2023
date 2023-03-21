@@ -178,7 +178,7 @@ public class PillPlayerController : MonoBehaviour
             else
             {
                 //Add movement
-                body.velocity += transform.rotation * movementVector * Time.deltaTime * airControlFactor;
+                body.velocity += transform.rotation * movementVector * (Time.deltaTime * airControlFactor);
                 //Normalize to maxSpeed if necessary
                 Vector3 oldVelocity = (Quaternion.Inverse(transform.rotation) * body.velocity);
                 Vector3 oldHorizontalVelocity = new Vector3(oldVelocity.x, 0, oldVelocity.z);
