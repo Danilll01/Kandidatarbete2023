@@ -6,7 +6,7 @@ PhysicMaterial:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Chicken
+  m_Name: Creature
   dynamicFriction: 6.53
   staticFriction: 2.77
   bounciness: 0
