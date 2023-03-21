@@ -7,8 +7,6 @@ using SimpleKeplerOrbits;
 
 [RequireComponent(typeof(GenerateCreatures))]
 [RequireComponent(typeof(TerrainColor))]
-[RequireComponent(typeof(SpawnFoliage))]
-[RequireComponent(typeof(SpawnFoliage))]
 public class Planet : MonoBehaviour
 {
     [SerializeField] private ComputeShader meshGenerator;
@@ -39,10 +37,6 @@ public class Planet : MonoBehaviour
 
     [SerializeField] private bool willGenerateCreature = false;
     [SerializeField] private GenerateCreatures generateCreatures;
-
-    private System.Random rand;
-
-    [SerializeField] public SpawnFoliage spawnFoliage;
     [SerializeField] public ChunksHandler chunksHandler;
     [SerializeField] public WaterHandler waterHandler;
 
@@ -53,6 +47,7 @@ public class Planet : MonoBehaviour
     private bool moonsLocked = true;
 
     private float threshold;
+    public FoliageHandler foliageHandler;
 
     private bool resetMoons = false;
 
@@ -83,8 +78,12 @@ public class Planet : MonoBehaviour
             marchingCubes = new MarchingCubes(1, meshGenerator, threshold, diameter, frequency, amplitude);
         }
 
-        // Init water
         waterDiameter = -(threshold / 255 - 1) * diameter;
+
+        if (foliageHandler != null && !bodyName.Contains("Moon"))
+        {
+            foliageHandler.Initialize(this);
+        }
 
         terrainLevel.SetMin(Mathf.Abs((waterDiameter + 1) / 2));
 
@@ -98,16 +97,10 @@ public class Planet : MonoBehaviour
             }
         }
 
-        if (spawnFoliage != null && !bodyName.Contains("Moon"))
-        {
-            spawnFoliage.Initialize(this, waterDiameter, rand.Next());
-        }
-
         if (waterHandler != null && bodyName != "Sun")
         {
             waterHandler.Initialize(this, waterDiameter, GetGroundColor());
         }
-        
     }
 
     public void InitializeMoonsValues()
