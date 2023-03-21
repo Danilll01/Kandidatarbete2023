@@ -10,7 +10,7 @@ public class ChunksHandler : MonoBehaviour
 {
     private Planet planet;
     private Transform player;
-    private Vector3 playerLastPosition;
+    private Vector3 playerLastPosition = Vector3.zero;
     private int foliageInitialized = 10;
     private int chunkResolution; //This is 2^chunkResolution
     private MarchingCubes marchingCubes;
@@ -47,7 +47,6 @@ public class ChunksHandler : MonoBehaviour
 
         this.planet = planet;
         player = planet.player;
-        playerLastPosition = Vector3.zero;
         marchingCubes = planet.marchingCubes;
         planetRadius = planet.radius;
         this.terrainLevel = terrainLevel;
@@ -169,11 +168,9 @@ public class ChunksHandler : MonoBehaviour
         Vector3 playerToPlanetCenter = playerPos - planetCenter;
 
         // Only update chunks if player has moved a certain distance
-        if ((Mathf.Abs(Vector3.Distance(playerPos, playerLastPosition)) < 50) && playerToPlanetCenter.magnitude > (planetRadius + 30f))
-        {
+        if (Vector3.Magnitude(playerPos - playerLastPosition) < 3)
             return;
-        }
-
+        
         playerLastPosition = playerPos;
 
         Vector3 cutoffPoint;

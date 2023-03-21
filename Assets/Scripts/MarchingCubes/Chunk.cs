@@ -22,7 +22,7 @@ public class Chunk : MonoBehaviour
     private int highRes;
     private int mediumRes;
     private int lowRes;
-    private bool updated = false;
+    private Vector3 previousPlayerPos = Vector3.zero;
 
     private MeshFilter meshFilter;
     private MeshCollider meshCollider;
@@ -88,6 +88,11 @@ public class Chunk : MonoBehaviour
     {
         if(marchingCubes.chunkResolution == chunkHandler.highChunkRes && initialized)
         {
+            // Check every 13 meter so that we don't check all the time
+            if (Vector3.Magnitude(player.localPosition - previousPlayerPos) < 5)
+                return;
+            
+            previousPlayerPos = player.localPosition;
             float playerDistance = Vector3.Magnitude(player.localPosition - position);
 
             if (playerDistance < 1.3 * chunkSize)
