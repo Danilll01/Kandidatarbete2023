@@ -1130,8 +1130,15 @@ MonoBehaviour:
   breedingParticle: {fileID: 6813416509558619124, guid: 3b7f2c753d435d647a80f1f047a113e3,
     type: 3}
   idleSounds:
+  - {fileID: 8300000, guid: 218230b48f2c2e34a8e668daea85536c, type: 3}
   - {fileID: 8300000, guid: 7b421084ab471ca4999b90920a2ce299, type: 3}
-  deathSounds: []
+  - {fileID: 8300000, guid: e8f79913c4e115948bb04e724f49fc7f, type: 3}
+  - {fileID: 8300000, guid: 73ac96f4c5554394c973af928395ab64, type: 3}
+  - {fileID: 8300000, guid: 4dba7c5f41bf7fb4db752b0c6e1e61f6, type: 3}
+  - {fileID: 8300000, guid: d090d3f40735e7f49bd1c912df8d5af8, type: 3}
+  - {fileID: 8300000, guid: 63c56079c521bc54a8ef0e369f538db1, type: 3}
+  deathSounds:
+  - {fileID: 8300000, guid: 873b25f846aabfe4498dc7bd518b4552, type: 3}
   timeBetweenIdleSounds: 15
   currentState: 0
   DEBUG: 0
@@ -1145,7 +1152,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1655403738057260}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: a4adf35cb82d37841a2a045cec59b390, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2

@@ -189,6 +189,7 @@ GameObject:
   - component: {fileID: 2499285313844354292}
   - component: {fileID: 1902558043075361594}
   - component: {fileID: 7009522980770883506}
+  - component: {fileID: 5319189935782859708}
   m_Layer: 20
   m_Name: Fox Cub
   m_TagString: Creature
@@ -250,6 +251,7 @@ MonoBehaviour:
   consumeRadius: 0.05
   meshObj: {fileID: 1716895368152690}
   creatureType: 0
+  hunger: 100
   thirst: 100
   randomizeStats: 1
   maxHunger: 100
@@ -278,6 +280,17 @@ MonoBehaviour:
   growUpTime: 60
   breedingParticle: {fileID: 6813416509558619124, guid: 3b7f2c753d435d647a80f1f047a113e3,
     type: 3}
+  idleSounds:
+  - {fileID: 8300000, guid: 218230b48f2c2e34a8e668daea85536c, type: 3}
+  - {fileID: 8300000, guid: 7b421084ab471ca4999b90920a2ce299, type: 3}
+  - {fileID: 8300000, guid: e8f79913c4e115948bb04e724f49fc7f, type: 3}
+  - {fileID: 8300000, guid: 73ac96f4c5554394c973af928395ab64, type: 3}
+  - {fileID: 8300000, guid: 4dba7c5f41bf7fb4db752b0c6e1e61f6, type: 3}
+  - {fileID: 8300000, guid: d090d3f40735e7f49bd1c912df8d5af8, type: 3}
+  - {fileID: 8300000, guid: 63c56079c521bc54a8ef0e369f538db1, type: 3}
+  deathSounds:
+  - {fileID: 8300000, guid: 873b25f846aabfe4498dc7bd518b4552, type: 3}
+  timeBetweenIdleSounds: 15
   currentState: 0
   DEBUG: 0
   isSleeping: 0
@@ -312,6 +325,102 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
+--- !u!82 &5319189935782859708
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1077125651660242}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &1116128327426740
 GameObject:
   m_ObjectHideFlags: 0
