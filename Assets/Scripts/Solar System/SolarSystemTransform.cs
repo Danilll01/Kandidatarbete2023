@@ -56,7 +56,7 @@ public class SolarSystemTransform : MonoBehaviour
             {
                 Debug.Log("Reset");
                 ResetPlanetOrbit(activePlanetIndex);
-                activePlanetIndex = -1;
+                releasePlayer = true;
                 reset = true;
             }
             // If the player has entered a new planet, move the solar system accordingly
@@ -71,7 +71,6 @@ public class SolarSystemTransform : MonoBehaviour
             ResetPlanetOrbit(activePlanetIndex);
             releasePlayer = true;
             reset = true;
-            activePlanetIndex = -1;
         }
         else if (!ResetSolarSystem && reset)
         {
@@ -91,13 +90,17 @@ public class SolarSystemTransform : MonoBehaviour
 
     private void CheckWhenToReleasePlayer()
     {
-        Vector3 distance = spawnPlanets.bodies[playerOnPlanetIndex].transform.position;
+        Vector3 distance = spawnPlanets.bodies[activePlanetIndex].transform.position;
         if (distance.magnitude > 100f)
         {
+            Debug.Log("Release Player");
             player.transform.SetParent(null,true);
-            player.transform.position = spawnPlanets.bodies[playerOnPlanetIndex].transform.position + directionPlayerToPlanet;
+            /*
+            player.transform.position = spawnPlanets.bodies[activePlanetIndex].transform.position + directionPlayerToPlanet;
             player.transform.rotation = playerRotation;
+            */
             releasePlayer = false;
+            playerOnPlanetIndex = activePlanetIndex;
         }
     }
 
