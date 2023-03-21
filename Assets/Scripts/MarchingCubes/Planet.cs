@@ -7,8 +7,6 @@ using UnityEngine;
 
 [RequireComponent(typeof(GenerateCreatures))]
 [RequireComponent(typeof(TerrainColor))]
-[RequireComponent(typeof(SpawnFoliage))]
-[RequireComponent(typeof(SpawnFoliage))]
 public class Planet : MonoBehaviour
 {
     [SerializeField] private ComputeShader meshGenerator;
@@ -34,11 +32,11 @@ public class Planet : MonoBehaviour
     [Range(0f, 1f)]
     [SerializeField] private float chanceToSpawnPlanetLife = 0.8f; 
     [SerializeField] private GenerateCreatures generateCreatures;
-    [SerializeField] public SpawnFoliage spawnFoliage;
     [SerializeField] public ChunksHandler chunksHandler;
     [SerializeField] public WaterHandler waterHandler;
 
     private float threshold;
+    public FoliageHandler foliageHandler;
 
     /// <summary>
     /// Initializes the planet
@@ -75,6 +73,11 @@ public class Planet : MonoBehaviour
             waterDiameter = 0; 
         }
 
+        if (foliageHandler != null && !bodyName.Contains("Moon"))
+        {
+            foliageHandler.Initialize(this);
+        }
+
         terrainLevel.SetMin(Mathf.Abs((waterDiameter + 1) / 2));
 
         chunksHandler.Initialize(this, terrainLevel, spawn, rand.Next());
@@ -88,16 +91,11 @@ public class Planet : MonoBehaviour
                 generateCreatures.Initialize(this, rand.Next());
             }
 
-            if (spawnFoliage != null && !bodyName.Contains("Moon"))
-            {
-                spawnFoliage.Initialize(this, waterDiameter, rand.Next());
-            }
-
-            if (waterHandler != null && bodyName != "Sun")
-            {
-                waterHandler.Initialize(this, waterDiameter, GetGroundColor());
-            }
+        if (waterHandler != null && bodyName != "Sun")
+        {
+            waterHandler.Initialize(this, waterDiameter, GetGroundColor());
         }
+
     }
 
     /// <summary>
