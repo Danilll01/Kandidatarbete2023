@@ -62,8 +62,6 @@ public class MarchingCubes
         // Run generateMesh in compute shader
         int kernelIndex = meshGenerator.FindKernel("GenerateMesh");
 
-        
-
         meshGenerator.SetInt("frequency", frequency);
         meshGenerator.SetFloat("amplitude", amplitude);
         meshGenerator.SetInt("chunkIndex", index);
@@ -75,7 +73,7 @@ public class MarchingCubes
         meshGenerator.SetInt("numTerrainLayers", terrainLayers.Count);
         meshGenerator.SetBuffer(kernelIndex, "terrainLayers", layersBuffer);
         meshGenerator.Dispatch(kernelIndex, resolution >> chunkResolution, resolution >> chunkResolution, resolution >> chunkResolution);
-        
+
         // Retrieve triangles
         int length = getLengthBuffer(ref trianglesBuffer); // This is slow!!!
 
@@ -85,6 +83,7 @@ public class MarchingCubes
 
         // Release all buffers
         trianglesBuffer.Release();
+        layersBuffer.Release();
 
         // Process our data from the compute shader
         int[] meshTriangles = new int[length * 3];

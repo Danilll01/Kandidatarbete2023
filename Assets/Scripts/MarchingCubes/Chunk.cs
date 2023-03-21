@@ -88,13 +88,13 @@ public class Chunk : MonoBehaviour
     {
         if(marchingCubes.chunkResolution == chunkHandler.highChunkRes && initialized)
         {
-            // Check every 13 meter so that we don't check all the time
+            // Check every 5 meter so that we don't check all the time
             if (Vector3.Magnitude(player.localPosition - previousPlayerPos) < 5)
                 return;
             
             previousPlayerPos = player.localPosition;
-            float playerDistance = Vector3.Magnitude(player.localPosition - position);
 
+            float playerDistance = Vector3.Magnitude(player.localPosition - position);
             if (playerDistance < 1.3 * chunkSize)
             {
                 meshCollider.enabled = true;
@@ -150,11 +150,11 @@ public class Chunk : MonoBehaviour
                 (index & (mask << (marchingCubes.chunkResolution * 1))) >> (marchingCubes.chunkResolution * 1),
                 (index & (mask << (marchingCubes.chunkResolution * 2))) >> (marchingCubes.chunkResolution * 2)
             );
-
+            
         position = -(chunkIndex - (Mathf.Pow(2, marchingCubes.chunkResolution) - 1) / 2 * Vector3.one) * (marchingCubes.radius * 2 / (1 << (marchingCubes.chunkResolution)));
     }
 
-    public int UpdateMesh(int resolution)
+    private int UpdateMesh(int resolution)
     {
         if (currentRes == resolution)
             return 0;
