@@ -429,7 +429,10 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 17da0b714f5071442be35ed78f7eb0e2, type: 3}
   - {fileID: 8300000, guid: 4e1e6ad5bb5eaf64fa8aae67f5cccd85, type: 3}
   - {fileID: 8300000, guid: 8d2ec4a7b97c7d74b920323b03258cbe, type: 3}
-  deathSounds: []
+  deathSounds:
+  - {fileID: 8300000, guid: 7a692c61fd140a5478d4bb8c33fa2ef0, type: 3}
+  - {fileID: 8300000, guid: f5875a8bef8494342b98c437368bb83c, type: 3}
+  - {fileID: 8300000, guid: 57bf160bd4b56fd4aa2017a77b5c4bbe, type: 3}
   timeBetweenIdleSounds: 15
   currentState: 0
   DEBUG: 0

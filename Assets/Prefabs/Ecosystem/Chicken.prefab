@@ -638,8 +638,18 @@ MonoBehaviour:
   growUpTime: 60
   breedingParticle: {fileID: 6813416509558619124, guid: 3b7f2c753d435d647a80f1f047a113e3,
     type: 3}
-  idleSounds: []
-  deathSounds: []
+  idleSounds:
+  - {fileID: 8300000, guid: ca8b5ac8ed748bd468d44a94079b941f, type: 3}
+  - {fileID: 8300000, guid: 1856104270ad45140b8eda61dfa492b2, type: 3}
+  - {fileID: 8300000, guid: 2a56fc009fc6bb84487259d3b1cdca22, type: 3}
+  - {fileID: 8300000, guid: 1030a4c2ba65c43419c81c8f3af0c80e, type: 3}
+  - {fileID: 8300000, guid: 17da0b714f5071442be35ed78f7eb0e2, type: 3}
+  - {fileID: 8300000, guid: 4e1e6ad5bb5eaf64fa8aae67f5cccd85, type: 3}
+  - {fileID: 8300000, guid: 8d2ec4a7b97c7d74b920323b03258cbe, type: 3}
+  deathSounds:
+  - {fileID: 8300000, guid: 7a692c61fd140a5478d4bb8c33fa2ef0, type: 3}
+  - {fileID: 8300000, guid: f5875a8bef8494342b98c437368bb83c, type: 3}
+  - {fileID: 8300000, guid: 57bf160bd4b56fd4aa2017a77b5c4bbe, type: 3}
   timeBetweenIdleSounds: 15
   currentState: 0
   DEBUG: 0
