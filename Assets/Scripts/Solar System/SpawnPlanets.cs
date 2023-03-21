@@ -163,7 +163,7 @@ public class SpawnPlanets : MonoBehaviour
         {
             GameObject moon = Instantiate(planetsPrefab);
             moon.transform.parent = moonsParent.transform;
-            moon.transform.localPosition = RandomPointOnCircleEdge(parentPlanet.diameter * i);
+            moon.transform.localPosition = RandomPointOnCircleEdge(parentPlanet.diameter * i * 1.2f);
             moon.gameObject.name = "Moon " + i;
 
             Planet moonBody = moon.GetComponent<Planet>();
