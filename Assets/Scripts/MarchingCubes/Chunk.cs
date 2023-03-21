@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Mathematics;
+using ExtendedRandom;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.UIElements;
@@ -19,6 +20,7 @@ public class Chunk : MonoBehaviour
     private MarchingCubes marchingCubes;
     private Transform player;
     private MinMaxTerrainLevel terrainLevel;
+    private RandomX random;
 
     [HideInInspector] public Vector3 position;
 
@@ -30,12 +32,13 @@ public class Chunk : MonoBehaviour
     /// <param name="marchingCubes">An instance of marching cubes</param>
     /// <param name="player"></param>
     /// <param name="terrainLevel"></param>
-    public void Initialize(int index, int resolution, MarchingCubes marchingCubes, Transform player, MinMaxTerrainLevel terrainLevel)
+    public void Initialize(int index, int resolution, MarchingCubes marchingCubes, Transform player, MinMaxTerrainLevel terrainLevel, int seed)
     {
         this.index = index;
         this.marchingCubes = marchingCubes;
         this.player = player;
         this.terrainLevel = terrainLevel;
+        random = new RandomX(seed);
 
         meshFilter = transform.GetComponent<MeshFilter>();
         meshCollider = transform.GetComponent<MeshCollider>();
@@ -46,7 +49,7 @@ public class Chunk : MonoBehaviour
         int meshVerticesLength = UpdateMesh(resolution);
         if (meshVerticesLength > 500 && marchingCubes.chunkResolution == 3)
         {
-            foliage.Initialize(meshVerticesLength, position);
+            foliage.Initialize(meshVerticesLength, position, random.Next());
         }
 
     }
