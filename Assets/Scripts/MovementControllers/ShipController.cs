@@ -9,7 +9,7 @@ public class ShipController : MonoBehaviour
     private bool shipHoldingUprightRotation = false;
     private Planet holdingOverPlanet = null;
     private float shipHoldingAltitude;
-    private Vector3 mountedPos = new Vector3(0, 1.6f, -1.4f);
+    [SerializeField] private Transform mountedPos;
     private Vector3 dismountedPos = new Vector3(-2.6f, 2, -2f);
 
     [SerializeField] private float landingTime;
@@ -34,6 +34,12 @@ public class ShipController : MonoBehaviour
         transform.rotation = Quaternion.LookRotation(Vector3.ProjectOnPlane(transform.TransformVector(Vector3.forward), hit.normal), hit.normal);
         transform.position += transform.TransformDirection(Vector3.right * 5);
         transform.SetParent(player.Planet.transform);
+
+        // If mounted pos transform is not set in editor it will grab the object at least
+        if (mountedPos.Equals(null))
+        {
+            //mountedPos = transform.GetChild(0);
+        }
     }
 
     // Update is called once per frame
@@ -71,6 +77,9 @@ public class ShipController : MonoBehaviour
 
     private void HandleShip()
     {
+        // More efficient code
+        Transform playerTransform = player.transform;
+        
         //Left planet and should no longer hold altitude
         if (shipHoldingUprightRotation && (holdingOverPlanet != player.Planet))
         {
@@ -83,13 +92,13 @@ public class ShipController : MonoBehaviour
             if (boarded)
             {
                 //Disembark
-                Physics.Raycast(player.transform.position, -player.Up, out RaycastHit hit, 20, 1 << (LayerMask.NameToLayer("Planet")));
+                Physics.Raycast(playerTransform.position, -player.Up, out RaycastHit hit, 20, 1 << (LayerMask.NameToLayer("Planet")));
 
                 if (hit.collider != null)
                 {
                     //Set up transition to/from
-                    transitionFromPos = player.transform.localPosition;
-                    transitionFromRot = player.transform.localRotation;
+                    transitionFromPos = playerTransform.localPosition;
+                    transitionFromRot = playerTransform.localRotation;
                     transitionToPos = player.Planet.transform.InverseTransformPoint(hit.point - Quaternion.FromToRotation(Vector3.up, player.Up) * (Vector3.up * transform.localPosition.y));
                     transitionToRot = Quaternion.LookRotation(Vector3.ProjectOnPlane(transform.TransformVector(Vector3.forward), hit.normal), hit.normal);
                     transitioning = true;
@@ -103,10 +112,10 @@ public class ShipController : MonoBehaviour
                 EmbarkInShip();
 
                 //Set up transition to/from
-                transitionFromPos = player.transform.localPosition;
-                transitionFromRot = player.transform.localRotation;
+                transitionFromPos = playerTransform.localPosition;
+                transitionFromRot = playerTransform.localRotation;
                 transitionToPos = transitionFromPos + player.Up * 10;
-                transitionToRot = Gravity.UprightRotation(player.transform, player.Planet.transform);
+                transitionToRot = Gravity.UprightRotation(playerTransform, player.Planet.transform);
                 transitioning = true;
                 player.boarded = true;
             }
@@ -124,25 +133,25 @@ public class ShipController : MonoBehaviour
             shipHoldingUprightRotation = !shipHoldingUprightRotation;
             if (shipHoldingUprightRotation)
             {
-                shipHoldingAltitude = Vector3.Distance(player.Planet.transform.position, player.transform.position);
+                shipHoldingAltitude = Vector3.Distance(player.Planet.transform.position, playerTransform.position);
             }
         }
         //Rotation
         float pitch = Input.GetAxis("Vertical Look");
         float yaw = Input.GetAxis("Horizontal Look");
         float roll = Input.GetAxis("Spaceship Roll");
-        player.transform.Rotate(new Vector3(pitch, yaw, roll) * Time.deltaTime * shipRotationSpeed);
+        playerTransform.Rotate(new Vector3(pitch, yaw, roll) * (Time.deltaTime * shipRotationSpeed));
         if (shipHoldingUprightRotation)
         {
-            player.transform.localPosition = player.transform.localPosition / (player.Altitude / shipHoldingAltitude);
+            playerTransform.localPosition = playerTransform.localPosition / (player.Altitude / shipHoldingAltitude);
 
             //This may lead to slowly slipping away from planet. Hasn't noticed so maybe so minute that it may be ignored :)
-            Quaternion rot = player.transform.rotation;
-            Gravity.KeepUpright(player.transform, player.Planet.transform);
-            Vector3 velocity = player.transform.InverseTransformDirection(body.velocity);
+            Quaternion rot = playerTransform.rotation;
+            Gravity.KeepUpright(playerTransform, player.Planet.transform);
+            Vector3 velocity = playerTransform.InverseTransformDirection(body.velocity);
             velocity.y = 0;
-            body.velocity = player.transform.TransformDirection(velocity);
-            player.transform.rotation = rot;
+            body.velocity = playerTransform.TransformDirection(velocity);
+            playerTransform.rotation = rot;
 
             //Not moving up/down. Hold altitude
             if (Input.GetAxisRaw("Spaceship Lift") != 0)
@@ -156,14 +165,14 @@ public class ShipController : MonoBehaviour
         float strafe = Input.GetAxis("Spaceship Strafe");
         float lift = Input.GetAxis("Spaceship Lift");
         float thrust = Input.GetAxis("Spaceship Thrust");
-        body.velocity += transform.rotation * new Vector3(strafe, lift, thrust) * Time.deltaTime * shipMovespeed;
+        body.velocity += transform.rotation * new Vector3(strafe, lift, thrust) * (Time.deltaTime * shipMovespeed);
         //Slowdown due to being inside of a planet
         //TODO. Maybe integrate with actual air resistance
         if (player.Planet != null)
         {
             if (body.velocity.magnitude > shipMovespeed * 5)
             {
-                body.velocity = body.velocity.normalized * shipMovespeed * 5;
+                body.velocity = body.velocity.normalized * (shipMovespeed * 5);
             }
             float divideFactor = 1.2f;
             if (strafe == 0 && lift == 0 && thrust == 0)
@@ -188,7 +197,7 @@ public class ShipController : MonoBehaviour
 
     private void EmbarkInShip()
     {
-        player.transform.position = transform.position + (transform.rotation * mountedPos);
+        player.transform.position = transform.position + (transform.rotation * mountedPos.localPosition);
         player.transform.rotation = transform.rotation;
         camera.transform.localRotation = Quaternion.identity;
         body.velocity = Vector3.zero;
