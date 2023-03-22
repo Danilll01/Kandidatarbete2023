@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Mathematics;
+using ExtendedRandom;
 using UnityEngine;
 
 public class Sun : MonoBehaviour
@@ -16,7 +17,7 @@ public class Sun : MonoBehaviour
     /// </summary>
     public void Initialize(Transform player, int randomSeed)
     {
-        System.Random rand = new System.Random(randomSeed);
+        RandomX rand = new RandomX(randomSeed);
 
         radius = diameter / 2;
     }

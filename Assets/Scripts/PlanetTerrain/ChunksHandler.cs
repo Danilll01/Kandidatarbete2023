@@ -1,6 +1,7 @@
 using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
+using ExtendedRandom;
 using UnityEditor;
 using UnityEngine;
 
@@ -18,6 +19,7 @@ public class ChunksHandler : MonoBehaviour
     private Material planetMaterial;
     private float planetRadius;
     private MinMaxTerrainLevel terrainLevel;
+    private RandomX rand;
 
     [HideInInspector] public bool chunksGenerated;
     [SerializeField] private Chunk chunkPrefab;
@@ -32,7 +34,7 @@ public class ChunksHandler : MonoBehaviour
     /// <param name="player"></param>
     public void Initialize(Planet planet, MinMaxTerrainLevel terrainLevel, bool spawn, int seed)
     {
-        System.Random rand = new System.Random(seed);
+        rand = new RandomX(seed);
 
         this.planet = planet;
         player = planet.player;
@@ -137,7 +139,7 @@ public class ChunksHandler : MonoBehaviour
             chunk.transform.parent = chunksParent.transform;
             chunk.transform.localPosition = Vector3.zero;
             chunk.name = "chunk" + i;
-            chunk.Initialize(i, resolution, marchingCubes, player, terrainLevel);
+            chunk.Initialize(planet, i, resolution, marchingCubes, player, terrainLevel, rand.seed + i);
             chunks.Add(chunk);
         }
     }

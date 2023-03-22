@@ -12,8 +12,8 @@ public class SpawnPlanet : MonoBehaviour
     void Start()
     {
         Planet planet = Instantiate(prefab);
-
-        planet.diameter = 1000;
+        
+        planet.radius = 1000;
 
         planet.transform.position = new Vector3(500, 0, 0);
 

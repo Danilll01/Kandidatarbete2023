@@ -93,7 +93,7 @@ public class PillPlayerController : MonoBehaviour
         if (attractor != null)
         {
             DisplayDebug.AddOrSetDebugVariable("Current planet", attractor.bodyName);
-            DisplayDebug.AddOrSetDebugVariable("Planet radius", attractor.diameter.ToString());
+            DisplayDebug.AddOrSetDebugVariable("Planet radius", attractor.radius.ToString());
             DisplayDebug.AddOrSetDebugVariable("Planet mass", attractor.mass.ToString());
             DisplayDebug.AddOrSetDebugVariable("Planet surface gravity", attractor.surfaceGravity.ToString());
         }
