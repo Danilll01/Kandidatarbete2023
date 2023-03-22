@@ -167,7 +167,7 @@ public class SpawnPlanets : MonoBehaviour
         for (int i = 1; i < numberOfMoons + 1; i++)
         {
             GameObject moon = Instantiate(planetsPrefab);
-            moon.transform.parent = parentPlanet.transform;
+            moon.transform.parent = moonsParent.transform;
             moon.transform.localPosition = RandomPointOnCircleEdge(parentPlanet.radius * i * 1.2f);
             moon.gameObject.name = "Moon " + i;
 
