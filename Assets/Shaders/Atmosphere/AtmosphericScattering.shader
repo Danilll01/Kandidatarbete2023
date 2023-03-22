@@ -9,7 +9,7 @@ Shader "Atmosphere/Atmospheric Scattering"
         _AtmosphereRadius("Atmosphere Radius", Float) = 50
         _Steps ("Steps", Int) = 20                                                  // Standard: 20
         _LightSteps ("Light Steps", Int) = 12                                       // Standard: 12
-        _RayleighScattering("Rayleigh Scattering", Vector) = (0.08,0.2,0.51,40)   // Standard: (0.08,0.2,0.51,0.64)
+        _RayleighScattering("Rayleigh Scattering (RGB)", Vector) = (0.08,0.2,0.51,40)   // Standard: (0.08,0.2,0.51,0.64)
         _MieScattering("Mie Scattering", Vector) = (0.01, 0.9, 0, 0.8)              // Standard: (0.01, 0.9, 0, 0.8)
         _ClipThreshold ("Clip Threshold", Range(0.0,1.0)) = 0.73                    // Standard: 0.73
     }

@@ -21,8 +21,8 @@ public class AtmosphereHandler : MonoBehaviour
 
         // Set up material
         atmosphereMaterial = new Material(atmosphereShader);
-        atmosphereMaterial.SetFloat(PlanetRadius, waterLevel);
-        atmosphereMaterial.SetFloat(AtmosphereRadius, planetRadius * 1.25f);
+        atmosphereMaterial.SetFloat(PlanetRadius, Mathf.RoundToInt(waterLevel));
+        atmosphereMaterial.SetFloat(AtmosphereRadius, Mathf.RoundToInt(planetRadius * 1.25f));
         GetComponent<MeshRenderer>().material = atmosphereMaterial;
         
     }
@@ -30,7 +30,7 @@ public class AtmosphereHandler : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Vector4 lightDirection = (transform.position - Universe.sunPosition.position).normalized;
+        Vector4 lightDirection = (transform.position - Universe.sunPosition.position);
         atmosphereMaterial.SetVector(LightDirection, lightDirection);
     }
 }
