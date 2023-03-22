@@ -22,16 +22,16 @@ Material:
     m_TexEnvs: []
     m_Ints: []
     m_Floats:
-    - _AtmosphereRadius: 100
+    - _AtmosphereRadius: 62.5
     - _ClipThreshold: 0.73
-    - _LightIntensity: 17.1
+    - _LightIntensity: 10
     - _LightSteps: 12
     - _PlanetRadius: 50
     - _Steps: 20
     m_Colors:
     - _LightColor: {r: 1, g: 1, b: 1, a: 1}
     - _LightDirection: {r: 9.91, g: 1, b: 1, a: 1}
-    - _MieScattering: {r: 0.01, g: 0.9, b: 0, a: 0.8}
+    - _MieScattering: {r: -0, g: 0.9, b: 0, a: 0.8}
     - _PlanetCenter: {r: 0, g: 0, b: 0, a: 1}
-    - _RayleighScattering: {r: 0.08, g: 0.2, b: 0.51, a: 3.1}
+    - _RayleighScattering: {r: 0.08, g: 0.2, b: 0.51, a: 3.4}
   m_BuildTextureStacks: []

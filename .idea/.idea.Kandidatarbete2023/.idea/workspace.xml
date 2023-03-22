@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Shaders/Atmosphere/TestAtmosphere.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Shaders/Atmosphere/TestAtmosphere.mat" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -117,7 +118,8 @@
       <option name="presentableId" value="Default" />
       <updated>1679325034818</updated>
       <workItem from="1679325039380" duration="1612000" />
-      <workItem from="1679411316898" duration="2732000" />
+      <workItem from="1679411316898" duration="2921000" />
+      <workItem from="1679438130511" duration="3150000" />
     </task>
     <task id="LOCAL−00003" summary="Changed file">
       <created>1679327563589</created>
