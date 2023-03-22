@@ -128,7 +128,7 @@ public class Planet : MonoBehaviour
 
 
     // Gives back a random position on the edge of a circle given the radius of the circle
-    private Vector3 RandomPointOnSphereEdge(float radius, System.Random rand)
+    private Vector3 RandomPointOnSphereEdge(float radius, RandomX rand)
     {
         Vector3 randomVector = new Vector3(rand.Next(1, 360), rand.Next(1, 360), rand.Next(1, 360));
         var vector3 = randomVector.normalized * radius;

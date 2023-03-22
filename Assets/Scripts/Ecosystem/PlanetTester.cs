@@ -14,7 +14,7 @@ public class PlanetTester : MonoBehaviour
         Universe.InitializeRandomWithSeed();
         planet.Initialize(player.transform, Universe.random.Next(), true);
         planet.SetUpPlanetValues();
-        player.Initialize(planet.gameObject);
+        player.Initialize(planet);
     }
 
 }

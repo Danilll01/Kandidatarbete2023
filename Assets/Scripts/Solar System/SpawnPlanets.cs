@@ -42,7 +42,7 @@ public class SpawnPlanets : MonoBehaviour
         GetValues();
         CreatePlanets();
         sunLightning.Initialize(sun.transform);
-        player.Initialize(bodies[spawnPlanetIndex].gameObject);
+        player.Initialize(bodies[spawnPlanetIndex]);
         solarySystemGenerated = true;
     }
 

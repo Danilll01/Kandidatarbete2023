@@ -448,6 +448,18 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 210303241, guid: d9aa2365836edc946afc563b765ba551, type: 3}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: 1898646049}
+    - target: {fileID: 210303241, guid: d9aa2365836edc946afc563b765ba551, type: 3}
+      propertyPath: spawnPlanets
+      value: 
+      objectReference: {fileID: 882231452}
+    - target: {fileID: 210303241, guid: d9aa2365836edc946afc563b765ba551, type: 3}
+      propertyPath: activePlanetIndex
+      value: -1
+      objectReference: {fileID: 0}
     - target: {fileID: 8157375954420172324, guid: d9aa2365836edc946afc563b765ba551,
         type: 3}
       propertyPath: m_RootOrder
@@ -516,20 +528,6 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 210303239}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &210303241
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 210303240}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 675c3fda8194de6479a348e9d502f785, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  spawnPlanets: {fileID: 882231452}
-  player: {fileID: 1898646049}
 --- !u!1 &459511075
 GameObject:
   m_ObjectHideFlags: 0
@@ -987,7 +985,7 @@ PrefabInstance:
     - target: {fileID: 776431053636631548, guid: 93094628cce30c64195c2ae1633e7e60,
         type: 3}
       propertyPath: numberOfPlanets
-      value: 1
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 776431053636631548, guid: 93094628cce30c64195c2ae1633e7e60,
         type: 3}
