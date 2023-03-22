@@ -10,14 +10,13 @@ public class SolarSystemTransform : MonoBehaviour
     private GameObject sun;
     private GameObject planetsParent;
     [SerializeField] private GameObject player;
-    private int playerOnPlanetIndex = 0;
-    private bool rotateSolarSystem = false;
+    private int playerOnPlanetIndex;
+    private bool rotateSolarSystem;
     private Quaternion playerRotation;
     private GameObject fakeOrbitObject;
     private Vector3[] relativePlanetSunDistances;
-
-    public bool ResetSolarSystem = false;
-    private bool reset = false;
+    private bool valuesInitialized = false;
+    
     private bool releasePlayer = false;
     private Vector3 directionPlayerToPlanet;
     private int planetIndexToReleasePlayerFrom;
@@ -35,17 +34,19 @@ public class SolarSystemTransform : MonoBehaviour
     
     void Update()
     {
+        if (!spawnPlanets.solarySystemGenerated)
+        {
+            return;
+        }
+        
+        if (!valuesInitialized)
+        {
+            InitializeValues();
+            valuesInitialized = true;
+        }
+        
         if (!releasePlayer)
         {
-            if (!spawnPlanets.solarySystemGenerated)
-            {
-                return;
-            }
-            else
-            {
-                InitializeValues();
-            }
-
             CheckIfPlayerOnAnyPlanet();
 
             // If the player is not on any planet, reset the solar system
@@ -56,7 +57,6 @@ public class SolarSystemTransform : MonoBehaviour
                 releasePlayer = true;
                 planetIndexToReleasePlayerFrom = activePlanetIndex;
                 activePlanetIndex = playerOnPlanetIndex;
-                //reset = true;
             }
             // If the player has entered a new planet, move the solar system accordingly
             else if (playerOnPlanetIndex != activePlanetIndex)
@@ -126,7 +126,7 @@ public class SolarSystemTransform : MonoBehaviour
                 float distance = (player.transform.position - planet.transform.GetChild(0).position).magnitude;
 
                 // Check if the player has entered a new planet
-                if (distance <= (planet.radius / 1.25f) && i != activePlanetIndex)
+                if (distance <= (planet.radius / 1.525f) && i != activePlanetIndex)
                 {
                     player.transform.parent = planet.transform;
                     playerOnPlanetIndex = i;
@@ -136,7 +136,7 @@ public class SolarSystemTransform : MonoBehaviour
                 // Check if the player has left the current planet
                 if (playerOnPlanetIndex >= 0 && i == playerOnPlanetIndex)
                 {
-                    if (distance > (planet.radius / 1.3f))
+                    if (distance > (planet.radius / 1.5f))
                     {
                         playerOnPlanetIndex = -1; // -1 means the player is not on any planet
                         break;
