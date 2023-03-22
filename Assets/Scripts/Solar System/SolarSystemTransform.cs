@@ -129,7 +129,7 @@ public class SolarSystemTransform : MonoBehaviour
                 float distance = (player.transform.position - planet.transform.GetChild(0).position).magnitude;
 
                 // Check if the player has entered a new planet
-                if (distance <= (planet.diameter / 1.5f) && i != activePlanetIndex)
+                if (distance <= (planet.diameter / 1.25f) && i != activePlanetIndex)
                 {
                     player.transform.parent = planet.transform;
                     playerOnPlanetIndex = i;
@@ -139,7 +139,7 @@ public class SolarSystemTransform : MonoBehaviour
                 // Check if the player has left the current planet
                 if (playerOnPlanetIndex >= 0 && i == playerOnPlanetIndex)
                 {
-                    if (distance > (planet.diameter / 1.25f))
+                    if (distance > (planet.diameter / 1.3f))
                     {
                         playerOnPlanetIndex = -1; // -1 means the player is not on any planet
                         break;
