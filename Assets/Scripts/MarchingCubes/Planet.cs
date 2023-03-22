@@ -69,7 +69,7 @@ public class Planet : MonoBehaviour
         // Init water
         if (willGeneratePlanetLife)
         {
-            waterDiameter = Mathf.Abs((threshold / 255 - 1) * radius * 0.93f);
+            waterDiameter = Mathf.Abs((threshold / 255 - 1) * 2 * radius * 0.93f);
         }
         else
         {

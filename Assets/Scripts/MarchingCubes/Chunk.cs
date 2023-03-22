@@ -7,6 +7,7 @@ using ExtendedRandom;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.UIElements;
+using static ChunksHandler;
 
 public class Chunk : MonoBehaviour
 {
@@ -20,10 +21,10 @@ public class Chunk : MonoBehaviour
 
     // Resolutions of chunk
     private int currentRes;
-    private int highRes;
-    private int mediumRes;
-    private int lowRes;
-    private Vector3 previousPlayerPos = Vector3.zero;
+    private ResolutionSetting highRes;
+    private ResolutionSetting mediumRes;
+    private ResolutionSetting lowRes;
+    private Vector3 previousPlayerPos;
 
     private MeshFilter meshFilter;
     private MeshCollider meshCollider;
@@ -32,9 +33,10 @@ public class Chunk : MonoBehaviour
     private Transform player;
     private Planet planet;
     private MinMaxTerrainLevel terrainLevel;
-    private float chunkSize;
+    [HideInInspector] public float chunkSize;
 
-    ChunksHandler chunkHandler;
+    private bool lowChunkResChunks;
+
     private RandomX random;
 
     [HideInInspector] public Vector3 position;
@@ -62,7 +64,6 @@ public class Chunk : MonoBehaviour
         lowRes = chunkHandler.lowRes;
         random = new RandomX(seed);
 
-        this.chunkHandler = chunkHandler;
         this.player = player;
         this.terrainLevel = terrainLevel;
         chunkSize = (2 * chunkHandler.planetRadius) / (1 << marchingCubes.chunkResolution);
@@ -70,15 +71,17 @@ public class Chunk : MonoBehaviour
         meshFilter = transform.GetComponent<MeshFilter>();
         if(marchingCubes.chunkResolution == 1)
         {
+            lowChunkResChunks = true;
             GetComponent<MeshCollider>().enabled = false;
         }
         else
         {
+            lowChunkResChunks = false;
             meshCollider = transform.GetComponent<MeshCollider>();
         }
 
         //Set lowest resolution as default
-        int numVerts = UpdateMesh(lowRes);
+        int numVerts = UpdateMesh(lowRes.resolution);
 
         initialized = true;
 
@@ -87,7 +90,7 @@ public class Chunk : MonoBehaviour
 
     private void Update()
     {
-        if(initialized && marchingCubes.chunkResolution == chunkHandler.highChunkRes)
+        if(initialized && !lowChunkResChunks)
         {
             // Check every 5 meter so that we don't check all the time
             if (Vector3.Magnitude(player.localPosition - previousPlayerPos) < 5)
@@ -96,35 +99,35 @@ public class Chunk : MonoBehaviour
             previousPlayerPos = player.localPosition;
 
             float playerDistance = Vector3.Magnitude(player.localPosition - position);
-            if (playerDistance < 1.3 * chunkSize)
+            if (playerDistance < highRes.upperRadius * chunkSize)
             {
                 meshCollider.enabled = true;
                 foliageGameObject.SetActive(true);
                 creatureGameObject.SetActive(true);
                 if (!foliage.initialized && planet.willGeneratePlanetLife)
                 {
-                    int numVerts = UpdateMesh(highRes);
+                    int numVerts = UpdateMesh(highRes.resolution);
                     if (numVerts > 500)
                         foliage.Initialize(numVerts, position, random.Next());
                 }
                 else
-                    UpdateMesh(highRes);
+                    UpdateMesh(highRes.resolution);
                     
             } 
-            else if (1.5 * chunkSize < playerDistance && playerDistance < 2 * chunkSize)
+            else if (mediumRes.lowerRadius * chunkSize < playerDistance && playerDistance < mediumRes.upperRadius * chunkSize)
             {
                 foliageGameObject.SetActive(false);
                 creatureGameObject.SetActive(false);
                 meshCollider.enabled = false;
-                UpdateMesh(mediumRes);
+                UpdateMesh(mediumRes.resolution);
                 
             }
-            else if (2.3 * chunkSize < playerDistance)
+            else if (lowRes.lowerRadius * chunkSize < playerDistance)
             {
                 foliageGameObject.SetActive(false);
                 creatureGameObject.SetActive(false);
                 meshCollider.enabled = false;
-                UpdateMesh(lowRes);
+                UpdateMesh(lowRes.resolution);
             }
         }
     }
