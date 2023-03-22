@@ -9,12 +9,14 @@ public class PlayerWater : MonoBehaviour
     [SerializeField] private Material water;
     [HideInInspector] public Planet planet = null;
     [HideInInspector] public bool underWater;
+    private static readonly int C1 = Shader.PropertyToID("_C1");
+    private static readonly int UnderWater = Shader.PropertyToID("_UnderWater");
 
     public void Initialize(Planet planet)
     {
         underWater = false;
         UpdatePlanet(planet);
-        water.SetFloat("_UnderWater", 0);
+        water.SetFloat(UnderWater, 0);
         underWater = false;
     }
 
@@ -33,7 +35,7 @@ public class PlayerWater : MonoBehaviour
     /// </summary>
     private void SetColors()
     {
-        water.SetColor("_C1", planet.GetGroundColor());
+        water.SetColor(C1, planet.GetGroundColor());
     }
 
     /// <summary>
@@ -41,17 +43,17 @@ public class PlayerWater : MonoBehaviour
     /// </summary>
     public void UpdateWater(Vector3 playerPos)
     {
-        bool underWater = Mathf.Abs(planet.waterDiameter / 2) > playerPos.magnitude;
+        bool underWater = Mathf.Abs(planet.waterDiameter / 2) > playerPos.magnitude + 1.7f; // Addition because camera is higher
         if (underWater != this.underWater)
         {
             if (underWater)
             {
-                water.SetFloat("_UnderWater", 1);
+                water.SetFloat(UnderWater, 1);
                 this.underWater = true;
             }
             else
             {
-                water.SetFloat("_UnderWater", 0);
+                water.SetFloat(UnderWater, 0);
                 this.underWater = false;
             }
             this.underWater = underWater;

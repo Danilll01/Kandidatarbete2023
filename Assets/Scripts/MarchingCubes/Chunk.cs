@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
 using Unity.Mathematics;
+using ExtendedRandom;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.UIElements;
@@ -29,10 +30,12 @@ public class Chunk : MonoBehaviour
     private Mesh mesh;
     public MarchingCubes marchingCubes;
     private Transform player;
+    private Planet planet;
     private MinMaxTerrainLevel terrainLevel;
     private float chunkSize;
 
     ChunksHandler chunkHandler;
+    private RandomX random;
 
     [HideInInspector] public Vector3 position;
     [HideInInspector] public bool initialized = false;
@@ -51,11 +54,13 @@ public class Chunk : MonoBehaviour
     /// <param name="resolution"></param>
     /// <param name="player"></param>
     /// <param name="terrainLevel"></param>
-    public int Initialize(Transform player, MinMaxTerrainLevel terrainLevel, ChunksHandler chunkHandler)
+    public int Initialize(Planet planet, Transform player, MinMaxTerrainLevel terrainLevel, ChunksHandler chunkHandler, int seed)
     {
+        this.planet = planet;
         highRes = chunkHandler.highRes;
         mediumRes = chunkHandler.mediumRes;
         lowRes = chunkHandler.lowRes;
+        random = new RandomX(seed);
 
         this.chunkHandler = chunkHandler;
         this.player = player;
@@ -74,10 +79,6 @@ public class Chunk : MonoBehaviour
 
         //Set lowest resolution as default
         int numVerts = UpdateMesh(lowRes);
-        //if (meshVerticesLength > 500 && marchingCubes.chunkResolution == chunkHandler.highChunkRes)
-        //{
-        //    foliage.Initialize(meshVerticesLength, position);
-        //}
 
         initialized = true;
 
@@ -100,7 +101,7 @@ public class Chunk : MonoBehaviour
                 meshCollider.enabled = true;
                 foliageGameObject.SetActive(true);
                 creatureGameObject.SetActive(true);
-                if (!foliage.initialized)
+                if (!foliage.initialized && planet.willGeneratePlanetLife)
                 {
                     int numVerts = UpdateMesh(highRes);
                     if (numVerts > 500)

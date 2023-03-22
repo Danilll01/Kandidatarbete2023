@@ -8,15 +8,19 @@ namespace ExtendedRandom
     public class RandomX
     {
         readonly private System.Random random;
+        readonly public int seed;
 
         public RandomX()
         {
-            random = new System.Random();
+            int seed = System.DateTime.Now.Millisecond;
+            random = new System.Random(seed);
+            this.seed = seed;
         }
 
         public RandomX(int seed)
         {
             random = new System.Random(seed);
+            this.seed = seed;
         }
 
         /// <summary>

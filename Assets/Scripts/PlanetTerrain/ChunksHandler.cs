@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using ExtendedRandom;
 using UnityEditor;
 using UnityEngine;
 
@@ -17,6 +18,7 @@ public class ChunksHandler : MonoBehaviour
     private Material planetMaterial;
     [HideInInspector] public float planetRadius;
     private MinMaxTerrainLevel terrainLevel;
+    private RandomX rand;
 
     [SerializeField] private Chunk chunkPrefab;
     [SerializeField] private GameObject chunksParent;
@@ -43,7 +45,7 @@ public class ChunksHandler : MonoBehaviour
     /// <param name="player"></param>
     public void Initialize(Planet planet, MinMaxTerrainLevel terrainLevel, bool spawn, int seed)
     {
-        System.Random rand = new System.Random(seed);
+        rand = new RandomX(seed);
 
         this.planet = planet;
         player = planet.player;

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Mathematics;
+using ExtendedRandom;
 using UnityEngine;
 
 [RequireComponent(typeof(GenerateCreatures))]
@@ -25,6 +26,12 @@ public class Planet : MonoBehaviour
     [HideInInspector] public MarchingCubes marchingCubes;
 
     [SerializeField] private bool willGenerateCreature = false;
+    //[SerializeField, Range(1, 4)] 
+    [SerializeField, Range(1, 14)] public int resolution = 5;
+
+    [SerializeField] public bool willGeneratePlanetLife = false;
+    [Range(0f, 1f)]
+    [SerializeField] private float chanceToSpawnPlanetLife = 0.8f; 
     [SerializeField] private GenerateCreatures generateCreatures;
     [SerializeField] public ChunksHandler chunksHandler;
     [SerializeField] public WaterHandler waterHandler;
@@ -42,24 +49,32 @@ public class Planet : MonoBehaviour
     /// <param name="spawn">True if the player will spawn on the planet</param>
     public void Initialize(Transform player, int randomSeed, bool spawn)
     {
-        System.Random rand = new System.Random(randomSeed);
-
-        radius = diameter / 2;
+        RandomX rand = new RandomX(randomSeed);
 
         this.player = player;
 
         MinMaxTerrainLevel terrainLevel = new MinMaxTerrainLevel();
 
+        willGeneratePlanetLife = rand.Value() < chanceToSpawnPlanetLife;
+
         // Initialize the meshgenerator
         if (marchingCubes == null)
         {
-            threshold = 23 + (float)rand.NextDouble() * 4;
+            threshold = 23 + (float) rand.Value() * 4;
             int frequency = rand.Next(2) + 3;
             float amplitude = 1.2f + (float)rand.NextDouble() * 0.4f;
             marchingCubes = new MarchingCubes(1, meshGenerator, threshold, radius, frequency, amplitude, terrainLayers);
         }
 
-        waterDiameter = -(threshold / 255 - 1) * diameter * 0.93f;
+        // Init water
+        if (willGeneratePlanetLife)
+        {
+            waterDiameter = Mathf.Abs((threshold / 255 - 1) * radius * 0.93f);
+        }
+        else
+        {
+            waterDiameter = 0; 
+        }
 
         if (foliageHandler != null && !bodyName.Contains("Moon"))
         {
@@ -70,17 +85,19 @@ public class Planet : MonoBehaviour
 
         chunksHandler.Initialize(this, terrainLevel, spawn, rand.Next());
 
-        if (willGenerateCreature) 
+        
+
+        if (willGeneratePlanetLife) 
         {
             // Generate the creatures
             if (generateCreatures != null && !bodyName.Contains("Moon")) {
-                generateCreatures.Initialize(this, rand.Next());
+                generateCreatures.Initialize(this, rand.Next(), spawn);
             }
-        }
 
-        if (waterHandler != null && bodyName != "Sun")
-        {
-            waterHandler.Initialize(this, waterDiameter, GetGroundColor());
+            if (waterHandler != null && bodyName != "Sun")
+            {
+                waterHandler.Initialize(this, waterDiameter, GetGroundColor());
+            }
         }
 
     }
@@ -90,7 +107,7 @@ public class Planet : MonoBehaviour
     /// </summary>
     public void SetUpPlanetValues()
     {
-        mass = surfaceGravity * diameter * diameter / Universe.gravitationalConstant;
+        mass = surfaceGravity * radius * radius / Universe.gravitationalConstant;
         gameObject.name = bodyName;
     }
 
