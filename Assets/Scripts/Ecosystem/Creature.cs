@@ -66,7 +66,7 @@ public class Creature : MonoBehaviour
     [SerializeField] private AudioClip[] stepSounds;
     [SerializeField] private float timeBetweenIdleSounds = 12f;
     [SerializeField] private float stepsTimer = 0f;
-    [SerializeField] private float stepsPerSecond = 3f;
+    [SerializeField] private float stepsPerSpeedUnit = 1f/3f;
     private float idleSoundTimer;
 
     [Header("Debug")]
@@ -89,6 +89,7 @@ public class Creature : MonoBehaviour
     private AudioSource audioSource;
 
     private Creature breedingPartner;
+    public bool isDying = false;
 
     // Start is called before the first frame update
     void Start()
@@ -122,7 +123,6 @@ public class Creature : MonoBehaviour
         if (isChild) canReproduce = false;
 
         idleSoundTimer = timeBetweenIdleSounds + Random.Range(-2f,2f);
-        stepsTimer = speed / stepsPerSecond;
     }
 
     // Update is called once per frame
@@ -182,7 +182,7 @@ public class Creature : MonoBehaviour
         // Die if hunger or thirst is 0
         if (hunger <= 0 || thirst <= 0)
         {
-            StartCoroutine(SelfDestruct());
+            Kill();
         }
 
         // Update all timers
@@ -387,9 +387,14 @@ public class Creature : MonoBehaviour
             {
                 if (type == ResourceType.Creature)
                 {
-                    CreatureType creatureType = coll.gameObject.GetComponent<Creature>().GetCreatureType;
+                    Creature creature = coll.gameObject.GetComponent<Creature>();
+
+                    if (creature.isDying) continue;
+
+                    CreatureType creatureType = creature.GetCreatureType;
                     if (creatureDiet != creatureType) continue;
                     if (SameSpecies(coll.gameObject.name)) continue;
+
                 }
                 
                 float distanceToGameObject = Vector3.Distance(transform.position, coll.transform.position);
@@ -548,7 +553,12 @@ public class Creature : MonoBehaviour
         {
             if (type == ResourceType.Creature)
             {
-                Destroy(resource);
+                Creature creature = resource.GetComponent<Creature>();
+                if (creature != null)
+                {
+                    creature.Kill();
+                }
+                
             } else
             {
                 resource.GetComponent<Resource>().ConsumeResource();
@@ -620,7 +630,7 @@ public class Creature : MonoBehaviour
             else
             {
                 audioSource.PlayOneShot(GetRandomClip(stepSounds));
-                stepsTimer = stepsTimer = speed / stepsPerSecond;
+                stepsTimer = stepsPerSpeedUnit / speed;
             }
         }
     }
@@ -659,6 +669,17 @@ public class Creature : MonoBehaviour
         return sameAsParent || sameAsChild;
     }
 
+    /// <summary>
+    /// Kills the creature
+    /// </summary>
+    public void Kill()
+    {
+        if (!isDying)
+        {
+            isDying = true;
+            StartCoroutine(SelfDestruct());
+        }
+    }
 
     public CreatureType GetCreatureType
     {
