@@ -35,12 +35,8 @@ public class SolarSystemTransform : MonoBehaviour
     
     void Update()
     {
-        if (!ResetSolarSystem && !reset)
+        if (!releasePlayer)
         {
-            if (sun == null && spawnPlanets.bodies != null)
-            {
-                sun = spawnPlanets.sun;
-            }
             if (!spawnPlanets.solarySystemGenerated)
             {
                 return;
@@ -69,22 +65,7 @@ public class SolarSystemTransform : MonoBehaviour
                 activePlanetIndex = playerOnPlanetIndex;
             }
         }
-        else if (!reset)
-        {
-            ResetPlanetOrbit(activePlanetIndex);
-            releasePlayer = true;
-            reset = true;
-        }
-        else if (!ResetSolarSystem && reset)
-        {
-            playerOnPlanetIndex = 0;
-            if (playerOnPlanetIndex != activePlanetIndex)
-            {
-                MovePlanets(playerOnPlanetIndex);
-                activePlanetIndex = playerOnPlanetIndex;
-            }
-        }
-
+        
         if (releasePlayer)
         {
             CheckWhenToReleasePlayer();
