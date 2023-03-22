@@ -61,6 +61,7 @@ MonoBehaviour:
   moons: []
   waterPoints: []
   player: {fileID: 0}
+  willGenerateCreature: 0
   resolution: 4
   willGeneratePlanetLife: 0
   chanceToSpawnPlanetLife: 0.8
@@ -172,6 +173,7 @@ MonoBehaviour:
   highRes: 8
   mediumRes: 4
   lowRes: 1
+  maxChunkChecksPerFrame: 100
 --- !u!114 &6368680446637308804
 MonoBehaviour:
   m_ObjectHideFlags: 0

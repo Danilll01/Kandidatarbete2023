@@ -87,7 +87,7 @@ public class Chunk : MonoBehaviour
 
     private void Update()
     {
-        if(marchingCubes.chunkResolution == chunkHandler.highChunkRes && initialized)
+        if(initialized && marchingCubes.chunkResolution == chunkHandler.highChunkRes)
         {
             // Check every 5 meter so that we don't check all the time
             if (Vector3.Magnitude(player.localPosition - previousPlayerPos) < 5)

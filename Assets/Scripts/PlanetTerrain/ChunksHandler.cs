@@ -37,6 +37,11 @@ public class ChunksHandler : MonoBehaviour
     [SerializeField] public int mediumRes = 2;
     [SerializeField] public int lowRes = 1;
 
+    // Used for chunk culling
+    private int index = 0;
+    [SerializeField] private int maxChunkChecksPerFrame = 50;
+
+
 
     /// <summary>
     /// Initialize the values
@@ -74,7 +79,7 @@ public class ChunksHandler : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(playerOnPlanet != ReferenceEquals(transform, player.transform.parent))
+        if (playerOnPlanet != ReferenceEquals(transform, player.transform.parent))
         {
             updateChunks = true;
             playerOnPlanet = ReferenceEquals(transform, player.transform.parent);
@@ -84,9 +89,9 @@ public class ChunksHandler : MonoBehaviour
         {
             foliageInitialized--;
         }
-        
+
         // Check if the chunks needs updating
-        if(updateChunks)
+        if (updateChunks)
         {
             // Check if player is on planet or not
             if (!playerOnPlanet)
@@ -98,7 +103,7 @@ public class ChunksHandler : MonoBehaviour
                 SetupChunks(highChunkRes);
 
             SetChunksMaterials();
-            updateChunks = false;  
+            updateChunks = false;
         }
 
         // Only update the chunks if the player is close to the planet
@@ -133,19 +138,19 @@ public class ChunksHandler : MonoBehaviour
             chunk.transform.localPosition = Vector3.zero;
             chunk.name = "chunk" + i;
             chunk.Setup(i, marchingCubes);
-            chunks.Add(chunk);  
+            chunks.Add(chunk);
         }
     }
 
     private void SetChunksMaterials()
     {
-        foreach(Chunk chunk in chunks)
+        foreach (Chunk chunk in chunks)
             chunk.SetMaterial(planetMaterial);
     }
 
     private void CreateMeshes(MinMaxTerrainLevel terrainLevel)
     {
-        for(int i = chunks.Count - 1; i != -1; i--)
+        for (int i = chunks.Count - 1; i != -1; i--)
         {
             // Remove chunks without vertices
             if (chunks[i].Initialize(planet, player, terrainLevel, this, rand.Next()) == 0)
@@ -155,6 +160,7 @@ public class ChunksHandler : MonoBehaviour
             }
         }
     }
+
     private void UpdateChunksVisibility()
     {
         Vector3 playerPos = player.position;
@@ -164,7 +170,7 @@ public class ChunksHandler : MonoBehaviour
         // Only update chunks if player has moved a certain distance
         if (Vector3.Magnitude(playerPos - playerLastPosition) < 3)
             return;
-        
+
         playerLastPosition = playerPos;
 
         Vector3 cutoffPoint;
@@ -177,29 +183,33 @@ public class ChunksHandler : MonoBehaviour
             cutoffPoint = new Vector3(playerToPlanetCenter.x / 1.5f, playerToPlanetCenter.y / 1.5f, playerToPlanetCenter.z / 1.5f);
         }
 
-        for(int i = chunks.Count - 1; i != -1; i--)
+        int count = 0;
+        while (count < maxChunkChecksPerFrame)
         {
-            bool isBelowHalfWayPoint = CheckIfPointBIsBelowPointA(cutoffPoint, chunks[i].position, cutoffPoint.normalized);
+            bool isBelowHalfWayPoint = CheckIfPointBIsBelowPointA(cutoffPoint, chunks[index].position, cutoffPoint.normalized);
             if (isBelowHalfWayPoint)
             {
-                chunks[i].gameObject.SetActive(false);
+                chunks[index].gameObject.SetActive(false);
             }
             else
             {
-                chunks[i].gameObject.SetActive(true);
-                if(!chunks[i].initialized)  // Create chunks as we go
+                
+                chunks[index].gameObject.SetActive(true);
+                if (!chunks[index].initialized)  // Create chunks as we go
                 {
                     // Remove chunks without vertices
-                    if (chunks[i].Initialize(planet, player, terrainLevel, this, rand.Next()) == 0)
+                    if (chunks[index].Initialize(planet, player, terrainLevel, this, rand.Next()) == 0)
                     {
-                        Destroy(chunks[i].gameObject);
-                        chunks.RemoveAt(i);
+                        Destroy(chunks[index].gameObject);
+                        chunks.RemoveAt(index);
                         continue;
                     }
                 }
                 if (foliageInitialized == 0)
-                    chunks[i].foliage.SpawnFoliageOnChunk();
+                    chunks[index].foliage.SpawnFoliageOnChunk();
             }
+            count++;
+            index = index == 0 ? chunks.Count - 1 : index - 1;
         }
     }
 
