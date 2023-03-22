@@ -1,13 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Changed directional light color to be based on temperature">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Added atmospheres to planets">
       <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Planets/Planet.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Planets/Planet.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/MarchingCubes/Planet.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/MarchingCubes/Planet.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Solar System/SpawnPlanets.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Solar System/SpawnPlanets.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Solar System/Universe.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Solar System/Universe.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Shaders/Atmosphere/TestAtmosphere.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Shaders/Atmosphere/TestAtmosphere.mat" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -37,6 +32,7 @@
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/4746c126b0b54f3b834845974d1a9190159000/57/36c84f50/Component.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Atmosphere/AtmosphereHandler.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://D:/Unity/Projects/Kandidatarbete2023/Assets/Scripts/MarchingCubes/Planet.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -125,7 +121,7 @@
       <updated>1679325034818</updated>
       <workItem from="1679325039380" duration="1612000" />
       <workItem from="1679411316898" duration="2921000" />
-      <workItem from="1679438130511" duration="6786000" />
+      <workItem from="1679438130511" duration="7116000" />
     </task>
     <task id="LOCAL−00003" summary="Changed file">
       <created>1679327563589</created>
@@ -139,7 +135,13 @@
       <option name="presentableId" value="LOCAL−00004" />
       <updated>1679448209679</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL−00005" summary="Added atmospheres to planets">
+      <created>1679451895994</created>
+      <option name="number" value="LOCAL−00005" />
+      <option name="presentableId" value="LOCAL−00005" />
+      <updated>1679451895994</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -165,6 +167,7 @@
     <MESSAGE value="Fixed typo" />
     <MESSAGE value="Changed file" />
     <MESSAGE value="Changed directional light color to be based on temperature" />
-    <option name="LAST_COMMIT_MESSAGE" value="Changed directional light color to be based on temperature" />
+    <MESSAGE value="Added atmospheres to planets" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added atmospheres to planets" />
   </component>
 </project>
