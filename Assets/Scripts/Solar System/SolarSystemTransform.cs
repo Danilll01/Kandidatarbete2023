@@ -35,7 +35,7 @@ public class SolarSystemTransform : MonoBehaviour
     
     void Update()
     {
-        if (!releasePlayer)
+        if (!ResetSolarSystem && !reset)
         {
             if (sun == null && spawnPlanets.bodies != null)
             {
@@ -69,7 +69,23 @@ public class SolarSystemTransform : MonoBehaviour
                 activePlanetIndex = playerOnPlanetIndex;
             }
         }
-        else if (releasePlayer)
+        else if (!reset)
+        {
+            ResetPlanetOrbit(activePlanetIndex);
+            releasePlayer = true;
+            reset = true;
+        }
+        else if (!ResetSolarSystem && reset)
+        {
+            playerOnPlanetIndex = 0;
+            if (playerOnPlanetIndex != activePlanetIndex)
+            {
+                MovePlanets(playerOnPlanetIndex);
+                activePlanetIndex = playerOnPlanetIndex;
+            }
+        }
+
+        if (releasePlayer)
         {
             CheckWhenToReleasePlayer();
         }
@@ -174,8 +190,8 @@ public class SolarSystemTransform : MonoBehaviour
             sunOrbitMover.enabled = false;
 
             // Set the rotation and position of planet
-            planet.ResetMoons();
             planet.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
+            planet.ResetMoons();
             Vector3 direction = sun.transform.position - planet.transform.position;
             direction.y = 0;
             planet.transform.position = -direction.normalized * relativePlanetSunDistances[planetIndex].magnitude;
