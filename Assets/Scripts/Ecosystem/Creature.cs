@@ -185,52 +185,15 @@ public class Creature : MonoBehaviour
             StartCoroutine(SelfDestruct());
         }
 
-        // Decrese timer for reproduction
-        if (canReproduce && reproductionTimer > 0)
-        {
-            reproductionTimer -= Time.deltaTime;
-        }
+        // Update all timers
 
-        
-        if (isChild)
-        {
-            // Decrease grow-up timer
-            if (growUpTime > 0)
-            {
-                growUpTime -= Time.deltaTime;
-            } else
-            {
-                isChild = false;
-                GameObject newObject = Instantiate(parentPrefab, transform.position, transform.rotation, transform.parent);
-                newObject.name = newObject.name.Replace("(Clone)", "").Trim(); 
-                Destroy(gameObject);
-            }
-        }
+        UpdateReproductionTimer();
 
-        // Only play sound if object is rendered
-        if (!isSleeping && idleSounds.Length > 0)
-        {
-            if (idleSoundTimer > 0)
-            {
-                idleSoundTimer -= Time.deltaTime;
-            } else
-            {
-                audioSource.PlayOneShot(GetRandomClip(idleSounds));
-                idleSoundTimer = timeBetweenIdleSounds + Random.Range(-5f, 5f); ;
-            }
-        }
-        
-        if (stepSounds.Length > 0)
-        {
-            if (stepsTimer > 0)
-            {
-                stepsTimer -= Time.deltaTime;
-            } else
-            {
-                audioSource.PlayOneShot(GetRandomClip(stepSounds));
-                stepsTimer = stepsTimer = speed / stepsPerSecond;
-            }
-        }
+        UpdateGrowthTimer();
+
+        UpdateIdleSoundsTimer();
+
+        UpdateStepSoundsTimer();
     }
 
     void FixedUpdate()
@@ -600,6 +563,69 @@ public class Creature : MonoBehaviour
 
         currentState = CreatureState.Walking;
     }
+
+    #region Timers
+
+    private void UpdateReproductionTimer()
+    {
+        if (canReproduce && reproductionTimer > 0)
+        {
+            reproductionTimer -= Time.deltaTime;
+        }
+    }
+
+    private void UpdateGrowthTimer()
+    {
+        if (isChild)
+        {
+            // Decrease grow-up timer
+            if (growUpTime > 0)
+            {
+                growUpTime -= Time.deltaTime;
+            }
+            else
+            {
+                isChild = false;
+                GameObject newObject = Instantiate(parentPrefab, transform.position, transform.rotation, transform.parent);
+                newObject.name = newObject.name.Replace("(Clone)", "").Trim();
+                Destroy(gameObject);
+            }
+        }
+    }
+
+    private void UpdateIdleSoundsTimer()
+    {
+        if (idleSounds.Length > 0)
+        {
+            if (idleSoundTimer > 0)
+            {
+                idleSoundTimer -= Time.deltaTime;
+            }
+            else
+            {
+                audioSource.PlayOneShot(GetRandomClip(idleSounds));
+                idleSoundTimer = timeBetweenIdleSounds + Random.Range(-5f, 5f); ;
+            }
+        }
+    }
+
+    private void UpdateStepSoundsTimer()
+    {
+        if (stepSounds.Length > 0)
+        {
+            if (stepsTimer > 0)
+            {
+                stepsTimer -= Time.deltaTime;
+            }
+            else
+            {
+                audioSource.PlayOneShot(GetRandomClip(stepSounds));
+                stepsTimer = stepsTimer = speed / stepsPerSecond;
+            }
+        }
+    }
+
+    #endregion
 
     private IEnumerator SelfDestruct()
     {
