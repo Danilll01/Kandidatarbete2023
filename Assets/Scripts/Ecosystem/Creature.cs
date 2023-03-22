@@ -63,7 +63,10 @@ public class Creature : MonoBehaviour
     [SerializeField] private float volume = 0.4f;
     [SerializeField] private AudioClip[] idleSounds;
     [SerializeField] private AudioClip[] deathSounds;
+    [SerializeField] private AudioClip[] stepSounds;
     [SerializeField] private float timeBetweenIdleSounds = 12f;
+    [SerializeField] private float stepsTimer = 0f;
+    [SerializeField] private float stepsPerSecond = 3f;
     private float idleSoundTimer;
 
     [Header("Debug")]
@@ -119,6 +122,7 @@ public class Creature : MonoBehaviour
         if (isChild) canReproduce = false;
 
         idleSoundTimer = timeBetweenIdleSounds + Random.Range(-2f,2f);
+        stepsTimer = speed / stepsPerSecond;
     }
 
     // Update is called once per frame
@@ -216,6 +220,17 @@ public class Creature : MonoBehaviour
             }
         }
         
+        if (stepSounds.Length > 0)
+        {
+            if (stepsTimer > 0)
+            {
+                stepsTimer -= Time.deltaTime;
+            } else
+            {
+                audioSource.PlayOneShot(GetRandomClip(stepSounds));
+                stepsTimer = stepsTimer = speed / stepsPerSecond;
+            }
+        }
     }
 
     void FixedUpdate()
@@ -617,6 +632,7 @@ public class Creature : MonoBehaviour
 
         return sameAsParent || sameAsChild;
     }
+
 
     public CreatureType GetCreatureType
     {
