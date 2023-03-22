@@ -9,7 +9,7 @@ using UnityEngine;
 public class Planet : MonoBehaviour
 {
     [SerializeField] private ComputeShader meshGenerator;
-    [SerializeField] private Material waterMaterial;
+    [SerializeField] private Material waterMaterial; // Can this be removed?
     [HideInInspector] public float waterDiameter;
 
     [HideInInspector, Obsolete]public float diameter;
@@ -31,6 +31,7 @@ public class Planet : MonoBehaviour
     [SerializeField] private GenerateCreatures generateCreatures;
     [SerializeField] public ChunksHandler chunksHandler;
     [SerializeField] public WaterHandler waterHandler;
+    [SerializeField] private AtmosphereHandler atmosphereHandler;
 
     private float threshold;
     public FoliageHandler foliageHandler;
@@ -84,6 +85,11 @@ public class Planet : MonoBehaviour
             waterHandler.Initialize(this, waterDiameter, GetGroundColor());
         }
 
+        if (atmosphereHandler != null && bodyName != "Sun")
+        {
+            atmosphereHandler.Initialize(radius, waterDiameter / 2);
+            
+        }
     }
 
     /// <summary>

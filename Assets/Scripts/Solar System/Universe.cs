@@ -11,6 +11,7 @@ public static class Universe
 
     //Guaranteed set after Awake()
     public static PillPlayerController player = null;
+    public static Transform sunPosition = null;
 
     /// <summary>
     /// Initializes the System.Random with the given seed
