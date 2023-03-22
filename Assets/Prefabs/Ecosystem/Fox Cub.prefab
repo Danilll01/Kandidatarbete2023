@@ -291,7 +291,18 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 63c56079c521bc54a8ef0e369f538db1, type: 3}
   deathSounds:
   - {fileID: 8300000, guid: 873b25f846aabfe4498dc7bd518b4552, type: 3}
+  stepSounds:
+  - {fileID: 8300000, guid: d865cf5819771a44ea9284b8433544eb, type: 3}
+  - {fileID: 8300000, guid: d8b57caa3496e34418f3afb4394e1799, type: 3}
+  - {fileID: 8300000, guid: 9bc6f465338b1864c993f3c32deb838c, type: 3}
+  - {fileID: 8300000, guid: f82c8717353ba3e42a42cfe81911ebb0, type: 3}
+  - {fileID: 8300000, guid: 511bc4e951be5f443bccaedb046f7754, type: 3}
+  - {fileID: 8300000, guid: d50c3fd81e9e6924a80d377802fa54a1, type: 3}
+  - {fileID: 8300000, guid: ca5e1fb6e16e1474eb845dc1a0ecc051, type: 3}
+  - {fileID: 8300000, guid: c00992d5ec1205d498ca08cbd105f76f, type: 3}
   timeBetweenIdleSounds: 15
+  stepsTimer: 0
+  stepsPerSecond: 3.2
   currentState: 0
   DEBUG: 0
   isSleeping: 0
