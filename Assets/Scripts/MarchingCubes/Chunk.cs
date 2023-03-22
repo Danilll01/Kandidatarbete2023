@@ -105,7 +105,7 @@ public class Chunk : MonoBehaviour
                 {
                     int numVerts = UpdateMesh(highRes);
                     if (numVerts > 500)
-                        foliage.Initialize(numVerts, position);
+                        foliage.Initialize(numVerts, position, random.Next());
                 }
                 else
                     UpdateMesh(highRes);

@@ -148,7 +148,7 @@ public class ChunksHandler : MonoBehaviour
         for(int i = chunks.Count - 1; i != -1; i--)
         {
             // Remove chunks without vertices
-            if (chunks[i].Initialize(player, terrainLevel, this) == 0)
+            if (chunks[i].Initialize(planet, player, terrainLevel, this, rand.Next()) == 0)
             {
                 Destroy(chunks[i].gameObject);
                 chunks.RemoveAt(i);
@@ -190,7 +190,7 @@ public class ChunksHandler : MonoBehaviour
                 if(!chunks[i].initialized)  // Create chunks as we go
                 {
                     // Remove chunks without vertices
-                    if (chunks[i].Initialize(player, terrainLevel, this) == 0)
+                    if (chunks[i].Initialize(planet, player, terrainLevel, this, rand.Next()) == 0)
                     {
                         Destroy(chunks[i].gameObject);
                         chunks.RemoveAt(i);

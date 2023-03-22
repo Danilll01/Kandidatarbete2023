@@ -62,7 +62,7 @@ public class Planet : MonoBehaviour
         {
             threshold = 23 + (float) rand.Value() * 4;
             int frequency = rand.Next(2) + 3;
-            float amplitude = 1.2f + (float)rand.NextDouble() * 0.4f;
+            float amplitude = 1.2f + rand.Value() * 0.4f;
             marchingCubes = new MarchingCubes(1, meshGenerator, threshold, radius, frequency, amplitude, terrainLayers);
         }
 
