@@ -20,6 +20,7 @@ public class SolarSystemTransform : MonoBehaviour
     private bool reset = false;
     private bool releasePlayer = false;
     private Vector3 directionPlayerToPlanet;
+    private int planetIndexToReleasePlayerFrom;
 
     void Start()
     {
@@ -34,7 +35,7 @@ public class SolarSystemTransform : MonoBehaviour
     
     void Update()
     {
-        if (!ResetSolarSystem && !reset)
+        if (!releasePlayer)
         {
             if (sun == null && spawnPlanets.bodies != null)
             {
@@ -57,7 +58,9 @@ public class SolarSystemTransform : MonoBehaviour
                 Debug.Log("Reset");
                 ResetPlanetOrbit(activePlanetIndex);
                 releasePlayer = true;
-                reset = true;
+                planetIndexToReleasePlayerFrom = activePlanetIndex;
+                activePlanetIndex = playerOnPlanetIndex;
+                //reset = true;
             }
             // If the player has entered a new planet, move the solar system accordingly
             else if (playerOnPlanetIndex != activePlanetIndex)
@@ -66,23 +69,7 @@ public class SolarSystemTransform : MonoBehaviour
                 activePlanetIndex = playerOnPlanetIndex;
             }
         }
-        else if(!reset)
-        {
-            ResetPlanetOrbit(activePlanetIndex);
-            releasePlayer = true;
-            reset = true;
-        }
-        else if (!ResetSolarSystem && reset)
-        {
-            playerOnPlanetIndex = 0;
-            if (playerOnPlanetIndex != activePlanetIndex)
-            {
-                MovePlanets(playerOnPlanetIndex);
-                activePlanetIndex = playerOnPlanetIndex;
-            }
-        }
-
-        if (releasePlayer)
+        else if (releasePlayer)
         {
             CheckWhenToReleasePlayer();
         }
@@ -90,7 +77,7 @@ public class SolarSystemTransform : MonoBehaviour
 
     private void CheckWhenToReleasePlayer()
     {
-        Vector3 distance = spawnPlanets.bodies[activePlanetIndex].transform.position;
+        Vector3 distance = spawnPlanets.bodies[planetIndexToReleasePlayerFrom].transform.position;
         if (distance.magnitude > 100f)
         {
             Debug.Log("Release Player");
@@ -100,7 +87,7 @@ public class SolarSystemTransform : MonoBehaviour
             player.transform.rotation = playerRotation;
             */
             releasePlayer = false;
-            playerOnPlanetIndex = activePlanetIndex;
+            
         }
     }
 
