@@ -7,7 +7,7 @@ public class Resource : MonoBehaviour
     [SerializeField] private float respawnTime = 30f;
 
     private MeshRenderer meshRenderer;
-    private Collider collider;
+    private new Collider collider;
 
     // Start is called before the first frame update
     void Start()

@@ -40,7 +40,7 @@ public class MarchingCubes
     /// <summary>
     /// Generate the mesh from the given parameters in the constructor
     /// </summary>
-    public void generateMesh(MinMaxTerrainLevel hightFillerTerrainLevel, int index, int resolution, Mesh mesh)
+    public Vector3[] generateMesh(MinMaxTerrainLevel hightFillerTerrainLevel, int index, int resolution, Mesh mesh)
     {
         resolution *= 1 << chunkResolution;
 
@@ -99,6 +99,8 @@ public class MarchingCubes
         mesh.vertices = meshVertices;
         mesh.triangles = meshTriangles;
         mesh.RecalculateBounds();
+
+        return meshVertices;
     }
 
     // Get the length buffer of type append

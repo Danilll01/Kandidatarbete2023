@@ -99,7 +99,7 @@ LODGroup:
   m_AnimateCrossFading: 0
   m_LastLODIsBillboard: 0
   m_LODs:
-  - screenRelativeHeight: 0.009861467
+  - screenRelativeHeight: 0.008
     fadeTransitionWidth: 0
     renderers:
     - renderer: {fileID: 4661435515760519716}
@@ -114,7 +114,7 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.57
+  m_Radius: 0.16737024
   m_Height: 4.2180724
   m_Direction: 1
-  m_Center: {x: -0.01845619, y: 2.092121, z: -0.003755778}
+  m_Center: {x: -0.018456146, y: 2.092121, z: -0.010868803}

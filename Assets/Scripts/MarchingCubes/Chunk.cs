@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Mathematics;
+using ExtendedRandom;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.UIElements;
@@ -9,6 +10,7 @@ using UnityEngine.UIElements;
 public class Chunk : MonoBehaviour
 {
     [SerializeField] public Transform creatures;
+    [SerializeField] public Foliage foliage;
 
     private int index;
     private int resolution;
@@ -17,7 +19,9 @@ public class Chunk : MonoBehaviour
     private Mesh mesh;
     private MarchingCubes marchingCubes;
     private Transform player;
+    private Planet planet;
     private MinMaxTerrainLevel terrainLevel;
+    private RandomX random;
 
     [HideInInspector] public Vector3 position;
 
@@ -29,20 +33,27 @@ public class Chunk : MonoBehaviour
     /// <param name="marchingCubes">An instance of marching cubes</param>
     /// <param name="player"></param>
     /// <param name="terrainLevel"></param>
-    public void Initialize(int index, int resolution, MarchingCubes marchingCubes, Transform player, MinMaxTerrainLevel terrainLevel)
+    public void Initialize(Planet planet, int index, int resolution, MarchingCubes marchingCubes, Transform player, MinMaxTerrainLevel terrainLevel, int seed)
     {
+        this.planet = planet;
         this.index = index;
         this.marchingCubes = marchingCubes;
         this.player = player;
         this.terrainLevel = terrainLevel;
+        random = new RandomX(seed);
 
         meshFilter = transform.GetComponent<MeshFilter>();
         meshCollider = transform.GetComponent<MeshCollider>();
 
-        calculateChunkPosition();
-
+        CalculateChunkPosition();
+        
         //Set lowest resolution as default
-        updateMesh(resolution);
+        int meshVerticesLength = UpdateMesh(resolution);
+        if (planet.willGeneratePlanetLife && meshVerticesLength > 500 && marchingCubes.chunkResolution == 3)
+        {
+            foliage.Initialize(meshVerticesLength, position, random.Next());
+        }
+
     }
 
     /// <summary>
@@ -52,7 +63,7 @@ public class Chunk : MonoBehaviour
         GetComponent<MeshRenderer>().material = material;
     }
 
-    private void calculateChunkPosition()
+    private void CalculateChunkPosition()
     {
         // Extra the chunkindex in terms of x,y,z
         int mask = 0;
@@ -68,25 +79,26 @@ public class Chunk : MonoBehaviour
                 (index & (mask << (marchingCubes.chunkResolution * 2))) >> (marchingCubes.chunkResolution * 2)
             );
 
-        // Use the chunkindex to calculate the position of the chunk
-        position = -(chunkIndex - 1.5f * Vector3.one) * (marchingCubes.diameter / (1 << (marchingCubes.chunkResolution)));
+        position = -(chunkIndex - (Mathf.Pow(2, marchingCubes.chunkResolution) - 1) / 2 * Vector3.one) * (marchingCubes.diameter / (1 << (marchingCubes.chunkResolution)));
     }
 
-    private void updateMesh(int resolution)
+    
+
+    private int UpdateMesh(int resolution)
     {
         if (this.resolution == resolution)
-            return;
+            return 0;
 
         this.resolution = resolution;
 
         mesh = new Mesh();
 
-        
-        marchingCubes.generateMesh(terrainLevel, index, resolution, mesh);
-        
-
+        Vector3[] meshVertices =  marchingCubes.generateMesh(terrainLevel, index, resolution, mesh);
+       
         meshFilter.sharedMesh = mesh;
 
         meshCollider.sharedMesh = mesh;
+
+        return meshVertices.Length;
     }
 }

@@ -1,6 +1,7 @@
 using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
+using ExtendedRandom;
 using UnityEditor;
 using UnityEngine;
 
@@ -11,20 +12,20 @@ public class ChunksHandler : MonoBehaviour
     private Vector3 playerLastPosition;
     private bool initialized = false;
     private bool resetchunks = false;
+    private int foliageInitialized = 10;
     private List<Vector3> chunkPositions;
     private int chunkResolution; //This is 2^chunkResolution
     private MarchingCubes marchingCubes;
     private Material planetMaterial;
     private float planetRadius;
     private MinMaxTerrainLevel terrainLevel;
+    private RandomX rand;
 
     [HideInInspector] public bool chunksGenerated;
     [SerializeField] private Chunk chunkPrefab;
     [SerializeField] private GameObject chunksParent;
     [HideInInspector] private List<Chunk> chunks;
     [SerializeField] public TerrainColor terrainColor;
-
-   
 
     /// <summary>
     /// Initialize the values
@@ -33,7 +34,7 @@ public class ChunksHandler : MonoBehaviour
     /// <param name="player"></param>
     public void Initialize(Planet planet, MinMaxTerrainLevel terrainLevel, bool spawn, int seed)
     {
-        System.Random rand = new System.Random(seed);
+        rand = new RandomX(seed);
 
         this.planet = planet;
         player = planet.player;
@@ -63,15 +64,22 @@ public class ChunksHandler : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(!initialized && planet.spawnFoliage.foliageSpawned)
+        bool playerOnPlanet = ReferenceEquals(transform, player.transform.parent);
+
+        if (!initialized)
         {
             InitializeChunkPositions();
             UpdateChunksVisibility();
             initialized = true;
         }
 
+        if (foliageInitialized != 0)
+        {
+            foliageInitialized--;
+        }
+
         // Only update the chunks if the player is close to the planet
-        if (planet.spawnFoliage.foliageSpawned && initialized && (player.position - planet.transform.position).magnitude < 3000)
+        if (initialized && (player.position - planet.transform.position).magnitude < 2000 && playerOnPlanet)
         {
             UpdateChunksVisibility();
             resetchunks = false;
@@ -81,8 +89,9 @@ public class ChunksHandler : MonoBehaviour
             Resetchunks();
         }
 
+        
         // Check if player is on the planet
-        if (!ReferenceEquals(transform, player.transform.parent))
+        if (!playerOnPlanet)
         {
             CreateMeshes(1, 1, terrainLevel);
             setChunksMaterials();
@@ -130,7 +139,7 @@ public class ChunksHandler : MonoBehaviour
             chunk.transform.parent = chunksParent.transform;
             chunk.transform.localPosition = Vector3.zero;
             chunk.name = "chunk" + i;
-            chunk.Initialize(i, resolution, marchingCubes, player, terrainLevel);
+            chunk.Initialize(planet, i, resolution, marchingCubes, player, terrainLevel, rand.seed + i);
             chunks.Add(chunk);
         }
     }
@@ -188,6 +197,8 @@ public class ChunksHandler : MonoBehaviour
             else
             {
                 chunks[i].gameObject.SetActive(true);
+                if(foliageInitialized == 0) 
+                    chunks[i].foliage.SpawnFoliageOnChunk();
             }
         }
     }
