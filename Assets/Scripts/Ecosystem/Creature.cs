@@ -47,10 +47,10 @@ public class Creature : MonoBehaviour
 
     private Planet planet;
 
-    private Collider collider;
-    private Rigidbody rigidbody;
+    private new Collider collider;
+    private new Rigidbody rigidbody;
     private LODGroup lodGroup;
-    private Renderer renderer;
+    private new Renderer renderer;
     private Animator animator;
 
     // Start is called before the first frame update

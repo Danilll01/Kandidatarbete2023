@@ -32,6 +32,7 @@ public class FoliageHandler : MonoBehaviour
     // How many extra hits every chunks has
     public readonly int MISS_COMPLIMENT = 200;
 
+    public bool isInstantiated = false;
     private Planet planet;
     private float waterRadius;
     private float density;
@@ -62,6 +63,8 @@ public class FoliageHandler : MonoBehaviour
         density = planet.radius * 0.0001f; // Magic numbers * "random"
         InitArrays();
         InitForestTypes();
+
+        isInstantiated = true;
     }
 
     // Updates the debug menu

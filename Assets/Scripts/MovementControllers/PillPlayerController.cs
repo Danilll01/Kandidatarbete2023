@@ -1,61 +1,69 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Security.Cryptography;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 [RequireComponent(typeof(Rigidbody))]
 public class PillPlayerController : MonoBehaviour
 {
     public Planet attractor = null;
     public Camera firstPersonCamera;
+    [SerializeField] private PlayerWater playerWater;
+    private Rigidbody body;
+    [HideInInspector] public bool paused;
+
+    [Header("Movement")]
     public float movementSpeed;
+    [SerializeField] private float sprintFactor;
     public float airControlFactor;
     public float jumpForce;
+    private int coyoteTimer = 0;
+    [SerializeField] private int coyoteMax;
     [SerializeField] private float swimForce;
     [SerializeField] private float maxSwimSpeed = 10;
     public float maxSpeed;
-
     private bool jump = false; // Used for creating a rising trigger for jump
+    private bool isSprinting = false;
 
-    [SerializeField] private PlayerWater playerWater;
-
-    private Rigidbody body;
-    [HideInInspector] public bool paused;
+    [Header("Ship")]
     private ShipController ship;
     [HideInInspector] public bool boarded = false;
+
+    // Animations
+    private Animator animator;
+    private static readonly int Speed = Animator.StringToHash("Speed");
+    private static readonly int Direction = Animator.StringToHash("Direction");
+    private Transform animationRig;
+    
+    [Header("Camera")]
+    [SerializeField] [Range(0.2f, 5f)] private float mouseSensitivity = 1f;
+    [SerializeField] private float lookLimitAngle = 80f;
+    private float pitch = 0f;
+    private static readonly int Swim = Animator.StringToHash("Swim");
+    private static readonly int Jump = Animator.StringToHash("Jump");
 
     private void Awake()
     {
         Universe.player = this;
+        animator = transform.GetChild(0).GetComponent<Animator>();
+        animationRig = transform.GetChild(0);
     }
 
     // Start is called before the first frame update
-    public void Initialize(GameObject planetToSpawnOn)
+    public void Initialize(Planet planetToSpawnOn)
     {
         Universe.player = this;
 
         if (attractor == null)
         {
-            attractor = planetToSpawnOn.GetComponent<Planet>();
+            attractor = planetToSpawnOn;
             if (attractor == null)
             {
-                Debug.LogError("Planet player spawned on has no Planet script");
+                Debug.LogError("Player spawned without a planet");
             }
         }
 
         body = GetComponent<Rigidbody>();
         ship = GameObject.Find("Spaceship").GetComponent<ShipController>();
-
-        //A bit of a hack to give the player a starting planet
-        transform.position = planetToSpawnOn.transform.position + new Vector3(0, attractor.diameter, 0);
-        Vector3 directionNearestPlanet = attractor.transform.position - transform.position;
-        Physics.Raycast(transform.position, directionNearestPlanet, out RaycastHit hit);
-
-        //Put the player above the ground
-        transform.position = hit.point - (directionNearestPlanet.normalized) * 5;
-        ship.Initialize(body, firstPersonCamera);
-
+        Spawn(planetToSpawnOn);
         //Lock the mouse inside of the game
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
@@ -67,7 +75,7 @@ public class PillPlayerController : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-    {
+    {       
         if (!paused)
         {
             if (!boarded)
@@ -81,10 +89,11 @@ public class PillPlayerController : MonoBehaviour
                 playerWater.UpdateWater(transform.position);
             }
         }
+        
         if (attractor != null)
         {
             DisplayDebug.AddOrSetDebugVariable("Current planet", attractor.bodyName);
-            DisplayDebug.AddOrSetDebugVariable("Planet radius", attractor.diameter.ToString());
+            DisplayDebug.AddOrSetDebugVariable("Planet radius", attractor.radius.ToString());
             DisplayDebug.AddOrSetDebugVariable("Planet mass", attractor.mass.ToString());
             DisplayDebug.AddOrSetDebugVariable("Planet surface gravity", attractor.surfaceGravity.ToString());
         }
@@ -97,24 +106,78 @@ public class PillPlayerController : MonoBehaviour
         }
     }
 
+    private void FixedUpdate()
+    {
+        coyoteTimer = Grounded ? 0 : coyoteTimer + 1;
+    }
     private void HandleCamera()
     {
         //Rotate player and camera
-        Vector3 cameraRotationVector = new Vector3(Input.GetAxis("Vertical Look") + Input.GetAxisRaw("Controller Vertical Look") * 3, 0);
-        Vector3 playerRotationVector = new Vector3(0, Input.GetAxis("Horizontal Look") + Input.GetAxisRaw("Controller Horizontal Look") * 4);
-        firstPersonCamera.transform.Rotate(cameraRotationVector);
+        //Vector3 cameraRotationVector = new Vector3(Input.GetAxis("Vertical Look") + Input.GetAxisRaw("Controller Vertical Look") * 3, 0);
+        Vector3 playerRotationVector = new Vector3(0, (mouseSensitivity * Input.GetAxis("Horizontal Look")) + Input.GetAxisRaw("Controller Horizontal Look") * 4);
+        pitch += (mouseSensitivity * Input.GetAxis("Vertical Look")) + (Input.GetAxisRaw("Controller Vertical Look") * 3);
+        
+        // Clamp pitch between lookAngle
+        pitch = Mathf.Clamp(pitch, -lookLimitAngle, lookLimitAngle);
+        
         transform.Rotate(playerRotationVector);
+        firstPersonCamera.transform.localEulerAngles = new Vector3(pitch, 0 ,0);
     }
 
+    // Moves model back or forward depending on player speed
+    private void MoveModelWhileSprint(float speed)
+    {
+        if(speed > 0.5f)
+        {
+            if (isSprinting) return;
+            isSprinting = true;
+            animationRig.localPosition += new Vector3(0,0,-0.015f);
+        }
+        else
+        {
+            if (!isSprinting) return;
+            isSprinting = false;
+            animationRig.localPosition += new Vector3(0,0,0.015f);
+        }
+        
+    }
     private void HandleMovement()
     {
         //Keep old Y velocity. Rotates to world space, grabs y velocity and rotates back to planet orientation
-        Vector3 oldY = transform.rotation * new Vector3(0, (Quaternion.Inverse(transform.rotation) * body.velocity).y);
+        Vector3 yGround = Grounded ? GroundNormal : transform.rotation * transform.up;
+        Vector3 oldY = Vector3.Project(body.velocity, yGround);
+        
         //New movement
-        Vector3 movementVector = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical")) * movementSpeed;
+        float inputDirection = Input.GetAxisRaw("Horizontal");
+        float inputSpeed = Input.GetAxisRaw("Vertical");
+        Vector3 movementVector = new Vector3(inputDirection, 0, inputSpeed) * movementSpeed;
+        
+        // Used for animations
+        float direction = Mathf.Min(Mathf.Abs(inputDirection), 0.5f);
+        float speed = Mathf.Min(Mathf.Abs(inputSpeed), 0.5f);   
+        
+        if (Input.GetAxisRaw("Sprint") == 1) // Running
+        {
+            movementVector *= sprintFactor;
+            
+            // Animations
+            speed = Mathf.Min(Mathf.Abs(inputSpeed),1);
+            direction = Mathf.Min(Mathf.Abs(inputDirection),1); 
+        }
+        else if (Input.GetAxisRaw("Sprint") == -1) // Walking slow
+        {
+            movementVector /= sprintFactor;
+            
+            // Animations
+            direction = Mathf.Min(Mathf.Abs(inputDirection), 0.3f);
+            speed = Mathf.Min(Mathf.Abs(inputSpeed), 0.3f);
+        }
+
+        // Decides if the model should be moved back because of sprinting
+        MoveModelWhileSprint(speed);
         
         //Swiming
-        if(Swimming)
+        if (Swimming)
         {
             if (Input.GetAxisRaw("Jump") == 1)
             {
@@ -124,23 +187,25 @@ public class PillPlayerController : MonoBehaviour
             {
                 movementVector.y += 0.0001f;
             }
-            
         }
-        else if (Input.GetAxisRaw("Jump") == 1 && !jump && Grounded) //Jumping
+        else if (Input.GetAxisRaw("Jump") == 1 && coyoteTimer <= coyoteMax) //Jumping
         {
-            movementVector.y += jumpForce;
             jump = true;
         }
-        if(Input.GetAxisRaw("Jump") == 0 && jump) //Resets the jump when jump is released
+        else if (!Grounded || Input.GetAxisRaw("Jump") == 0) //Resets the jump when jump is released or left the ground
         {
             jump = false;
         }
+        if (jump)
+        {
+            movementVector.y = jumpForce;
+        }
 
-        //Input recieved
+        //Input received
         if (movementVector.magnitude != 0)
         {
             //Ground controls + swim controls
-            if(Swimming)
+            if (Swimming)
             {
                 float currentUppSpeed = (Quaternion.Inverse(transform.rotation) * body.velocity).y + movementVector.y;
 
@@ -158,14 +223,20 @@ public class PillPlayerController : MonoBehaviour
             }
             else if (Grounded)
             {
-                body.velocity = transform.rotation * movementVector;
-                body.velocity += oldY;
+                movementVector = transform.rotation * movementVector;
+
+                //Remove any movement that would make the player leave the ground unless the player is jumping
+                if (!jump)
+                {
+                    movementVector -= Vector3.Project(movementVector, yGround);
+                }
+                body.velocity = movementVector;
             }
             //Air controls
             else
             {
                 //Add movement
-                body.velocity += transform.rotation * movementVector * Time.deltaTime * airControlFactor;
+                body.velocity += transform.rotation * movementVector * (Time.deltaTime * airControlFactor);
                 //Normalize to maxSpeed if necessary
                 Vector3 oldVelocity = (Quaternion.Inverse(transform.rotation) * body.velocity);
                 Vector3 oldHorizontalVelocity = new Vector3(oldVelocity.x, 0, oldVelocity.z);
@@ -180,14 +251,60 @@ public class PillPlayerController : MonoBehaviour
         //No input
         else if (Grounded)
         {
-            body.velocity = Vector3.zero;
-            body.velocity += oldY;
+            Vector3 velocity = Vector3.zero;
+            velocity += oldY;
+            body.velocity = velocity;
         }
 
-        if (!boarded)
+        // Sets animation state
+        animator.SetFloat(Speed, Mathf.Sign(inputSpeed) * speed);
+        animator.SetFloat(Direction, Mathf.Sign(inputDirection) * direction);  
+        
+        if (boarded) return;
+        Gravity.KeepUpright(transform, attractor.transform);
+        Gravity.Attract(transform.position, body, attractor.transform.position, attractor.mass);
+    }
+
+    private void Spawn(Planet planet)
+    {
+        UnityEngine.Random.InitState(Universe.random.Next());
+        int failCount = 0;
+        bool foundSpawnLocation = false;
+        //Try to find suitable spawn location
+        while (!foundSpawnLocation)
         {
-            Gravity.KeepUpright(transform, attractor.transform);
-            Gravity.Attract(transform.position, body, attractor.transform.position, attractor.mass);
+            if (failCount > 1000)
+            {
+                Debug.LogError("Unable to find suitable spawn position for player on planet: " + planet.bodyName);
+                return;
+            }
+            
+            //Try to find a suitable spawn position
+            Vector3 spawnLocationAbovePlanet = planet.transform.position + (UnityEngine.Random.onUnitSphere * planet.radius);
+            Vector3 directionNearestPlanet = (planet.transform.position - spawnLocationAbovePlanet).normalized;
+            bool hitPlanet = Physics.Raycast(spawnLocationAbovePlanet, directionNearestPlanet, out RaycastHit spawnLocation, planet.radius);
+
+            if (!hitPlanet)
+            {
+                Debug.LogError("Unable to hit planet: " + planet.bodyName + " with spawn ray at " + planet.transform.position.ToString());
+                Debug.DrawLine(spawnLocationAbovePlanet, spawnLocationAbovePlanet + directionNearestPlanet * planet.radius, Color.red, 1000000);
+                Debug.Break();
+                return;
+            }
+
+            bool onGround = spawnLocation.transform.gameObject.layer == LayerMask.NameToLayer("Planet");
+            bool aboveWater = Vector3.Distance(spawnLocation.point, planet.transform.position) > planet.waterDiameter / 2;
+            foundSpawnLocation = onGround && aboveWater;
+
+            if (!foundSpawnLocation)
+            {
+                failCount++;
+                continue;
+            }
+
+            //Put the player above the ground
+            transform.position = spawnLocation.point - directionNearestPlanet.normalized * 5;
+            ship.Initialize(body, firstPersonCamera);
         }
     }
 
@@ -205,9 +322,40 @@ public class PillPlayerController : MonoBehaviour
         get { return (attractor.transform.position - transform.position).magnitude; }
     }
 
+
+    /// <summary>
+    /// The Vector3 of the normal ground the player is standing on. Returns Vector3.Zero if not on ground.
+    /// </summary>
+    public Vector3 GroundNormal
+    {
+        get
+        {
+            if (attractor.Equals(null))
+            {
+                return Vector3.zero;
+            }
+
+
+            Physics.Raycast(transform.position, attractor.transform.position - transform.position, out RaycastHit hit, 2f);
+            return hit.collider == null ? Vector3.zero : hit.normal;
+        }
+    }
+
+
     public bool Grounded
     {
-        get { return Physics.Raycast(transform.position, attractor.transform.position - transform.position, 2f); }
+   
+        get 
+        { 
+            if (attractor == null)
+            {
+                return false;
+            }
+            
+            bool isGrounded = Physics.Raycast(transform.position, attractor.transform.position - transform.position, 2f);
+            animator.SetBool(Jump, !isGrounded); // Sets animation
+            return isGrounded;      
+        }
     }
 
     public Vector3 Up
@@ -217,7 +365,11 @@ public class PillPlayerController : MonoBehaviour
 
     private bool Swimming
     {
-        get { return playerWater.underWater; }
+        get
+        {
+            animator.SetBool(Swim, playerWater.underWater); // Sets animation
+            return playerWater.underWater;
+        }
     }
 
 }
