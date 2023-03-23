@@ -160,7 +160,7 @@ public class Planet : MonoBehaviour
         {
             RotateAroundAxis();
         }
-        else if(!bodyName.Contains("Moon") && !resetMoons)
+        else if(!bodyName.Contains("Moon"))
         {
             RotateMoons();
         }
@@ -176,7 +176,7 @@ public class Planet : MonoBehaviour
     {
         LockMoons(false);
 
-        moonsParent.transform.RotateAround(transform.position, rotationAxis, 5f * Time.deltaTime);
+        moonsParent.transform.RotateAround(transform.position, rotationAxis, Time.deltaTime);
 
         for (int i = 0; i < moons.Count; i++)
         {
@@ -190,14 +190,12 @@ public class Planet : MonoBehaviour
 
     public void ResetMoons()
     {
-        resetMoons = true;
         LockMoons(false);
         for (int i = 0; i < moons.Count; i++)
         {
             Planet moon = moons[i];
             moon.GetComponent<KeplerOrbitMover>().enabled = false;
         }
-
         /*
         moonsParent.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
         for (int i = 0; i < moons.Count; i++)
@@ -209,11 +207,9 @@ public class Planet : MonoBehaviour
             moon.gameObject.GetComponent<KeplerOrbitMover>().VelocityHandle.localPosition = new Vector3(100, 0, 0);
         }
         */
-
-            
+ 
         ReactivateMoonOrbits();
         LockMoons(true);
-        resetMoons = false;
     }
 
     private void ReactivateMoonOrbits()

@@ -171,7 +171,7 @@ public class SolarSystemTransform : MonoBehaviour
             sunOrbitMover.enabled = false;
 
             // Set the rotation and position of planet
-            planet.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
+            planet.transform.rotation = Quaternion.identity;
             planet.ResetMoons();
             Vector3 direction = sun.transform.position - planet.transform.position;
             direction.y = 0;
