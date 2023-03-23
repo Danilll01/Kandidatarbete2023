@@ -105,7 +105,7 @@ public class Planet : MonoBehaviour
     /// </summary>
     public void SetUpPlanetValues()
     {
-        mass = surfaceGravity * radius * radius / Universe.gravitationalConstant;
+        mass = surfaceGravity * 4 * radius * radius / Universe.gravitationalConstant;
         gameObject.name = bodyName;
     }
 
