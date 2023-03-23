@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Mathematics;
 using ExtendedRandom;
+using SimpleKeplerOrbits;
 using UnityEngine;
 
 [RequireComponent(typeof(GenerateCreatures))]
@@ -37,6 +38,11 @@ public class Planet : MonoBehaviour
 
     private float threshold;
     public FoliageHandler foliageHandler;
+    
+    public Vector3 rotationAxis;
+    [HideInInspector] public GameObject moonsParent;
+    private Vector3[] moonsrelativeDistances;
+    private bool moonsLocked = true;
 
     /// <summary>
     /// Initializes the planet
@@ -52,6 +58,8 @@ public class Planet : MonoBehaviour
 
         MinMaxTerrainLevel terrainLevel = new MinMaxTerrainLevel();
 
+        rotationAxis = RandomPointOnSphereEdge(radius, rand) - Vector3.zero;
+        
         willGeneratePlanetLife = rand.Value() < chanceToSpawnPlanetLife;
 
         // Initialize the meshgenerator
@@ -98,6 +106,26 @@ public class Planet : MonoBehaviour
         }
 
     }
+    
+    public void InitializeMoonsValues()
+    {
+        moonsrelativeDistances = new Vector3[moons.Count];
+
+        for (int i = 0; i < moons.Count; i++)
+        {
+            moonsrelativeDistances[i] = moons[i].transform.position - this.transform.position;
+        }
+    }
+
+
+    // Gives back a random position on the edge of a circle given the radius of the circle
+    private Vector3 RandomPointOnSphereEdge(float radius, RandomX rand)
+    {
+        Vector3 randomVector = new Vector3(rand.Next(1, 360), rand.Next(1, 360), rand.Next(1, 360));
+        var vector3 = randomVector.normalized * radius;
+        return new Vector3(vector3.x, vector3.y, vector3.z);
+    }
+
 
     /// <summary>
     /// Set up the values for the planets
@@ -111,5 +139,96 @@ public class Planet : MonoBehaviour
     public Color GetGroundColor()
     {
         return chunksHandler.terrainColor.bottomColor;
+    }
+    
+    void Update()
+    {
+        if (player.parent == null)
+        {
+            RotateAroundAxis();
+        }
+        else if (player.parent != transform && player.parent != this.transform.parent.parent)
+        {
+            RotateAroundAxis();
+        }
+        else if(!bodyName.Contains("Moon"))
+        {
+            RotateMoons();
+        }
+    }
+
+
+    private void RotateAroundAxis()
+    {
+        transform.RotateAround(transform.position, rotationAxis, Time.deltaTime);
+    }
+
+    private void RotateMoons()
+    {
+        LockMoons(false);
+
+        moonsParent.transform.RotateAround(transform.position, rotationAxis, Time.deltaTime);
+
+        for (int i = 0; i < moons.Count; i++)
+        {
+            Planet moon = moons[i];
+            Vector3 direction = moon.transform.position - transform.position;
+            moon.gameObject.GetComponent<KeplerOrbitMover>().SetAutoCircleOrbit();
+            moon.transform.position = direction.normalized * moonsrelativeDistances[i].magnitude;
+        } 
+
+    }
+
+    public void ResetMoons()
+    {
+        LockMoons(true);
+
+        // Commented for now, but might be useful when trying to fix landing on moons
+        //LockMoons(false);
+        /*
+        for (int i = 0; i < moons.Count; i++)
+        {
+            Planet moon = moons[i];
+            moon.GetComponent<KeplerOrbitMover>().enabled = false;
+        }
+        moonsParent.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
+        for (int i = 0; i < moons.Count; i++)
+        {
+            Planet moon = moons[i];
+            Vector3 direction = moon.transform.position - moonsParent.transform.position;
+            direction.y = 0;
+            moon.transform.position = direction.normalized * moonsrelativeDistances[i].magnitude;
+            moon.gameObject.GetComponent<KeplerOrbitMover>().VelocityHandle.localPosition = new Vector3(100, 0, 0);
+        }
+        */
+
+        //ReactivateMoonOrbits();
+
+    }
+
+    private void ReactivateMoonOrbits()
+    {
+        for (int i = 0; i < moons.Count; i++)
+        {
+            Planet moon = moons[i];
+
+            KeplerOrbitMover orbitMover = moon.GetComponent<KeplerOrbitMover>();
+            orbitMover.SetUp();
+            orbitMover.SetAutoCircleOrbit();
+            orbitMover.ForceUpdateOrbitData();
+            orbitMover.enabled = true;
+        }
+    }
+
+    private void LockMoons(bool lockMoons)
+    {
+        if (moonsLocked != lockMoons)
+        {
+            foreach (Planet moon in moons)
+            {
+                moon.gameObject.GetComponent<KeplerOrbitMover>().LockOrbitEditing = lockMoons;
+            }
+            moonsLocked = lockMoons;
+        }
     }
 }

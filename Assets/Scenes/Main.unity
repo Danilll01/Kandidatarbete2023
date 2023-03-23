@@ -508,7 +508,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: Planets Parent
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 210303241, guid: d9aa2365836edc946afc563b765ba551, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: d9aa2365836edc946afc563b765ba551, type: 3}
 --- !u!1 &210303240 stripped
 GameObject:
@@ -529,6 +530,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spawnPlanets: {fileID: 882231452}
+  activePlanetIndex: -1
   player: {fileID: 1898646049}
 --- !u!1 &459511075
 GameObject:

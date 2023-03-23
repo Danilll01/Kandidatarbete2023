@@ -13,8 +13,6 @@ public class SpawnPlanets : MonoBehaviour
     [SerializeField] private int numberOfPlanets;
     [SerializeField] private int radiusMinValue = 500;
     [SerializeField] private int radiusMaxValue = 1500;
-    [SerializeField] private int orbitOffsetMinValue = -10;
-    [SerializeField] private int orbitOffsetMaxValue = 10;
     [SerializeField] private int chanceOfMoonsLimit = 5;
     [SerializeField] private int minNumberOfMoons = 1;
     [SerializeField] private int maxNumberOfMoons = 5;
@@ -106,6 +104,8 @@ public class SpawnPlanets : MonoBehaviour
             InstantiateMoons(planetBody, nrOfMoonsForPlanet);
             bodies.Add(planetBody);
 
+            
+            planetBody.InitializeMoonsValues();
             SetupOrbitComponents(Sun, planet);
         }
     }
@@ -160,11 +160,15 @@ public class SpawnPlanets : MonoBehaviour
     // Instantiate moons for the given planet
     private void InstantiateMoons(Planet parentPlanet, int numberOfMoons)
     {
+        GameObject moonsParent = new GameObject("Moons Parent");
+        moonsParent.transform.parent = parentPlanet.transform;
+        moonsParent.transform.localPosition = Vector3.zero;
+        
         for (int i = 1; i < numberOfMoons + 1; i++)
         {
             GameObject moon = Instantiate(planetsPrefab);
-            moon.transform.parent = parentPlanet.transform;
-            moon.transform.localPosition = RandomPointOnCircleEdge(parentPlanet.radius * i);
+            moon.transform.parent = moonsParent.transform;
+            moon.transform.localPosition = RandomPointOnCircleEdge(parentPlanet.radius * i * 1.2f);
             moon.gameObject.name = "Moon " + i;
 
             Planet moonBody = moon.GetComponent<Planet>();
@@ -175,12 +179,15 @@ public class SpawnPlanets : MonoBehaviour
             parentPlanet.moons.Add(moonBody);
             SetupOrbitComponents(parentPlanet.gameObject, moon);
         }
+        
+        parentPlanet.moonsParent = moonsParent;
     }
 
     // Gives back a random position on the edge of a circle given the radius of the circle
     private Vector3 RandomPointOnCircleEdge(float radius)
     {
-        var vector2 = Random.insideUnitCircle.normalized * radius;
+        Vector2 randomVector = new Vector2(random.Next(1,360), random.Next(1, 360));
+        var vector2 = randomVector.normalized * radius;
         return new Vector3(vector2.x, 0, vector2.y);
     }
 
@@ -190,9 +197,8 @@ public class SpawnPlanets : MonoBehaviour
         GameObject velocityHelper = new GameObject();
         velocityHelper.gameObject.name = "VelocityHelper";
         velocityHelper.transform.parent = planet.transform;
-
-        int orbitOffset = random.Next(orbitOffsetMinValue, orbitOffsetMaxValue);
-        velocityHelper.transform.localPosition = new Vector3(100, orbitOffset, orbitOffset);
+        
+        velocityHelper.transform.localPosition = new Vector3(100, 0, 0);
 
         // Assign needed scripts to the planet
         planet.AddComponent<KeplerOrbitMover>();
@@ -217,7 +223,14 @@ public class SpawnPlanets : MonoBehaviour
         planetOrbitMover.VelocityHandle = velocityHelper.transform;
         planetOrbitMover.SetUp();
         planetOrbitMover.SetAutoCircleOrbit();
+        if (Attractor.gameObject.name == "Sun" || Attractor.gameObject.name.Contains("Planet"))
+        {
+            planetOrbitMover.LockOrbitEditing = true;
+        }
+        else
+        {
+            planetOrbitMover.LockOrbitEditing = false;
+        }
         planetOrbitMover.ForceUpdateOrbitData();
-        planetOrbitMover.LockOrbitEditing = true;
     }
 }
