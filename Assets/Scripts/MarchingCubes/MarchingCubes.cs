@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using Unity.Mathematics;
+using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.UI;
@@ -14,33 +15,30 @@ public class MarchingCubes
 {
     readonly ComputeShader meshGenerator;
     readonly float threshold;
-    public readonly float diameter;
-    readonly int frequency;
-    readonly float amplitude;
+    public readonly float radius;
     public int chunkResolution;
 
-    AsyncGPUReadbackRequest asyncRequest;
+    public List<TerrainLayer> terrainLayers;
 
     /// <summary>
     /// Initializes the MarchingCubes script
     /// </summary>
     /// <param name="meshGenerator">The meshgenerator compute shader</param>
     /// <param name="threshold">The cut off threshold to be used</param>
-    /// <param name="diameter"></param>
-    public MarchingCubes(int chunkResolution, ComputeShader meshGenerator, float threshold, float diameter, int frequency, float amplitude)
+    /// <param name="radius"></param>
+    public MarchingCubes(int chunkResolution, ComputeShader meshGenerator, float threshold, float radius, List<TerrainLayer> terrainLayers)
     {
         this.chunkResolution = chunkResolution;
         this.meshGenerator = meshGenerator;
         this.threshold = threshold;
-        this.diameter = diameter;
-        this.amplitude = amplitude;
-        this.frequency = frequency;
+        this.radius = radius;
+        this.terrainLayers = terrainLayers;
     }
 
     /// <summary>
     /// Generate the mesh from the given parameters in the constructor
     /// </summary>
-    public Vector3[] generateMesh(MinMaxTerrainLevel hightFillerTerrainLevel, int index, int resolution, Mesh mesh)
+    public int generateMesh(MinMaxTerrainLevel hightFillerTerrainLevel, int index, int resolution, Mesh mesh)
     {
         resolution *= 1 << chunkResolution;
 
@@ -48,25 +46,28 @@ public class MarchingCubes
         int numVoxelsPerAxis = ((resolution << 3) >> chunkResolution) - 1;
         int numVoxels = numVoxelsPerAxis * numVoxelsPerAxis * numVoxelsPerAxis;
         int maxTriangleCount = numVoxels * 5;
+
         // Set up buffers for the triangles
         ComputeBuffer trianglesBuffer = new ComputeBuffer(maxTriangleCount, sizeof(int) * 3 * 3, ComputeBufferType.Append);
         trianglesBuffer.SetCounterValue(0);
 
+        // Set up buffer for the terrain layers
+        ComputeBuffer layersBuffer = new ComputeBuffer(terrainLayers.Count, sizeof(float) * 7 + sizeof(int));
+        layersBuffer.SetData(terrainLayers.ToArray());
+
         // Run generateMesh in compute shader
         int kernelIndex = meshGenerator.FindKernel("GenerateMesh");
 
-        
-        meshGenerator.SetInt("frequency", frequency);
-        meshGenerator.SetFloat("amplitude", amplitude);
         meshGenerator.SetInt("chunkIndex", index);
         meshGenerator.SetInt("chunkResolution", chunkResolution);
         meshGenerator.SetInt("resolution", resolution << 3);
         meshGenerator.SetFloat("threshold", threshold);
-        meshGenerator.SetFloat("diameter", diameter);
+        meshGenerator.SetFloat("radius", radius);
         meshGenerator.SetBuffer(kernelIndex, "triangles", trianglesBuffer);
+        meshGenerator.SetInt("numTerrainLayers", terrainLayers.Count);
+        meshGenerator.SetBuffer(kernelIndex, "terrainLayers", layersBuffer);
         meshGenerator.Dispatch(kernelIndex, resolution >> chunkResolution, resolution >> chunkResolution, resolution >> chunkResolution);
 
-        
         // Retrieve triangles
         int length = getLengthBuffer(ref trianglesBuffer); // This is slow!!!
 
@@ -76,6 +77,7 @@ public class MarchingCubes
 
         // Release all buffers
         trianglesBuffer.Release();
+        layersBuffer.Release();
 
         // Process our data from the compute shader
         int[] meshTriangles = new int[length * 3];
@@ -100,7 +102,7 @@ public class MarchingCubes
         mesh.triangles = meshTriangles;
         mesh.RecalculateBounds();
 
-        return meshVertices;
+        return meshVertices.Length;
     }
 
     // Get the length buffer of type append

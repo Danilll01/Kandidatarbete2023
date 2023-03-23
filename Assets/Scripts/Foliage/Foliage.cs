@@ -28,6 +28,8 @@ public class Foliage : MonoBehaviour
     private Vector3 chunkPosition;
     private int positionArrayLength;
 
+    [HideInInspector] public bool initialized = false;
+
     // Updates the debug screen
     private void OnDisable()
     {
@@ -67,7 +69,7 @@ public class Foliage : MonoBehaviour
         foliageHandler = transform.parent.parent.parent.GetComponent<Planet>().foliageHandler;
         if (foliageHandler == null && foliageHandler.isInstantiated) return;
         
-        // Seedar en random för denna chunken // Här vill vi ha bra random :)
+        // Seedar en random fï¿½r denna chunken // Hï¿½r vill vi ha bra random :)
         random = new RandomX(seed);
 
         // Determines how much foliage there should be on this chunk
@@ -81,6 +83,8 @@ public class Foliage : MonoBehaviour
 
         // This is for angle debugging
         // TestSize();
+
+        initialized = true;
     }
     
     // Test fucntion to measure the angle required to hit the whole chunk
@@ -345,5 +349,5 @@ public class Foliage : MonoBehaviour
         
     }
 
-
+    
 }

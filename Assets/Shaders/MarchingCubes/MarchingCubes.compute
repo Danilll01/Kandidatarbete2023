@@ -1,8 +1,8 @@
 // Each #kernel tells which function to compile; you can have many kernels
 #pragma kernel GenerateMesh
 
-#include "Includes/MarchTables.compute"
-#include "../Tools/Noise/Noise.hlsl"
+#include "Includes/MarchTables.hlsl"
+#include "Includes/Terrain.hlsl"
 
 // Helper functions declaration
 float4 getTexturePoint(uint3 pos, int3 chunkId, float maxPos);
@@ -15,14 +15,14 @@ struct Triangle
     float3 vertexC;
 };
 
-//RWStructuredBuffer<float4> points; 
 AppendStructuredBuffer<Triangle> triangles;
+
+int numTerrainLayers;
+RWStructuredBuffer<TerrainLayer> terrainLayers;
 
 uint resolution;
 float threshold;
-float diameter;
-uint frequency;
-float amplitude;
+float radius;
 int chunkIndex;
 int chunkResolution;
 
@@ -126,20 +126,8 @@ float4 getTexturePoint(uint3 pos, int3 chunkId, float maxPos)
     normPos += chunkId * (1.0 / (1 << chunkResolution));
     
     float3 relPos = (.5 - normPos) * 2; // relPos goes between [-1, 1]
-    float lengthPos = length(relPos);
     
+    float terrainValue = getTerrain(relPos, terrainLayers, numTerrainLayers);
     
-    // If outside circle return 0
-    if (lengthPos > 1)
-        return float4(relPos * (diameter / 2), 0);
-    
-    // Add noise to current point
-    float density = (1 - lengthPos) * 255;
-    float noiseOctave0 = (perlin.Evaluate(normPos * (frequency << 0)) + 1) * .5 * amplitude;
-    float noiseOctave1 = (perlin.Evaluate(normPos * (frequency << 1)) + 1) * .5 * amplitude * amplitude;
-    float noiseOctave2 = (perlin.Evaluate(normPos * (frequency << 2)) + 1) * .5 * amplitude * amplitude * amplitude;
-    density *= noiseOctave0 * noiseOctave1 * noiseOctave2;
-        
-    // Return the noised value
-    return float4(relPos * (diameter / 2), density);
+    return float4(relPos * radius, terrainValue);
 }
