@@ -38,7 +38,7 @@ public class ShipController : MonoBehaviour
         // If mounted pos transform is not set in editor it will grab the object at least
         if (mountedPos.Equals(null))
         {
-            //mountedPos = transform.GetChild(0);
+            mountedPos = transform.GetChild(0);
         }
     }
 
