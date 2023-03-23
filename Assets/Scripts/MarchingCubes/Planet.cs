@@ -99,9 +99,7 @@ public class Planet : MonoBehaviour
         terrainLevel.SetMin(Mathf.Abs((waterDiameter + 1) / 2));
 
         chunksHandler.Initialize(this, terrainLevel, spawn, rand.Next());
-
         
-
         if (willGeneratePlanetLife) 
         {
             // Generate the creatures
@@ -156,7 +154,7 @@ public class Planet : MonoBehaviour
         {
             RotateAroundAxis();
         }
-        else if (player.parent.GetComponent<Planet>() != this && player.parent != this.transform.parent.parent)
+        else if (player.parent != transform && player.parent != this.transform.parent.parent)
         {
             RotateAroundAxis();
         }
