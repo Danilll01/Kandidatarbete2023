@@ -186,8 +186,7 @@ public class SpawnPlanets : MonoBehaviour
     // Gives back a random position on the edge of a circle given the radius of the circle
     private Vector3 RandomPointOnCircleEdge(float radius)
     {
-        Vector2 randomVector = new Vector2(random.Next(1,360), random.Next(1, 360));
-        var vector2 = randomVector.normalized * radius;
+        var vector2 = random.OnUnitCircle() * radius;
         return new Vector3(vector2.x, 0, vector2.y);
     }
 

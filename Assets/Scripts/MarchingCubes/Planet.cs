@@ -26,6 +26,7 @@ public class Planet : MonoBehaviour
     [HideInInspector] public Transform player;
     [HideInInspector] public MarchingCubes marchingCubes;
 
+    [SerializeField] private bool willGenerateCreature = false;
     //[SerializeField, Range(1, 4)] 
     [SerializeField, Range(1, 14)] public int resolution = 5;
 
@@ -35,6 +36,8 @@ public class Planet : MonoBehaviour
     [SerializeField] private GenerateCreatures generateCreatures;
     [SerializeField] public ChunksHandler chunksHandler;
     [SerializeField] public WaterHandler waterHandler;
+
+    [SerializeField] private List<TerrainLayer> terrainLayers;
 
     private float threshold;
     public FoliageHandler foliageHandler;
@@ -66,15 +69,13 @@ public class Planet : MonoBehaviour
         if (marchingCubes == null)
         {
             threshold = 23 + (float) rand.Value() * 4;
-            int frequency = rand.Next(2) + 3;
-            float amplitude = 1.2f + (float) rand.Value() * 0.4f;
-            marchingCubes = new MarchingCubes(1, meshGenerator, threshold, radius, frequency, amplitude);
+            marchingCubes = new MarchingCubes(1, meshGenerator, threshold, radius, terrainLayers);
         }
 
         // Init water
         if (willGeneratePlanetLife)
         {
-            waterDiameter = Mathf.Abs((threshold / 255 - 1) * radius);
+            waterDiameter = Mathf.Abs((threshold / 255 - 1) * 2 * radius * 0.93f);
         }
         else
         {
@@ -132,7 +133,7 @@ public class Planet : MonoBehaviour
     /// </summary>
     public void SetUpPlanetValues()
     {
-        mass = surfaceGravity * radius * radius / Universe.gravitationalConstant;
+        mass = surfaceGravity * 4 * radius * radius / Universe.gravitationalConstant;
         gameObject.name = bodyName;
     }
 
