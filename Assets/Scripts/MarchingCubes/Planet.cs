@@ -190,13 +190,16 @@ public class Planet : MonoBehaviour
 
     public void ResetMoons()
     {
-        LockMoons(false);
+        LockMoons(true);
+        
+        // Commented for now, but might be useful when trying to fix landing on moons
+        //LockMoons(false);
+        /*
         for (int i = 0; i < moons.Count; i++)
         {
             Planet moon = moons[i];
             moon.GetComponent<KeplerOrbitMover>().enabled = false;
         }
-        /*
         moonsParent.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
         for (int i = 0; i < moons.Count; i++)
         {
@@ -208,8 +211,8 @@ public class Planet : MonoBehaviour
         }
         */
  
-        ReactivateMoonOrbits();
-        LockMoons(true);
+        //ReactivateMoonOrbits();
+        
     }
 
     private void ReactivateMoonOrbits()
