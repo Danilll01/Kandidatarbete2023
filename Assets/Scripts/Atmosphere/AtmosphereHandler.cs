@@ -6,6 +6,7 @@ public class AtmosphereHandler : MonoBehaviour
 {
     [SerializeField] private Shader atmosphereShader;
     private Material atmosphereMaterial;
+    private float planetNormalRadius;
     private static readonly int PlanetRadius = Shader.PropertyToID("_PlanetRadius");
     private static readonly int AtmosphereRadius = Shader.PropertyToID("_AtmosphereRadius");
     private static readonly int LightDirection = Shader.PropertyToID("_LightDirection");
@@ -21,8 +22,10 @@ public class AtmosphereHandler : MonoBehaviour
 
         // Set up material
         atmosphereMaterial = new Material(atmosphereShader);
-        atmosphereMaterial.SetFloat(PlanetRadius, Mathf.RoundToInt(waterLevel));
-        atmosphereMaterial.SetFloat(AtmosphereRadius, Mathf.RoundToInt(planetRadius * 1.25f));
+        planetNormalRadius = waterLevel;
+        
+        atmosphereMaterial.SetFloat(PlanetRadius, Mathf.RoundToInt(planetNormalRadius));
+        atmosphereMaterial.SetFloat(AtmosphereRadius, Mathf.RoundToInt(planetRadius * 1.25f - 10));
         GetComponent<MeshRenderer>().material = atmosphereMaterial;
         
     }
@@ -30,7 +33,11 @@ public class AtmosphereHandler : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Vector4 lightDirection = (transform.position - Universe.sunPosition.position);
+        Vector3 playerPosition = transform.position;
+        Vector4 lightDirection = (playerPosition - Universe.sunPosition.position);
         atmosphereMaterial.SetVector(LightDirection, lightDirection);
+
+        float playerHeight = Vector3.Distance(playerPosition, Universe.player.transform.position);
+        atmosphereMaterial.SetFloat(PlanetRadius, Mathf.Min(planetNormalRadius, playerHeight));
     }
 }

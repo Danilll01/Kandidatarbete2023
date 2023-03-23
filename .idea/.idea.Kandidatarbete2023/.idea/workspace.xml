@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Atmpsphere light now faces right direction">
+    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="You can now temporarily increase atmosphere saturation">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Atmosphere/AtmosphereHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Atmosphere/AtmosphereHandler.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Shaders/Atmosphere/AtmosphericScattering.shader" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Shaders/Atmosphere/AtmosphericScattering.shader" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -33,6 +34,7 @@
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/4746c126b0b54f3b834845974d1a9190159000/57/36c84f50/Component.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Atmosphere/AtmosphereHandler.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://D:/Unity/Projects/Kandidatarbete2023/Assets/Shaders/Atmosphere/AtmosphericScattering.shader" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -122,7 +124,7 @@
       <workItem from="1679325039380" duration="1612000" />
       <workItem from="1679411316898" duration="2921000" />
       <workItem from="1679438130511" duration="8982000" />
-      <workItem from="1679477641954" duration="12868000" />
+      <workItem from="1679477641954" duration="19864000" />
     </task>
     <task id="LOCAL−00003" summary="Changed file">
       <created>1679327563589</created>
@@ -148,7 +150,13 @@
       <option name="presentableId" value="LOCAL−00006" />
       <updated>1679452532570</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL−00007" summary="You can now temporarily increase atmosphere saturation">
+      <created>1679529725777</created>
+      <option name="number" value="LOCAL−00007" />
+      <option name="presentableId" value="LOCAL−00007" />
+      <updated>1679529725777</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -176,6 +184,7 @@
     <MESSAGE value="Changed directional light color to be based on temperature" />
     <MESSAGE value="Added atmospheres to planets" />
     <MESSAGE value="Atmpsphere light now faces right direction" />
-    <option name="LAST_COMMIT_MESSAGE" value="Atmpsphere light now faces right direction" />
+    <MESSAGE value="You can now temporarily increase atmosphere saturation" />
+    <option name="LAST_COMMIT_MESSAGE" value="You can now temporarily increase atmosphere saturation" />
   </component>
 </project>

@@ -10,7 +10,7 @@ Shader "Atmosphere/Atmospheric Scattering"
         _Steps ("Steps", Int) = 20                                                  // Standard: 20
         _LightSteps ("Light Steps", Int) = 12                                       // Standard: 12
         _AtmosphereDensity ("Atmosphere Density", Float) = 1
-        _RayleighScattering("Rayleigh Scattering (RGB)", Vector) = (0.08,0.2,0.51,40)   // Standard: (0.08,0.2,0.51,0.64)
+        _RayleighScattering("Rayleigh Scattering (RGB)", Vector) = (0.08,0.2,0.51,100)   // Standard: (0.08,0.2,0.51,0.64)
         _MieScattering("Mie Scattering", Vector) = (0.01, 0.9, 0, 0.8)              // Standard: (0.01, 0.9, 0, 0.8)
         _ClipThreshold ("Clip Threshold", Range(0.0,1.0)) = 0.73                    // Standard: 0.73
     }
@@ -69,6 +69,7 @@ Shader "Atmosphere/Atmospheric Scattering"
                 float t = dot(_PlanetCenter - ro, rd);
                 float3 pM = ro + rd * t;
                 float height = sqrLength(pM - _PlanetCenter);
+                
                 if (height > _AtmosphereRadius * _AtmosphereRadius) return false;
                 float x = sqrt(_AtmosphereRadius * _AtmosphereRadius - height);
                 t0 = (t - x < 0) ? 0 : t - x;
@@ -119,11 +120,11 @@ Shader "Atmosphere/Atmospheric Scattering"
             
             fixed4 frag(v2f i) : SV_Target
             {
-                //_PlanetCenter = mul(unity_ObjectToWorld, float4(0, 0, 0, 1));
+                _PlanetCenter = mul(unity_ObjectToWorld, float4(0, 0, 0, 1));
                 if (_PlanetRadius > _AtmosphereRadius) _PlanetRadius = _AtmosphereRadius - 2;
                 if (_AtmosphereRadius < 0) _AtmosphereRadius = 1;
 
-                float3 rsRGB = float3(_RayleighScattering.xyz);
+                float3 rsRGB = float3(_RayleighScattering.xyz / 50);
                 float msRGB = _MieScattering.x;
                 float rSH = _RayleighScattering.w;
                 float mSH = _MieScattering.w;
@@ -138,12 +139,12 @@ Shader "Atmosphere/Atmospheric Scattering"
                 float g = _MieScattering.y;
                 float phaseR = 3.0 / (16.0 * PI) * (1 + mu * mu);
                 float phaseM = 3.0 / (8.0 * PI) * ((1.f - g * g) * (1.f + mu * mu)) / ((2.f + g * g) * pow(1.f + g * g - 2.f * g * mu, 1.5f));
-
+                
                 float3 sumR, sumM;
                 float2 opticalDepth;
 
                 float3 p1 = i.startPos + i.viewDir * t0;
-                float l = t1 - t0;  // How lon the ray is in the atmosphere
+                float l = t1 - t0;  // How long the ray is in the atmosphere
                 float ds = l / _Steps;  // Length of sample step
                 float time = 0;
                 for (int e = 0; e < _Steps; e++)
@@ -158,6 +159,7 @@ Shader "Atmosphere/Atmospheric Scattering"
                     if (LightMarch(lp1, lrd, lt1 - lt0, opticalLightDepth)) {
                         
                         float height = length(p - _PlanetCenter) - _PlanetRadius;
+                        height = pow(height, 1/1.1f);
                         
                         float hr = exp(-height / rSH) * ds;
                         float hm = exp(-height / mSH) * ds;
@@ -179,7 +181,7 @@ Shader "Atmosphere/Atmospheric Scattering"
                 float3 color = (sumR * rsRGB * phaseR + sumM * msRGB * phaseM) * _LightIntensity * _LightColor;
                 color = Unity_Saturation_float(color, _AtmosphereDensity);
 
-                //lightDepth.x *= _AtmosphereDensity; // ADDED
+                
                 
                 float a = pow(saturate(sqrLength(_WorldSpaceCameraPos.xyz - i.wPos) - 0.4),2);
                 float a1 = (color.x + color.y + color.z) / 3;
