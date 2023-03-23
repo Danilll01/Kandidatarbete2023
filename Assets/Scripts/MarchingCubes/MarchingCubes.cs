@@ -1,3 +1,4 @@
+using Assets.Scripts.Tools;
 using JetBrains.Annotations;
 using System;
 
@@ -40,7 +41,7 @@ public class MarchingCubes
     /// <summary>
     /// Generate the mesh from the given parameters in the constructor
     /// </summary>
-    public Vector3[] generateMesh(MinMaxTerrainLevel hightFillerTerrainLevel, int index, int resolution, Mesh mesh)
+    public Vector3[] generateMesh(MinMaxTerrainLevel hightFillerTerrainLevel, int index, int resolution, Mesh mesh, MeshFilter meshFilter, MeshCollider meshCollider)
     {
         resolution *= 1 << chunkResolution;
 
@@ -66,41 +67,51 @@ public class MarchingCubes
         meshGenerator.SetBuffer(kernelIndex, "triangles", trianglesBuffer);
         meshGenerator.Dispatch(kernelIndex, resolution >> chunkResolution, resolution >> chunkResolution, resolution >> chunkResolution);
 
-        
-        // Retrieve triangles
-        int length = getLengthBuffer(ref trianglesBuffer); // This is slow!!!
-
-        Triangle[] triangles = new Triangle[length];
-        trianglesBuffer.GetData(triangles, 0, 0, length);
-        
-
-        // Release all buffers
-        trianglesBuffer.Release();
-
-        // Process our data from the compute shader
-        int[] meshTriangles = new int[length * 3];
-        Vector3[] meshVertices = new Vector3[length * 3];
-
-        
-        // Set values for the meshtriangles and meshvertices arrays
-        for (int i = 0; i < length; i++)
+        Action a = () =>
         {
-            for (int j = 0; j < 3; j++)
+
+        };
+        Action b = () =>
+        {
+            // Retrieve triangles
+            int length = getLengthBuffer(ref trianglesBuffer); // This is slow!!!
+
+            Triangle[] triangles = new Triangle[length];
+            trianglesBuffer.GetData(triangles, 0, 0, length);
+
+
+            // Release all buffers
+            trianglesBuffer.Release();
+
+            // Process our data from the compute shader
+            int[] meshTriangles = new int[length * 3];
+            Vector3[] meshVertices = new Vector3[length * 3];
+
+
+            // Set values for the meshtriangles and meshvertices arrays
+            for (int i = 0; i < length; i++)
             {
-                meshTriangles[i * 3 + j] = i * 3 + j;
-                hightFillerTerrainLevel.UpdateMinMax(triangles[i][j]);  //This is slow, need to implement fix so that this is only called the first time the chunks are created
-                meshVertices[i * 3 + j] = triangles[i][j];
+                for (int j = 0; j < 3; j++)
+                {
+                    meshTriangles[i * 3 + j] = i * 3 + j;
+                    hightFillerTerrainLevel.UpdateMinMax(triangles[i][j]);  //This is slow, need to implement fix so that this is only called the first time the chunks are created
+                    meshVertices[i * 3 + j] = triangles[i][j];
+                }
             }
-        }
 
-        // Set values in mesh
-        mesh.indexFormat = IndexFormat.UInt32;
-        mesh.Clear();
-        mesh.vertices = meshVertices;
-        mesh.triangles = meshTriangles;
-        mesh.RecalculateBounds();
+            // Set values in mesh
+            mesh.indexFormat = IndexFormat.UInt32;
+            mesh.Clear();
+            mesh.vertices = meshVertices;
+            mesh.triangles = meshTriangles;
+            mesh.RecalculateBounds();
 
-        return meshVertices;
+            meshFilter.sharedMesh = mesh;
+
+            meshCollider.sharedMesh = mesh;
+        };
+        MultithreadedWorker.QueueWork(a, b);
+        return new Vector3[1];
     }
 
     // Get the length buffer of type append

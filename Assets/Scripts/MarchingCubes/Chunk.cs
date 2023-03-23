@@ -93,11 +93,7 @@ public class Chunk : MonoBehaviour
 
         mesh = new Mesh();
 
-        Vector3[] meshVertices =  marchingCubes.generateMesh(terrainLevel, index, resolution, mesh);
-       
-        meshFilter.sharedMesh = mesh;
-
-        meshCollider.sharedMesh = mesh;
+        Vector3[] meshVertices =  marchingCubes.generateMesh(terrainLevel, index, resolution, mesh, meshFilter, meshCollider);
 
         return meshVertices.Length;
     }

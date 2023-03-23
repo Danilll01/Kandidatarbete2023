@@ -260,7 +260,7 @@ public class PillPlayerController : MonoBehaviour
         animator.SetFloat(Speed, Mathf.Sign(inputSpeed) * speed);
         animator.SetFloat(Direction, Mathf.Sign(inputDirection) * direction);  
         
-        if (boarded) return;
+        if (boarded || attractor == null) return;
         Gravity.KeepUpright(transform, attractor.transform);
         Gravity.Attract(transform.position, body, attractor.transform.position, attractor.mass);
     }
@@ -288,7 +288,8 @@ public class PillPlayerController : MonoBehaviour
             {
                 Debug.LogError("Unable to hit planet: " + planet.bodyName + " with spawn ray at " + planet.transform.position.ToString());
                 Debug.DrawLine(spawnLocationAbovePlanet, spawnLocationAbovePlanet + directionNearestPlanet * planet.radius, Color.red, 1000000);
-                Debug.Break();
+                //Debug.Break();
+                ship.Initialize(body, firstPersonCamera);
                 return;
             }
 
