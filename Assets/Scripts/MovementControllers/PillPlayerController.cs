@@ -336,7 +336,7 @@ public class PillPlayerController : MonoBehaviour
             }
 
 
-            Physics.Raycast(transform.position, attractor.transform.position - transform.position, out RaycastHit hit, 2f);
+            Physics.Raycast(transform.position, attractor.transform.position - transform.position, out RaycastHit hit, 0.75f);
             return hit.collider == null ? Vector3.zero : hit.normal;
         }
     }
@@ -352,7 +352,7 @@ public class PillPlayerController : MonoBehaviour
                 return false;
             }
             
-            bool isGrounded = Physics.Raycast(transform.position, attractor.transform.position - transform.position, 2f);
+            bool isGrounded = Physics.Raycast(transform.position, attractor.transform.position - transform.position, 0.75f);
             animator.SetBool(Jump, !isGrounded); // Sets animation
             return isGrounded;      
         }
