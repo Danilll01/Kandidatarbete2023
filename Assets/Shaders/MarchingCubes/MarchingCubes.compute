@@ -23,18 +23,12 @@ RWStructuredBuffer<TerrainLayer> terrainLayers;
 uint resolution;
 float threshold;
 float radius;
-uint frequency;
-float amplitude;
 int chunkIndex;
 int chunkResolution;
-
-Terrain terrain;
 
 [numthreads(8, 8, 8)]
 void GenerateMesh(uint3 id : SV_DispatchThreadID)
 {
-    terrain.frequency = frequency;
-    terrain.amplitude = amplitude;
     
     // Since we are going through the voxels, not the points, we stop before we reach the endpoint
     if (id.x >= resolution - 1 || id.y >= resolution - 1 || id.z >= resolution - 1)
@@ -133,7 +127,7 @@ float4 getTexturePoint(uint3 pos, int3 chunkId, float maxPos)
     
     float3 relPos = (.5 - normPos) * 2; // relPos goes between [-1, 1]
     
-    float terrainValue = getTerrain(terrain, relPos, terrainLayers, numTerrainLayers);
+    float terrainValue = getTerrain(relPos, terrainLayers, numTerrainLayers);
     
     return float4(relPos * radius, terrainValue);
 }

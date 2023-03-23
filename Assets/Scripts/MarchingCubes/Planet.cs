@@ -61,9 +61,7 @@ public class Planet : MonoBehaviour
         if (marchingCubes == null)
         {
             threshold = 23 + (float) rand.Value() * 4;
-            int frequency = rand.Next(2) + 3;
-            float amplitude = 1.2f + rand.Value() * 0.4f;
-            marchingCubes = new MarchingCubes(1, meshGenerator, threshold, radius, frequency, amplitude, terrainLayers);
+            marchingCubes = new MarchingCubes(1, meshGenerator, threshold, radius, terrainLayers);
         }
 
         // Init water
