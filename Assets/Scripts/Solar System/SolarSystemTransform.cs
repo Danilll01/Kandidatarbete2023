@@ -190,7 +190,12 @@ public class SolarSystemTransform : MonoBehaviour
             sunOrbitMover.enabled = false;
 
             // Set the rotation and position of planet depending on sun position
-            planetTransform.rotation = Quaternion.identity;
+
+            Vector3 sunToPlanetDir = sun.transform.position - planetTransform.position;
+            Vector3 sunToPlanetRelativeDir = sunToPlanetDir;
+            sunToPlanetRelativeDir.y = 0;
+            float angleBetweenPlanetAndSun = Vector3.Angle(sunToPlanetDir, sunToPlanetRelativeDir);
+            planetTransform.rotation = Quaternion.AngleAxis(angleBetweenPlanetAndSun, rotationAxis);
             planet.ResetMoons();
             Vector3 direction = sun.transform.position - planetTransform.position;
             direction.y = 0;
