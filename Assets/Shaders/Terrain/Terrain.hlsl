@@ -1,7 +1,7 @@
 #ifndef __terrain_hlsl_
 #define __terrain_hlsl_
 
-#include "../../Tools/Noise/Noise.hlsl"
+#include "../Tools/Noise/Noise.hlsl"
 
 struct TerrainLayer
 {
