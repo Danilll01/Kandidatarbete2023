@@ -66,7 +66,7 @@ public class Creature : MonoBehaviour
     [SerializeField] private AudioClip[] stepSounds;
     [SerializeField] private float timeBetweenIdleSounds = 12f;
     [SerializeField] private float stepsTimer = 0f;
-    [SerializeField] private float stepsPerSpeedUnit = 1f/3f;
+    [SerializeField] private float timeBetweenSteps = 1f/3f;
     private float idleSoundTimer;
 
     [Header("Debug")]
@@ -629,8 +629,8 @@ public class Creature : MonoBehaviour
             }
             else
             {
-                audioSource.PlayOneShot(GetRandomClip(stepSounds));
-                stepsTimer = stepsPerSpeedUnit / speed;
+                audioSource.PlayOneShot(GetRandomClip(stepSounds)); // SPEED = U/S     U / sek    
+                stepsTimer = timeBetweenSteps * speed;
             }
         }
     }
