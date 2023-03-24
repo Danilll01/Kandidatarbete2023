@@ -61,8 +61,8 @@ public class Planet : MonoBehaviour
 
         MinMaxTerrainLevel terrainLevel = new MinMaxTerrainLevel();
 
-        rotationAxis = RandomPointOnSphereEdge(radius, rand) - Vector3.zero;
-        
+        rotationAxis = rand.OnUnitSphere() * radius - Vector3.zero;
+
         willGeneratePlanetLife = rand.Value() < chanceToSpawnPlanetLife;
 
         // Initialize the meshgenerator
