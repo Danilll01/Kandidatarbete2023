@@ -489,7 +489,7 @@ public class Creature : MonoBehaviour
                     Chunk newChunk = hitChunk.transform.GetComponent<Chunk>();
                     if (newChunk != null)
                     {
-                        transform.parent = newChunk.creatures;
+                        transform.parent = newChunk.creatureGameObject.transform;
                     }
                 }
             }

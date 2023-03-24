@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 7065241369011201559}
   - component: {fileID: 6742904736247445569}
   - component: {fileID: 6368680446637308804}
+  - component: {fileID: 7163593874528261928}
   m_Layer: 8
   m_Name: Planet
   m_TagString: Untagged
@@ -77,6 +78,7 @@ MonoBehaviour:
     centre: {x: 0, y: 0, z: 0}
     numLayers: 5
   foliageHandler: {fileID: 6368680446637308804}
+  creatureHandler: {fileID: 7163593874528261928}
 --- !u!114 &3175307376905995560
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -172,9 +174,18 @@ MonoBehaviour:
   terrainColor: {fileID: 3175307376905995560}
   lowChunkRes: 1
   highChunkRes: 4
-  highRes: 8
-  mediumRes: 4
-  lowRes: 1
+  highRes:
+    lowerRadius: 0
+    upperRadius: 1.3
+    resolution: 3
+  mediumRes:
+    lowerRadius: 1.5
+    upperRadius: 2
+    resolution: 2
+  lowRes:
+    lowerRadius: 2.3
+    upperRadius: 6.871948e+10
+    resolution: 1
   maxChunkChecksPerFrame: 50
 --- !u!114 &6368680446637308804
 MonoBehaviour:
@@ -264,6 +275,33 @@ MonoBehaviour:
   waterPlantNr: 0
   stoneNr: 0
   foragableNr: 0
+--- !u!114 &7163593874528261928
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 938852981703260768}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 439adec586f31c146b21b657c1373892, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  packs:
+  - prefab: {fileID: 1311290861401530, guid: 5904fbfe921140647a4ebddf4adda389, type: 3}
+    ratio: 1
+    minPackSize: 5
+    maxPackSize: 12
+    packRadius: 40
+    prefabRadius: 1
+  - prefab: {fileID: 1655403738057260, guid: dcc3bfa5cf419b64e86c7effdae2b6f2, type: 3}
+    ratio: 1
+    minPackSize: 2
+    maxPackSize: 5
+    packRadius: 30
+    prefabRadius: 1
+  isInstantiated: 0
+  debug: 1
 --- !u!1 &3800433809544220050
 GameObject:
   m_ObjectHideFlags: 0
