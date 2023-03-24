@@ -213,7 +213,12 @@ public class ChunksHandler : MonoBehaviour
             {
                 chunksHighRes[index].gameObject.SetActive(true);
                 if (foliageInitialized == 0)
+                {
                     chunksHighRes[index].foliage.SpawnFoliageOnChunk();
+                    CreatureSpawning cretureSpawning = chunksHighRes[index].creatures;
+                    if (cretureSpawning.initialized) cretureSpawning.SpawnCreatures();
+                }
+                    
             }
             count++;
             index = index == 0 ? chunksHighRes.Count - 1 : index - 1;

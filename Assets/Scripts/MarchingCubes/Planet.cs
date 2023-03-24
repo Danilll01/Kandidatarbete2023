@@ -40,6 +40,7 @@ public class Planet : MonoBehaviour
 
     private float threshold;
     public FoliageHandler foliageHandler;
+    public CreatureHandler creatureHandler;
 
     /// <summary>
     /// Initializes the planet
@@ -74,10 +75,21 @@ public class Planet : MonoBehaviour
             waterDiameter = 0; 
         }
 
-        if (foliageHandler != null && !bodyName.Contains("Moon"))
+        if (!bodyName.Contains("Moon"))
         {
-            foliageHandler.Initialize(this);
+            if (foliageHandler != null)
+            {
+                foliageHandler.Initialize(this);
+            }
+
+            if (creatureHandler != null)
+            {
+                creatureHandler.Initialize(this);
+            }
         }
+        
+
+        
 
         terrainLevel.SetMin(Mathf.Abs((waterDiameter + 1) / 2));
 
