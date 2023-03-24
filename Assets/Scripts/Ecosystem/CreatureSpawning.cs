@@ -1,11 +1,12 @@
 using ExtendedRandom;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class CreatureSpawning : MonoBehaviour
 {
-
+    [SerializeField] private float terrainSteepnesAngle = 30f;
 
     public bool initialized = false;
 
@@ -15,6 +16,7 @@ public class CreatureSpawning : MonoBehaviour
     private CreatureHandler creatureHandler;
     private RandomX random;
     private Vector3 chunkPosition;
+    private int[] spawningRatios;
     private int positionArrayLength;
 
     public void Initialize(int meshVerticesLength, Vector3 position, int seed)
@@ -29,6 +31,8 @@ public class CreatureSpawning : MonoBehaviour
 
         // Where to start shooting rays from
         chunkPosition = position;
+
+        spawningRatios = GetSpawningRatios();
 
         // Generates all spawn points for this chunk
         InitCreatures();
@@ -85,7 +89,8 @@ public class CreatureSpawning : MonoBehaviour
             // Checks if the ray hit the correct chunk
             if (hit.transform == transform.parent)
             {
-                SpawnPack(hit, rayOrigin);
+                Quaternion rotation = Quaternion.FromToRotation(Vector3.forward, hit.normal);
+                SpawnPack(rayOrigin, rotation, creatureHandler.packs[0]);
                 
                 hits++;
             }
@@ -104,8 +109,136 @@ public class CreatureSpawning : MonoBehaviour
         creatureSpots = null;
     }
 
-    private void SpawnPack(RaycastHit hit, Vector3 rayOrigin)
+    private void SpawnPack(Vector3 rayOrigin, Quaternion rotation, CreaturePack packData)
     {
+        // How many creatures in this pack
+        int packSize = random.Next(packData.minPackSize, packData.maxPackSize);
 
+        // Used to keep track of all creature positions in a pack
+        Vector3[] positions = new Vector3[packSize];
+
+        // Create the pack
+        for (int i = 0; i < packSize; i++)
+        {
+            Vector3 randomOrigin = rayOrigin + rotation * random.InsideUnitCircle() * packData.packRadius;
+
+            Ray ray = new(randomOrigin, creatureHandler.PlanetPosition - randomOrigin);
+            RaycastHit hit;
+
+            // Registered a hit
+            if (Physics.Raycast(ray, out hit, creatureHandler.PlanetRadius))
+            {
+                // Check if the hit colliding with a creature
+                if (hit.transform.CompareTag("Creature"))
+                {
+                    if (creatureHandler.debug) Debug.Log("Hit creature");
+                    continue;
+                }
+
+                // Check if the hit is coliiding with water
+                if (creatureHandler.WaterRadius > Vector3.Distance(hit.point, creatureHandler.PlanetPosition))
+                {
+                    if (creatureHandler.debug) Debug.Log("Hit water");
+                    continue;
+                }
+                
+                // Check if "hit.point" is close to a point in positions
+                if (CloseToListOfPoints(positions, hit.point, packData.prefabRadius))
+                {
+                    if (creatureHandler.debug) Debug.Log("Too close to another creature in pack");
+                    continue;
+                }
+
+                // Check if the terrain is too steep to place a creature on 
+                if (AngleTooSteep(randomOrigin, hit.point, hit.normal))
+                {
+                    if (creatureHandler.debug) Debug.Log("Angle too steep");
+                    continue;
+                }
+
+                // Creates a rotation for the new object that always is rotated towards the planet
+                Quaternion rotation2 = Quaternion.FromToRotation(Vector3.forward, hit.normal) * Quaternion.Euler(90, 0, 0);
+                //Quaternion rotation2 = Quaternion.LookRotation(hit.point) * Quaternion.Euler(90, 0, 0);
+                GameObject newObject = Instantiate(packData.prefab, hit.point, rotation2, transform);
+                newObject.transform.rotation = rotation2;
+                newObject.name = newObject.name.Replace("(Clone)", "").Trim();
+
+                if (creatureHandler.debug) Debug.DrawLine(randomOrigin, hit.point, Color.cyan, 10f);
+
+                positions[i] = hit.point;
+            }
+
+        }
+    }
+
+    // Helper methods
+
+    // Check if a point is near other points in an array
+    private bool CloseToListOfPoints(Vector3[] positions, Vector3 newPoint, float minDistance)
+    {
+        for (int j = 0; j < positions.Count(); j++)
+        {
+            if (Vector3.Distance(newPoint, positions[j]) < minDistance)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // Calculates if the angle between three points is too steep
+    private bool AngleTooSteep(Vector3 spawnPos, Vector3 groundPos, Vector3 groundNormal)
+    {
+        // Calculate the angle between the normal and the vector from the spawn point to the ground point
+        float angle = Vector3.Angle(groundNormal, spawnPos - groundPos);
+        if (creatureHandler.debug) Debug.Log("Angle: " + angle);
+        // If the angle is too steep, return false
+        if (angle > terrainSteepnesAngle)
+        {
+            return true;
+        }
+        return false;
+    }
+
+    private CreaturePack GetCreatureToSpawn()
+    {
+        if (spawningRatios.Length != creatureHandler.packs.Length) Debug.Log("Creatures and ratios needs to be the same size");
+
+        int total = 0;
+
+        foreach (int ratio in spawningRatios)
+        {
+            total += ratio;
+        }
+
+        float randomNum = random.Next(0, total);
+
+        float accumulatedSum = 0;
+
+        for (int i = 0; i < spawningRatios.Length; i++)
+        {
+            if (randomNum > accumulatedSum)
+            {
+                accumulatedSum += spawningRatios[i];
+            }
+            else
+            {
+                return creatureHandler.packs[i];
+            }
+        }
+
+        return creatureHandler.packs[0];
+    }
+
+    private int[] GetSpawningRatios()
+    {
+        int[] ratios = new int[creatureHandler.packs.Count()];
+
+        for (int i = 0; i < creatureHandler.packs.Count(); i++)
+        {
+            ratios[i] = creatureHandler.packs[i].ratio;
+        }
+
+        return ratios;
     }
 }
