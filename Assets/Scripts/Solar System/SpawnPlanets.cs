@@ -164,7 +164,7 @@ public class SpawnPlanets : MonoBehaviour
         {
             GameObject moon = Instantiate(planetsPrefab);
             moon.transform.parent = parentPlanet.transform;
-            moon.transform.localPosition = RandomPointOnCircleEdge(parentPlanet.radius * i);
+            moon.transform.localPosition = RandomPointOnCircleEdge(parentPlanet.radius * (i + 1));
             moon.gameObject.name = "Moon " + i;
 
             Planet moonBody = moon.GetComponent<Planet>();
@@ -180,7 +180,7 @@ public class SpawnPlanets : MonoBehaviour
     // Gives back a random position on the edge of a circle given the radius of the circle
     private Vector3 RandomPointOnCircleEdge(float radius)
     {
-        var vector2 = Random.insideUnitCircle.normalized * radius;
+        var vector2 = random.OnUnitCircle() * radius;
         return new Vector3(vector2.x, 0, vector2.y);
     }
 
