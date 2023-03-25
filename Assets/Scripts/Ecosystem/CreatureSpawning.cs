@@ -60,7 +60,7 @@ public class CreatureSpawning : MonoBehaviour
 
     public void SpawnCreatures()
     {
-        Debug.Log("NOWDNDOWAD");
+        
         // Not initialized or already spawned
         if (creatureSpots == null) return;
 
@@ -87,10 +87,10 @@ public class CreatureSpawning : MonoBehaviour
             }
 
             // Checks if the ray hit the correct chunk
-            if (hit.transform == transform.parent)
+            if (hit.transform == transform.parent && hit.distance < radius - waterRadius)
             {
                 Quaternion rotation = Quaternion.FromToRotation(Vector3.forward, hit.normal);
-                SpawnPack(rayOrigin, rotation, creatureHandler.packs[0]);
+                SpawnPack(rayOrigin, rotation, GetCreatureToSpawn());
                 
                 hits++;
             }

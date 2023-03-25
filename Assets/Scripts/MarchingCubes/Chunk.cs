@@ -111,7 +111,6 @@ public class Chunk : MonoBehaviour
 
                     if (!foliage.initialized)
                     {
-                        
                         if (numVerts > 500)
                             foliage.Initialize(numVerts, position, random.Next());
                     }

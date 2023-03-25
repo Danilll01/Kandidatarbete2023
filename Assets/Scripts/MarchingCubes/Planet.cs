@@ -87,23 +87,13 @@ public class Planet : MonoBehaviour
                 creatureHandler.Initialize(this);
             }
         }
-        
-
-        
 
         terrainLevel.SetMin(Mathf.Abs((waterDiameter + 1) / 2));
 
         chunksHandler.Initialize(this, terrainLevel, spawn, rand.Next());
 
-        
-
         if (willGeneratePlanetLife) 
         {
-            // Generate the creatures
-            if (generateCreatures != null && !bodyName.Contains("Moon")) {
-                generateCreatures.Initialize(this, rand.Next(), spawn);
-            }
-
             if (waterHandler != null && bodyName != "Sun")
             {
                 waterHandler.Initialize(this, waterDiameter, GetGroundColor());

@@ -301,7 +301,7 @@ MonoBehaviour:
     packRadius: 30
     prefabRadius: 1
   isInstantiated: 0
-  debug: 1
+  debug: 0
 --- !u!1 &3800433809544220050
 GameObject:
   m_ObjectHideFlags: 0
