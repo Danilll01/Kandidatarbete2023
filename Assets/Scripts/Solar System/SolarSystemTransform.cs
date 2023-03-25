@@ -71,6 +71,7 @@ public class SolarSystemTransform : MonoBehaviour
             else if (playerOnPlanetIndex != activePlanetIndex)
             {
                 MovePlanets(playerOnPlanetIndex);
+                player.GetComponent<PillPlayerController>().attractor = spawnPlanets.bodies[playerOnPlanetIndex];
                 activePlanetIndex = playerOnPlanetIndex;
             }
         }
@@ -90,6 +91,7 @@ public class SolarSystemTransform : MonoBehaviour
         {
             player.transform.SetParent(null,true);
             releasePlayer = false;
+            player.GetComponent<PillPlayerController>().attractor = null;
         }
     }
 
@@ -152,7 +154,7 @@ public class SolarSystemTransform : MonoBehaviour
                 // Check if the player has left the current planet
                 if (playerOnPlanetIndex >= 0 && i == playerOnPlanetIndex)
                 {
-                    if (distance > (planet.radius + 400f))
+                    if (distance > (planet.radius + 500f))
                     {
                         playerOnPlanetIndex = -1; // -1 means the player is not on any planet
                         break;
