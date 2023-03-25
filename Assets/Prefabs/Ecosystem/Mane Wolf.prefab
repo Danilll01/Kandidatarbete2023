@@ -1039,7 +1039,7 @@ GameObject:
   - component: {fileID: 5967490473235420340}
   - component: {fileID: 2083974084113956184}
   - component: {fileID: 4424857231441827145}
-  m_Layer: 20
+  m_Layer: 10
   m_Name: Mane Wolf
   m_TagString: Creature
   m_Icon: {fileID: 0}
