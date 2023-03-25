@@ -9,7 +9,7 @@ public class SolarSystemTransform : MonoBehaviour
     [SerializeField] private int activePlanetIndex = 0;
     private GameObject sun;
     private GameObject planetsParent;
-    [SerializeField] private GameObject player;
+    [SerializeField] private PillPlayerController player;
     private int playerOnPlanetIndex;
     private bool rotateSolarSystem;
     private Quaternion playerRotation;
@@ -71,7 +71,7 @@ public class SolarSystemTransform : MonoBehaviour
             else if (playerOnPlanetIndex != activePlanetIndex)
             {
                 MovePlanets(playerOnPlanetIndex);
-                player.GetComponent<PillPlayerController>().attractor = spawnPlanets.bodies[playerOnPlanetIndex];
+                player.attractor = spawnPlanets.bodies[playerOnPlanetIndex];
                 activePlanetIndex = playerOnPlanetIndex;
             }
         }
@@ -91,7 +91,7 @@ public class SolarSystemTransform : MonoBehaviour
         {
             player.transform.SetParent(null,true);
             releasePlayer = false;
-            player.GetComponent<PillPlayerController>().attractor = null;
+            player.attractor = null;
         }
     }
 
