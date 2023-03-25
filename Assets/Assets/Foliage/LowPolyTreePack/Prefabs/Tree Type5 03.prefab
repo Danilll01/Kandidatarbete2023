@@ -13,9 +13,9 @@ GameObject:
   - component: {fileID: 2389852}
   - component: {fileID: -2554083129457404752}
   - component: {fileID: 5695618347440527538}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Tree Type5 03
-  m_TagString: Untagged
+  m_TagString: Foliage
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
