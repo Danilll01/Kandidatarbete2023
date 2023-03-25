@@ -6,6 +6,7 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(BoxCollider))]
 [RequireComponent(typeof(Animator))]
+[RequireComponent(typeof(AudioSource))]
 public class Creature : MonoBehaviour
 {
 
@@ -57,6 +58,17 @@ public class Creature : MonoBehaviour
 
     [SerializeField] private GameObject breedingParticle;
 
+    [Header("Sound")]
+    [Range(0f, 1f)]
+    [SerializeField] private float volume = 0.4f;
+    [SerializeField] private AudioClip[] idleSounds;
+    [SerializeField] private AudioClip[] deathSounds;
+    [SerializeField] private AudioClip[] stepSounds;
+    [SerializeField] private float timeBetweenIdleSounds = 12f;
+    [SerializeField] private float stepsTimer = 0f;
+    [SerializeField] private float timeBetweenSteps = 1f/3f;
+    private float idleSoundTimer;
+
     [Header("Debug")]
     [SerializeField] private CreatureState currentState;
     [SerializeField] private bool DEBUG = false;
@@ -74,8 +86,10 @@ public class Creature : MonoBehaviour
     private LODGroup lodGroup;
     private new Renderer renderer;
     private Animator animator;
+    private AudioSource audioSource;
 
     private Creature breedingPartner;
+    public bool isDying = false;
 
     // Start is called before the first frame update
     void Start()
@@ -89,6 +103,9 @@ public class Creature : MonoBehaviour
         lodGroup = meshObj.GetComponent<LODGroup>();
         renderer = lodGroup.transform.GetComponent<Renderer>();
         animator = GetComponent<Animator>();
+        audioSource = GetComponent<AudioSource>();
+        audioSource.volume = volume;
+        audioSource.spatialBlend = 1.0f;
 
         // Teleport the creature 1 meter up in correct direction based on position on planet
         transform.position += -(planet.transform.position - transform.position).normalized * 0.3f;
@@ -104,6 +121,8 @@ public class Creature : MonoBehaviour
         animator.keepAnimatorStateOnDisable = true;
 
         if (isChild) canReproduce = false;
+
+        idleSoundTimer = timeBetweenIdleSounds + Random.Range(-2f,2f);
     }
 
     // Update is called once per frame
@@ -163,33 +182,18 @@ public class Creature : MonoBehaviour
         // Die if hunger or thirst is 0
         if (hunger <= 0 || thirst <= 0)
         {
-            // Spawn a poof particle when the creature dies
-            Instantiate(breedingParticle, transform.position, transform.rotation, transform.parent);
-
-            Destroy(gameObject);
+            Kill();
         }
 
-        // Decrese timer for reproduction
-        if (canReproduce && reproductionTimer > 0)
-        {
-            reproductionTimer -= Time.deltaTime;
-        }
+        // Update all timers
 
-        
-        if (isChild)
-        {
-            // Decrease grow-up timer
-            if (growUpTime > 0)
-            {
-                growUpTime -= Time.deltaTime;
-            } else
-            {
-                isChild = false;
-                GameObject newObject = Instantiate(parentPrefab, transform.position, transform.rotation, transform.parent);
-                newObject.name = newObject.name.Replace("(Clone)", "").Trim(); 
-                Destroy(gameObject);
-            }
-        }
+        UpdateReproductionTimer();
+
+        UpdateGrowthTimer();
+
+        UpdateIdleSoundsTimer();
+
+        UpdateStepSoundsTimer();
     }
 
     void FixedUpdate()
@@ -383,9 +387,14 @@ public class Creature : MonoBehaviour
             {
                 if (type == ResourceType.Creature)
                 {
-                    CreatureType creatureType = coll.gameObject.GetComponent<Creature>().GetCreatureType;
+                    Creature creature = coll.gameObject.GetComponent<Creature>();
+
+                    if (creature.isDying) continue;
+
+                    CreatureType creatureType = creature.GetCreatureType;
                     if (creatureDiet != creatureType) continue;
                     if (SameSpecies(coll.gameObject.name)) continue;
+
                 }
                 
                 float distanceToGameObject = Vector3.Distance(transform.position, coll.transform.position);
@@ -544,7 +553,12 @@ public class Creature : MonoBehaviour
         {
             if (type == ResourceType.Creature)
             {
-                Destroy(resource);
+                Creature creature = resource.GetComponent<Creature>();
+                if (creature != null)
+                {
+                    creature.Kill();
+                }
+                
             } else
             {
                 resource.GetComponent<Resource>().ConsumeResource();
@@ -560,12 +574,111 @@ public class Creature : MonoBehaviour
         currentState = CreatureState.Walking;
     }
 
+    #region Timers
+
+    private void UpdateReproductionTimer()
+    {
+        if (canReproduce && reproductionTimer > 0)
+        {
+            reproductionTimer -= Time.deltaTime;
+        }
+    }
+
+    private void UpdateGrowthTimer()
+    {
+        if (isChild)
+        {
+            // Decrease grow-up timer
+            if (growUpTime > 0)
+            {
+                growUpTime -= Time.deltaTime;
+            }
+            else
+            {
+                isChild = false;
+                GameObject newObject = Instantiate(parentPrefab, transform.position, transform.rotation, transform.parent);
+                newObject.name = newObject.name.Replace("(Clone)", "").Trim();
+                Destroy(gameObject);
+            }
+        }
+    }
+
+    private void UpdateIdleSoundsTimer()
+    {
+        if (idleSounds.Length > 0)
+        {
+            if (idleSoundTimer > 0)
+            {
+                idleSoundTimer -= Time.deltaTime;
+            }
+            else
+            {
+                audioSource.PlayOneShot(GetRandomClip(idleSounds));
+                idleSoundTimer = timeBetweenIdleSounds + Random.Range(-5f, 5f); ;
+            }
+        }
+    }
+
+    private void UpdateStepSoundsTimer()
+    {
+        if (stepSounds.Length > 0)
+        {
+            if (stepsTimer > 0)
+            {
+                stepsTimer -= Time.deltaTime;
+            }
+            else
+            {
+                audioSource.PlayOneShot(GetRandomClip(stepSounds)); // SPEED = U/S     U / sek    
+                stepsTimer = timeBetweenSteps * speed;
+            }
+        }
+    }
+
+    #endregion
+
+    private IEnumerator SelfDestruct()
+    {
+        AudioClip deathSound = GetRandomClip(deathSounds);
+        if (deathSound != null)
+        {
+            audioSource.PlayOneShot(deathSound);
+
+            yield return new WaitForSeconds(deathSound.length);
+        }
+
+        // Spawn a poof particle when the creature dies
+        Instantiate(breedingParticle, transform.position, transform.rotation, transform.parent);
+
+        Destroy(gameObject);
+    }
+
+    private AudioClip GetRandomClip(AudioClip[] clips)
+    {
+        if (clips.Length == 0) return null;
+
+        return clips[Random.Range(0, clips.Length)];
+    }
+        
+
     private bool SameSpecies(string creatureName)
     {
         bool sameAsParent = parentPrefab.name == creatureName;
         bool sameAsChild = childPrefab.name == creatureName;
 
         return sameAsParent || sameAsChild;
+    }
+
+    /// <summary>
+    /// Kills the creature
+    /// </summary>
+    public void Kill()
+    {
+        if (!isDying)
+        {
+            isDying = true;
+            StartCoroutine(SelfDestruct());
+        }
     }
 
     public CreatureType GetCreatureType
