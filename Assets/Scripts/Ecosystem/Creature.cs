@@ -91,6 +91,14 @@ public class Creature : MonoBehaviour
     private Creature breedingPartner;
     public bool isDying = false;
 
+    // Overlap sphere optimizations
+    private static int foodLayerMask = (1 << 9);
+    private static int creatureLayerMask = (1 << 10);
+    private static int resourceLayerMask = foodLayerMask | creatureLayerMask;
+    private int getResourceTickSkips = 20;
+    private int getResourceTicks = 20;
+    private GameObject lastResourceFound;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -251,7 +259,18 @@ public class Creature : MonoBehaviour
 
     private void LookingForResource(ResourceType resource)
     {
-        GameObject nearestResource = GetNearestGameobject(resource);
+        GameObject nearestResource;
+        if (getResourceTicks <= 0)
+        {
+            nearestResource = GetNearestGameobject(resource);
+            lastResourceFound = nearestResource;
+            getResourceTicks = getResourceTickSkips;
+        } else
+        {
+            nearestResource = lastResourceFound;
+            getResourceTicks--;
+        }
+        
         Vector3 resourcePos = Vector3.zero;
 
         // Get position of nearest resource
@@ -308,7 +327,7 @@ public class Creature : MonoBehaviour
 
     private void LookingForPartner()
     {
-        Collider[] hitColliders = Physics.OverlapSphere(transform.position, detectionRadius);
+        Collider[] hitColliders = Physics.OverlapSphere(transform.position, detectionRadius, creatureLayerMask);
         GameObject nearestObject = null;
         float nearestDistance = Mathf.Infinity;
 
@@ -376,7 +395,7 @@ public class Creature : MonoBehaviour
 
     private GameObject GetNearestGameobject(ResourceType type)
     {
-        Collider[] hitColliders = Physics.OverlapSphere(transform.position, detectionRadius);
+        Collider[] hitColliders = Physics.OverlapSphere(transform.position, detectionRadius, resourceLayerMask);
         GameObject nearestObject = null;
         float nearestDistance = Mathf.Infinity;
 
