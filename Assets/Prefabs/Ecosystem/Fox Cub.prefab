@@ -140,7 +140,7 @@ CapsuleCollider:
   m_GameObject: {fileID: 1073431703688230}
   m_Material: {fileID: 13400000, guid: 54174b87a6301064ea8788686f85bda8, type: 2}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   m_Radius: 0.12989005
   m_Height: 0.36457258
   m_Direction: 0
@@ -572,7 +572,7 @@ CapsuleCollider:
   m_GameObject: {fileID: 1186627445905640}
   m_Material: {fileID: 13400000, guid: 54174b87a6301064ea8788686f85bda8, type: 2}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   m_Radius: 0.11309509
   m_Height: 0.45255604
   m_Direction: 0
@@ -659,7 +659,7 @@ SphereCollider:
   m_GameObject: {fileID: 1257786769891958}
   m_Material: {fileID: 13400000, guid: 54174b87a6301064ea8788686f85bda8, type: 2}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Radius: 0.095
   m_Center: {x: 0, y: 0.06, z: 0}
@@ -922,7 +922,7 @@ SkinnedMeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1532307533272276}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -1054,7 +1054,7 @@ CapsuleCollider:
   m_GameObject: {fileID: 1614664845361482}
   m_Material: {fileID: 13400000, guid: 54174b87a6301064ea8788686f85bda8, type: 2}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   m_Radius: 0.121
   m_Height: 0.45255604
   m_Direction: 0
@@ -1633,7 +1633,7 @@ CapsuleCollider:
   m_GameObject: {fileID: 1874486795075382}
   m_Material: {fileID: 13400000, guid: 54174b87a6301064ea8788686f85bda8, type: 2}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   m_Radius: 0.09
   m_Height: 0.31
   m_Direction: 0
