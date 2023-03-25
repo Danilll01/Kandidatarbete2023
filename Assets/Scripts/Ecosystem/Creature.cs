@@ -1,7 +1,9 @@
+using System;
 using System.Collections;
 using Unity.Burst.CompilerServices;
 using Unity.VisualScripting;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(BoxCollider))]
@@ -98,6 +100,8 @@ public class Creature : MonoBehaviour
     private int getResourceTickSkips = 20;
     private int getResourceTicks = 20;
     private GameObject lastResourceFound;
+
+    private Collider[] nearestResources = new Collider[300]; 
 
     // Start is called before the first frame update
     void Start()
@@ -395,28 +399,35 @@ public class Creature : MonoBehaviour
 
     private GameObject GetNearestGameobject(ResourceType type)
     {
-        Collider[] hitColliders = Physics.OverlapSphere(transform.position, detectionRadius, resourceLayerMask);
+        string stringOfType = type.ToString();
+        Creature creature;
+        CreatureType creatureType;
+
+        //Collider[] hitColliders = Physics.OverlapSphere(transform.position, detectionRadius, resourceLayerMask);
+        Physics.OverlapSphereNonAlloc(transform.position, detectionRadius, nearestResources, resourceLayerMask);
         GameObject nearestObject = null;
         float nearestDistance = Mathf.Infinity;
+        float distanceToGameObject;
 
         // Find nearest object with tag
-        foreach (Collider coll in hitColliders)
+        foreach (Collider coll in nearestResources)
         {
-            if (coll != collider && coll.gameObject.CompareTag(type.ToString()))
+            if (coll == null) continue;
+            if (coll != collider && coll.gameObject.CompareTag(stringOfType))
             {
                 if (type == ResourceType.Creature)
                 {
-                    Creature creature = coll.gameObject.GetComponent<Creature>();
+                    creature = coll.gameObject.GetComponent<Creature>();
 
                     if (creature.isDying) continue;
 
-                    CreatureType creatureType = creature.GetCreatureType;
+                    creatureType = creature.GetCreatureType;
                     if (creatureDiet != creatureType) continue;
                     if (SameSpecies(coll.gameObject.name)) continue;
 
                 }
-                
-                float distanceToGameObject = Vector3.Distance(transform.position, coll.transform.position);
+
+                distanceToGameObject = Vector3.Distance(transform.position, coll.transform.position);
 
                 if (nearestDistance > distanceToGameObject)
                 {
@@ -424,7 +435,12 @@ public class Creature : MonoBehaviour
                     nearestObject = coll.gameObject;
                 }
             }
-            
+        }
+
+        // Clear the array
+        for (int i = 0; i < nearestResources.Length; i++)
+        {
+            nearestResources[i] = null;
         }
 
         return nearestObject;

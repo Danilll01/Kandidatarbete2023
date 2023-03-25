@@ -118,7 +118,7 @@ public class Chunk : MonoBehaviour
     private void UpdateChunk()
     {
         float playerDistance = Vector3.Magnitude(player.localPosition - position);
-        print("P dist: " + playerDistance + " less than " + highRes.upperRadius * chunkSize);
+        //print("P dist: " + playerDistance + " less than " + highRes.upperRadius * chunkSize);
         if (playerDistance < highRes.upperRadius * chunkSize)
         {
             meshCollider.enabled = true;
