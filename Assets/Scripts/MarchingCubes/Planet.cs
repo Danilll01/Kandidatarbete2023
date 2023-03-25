@@ -148,7 +148,7 @@ public class Planet : MonoBehaviour
         {
             RotateAroundAxis();
         }
-        else if (player.parent != transform && player.parent != this.transform.parent.parent)
+        else if (player.parent != transform)
         {
             RotateAroundAxis();
         }
@@ -161,7 +161,7 @@ public class Planet : MonoBehaviour
 
     private void RotateAroundAxis()
     {
-        transform.RotateAround(transform.position, rotationAxis, Time.deltaTime);
+        transform.RotateAround(transform.position, rotationAxis, 5f * Time.deltaTime);
     }
 
     private void RotateMoons()
