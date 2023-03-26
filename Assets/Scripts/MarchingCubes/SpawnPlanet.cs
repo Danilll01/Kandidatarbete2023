@@ -21,6 +21,6 @@ public class SpawnPlanet : MonoBehaviour
         planet.Initialize(player.transform, 1, true);
         planet.SetUpPlanetValues();
 
-        player.Initialize(planet);
+        player.Initialize(planet, Universe.random.Next());
     }
 }
