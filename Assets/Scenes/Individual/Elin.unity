@@ -646,7 +646,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 67fef1f66bdcac040aa807217b1b0ba7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  parent: {fileID: 0}
+  parent: {fileID: 1908630817}
   rotationAxis: {x: 0, y: 0, z: 0}
 --- !u!1 &891510519
 GameObject:
@@ -1182,7 +1182,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 67fef1f66bdcac040aa807217b1b0ba7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  parent: {fileID: 0}
+  parent: {fileID: 1908630817}
   rotationAxis: {x: 0, y: 0, z: 0}
 --- !u!1001 &1574120945
 PrefabInstance:

@@ -13,7 +13,7 @@ public class SetUpOrbit : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //moonsrelativeDistances = transform.position - parent.position;
+        moonsrelativeDistances = transform.position - parent.position;
         KeplerOrbitMover planetOrbitMover = GetComponent<KeplerOrbitMover>();
         // Turns on orbit for the given planet
         planetOrbitMover.LockOrbitEditing = false;
@@ -41,7 +41,8 @@ public class SetUpOrbit : MonoBehaviour
         transform.rotation *= Quaternion.Inverse(myRot) * rot * myRot;
     }
 
-    private void LateUpdate()
+    */
+    private void Update()
     {
         Transform moon = this.transform;
         Vector3 direction = moon.transform.position - parent.position;
@@ -49,6 +50,5 @@ public class SetUpOrbit : MonoBehaviour
         moon.transform.position = direction.normalized * moonsrelativeDistances.magnitude;
         
     }
-    */
     
 }
