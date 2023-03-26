@@ -64,7 +64,7 @@ public class PillPlayerController : MonoBehaviour
 
         body = GetComponent<Rigidbody>();
         ship = GameObject.Find("Spaceship").GetComponent<ShipController>();
-        Spawn(planetToSpawnOn, int seed);
+        Spawn(planetToSpawnOn, seed);
         //Lock the mouse inside of the game
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
