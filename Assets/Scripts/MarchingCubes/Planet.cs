@@ -5,6 +5,7 @@ using Unity.Mathematics;
 using ExtendedRandom;
 using SimpleKeplerOrbits;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 [RequireComponent(typeof(GenerateCreatures))]
 [RequireComponent(typeof(TerrainColor))]
@@ -43,9 +44,10 @@ public class Planet : MonoBehaviour
     public FoliageHandler foliageHandler;
     
     public Vector3 rotationAxis;
-    [HideInInspector] public GameObject moonsParent;
+    [HideInInspector] public GameObject moonsRotationObject;
     private Vector3[] moonsrelativeDistances;
     private bool moonsLocked = true;
+    public bool testingRotation = false;
 
     /// <summary>
     /// Initializes the planet
@@ -64,6 +66,8 @@ public class Planet : MonoBehaviour
         rotationAxis = rand.OnUnitSphere() * radius - Vector3.zero;
 
         willGeneratePlanetLife = rand.Value() < chanceToSpawnPlanetLife;
+        willGenerateCreature = false;
+        willGeneratePlanetLife = false;
 
         // Initialize the meshgenerator
         if (marchingCubes == null)
@@ -84,7 +88,7 @@ public class Planet : MonoBehaviour
 
         if (foliageHandler != null && !bodyName.Contains("Moon"))
         {
-            foliageHandler.Initialize(this);
+            //foliageHandler.Initialize(this);
         }
 
         terrainLevel.SetMin(Mathf.Abs((waterDiameter + 1) / 2));
@@ -144,17 +148,24 @@ public class Planet : MonoBehaviour
     
     void Update()
     {
-        if (player.parent == null)
+        if (!testingRotation)
         {
             RotateAroundAxis();
         }
-        else if (player.parent != transform)
+        else
         {
-            RotateAroundAxis();
-        }
-        else if(!bodyName.Contains("Moon"))
-        {
-            RotateMoons();
+            if (player.parent == null)
+            {
+                RotateAroundAxis();
+            }
+            else if (player.parent != transform)
+            {
+                RotateAroundAxis();
+            }
+            else if(!bodyName.Contains("Moon"))
+            {
+                RotateMoons();
+            }
         }
     }
 
@@ -168,7 +179,7 @@ public class Planet : MonoBehaviour
     {
         LockMoons(false);
 
-        moonsParent.transform.RotateAround(transform.position, rotationAxis, Time.deltaTime);
+        moonsRotationObject.transform.RotateAround(transform.position, -rotationAxis, 5f * Time.deltaTime);
 
         for (int i = 0; i < moons.Count; i++)
         {

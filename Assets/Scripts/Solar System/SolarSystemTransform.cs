@@ -11,7 +11,7 @@ public class SolarSystemTransform : MonoBehaviour
     private GameObject planetsParent;
     [SerializeField] private PillPlayerController player;
     private int playerOnPlanetIndex;
-    private bool rotateSolarSystem;
+    public bool rotateSolarSystem;
     private Quaternion playerRotation;
     private GameObject fakeOrbitObject;
     private Vector3[] relativePlanetSunDistances;
@@ -182,7 +182,7 @@ public class SolarSystemTransform : MonoBehaviour
     {
         if (planetIndex >= 0)
         {
-            rotateSolarSystem = false;
+            //rotateSolarSystem = false;
             Planet planet = spawnPlanets.bodies[planetIndex];
             Transform planetTransform = planet.transform;
             KeplerOrbitMover planetOrbitMover = planet.GetComponent<KeplerOrbitMover>();
@@ -234,7 +234,7 @@ public class SolarSystemTransform : MonoBehaviour
 
         // Activate orbit on the sun to fake the movement of the planet
         ActivateSunOrbit(planet.gameObject);
-        rotateSolarSystem = true;
+        //rotateSolarSystem = true;
     }
 
     private void ActivateSunOrbit(GameObject planetToOrbit)
