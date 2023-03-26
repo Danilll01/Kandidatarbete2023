@@ -244,7 +244,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rotationAxis: {x: 1, y: 0, z: 0}
-  rotate: 0
+  rotate: 1
 --- !u!1 &454088898
 GameObject:
   m_ObjectHideFlags: 0
