@@ -44,7 +44,7 @@ public class Planet : MonoBehaviour
     public FoliageHandler foliageHandler;
     
     public Vector3 rotationAxis;
-    [HideInInspector] public GameObject moonsRotationObject;
+    [HideInInspector] public GameObject moonsParent;
     private Vector3[] moonsrelativeDistances;
     private bool moonsLocked = true;
     public bool testingRotation = false;
@@ -122,16 +122,6 @@ public class Planet : MonoBehaviour
         }
     }
 
-
-    // Gives back a random position on the edge of a circle given the radius of the circle
-    private Vector3 RandomPointOnSphereEdge(float radius, RandomX rand)
-    {
-        Vector3 randomVector = new Vector3(rand.Next(1, 360), rand.Next(1, 360), rand.Next(1, 360));
-        var vector3 = randomVector.normalized * radius;
-        return new Vector3(vector3.x, vector3.y, vector3.z);
-    }
-
-
     /// <summary>
     /// Set up the values for the planets
     /// </summary>
@@ -150,7 +140,7 @@ public class Planet : MonoBehaviour
     {
         if (!testingRotation)
         {
-            RotateAroundAxis();
+            //RotateAroundAxis();
         }
         else
         {
@@ -168,8 +158,7 @@ public class Planet : MonoBehaviour
             }
         }
     }
-
-
+    
     private void RotateAroundAxis()
     {
         transform.RotateAround(transform.position, rotationAxis, 5f * Time.deltaTime);
@@ -178,16 +167,21 @@ public class Planet : MonoBehaviour
     private void RotateMoons()
     {
         LockMoons(false);
+        moonsParent.transform.Rotate(rotationAxis, 5f * Time.deltaTime, Space.World);
+        //moonsParent.transform.RotateAround(transform.position, -rotationAxis, 5f * Time.deltaTime);
 
-        moonsRotationObject.transform.RotateAround(transform.position, -rotationAxis, 5f * Time.deltaTime);
-
+        
         for (int i = 0; i < moons.Count; i++)
         {
+            
             Planet moon = moons[i];
-            Vector3 direction = moon.transform.position - transform.position;
-            moon.gameObject.GetComponent<KeplerOrbitMover>().SetAutoCircleOrbit();
-            moon.transform.position = direction.normalized * moonsrelativeDistances[i].magnitude;
+            moon.transform.parent.GetComponent<KeplerOrbitMover>().SetAutoCircleOrbit();
+            Vector3 direction = moon.transform.parent.position - transform.position;
+            moon.transform.parent.position = direction.normalized * moonsrelativeDistances[i].magnitude;
+            moon.transform.localPosition = Vector3.zero;
+
         } 
+        
 
     }
 
@@ -238,7 +232,7 @@ public class Planet : MonoBehaviour
         {
             foreach (Planet moon in moons)
             {
-                moon.gameObject.GetComponent<KeplerOrbitMover>().LockOrbitEditing = lockMoons;
+                moon.transform.parent.GetComponent<KeplerOrbitMover>().LockOrbitEditing = lockMoons;
             }
             moonsLocked = lockMoons;
         }

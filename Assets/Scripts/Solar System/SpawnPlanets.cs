@@ -161,30 +161,30 @@ public class SpawnPlanets : MonoBehaviour
     private void InstantiateMoons(Planet parentPlanet, int numberOfMoons)
     {
         GameObject moonsParent = new GameObject("Moons Parent");
-        GameObject moonsRotationObject = new GameObject("Moons Rotation Object");
-        moonsRotationObject.transform.parent = parentPlanet.transform;
-        moonsRotationObject.transform.localPosition = Vector3.zero;
-        
-        moonsParent.transform.parent = moonsRotationObject.transform;
+        moonsParent.transform.parent = parentPlanet.transform;
         moonsParent.transform.localPosition = Vector3.zero;
         
         for (int i = 1; i < numberOfMoons + 1; i++)
         {
+            GameObject moonsOrbitObject = new GameObject("Moons Orbit Object");
+            moonsOrbitObject.transform.parent = moonsParent.transform;
+            moonsOrbitObject.transform.localPosition = Vector3.zero; 
             GameObject moon = Instantiate(planetsPrefab);
-            moon.transform.parent = moonsParent.transform;
-            moon.transform.localPosition = RandomPointOnCircleEdge(parentPlanet.radius * (i + 1));
+            moon.transform.parent = moonsOrbitObject.transform;
+            moon.transform.localPosition = Vector3.zero;
+            moonsOrbitObject.transform.localPosition = RandomPointOnCircleEdge(parentPlanet.radius * (i + 1));
             moon.gameObject.name = "Moon " + i;
 
             Planet moonBody = moon.GetComponent<Planet>();
             moonBody.bodyName = "Moon " + i;
             moonBody.radius = random.Next((int)(parentPlanet.radius / 5), (int)((parentPlanet.radius / 2) + 1));
             moonBody.SetUpPlanetValues();
-            moonBody.Initialize(player.transform, random.Next(), false); //False here beacause we don't spawn on moons
+            moonBody.Initialize(player.transform, random.Next(), false); //False here because we don't spawn on moons
             parentPlanet.moons.Add(moonBody);
-            SetupOrbitComponents(parentPlanet.gameObject, moon);
+            SetupOrbitComponents(parentPlanet.gameObject, moonsOrbitObject);
         }
         
-        parentPlanet.moonsRotationObject = moonsRotationObject;
+        parentPlanet.moonsParent = moonsParent;
     }
 
     // Gives back a random position on the edge of a circle given the radius of the circle

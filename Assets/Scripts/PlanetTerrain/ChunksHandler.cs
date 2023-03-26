@@ -103,11 +103,14 @@ public class ChunksHandler : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        /*
         if (playerOnPlanet != ReferenceEquals(transform, player.transform.parent))
         {
             updateChunks = true;
             playerOnPlanet = ReferenceEquals(transform, player.transform.parent);
         }
+        */
+        playerOnPlanet = false;
 
         if (foliageInitialized != 0)
         {
