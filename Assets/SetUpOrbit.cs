@@ -9,9 +9,10 @@ public class SetUpOrbit : MonoBehaviour
     private Vector3 moonsrelativeDistances;
     public Transform parent;
     public Vector3 rotationAxis;
+    private bool setup = false;
 
     // Start is called before the first frame update
-    void Start()
+    void Initialize()
     {
         moonsrelativeDistances = transform.position - parent.position;
         KeplerOrbitMover planetOrbitMover = GetComponent<KeplerOrbitMover>();
@@ -42,12 +43,19 @@ public class SetUpOrbit : MonoBehaviour
     }
 
     */
-    private void Update()
+    private void LateUpdate()
     {
-        Transform moon = this.transform;
+        if (!setup)
+        {
+            Initialize();
+            setup = true;
+        }
+        
+        
+        Transform moon = transform;
         Vector3 direction = moon.transform.position - parent.position;
-        moon.gameObject.GetComponent<KeplerOrbitMover>().SetAutoCircleOrbit();
         moon.transform.position = direction.normalized * moonsrelativeDistances.magnitude;
+        moon.GetComponent<KeplerOrbitMover>().SetAutoCircleOrbit();
         
     }
     
