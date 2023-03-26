@@ -45,9 +45,11 @@ public class Planet : MonoBehaviour
     
     public Vector3 rotationAxis;
     [HideInInspector] public GameObject moonsParent;
+    public List<GameObject> moonsOrbitObjects;
     private Vector3[] moonsrelativeDistances;
     private bool moonsLocked = true;
     public bool testingRotation = false;
+    private bool setupOrbits = false;
 
     /// <summary>
     /// Initializes the planet
@@ -57,6 +59,7 @@ public class Planet : MonoBehaviour
     /// <param name="spawn">True if the player will spawn on the planet</param>
     public void Initialize(Transform player, int randomSeed, bool spawn)
     {
+        moonsOrbitObjects = new List<GameObject>();
         RandomX rand = new RandomX(randomSeed);
 
         this.player = player;
@@ -118,7 +121,7 @@ public class Planet : MonoBehaviour
 
         for (int i = 0; i < moons.Count; i++)
         {
-            moonsrelativeDistances[i] = moons[i].transform.position - this.transform.position;
+            moonsrelativeDistances[i] = moons[i].transform.parent.position - transform.position;
         }
     }
 
@@ -138,30 +141,61 @@ public class Planet : MonoBehaviour
     
     void Update()
     {
-        if (!testingRotation)
+        if (!setupOrbits)
         {
-            //RotateAroundAxis();
+            InitializeOrbits();
+            setupOrbits = true;
         }
-        else
+        if (player.parent == null)
         {
-            if (player.parent == null)
-            {
-                RotateAroundAxis();
-            }
-            else if (player.parent != transform)
-            {
-                RotateAroundAxis();
-            }
-            else if(!bodyName.Contains("Moon"))
-            {
-                RotateMoons();
-            }
+            RotateAroundAxis();
+        }
+        else if (player.parent != transform)
+        {
+            RotateAroundAxis();
+        }
+        else if(!bodyName.Contains("Moon"))
+        {
+            RotateMoons();
         }
     }
-    
+
+    private void InitializeOrbits()
+    {
+        foreach (var moonOrbit in moonsOrbitObjects)
+        {
+            GameObject velocityHelper = new GameObject();
+            velocityHelper.gameObject.name = "VelocityHelper";
+            velocityHelper.transform.parent = moonOrbit.transform;
+
+            velocityHelper.transform.localPosition = new Vector3(100, 0, 0);
+
+            // Assign needed scripts to the planet                                                                                                                      
+            moonOrbit.AddComponent<KeplerOrbitMover>();
+            moonOrbit.AddComponent<KeplerOrbitLineDisplay>();
+
+            // Not nessecarry, used for debug                                                                                                                           
+            moonOrbit.GetComponent<KeplerOrbitLineDisplay>().MaxOrbitWorldUnitsDistance =
+                (transform.position - moonOrbit.transform.position).magnitude * 1.2f;
+            moonOrbit.GetComponent<KeplerOrbitLineDisplay>().LineRendererReference = moonOrbit.GetComponent<LineRenderer>();
+
+            // Setup settings for the orbit script with the sun as the central body                                                                                     
+            KeplerOrbitMover planetOrbitMover = moonOrbit.GetComponent<KeplerOrbitMover>();
+            planetOrbitMover.AttractorSettings.AttractorObject = transform;
+            planetOrbitMover.AttractorSettings.AttractorMass = mass;
+
+            planetOrbitMover.AttractorSettings.GravityConstant = Universe.gravitationalConstant;
+            planetOrbitMover.VelocityHandle = velocityHelper.transform;
+            planetOrbitMover.SetUp();
+            planetOrbitMover.SetAutoCircleOrbit();
+            planetOrbitMover.LockOrbitEditing = true;
+            planetOrbitMover.ForceUpdateOrbitData();
+        }
+    }
+
     private void RotateAroundAxis()
     {
-        transform.RotateAround(transform.position, rotationAxis, 5f * Time.deltaTime);
+        transform.Rotate(rotationAxis, 10f * Time.deltaTime, Space.World);
     }
 
     private void RotateMoons()
@@ -175,12 +209,20 @@ public class Planet : MonoBehaviour
         {
             
             Planet moon = moons[i];
-            moon.transform.parent.GetComponent<KeplerOrbitMover>().SetAutoCircleOrbit();
             Vector3 direction = moon.transform.parent.position - transform.position;
             moon.transform.parent.position = direction.normalized * moonsrelativeDistances[i].magnitude;
-            moon.transform.localPosition = Vector3.zero;
+            //moon.transform.localPosition = Vector3.zero;
+            moon.transform.parent.GetComponent<KeplerOrbitMover>().SetAutoCircleOrbit();
+            
+            /*
+            Transform moon = transform;
+            Vector3 direction = moon.transform.position - parent.position;
+            moon.transform.position = direction.normalized * moonsrelativeDistances.magnitude;
+            moon.GetComponent<KeplerOrbitMover>().SetAutoCircleOrbit();
+            */
 
         } 
+        
         
 
     }

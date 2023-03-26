@@ -9,10 +9,12 @@ public class SpawnMoons : MonoBehaviour
     public GameObject planetsPrefab;
     private RandomX random;
     public Transform player;
+    
 
     // Start is called before the first frame update
     void Start()
     {
+       
         random = new RandomX(100);
         // Create all other planets and helpers                                                                              
         GameObject planet = Instantiate(planetsPrefab);
@@ -59,7 +61,8 @@ public class SpawnMoons : MonoBehaviour
             moonBody.SetUpPlanetValues();
             moonBody.Initialize(null, random.Next(), false); //False here because we don't spawn on moons      
             parentPlanet.moons.Add(moonBody);
-            SetupOrbitComponents(parentPlanet.gameObject, moonsOrbitObject);
+            parentPlanet.moonsOrbitObjects.Add(moonsOrbitObject);
+            //SetupOrbitComponents(parentPlanet.gameObject, moonsOrbitObject);
         }
 
         parentPlanet.moonsParent = moonsParent;

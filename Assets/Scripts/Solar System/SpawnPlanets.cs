@@ -181,7 +181,8 @@ public class SpawnPlanets : MonoBehaviour
             moonBody.SetUpPlanetValues();
             moonBody.Initialize(player.transform, random.Next(), false); //False here because we don't spawn on moons
             parentPlanet.moons.Add(moonBody);
-            SetupOrbitComponents(parentPlanet.gameObject, moonsOrbitObject);
+            parentPlanet.moonsOrbitObjects.Add(moonsOrbitObject);
+            //SetupOrbitComponents(parentPlanet.gameObject, moonsOrbitObject);
         }
         
         parentPlanet.moonsParent = moonsParent;
