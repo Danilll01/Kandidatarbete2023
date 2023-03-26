@@ -139,7 +139,7 @@ public class Planet : MonoBehaviour
         return chunksHandler.terrainColor.bottomColor;
     }
     
-    void Update()
+    void LateUpdate()
     {
         if (!setupOrbits)
         {
