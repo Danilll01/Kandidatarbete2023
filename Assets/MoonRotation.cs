@@ -4,15 +4,9 @@ using UnityEngine;
 
 public class MoonRotation : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public Vector3 rotationAxis;
+    private void Update()
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+        transform.RotateAround(transform.position, rotationAxis, 20f * Time.deltaTime);
+    } 
 }

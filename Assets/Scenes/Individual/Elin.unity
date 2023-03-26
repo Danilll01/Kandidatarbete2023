@@ -233,6 +233,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19f7f011eee42bf419cdbad46f34ca39, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rotationAxis: {x: 1, y: 0, z: 0}
 --- !u!1001 &89491375
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -886,6 +887,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19f7f011eee42bf419cdbad46f34ca39, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rotationAxis: {x: 1, y: 0, z: 0}
 --- !u!1 &1092254193 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8157375954420172327, guid: d9aa2365836edc946afc563b765ba551,
