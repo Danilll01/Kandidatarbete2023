@@ -10,7 +10,6 @@ public class AtmosphereHandler : MonoBehaviour
     private static readonly int PlanetRadius = Shader.PropertyToID("_PlanetRadius");
     private static readonly int AtmosphereRadius = Shader.PropertyToID("_AtmosphereRadius");
     private static readonly int LightDirection = Shader.PropertyToID("_LightDirection");
-    private static readonly int LightIntensity = Shader.PropertyToID("_LightIntensity");
 
     /// <summary>
     /// Sets up the planet atmosphere
@@ -23,9 +22,9 @@ public class AtmosphereHandler : MonoBehaviour
 
         // Set up material
         atmosphereMaterial = new Material(atmosphereShader);
-        planetNormalRadius = Mathf.RoundToInt(waterLevel) - 10;
+        planetNormalRadius = waterLevel;
         
-        atmosphereMaterial.SetFloat(PlanetRadius, planetNormalRadius);
+        atmosphereMaterial.SetFloat(PlanetRadius, Mathf.RoundToInt(planetNormalRadius));
         atmosphereMaterial.SetFloat(AtmosphereRadius, Mathf.RoundToInt(planetRadius * 1.25f - 10));
         GetComponent<MeshRenderer>().material = atmosphereMaterial;
         
@@ -35,14 +34,10 @@ public class AtmosphereHandler : MonoBehaviour
     void Update()
     {
         Vector3 playerPosition = transform.position;
-        Vector3 localScale = transform.localScale;
         Vector4 lightDirection = (playerPosition - Universe.sunPosition.position);
         atmosphereMaterial.SetVector(LightDirection, lightDirection);
 
         float playerHeight = Vector3.Distance(playerPosition, Universe.player.transform.position);
-        atmosphereMaterial.SetFloat(PlanetRadius, Mathf.Min(planetNormalRadius, playerHeight - 10));
-
-        float lightIntensityLerp = Mathf.InverseLerp((localScale.x / 2f) - (localScale.x / 10f), (localScale.x / 2f), playerHeight);
-        atmosphereMaterial.SetFloat(LightIntensity, Mathf.Lerp(20, 10, lightIntensityLerp));
+        atmosphereMaterial.SetFloat(PlanetRadius, Mathf.Min(planetNormalRadius, playerHeight));
     }
 }

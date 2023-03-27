@@ -2,14 +2,14 @@ Shader "Atmosphere/Atmospheric Scattering"
 {
     Properties
     {
-        _LightIntensity("Light Intensity", Float) = 10
+        _LightIntensity("Light Intensity", Float) = 20
         _LightColor("Light Color", Color) = (1,1,1)
         _LightDirection("Light Direction", Vector) = (0,0,1)
         _PlanetRadius("Planet Radius", Float) = 47
         _AtmosphereRadius("Atmosphere Radius", Float) = 50
         _Steps ("Steps", Int) = 20                                                  // Standard: 20
         _LightSteps ("Light Steps", Int) = 12                                       // Standard: 12
-        _AtmosphereSaturation ("Atmosphere Density", Float) = 2
+        _AtmosphereDensity ("Atmosphere Density", Float) = 1
         _RayleighScattering("Rayleigh Scattering (RGB)", Vector) = (0.08,0.2,0.51,100)   // Standard: (0.08,0.2,0.51,0.64)
         _MieScattering("Mie Scattering", Vector) = (0.01, 0.9, 0, 0.8)              // Standard: (0.01, 0.9, 0, 0.8)
         _ClipThreshold ("Clip Threshold", Range(0.0,1.0)) = 0.73                    // Standard: 0.73
@@ -59,7 +59,7 @@ Shader "Atmosphere/Atmospheric Scattering"
             float4 _RayleighScattering;
             float4 _MieScattering;
             float _ClipThreshold;
-            float _AtmosphereSaturation;
+            float _AtmosphereDensity;
 
             float sqrLength(float3 v) {
                 return (v.x * v.x + v.y * v.y + v.z * v.z);
@@ -179,7 +179,7 @@ Shader "Atmosphere/Atmospheric Scattering"
                 }
 
                 float3 color = (sumR * rsRGB * phaseR + sumM * msRGB * phaseM) * _LightIntensity * _LightColor;
-                color = Unity_Saturation_float(color, _AtmosphereSaturation);
+                color = Unity_Saturation_float(color, _AtmosphereDensity);
 
                 
                 
