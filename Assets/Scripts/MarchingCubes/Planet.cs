@@ -149,6 +149,20 @@ public class Planet : MonoBehaviour
             moon.parent.transform.position = direction.normalized * moonsrelativeDistances[i].magnitude;
         }
     }
+
+    public void ResetMoons()
+    {
+        rotateMoons = false;
+        moonsParent.transform.rotation = Quaternion.identity;
+        for (int i = 0; i < moons.Count; i++)
+        {
+            Transform moon = moons[i].transform;
+            KeplerOrbitMover orbitMover = moon.parent.GetComponent<KeplerOrbitMover>();
+            orbitMover.ForceUpdateOrbitData();
+            orbitMover.SetAutoCircleOrbit();
+        }
+        LockMoons(true);
+    }
     
     
     private void LockMoons(bool lockMoons)

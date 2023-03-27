@@ -45,14 +45,14 @@ public class SolarSystemTransform : MonoBehaviour
         // If the player is not on any planet, reset the solar system
         if (activePlanet != oldActivePlanet && activePlanet == null)
         {
-            activePlanet.rotateMoons = false;
+            oldActivePlanet.ResetMoons();
             ResetPlanetOrbit(oldActivePlanet.gameObject);
             oldActivePlanet = activePlanet;
         }
         // If the player has entered a new planet, move the solar system accordingly
         else if (activePlanet != oldActivePlanet)
         {
-            MovePlanets(activePlanet);
+            MovePlanets();
             activePlanet.rotateMoons = true;
             oldActivePlanet = activePlanet;
         }
@@ -86,30 +86,22 @@ public class SolarSystemTransform : MonoBehaviour
 
     private void UpdateClosestPlanet()
     {
-        //Check if the active planet has been left
-        if (activePlanet != null && Vector3.Distance(player.transform.position, activePlanet.transform.GetChild(0).position) >= activePlanet.radius * 4)
-        {
-            activePlanet = null;
-        }
         // Loops over all planets and checks if the player is on it or has left it
         foreach (Planet planet in planets)
         {
-            float distance = Vector3.Distance(player.transform.position, planet.transform.GetChild(0).position);
-            float activeDistance;
-            if (activePlanet == null)
-            {
-                activeDistance = float.MaxValue;
-            }
-            else
-            {
-                activeDistance = Vector3.Distance(player.transform.position, activePlanet.transform.GetChild(0).position);
-            }
-
-            // Check if the player has entered a new planet
-            if (distance < planet.radius * 4 && distance <= activeDistance * 1.1f)
+            if (planet.bodyName.Contains("Moon")) continue;
+            
+            float distance =  (player.transform.position - planet.transform.position).magnitude;
+            if (distance <= (planet.radius + 300f) && planet != activePlanet)
             {
                 activePlanet = planet;
                 player.transform.parent = activePlanet.transform;
+                break;
+            }
+            if(planet == activePlanet && distance > (planet.radius + 500f))
+            {
+                activePlanet = null;
+                break;
             }
         }
     }
@@ -128,28 +120,18 @@ public class SolarSystemTransform : MonoBehaviour
 
     }
 
-    private void MovePlanets(Planet planet)
+    private void MovePlanets()
     {
-        Planet parentPlanet = planet.transform.parent.GetComponent<Planet>();
-        //Only move to planets, not to moons. I've already lost my mind to the thought of faking a double jointed orbit.
-        //KEPLER BE DAMNED
-        if (planet.transform.parent.GetComponent<SolarSystemTransform>() == null)
-        {
-            MovePlanets(parentPlanet);
-        }
-        //You are a planet. You are welcome to being the center of the universe
-        else
-        {
-            planet.gameObject.GetComponent<KeplerOrbitMover>().enabled = false;
+        activePlanet.gameObject.GetComponent<KeplerOrbitMover>().enabled = false;
 
-            // Calculate the distance from the planet that should be centered and origo
-            // Move the solar system by that distance to place planet in origo
-            Vector3 distanceFromOrigin = planet.transform.GetChild(0).transform.position - Vector3.zero;
-            planetsParent.transform.position -= distanceFromOrigin;
+        // Calculate the distance from the planet that should be centered and origo
+        // Move the solar system by that distance to place planet in origo
+        Vector3 distanceFromOrigin = activePlanet.transform.GetChild(0).transform.position - Vector3.zero;
+        planetsParent.transform.position -= distanceFromOrigin;
 
-            // Activate orbit on the sun to fake the movement of the planet
-            ActivateSunOrbit(planet.gameObject);
-        }
+        // Activate orbit on the sun to fake the movement of the planet
+        ActivateSunOrbit(activePlanet.gameObject);
+        //rotate = true;
     }
 
     private void ActivateSunOrbit(GameObject planetToOrbit)
