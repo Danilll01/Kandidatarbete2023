@@ -1,11 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="You can now temporarily increase atmosphere saturation">
+    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Atmosphere/AtmosphereHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Atmosphere/AtmosphereHandler.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Solar System/Universe.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Solar System/Universe.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Shaders/Atmosphere/AtmosphericScattering.shader" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Shaders/Atmosphere/AtmosphericScattering.shader" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -36,6 +33,7 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/4746c126b0b54f3b834845974d1a9190159000/57/36c84f50/Component.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://D:/Unity/Projects/Kandidatarbete2023/Assets/Prefabs/Planets/Planet.prefab" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://D:/Unity/Projects/Kandidatarbete2023/Assets/Prefabs/Planets/Planet.prefab" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://D:/Unity/Projects/Kandidatarbete2023/Assets/Scripts/Atmosphere/AtmosphereHandler.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Atmosphere/AtmosphereHandler.cs" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="MarkdownSettingsMigration">
@@ -158,7 +156,13 @@
       <option name="presentableId" value="LOCAL−00007" />
       <updated>1679529725777</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL−00008" summary="Added back blending light intensity. Changed values to make atmpsphere look better">
+      <created>1679886408947</created>
+      <option name="number" value="LOCAL−00008" />
+      <option name="presentableId" value="LOCAL−00008" />
+      <updated>1679886408948</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -187,6 +191,7 @@
     <MESSAGE value="Added atmospheres to planets" />
     <MESSAGE value="Atmpsphere light now faces right direction" />
     <MESSAGE value="You can now temporarily increase atmosphere saturation" />
-    <option name="LAST_COMMIT_MESSAGE" value="You can now temporarily increase atmosphere saturation" />
+    <MESSAGE value="Added back blending light intensity. Changed values to make atmpsphere look better" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added back blending light intensity. Changed values to make atmpsphere look better" />
   </component>
 </project>
