@@ -108,7 +108,7 @@ public class SolarSystemTransform : MonoBehaviour
 
     private void ResetPlanetOrbit(GameObject planet)
     {
-        TurnOnOrbit(planet.gameObject);
+        TurnOnOrbit(planet.transform.parent.gameObject);
 
         //Turn of orbitig on the sun
         KeplerOrbitMover sunOrbitMover = sun.GetComponent<KeplerOrbitMover>();
@@ -122,7 +122,7 @@ public class SolarSystemTransform : MonoBehaviour
 
     private void MovePlanets()
     {
-        activePlanet.gameObject.GetComponent<KeplerOrbitMover>().enabled = false;
+        activePlanet.transform.parent.GetComponent<KeplerOrbitMover>().enabled = false;
 
         // Calculate the distance from the planet that should be centered and origo
         // Move the solar system by that distance to place planet in origo

@@ -88,17 +88,26 @@ public class SpawnPlanets : MonoBehaviour
         // Create all other planets and helpers
         for (int i = 0; i < numberOfPlanets; i++)
         {
-            GameObject planet = Instantiate(planetsPrefab);
-            planet.transform.parent = planetsParent.transform;
+            GameObject planetOrbitObject = new GameObject("Planet " + i )
+            {
+                transform =
+                {
+                    parent = planetsParent.transform,
+                    localPosition = Vector3.zero
+                }
+            };
+            
+            GameObject planet = Instantiate(planetsPrefab, planetOrbitObject.transform);
+            planet.transform.localPosition = Vector3.zero;
 
             Planet planetBody = planet.GetComponent<Planet>();
-            planetBody.bodyName = "Planet " + i;
+            planetBody.bodyName = "Planet " + i + " body";
             planetBody.radius = random.Next(radiusMinValue, radiusMaxValue);
 
 
             int nrOfMoonsForPlanet = GetNrOfMoonsToGenerate();
-            planet.transform.localPosition = CalculatePositionForPlanet(planetBody, i, nrOfMoonsForPlanet);
-            planet.gameObject.name = "Planet " + i;
+            planetOrbitObject.transform.localPosition = CalculatePositionForPlanet(planetBody, i, nrOfMoonsForPlanet);
+            planet.gameObject.name = "Planet " + i + " body";
 
 
             planetBody.SetUpPlanetValues();
@@ -106,7 +115,7 @@ public class SpawnPlanets : MonoBehaviour
             InstantiateMoons(planetBody, nrOfMoonsForPlanet);
             bodies.Add(planetBody);
 
-            SetupOrbitComponents(Sun, planet);
+            SetupOrbitComponents(Sun, planetOrbitObject);
         }
     }
 
@@ -164,7 +173,7 @@ public class SpawnPlanets : MonoBehaviour
         {
             transform =
             {
-                parent = parentPlanet.transform,
+                parent = parentPlanet.transform.parent.transform,
                 localPosition = Vector3.zero
             }
         };
