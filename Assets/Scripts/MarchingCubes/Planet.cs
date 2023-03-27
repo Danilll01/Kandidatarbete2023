@@ -56,7 +56,7 @@ public class Planet : MonoBehaviour
         MinMaxTerrainLevel terrainLevel = new MinMaxTerrainLevel();
 
         willGeneratePlanetLife = rand.Value() < chanceToSpawnPlanetLife;
-
+        willGeneratePlanetLife = false;
         // Initialize the meshgenerator
         if (marchingCubes == null)
         {
@@ -76,7 +76,7 @@ public class Planet : MonoBehaviour
 
         if (foliageHandler != null && !bodyName.Contains("Moon"))
         {
-            foliageHandler.Initialize(this);
+            //foliageHandler.Initialize(this);
         }
 
         terrainLevel.SetMin(Mathf.Abs((waterDiameter + 1) / 2));
