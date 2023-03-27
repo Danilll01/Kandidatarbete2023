@@ -105,6 +105,19 @@ public class Planet : MonoBehaviour
 
     }
 
+    private void FixedUpdate()
+    {
+        if (player.parent != transform)
+        {
+            RotateAroundAxis();
+        }
+    }
+
+    private void RotateAroundAxis()
+    {
+        transform.Rotate(rotationAxis, 10f * Time.deltaTime, Space.World);
+    }
+
     /// <summary>
     /// Set up the values for the planets
     /// </summary>
