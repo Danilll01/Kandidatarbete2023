@@ -37,7 +37,8 @@ public class Planet : MonoBehaviour
     [SerializeField] public ChunksHandler chunksHandler;
     [SerializeField] public WaterHandler waterHandler;
     
-    public Vector3 rotationAxis;
+    [HideInInspector] public Vector3 rotationAxis;
+    [HideInInspector] public float rotationSpeed;
     [HideInInspector] public GameObject moonsParent;
 
     [SerializeField] private List<TerrainLayer> terrainLayers;
@@ -64,6 +65,7 @@ public class Planet : MonoBehaviour
         MinMaxTerrainLevel terrainLevel = new MinMaxTerrainLevel();
         
         rotationAxis = rand.OnUnitSphere() * radius;
+        rotationSpeed = rand.Next(5,15);
 
         willGeneratePlanetLife = rand.Value() < chanceToSpawnPlanetLife;
         willGeneratePlanetLife = false;
@@ -134,13 +136,13 @@ public class Planet : MonoBehaviour
 
     private void RotateAroundAxis()
     {
-        transform.Rotate(rotationAxis, 10f * Time.deltaTime, Space.World);
+        transform.Rotate(rotationAxis, rotationSpeed * Time.deltaTime, Space.World);
     }
 
     private void RotateMoons()
     {
         LockMoons(false);
-        moonsParent.transform.Rotate(-rotationAxis, 5f * Time.deltaTime, Space.World);
+        moonsParent.transform.Rotate(-rotationAxis, rotationSpeed * Time.deltaTime, Space.World);
         
         for (int i = 0; i < moons.Count; i++)
         {
