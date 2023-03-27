@@ -140,7 +140,7 @@ public class Planet : MonoBehaviour
     private void RotateMoons()
     {
         LockMoons(false);
-        moonsParent.transform.Rotate(rotationAxis, 5f * Time.deltaTime, Space.World);
+        moonsParent.transform.Rotate(-rotationAxis, 5f * Time.deltaTime, Space.World);
         
         for (int i = 0; i < moons.Count; i++)
         {
