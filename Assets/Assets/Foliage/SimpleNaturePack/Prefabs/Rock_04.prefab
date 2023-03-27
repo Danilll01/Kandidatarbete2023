@@ -12,9 +12,9 @@ GameObject:
   - component: {fileID: 8783306491909876435}
   - component: {fileID: 8783306491910875155}
   - component: {fileID: 1506613449699206993}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Rock_04
-  m_TagString: Untagged
+  m_TagString: Foliage
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 126
