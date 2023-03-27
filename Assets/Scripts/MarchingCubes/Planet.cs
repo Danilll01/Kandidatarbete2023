@@ -46,6 +46,8 @@ public class Planet : MonoBehaviour
     public FoliageHandler foliageHandler;
     public bool rotateMoons;
     private bool moonsLocked = true;
+    private Vector3[] moonsrelativeDistances;
+    private bool setUpMoonRotation;
 
     /// <summary>
     /// Initializes the planet
@@ -108,7 +110,17 @@ public class Planet : MonoBehaviour
 
     }
 
-    private void FixedUpdate()
+    public void InitializeMoonValues()
+    {
+        moonsrelativeDistances = new Vector3[moons.Count];
+
+        for (int i = 0; i < moons.Count; i++)
+        {
+            moonsrelativeDistances[i] = moons[i].transform.parent.position - transform.position;
+        }
+    }
+
+    private void LateUpdate()
     {
         if (player.parent != transform)
         {
@@ -129,7 +141,15 @@ public class Planet : MonoBehaviour
     {
         LockMoons(false);
         moonsParent.transform.Rotate(rotationAxis, 5f * Time.deltaTime, Space.World);
+        
+        for (int i = 0; i < moons.Count; i++)
+        {
+            Transform moon = moons[i].transform;
+            Vector3 direction = moon.parent.transform.position - moonsParent.transform.position;
+            moon.parent.transform.position = direction.normalized * moonsrelativeDistances[i].magnitude;
+        }
     }
+    
     
     private void LockMoons(bool lockMoons)
     {

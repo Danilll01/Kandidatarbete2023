@@ -194,6 +194,7 @@ public class SpawnPlanets : MonoBehaviour
             SetupOrbitComponents(parentPlanet.gameObject, moonsOrbitObject);
         }
         parentPlanet.moonsParent = moonsParent;
+        parentPlanet.InitializeMoonValues();
     }
 
     // Gives back a random position on the edge of a circle given the radius of the circle
