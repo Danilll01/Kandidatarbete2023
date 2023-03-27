@@ -160,11 +160,29 @@ public class SpawnPlanets : MonoBehaviour
     // Instantiate moons for the given planet
     private void InstantiateMoons(Planet parentPlanet, int numberOfMoons)
     {
+        GameObject moonsParent = new GameObject("Moons parent")
+        {
+            transform =
+            {
+                parent = parentPlanet.transform,
+                localPosition = Vector3.zero
+            }
+        };
+
         for (int i = 1; i < numberOfMoons + 1; i++)
         {
-            GameObject moon = Instantiate(planetsPrefab);
-            moon.transform.parent = parentPlanet.transform;
-            moon.transform.localPosition = RandomPointOnCircleEdge(parentPlanet.radius * (i + 1));
+            GameObject moonsOrbitObject = new GameObject("Moon orbit object")
+            {
+                transform =
+                {
+                    parent = moonsParent.transform,
+                    localPosition = Vector3.zero
+                }
+            };
+            
+            GameObject moon = Instantiate(planetsPrefab, moonsOrbitObject.transform);
+            moon.transform.localPosition = Vector3.zero;
+            moonsOrbitObject.transform.localPosition = RandomPointOnCircleEdge(parentPlanet.radius * (i + 1));
             moon.gameObject.name = "Moon " + i;
 
             Planet moonBody = moon.GetComponent<Planet>();
@@ -173,7 +191,8 @@ public class SpawnPlanets : MonoBehaviour
             moonBody.SetUpPlanetValues();
             moonBody.Initialize(player.transform, random.Next(), false); //False here beacause we don't spawn on moons
             parentPlanet.moons.Add(moonBody);
-            SetupOrbitComponents(parentPlanet.gameObject, moon);
+            moonBody.moonsParent = moonsParent;
+            SetupOrbitComponents(parentPlanet.gameObject, moonsOrbitObject);
         }
     }
 

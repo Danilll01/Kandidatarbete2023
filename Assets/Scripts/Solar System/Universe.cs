@@ -6,7 +6,7 @@ using UnityEngine;
 public static class Universe
 {
     public const float gravitationalConstant = 2f;
-    public static int nrOfPlanets = 1;
+    public static int nrOfPlanets = 2;
     public static int seed = 12345;
     public static RandomX random;
 

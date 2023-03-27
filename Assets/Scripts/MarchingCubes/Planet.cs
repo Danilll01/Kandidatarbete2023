@@ -35,6 +35,9 @@ public class Planet : MonoBehaviour
     [SerializeField] private GenerateCreatures generateCreatures;
     [SerializeField] public ChunksHandler chunksHandler;
     [SerializeField] public WaterHandler waterHandler;
+    
+    public Vector3 rotationAxis;
+    [HideInInspector] public GameObject moonsParent;
 
     [SerializeField] private List<TerrainLayer> terrainLayers;
 
@@ -54,6 +57,8 @@ public class Planet : MonoBehaviour
         this.player = player;
 
         MinMaxTerrainLevel terrainLevel = new MinMaxTerrainLevel();
+        
+        rotationAxis = rand.OnUnitSphere() * radius;
 
         willGeneratePlanetLife = rand.Value() < chanceToSpawnPlanetLife;
         willGeneratePlanetLife = false;

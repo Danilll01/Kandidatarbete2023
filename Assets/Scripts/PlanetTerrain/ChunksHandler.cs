@@ -187,7 +187,7 @@ public class ChunksHandler : MonoBehaviour
     }
     private void UpdateChunksVisibility()
     {
-        Vector3 playerPos = player.position;
+        Vector3 playerPos = player.localPosition;
 
         // Only update chunks if player has moved a certain distance
         if (Vector3.Magnitude(playerPos - playerLastPosition) < 3)

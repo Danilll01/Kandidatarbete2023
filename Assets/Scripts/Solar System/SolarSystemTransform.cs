@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,6 +13,10 @@ public class SolarSystemTransform : MonoBehaviour
     private GameObject sun;
     private GameObject planetsParent;
     [SerializeField] private GameObject player;
+    private bool rotate;
+    private bool setUpSolarSystemRotation;
+    private KeplerOrbitMover sunKeplerOrbitMover;
+    private Vector3 rotationAxis;
 
 
     void Start()
@@ -24,34 +29,60 @@ public class SolarSystemTransform : MonoBehaviour
         planets = planetsParent.GetComponentsInChildren<Planet>();
     }
 
-
-
     void Update()
     {
-        if (sun == null && spawnPlanets.bodies != null)
+        if (!rotate)
         {
-            sun = spawnPlanets.sun;
-        }
-        if (!spawnPlanets.solarySystemGenerated)
-        {
-            return;
-        }
+            if (sun == null && spawnPlanets.bodies != null)
+            {
+                sun = spawnPlanets.sun;
+            }
+            if (!spawnPlanets.solarySystemGenerated)
+            {
+                return;
+            }
 
-        UpdateClosestPlanet();
+            UpdateClosestPlanet();
 
-        // If the player is not on any planet, reset the solar system
-        if (activePlanet != oldActivePlanet && activePlanet == null)
-        {
-            ResetPlanetOrbit(oldActivePlanet.gameObject);
-            oldActivePlanet = activePlanet;
+            // If the player is not on any planet, reset the solar system
+            if (activePlanet != oldActivePlanet && activePlanet == null)
+            {
+                ResetPlanetOrbit(oldActivePlanet.gameObject);
+                oldActivePlanet = activePlanet;
+            }
+            // If the player has entered a new planet, move the solar system accordingly
+            else if (activePlanet != oldActivePlanet)
+            {
+                MovePlanets(activePlanet);
+                oldActivePlanet = activePlanet;
+            }
+            Universe.player.Planet = activePlanet;
         }
-        // If the player has entered a new planet, move the solar system accordingly
-        else if (activePlanet != oldActivePlanet)
+    }
+
+    private void FixedUpdate()
+    {
+        if (rotate)
         {
-            MovePlanets(activePlanet);
-            oldActivePlanet = activePlanet;
+            SetUpRotation();
+            RotateSolarSystem();
         }
-        Universe.player.Planet = activePlanet;
+    }
+    // Setup components for system rotation
+    private void SetUpRotation()
+    {
+        if (setUpSolarSystemRotation) return;
+
+        sunKeplerOrbitMover = sun.GetComponent<KeplerOrbitMover>();
+        rotationAxis = activePlanet.rotationAxis;
+        sunKeplerOrbitMover.LockOrbitEditing = false;
+        setUpSolarSystemRotation = true;
+    }
+    
+
+    private void RotateSolarSystem()
+    {
+        
     }
 
     private void UpdateClosestPlanet()
