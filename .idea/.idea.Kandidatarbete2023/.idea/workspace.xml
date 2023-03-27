@@ -4,6 +4,7 @@
     <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="You can now temporarily increase atmosphere saturation">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Atmosphere/AtmosphereHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Atmosphere/AtmosphereHandler.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Solar System/Universe.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Solar System/Universe.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Shaders/Atmosphere/AtmosphericScattering.shader" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Shaders/Atmosphere/AtmosphericScattering.shader" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -33,8 +34,9 @@
   </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/4746c126b0b54f3b834845974d1a9190159000/57/36c84f50/Component.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://D:/Unity/Projects/Kandidatarbete2023/Assets/Prefabs/Planets/Planet.prefab" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://D:/Unity/Projects/Kandidatarbete2023/Assets/Prefabs/Planets/Planet.prefab" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Atmosphere/AtmosphereHandler.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="mock://D:/Unity/Projects/Kandidatarbete2023/Assets/Shaders/Atmosphere/AtmosphericScattering.shader" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />

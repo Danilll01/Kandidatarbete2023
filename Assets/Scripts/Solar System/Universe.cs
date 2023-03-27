@@ -7,7 +7,7 @@ public static class Universe
 {
     public const float gravitationalConstant = 2f;
     public static int nrOfPlanets = 3;
-    public static int seed = 12345;
+    public static int seed = 1234;
     public static RandomX random;
 
     //Guaranteed set after Awake()
