@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Mathematics;
 using ExtendedRandom;
+using SimpleKeplerOrbits;
 using UnityEngine;
 
 [RequireComponent(typeof(GenerateCreatures))]
@@ -43,6 +44,8 @@ public class Planet : MonoBehaviour
 
     private float threshold;
     public FoliageHandler foliageHandler;
+    public bool rotateMoons;
+    private bool moonsLocked = true;
 
     /// <summary>
     /// Initializes the planet
@@ -111,11 +114,33 @@ public class Planet : MonoBehaviour
         {
             RotateAroundAxis();
         }
+        else if (rotateMoons && !bodyName.Contains("Moon"))
+        {
+            RotateMoons();
+        }
     }
 
     private void RotateAroundAxis()
     {
         transform.Rotate(rotationAxis, 10f * Time.deltaTime, Space.World);
+    }
+
+    private void RotateMoons()
+    {
+        LockMoons(false);
+        moonsParent.transform.Rotate(rotationAxis, 5f * Time.deltaTime, Space.World);
+    }
+    
+    private void LockMoons(bool lockMoons)
+    {
+        if (moonsLocked != lockMoons)
+        {
+            foreach (Planet moon in moons)
+            {
+                moon.transform.parent.GetComponent<KeplerOrbitMover>().LockOrbitEditing = lockMoons;
+            }
+            moonsLocked = lockMoons;
+        }
     }
 
     /// <summary>

@@ -31,33 +31,32 @@ public class SolarSystemTransform : MonoBehaviour
 
     void Update()
     {
-        if (!rotate)
+        if (sun == null && spawnPlanets.bodies != null)
         {
-            if (sun == null && spawnPlanets.bodies != null)
-            {
-                sun = spawnPlanets.sun;
-            }
-            if (!spawnPlanets.solarySystemGenerated)
-            {
-                return;
-            }
-
-            UpdateClosestPlanet();
-
-            // If the player is not on any planet, reset the solar system
-            if (activePlanet != oldActivePlanet && activePlanet == null)
-            {
-                ResetPlanetOrbit(oldActivePlanet.gameObject);
-                oldActivePlanet = activePlanet;
-            }
-            // If the player has entered a new planet, move the solar system accordingly
-            else if (activePlanet != oldActivePlanet)
-            {
-                MovePlanets(activePlanet);
-                oldActivePlanet = activePlanet;
-            }
-            Universe.player.Planet = activePlanet;
+            sun = spawnPlanets.sun;
         }
+        if (!spawnPlanets.solarySystemGenerated)
+        {
+            return;
+        }
+
+        UpdateClosestPlanet();
+
+        // If the player is not on any planet, reset the solar system
+        if (activePlanet != oldActivePlanet && activePlanet == null)
+        {
+            activePlanet.rotateMoons = false;
+            ResetPlanetOrbit(oldActivePlanet.gameObject);
+            oldActivePlanet = activePlanet;
+        }
+        // If the player has entered a new planet, move the solar system accordingly
+        else if (activePlanet != oldActivePlanet)
+        {
+            MovePlanets(activePlanet);
+            activePlanet.rotateMoons = true;
+            oldActivePlanet = activePlanet;
+        }
+        Universe.player.Planet = activePlanet;
     }
 
     private void FixedUpdate()

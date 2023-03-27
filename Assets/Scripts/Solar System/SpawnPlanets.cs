@@ -191,9 +191,9 @@ public class SpawnPlanets : MonoBehaviour
             moonBody.SetUpPlanetValues();
             moonBody.Initialize(player.transform, random.Next(), false); //False here beacause we don't spawn on moons
             parentPlanet.moons.Add(moonBody);
-            moonBody.moonsParent = moonsParent;
             SetupOrbitComponents(parentPlanet.gameObject, moonsOrbitObject);
         }
+        parentPlanet.moonsParent = moonsParent;
     }
 
     // Gives back a random position on the edge of a circle given the radius of the circle
