@@ -108,14 +108,14 @@ public class SpawnPlanets : MonoBehaviour
             int nrOfMoonsForPlanet = GetNrOfMoonsToGenerate();
             planetOrbitObject.transform.localPosition = CalculatePositionForPlanet(planetBody, i, nrOfMoonsForPlanet);
             planet.gameObject.name = "Planet " + i + " body";
-
-
             planetBody.SetUpPlanetValues();
+
+
+            SetupOrbitComponents(Sun, planetOrbitObject);
             planetBody.Initialize(player.transform, random.Next(), i == spawnPlanetIndex);
             InstantiateMoons(planetBody, nrOfMoonsForPlanet);
             bodies.Add(planetBody);
 
-            SetupOrbitComponents(Sun, planetOrbitObject);
         }
     }
 

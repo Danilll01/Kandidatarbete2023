@@ -48,7 +48,12 @@ public class Planet : MonoBehaviour
     public bool rotateMoons;
     private bool moonsLocked = true;
     private Vector3[] moonsrelativeDistances;
+    [HideInInspector] public Vector3 positionrelativeToSun;
     private bool setUpMoonRotation;
+    private bool setUpSystemRotationComponents;
+    private KeplerOrbitMover parentOrbitMover;
+    private bool solarSystemRotationActive;
+    private bool setupRelativeDistance;
 
     /// <summary>
     /// Initializes the planet
@@ -61,6 +66,8 @@ public class Planet : MonoBehaviour
         RandomX rand = new RandomX(randomSeed);
 
         this.player = player;
+
+        
 
         MinMaxTerrainLevel terrainLevel = new MinMaxTerrainLevel();
         
@@ -95,7 +102,6 @@ public class Planet : MonoBehaviour
 
         chunksHandler.Initialize(this, terrainLevel, spawn, rand.Next());
 
-        
 
         if (willGeneratePlanetLife) 
         {
@@ -120,6 +126,9 @@ public class Planet : MonoBehaviour
         {
             moonsrelativeDistances[i] = moons[i].transform.parent.position - transform.position;
         }
+        
+        parentOrbitMover = transform.parent.GetComponent<KeplerOrbitMover>();
+        
     }
 
     private void LateUpdate()
@@ -131,6 +140,11 @@ public class Planet : MonoBehaviour
         else if (rotateMoons && !bodyName.Contains("Moon"))
         {
             RotateMoons();
+        }
+
+        if (solarSystemRotationActive)
+        {
+            //KeepPlanetAtSameDistanceToSun();
         }
     }
 
@@ -191,5 +205,35 @@ public class Planet : MonoBehaviour
     public Color GetGroundColor()
     {
         return chunksHandler.terrainColor.bottomColor;
+    }
+
+    public void HandleSolarSystemOrbit()
+    {
+        if (bodyName.Contains("Planet") && player.parent != transform)
+        {
+            SetUpComponents();
+            solarSystemRotationActive = true;
+        }
+    }
+
+    private void KeepPlanetAtSameDistanceToSun()
+    {
+        Vector3 sunPosition = parentOrbitMover.AttractorSettings.AttractorObject.transform.position;
+        if (!setupRelativeDistance)
+        {
+            positionrelativeToSun = parentOrbitMover.transform.position - sunPosition;
+            setupRelativeDistance = true;
+        }
+        Debug.Log("Before" + (parentOrbitMover.transform.position - sunPosition).magnitude);
+        Vector3 direction = parentOrbitMover.transform.position - sunPosition;
+        parentOrbitMover.transform.position = direction.normalized * positionrelativeToSun.magnitude;
+        Debug.Log("After" + (parentOrbitMover.transform.position - sunPosition).magnitude);
+    }
+
+    private void SetUpComponents()
+    {
+        if (setUpSystemRotationComponents) return;
+        parentOrbitMover.LockOrbitEditing = false;
+        setUpSystemRotationComponents = true;
     }
 }
