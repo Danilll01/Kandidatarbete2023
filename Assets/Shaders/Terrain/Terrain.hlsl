@@ -13,6 +13,17 @@ struct TerrainLayer
     int numLayers;
 };
 
+// Note, TemperatureRoughness and MountainTemperatureAffect must be in the range 0-1
+struct BiomeSettings
+{
+    float Seed;
+    float MountainFrequency;
+    float TemperatureFrequency;
+    float TemperatureRoughness;
+    float MountainTemperatureAffect;
+    float TreeFrequency;
+};
+
 float getTerrain(float3 pos, RWStructuredBuffer<TerrainLayer> terrainLayers, int numTerrainLayers)
 {
     float3 pointOnSphere = pos / length(pos);
@@ -39,5 +50,39 @@ float getTerrain(float3 pos, RWStructuredBuffer<TerrainLayer> terrainLayers, int
     
     return length(pos) < (1 - noiseValue) ? ((1 - noiseValue) - length(pos)) * 255 : 0;
 }
+
+
+// Note, TemperatureRoughness and MountainTemperatureAffect must be in the range 0-1
+void EvaluateBiomeMap_float(float3 UV, float Seed, float MountainFrequency, float TemperatureFrequency, float TemperatureRoughness, float MountainTemperatureAffect, float TreeFrequency, out float3 Out)
+{
+    // Normalize position
+    UV = normalize(UV);
+    
+    // Get noisevalue for each map
+    float mountainNoise = (simplex.Evaluate(float3(UV.x + Seed, UV.y, UV.z) * MountainFrequency) + 1) * .5f;
+    float tempNoise = (simplex.Evaluate(float3(UV.x, UV.y + Seed, UV.z) * TemperatureFrequency) + 1) * .5f;
+    float treeNoise = (simplex.Evaluate(float3(UV.x, UV.y, UV.z + Seed) * TreeFrequency) + 1) * .5f;
+    
+    // Generate temperature map
+    float tempValue = 1 - abs(UV.y);
+    
+    // Rough up the temperature map
+    tempValue *= 1 - TemperatureRoughness + TemperatureRoughness * tempNoise;
+    
+    // Change temperature with mountains
+    tempValue *= (1 - mountainNoise) * MountainTemperatureAffect + 1 - MountainTemperatureAffect;
+    
+    //Return the calculated values
+    Out = float3(mountainNoise, tempValue, treeNoise);
+}
+
+float3 evaluateBiomeMap(BiomeSettings biomeSettings, float3 pos)
+{
+    float3 returnValue;
+    EvaluateBiomeMap_float(pos, biomeSettings.Seed, biomeSettings.MountainFrequency, biomeSettings.TemperatureFrequency, biomeSettings.TemperatureRoughness, biomeSettings.MountainTemperatureAffect, biomeSettings.TreeFrequency, returnValue);
+    return returnValue;
+}
+
+
 
 #endif
