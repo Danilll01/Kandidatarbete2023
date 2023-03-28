@@ -2,7 +2,7 @@
 #pragma kernel GenerateMesh
 
 #include "Includes/MarchTables.hlsl"
-#include "Includes/Terrain.hlsl"
+#include "../Terrain/Terrain.hlsl"
 
 // Helper functions declaration
 float4 getTexturePoint(uint3 pos, int3 chunkId, float maxPos);
