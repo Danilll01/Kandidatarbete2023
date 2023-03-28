@@ -7,13 +7,13 @@ public class Resource : MonoBehaviour
     [SerializeField] private float respawnTime = 30f;
 
     private MeshRenderer meshRenderer;
-    private new Collider collider;
+    private Collider colliderComponent;
 
     // Start is called before the first frame update
     void Start()
     {
         meshRenderer = GetComponent<MeshRenderer>();
-        collider = GetComponent<Collider>();
+        colliderComponent = GetComponent<Collider>();
     }
 
     /// <summary>
@@ -21,10 +21,10 @@ public class Resource : MonoBehaviour
     /// </summary>
     public void ConsumeResource()
     {
-        if (meshRenderer == null || collider == null) return;
+        if (meshRenderer == null || colliderComponent == null) return;
         
         meshRenderer.enabled = false;
-        collider.enabled = false;
+        colliderComponent.enabled = false;
         StopAllCoroutines();
         StartCoroutine(Timer());
     }
@@ -35,6 +35,6 @@ public class Resource : MonoBehaviour
         yield return new WaitForSeconds(respawnTime);
 
         meshRenderer.enabled = true;
-        collider.enabled = true;
+        colliderComponent.enabled = true;
     }
 }
