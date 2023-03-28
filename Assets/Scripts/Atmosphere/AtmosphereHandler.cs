@@ -55,6 +55,7 @@ public class AtmosphereHandler : MonoBehaviour
         
     }
 
+    // Colors the atmosphere
     private void SelectAtmosphereColors()
     {
         if (random.Value() < 0.5f)
@@ -72,15 +73,36 @@ public class AtmosphereHandler : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Vector3 playerPosition = transform.position;
-        Vector3 localScale = transform.localScale;
-        Vector4 lightDirection = (playerPosition - Universe.sunPosition.position);
+        // Light direction
+        Vector4 lightDirection = (transform.position - Universe.sunPosition.position);
         atmosphereMaterial.SetVector(LightDirection, lightDirection);
+    }
 
-        float playerHeight = Vector3.Distance(playerPosition, Universe.player.transform.position);
+    public void UpdateAtmosphereAmbient(Gradient skyGradient)
+    {
+        Vector3 planetPosition = transform.position;
+        Vector3 localScale = transform.localScale;
+        Vector3 sunPosition = Universe.sunPosition.position;
+        Vector3 playerPosition = Universe.player.transform.position;
+        
+        // Planet radius (for when going underwater)
+        float playerHeight = Vector3.Distance(planetPosition, playerPosition);
         atmosphereMaterial.SetFloat(PlanetRadius, Mathf.Min(planetNormalRadius, playerHeight - 10));
 
+        // Light intensity (Makes atmosphere appear more thick)
         lightIntensityLerp = Mathf.InverseLerp((localScale.x / 2f) - (localScale.x / 10f), (localScale.x / 2f), playerHeight);
         atmosphereMaterial.SetFloat(LightIntensity, Mathf.Lerp(20, 10, lightIntensityLerp));
+
+
+        
+        // Sets the ambient light
+        float sunPlanetDistance = Vector3.Distance(sunPosition, planetPosition);
+        float maxCutOfDistance = Vector3.Distance(Vector3.zero, new Vector3(sunPlanetDistance, planetNormalRadius + 10));
+        float minDistance = sunPlanetDistance - planetNormalRadius + 10;
+
+        // Will be between 0 and 1 with 1 being when the player is near sun (max light) and 0 being 90 degrees to the side of the planet (lowest ambient light) 
+        float lightAmount  = Mathf.InverseLerp(maxCutOfDistance, minDistance, Vector3.Distance(sunPosition, playerPosition));
+
+        RenderSettings.ambientLight = Color.Lerp( skyGradient.Evaluate(lightAmount), skyGradient.Evaluate(0), lightIntensityLerp);
     }
 }

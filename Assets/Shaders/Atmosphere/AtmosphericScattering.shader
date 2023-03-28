@@ -2,7 +2,7 @@ Shader "Atmosphere/Atmospheric Scattering"
 {
     Properties
     {
-        _LightIntensity("Light Intensity", Float) = 20
+        _LightIntensity("Light Intensity", Float) = 10
         _LightColor("Light Color", Color) = (1,1,1)
         _LightDirection("Light Direction", Vector) = (0,0,1)
         _PlanetRadius("Planet Radius", Float) = 47
