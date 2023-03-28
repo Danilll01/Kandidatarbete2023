@@ -16,7 +16,7 @@ public class DirectionalSun : MonoBehaviour
     /// <summary>
     /// Initializes the script to make directional light point from the sun object
     /// </summary>
-    /// <param name="sun">The sunubject to point light from</param>
+    /// <param name="sun">The sun object to point light from</param>
     public void Initialize(Transform sun) {
         this.sun = sun;
         currentPlanet = player.GetComponent<PillPlayerController>().attractor;
@@ -27,15 +27,12 @@ public class DirectionalSun : MonoBehaviour
     // Update is called once per frame
     void Update() {
         UpdateDirection();
-
-        // This probably will need more work when the player can move between different planets as I think the ambient light will "jump" hard between
-        // light levels right now. Some kind of lerp to a fixed "space" ambient color could be used.
         UpdateAmbientLight();
     }
 
     private void UpdateAmbientLight() {
 
-        // This basicly works by calculating the distance to the planet light edge and the shortest distance to the sun.
+        // This basically works by calculating the distance to the planet light edge and the shortest distance to the sun.
         // Then whatever the player distance falls in between these values that is whats is looked up in the gradient and set as the color
         // Therefore when the player is on the back half of the planet the ambient light will be low and the more near the sun the lighter the light will be
         if (currentPlanet != null) {
