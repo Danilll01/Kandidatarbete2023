@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 1493958779013422100}
   - component: {fileID: 1493958779014389460}
   - component: {fileID: -6144865116993665124}
-  - component: {fileID: 1273854297095324107}
   m_Layer: 0
   m_Name: Branch_01
   m_TagString: Untagged
@@ -104,17 +103,3 @@ LODGroup:
     renderers:
     - renderer: {fileID: 1493958779014389460}
   m_Enabled: 1
---- !u!136 &1273854297095324107
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1493958779012120596}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  m_Radius: 0.06407011
-  m_Height: 0.8512509
-  m_Direction: 0
-  m_Center: {x: 0, y: 0, z: 0}
