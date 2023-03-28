@@ -83,6 +83,4 @@ float3 evaluateBiomeMap(BiomeSettings biomeSettings, float3 pos)
     return returnValue;
 }
 
-
-
 #endif
