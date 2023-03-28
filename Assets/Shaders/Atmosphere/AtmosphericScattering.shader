@@ -11,7 +11,7 @@ Shader "Atmosphere/Atmospheric Scattering"
         _LightSteps ("Light Steps", Int) = 12                                       // Standard: 12
         _AtmosphereSaturation ("Atmosphere Saturation", Float) = 1.5
         _RayleighScattering("Rayleigh Scattering (RGB)", Vector) = (0.08,0.2,0.51,50)   // Standard: (0.08,0.2,0.51,0.64)
-        _MieScattering("Mie Scattering", Vector) = (0.01, 0.9, 0, 10)              // Standard: (0.01, 0.9, 0, 0.8)
+        _MieScattering("Mie Scattering", Vector) = (0.01, 0.9, 0, 0.8)              // Standard: (0.01, 0.9, 0, 0.8)
         _ClipThreshold ("Clip Threshold", Range(0.0,1.0)) = 0.73                    // Standard: 0.73
     }
     SubShader

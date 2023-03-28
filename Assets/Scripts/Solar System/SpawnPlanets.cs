@@ -41,8 +41,8 @@ public class SpawnPlanets : MonoBehaviour
         random = Universe.random;
         GetValues();
         CreatePlanets();
-        sunLightning.Initialize(sun.transform);
         player.Initialize(bodies[spawnPlanetIndex], random.Next());
+        sunLightning.Initialize(sun.transform);
         solarySystemGenerated = true;
     }
 

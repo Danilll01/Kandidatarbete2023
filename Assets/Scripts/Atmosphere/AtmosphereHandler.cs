@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class AtmosphereHandler : MonoBehaviour
 {
+    [HideInInspector] public float lightIntensityLerp = 0; // How to lerp lights when near planet
+    
     [SerializeField] private Shader atmosphereShader;
     private Material atmosphereMaterial;
     private float planetNormalRadius;
@@ -42,7 +44,7 @@ public class AtmosphereHandler : MonoBehaviour
         float playerHeight = Vector3.Distance(playerPosition, Universe.player.transform.position);
         atmosphereMaterial.SetFloat(PlanetRadius, Mathf.Min(planetNormalRadius, playerHeight - 10));
 
-        float lightIntensityLerp = Mathf.InverseLerp((localScale.x / 2f) - (localScale.x / 10f), (localScale.x / 2f), playerHeight);
+        lightIntensityLerp = Mathf.InverseLerp((localScale.x / 2f) - (localScale.x / 10f), (localScale.x / 2f), playerHeight);
         atmosphereMaterial.SetFloat(LightIntensity, Mathf.Lerp(20, 10, lightIntensityLerp));
     }
 }

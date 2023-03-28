@@ -35,7 +35,7 @@ public class Planet : MonoBehaviour
     [SerializeField] private GenerateCreatures generateCreatures;
     [SerializeField] public ChunksHandler chunksHandler;
     [SerializeField] public WaterHandler waterHandler;
-    [SerializeField] private AtmosphereHandler atmosphereHandler;
+    public AtmosphereHandler atmosphereHandler;
 
     [SerializeField] private List<TerrainLayer> terrainLayers;
 
