@@ -19,7 +19,7 @@ float getTerrain(float3 pos, RWStructuredBuffer<TerrainLayer> terrainLayers, int
    
     float noiseValue = 0;
     
-    for (int i = 0; i < 1; i++)
+    for (int i = 0; i < numTerrainLayers; i++)
     {
         float amplitude = 1;
         float frequency = terrainLayers[i].baseRoughness;
