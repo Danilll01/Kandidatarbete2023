@@ -222,7 +222,6 @@ public class ShipController : MonoBehaviour
             }
         }
 
-        //TODO fix landing upside down
         //Assumes 3 gearPositions
         Plane landingPlane = new Plane(gearLandingPositions[0], gearLandingPositions[1], gearLandingPositions[2]);
         landingPlane.Raycast(new Ray(playerTransform.position, -player.Up), out float height);
@@ -233,6 +232,13 @@ public class ShipController : MonoBehaviour
         //Set up transition to/from
         landingSpot.position = player.Planet.transform.InverseTransformPoint(landingPos - playerPositionOffset);
         landingSpot.rotation = Quaternion.LookRotation(Vector3.ProjectOnPlane(transform.TransformVector(Vector3.forward), landingPlane.normal), landingPlane.normal);
+
+        //Makes sure landing is upright
+        if (Vector3.Dot(landingPlane.normal, player.Up) < 0)
+        {
+            landingSpot.rotation = Quaternion.Euler(180, 0, 0) * landingSpot.rotation;
+        }
+
         return true;
     }
 
