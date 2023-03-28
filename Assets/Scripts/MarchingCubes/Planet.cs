@@ -101,7 +101,7 @@ public class Planet : MonoBehaviour
 
         if (atmosphereHandler != null && bodyName != "Sun")
         {
-            atmosphereHandler.Initialize(radius, waterDiameter / 2);
+            atmosphereHandler.Initialize(radius, waterDiameter / 2, rand.Next());
             
         }
     }
