@@ -42,6 +42,7 @@ public class ChunksHandler : MonoBehaviour
     // Used for chunk culling
     private int index = 0;
     [SerializeField] private int maxChunkChecksPerFrame = 50;
+    private int updateCounter = 40;
 
     enum ChunkResolution
     {
@@ -92,7 +93,10 @@ public class ChunksHandler : MonoBehaviour
         SetChunksMaterials(chunksHighRes);
 
         if (!playerOnPlanet)
+        {
             chunksParentHighRes.SetActive(false);
+            UpdateChunksVisibility();
+        }            
         else
         {
             chunksParentLowRes.SetActive(false);
@@ -188,11 +192,23 @@ public class ChunksHandler : MonoBehaviour
     private void UpdateChunksVisibility()
     {
         Vector3 playerPos = player.position;
+        if (!Universe.solarySystemGenerated) return;
 
         // Only update chunks if player has moved a certain distance
-        if (Vector3.Magnitude(playerPos - playerLastPosition) < 3)
+        //if (Vector3.Magnitude(playerPos - playerLastPosition) < 2)
+            //return;
+           
+        
+        if (updateCounter > 0)
+        {
+            updateCounter--;
             return;
-            
+        } else
+        {
+            //print("Now");
+            updateCounter = 1;
+        }
+
         playerLastPosition = playerPos;
 
         Vector3 cutoffPoint;
@@ -215,8 +231,8 @@ public class ChunksHandler : MonoBehaviour
                 if (foliageInitialized == 0)
                 {
                     chunksHighRes[index].foliage.SpawnFoliageOnChunk();
-                    CreatureSpawning cretureSpawning = chunksHighRes[index].creatures;
-                    if (cretureSpawning.initialized) cretureSpawning.SpawnCreatures();
+                    CreatureSpawning creatureSpawning = chunksHighRes[index].creatures;
+                    if (creatureSpawning.initialized) creatureSpawning.SpawnCreatures();
                 }
                     
             }

@@ -19,6 +19,11 @@ public class CreatureSpawning : MonoBehaviour
     private int[] spawningRatios;
     private int positionArrayLength;
 
+    [SerializeField] public SpawnPack[] objectsToSpawn;
+    private int objectsToSpawnIndex = 0;
+    private bool readyToSpawn = false;
+    public bool finishedSpawning = false;
+
     public void Initialize(int meshVerticesLength, Vector3 position, int seed)
     {
         creatureHandler = transform.parent.parent.parent.GetComponent<Planet>().creatureHandler;
@@ -56,6 +61,38 @@ public class CreatureSpawning : MonoBehaviour
             Vector3 localpos = Quaternion.Euler(x, y, z) * pos;
             creatureSpots[i] = localpos;
         }
+
+        objectsToSpawn = new SpawnPack[creatureSpots.Length];
+        
+    }
+
+    public void PackSpawning()
+    {
+        if (readyToSpawn && objectsToSpawn.Length > 0)
+        {
+            //print("Yes:" + objectsToSpawn[0].rayOrigin);
+            /*
+            print("NOdnwaoj");
+            foreach (SpawnPack pack in objectsToSpawn)
+            {
+                print("Pack" + pack.rayOrigin);
+            }*/
+            int totalIndex = objectsToSpawnIndex;
+            while (totalIndex < objectsToSpawnIndex + 5)
+            {
+                //print("Its time to work now!" + totalIndex + " : " + objectsToSpawn.Length);
+                if (totalIndex >= objectsToSpawn.Length || objectsToSpawn[totalIndex] == null)
+                {
+                    //print("Giving up..." + totalIndex + " : " + objectsToSpawn[totalIndex]);
+                    finishedSpawning = true;
+                    return;
+                }
+                SpawnPack(objectsToSpawn[totalIndex].rayOrigin, objectsToSpawn[totalIndex].rotation, objectsToSpawn[totalIndex].creature);
+
+                totalIndex++;
+            }
+            objectsToSpawnIndex += totalIndex - objectsToSpawnIndex;
+        }
     }
 
     public void SpawnCreatures()
@@ -90,8 +127,11 @@ public class CreatureSpawning : MonoBehaviour
             if (hit.transform == transform.parent && hit.distance < radius - waterRadius)
             {
                 Quaternion rotation = Quaternion.FromToRotation(Vector3.forward, hit.normal);
-                SpawnPack(rayOrigin, rotation, GetCreatureToSpawn());
-                
+                //SpawnPack(rayOrigin, rotation, GetCreatureToSpawn());
+                //print("Org:" + rayOrigin + " : " + rotation);
+                objectsToSpawn[objectsToSpawnIndex] = new SpawnPack(rayOrigin, rotation, GetCreatureToSpawn());
+                objectsToSpawnIndex++;
+
                 hits++;
             }
 
@@ -107,13 +147,15 @@ public class CreatureSpawning : MonoBehaviour
 
         // Removes spots making the chunk unable to spawn new trees
         creatureSpots = null;
+        objectsToSpawnIndex = 0;
+        readyToSpawn = true;
     }
 
     private void SpawnPack(Vector3 rayOrigin, Quaternion rotation, CreaturePack packData)
     {
         // How many creatures in this pack
         int packSize = random.Next(packData.minPackSize, packData.maxPackSize);
-
+        //print("Pack size" + packSize);
         // Used to keep track of all creature positions in a pack
         Vector3[] positions = new Vector3[packSize];
 
@@ -124,6 +166,8 @@ public class CreatureSpawning : MonoBehaviour
 
             Ray ray = new(randomOrigin, creatureHandler.PlanetPosition - randomOrigin);
             RaycastHit hit;
+            //print("Rand:" + randomOrigin + " : " + (creatureHandler.PlanetPosition - randomOrigin));
+            //Debug.DrawLine(randomOrigin, creatureHandler.PlanetPosition - randomOrigin, Color.cyan);
 
             // Registered a hit
             if (Physics.Raycast(ray, out hit, creatureHandler.PlanetRadius))

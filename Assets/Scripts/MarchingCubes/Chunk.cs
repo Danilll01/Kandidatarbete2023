@@ -42,6 +42,8 @@ public class Chunk : MonoBehaviour
     [HideInInspector] public Vector3 position;
     [HideInInspector] public bool initialized = false;
     public bool debug = false;
+    private bool initialSpawn = false;
+    private int updateCounter = 20;
 
     public void Setup(int index, MarchingCubes marchingCubes)
     {
@@ -87,8 +89,9 @@ public class Chunk : MonoBehaviour
         //previousPlayerPos = player.localPosition + new Vector3(100,100,100);
         previousPlayerPos = Vector3.zero;
 
-        //if (!lowChunkResChunks && numVerts != 0)
-            //UpdateChunk();
+        //if (!lowChunkResChunks && numVerts != 0 && !planet.name.Contains("Moon"))
+        //UpdateChunk();
+        
 
         initialized = true;
 
@@ -105,10 +108,32 @@ public class Chunk : MonoBehaviour
                 print("Curr: " + player.localPosition);
                 print("Mag: " + Vector3.Magnitude(player.localPosition - previousPlayerPos));
             }
+
+            if (!Universe.solarySystemGenerated) return;
+
+
+
+            if (!initialSpawn && Universe.playerSpawned)
+            {
+                //UpdateChunk();
+
+                initialSpawn = true;
+            }
+
             // Check every 5 meter so that we don't check all the time
-            if (!previousPlayerPos.Equals(Vector3.zero) && Vector3.Magnitude(player.localPosition - previousPlayerPos) < 5)
+            //if (!previousPlayerPos.Equals(Vector3.zero) && Vector3.Magnitude(player.localPosition - previousPlayerPos) < 5)
+            //return;
+            if (updateCounter > 0)
+            {
+                updateCounter--;
                 return;
-            
+            }
+            else
+            {
+                //print("Now222");
+                updateCounter = 5;
+            }
+
             previousPlayerPos = player.localPosition;
 
             UpdateChunk();
@@ -140,12 +165,18 @@ public class Chunk : MonoBehaviour
                     if (numVerts > 500)
                         creatures.Initialize(numVerts, position, random.Next());
                 }
+                if (!creatures.finishedSpawning)
+                {
+                    creatures.PackSpawning();
+                }
 
-            }
-            else
+            } else
             {
+
                 UpdateMesh(highRes.resolution);
             }
+
+            
         }
         else if (mediumRes.lowerRadius * chunkSize < playerDistance && playerDistance < mediumRes.upperRadius * chunkSize)
         {

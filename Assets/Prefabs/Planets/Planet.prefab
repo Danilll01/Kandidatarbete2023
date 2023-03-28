@@ -63,7 +63,6 @@ MonoBehaviour:
   moons: []
   waterPoints: []
   player: {fileID: 0}
-  willGenerateCreature: 0
   resolution: 4
   willGeneratePlanetLife: 0
   chanceToSpawnPlanetLife: 0.8
@@ -186,7 +185,7 @@ MonoBehaviour:
     lowerRadius: 2.3
     upperRadius: 6.871948e+10
     resolution: 1
-  maxChunkChecksPerFrame: 50
+  maxChunkChecksPerFrame: 10
 --- !u!114 &6368680446637308804
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -301,7 +300,7 @@ MonoBehaviour:
     packRadius: 30
     prefabRadius: 1
   isInstantiated: 0
-  debug: 0
+  debug: 1
 --- !u!1 &3800433809544220050
 GameObject:
   m_ObjectHideFlags: 0
