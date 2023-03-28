@@ -25,7 +25,6 @@ public class Planet : MonoBehaviour
     [HideInInspector] public Transform player;
     [HideInInspector] public MarchingCubes marchingCubes;
 
-    [SerializeField] private bool willGenerateCreature = false;
     //[SerializeField, Range(1, 4)] 
     [SerializeField, Range(1, 14)] public int resolution = 5;
 
