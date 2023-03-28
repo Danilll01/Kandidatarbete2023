@@ -9,6 +9,8 @@ public static class Universe
     public static int nrOfPlanets = 3;
     public static int seed = 123456789;
     public static RandomX random;
+    public static bool solarySystemGenerated = false;
+    public static bool playerSpawned = false;
 
     //Guaranteed set after Awake()
     public static PillPlayerController player = null;

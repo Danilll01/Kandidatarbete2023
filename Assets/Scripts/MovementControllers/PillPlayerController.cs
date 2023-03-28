@@ -71,6 +71,8 @@ public class PillPlayerController : MonoBehaviour
         paused = false;
 
         playerWater.Initialize(attractor);
+
+        Universe.playerSpawned = true;
     }
 
     // Update is called once per frame
