@@ -183,7 +183,7 @@ public class Creature : MonoBehaviour
                 LookingForPartner();
                 break;
             case CreatureState.Breeding:
-                Bredding();
+                Breeding();
                 break;
         }
 
@@ -374,7 +374,7 @@ public class Creature : MonoBehaviour
 
     }
 
-    private void Bredding()
+    private void Breeding()
     {
         if (reproductionChance > Random.Range(0f,1f) && breedingPartner.thirst < thirst)
         {
