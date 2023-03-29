@@ -23,20 +23,21 @@ public class AtmosphereHandler : MonoBehaviour
     private static readonly int RayleighScattering = Shader.PropertyToID("_RayleighScattering");
 
     private static readonly int[] maxLightProbability = { 20, 20, 20, 15, 10, 5, 5};
+    private static readonly int[] atmosphereSizeProbability = { 50, 50, 50, 50, 70, 60, 40, 30, 20, 10};
 
     // These gradients are set in the editor and match the atmosphere values below. (Uses same index)
     [SerializeField] private Gradient[] ambientGradients;
     
     // Atmosphere colors (colors assigned from nearest planet and up in the comments)
-    private static readonly Vector4[] rayLeightValues = { new (0.08f, 0.2f, 0.51f, 50), // Normal earth
-                                                          new (0.2f, 0.08f, 0.51f, 50), // Yellow, Orange, Pink, Purple
-                                                          new (0.51f, 0.2f, 0.08f, 50), // Blue, Yellow, Orange (Desert planer / Venus like)
-                                                          new (0.2f, 0.51f, 0.08f, 50), // Pink, Yellow, Green
-                                                          new (0.08f, 0.51f, 0.2f, 50), // Pink, Blue, Turquoise
-                                                          new (0.51f, 0.08f, 0.2f, 50), // Blue, Pink
-                                                          new (0.02f, 0.1f, 1f, 50),    // Red, Green, Blue
-                                                          new (0.5f, 0.06f, 0.06f, 50), // Turquoise, Red
-                                                          new (0.15f, 0.04f, 0.74f, 50) // Green, Yellow, Pink, Purple
+    private static readonly Vector4[] rayLeightValues = { new (0.08f, 0.2f, 0.51f), // Normal earth
+                                                          new (0.2f, 0.08f, 0.51f), // Yellow, Orange, Pink, Purple
+                                                          new (0.51f, 0.2f, 0.08f), // Blue, Yellow, Orange (Desert planer / Venus like)
+                                                          new (0.2f, 0.51f, 0.08f), // Pink, Yellow, Green
+                                                          new (0.08f, 0.51f, 0.2f), // Pink, Blue, Turquoise
+                                                          new (0.51f, 0.08f, 0.2f), // Blue, Pink
+                                                          new (0.02f, 0.1f, 1f),    // Red, Green, Blue
+                                                          new (0.5f, 0.06f, 0.06f), // Turquoise, Red
+                                                          new (0.15f, 0.04f, 0.74f) // Green, Yellow, Pink, Purple
     };
 
 
@@ -87,16 +88,31 @@ public class AtmosphereHandler : MonoBehaviour
         if (random.Value() < 0.5f)
         {
             // Normal atmosphere is more common
-            atmosphereMaterial.SetVector(RayleighScattering, rayLeightValues[0]);
+            
+            Vector4 finalColorVector = FixAtmosphereSize(rayLeightValues[0]);
+
+            atmosphereMaterial.SetVector(RayleighScattering, finalColorVector);
             ambientGradient = ambientGradients[0];
         }
         else
         {
             // Can be other colors too
             int randomColorVal = random.Next(1, rayLeightValues.Length - 1);
-            atmosphereMaterial.SetVector(RayleighScattering, rayLeightValues[randomColorVal]); 
+            
+            // Get color vector
+            Vector4 finalColorVector = FixAtmosphereSize(rayLeightValues[randomColorVal]);
+
+            atmosphereMaterial.SetVector(RayleighScattering, finalColorVector); 
             ambientGradient = ambientGradients[randomColorVal];
         }
+    }
+
+    // Selects an atmosphere size
+    private Vector4 FixAtmosphereSize(Vector4 finalColorVector)
+    {
+        // Set size
+        finalColorVector.w = atmosphereSizeProbability[random.Next(1, atmosphereSizeProbability.Length - 1)];
+        return finalColorVector;
     }
 
     // Will select one value to use as the maximum light intensity
