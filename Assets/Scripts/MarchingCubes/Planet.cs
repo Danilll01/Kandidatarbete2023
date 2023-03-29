@@ -70,7 +70,7 @@ public class Planet : MonoBehaviour
         MinMaxTerrainLevel terrainLevel = new MinMaxTerrainLevel();
         
         rotationAxis = rand.OnUnitSphere() * radius;
-        rotationSpeed = rand.Next(5,15);
+        rotationSpeed = rand.Next(1,5);
 
         willGeneratePlanetLife = rand.Value() < chanceToSpawnPlanetLife;
         willGeneratePlanetLife = false;
