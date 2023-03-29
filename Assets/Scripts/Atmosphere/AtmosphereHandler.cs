@@ -5,19 +5,24 @@ using UnityEngine;
 
 public class AtmosphereHandler : MonoBehaviour
 {
-    [HideInInspector] public float lightIntensityLerp = 0; // How to lerp lights when near planet
+     
     
     [SerializeField] private Shader atmosphereShader;
     private Material atmosphereMaterial;
+    private float lightIntensityLerp;
     private float planetNormalRadius;
     private RandomX random;
+    private Gradient ambientGradient;
     
     private static readonly int PlanetRadius = Shader.PropertyToID("_PlanetRadius");
     private static readonly int AtmosphereRadius = Shader.PropertyToID("_AtmosphereRadius");
     private static readonly int LightDirection = Shader.PropertyToID("_LightDirection");
     private static readonly int LightIntensity = Shader.PropertyToID("_LightIntensity");
-    private static readonly int RayleighScattering = Shader.PropertyToID("_RayleighScattering");  
+    private static readonly int RayleighScattering = Shader.PropertyToID("_RayleighScattering");
 
+    // These gradients are set in the editor and match the atmosphere values below. (Uses same index)
+    [SerializeField] private Gradient[] ambientGradients;
+    
     // Atmosphere colors (colors assigned from nearest planet and up in the comments)
     private static readonly Vector4[] rayLeightValues = { new (0.08f, 0.2f, 0.51f, 50), // Normal earth
                                                           new (0.2f, 0.08f, 0.51f, 50), // Yellow, Orange, Pink, Purple
@@ -52,7 +57,11 @@ public class AtmosphereHandler : MonoBehaviour
         atmosphereMaterial.SetFloat(AtmosphereRadius, Mathf.RoundToInt(planetRadius * 1.25f - 10));
         SelectAtmosphereColors();
         GetComponent<MeshRenderer>().material = atmosphereMaterial;
-        
+
+        if (ambientGradients.Length != rayLeightValues.Length)
+        {
+            Debug.LogError("Atmosphere ambient gradients do not match atmosphere values. This have chance to cause error");
+        }
     }
 
     // Colors the atmosphere
@@ -62,11 +71,14 @@ public class AtmosphereHandler : MonoBehaviour
         {
             // Normal atmosphere is more common
             atmosphereMaterial.SetVector(RayleighScattering, rayLeightValues[0]);
+            ambientGradient = ambientGradients[0];
         }
         else
         {
             // Can be other colors too
-            atmosphereMaterial.SetVector(RayleighScattering, rayLeightValues[random.Next(1, rayLeightValues.Length - 1)]); 
+            int randomColorVal = random.Next(1, rayLeightValues.Length - 1);
+            atmosphereMaterial.SetVector(RayleighScattering, rayLeightValues[randomColorVal]); 
+            ambientGradient = ambientGradients[randomColorVal];
         }
     }
 
@@ -78,12 +90,22 @@ public class AtmosphereHandler : MonoBehaviour
         atmosphereMaterial.SetVector(LightDirection, lightDirection);
     }
 
-    public void UpdateAtmosphereAmbient(Gradient skyGradient)
+    /// <summary>
+    /// Updates the ambient light and atmosphere based on current player and this atmosphere
+    /// </summary>
+    public void UpdateAtmosphereAmbient()
     {
         Vector3 planetPosition = transform.position;
         Vector3 localScale = transform.localScale;
         Vector3 sunPosition = Universe.sunPosition.position;
         Vector3 playerPosition = Universe.player.transform.position;
+        
+        UpdateAtmosphereValues(planetPosition, playerPosition, localScale);
+        UpdateAmbientLight(sunPosition, planetPosition, playerPosition);
+    }
+
+    private void UpdateAtmosphereValues(Vector3 planetPosition, Vector3 playerPosition, Vector3 localScale)
+    {
         
         // Planet radius (for when going underwater)
         float playerHeight = Vector3.Distance(planetPosition, playerPosition);
@@ -92,8 +114,11 @@ public class AtmosphereHandler : MonoBehaviour
         // Light intensity (Makes atmosphere appear more thick)
         lightIntensityLerp = Mathf.InverseLerp((localScale.x / 2f) - (localScale.x / 10f), (localScale.x / 2f), playerHeight);
         atmosphereMaterial.SetFloat(LightIntensity, Mathf.Lerp(20, 10, lightIntensityLerp));
+        
+    }
 
-
+    private void UpdateAmbientLight(Vector3 sunPosition, Vector3 planetPosition, Vector3 playerPosition)
+    {
         
         // Sets the ambient light
         float sunPlanetDistance = Vector3.Distance(sunPosition, planetPosition);
@@ -101,8 +126,8 @@ public class AtmosphereHandler : MonoBehaviour
         float minDistance = sunPlanetDistance - planetNormalRadius + 10;
 
         // Will be between 0 and 1 with 1 being when the player is near sun (max light) and 0 being 90 degrees to the side of the planet (lowest ambient light) 
-        float lightAmount  = Mathf.InverseLerp(maxCutOfDistance, minDistance, Vector3.Distance(sunPosition, playerPosition));
-
-        RenderSettings.ambientLight = Color.Lerp( skyGradient.Evaluate(lightAmount), skyGradient.Evaluate(0), lightIntensityLerp);
+        float lightAmount = Mathf.InverseLerp(maxCutOfDistance, minDistance, Vector3.Distance(sunPosition, playerPosition));
+        RenderSettings.ambientLight = Color.Lerp(ambientGradient.Evaluate(lightAmount), ambientGradient.Evaluate(0), lightIntensityLerp);
+        
     }
 }

@@ -6,7 +6,6 @@ using UnityEngine;
 public class DirectionalSun : MonoBehaviour
 {
     [SerializeField] private Transform player;     // Player to point light towards
-    [SerializeField] private Gradient skyGradient;  // Sky color gradient
 
     private Transform sun;                          // Sun to point light from
     private PillPlayerController currentPlayer;
@@ -32,7 +31,7 @@ public class DirectionalSun : MonoBehaviour
         // Then whatever the player distance falls in between these values that is whats is looked up in the gradient and set as the color
         // Therefore when the player is on the back half of the planet the ambient light will be low and the more near the sun the lighter the light will be
         if (currentPlayer.attractor != null) {
-            currentPlayer.attractor.atmosphereHandler.UpdateAtmosphereAmbient(skyGradient);
+            currentPlayer.attractor.atmosphereHandler.UpdateAtmosphereAmbient();
         }
     }
 
