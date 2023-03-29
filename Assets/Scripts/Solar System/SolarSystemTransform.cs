@@ -110,6 +110,12 @@ public class SolarSystemTransform : MonoBehaviour
     private void RotateSolarSystem()
     {
         planetsParent.transform.RotateAround(activePlanet.transform.position, -rotationAxis, Time.deltaTime);
+
+        
+        int activePlanetIndex = spawnPlanets.bodies.IndexOf(activePlanet);
+        Vector3 direction = sun.transform.position - fakeOrbitObject.transform.position;
+        sun.transform.position = direction.normalized * relativePlanetSunDistances[activePlanetIndex].magnitude;
+        
     }
 
     private void UpdateClosestPlanet()
