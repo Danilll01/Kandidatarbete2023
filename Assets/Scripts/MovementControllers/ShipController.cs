@@ -14,6 +14,7 @@ public class ShipController : MonoBehaviour
     private Vector3 dismountedPos = new Vector3(-2.6f, 2, -2f);
 
     [SerializeField] private float landingTime;
+    [SerializeField] private float maxLandingAngle;
     private float transitionProgress = 0;
     private Vector3 transitionFromPos = Vector3.zero;
     private Quaternion transitionFromRot = Quaternion.identity;
@@ -22,6 +23,9 @@ public class ShipController : MonoBehaviour
     private PillPlayerController player;
     private Rigidbody body;
     private new Camera camera;
+
+    private AudioSource audioPlayer;
+    [SerializeField] AudioClip errorSound;
 
     public void Initialize(Rigidbody body, Camera camera)
     {
@@ -41,6 +45,8 @@ public class ShipController : MonoBehaviour
         {
             mountedPos = transform.GetChild(0);
         }
+
+        audioPlayer = gameObject.GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -218,6 +224,7 @@ public class ShipController : MonoBehaviour
             }
             else
             {
+                audioPlayer.PlayOneShot(errorSound);
                 return false;
             }
         }
@@ -237,6 +244,13 @@ public class ShipController : MonoBehaviour
         if (Vector3.Dot(landingPlane.normal, player.Up) < 0)
         {
             landingSpot.rotation = Quaternion.Euler(180, 0, 0) * landingSpot.rotation;
+        }
+
+        //Check if landing angle is allowed
+        if (Vector3.Angle(landingPlane.normal, player.Up) > maxLandingAngle)
+        {
+            audioPlayer.PlayOneShot(errorSound);
+            return false;
         }
 
         return true;
