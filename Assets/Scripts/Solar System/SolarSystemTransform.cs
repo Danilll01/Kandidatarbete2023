@@ -11,7 +11,7 @@ public class SolarSystemTransform : MonoBehaviour
     private Planet oldActivePlanet = null;
     private GameObject sun;
     private GameObject planetsParent;
-    [SerializeField] private GameObject player;
+    [SerializeField] private PillPlayerController player;
     private bool rotateSolarSystem;
     private bool setUpSolarSystemRotation;
     private KeplerOrbitMover sunKeplerOrbitMover;
@@ -19,6 +19,9 @@ public class SolarSystemTransform : MonoBehaviour
     private Vector3 rotationAxis;
     private float rotationspeed;
     private GameObject fakeOrbitObject;
+    
+    private bool releasePlayer = false;
+    private Planet planetToReleasePlayerFrom;
 
 
     void Start()
@@ -29,6 +32,7 @@ public class SolarSystemTransform : MonoBehaviour
         }
         
         planetsParent = this.gameObject;
+        planetToReleasePlayerFrom = null;
         
         // Create a fake orbit object the sun can orbit around while solar system is rotating
         fakeOrbitObject = new GameObject("fake orbit object")
@@ -65,24 +69,48 @@ public class SolarSystemTransform : MonoBehaviour
             return;
         }
         InitializeValues();
-        UpdateClosestPlanet();
 
-        // If the player is not on any planet, reset the solar system
-        if (activePlanet != oldActivePlanet && activePlanet == null)
+        if (!releasePlayer)
         {
-            rotateSolarSystem = false;
-            ResetPlanetOrbit(oldActivePlanet.gameObject);
-            oldActivePlanet.ResetMoons();
-            oldActivePlanet = activePlanet;
+            UpdateClosestPlanet();
+
+            // If the player is not on any planet, reset the solar system
+            if (activePlanet != oldActivePlanet && activePlanet == null)
+            {
+                rotateSolarSystem = false;
+                ResetPlanetOrbit(oldActivePlanet.gameObject);
+                oldActivePlanet.ResetMoons();
+                planetToReleasePlayerFrom = oldActivePlanet;
+                releasePlayer = true;
+                oldActivePlanet = activePlanet;
+            }
+            // If the player has entered a new planet, move the solar system accordingly
+            else if (activePlanet != oldActivePlanet)
+            {
+                MovePlanets();
+                activePlanet.rotateMoons = true;
+                oldActivePlanet = activePlanet;
+            }
         }
-        // If the player has entered a new planet, move the solar system accordingly
-        else if (activePlanet != oldActivePlanet)
+        else
         {
-            MovePlanets();
-            activePlanet.rotateMoons = true;
-            oldActivePlanet = activePlanet;
+            CheckWhenToReleasePlayer();
         }
+        
         Universe.player.Planet = activePlanet;
+    }
+
+    private void CheckWhenToReleasePlayer()
+    {
+        Vector3 distance = planetToReleasePlayerFrom.transform.parent.position;
+        if (distance.magnitude > 100f)
+        {
+            player.transform.SetParent(null,true);
+            releasePlayer = false;
+            player.attractor = null;
+            planetToReleasePlayerFrom.ResetMoons();
+            ResetPlanets();
+        }
     }
 
     private void LateUpdate()
@@ -114,8 +142,9 @@ public class SolarSystemTransform : MonoBehaviour
         {
             Planet planet = spawnPlanets.bodies[i];
             planet.solarSystemRotationActive = false;
-            planet.LockMoons(true);
+            planet.ResetMoons();
             planet.transform.parent.GetComponent<KeplerOrbitMover>().SetAutoCircleOrbit();
+            planet.transform.parent.GetComponent<KeplerOrbitMover>().LockOrbitEditing = true;
         }
     }
 
@@ -176,7 +205,7 @@ public class SolarSystemTransform : MonoBehaviour
         planetTransform.rotation = Quaternion.AngleAxis(angleBetweenPlanetAndSun, rotationAxis);
         Vector3 direction = sun.transform.position - planetTransform.parent.position;
         direction.y = 0;
-        planetTransform.parent.position = sun.transform.position  + (- direction.normalized * relativePlanetSunDistances[spawnPlanets.bodies.IndexOf(planet.GetComponent<Planet>())].magnitude);
+        planetTransform.parent.position = - direction.normalized * relativePlanetSunDistances[spawnPlanets.bodies.IndexOf(planet.GetComponent<Planet>())].magnitude;
         planet.transform.parent.GetComponent<KeplerOrbitMover>().VelocityHandle.localPosition = new Vector3(100, 0, 0);
 
         planetsParent.transform.rotation = Quaternion.identity;
@@ -191,10 +220,6 @@ public class SolarSystemTransform : MonoBehaviour
 
         // Center the solar system at origo again and remove player as a child of planet
         planet.transform.parent.parent = planetsParent.transform;
-        
-        ResetPlanets();
-        
-
     }
 
     private void MovePlanets()

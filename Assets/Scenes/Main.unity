@@ -417,7 +417,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spawnPlanets: {fileID: 882231452}
-  player: {fileID: 1147752278476081}
+  player: {fileID: 755283109212808068}
 --- !u!1 &459511075
 GameObject:
   m_ObjectHideFlags: 0
@@ -1984,12 +1984,6 @@ MonoBehaviour:
   pausContainer: {fileID: 878722367}
   seedText: {fileID: 627717125}
   playerController: {fileID: 755283109212808068}
---- !u!1 &1147752278476081 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1871491114154613218, guid: 3011931ec0e051e409b86876306c170a,
-    type: 3}
-  m_PrefabInstance: {fileID: 1872596529788034259}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &4268598018086607 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1870092099520268828, guid: 3011931ec0e051e409b86876306c170a,
@@ -2002,7 +1996,7 @@ MonoBehaviour:
     type: 3}
   m_PrefabInstance: {fileID: 1872596529788034259}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1147752278476081}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a06957ffefbd4a24aa9146fc52b81dc0, type: 3}
