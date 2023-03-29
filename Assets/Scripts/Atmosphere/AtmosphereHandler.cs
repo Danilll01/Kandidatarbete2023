@@ -13,12 +13,16 @@ public class AtmosphereHandler : MonoBehaviour
     private float planetNormalRadius;
     private RandomX random;
     private Gradient ambientGradient;
+    private float maxLightIntensity = 20f;
+    private bool atmosphereExist;
     
     private static readonly int PlanetRadius = Shader.PropertyToID("_PlanetRadius");
     private static readonly int AtmosphereRadius = Shader.PropertyToID("_AtmosphereRadius");
     private static readonly int LightDirection = Shader.PropertyToID("_LightDirection");
     private static readonly int LightIntensity = Shader.PropertyToID("_LightIntensity");
     private static readonly int RayleighScattering = Shader.PropertyToID("_RayleighScattering");
+
+    private static readonly int[] maxLightProbability = { 20, 20, 20, 15, 10, 5, 5};
 
     // These gradients are set in the editor and match the atmosphere values below. (Uses same index)
     [SerializeField] private Gradient[] ambientGradients;
@@ -35,7 +39,6 @@ public class AtmosphereHandler : MonoBehaviour
                                                           new (0.15f, 0.04f, 0.74f, 50) // Green, Yellow, Pink, Purple
     };
 
-    
 
     /// <summary>
     /// Sets up the planet atmosphere
@@ -43,9 +46,11 @@ public class AtmosphereHandler : MonoBehaviour
     /// <param name="planetRadius">The radius of the current planet</param>
     /// <param name="waterLevel">The water level on that planet</param>
     /// <param name="randomSeed">The random seed to be used</param>
-    public void Initialize(float planetRadius, float waterLevel, int randomSeed)
+    /// <param name="atmosphereExists">If the atmosphere should exist or not</param>
+    public void Initialize(float planetRadius, float waterLevel, bool atmosphereExists, int randomSeed)
     {
         random = new RandomX(randomSeed);
+        atmosphereExist = atmosphereExists;
         
         transform.localScale = new Vector3((planetRadius*2) * 1.25f, (planetRadius*2) * 1.25f, (planetRadius*2) * 1.25f); // Set the size of material sphere around planet
 
@@ -55,7 +60,19 @@ public class AtmosphereHandler : MonoBehaviour
         
         atmosphereMaterial.SetFloat(PlanetRadius, planetNormalRadius);
         atmosphereMaterial.SetFloat(AtmosphereRadius, Mathf.RoundToInt(planetRadius * 1.25f - 10));
-        SelectAtmosphereColors();
+
+        if (atmosphereExists)
+        {
+            SelectAtmosphereColors();
+            SelectMaxLightIntensity();
+        }
+        else
+        {
+            // Effectively turns of the atmosphere
+            maxLightIntensity = 0;
+            atmosphereMaterial.SetFloat(LightIntensity, maxLightIntensity);
+        }
+        
         GetComponent<MeshRenderer>().material = atmosphereMaterial;
 
         if (ambientGradients.Length != rayLeightValues.Length)
@@ -80,6 +97,13 @@ public class AtmosphereHandler : MonoBehaviour
             atmosphereMaterial.SetVector(RayleighScattering, rayLeightValues[randomColorVal]); 
             ambientGradient = ambientGradients[randomColorVal];
         }
+    }
+
+    // Will select one value to use as the maximum light intensity
+    private void SelectMaxLightIntensity()
+    {
+        maxLightIntensity = maxLightProbability[random.Next(maxLightProbability.Length - 1)];
+        atmosphereMaterial.SetFloat(LightIntensity, Mathf.Min(10, maxLightIntensity));
     }
 
     // Update is called once per frame
@@ -111,10 +135,11 @@ public class AtmosphereHandler : MonoBehaviour
         float playerHeight = Vector3.Distance(planetPosition, playerPosition);
         atmosphereMaterial.SetFloat(PlanetRadius, Mathf.Min(planetNormalRadius, playerHeight - 10));
 
+        if (!atmosphereExist) return;
+        
         // Light intensity (Makes atmosphere appear more thick)
         lightIntensityLerp = Mathf.InverseLerp((localScale.x / 2f) - (localScale.x / 10f), (localScale.x / 2f), playerHeight);
-        atmosphereMaterial.SetFloat(LightIntensity, Mathf.Lerp(20, 10, lightIntensityLerp));
-        
+        atmosphereMaterial.SetFloat(LightIntensity, Mathf.Lerp(maxLightIntensity, Mathf.Min(10, maxLightIntensity), lightIntensityLerp));
     }
 
     private void UpdateAmbientLight(Vector3 sunPosition, Vector3 planetPosition, Vector3 playerPosition)

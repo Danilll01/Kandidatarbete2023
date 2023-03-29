@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using ExtendedRandom;
 using UnityEngine;
 using SimpleKeplerOrbits;
+using UnityEngine.Serialization;
 
 public class SpawnPlanets : MonoBehaviour
 {
@@ -24,7 +25,7 @@ public class SpawnPlanets : MonoBehaviour
     [SerializeField] private DirectionalSun sunLightning;
     [HideInInspector] public GameObject sun;
 
-    [HideInInspector] public bool solarySystemGenerated = false;
+    [HideInInspector] public bool solarSystemGenerated = false;
 
     [SerializeField] private bool randomizeSpawnPlanet = false;
     private RandomX random;
@@ -43,7 +44,7 @@ public class SpawnPlanets : MonoBehaviour
         CreatePlanets();
         player.Initialize(bodies[spawnPlanetIndex], random.Next());
         sunLightning.Initialize();
-        solarySystemGenerated = true;
+        solarSystemGenerated = true;
     }
 
     private void GetValues()

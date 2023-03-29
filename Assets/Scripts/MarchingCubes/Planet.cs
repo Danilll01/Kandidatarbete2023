@@ -101,7 +101,9 @@ public class Planet : MonoBehaviour
 
         if (atmosphereHandler != null && bodyName != "Sun")
         {
-            atmosphereHandler.Initialize(radius, waterDiameter / 2, rand.Next());
+            // Will generate planet life currently decides if there is atmosphere, could change this later when a better system is created
+            // Depending on system, it could be advantageous to give the strength of the atmosphere too, this will have to be sent in as a parameter then 
+            atmosphereHandler.Initialize(radius, waterDiameter / 2, willGeneratePlanetLife,rand.Next()); 
             
         }
     }
