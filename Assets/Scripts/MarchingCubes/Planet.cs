@@ -142,7 +142,7 @@ public class Planet : MonoBehaviour
 
         if (solarSystemRotationActive)
         {
-            //KeepPlanetAtSameDistanceToSun();
+            KeepPlanetAtSameDistanceToSun();
         }
     }
 
@@ -216,26 +216,9 @@ public class Planet : MonoBehaviour
 
     private void KeepPlanetAtSameDistanceToSun()
     {
-        Vector3 sunPosition = parentOrbitMover.AttractorSettings.AttractorObject.transform.localPosition;
-        Vector3 direction = parentOrbitMover.transform.localPosition - sunPosition;
-        parentOrbitMover.transform.localPosition = direction.normalized * positionrelativeToSunDistance;
-    }
-
-    void OnDrawGizmosSelected()
-    {
-        if (bodyName.Contains("Moons"))
-        {
-            return;
-        }
-        if (parentOrbitMover == null)
-        {
-            parentOrbitMover = transform.parent.GetComponent<KeplerOrbitMover>();
-        }
         Vector3 sunPosition = parentOrbitMover.AttractorSettings.AttractorObject.transform.position;
         Vector3 direction = parentOrbitMover.transform.position - sunPosition;
-        // Draws a blue line from this transform to the target
-        Gizmos.color = Color.red;
-        Gizmos.DrawLine(sunPosition, parentOrbitMover.transform.position);
+        parentOrbitMover.transform.position = sunPosition + (direction.normalized * positionrelativeToSunDistance);
     }
 
     private void SetUpComponents()
