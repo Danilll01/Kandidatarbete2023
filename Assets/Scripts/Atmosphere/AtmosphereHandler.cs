@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class AtmosphereHandler : MonoBehaviour
 {
-     
     
     [SerializeField] private Shader atmosphereShader;
     private Material atmosphereMaterial;
