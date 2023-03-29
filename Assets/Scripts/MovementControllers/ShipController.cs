@@ -223,7 +223,9 @@ public class ShipController : MonoBehaviour
         }
 
         //Assumes 3 gearPositions
-        Plane landingPlane = new Plane(gearLandingPositions[0], gearLandingPositions[1], gearLandingPositions[2]);
+        Debug.DrawLine(transform.position, gearLandingPositions[0], Color.red, 5f);
+        Debug.DrawLine(transform.position, gearLandingPositions[1], Color.red, 5f);
+        Debug.DrawLine(transform.position, gearLandingPositions[2], Color.red, 5f);
         landingPlane.Raycast(new Ray(playerTransform.position, -player.Up), out float height);
         Vector3 landingPos = playerTransform.position + (-player.Up * height);
         Vector3 playerPositionOffset = Quaternion.FromToRotation(Vector3.up, player.Up) * (Vector3.up * transform.localPosition.y);
