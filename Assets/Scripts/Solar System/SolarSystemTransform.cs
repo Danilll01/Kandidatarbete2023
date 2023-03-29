@@ -193,7 +193,7 @@ public class SolarSystemTransform : MonoBehaviour
         sunToPlanetRelativeDir.y = 0;
         
         float angleBetweenPlanetAndSun = Vector3.Angle(sunToPlanetDir, sunToPlanetRelativeDir);
-        planetTransform.rotation = Quaternion.AngleAxis(angleBetweenPlanetAndSun, rotationAxis);
+        planetTransform.rotation = Quaternion.Inverse(planet.GetComponent<Planet>().moonsParent.transform.rotation);//Quaternion.AngleAxis(angleBetweenPlanetAndSun, rotationAxis);
 
         planetTransform.parent.position = - sunToPlanetRelativeDir.normalized * relativePlanetSunDistances[spawnPlanets.bodies.IndexOf(planet.GetComponent<Planet>())].magnitude;
         planet.transform.parent.GetComponent<KeplerOrbitMover>().VelocityHandle.localPosition = new Vector3(100, 0, 0);
