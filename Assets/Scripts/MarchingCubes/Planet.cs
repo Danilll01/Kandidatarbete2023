@@ -48,12 +48,10 @@ public class Planet : MonoBehaviour
     public bool rotateMoons;
     private bool moonsLocked = true;
     private Vector3[] moonsrelativeDistances;
-    [HideInInspector] public Vector3 positionrelativeToSun;
-    private bool setUpMoonRotation;
+    [HideInInspector] public float positionrelativeToSunDistance;
     private bool setUpSystemRotationComponents;
     private KeplerOrbitMover parentOrbitMover;
     private bool solarSystemRotationActive;
-    private bool setupRelativeDistance;
 
     /// <summary>
     /// Initializes the planet
@@ -218,16 +216,26 @@ public class Planet : MonoBehaviour
 
     private void KeepPlanetAtSameDistanceToSun()
     {
-        Vector3 sunPosition = parentOrbitMover.AttractorSettings.AttractorObject.transform.position;
-        if (!setupRelativeDistance)
+        Vector3 sunPosition = parentOrbitMover.AttractorSettings.AttractorObject.transform.localPosition;
+        Vector3 direction = parentOrbitMover.transform.localPosition - sunPosition;
+        parentOrbitMover.transform.localPosition = direction.normalized * positionrelativeToSunDistance;
+    }
+
+    void OnDrawGizmosSelected()
+    {
+        if (bodyName.Contains("Moons"))
         {
-            positionrelativeToSun = parentOrbitMover.transform.position - sunPosition;
-            setupRelativeDistance = true;
+            return;
         }
-        Debug.Log("Before" + (parentOrbitMover.transform.position - sunPosition).magnitude);
+        if (parentOrbitMover == null)
+        {
+            parentOrbitMover = transform.parent.GetComponent<KeplerOrbitMover>();
+        }
+        Vector3 sunPosition = parentOrbitMover.AttractorSettings.AttractorObject.transform.position;
         Vector3 direction = parentOrbitMover.transform.position - sunPosition;
-        parentOrbitMover.transform.position = direction.normalized * positionrelativeToSun.magnitude;
-        Debug.Log("After" + (parentOrbitMover.transform.position - sunPosition).magnitude);
+        // Draws a blue line from this transform to the target
+        Gizmos.color = Color.red;
+        Gizmos.DrawLine(sunPosition, parentOrbitMover.transform.position);
     }
 
     private void SetUpComponents()

@@ -107,6 +107,7 @@ public class SpawnPlanets : MonoBehaviour
 
             int nrOfMoonsForPlanet = GetNrOfMoonsToGenerate();
             planetOrbitObject.transform.localPosition = CalculatePositionForPlanet(planetBody, i, nrOfMoonsForPlanet);
+            planetBody.positionrelativeToSunDistance = planetOrbitObject.transform.localPosition.magnitude;
             planet.gameObject.name = "Planet " + i + " body";
             planetBody.SetUpPlanetValues();
 

@@ -48,7 +48,7 @@ public class SolarSystemTransform : MonoBehaviour
             for (int i = 0; i < spawnPlanets.bodies.Count; i++)
             {
                 Planet planet = spawnPlanets.bodies[i];
-                relativePlanetSunDistances[i] =  sun.transform.position - planet.transform.position;
+                relativePlanetSunDistances[i] = planet.transform.parent.localPosition;
             }
         }
         Universe.player.Planet = activePlanet;
@@ -113,8 +113,22 @@ public class SolarSystemTransform : MonoBehaviour
 
         
         int activePlanetIndex = spawnPlanets.bodies.IndexOf(activePlanet);
-        Vector3 direction = sun.transform.position - fakeOrbitObject.transform.position;
-        sun.transform.position = direction.normalized * relativePlanetSunDistances[activePlanetIndex].magnitude;
+        Vector3 direction = sun.transform.localPosition - fakeOrbitObject.transform.localPosition;
+        sun.transform.localPosition = direction.normalized * relativePlanetSunDistances[activePlanetIndex].magnitude;
+
+        /*
+        for (int i = 0; i < spawnPlanets.bodies.Count; i++)
+        {
+            if (i == activePlanetIndex)
+            {
+                continue;
+            }
+            Transform planetOrbitTransform = spawnPlanets.bodies[i].transform.parent;
+            Vector3 planetDirection = planetOrbitTransform.transform.localPosition - sun.transform.localPosition;
+            planetOrbitTransform.transform.localPosition = planetDirection.normalized * relativePlanetSunDistances[i].magnitude;
+        }
+        */
+        
         
     }
 
