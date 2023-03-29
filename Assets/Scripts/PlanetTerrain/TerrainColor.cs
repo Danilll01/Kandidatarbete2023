@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.Mathematics;
+using ExtendedRandom;
 using UnityEngine;
 
 public class TerrainColor : MonoBehaviour {
@@ -17,7 +18,7 @@ public class TerrainColor : MonoBehaviour {
     private Material material;
     private Texture2D texture;
     private const int textureRes = 50;
-    private System.Random random;
+    private RandomX random;
 
     private Color[][] crazyColorPaletts =
     {
@@ -48,7 +49,7 @@ public class TerrainColor : MonoBehaviour {
     /// <param name="randomSeedGen">Random seed to be used when creating new random</param>
     public Material GetPlanetMaterial(MinMaxTerrainLevel terrainLevel, int randomSeedGen) 
     {
-        random = new System.Random(randomSeedGen);
+        random = new RandomX(randomSeedGen);
 
         material = new Material(shader);
 

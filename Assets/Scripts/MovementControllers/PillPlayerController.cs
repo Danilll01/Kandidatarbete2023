@@ -1,4 +1,5 @@
 using UnityEngine;
+using ExtendedRandom;
 using UnityEngine.Serialization;
 
 [RequireComponent(typeof(Rigidbody))]
@@ -48,7 +49,7 @@ public class PillPlayerController : MonoBehaviour
     }
 
     // Start is called before the first frame update
-    public void Initialize(Planet planetToSpawnOn)
+    public void Initialize(Planet planetToSpawnOn, int seed)
     {
         Universe.player = this;
 
@@ -63,7 +64,7 @@ public class PillPlayerController : MonoBehaviour
 
         body = GetComponent<Rigidbody>();
         ship = GameObject.Find("Spaceship").GetComponent<ShipController>();
-        Spawn(planetToSpawnOn);
+        Spawn(planetToSpawnOn, seed);
         //Lock the mouse inside of the game
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
@@ -93,7 +94,7 @@ public class PillPlayerController : MonoBehaviour
         if (attractor != null)
         {
             DisplayDebug.AddOrSetDebugVariable("Current planet", attractor.bodyName);
-            DisplayDebug.AddOrSetDebugVariable("Planet radius", attractor.diameter.ToString());
+            DisplayDebug.AddOrSetDebugVariable("Planet radius", attractor.radius.ToString());
             DisplayDebug.AddOrSetDebugVariable("Planet mass", attractor.mass.ToString());
             DisplayDebug.AddOrSetDebugVariable("Planet surface gravity", attractor.surfaceGravity.ToString());
         }
@@ -265,9 +266,9 @@ public class PillPlayerController : MonoBehaviour
         Gravity.Attract(transform.position, body, attractor.transform.position, attractor.mass);
     }
 
-    private void Spawn(Planet planet)
+    private void Spawn(Planet planet, int seed)
     {
-        UnityEngine.Random.InitState(Universe.random.Next());
+        RandomX rand = new RandomX(seed);
         int failCount = 0;
         bool foundSpawnLocation = false;
         //Try to find suitable spawn location
@@ -280,7 +281,7 @@ public class PillPlayerController : MonoBehaviour
             }
             
             //Try to find a suitable spawn position
-            Vector3 spawnLocationAbovePlanet = planet.transform.position + (UnityEngine.Random.onUnitSphere * planet.radius);
+            Vector3 spawnLocationAbovePlanet = planet.transform.position + (rand.OnUnitSphere() * planet.radius);
             Vector3 directionNearestPlanet = (planet.transform.position - spawnLocationAbovePlanet).normalized;
             bool hitPlanet = Physics.Raycast(spawnLocationAbovePlanet, directionNearestPlanet, out RaycastHit spawnLocation, planet.radius);
 
@@ -336,7 +337,7 @@ public class PillPlayerController : MonoBehaviour
             }
 
 
-            Physics.Raycast(transform.position, attractor.transform.position - transform.position, out RaycastHit hit, 2f);
+            Physics.Raycast(transform.position, attractor.transform.position - transform.position, out RaycastHit hit, 0.75f);
             return hit.collider == null ? Vector3.zero : hit.normal;
         }
     }
@@ -352,7 +353,7 @@ public class PillPlayerController : MonoBehaviour
                 return false;
             }
             
-            bool isGrounded = Physics.Raycast(transform.position, attractor.transform.position - transform.position, 2f);
+            bool isGrounded = Physics.Raycast(transform.position, attractor.transform.position - transform.position, 0.75f);
             animator.SetBool(Jump, !isGrounded); // Sets animation
             return isGrounded;      
         }

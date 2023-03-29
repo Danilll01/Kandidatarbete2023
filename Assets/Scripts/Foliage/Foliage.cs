@@ -1,5 +1,5 @@
 using UnityEngine;
-using Random = System.Random;
+using ExtendedRandom;
 using Noise;
 
 public class Foliage : MonoBehaviour
@@ -21,12 +21,14 @@ public class Foliage : MonoBehaviour
     private FoliageHandler foliageHandler;
 
     // This should probably be the Manfred random
-    private Random random;
+    private RandomX random;
 
     [SerializeField] private float frequency = 0.1f;
 
     private Vector3 chunkPosition;
     private int positionArrayLength;
+
+    [HideInInspector] public bool initialized = false;
 
     // Updates the debug screen
     private void OnDisable()
@@ -61,14 +63,14 @@ public class Foliage : MonoBehaviour
     /// </summary>
     /// <param name="meshVerticesLength"></param>
     /// <param name="position"></param>
-    public void Initialize(int meshVerticesLength, Vector3 position)
+    public void Initialize(int meshVerticesLength, Vector3 position, int seed)
     {
         // Epic foliageHandler getter :O
         foliageHandler = transform.parent.parent.parent.GetComponent<Planet>().foliageHandler;
-        if (foliageHandler == null) return;
+        if (foliageHandler == null && foliageHandler.isInstantiated) return;
         
-        // Seedar en random för denna chunken // Här vill vi ha bra random :)
-        random = new Random(Universe.seed);
+        // Seedar en random fï¿½r denna chunken // Hï¿½r vill vi ha bra random :)
+        random = new RandomX(seed);
 
         // Determines how much foliage there should be on this chunk
         positionArrayLength = (int)(meshVerticesLength * foliageHandler.Density);
@@ -81,6 +83,8 @@ public class Foliage : MonoBehaviour
 
         // This is for angle debugging
         // TestSize();
+
+        initialized = true;
     }
     
     // Test fucntion to measure the angle required to hit the whole chunk
@@ -132,9 +136,9 @@ public class Foliage : MonoBehaviour
         // Check the debug function above if interested in how it works
         for (int i = 0; i < positionArrayLength + foliageHandler.MISS_COMPLIMENT; i++)
         {
-            float x = (float)random.NextDouble() * 18 - 9;
-            float y = (float)random.NextDouble() * 18 - 9;
-            float z = (float)random.NextDouble() * 18 - 9;
+            float x = (float)random.Value() * 18 - 9;
+            float y = (float)random.Value() * 18 - 9;
+            float z = (float)random.Value() * 18 - 9;
             Vector3 localpos = Quaternion.Euler(x, y, z) * pos;
             plantSpots[i] = localpos;
         }
@@ -295,13 +299,12 @@ public class Foliage : MonoBehaviour
 
         GameObject treeObject = foliageHandler.GetForstetTree(treeType);
 
-
         // Spawns 5 trees around a found forest spot! Bigger number = denser forest
         for (int i = 0; i < 5; i++)
         {
-            float x = (float)random.NextDouble()*2 - 1;
-            float y = (float)random.NextDouble()*2 - 1;
-            float z = (float)random.NextDouble()*2 - 1;
+            float x = (float)random.Value() * 2 - 1;
+            float y = (float)random.Value() * 2 - 1;
+            float z = (float)random.Value() * 2 - 1;
             Vector3 localpos = Quaternion.Euler(x, y, z) * rayOrigin;
 
             // Assumes we are spawning trees on a planet located in origin!
@@ -346,5 +349,5 @@ public class Foliage : MonoBehaviour
         
     }
 
-
+    
 }

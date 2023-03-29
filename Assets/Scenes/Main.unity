@@ -977,12 +977,12 @@ PrefabInstance:
     - target: {fileID: 776431053636631548, guid: 93094628cce30c64195c2ae1633e7e60,
         type: 3}
       propertyPath: radiusMaxValue
-      value: 2000
+      value: 4000
       objectReference: {fileID: 0}
     - target: {fileID: 776431053636631548, guid: 93094628cce30c64195c2ae1633e7e60,
         type: 3}
       propertyPath: radiusMinValue
-      value: 500
+      value: 1000
       objectReference: {fileID: 0}
     - target: {fileID: 776431053636631548, guid: 93094628cce30c64195c2ae1633e7e60,
         type: 3}
@@ -1012,6 +1012,11 @@ PrefabInstance:
     - target: {fileID: 776431053636631548, guid: 93094628cce30c64195c2ae1633e7e60,
         type: 3}
       propertyPath: orbitOffsetMinValue
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 776431053636631548, guid: 93094628cce30c64195c2ae1633e7e60,
+        type: 3}
+      propertyPath: randomizeSpawnPlanet
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

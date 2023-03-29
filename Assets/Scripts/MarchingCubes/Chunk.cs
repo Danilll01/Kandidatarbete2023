@@ -1,54 +1,135 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using Unity.Mathematics;
+using ExtendedRandom;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.UIElements;
+using static ChunksHandler;
 
 public class Chunk : MonoBehaviour
 {
     [SerializeField] public Transform creatures;
     [SerializeField] public Foliage foliage;
 
+    [SerializeField] private GameObject foliageGameObject;
+    [SerializeField] private GameObject creatureGameObject;
+
     private int index;
-    private int resolution;
+
+    // Resolutions of chunk
+    private int currentRes;
+    private ResolutionSetting highRes;
+    private ResolutionSetting mediumRes;
+    private ResolutionSetting lowRes;
+    private Vector3 previousPlayerPos;
+
     private MeshFilter meshFilter;
     private MeshCollider meshCollider;
     private Mesh mesh;
-    private MarchingCubes marchingCubes;
+    public MarchingCubes marchingCubes;
     private Transform player;
+    private Planet planet;
     private MinMaxTerrainLevel terrainLevel;
+    [HideInInspector] public float chunkSize;
+
+    private bool lowChunkResChunks;
+
+    private RandomX random;
 
     [HideInInspector] public Vector3 position;
+    [HideInInspector] public bool initialized = false;
+
+    public void Setup(int index, MarchingCubes marchingCubes)
+    {
+        this.index = index;
+        this.marchingCubes = marchingCubes;
+
+        CalculateChunkPosition();
+    }
 
     /// <summary>
     /// Initalizes a given chunk
     /// </summary>
-    /// <param name="index">Chunk index</param>
     /// <param name="resolution"></param>
-    /// <param name="marchingCubes">An instance of marching cubes</param>
     /// <param name="player"></param>
     /// <param name="terrainLevel"></param>
-    public void Initialize(int index, int resolution, MarchingCubes marchingCubes, Transform player, MinMaxTerrainLevel terrainLevel)
+    public int Initialize(Planet planet, Transform player, MinMaxTerrainLevel terrainLevel, ChunksHandler chunkHandler, int seed)
     {
-        this.index = index;
-        this.marchingCubes = marchingCubes;
+        this.planet = planet;
+        highRes = chunkHandler.highRes;
+        mediumRes = chunkHandler.mediumRes;
+        lowRes = chunkHandler.lowRes;
+        random = new RandomX(seed);
+
         this.player = player;
         this.terrainLevel = terrainLevel;
+        chunkSize = (2 * chunkHandler.planetRadius) / (1 << marchingCubes.chunkResolution);
 
         meshFilter = transform.GetComponent<MeshFilter>();
-        meshCollider = transform.GetComponent<MeshCollider>();
-
-        CalculateChunkPosition();
-        
-        //Set lowest resolution as default
-        int meshVerticesLength = UpdateMesh(resolution);
-        if (meshVerticesLength > 500 && marchingCubes.chunkResolution == 3)
+        if(marchingCubes.chunkResolution == 1)
         {
-            foliage.Initialize(meshVerticesLength, position);
+            lowChunkResChunks = true;
+            GetComponent<MeshCollider>().enabled = false;
+        }
+        else
+        {
+            lowChunkResChunks = false;
+            meshCollider = transform.GetComponent<MeshCollider>();
         }
 
+        //Set lowest resolution as default
+        int numVerts = UpdateMesh(lowRes.resolution);
+
+        initialized = true;
+
+        return numVerts;
+    }
+
+    private void Update()
+    {
+        if(initialized && !lowChunkResChunks)
+        {
+            // Check every 5 meter so that we don't check all the time
+            if (Vector3.Magnitude(player.localPosition - previousPlayerPos) < 5)
+                return;
+            
+            previousPlayerPos = player.localPosition;
+
+            float playerDistance = Vector3.Magnitude(player.localPosition - position);
+            if (playerDistance < highRes.upperRadius * chunkSize)
+            {
+                meshCollider.enabled = true;
+                foliageGameObject.SetActive(true);
+                creatureGameObject.SetActive(true);
+                if (!foliage.initialized && planet.willGeneratePlanetLife)
+                {
+                    int numVerts = UpdateMesh(highRes.resolution);
+                    if (numVerts > 500)
+                        foliage.Initialize(numVerts, position, random.Next());
+                }
+                else
+                    UpdateMesh(highRes.resolution);
+                    
+            } 
+            else if (mediumRes.lowerRadius * chunkSize < playerDistance && playerDistance < mediumRes.upperRadius * chunkSize)
+            {
+                foliageGameObject.SetActive(false);
+                creatureGameObject.SetActive(false);
+                meshCollider.enabled = false;
+                UpdateMesh(mediumRes.resolution);
+                
+            }
+            else if (lowRes.lowerRadius * chunkSize < playerDistance)
+            {
+                foliageGameObject.SetActive(false);
+                creatureGameObject.SetActive(false);
+                meshCollider.enabled = false;
+                UpdateMesh(lowRes.resolution);
+            }
+        }
     }
 
     /// <summary>
@@ -73,27 +154,26 @@ public class Chunk : MonoBehaviour
                 (index & (mask << (marchingCubes.chunkResolution * 1))) >> (marchingCubes.chunkResolution * 1),
                 (index & (mask << (marchingCubes.chunkResolution * 2))) >> (marchingCubes.chunkResolution * 2)
             );
-
-        position = -(chunkIndex - (Mathf.Pow(2, marchingCubes.chunkResolution) - 1) / 2 * Vector3.one) * (marchingCubes.diameter / (1 << (marchingCubes.chunkResolution)));
+            
+        position = -(chunkIndex - (Mathf.Pow(2, marchingCubes.chunkResolution) - 1) / 2 * Vector3.one) * (marchingCubes.radius * 2 / (1 << (marchingCubes.chunkResolution)));
     }
-
-    
 
     private int UpdateMesh(int resolution)
     {
-        if (this.resolution == resolution)
+        if (currentRes == resolution)
             return 0;
 
-        this.resolution = resolution;
+        currentRes = resolution;
 
         mesh = new Mesh();
 
-        Vector3[] meshVertices =  marchingCubes.generateMesh(terrainLevel, index, resolution, mesh);
+        int numVerts = marchingCubes.generateMesh(terrainLevel, index, currentRes, mesh);
        
         meshFilter.sharedMesh = mesh;
 
-        meshCollider.sharedMesh = mesh;
+        if (marchingCubes.chunkResolution != 1 && meshCollider.enabled)
+            meshCollider.sharedMesh = mesh;
 
-        return meshVertices.Length;
+        return numVerts;
     }
 }

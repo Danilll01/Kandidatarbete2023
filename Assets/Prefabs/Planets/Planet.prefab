@@ -35,6 +35,7 @@ Transform:
   m_Children:
   - {fileID: 478650547306934036}
   - {fileID: 8161010351517271305}
+  - {fileID: 5536552789248980764}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -61,11 +62,20 @@ MonoBehaviour:
   moons: []
   waterPoints: []
   player: {fileID: 0}
+  willGenerateCreature: 0
   resolution: 4
-  willGenerateCreature: 1
+  willGeneratePlanetLife: 0
+  chanceToSpawnPlanetLife: 0.8
   generateCreatures: {fileID: 7065241369011201559}
   chunksHandler: {fileID: 6742904736247445569}
   waterHandler: {fileID: 7974886500941765792}
+  terrainLayers:
+  - strength: 0.0625
+    baseRoughness: 1.5
+    roughness: 2
+    persistance: 0.5
+    centre: {x: 0, y: 0, z: 0}
+    numLayers: 5
   foliageHandler: {fileID: 6368680446637308804}
 --- !u!114 &3175307376905995560
 MonoBehaviour:
@@ -154,11 +164,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a74dae873f525754f8bfc5552f8e48e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  chunksGenerated: 0
+  planetRadius: 0
   chunkPrefab: {fileID: 5146216955868432244, guid: 8531586e98093b342af8fdd2a736c017,
     type: 3}
-  chunksParent: {fileID: 3939805141923606249}
+  chunksParentLowRes: {fileID: 3939805141923606249}
+  chunksParentHighRes: {fileID: 6617800754153101217}
   terrainColor: {fileID: 3175307376905995560}
+  lowChunkRes: 1
+  highChunkRes: 4
+  highRes: 8
+  mediumRes: 4
+  lowRes: 1
+  maxChunkChecksPerFrame: 50
 --- !u!114 &6368680446637308804
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -241,6 +258,7 @@ MonoBehaviour:
   - {fileID: 5440707293445505367, guid: 494f6d43e170e9145bc7865d243ee00b, type: 3}
   - {fileID: 1127315056602366, guid: 3a9df2c30188f10438112114dc22bae1, type: 3}
   - {fileID: 1240686429475702, guid: da33a1bfeaaabaa4597896ca7003b785, type: 3}
+  isInstantiated: 0
   treeNr: 0
   bushNr: 0
   waterPlantNr: 0
@@ -306,7 +324,7 @@ GameObject:
   m_Component:
   - component: {fileID: 478650547306934036}
   m_Layer: 8
-  m_Name: chunks
+  m_Name: chunksLowRes
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -326,4 +344,35 @@ Transform:
   m_Children: []
   m_Father: {fileID: 2176386958015389607}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &6617800754153101217
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5536552789248980764}
+  m_Layer: 8
+  m_Name: chunksHighRes
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5536552789248980764
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6617800754153101217}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2176386958015389607}
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
