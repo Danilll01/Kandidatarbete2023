@@ -51,7 +51,7 @@ public class Planet : MonoBehaviour
     [HideInInspector] public float positionrelativeToSunDistance;
     private bool setUpSystemRotationComponents;
     private KeplerOrbitMover parentOrbitMover;
-    private bool solarSystemRotationActive;
+    public bool solarSystemRotationActive;
 
     /// <summary>
     /// Initializes the planet
@@ -180,13 +180,17 @@ public class Planet : MonoBehaviour
     }
     
     
-    private void LockMoons(bool lockMoons)
+    public void LockMoons(bool lockMoons)
     {
         if (moonsLocked != lockMoons)
         {
             foreach (Planet moon in moons)
             {
                 moon.transform.parent.GetComponent<KeplerOrbitMover>().LockOrbitEditing = lockMoons;
+                if (lockMoons)
+                {
+                    moon.transform.parent.GetComponent<KeplerOrbitMover>().SetAutoCircleOrbit();
+                }
             }
             moonsLocked = lockMoons;
         }
