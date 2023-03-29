@@ -371,8 +371,36 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec689229a568f344d89b7d33a62d11ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lightIntensityLerp: 0
   atmosphereShader: {fileID: 4800000, guid: 8ed10eaef17c0ec4bbdfcb5a320385b6, type: 3}
+  noAtmosphereGradient:
+    serializedVersion: 2
+    key0: {r: 0.19103774, g: 0.21863209, b: 0.254717, a: 1}
+    key1: {r: 0.2749644, g: 0.32721868, b: 0.3490566, a: 1}
+    key2: {r: 0.5754717, g: 0.5754717, b: 0.5754717, a: 0}
+    key3: {r: 0.8207547, g: 0.8207547, b: 0.8207547, a: 0}
+    key4: {r: 0, g: 0, b: 0, a: 0}
+    key5: {r: 0, g: 0, b: 0, a: 0}
+    key6: {r: 0, g: 0, b: 0, a: 0}
+    key7: {r: 0, g: 0, b: 0, a: 0}
+    ctime0: 0
+    ctime1: 6554
+    ctime2: 26214
+    ctime3: 65535
+    ctime4: 0
+    ctime5: 0
+    ctime6: 0
+    ctime7: 0
+    atime0: 0
+    atime1: 65535
+    atime2: 0
+    atime3: 0
+    atime4: 0
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_Mode: 0
+    m_NumColorKeys: 4
+    m_NumAlphaKeys: 2
   ambientGradients:
   - serializedVersion: 2
     key0: {r: 0.19103774, g: 0.21863209, b: 0.254717, a: 1}
