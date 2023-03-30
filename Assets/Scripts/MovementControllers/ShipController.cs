@@ -1,4 +1,3 @@
-using System.Linq;
 using UnityEngine;
 
 public class ShipController : MonoBehaviour
@@ -86,7 +85,7 @@ public class ShipController : MonoBehaviour
     {
         // More efficient code
         Transform playerTransform = player.transform;
-        
+
         //Left planet and should no longer hold altitude
         if (shipHoldingUprightRotation && (holdingOverPlanet != player.Planet))
         {
@@ -197,7 +196,7 @@ public class ShipController : MonoBehaviour
 
     private bool GetLandingSpot(out (Vector3 position, Quaternion rotation) landingSpot)
     {
-        Vector3[] gearPositions = { 
+        Vector3[] gearPositions = {
             new Vector3(2.7f, 0f, -4f),   //Right back
             new Vector3(-2.7f, 0f, -4f),  //Left back
             new Vector3(0f, 0.16f, 10f)     //Front
