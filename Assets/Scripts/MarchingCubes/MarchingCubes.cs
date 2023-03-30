@@ -17,6 +17,7 @@ public class MarchingCubes
     readonly float threshold;
     public readonly float radius;
     public int chunkResolution;
+    public float seed;
 
     public List<TerrainLayer> terrainLayers;
 
@@ -26,8 +27,9 @@ public class MarchingCubes
     /// <param name="meshGenerator">The meshgenerator compute shader</param>
     /// <param name="threshold">The cut off threshold to be used</param>
     /// <param name="radius"></param>
-    public MarchingCubes(int chunkResolution, ComputeShader meshGenerator, float threshold, float radius, List<TerrainLayer> terrainLayers)
+    public MarchingCubes(float seed, int chunkResolution, ComputeShader meshGenerator, float threshold, float radius, List<TerrainLayer> terrainLayers)
     {
+        this.seed = seed;
         this.chunkResolution = chunkResolution;
         this.meshGenerator = meshGenerator;
         this.threshold = threshold;
@@ -58,6 +60,7 @@ public class MarchingCubes
         // Run generateMesh in compute shader
         int kernelIndex = meshGenerator.FindKernel("GenerateMesh");
 
+        meshGenerator.SetFloat("seed", seed);
         meshGenerator.SetInt("chunkIndex", index);
         meshGenerator.SetInt("chunkResolution", chunkResolution);
         meshGenerator.SetInt("resolution", resolution << 3);

@@ -30,7 +30,7 @@ float getTerrain(float3 pos, RWStructuredBuffer<TerrainLayer> terrainLayers, int
    
     float noiseValue = 0;
     
-    //float3 noiseOffset = float3(simplex.Evaluate(seed) * seed, simplex.Evaluate(seed + 17.8f) * seed, simplex.Evaluate(seed + 23.5) * seed);
+    float3 noiseOffset = float3(perlin.Evaluate(seed) * seed, perlin.Evaluate(seed + 17.8f) * seed, perlin.Evaluate(seed + 23.5) * seed);
     
     for (int i = 0; i < numTerrainLayers; i++)
     {
@@ -42,15 +42,19 @@ float getTerrain(float3 pos, RWStructuredBuffer<TerrainLayer> terrainLayers, int
         for (int j = 0; j < terrainLayers[i].numLayers; j++)
         {
             amplitudeSum += amplitude;
-            noiseLayer += (simplex.Evaluate(pointOnSphere * frequency) + 1) * 0.5f * amplitude;
+            noiseLayer += (simplex.Evaluate(pointOnSphere * frequency + noiseOffset) + 1) * 0.5f * amplitude;
             frequency *= terrainLayers[i].roughness;
             amplitude *= terrainLayers[i].persistance;
+            noiseOffset = float3(perlin.Evaluate(noiseOffset.x) * seed, perlin.Evaluate(noiseOffset.y + 17.8f) * seed, perlin.Evaluate(noiseOffset.z + 23.5) * seed);
         }
         
+        // Normalize noiselayer to be within range [0, 1]
         noiseLayer *= 1 / amplitudeSum;
         
+        // Multiply the noiselayer with the wanted strength
         noiseLayer *= terrainLayers[i].strength;
         
+        // Add the current noiselayer
         noiseValue += noiseLayer;
     }
     

@@ -20,6 +20,7 @@ AppendStructuredBuffer<Triangle> triangles;
 int numTerrainLayers;
 RWStructuredBuffer<TerrainLayer> terrainLayers;
 
+float seed;
 uint resolution;
 float threshold;
 float radius;
@@ -127,7 +128,7 @@ float4 getTexturePoint(uint3 pos, int3 chunkId, float maxPos)
     
     float3 relPos = (.5 - normPos) * 2; // relPos goes between [-1, 1]
     
-    float terrainValue = 1; //getTerrain(relPos, terrainLayers, numTerrainLayers);
+    float terrainValue = getTerrain(relPos, terrainLayers, numTerrainLayers, seed);
     
     return float4(relPos * radius, terrainValue);
 }
