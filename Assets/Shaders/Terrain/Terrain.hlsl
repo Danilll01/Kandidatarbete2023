@@ -26,6 +26,8 @@ struct BiomeSettings
     float TreeFrequency;
 };
 
+float evalutateBiomeMapMountains(BiomeSettings biomeSettings, float3 pos);
+
 float getTerrain(float3 pos, RWStructuredBuffer<TerrainLayer> terrainLayers, int numTerrainLayers, float seed, BiomeSettings biomeSettings)
 {
     float3 pointOnSphere = pos / length(pos);
@@ -54,9 +56,9 @@ float getTerrain(float3 pos, RWStructuredBuffer<TerrainLayer> terrainLayers, int
         noiseLayer *= 1 / amplitudeSum;
         
         // Create mountains
-        float mountains = 1; // Todo, change to evaluateBiomeMap(biomeSettings, pos)
-        float power = 1 + mountains;
-        noiseLayer = pow(noiseLayer, power);
+        float mountains = evalutateBiomeMapMountains(biomeSettings, pos);
+        mountains *= mountains;
+        noiseLayer = pow(noiseLayer, (1 + mountains) * 2) * mountains + pow(noiseLayer, 0.2);
         
         // Multiply the noiselayer with the wanted strength
         noiseLayer *= terrainLayers[i].strength;    
@@ -65,7 +67,7 @@ float getTerrain(float3 pos, RWStructuredBuffer<TerrainLayer> terrainLayers, int
         noiseValue += noiseLayer;
     }
     
-    return length(pos) < (1 - noiseValue) ? ((1 - noiseValue) - length(pos)) * 255 : 0;
+    return length(pos) < (.7 + noiseValue) ? ((.7 + noiseValue) - length(pos)) * 255 : 0;
 }
 
 
@@ -101,6 +103,12 @@ float3 evaluateBiomeMap(BiomeSettings biomeSettings, float3 pos, float distance)
     float3 returnValue;
     EvaluateBiomeMap_float(pos, distance, biomeSettings.Seed, biomeSettings.TemperatureDecay, biomeSettings.FarTemperature, biomeSettings.MountainFrequency, biomeSettings.TemperatureFrequency, biomeSettings.TemperatureRoughness, biomeSettings.MountainTemperatureAffect, biomeSettings.TreeFrequency, returnValue);
     return returnValue;
+}
+
+float evalutateBiomeMapMountains(BiomeSettings biomeSettings, float3 pos)
+{
+    pos = normalize(pos);
+    return (simplex.Evaluate(float3(pos.x + biomeSettings.Seed, pos.y, pos.z) * biomeSettings.MountainFrequency) + 1) * .5f;
 }
 
 #endif

@@ -59,9 +59,12 @@ public class MarchingCubes
         ComputeBuffer layersBuffer = new ComputeBuffer(terrainLayers.Count, sizeof(float) * 7 + sizeof(int));
         layersBuffer.SetData(terrainLayers.ToArray());
 
+        // Set up buffer for the Biome settings
+        ComputeBuffer biomesBuffer = new ComputeBuffer(1, sizeof(float) * 8);
+        biomesBuffer.SetData(biomeSettings.ToArray());
+
         // Run generateMesh in compute shader
         int kernelIndex = meshGenerator.FindKernel("GenerateMesh");
-        meshGenerator.SetFloats("biomeSettings", biomeSettings.ToArray());
         meshGenerator.SetFloat("seed", seed);
         meshGenerator.SetInt("chunkIndex", index);
         meshGenerator.SetInt("chunkResolution", chunkResolution);
@@ -71,6 +74,7 @@ public class MarchingCubes
         meshGenerator.SetBuffer(kernelIndex, "triangles", trianglesBuffer);
         meshGenerator.SetInt("numTerrainLayers", terrainLayers.Count);
         meshGenerator.SetBuffer(kernelIndex, "terrainLayers", layersBuffer);
+        meshGenerator.SetBuffer(kernelIndex, "biomeSettings", biomesBuffer);
         meshGenerator.Dispatch(kernelIndex, resolution >> chunkResolution, resolution >> chunkResolution, resolution >> chunkResolution);
 
         // Retrieve triangles
@@ -83,6 +87,7 @@ public class MarchingCubes
         // Release all buffers
         trianglesBuffer.Release();
         layersBuffer.Release();
+        biomesBuffer.Release();
 
         // Process our data from the compute shader
         int[] meshTriangles = new int[length * 3];

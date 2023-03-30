@@ -40,7 +40,7 @@ public struct BiomeSettings
 
     public float[] ToArray()
     {
-        float[] arr = new float[6];
+        float[] arr = new float[8];
         for(int i = 0; i < arr.Length; i++)
         {
             arr[i] = this[i];
@@ -55,11 +55,13 @@ public struct BiomeSettings
             switch (i)
             {
                 case 0: return seed;
-                case 1: return mountainFrequency;
-                case 2: return temperatureFrequency;
-                case 3: return temperatureRoughness;
-                case 4: return mountainTemperatureAffect;
-                case 5: return treeFrequency;
+                case 1: return temperatureDecay;
+                case 2: return farTemperature;
+                case 3: return mountainFrequency;
+                case 4: return temperatureFrequency;
+                case 5: return temperatureRoughness;
+                case 6: return mountainTemperatureAffect;
+                case 7: return treeFrequency;
                 default:
                     throw new IndexOutOfRangeException();
             }
