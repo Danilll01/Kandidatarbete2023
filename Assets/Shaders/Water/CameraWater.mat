@@ -51,7 +51,7 @@ Material:
     - _DstBlend: 10
     - _FullscreenIntensity: 1
     - _Intensity: 0.351
-    - _QueueControl: 0
+    - _QueueControl: 1
     - _QueueOffset: 0
     - _RadiusPower: 2.58
     - _Seafloor: 0.846

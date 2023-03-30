@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Added tonemapping for much better colors (Will not be as washed out as before)" />
+    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Longer camera cut of distance to not make sun disappear + better shadow quality">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Shaders/Water/WaterSurfaceShader.shadergraph" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Shaders/Water/WaterSurfaceShader.shadergraph" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -278,7 +281,13 @@
       <option name="presentableId" value="LOCAL−00026" />
       <updated>1680215737793</updated>
     </task>
-    <option name="localTasksCounter" value="27" />
+    <task id="LOCAL−00027" summary="Longer camera cut of distance to not make sun disappear + better shadow quality">
+      <created>1680217837140</created>
+      <option name="number" value="LOCAL−00027" />
+      <option name="presentableId" value="LOCAL−00027" />
+      <updated>1680217837140</updated>
+    </task>
+    <option name="localTasksCounter" value="28" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -300,7 +309,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="Fixed typo" />
     <MESSAGE value="Changed file" />
     <MESSAGE value="Changed directional light color to be based on temperature" />
     <MESSAGE value="Added atmospheres to planets" />
@@ -325,6 +333,7 @@
     <MESSAGE value="Made ship glass a little more transparent" />
     <MESSAGE value="Turned on camera dithering to make color banding much less noticeable" />
     <MESSAGE value="Added tonemapping for much better colors (Will not be as washed out as before)" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added tonemapping for much better colors (Will not be as washed out as before)" />
+    <MESSAGE value="Longer camera cut of distance to not make sun disappear + better shadow quality" />
+    <option name="LAST_COMMIT_MESSAGE" value="Longer camera cut of distance to not make sun disappear + better shadow quality" />
   </component>
 </project>
