@@ -179,9 +179,15 @@ Shader "Atmosphere/Atmospheric Scattering"
                 }
 
                 float3 color = (sumR * rsRGB * phaseR + sumM * msRGB * phaseM) * _LightIntensity * _LightColor;
-                color = Unity_Saturation_float(color, _AtmosphereSaturation);
 
+                // Nan check to make blinding lights disappear
+                vector<bool,3> nanCheck = isnan(color);
+                if (nanCheck.x || nanCheck.y || nanCheck.z)
+                {
+                    return fixed4(0,0,0,0);
+                }
                 
+                color = Unity_Saturation_float(color, _AtmosphereSaturation);
                 
                 float a = pow(saturate(sqrLength(_WorldSpaceCameraPos.xyz - i.wPos) - 0.4),2);
                 float a1 = (color.x + color.y + color.z) / 3;
