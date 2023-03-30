@@ -230,30 +230,35 @@ public class ShipController : MonoBehaviour
         }
 
         //Assumes 3 gearPositions
+        //Create plane which the ship will land on
         Plane landingPlane = new Plane(gearLandingPositions[0], gearLandingPositions[1], gearLandingPositions[2]);
-        landingPlane.Raycast(new Ray(playerTransform.position, -player.Up), out float height);
-        Vector3 landingPos = playerTransform.position + (-player.Up * height);
-        Vector3 playerPositionOffset = Quaternion.FromToRotation(Vector3.up, player.Up) * (Vector3.up * transform.localPosition.y * transform.parent.localScale.y);
-
         //Makes sure landing is upright
         if (Vector3.Dot(landingPlane.normal, player.Up) < 0)
         {
-            landingSpot.rotation = Quaternion.Euler(180, 0, 0) * landingSpot.rotation;
+            landingPlane.Flip();
         }
-
         //Check if middle is too far into ground
         Physics.Raycast(transform.TransformPoint(altFrontPosition), -player.Up, out RaycastHit altHit, 20, planetMask);
         if (landingPlane.GetDistanceToPoint(altHit.point) > 0)
         {
             landingPlane = new Plane(gearLandingPositions[0], gearLandingPositions[1], altHit.point);
+            //Makes sure new landing is upright
+            if (Vector3.Dot(landingPlane.normal, player.Up) < 0)
+            {
+                landingPlane.Flip();
+            }
         }
-
         //Check if landing angle is allowed
         if (Vector3.Angle(landingPlane.normal, player.Up) > maxLandingAngle)
         {
             audioPlayer.PlayOneShot(errorSound);
             return false;
         }
+
+        //Land ship and calculate offsets
+        landingPlane.Raycast(new Ray(playerTransform.position, -player.Up), out float height);
+        Vector3 landingPos = playerTransform.position + (-player.Up * height);
+        Vector3 playerPositionOffset = Quaternion.FromToRotation(Vector3.up, player.Up) * (Vector3.up * transform.localPosition.y * transform.parent.localScale.y);
 
         //Set up transition to/from
         landingSpot.position = player.Planet.transform.InverseTransformPoint(landingPos - playerPositionOffset);
