@@ -275,6 +275,11 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 188247274776214973, guid: 2abf19653d633114faedf3b60dc6c39f,
+        type: 3}
+      propertyPath: field of view
+      value: 90
+      objectReference: {fileID: 0}
     - target: {fileID: 535300582913901798, guid: 2abf19653d633114faedf3b60dc6c39f,
         type: 3}
       propertyPath: m_LocalScale.y
