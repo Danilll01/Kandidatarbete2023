@@ -34,3 +34,11 @@ MonoBehaviour:
     Assembly: Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
     Type: Creature
     Method: Void LookingForResource(ResourceType)
+  - Enabled: 1
+    Assembly: Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    Type: ChunksHandler
+    Method: Void Update()
+  - Enabled: 1
+    Assembly: Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    Type: ChunksHandler
+    Method: Void UpdateChunksVisibility()
