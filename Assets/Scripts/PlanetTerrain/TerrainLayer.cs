@@ -5,7 +5,7 @@ using UnityEngine;
 [System.Serializable]
 public struct TerrainLayer
 {
-    [SerializeField] public float strength, baseRoughness, roughness, persistance;
+    [SerializeField] public float strength, baseRoughness, roughness, persistance, mountainPeakness, mountainHeight, flatSmoothness;
     [SerializeField] public Vector3 centre;
     [Range(0, 8)] public int numLayers;
 }

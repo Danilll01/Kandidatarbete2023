@@ -56,7 +56,7 @@ public class MarchingCubes
         trianglesBuffer.SetCounterValue(0);
 
         // Set up buffer for the terrain layers
-        ComputeBuffer layersBuffer = new ComputeBuffer(terrainLayers.Count, sizeof(float) * 7 + sizeof(int));
+        ComputeBuffer layersBuffer = new ComputeBuffer(terrainLayers.Count, sizeof(float) * 10 + sizeof(int));
         layersBuffer.SetData(terrainLayers.ToArray());
 
         // Set up buffer for the Biome settings

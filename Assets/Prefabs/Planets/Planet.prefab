@@ -70,13 +70,17 @@ MonoBehaviour:
   chunksHandler: {fileID: 6742904736247445569}
   waterHandler: {fileID: 7974886500941765792}
   foliageHandler: {fileID: 6368680446637308804}
+  waterLevel: 0.925
   terrainLayers:
   - strength: 0.25
-    baseRoughness: 1.5
+    baseRoughness: 1.7
     roughness: 2
     persistance: 0.5
+    mountainPeakness: 2
+    mountainHeight: 1
+    flatSmoothness: 0.1
     centre: {x: 0, y: 0, z: 0}
-    numLayers: 6
+    numLayers: 7
   biomeSettings:
     seed: 1
     temperatureDecay: 0

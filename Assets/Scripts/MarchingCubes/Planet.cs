@@ -38,6 +38,7 @@ public class Planet : MonoBehaviour
     [SerializeField] public FoliageHandler foliageHandler;
 
     [Header("Terrain")]
+    [SerializeField, Range(0, 1)] private float waterLevel = 0.92f;
     [SerializeField] private List<TerrainLayer> terrainLayers;
     [SerializeField] private BiomeSettings biomeSettings;
 
@@ -69,7 +70,7 @@ public class Planet : MonoBehaviour
         // Init water
         if (willGeneratePlanetLife)
         {
-            waterDiameter = Mathf.Abs((threshold / 255 - 1) * 2 * radius * 0.89f);
+            waterDiameter = Mathf.Abs((threshold / 255 - 1) * 2 * radius * waterLevel);
         }
         else
         {
