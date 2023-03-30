@@ -389,10 +389,10 @@
     "m_Guid": {
         "m_GuidSerialized": "4bc9ccc1-5f3f-4069-a51a-6ec89563fb02"
     },
-    "m_Name": "TemperaturePersistance",
+    "m_Name": "TemperatureDecay",
     "m_DefaultRefNameVersion": 1,
-    "m_RefNameGeneratedByDisplayName": "TemperaturePersistance",
-    "m_DefaultReferenceName": "_TemperaturePersistance",
+    "m_RefNameGeneratedByDisplayName": "TemperatureDecay",
+    "m_DefaultReferenceName": "_TemperatureDecay",
     "m_OverrideReferenceName": "",
     "m_GeneratePropertyBlock": true,
     "m_UseCustomSlotLabel": false,
@@ -496,7 +496,7 @@
     "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
     "m_ObjectId": "32875948115e4ddd8365404a2d08b183",
     "m_Id": 0,
-    "m_DisplayName": "TemperaturePersistance",
+    "m_DisplayName": "TemperatureDecay",
     "m_SlotType": 1,
     "m_Hidden": false,
     "m_ShaderOutputName": "Out",
@@ -518,10 +518,10 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": -711.0000610351563,
-            "y": 80.0,
-            "width": 204.00003051757813,
-            "height": 34.0
+            "x": -683.0,
+            "y": 80.00000762939453,
+            "width": 176.00003051757813,
+            "height": 33.99999237060547
         }
     },
     "m_Slots": [
@@ -598,6 +598,21 @@
 {
     "m_SGVersion": 0,
     "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
+    "m_ObjectId": "563988e51a514659885d5ee2a7e5d15d",
+    "m_Id": 9,
+    "m_DisplayName": "TemperatureDecay",
+    "m_SlotType": 0,
+    "m_Hidden": false,
+    "m_ShaderOutputName": "TemperatureDecay",
+    "m_StageCapability": 3,
+    "m_Value": 0.0,
+    "m_DefaultValue": 0.0,
+    "m_Labels": []
+}
+
+{
+    "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
     "m_ObjectId": "5745a49d93ca4a89ba31b0f6af1e1912",
     "m_Id": 0,
     "m_DisplayName": "TemperatureRoughnes",
@@ -635,21 +650,6 @@
         "x": 0.0,
         "y": 1.0
     }
-}
-
-{
-    "m_SGVersion": 0,
-    "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
-    "m_ObjectId": "637b36dd0fc141f4813be51cd65868b7",
-    "m_Id": 9,
-    "m_DisplayName": "TemperaturePersistance",
-    "m_SlotType": 0,
-    "m_Hidden": false,
-    "m_ShaderOutputName": "TemperaturePersistance",
-    "m_StageCapability": 3,
-    "m_Value": 0.0,
-    "m_DefaultValue": 0.0,
-    "m_Labels": []
 }
 
 {
@@ -723,7 +723,7 @@
             "m_Id": "b36a7bac0f4342acacec5bc218d91946"
         },
         {
-            "m_Id": "637b36dd0fc141f4813be51cd65868b7"
+            "m_Id": "563988e51a514659885d5ee2a7e5d15d"
         },
         {
             "m_Id": "6f5b076f77de4aeabb4c1d7dee27ffc4"

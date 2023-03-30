@@ -590,10 +590,10 @@
     "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
     "m_ObjectId": "0c3f359dd74c4c9f82b2ab5c4250a432",
     "m_Id": -1053431090,
-    "m_DisplayName": "TemperaturePersistance",
+    "m_DisplayName": "TemperatureDecay",
     "m_SlotType": 0,
     "m_Hidden": false,
-    "m_ShaderOutputName": "_TemperaturePersistance",
+    "m_ShaderOutputName": "_TemperatureDecay",
     "m_StageCapability": 3,
     "m_Value": 0.0004920000210404396,
     "m_DefaultValue": 0.0,
@@ -713,7 +713,7 @@
     "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
     "m_ObjectId": "17b1735a3f18497bad07a1c1df7ccd5d",
     "m_Id": 0,
-    "m_DisplayName": "TemperaturePersistance",
+    "m_DisplayName": "TemperatureDecay",
     "m_SlotType": 1,
     "m_Hidden": false,
     "m_ShaderOutputName": "Out",
@@ -2898,10 +2898,10 @@
     "m_Guid": {
         "m_GuidSerialized": "465023f4-5eaa-4c1b-a720-8c2b4acf91e6"
     },
-    "m_Name": "TemperaturePersistance",
+    "m_Name": "TemperatureDecay",
     "m_DefaultRefNameVersion": 1,
-    "m_RefNameGeneratedByDisplayName": "TemperaturePersistance",
-    "m_DefaultReferenceName": "_TemperaturePersistance",
+    "m_RefNameGeneratedByDisplayName": "TemperatureDecay",
+    "m_DefaultReferenceName": "_TemperatureDecay",
     "m_OverrideReferenceName": "",
     "m_GeneratePropertyBlock": true,
     "m_UseCustomSlotLabel": false,
@@ -2910,11 +2910,11 @@
     "overrideHLSLDeclaration": false,
     "hlslDeclarationOverride": 0,
     "m_Hidden": false,
-    "m_Value": 0.0005000000237487257,
+    "m_Value": 0.05000000074505806,
     "m_FloatType": 1,
     "m_RangeValues": {
         "x": 0.0,
-        "y": 0.0020000000949949028
+        "y": 0.10000000149011612
     }
 }
 

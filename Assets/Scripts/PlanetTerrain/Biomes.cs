@@ -8,7 +8,7 @@ using System;
 public struct BiomeSettings
 {
     public float seed;
-    public float temperaturePersistance;
+    public float temperatureDecay;
     public float farTemperature;
     public float mountainFrequency;
     public float temperatureFrequency;
@@ -20,7 +20,7 @@ public struct BiomeSettings
     /// <i>Note: parameters <paramref name="temperatureRoughness"/> and <paramref name="mountainTemperatureAffect"/> must
     /// be in range [0, 1]</i>
     /// </summary>
-    public BiomeSettings(float seed, float temperaturePersistance, float farTemperature, float mountainFrequency, float temperatureFrequency, float temperatureRoughness, float mountainTemperatureAffect, float treeFrequency)
+    public BiomeSettings(float seed, float temperatureDecay, float farTemperature, float mountainFrequency, float temperatureFrequency, float temperatureRoughness, float mountainTemperatureAffect, float treeFrequency)
     {
         // Check that variables are in range
         Details.AssertInRange(temperatureRoughness, 0, 1, nameof(temperatureRoughness));
@@ -28,7 +28,7 @@ public struct BiomeSettings
         Details.AssertInRange(farTemperature, 0, 1, nameof(farTemperature));
 
         this.seed = seed;
-        this.temperaturePersistance = temperaturePersistance;
+        this.temperatureDecay = temperatureDecay;
         this.farTemperature = farTemperature;
         this.mountainFrequency = mountainFrequency;
         this.temperatureFrequency = temperatureFrequency;
@@ -103,7 +103,7 @@ public static class Biomes
         tempValue *= (1 - mountainNoise) * biomeSettings.mountainTemperatureAffect + 1 - biomeSettings.mountainTemperatureAffect;
 
         // Calculate multiplier for temperatue (due to distance from sun)
-        tempValue *= (1 - biomeSettings.farTemperature) / (biomeSettings.temperaturePersistance * distance + 1) + biomeSettings.farTemperature;
+        tempValue *= (1 - biomeSettings.farTemperature) / (biomeSettings.temperatureDecay * biomeSettings.temperatureDecay * distance + 1) + biomeSettings.farTemperature;
 
         //Return the calculated values
         return new BiomeValue(mountainNoise, tempValue, treeNoise);
@@ -154,7 +154,7 @@ public static class Biomes
         tempValue *= (1 - mountainNoise) * biomeSettings.mountainTemperatureAffect + 1 - biomeSettings.mountainTemperatureAffect;
 
         // Calculate multiplier for temperatue (due to distance from sun)
-        tempValue *= (1 - biomeSettings.farTemperature) / (biomeSettings.temperaturePersistance * distance + 1) + biomeSettings.farTemperature;
+        tempValue *= (1 - biomeSettings.farTemperature) / (biomeSettings.temperatureDecay * biomeSettings.temperatureDecay * distance + 1) + biomeSettings.farTemperature;
 
         return tempValue;
     }
