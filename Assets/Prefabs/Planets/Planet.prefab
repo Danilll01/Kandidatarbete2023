@@ -70,12 +70,12 @@ MonoBehaviour:
   chunksHandler: {fileID: 6742904736247445569}
   waterHandler: {fileID: 7974886500941765792}
   terrainLayers:
-  - strength: 0.3
-    baseRoughness: 1
+  - strength: 0.25
+    baseRoughness: 1.5
     roughness: 2
     persistance: 0.5
     centre: {x: 0, y: 0, z: 0}
-    numLayers: 3
+    numLayers: 7
   foliageHandler: {fileID: 6368680446637308804}
 --- !u!114 &3175307376905995560
 MonoBehaviour:
@@ -175,11 +175,11 @@ MonoBehaviour:
   highRes:
     lowerRadius: 0
     upperRadius: 1.3
-    resolution: 3
+    resolution: 12
   mediumRes:
     lowerRadius: 1.5
     upperRadius: 2
-    resolution: 2
+    resolution: 6
   lowRes:
     lowerRadius: 2.3
     upperRadius: 6.871948e+10
