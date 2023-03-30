@@ -9,6 +9,7 @@ public class CreatureSpawning : MonoBehaviour
     [SerializeField] private float terrainSteepnesAngle = 30f;
 
     public bool initialized = false;
+    public bool finishedSpawning = false;
 
     // Spawning spots
     private Vector3[] creatureSpots = null;
@@ -18,6 +19,10 @@ public class CreatureSpawning : MonoBehaviour
     private Vector3 chunkPosition;
     private int[] spawningRatios;
     private int positionArrayLength;
+
+    private SpawnPack[] objectsToSpawn;
+    private int objectsToSpawnIndex = 0;
+    private bool readyToSpawn = false;
 
     public void Initialize(int meshVerticesLength, Vector3 position, int seed)
     {
@@ -56,6 +61,8 @@ public class CreatureSpawning : MonoBehaviour
             Vector3 localpos = Quaternion.Euler(x, y, z) * pos;
             creatureSpots[i] = localpos;
         }
+
+        objectsToSpawn = new SpawnPack[creatureSpots.Length];
     }
 
     public void SpawnCreatures()
@@ -90,8 +97,10 @@ public class CreatureSpawning : MonoBehaviour
             if (hit.transform == transform.parent && hit.distance < radius - waterRadius)
             {
                 Quaternion rotation = Quaternion.FromToRotation(Vector3.forward, hit.normal);
-                SpawnPack(rayOrigin, rotation, GetCreatureToSpawn());
-                
+                //SpawnPack(rayOrigin, rotation, GetCreatureToSpawn());
+                objectsToSpawn[objectsToSpawnIndex] = new SpawnPack(rayOrigin, rotation, GetCreatureToSpawn());
+                objectsToSpawnIndex++;
+
                 hits++;
             }
 
@@ -107,6 +116,29 @@ public class CreatureSpawning : MonoBehaviour
 
         // Removes spots making the chunk unable to spawn new trees
         creatureSpots = null;
+        objectsToSpawnIndex = 0;
+        readyToSpawn = true;
+    }
+
+    public void PackSpawning()
+    {
+        if (readyToSpawn && objectsToSpawn.Length > 0)
+        {
+            int totalIndex = objectsToSpawnIndex;
+            while (totalIndex < objectsToSpawnIndex + 5)
+            {
+                if (totalIndex >= objectsToSpawn.Length || objectsToSpawn[totalIndex] == null)
+                {
+                    finishedSpawning = true;
+                    return;
+                }
+
+                SpawnPack(objectsToSpawn[totalIndex].rayOrigin, objectsToSpawn[totalIndex].rotation, objectsToSpawn[totalIndex].creature);
+
+                totalIndex++;
+            }
+            objectsToSpawnIndex += totalIndex - objectsToSpawnIndex;
+        }
     }
 
     private void SpawnPack(Vector3 rayOrigin, Quaternion rotation, CreaturePack packData)

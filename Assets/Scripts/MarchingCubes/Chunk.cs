@@ -120,6 +120,10 @@ public class Chunk : MonoBehaviour
                         if (numVerts > 500)
                             creatures.Initialize(numVerts, position, random.Next());
                     }
+                    if (!creatures.finishedSpawning)
+                    {
+                        creatures.PackSpawning();
+                    }
 
                 } else
                 {
