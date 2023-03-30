@@ -105,7 +105,7 @@ public class SolarSystemTransform : MonoBehaviour
         Vector3 distance = planetToReleasePlayerFrom.transform.parent.position;
         if (distance.magnitude > 100f)
         {
-            player.transform.SetParent(null);
+            player.transform.SetParent(null, true);
             releasePlayer = false;
             player.attractor = null;
             planetToReleasePlayerFrom.ResetMoons();
@@ -193,9 +193,9 @@ public class SolarSystemTransform : MonoBehaviour
         sunToPlanetRelativeDir.y = 0;
         
         float angleBetweenPlanetAndSun = Vector3.Angle(sunToPlanetDir, sunToPlanetRelativeDir);
-        planetTransform.rotation = Quaternion.Inverse(planet.GetComponent<Planet>().moonsParent.transform.rotation);//Quaternion.AngleAxis(angleBetweenPlanetAndSun, rotationAxis);
+        planetTransform.rotation = Quaternion.AngleAxis(angleBetweenPlanetAndSun, rotationAxis);
 
-        planetTransform.parent.position = - sunToPlanetRelativeDir.normalized * relativePlanetSunDistances[spawnPlanets.bodies.IndexOf(planet.GetComponent<Planet>())].magnitude;
+        planetTransform.parent.position = sunToPlanetRelativeDir.normalized * relativePlanetSunDistances[spawnPlanets.bodies.IndexOf(planet.GetComponent<Planet>())].magnitude;
         planet.transform.parent.GetComponent<KeplerOrbitMover>().VelocityHandle.localPosition = new Vector3(100, 0, 0);
 
         planetsParent.transform.rotation = Quaternion.identity;
