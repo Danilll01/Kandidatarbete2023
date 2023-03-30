@@ -277,7 +277,7 @@ public class ShipController : MonoBehaviour
         transform.SetParent(player.Planet.gameObject.transform);
         player.transform.position = transform.position + (transform.rotation * dismountedPos);
         player.transform.rotation = transform.rotation;
-        player.GetComponent<Rigidbody>().velocity = Vector3.zero;
+        body.velocity = Vector3.zero;
     }
 
     private void EmbarkInShip()
