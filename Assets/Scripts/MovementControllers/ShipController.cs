@@ -197,12 +197,12 @@ public class ShipController : MonoBehaviour
 
     private bool GetLandingSpot(out (Vector3 position, Quaternion rotation) landingSpot)
     {
-        //TODO make sure entire beam is above ground
         Vector3[] gearPositions = { 
-            new Vector3(2.7f, 0f, -1.8f),   //Right back
-            new Vector3(-2.7f, 0f, -1.8f),  //Left back
+            new Vector3(2.7f, 0f, -4f),   //Right back
+            new Vector3(-2.7f, 0f, -4f),  //Left back
             new Vector3(0f, 0.16f, 10f)     //Front
         };
+        Vector3 altFrontPosition = new Vector3(0f, 0.16f, 3f);
         LayerMask planetMask = 1 << (LayerMask.NameToLayer("Planet"));
 
         landingSpot = (Vector3.zero, Quaternion.identity);
@@ -233,17 +233,19 @@ public class ShipController : MonoBehaviour
         Plane landingPlane = new Plane(gearLandingPositions[0], gearLandingPositions[1], gearLandingPositions[2]);
         landingPlane.Raycast(new Ray(playerTransform.position, -player.Up), out float height);
         Vector3 landingPos = playerTransform.position + (-player.Up * height);
-        Vector3 playerPositionOffset = Quaternion.FromToRotation(Vector3.up, player.Up) * (Vector3.up * transform.localPosition.y);
-
-
-        //Set up transition to/from
-        landingSpot.position = player.Planet.transform.InverseTransformPoint(landingPos - playerPositionOffset);
-        landingSpot.rotation = Quaternion.LookRotation(Vector3.ProjectOnPlane(transform.TransformVector(Vector3.forward), landingPlane.normal), landingPlane.normal);
+        Vector3 playerPositionOffset = Quaternion.FromToRotation(Vector3.up, player.Up) * (Vector3.up * transform.localPosition.y * transform.parent.localScale.y);
 
         //Makes sure landing is upright
         if (Vector3.Dot(landingPlane.normal, player.Up) < 0)
         {
             landingSpot.rotation = Quaternion.Euler(180, 0, 0) * landingSpot.rotation;
+        }
+
+        //Check if middle is too far into ground
+        Physics.Raycast(transform.TransformPoint(altFrontPosition), -player.Up, out RaycastHit altHit, 20, planetMask);
+        if (landingPlane.GetDistanceToPoint(altHit.point) > 0)
+        {
+            landingPlane = new Plane(gearLandingPositions[0], gearLandingPositions[1], altHit.point);
         }
 
         //Check if landing angle is allowed
@@ -252,6 +254,10 @@ public class ShipController : MonoBehaviour
             audioPlayer.PlayOneShot(errorSound);
             return false;
         }
+
+        //Set up transition to/from
+        landingSpot.position = player.Planet.transform.InverseTransformPoint(landingPos - playerPositionOffset);
+        landingSpot.rotation = Quaternion.LookRotation(Vector3.ProjectOnPlane(transform.TransformVector(Vector3.forward), landingPlane.normal), landingPlane.normal);
 
         return true;
     }
