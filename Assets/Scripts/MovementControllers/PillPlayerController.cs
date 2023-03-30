@@ -269,44 +269,10 @@ public class PillPlayerController : MonoBehaviour
     private void Spawn(Planet planet, int seed)
     {
         RandomX rand = new RandomX(seed);
-        int failCount = 0;
-        bool foundSpawnLocation = false;
-        //Try to find suitable spawn location
-        while (!foundSpawnLocation)
-        {
-            if (failCount > 1000)
-            {
-                Debug.LogError("Unable to find suitable spawn position for player on planet: " + planet.bodyName);
-                return;
-            }
-            
-            //Try to find a suitable spawn position
-            Vector3 spawnLocationAbovePlanet = planet.transform.position + (rand.OnUnitSphere() * planet.radius);
-            Vector3 directionNearestPlanet = (planet.transform.position - spawnLocationAbovePlanet).normalized;
-            bool hitPlanet = Physics.Raycast(spawnLocationAbovePlanet, directionNearestPlanet, out RaycastHit spawnLocation, planet.radius);
-
-            if (!hitPlanet)
-            {
-                Debug.LogError("Unable to hit planet: " + planet.bodyName + " with spawn ray at " + planet.transform.position.ToString());
-                Debug.DrawLine(spawnLocationAbovePlanet, spawnLocationAbovePlanet + directionNearestPlanet * planet.radius, Color.red, 1000000);
-                Debug.Break();
-                return;
-            }
-
-            bool onGround = spawnLocation.transform.gameObject.layer == LayerMask.NameToLayer("Planet");
-            bool aboveWater = Vector3.Distance(spawnLocation.point, planet.transform.position) > planet.waterDiameter / 2;
-            foundSpawnLocation = onGround && aboveWater;
-
-            if (!foundSpawnLocation)
-            {
-                failCount++;
-                continue;
-            }
-
-            //Put the player above the ground
-            transform.position = spawnLocation.point - directionNearestPlanet.normalized * 5;
-            ship.Initialize(body, firstPersonCamera);
-        }
+        Vector3 spawnLocationAbovePlanet = planet.transform.position + (rand.OnUnitSphere() * planet.radius * 1.5f);
+        transform.position = spawnLocationAbovePlanet;
+        transform.LookAt(planet.transform);
+        ship.Initialize(body, firstPersonCamera);
     }
 
     public Planet Planet

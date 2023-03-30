@@ -32,12 +32,14 @@ public class ShipController : MonoBehaviour
         this.body = body;
         this.camera = camera;
 
-        //Place ship next to player and make ship child to planets
-        Physics.Raycast(player.transform.position, player.attractor.transform.position - player.transform.position, out RaycastHit hit, 20, 1 << (LayerMask.NameToLayer("Planet")));
-        transform.position = hit.point;
-        transform.rotation = Quaternion.LookRotation(Vector3.ProjectOnPlane(transform.TransformVector(Vector3.forward), hit.normal), hit.normal);
-        transform.position += transform.TransformDirection(Vector3.right * 5);
-        transform.SetParent(player.Planet.transform);
+        //Place ship where the player is and embark them
+        transform.position = player.transform.position;
+        transform.rotation = player.transform.rotation;
+        EmbarkInShip();
+        transitionToPos = transform.position;
+        transitionToRot = transform.rotation;
+        transitionProgress = float.MaxValue;
+        HandleTransition();
 
         // If mounted pos transform is not set in editor it will grab the object at least
         if (mountedPos.Equals(null))
