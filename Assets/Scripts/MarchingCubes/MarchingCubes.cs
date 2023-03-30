@@ -25,9 +25,13 @@ public class MarchingCubes
     /// <summary>
     /// Initializes the MarchingCubes script
     /// </summary>
-    /// <param name="meshGenerator">The meshgenerator compute shader</param>
-    /// <param name="threshold">The cut off threshold to be used</param>
-    /// <param name="radius"></param>
+    /// <param name="seed">The seed for the planet</param>
+    /// <param name="chunkResolution">The resolution of the chunks overall</param>
+    /// <param name="meshGenerator">The computer shader for the marching cubes</param>
+    /// <param name="threshold">Cutoffpoint for the terrain</param>
+    /// <param name="radius">Radius of the planet</param>
+    /// <param name="terrainLayers">The terrainlayers</param>
+    /// <param name="biomeSettings">Settings for the biomes</param>
     public MarchingCubes(float seed, int chunkResolution, ComputeShader meshGenerator, float threshold, float radius, List<TerrainLayer> terrainLayers, BiomeSettings biomeSettings)
     {
         this.seed = seed;

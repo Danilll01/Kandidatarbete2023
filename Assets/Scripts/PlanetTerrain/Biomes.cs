@@ -38,6 +38,9 @@ public struct BiomeSettings
         this.treeFrequency = treeFrequency;
     }
 
+    /// <summary>
+    /// Turns the biomesettings into an array
+    /// </summary>
     public float[] ToArray()
     {
         float[] arr = new float[8];
