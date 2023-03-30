@@ -2126,21 +2126,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 98033806165277618, guid: 817e184478ce3fd47bea48db42095bc5,
-        type: 3}
-      propertyPath: shipMovespeed
-      value: 100
-      objectReference: {fileID: 0}
-    - target: {fileID: 659449604949046378, guid: 817e184478ce3fd47bea48db42095bc5,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0.4
-      objectReference: {fileID: 0}
-    - target: {fileID: 659449604949046378, guid: 817e184478ce3fd47bea48db42095bc5,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -0.65
-      objectReference: {fileID: 0}
     - target: {fileID: 8081581959268663209, guid: 817e184478ce3fd47bea48db42095bc5,
         type: 3}
       propertyPath: m_Name

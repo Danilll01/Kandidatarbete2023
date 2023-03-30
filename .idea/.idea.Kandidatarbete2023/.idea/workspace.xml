@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Increased FOV" />
+    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Changed player position in ship to better suit the new FOV" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -254,7 +254,13 @@
       <option name="presentableId" value="LOCAL−00022" />
       <updated>1680212982534</updated>
     </task>
-    <option name="localTasksCounter" value="23" />
+    <task id="LOCAL−00023" summary="Changed player position in ship to better suit the new FOV">
+      <created>1680213412454</created>
+      <option name="number" value="LOCAL−00023" />
+      <option name="presentableId" value="LOCAL−00023" />
+      <updated>1680213412454</updated>
+    </task>
+    <option name="localTasksCounter" value="24" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -298,6 +304,7 @@
     <MESSAGE value="Changed spacing" />
     <MESSAGE value="Fixed blinking lights" />
     <MESSAGE value="Increased FOV" />
-    <option name="LAST_COMMIT_MESSAGE" value="Increased FOV" />
+    <MESSAGE value="Changed player position in ship to better suit the new FOV" />
+    <option name="LAST_COMMIT_MESSAGE" value="Changed player position in ship to better suit the new FOV" />
   </component>
 </project>
