@@ -24,24 +24,30 @@ struct BiomeSettings
     float TreeFrequency;
 };
 
-float getTerrain(float3 pos, RWStructuredBuffer<TerrainLayer> terrainLayers, int numTerrainLayers)
+float getTerrain(float3 pos, RWStructuredBuffer<TerrainLayer> terrainLayers, int numTerrainLayers, float seed)
 {
     float3 pointOnSphere = pos / length(pos);
    
     float noiseValue = 0;
+    
+    //float3 noiseOffset = float3(simplex.Evaluate(seed) * seed, simplex.Evaluate(seed + 17.8f) * seed, simplex.Evaluate(seed + 23.5) * seed);
     
     for (int i = 0; i < numTerrainLayers; i++)
     {
         float amplitude = 1;
         float frequency = terrainLayers[i].baseRoughness;
         float noiseLayer;
+        float amplitudeSum = 0;
     
         for (int j = 0; j < terrainLayers[i].numLayers; j++)
         {
+            amplitudeSum += amplitude;
             noiseLayer += (simplex.Evaluate(pointOnSphere * frequency) + 1) * 0.5f * amplitude;
             frequency *= terrainLayers[i].roughness;
             amplitude *= terrainLayers[i].persistance;
         }
+        
+        noiseLayer *= 1 / amplitudeSum;
         
         noiseLayer *= terrainLayers[i].strength;
         
