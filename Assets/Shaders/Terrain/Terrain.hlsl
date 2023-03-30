@@ -24,7 +24,7 @@ struct BiomeSettings
     float TreeFrequency;
 };
 
-float getTerrain(float3 pos, RWStructuredBuffer<TerrainLayer> terrainLayers, int numTerrainLayers, float seed)
+float getTerrain(float3 pos, RWStructuredBuffer<TerrainLayer> terrainLayers, int numTerrainLayers, float seed, BiomeSettings biomeSettings)
 {
     float3 pointOnSphere = pos / length(pos);
    
@@ -51,8 +51,13 @@ float getTerrain(float3 pos, RWStructuredBuffer<TerrainLayer> terrainLayers, int
         // Normalize noiselayer to be within range [0, 1]
         noiseLayer *= 1 / amplitudeSum;
         
+        // Create mountains
+        float mountains = 1; // Todo, change to evaluateBiomeMap(biomeSettings, pos)
+        float power = 1 + mountains;
+        noiseLayer = pow(noiseLayer, power);
+        
         // Multiply the noiselayer with the wanted strength
-        noiseLayer *= terrainLayers[i].strength;
+        noiseLayer *= terrainLayers[i].strength;    
         
         // Add the current noiselayer
         noiseValue += noiseLayer;
@@ -62,7 +67,7 @@ float getTerrain(float3 pos, RWStructuredBuffer<TerrainLayer> terrainLayers, int
 }
 
 
-// Note, TemperatureRoughness and MountainTemperatureAffect must be in the range 0-1
+// Note, TemperatureRoughness and MountainTemperatureAffect must be in the range 0-1, returns float3(mountains, temperature, trees)
 void EvaluateBiomeMap_float(float3 UV, float Seed, float MountainFrequency, float TemperatureFrequency, float TemperatureRoughness, float MountainTemperatureAffect, float TreeFrequency, out float3 Out)
 {
     // Normalize position
@@ -86,6 +91,7 @@ void EvaluateBiomeMap_float(float3 UV, float Seed, float MountainFrequency, floa
     Out = float3(mountainNoise, tempValue, treeNoise);
 }
 
+//returns float3(mountains, temperature, trees)
 float3 evaluateBiomeMap(BiomeSettings biomeSettings, float3 pos)
 {
     float3 returnValue;

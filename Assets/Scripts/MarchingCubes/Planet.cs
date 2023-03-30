@@ -35,12 +35,14 @@ public class Planet : MonoBehaviour
     [SerializeField] private GenerateCreatures generateCreatures;
     [SerializeField] public ChunksHandler chunksHandler;
     [SerializeField] public WaterHandler waterHandler;
+    [SerializeField] public FoliageHandler foliageHandler;
 
+    [Header("Terrain")]
     [SerializeField] private List<TerrainLayer> terrainLayers;
+    [SerializeField] private BiomeSettings biomeSettings;
 
     private float threshold;
-    public FoliageHandler foliageHandler;
-
+   
     /// <summary>
     /// Initializes the planet
     /// </summary>
@@ -61,7 +63,7 @@ public class Planet : MonoBehaviour
         if (marchingCubes == null)
         {
             threshold = 23 + (float) rand.Value() * 4;
-            marchingCubes = new MarchingCubes(rand.Value() * 123.123f, 1, meshGenerator, threshold, radius, terrainLayers);
+            marchingCubes = new MarchingCubes(rand.Value() * 123.123f, 1, meshGenerator, threshold, radius, terrainLayers, biomeSettings);
         }
 
         // Init water

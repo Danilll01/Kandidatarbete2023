@@ -76,6 +76,13 @@ MonoBehaviour:
     persistance: 0.5
     centre: {x: 0, y: 0, z: 0}
     numLayers: 7
+  biomeSettings:
+    seed: 1
+    mountainFrequency: 1
+    temperatureFrequency: 1
+    temperatureRoughness: 0.52
+    mountainTemperatureAffect: 0.527
+    treeFrequency: 1
   foliageHandler: {fileID: 6368680446637308804}
 --- !u!114 &3175307376905995560
 MonoBehaviour:
