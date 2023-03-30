@@ -464,10 +464,10 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": -368.9999694824219,
-            "y": 0.000003814697265625,
-            "width": 207.9999542236328,
-            "height": 278.0000305175781
+            "x": -370.0,
+            "y": -0.000003337860107421875,
+            "width": 268.0000305175781,
+            "height": 422.0
         }
     },
     "m_Slots": [
@@ -500,7 +500,7 @@
         "code",
         "HLSL"
     ],
-    "m_Precision": 1,
+    "m_Precision": 0,
     "m_PreviewExpanded": true,
     "m_PreviewMode": 2,
     "m_CustomColors": {
@@ -770,7 +770,7 @@
         }
     ],
     "synonyms": [],
-    "m_Precision": 1,
+    "m_Precision": 0,
     "m_PreviewExpanded": true,
     "m_PreviewMode": 0,
     "m_CustomColors": {

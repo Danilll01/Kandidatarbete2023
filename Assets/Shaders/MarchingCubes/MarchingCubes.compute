@@ -127,7 +127,7 @@ float4 getTexturePoint(uint3 pos, int3 chunkId, float maxPos)
     
     float3 relPos = (.5 - normPos) * 2; // relPos goes between [-1, 1]
     
-    float terrainValue = getTerrain(relPos, terrainLayers, numTerrainLayers);
+    float terrainValue = 1; //getTerrain(relPos, terrainLayers, numTerrainLayers);
     
     return float4(relPos * radius, terrainValue);
 }

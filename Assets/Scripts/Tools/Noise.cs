@@ -11,6 +11,24 @@ namespace Noise
         /// <summary>
         /// Evaluate noise at position
         /// </summary>
+        public static float Evaluate(float x)
+        {
+            //Find unit interval that contains x
+            int X = (int)Mathf.Floor(x) & 255;
+
+            //Find relative point in this interval
+            x -= Mathf.Floor(x);
+
+            //Compute fade curve
+            float u = Details.Fade(x);
+
+            //Add blended results from edges of interval
+            return Details.Lerp(u, Details.Grad(Details.p[X], x), Details.Grad(Details.p[X + 1], x - 1)) * 2;
+        }
+
+        /// <summary>
+        /// Evaluate noise at position
+        /// </summary>
         public static float Evaluate(Vector2 pos)
         {
             return Evaluate(pos.x, pos.y);
@@ -368,7 +386,17 @@ namespace Noise
         }
 
         /// <summary>
-        /// Returns one of the four direction vectors used for 2D noise
+        /// Returns the dot product with one of the two direction vectors used for 1D noise
+        /// </summary>
+        /// <param name="hash">Any integer value</param>
+        /// <param name="x">x-position</param>
+        public static float Grad(int hash, float x)
+        {
+            return (hash & 1) == 0 ? x : -x; //Let LSB represent direction vector -1 or 1
+        }
+
+        /// <summary>
+        /// Returns the dot product with one of the four direction vectors used for 2D noise
         /// </summary>
         /// <param name="hash">Any integer value</param>
         /// <param name="x">x-position</param>
@@ -382,7 +410,7 @@ namespace Noise
         }
 
         /// <summary>
-        /// Returns one of the twelve recomended vectors for 3D noise
+        /// Returns the dot product with one of the twelve recomended vectors for 3D noise
         /// </summary>
         /// <param name="hash">Any integer value</param>
         /// <param name="x">x-position</param>
