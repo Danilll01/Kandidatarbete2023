@@ -2,13 +2,14 @@ using UnityEngine;
 using Noise;
 using System;
 
-
 /// <summary>
 /// Struct for storing the biomesettings
 /// </summary>
 public struct BiomeSettings
 {
     public float seed;
+    public float temperatureDecay;
+    public float farTemperature;
     public float mountainFrequency;
     public float temperatureFrequency;
     public float temperatureRoughness;
@@ -19,13 +20,16 @@ public struct BiomeSettings
     /// <i>Note: parameters <paramref name="temperatureRoughness"/> and <paramref name="mountainTemperatureAffect"/> must
     /// be in range [0, 1]</i>
     /// </summary>
-    public BiomeSettings(float seed, float mountainFrequency, float temperatureFrequency, float temperatureRoughness, float mountainTemperatureAffect, float treeFrequency)
+    public BiomeSettings(float seed, float temperatureDecay, float farTemperature, float mountainFrequency, float temperatureFrequency, float temperatureRoughness, float mountainTemperatureAffect, float treeFrequency)
     {
         // Check that variables are in range
         Details.AssertInRange(temperatureRoughness, 0, 1, nameof(temperatureRoughness));
         Details.AssertInRange(mountainTemperatureAffect, 0, 1, nameof(mountainTemperatureAffect));
+        Details.AssertInRange(farTemperature, 0, 1, nameof(farTemperature));
 
         this.seed = seed;
+        this.temperatureDecay = temperatureDecay;
+        this.farTemperature = farTemperature;
         this.mountainFrequency = mountainFrequency;
         this.temperatureFrequency = temperatureFrequency;
         this.temperatureRoughness = temperatureRoughness;
@@ -65,9 +69,10 @@ public struct BiomeValue
 public static class Biomes
 {
     /// <summary>
-    /// Evaluates biomemap with given <paramref name="biomeSettings"/> at <paramref name="position"/>
+    /// Evaluates biomemap with given <paramref name="biomeSettings"/> at <paramref name="position"/> 
+    /// with the <paramref name="distance"/> from the sun.
     /// </summary>
-    public static BiomeValue EvaluteBiomeMap(BiomeSettings biomeSettings, Vector3 position)
+    public static BiomeValue EvaluteBiomeMap(BiomeSettings biomeSettings, Vector3 position, float distance)
     {
         // Normalize position
         position = Vector3.Normalize(position);
@@ -97,6 +102,9 @@ public static class Biomes
         // Change temperature with mountains
         tempValue *= (1 - mountainNoise) * biomeSettings.mountainTemperatureAffect + 1 - biomeSettings.mountainTemperatureAffect;
 
+        // Calculate multiplier for temperatue (due to distance from sun)
+        tempValue *= (1 - biomeSettings.farTemperature) / (biomeSettings.temperatureDecay * biomeSettings.temperatureDecay * distance + 1) + biomeSettings.farTemperature;
+
         //Return the calculated values
         return new BiomeValue(mountainNoise, tempValue, treeNoise);
     }
@@ -117,9 +125,10 @@ public static class Biomes
     }
 
     /// <summary>
-    /// Evaluates the value of the temperaturemap at <paramref name="position"/> with <paramref name="biomeSettings"/>
+    /// Evaluates the value of the temperaturemap at <paramref name="position"/> with <paramref name="biomeSettings"/> 
+    /// with the <paramref name="distance"/> to the sun.
     /// </summary>
-    public static float EvaluteBiomeMapTemperature(BiomeSettings biomeSettings, Vector3 position)
+    public static float EvaluteBiomeMapTemperature(BiomeSettings biomeSettings, Vector3 position, float distance)
     {
         // Normalize position
         position = Vector3.Normalize(position);
@@ -143,6 +152,9 @@ public static class Biomes
 
         // Change temperature with mountains
         tempValue *= (1 - mountainNoise) * biomeSettings.mountainTemperatureAffect + 1 - biomeSettings.mountainTemperatureAffect;
+
+        // Calculate multiplier for temperatue (due to distance from sun)
+        tempValue *= (1 - biomeSettings.farTemperature) / (biomeSettings.temperatureDecay * biomeSettings.temperatureDecay * distance + 1) + biomeSettings.farTemperature;
 
         return tempValue;
     }
