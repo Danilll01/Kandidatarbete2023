@@ -59,10 +59,11 @@ public class AtmosphereHandler : MonoBehaviour
 
         // Set up material
         atmosphereMaterial = new Material(atmosphereShader);
-        planetNormalRadius = Mathf.RoundToInt(waterLevel) - 10;
-        
+        planetNormalRadius = waterLevel - 10;
+
+        atmosphereMaterial.renderQueue = 3200;
         atmosphereMaterial.SetFloat(PlanetRadius, planetNormalRadius);
-        atmosphereMaterial.SetFloat(AtmosphereRadius, Mathf.RoundToInt(planetRadius * 1.25f - 10));
+        atmosphereMaterial.SetFloat(AtmosphereRadius, planetRadius * 1.25f - 10);
 
         if (atmosphereExists)
         {
@@ -160,6 +161,9 @@ public class AtmosphereHandler : MonoBehaviour
         // Light intensity (Makes atmosphere appear more thick)
         lightIntensityLerp = Mathf.InverseLerp((localScale.x / 2f) - (localScale.x / 10f), (localScale.x / 2f), playerHeight);
         atmosphereMaterial.SetFloat(LightIntensity, Mathf.Lerp(maxLightIntensity, Mathf.Min(10, maxLightIntensity), lightIntensityLerp));
+
+        // Makes water be shaded by the atmosphere when outside the planet and not when inside
+        atmosphereMaterial.renderQueue = playerHeight > (localScale.x / 2f) ? 3200 : 3000;
     }
 
     private void UpdateAmbientLight(Vector3 sunPosition, Vector3 planetPosition, Vector3 playerPosition)

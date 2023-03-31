@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Water now get rendered at the right time when under water">
-      <change beforePath="$PROJECT_DIR$/Assets/Shaders/Water/WaterSurfaceShader.shadergraph" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Shaders/Water/WaterSurfaceShader.shadergraph" afterDir="false" />
+    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Water material is now done a little better">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Planets/Planet.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Planets/Planet.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Atmosphere/AtmosphereHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Atmosphere/AtmosphereHandler.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -292,7 +294,13 @@
       <option name="presentableId" value="LOCAL−00028" />
       <updated>1680220284901</updated>
     </task>
-    <option name="localTasksCounter" value="29" />
+    <task id="LOCAL−00029" summary="Water material is now done a little better">
+      <created>1680221001694</created>
+      <option name="number" value="LOCAL−00029" />
+      <option name="presentableId" value="LOCAL−00029" />
+      <updated>1680221001694</updated>
+    </task>
+    <option name="localTasksCounter" value="30" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -314,7 +322,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="Changed directional light color to be based on temperature" />
     <MESSAGE value="Added atmospheres to planets" />
     <MESSAGE value="Atmpsphere light now faces right direction" />
     <MESSAGE value="You can now temporarily increase atmosphere saturation" />
@@ -339,6 +346,7 @@
     <MESSAGE value="Added tonemapping for much better colors (Will not be as washed out as before)" />
     <MESSAGE value="Longer camera cut of distance to not make sun disappear + better shadow quality" />
     <MESSAGE value="Water now get rendered at the right time when under water" />
-    <option name="LAST_COMMIT_MESSAGE" value="Water now get rendered at the right time when under water" />
+    <MESSAGE value="Water material is now done a little better" />
+    <option name="LAST_COMMIT_MESSAGE" value="Water material is now done a little better" />
   </component>
 </project>
