@@ -71,14 +71,27 @@ MonoBehaviour:
   chunksHandler: {fileID: 6742904736247445569}
   waterHandler: {fileID: 7974886500941765792}
   atmosphereHandler: {fileID: 8052205839722006373}
+  foliageHandler: {fileID: 6368680446637308804}
+  waterLevel: 0.925
   terrainLayers:
-  - strength: 0.0625
-    baseRoughness: 1.5
+  - strength: 0.25
+    baseRoughness: 1.7
     roughness: 2
     persistance: 0.5
+    mountainPeakness: 2
+    mountainHeight: 1
+    flatSmoothness: 0.1
     centre: {x: 0, y: 0, z: 0}
-    numLayers: 5
-  foliageHandler: {fileID: 6368680446637308804}
+    numLayers: 7
+  biomeSettings:
+    seed: 1
+    temperatureDecay: 0
+    farTemperature: 0
+    mountainFrequency: 1.2
+    temperatureFrequency: 1
+    temperatureRoughness: 0.52
+    mountainTemperatureAffect: 0.527
+    treeFrequency: 1
 --- !u!114 &3175307376905995560
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -177,11 +190,11 @@ MonoBehaviour:
   highRes:
     lowerRadius: 0
     upperRadius: 1.3
-    resolution: 3
+    resolution: 10
   mediumRes:
     lowerRadius: 1.5
     upperRadius: 2
-    resolution: 2
+    resolution: 5
   lowRes:
     lowerRadius: 2.3
     upperRadius: 6.871948e+10

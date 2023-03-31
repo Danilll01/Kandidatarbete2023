@@ -29,19 +29,22 @@ public class Planet : MonoBehaviour
     //[SerializeField, Range(1, 4)] 
     [SerializeField, Range(1, 14)] public int resolution = 5;
 
-    [SerializeField] public bool willGeneratePlanetLife = false;
+    public bool willGeneratePlanetLife = false;
     [Range(0f, 1f)]
     [SerializeField] private float chanceToSpawnPlanetLife = 0.8f; 
     [SerializeField] private GenerateCreatures generateCreatures;
-    [SerializeField] public ChunksHandler chunksHandler;
-    [SerializeField] public WaterHandler waterHandler;
+    public ChunksHandler chunksHandler;
+    public WaterHandler waterHandler;
     public AtmosphereHandler atmosphereHandler;
-
-    [SerializeField] private List<TerrainLayer> terrainLayers;
-
-    private float threshold;
     public FoliageHandler foliageHandler;
 
+    [Header("Terrain")]
+    [SerializeField, Range(0, 1)] private float waterLevel = 0.92f;
+    [SerializeField] private List<TerrainLayer> terrainLayers;
+    [SerializeField] private BiomeSettings biomeSettings;
+
+    private float threshold;
+   
     /// <summary>
     /// Initializes the planet
     /// </summary>
@@ -62,13 +65,13 @@ public class Planet : MonoBehaviour
         if (marchingCubes == null)
         {
             threshold = 23 + (float) rand.Value() * 4;
-            marchingCubes = new MarchingCubes(1, meshGenerator, threshold, radius, terrainLayers);
+            marchingCubes = new MarchingCubes(rand.Value() * 123.123f, 1, meshGenerator, threshold, radius, terrainLayers, biomeSettings);
         }
 
         // Init water
         if (willGeneratePlanetLife)
         {
-            waterDiameter = Mathf.Abs((threshold / 255 - 1) * 2 * radius * 0.93f);
+            waterDiameter = Mathf.Abs((threshold / 255 - 1) * 2 * radius * waterLevel);
         }
         else
         {

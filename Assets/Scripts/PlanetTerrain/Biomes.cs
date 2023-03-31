@@ -5,6 +5,7 @@ using System;
 /// <summary>
 /// Struct for storing the biomesettings
 /// </summary>
+[Serializable]
 public struct BiomeSettings
 {
     public float seed;
@@ -12,8 +13,8 @@ public struct BiomeSettings
     public float farTemperature;
     public float mountainFrequency;
     public float temperatureFrequency;
-    public float temperatureRoughness;
-    public float mountainTemperatureAffect;
+    [Range(0, 1)] public float temperatureRoughness;
+    [Range(0, 1)] public float mountainTemperatureAffect;
     public float treeFrequency;
 
     /// <summary>
@@ -35,6 +36,39 @@ public struct BiomeSettings
         this.temperatureRoughness = temperatureRoughness;
         this.mountainTemperatureAffect = mountainTemperatureAffect;
         this.treeFrequency = treeFrequency;
+    }
+
+    /// <summary>
+    /// Turns the biomesettings into an array
+    /// </summary>
+    public float[] ToArray()
+    {
+        float[] arr = new float[8];
+        for(int i = 0; i < arr.Length; i++)
+        {
+            arr[i] = this[i];
+        }
+        return arr;
+    }
+
+    private float this[int i]
+    {
+        get
+        {
+            switch (i)
+            {
+                case 0: return seed;
+                case 1: return temperatureDecay;
+                case 2: return farTemperature;
+                case 3: return mountainFrequency;
+                case 4: return temperatureFrequency;
+                case 5: return temperatureRoughness;
+                case 6: return mountainTemperatureAffect;
+                case 7: return treeFrequency;
+                default:
+                    throw new IndexOutOfRangeException();
+            }
+        }
     }
 }
 
