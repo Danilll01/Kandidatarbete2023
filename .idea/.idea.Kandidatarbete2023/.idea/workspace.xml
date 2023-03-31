@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Fixed green sun bug">
+    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Better spawn planet">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Solar System/Universe.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Solar System/Universe.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Atmosphere/AtmosphereHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Atmosphere/AtmosphereHandler.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Water/WaterHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Water/WaterHandler.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Shaders/Water/WaterSurfaceShader.shadergraph" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Shaders/Water/WaterSurfaceShader.shadergraph" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -133,7 +135,7 @@
       <workItem from="1680030356711" duration="11781000" />
       <workItem from="1680116449264" duration="153000" />
       <workItem from="1680116721177" duration="10746000" />
-      <workItem from="1680265180898" duration="3761000" />
+      <workItem from="1680265180898" duration="5422000" />
     </task>
     <task id="LOCAL−00003" summary="Changed file">
       <created>1679327563589</created>
@@ -333,7 +335,13 @@
       <option name="presentableId" value="LOCAL−00035" />
       <updated>1680267288470</updated>
     </task>
-    <option name="localTasksCounter" value="36" />
+    <task id="LOCAL−00036" summary="Better spawn planet">
+      <created>1680269111791</created>
+      <option name="number" value="LOCAL−00036" />
+      <option name="presentableId" value="LOCAL−00036" />
+      <updated>1680269111791</updated>
+    </task>
+    <option name="localTasksCounter" value="37" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -355,7 +363,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="Added random atmosphere color values" />
     <MESSAGE value="Planet atmosphere color is now randomized" />
     <MESSAGE value="Have moved ambient light calculation to corresponding planet atmosphere" />
     <MESSAGE value="Fixed atmosphere update calling to mirror the players actual current planet" />
@@ -380,6 +387,7 @@
     <MESSAGE value="Directional light matches sun temperature and color" />
     <MESSAGE value="Added back water shadow as the back side of the planet otherwise would have sunlight through the ground" />
     <MESSAGE value="Fixed green sun bug" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fixed green sun bug" />
+    <MESSAGE value="Better spawn planet" />
+    <option name="LAST_COMMIT_MESSAGE" value="Better spawn planet" />
   </component>
 </project>
