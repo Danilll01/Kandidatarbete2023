@@ -35,8 +35,20 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - _Distance: 4000
+    - _Enabled: 1
+    - _Enabled_1: 1
+    - _Enabled_2: 1
+    - _FarTemperature: 0.49
+    - _Frequency: 1.4
+    - _Frequency_1: 1
+    - _Frequency_2: 1.98
+    - _MountainAffect: 0.413
     - _QueueControl: 0
     - _QueueOffset: 0
+    - _Roughness: 0.337
+    - _Seed: 0
+    - _TemperaturePersistance: 0.00096
     m_Colors: []
   m_BuildTextureStacks: []
 --- !u!114 &343350973709496982

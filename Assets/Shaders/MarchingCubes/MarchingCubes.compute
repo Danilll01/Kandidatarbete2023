@@ -19,7 +19,9 @@ AppendStructuredBuffer<Triangle> triangles;
 
 int numTerrainLayers;
 RWStructuredBuffer<TerrainLayer> terrainLayers;
+RWStructuredBuffer<BiomeSettings> biomeSettings;
 
+float seed;
 uint resolution;
 float threshold;
 float radius;
@@ -127,7 +129,7 @@ float4 getTexturePoint(uint3 pos, int3 chunkId, float maxPos)
     
     float3 relPos = (.5 - normPos) * 2; // relPos goes between [-1, 1]
     
-    float terrainValue = getTerrain(relPos, terrainLayers, numTerrainLayers);
+    float terrainValue = getTerrain(relPos, terrainLayers, numTerrainLayers, seed, biomeSettings[0]);
     
     return float4(relPos * radius, terrainValue);
 }
