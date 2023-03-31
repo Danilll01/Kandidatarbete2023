@@ -13,8 +13,6 @@ public class SpawnPlanets : MonoBehaviour
     [SerializeField] private int numberOfPlanets;
     [SerializeField] private int radiusMinValue = 500;
     [SerializeField] private int radiusMaxValue = 1500;
-    [SerializeField] private int orbitOffsetMinValue = -10;
-    [SerializeField] private int orbitOffsetMaxValue = 10;
     [SerializeField] private int chanceOfMoonsLimit = 5;
     [SerializeField] private int minNumberOfMoons = 1;
     [SerializeField] private int maxNumberOfMoons = 5;
@@ -221,8 +219,7 @@ public class SpawnPlanets : MonoBehaviour
         velocityHelper.gameObject.name = "VelocityHelper";
         velocityHelper.transform.parent = planet.transform;
 
-        int orbitOffset = random.Next(orbitOffsetMinValue, orbitOffsetMaxValue);
-        velocityHelper.transform.localPosition = new Vector3(100, orbitOffset, orbitOffset);
+        velocityHelper.transform.localPosition = new Vector3(100, 0, 0);
 
         // Assign needed scripts to the planet
         planet.AddComponent<KeplerOrbitMover>();
