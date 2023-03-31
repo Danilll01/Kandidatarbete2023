@@ -78,7 +78,7 @@ public class SolarSystemTransform : MonoBehaviour
             if (activePlanet != oldActivePlanet && activePlanet == null)
             {
                 rotateSolarSystem = false;
-                ResetPlanetOrbit(oldActivePlanet.gameObject);
+                ResetPlanetOrbit(oldActivePlanet);
                 oldActivePlanet.ResetMoons();
                 planetToReleasePlayerFrom = oldActivePlanet;
                 releasePlayer = true;
@@ -166,13 +166,13 @@ public class SolarSystemTransform : MonoBehaviour
             if (planet.bodyName.Contains("Moon")) continue;
             
             float distance =  (player.transform.position - planet.transform.position).magnitude;
-            if (distance <= (planet.radius + 300f) && planet != activePlanet)
+            if (distance <= (planet.radius * 1.26) && planet != activePlanet)
             {
                 activePlanet = planet;
                 player.transform.parent = activePlanet.transform;
                 break;
             }
-            if(planet == activePlanet && distance > (planet.radius + 500f))
+            if(planet == activePlanet && distance > (planet.radius * 1.3))
             {
                 activePlanet = null;
                 break;
@@ -180,7 +180,7 @@ public class SolarSystemTransform : MonoBehaviour
         }
     }
 
-    private void ResetPlanetOrbit(GameObject planet)
+    private void ResetPlanetOrbit(Planet planet)
     {
         Transform planetTransform = planet.transform;
         
@@ -192,8 +192,7 @@ public class SolarSystemTransform : MonoBehaviour
         Vector3 sunToPlanetRelativeDir = sunToPlanetDir;
         sunToPlanetRelativeDir.y = 0;
         
-        float angleBetweenPlanetAndSun = Vector3.Angle(sunToPlanetDir, sunToPlanetRelativeDir);
-        planetTransform.rotation = Quaternion.AngleAxis(angleBetweenPlanetAndSun, rotationAxis);
+        planetTransform.rotation = Quaternion.Inverse(planet.moonsParent.transform.rotation);
 
         planetTransform.parent.position = sunToPlanetRelativeDir.normalized * relativePlanetSunDistances[spawnPlanets.bodies.IndexOf(planet.GetComponent<Planet>())].magnitude;
         planet.transform.parent.GetComponent<KeplerOrbitMover>().VelocityHandle.localPosition = new Vector3(100, 0, 0);
