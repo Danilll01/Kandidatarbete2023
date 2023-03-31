@@ -64,9 +64,7 @@ public class Planet : MonoBehaviour
         RandomX rand = new RandomX(randomSeed);
 
         this.player = player;
-
         
-
         MinMaxTerrainLevel terrainLevel = new MinMaxTerrainLevel();
         
         rotationAxis = rand.OnUnitSphere() * radius;
@@ -116,6 +114,7 @@ public class Planet : MonoBehaviour
 
     }
 
+    // Get the initial distances from the moons to the planet
     public void InitializeMoonValues()
     {
         moonsrelativeDistances = new Vector3[moons.Count];
@@ -166,6 +165,7 @@ public class Planet : MonoBehaviour
         }
     }
 
+    // Reset the moons rotation
     public void ResetMoons()
     {
         rotateMoons = false;
@@ -179,7 +179,7 @@ public class Planet : MonoBehaviour
         }
     }
     
-    
+    // Lock or unlock the moons orbits
     public void LockMoons(bool lockMoons)
     {
         if (moonsLocked != lockMoons)
@@ -210,6 +210,7 @@ public class Planet : MonoBehaviour
         return chunksHandler.terrainColor.bottomColor;
     }
 
+    // Set up the components for solar system orbit
     public void HandleSolarSystemOrbit()
     {
         if (bodyName.Contains("Planet") && player.parent != transform)
