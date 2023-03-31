@@ -9,6 +9,9 @@ struct TerrainLayer
     float baseRoughness;
     float roughness;
     float persistance;
+    float mountainPeakness;
+    float mountainHeight;
+    float flatSmoothness;
     float3 centre;
     int numLayers;
 };
@@ -26,31 +29,50 @@ struct BiomeSettings
     float TreeFrequency;
 };
 
-float getTerrain(float3 pos, RWStructuredBuffer<TerrainLayer> terrainLayers, int numTerrainLayers)
+float evalutateBiomeMapMountains(BiomeSettings biomeSettings, float3 pos);
+
+float getTerrain(float3 pos, RWStructuredBuffer<TerrainLayer> terrainLayers, int numTerrainLayers, float seed, BiomeSettings biomeSettings)
 {
     float3 pointOnSphere = pos / length(pos);
    
     float noiseValue = 0;
+    
+    float3 noiseOffset = float3(perlin.Evaluate(seed) * seed, perlin.Evaluate(seed + 17.8f) * seed, perlin.Evaluate(seed + 23.5) * seed);
     
     for (int i = 0; i < numTerrainLayers; i++)
     {
         float amplitude = 1;
         float frequency = terrainLayers[i].baseRoughness;
         float noiseLayer;
+        float amplitudeSum = 0;
     
         for (int j = 0; j < terrainLayers[i].numLayers; j++)
         {
-            noiseLayer += (simplex.Evaluate(pointOnSphere * frequency) + 1) * 0.5f * amplitude;
+            amplitudeSum += amplitude;
+            noiseLayer += (simplex.Evaluate(pointOnSphere * frequency + noiseOffset) + 1) * 0.5f * amplitude;
             frequency *= terrainLayers[i].roughness;
             amplitude *= terrainLayers[i].persistance;
+            noiseOffset = float3(perlin.Evaluate(noiseOffset.x) * seed, perlin.Evaluate(noiseOffset.y + 17.8f) * seed, perlin.Evaluate(noiseOffset.z + 23.5) * seed);
         }
         
-        noiseLayer *= terrainLayers[i].strength;
+        // Normalize noiselayer to be within range [0, 1]
+        noiseLayer *= 1 / amplitudeSum;
         
+        // Create mountains
+        float mountains = evalutateBiomeMapMountains(biomeSettings, pos);
+        mountains *= mountains;
+        float mountainGround = pow(noiseLayer, (1 + mountains) * terrainLayers[i].mountainPeakness) * mountains;
+        float flatGround = pow(noiseLayer, terrainLayers[i].flatSmoothness);
+        noiseLayer = mountainGround * terrainLayers[i].mountainHeight + flatGround;
+        
+        // Multiply the noiselayer with the wanted strength
+        noiseLayer *= terrainLayers[i].strength;    
+        
+        // Add the current noiselayer
         noiseValue += noiseLayer;
     }
     
-    return length(pos) < (1 - noiseValue) ? ((1 - noiseValue) - length(pos)) * 255 : 0;
+    return length(pos) < (.7 + noiseValue) ? ((.7 + noiseValue) - length(pos)) * 255 : 0;
 }
 
 
@@ -86,6 +108,12 @@ float3 evaluateBiomeMap(BiomeSettings biomeSettings, float3 pos, float distance)
     float3 returnValue;
     EvaluateBiomeMap_float(pos, distance, biomeSettings.Seed, biomeSettings.TemperatureDecay, biomeSettings.FarTemperature, biomeSettings.MountainFrequency, biomeSettings.TemperatureFrequency, biomeSettings.TemperatureRoughness, biomeSettings.MountainTemperatureAffect, biomeSettings.TreeFrequency, returnValue);
     return returnValue;
+}
+
+float evalutateBiomeMapMountains(BiomeSettings biomeSettings, float3 pos)
+{
+    pos = normalize(pos);
+    return (simplex.Evaluate(float3(pos.x + biomeSettings.Seed, pos.y, pos.z) * biomeSettings.MountainFrequency) + 1) * .5f;
 }
 
 #endif

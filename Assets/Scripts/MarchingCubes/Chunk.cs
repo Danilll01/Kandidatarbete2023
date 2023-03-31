@@ -168,7 +168,9 @@ public class Chunk : MonoBehaviour
         mesh = new Mesh();
 
         int numVerts = marchingCubes.generateMesh(terrainLevel, index, currentRes, mesh);
-       
+
+        Destroy(meshFilter.sharedMesh);
+
         meshFilter.sharedMesh = mesh;
 
         if (marchingCubes.chunkResolution != 1 && meshCollider.enabled)
