@@ -122,7 +122,7 @@ public class AtmosphereHandler : MonoBehaviour
     // Will select one value to use as the maximum light intensity
     private void SelectMaxLightIntensity()
     {
-        maxLightIntensity = maxLightProbability[random.Next(maxLightProbability.Length - 1)];
+        maxLightIntensity = maxLightProbability[random.Next(maxLightProbability.Length)];
         atmosphereMaterial.SetFloat(LightIntensity, Mathf.Min(10, maxLightIntensity));
     }
 
