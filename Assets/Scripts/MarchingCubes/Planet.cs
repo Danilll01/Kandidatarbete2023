@@ -40,11 +40,14 @@ public class Planet : MonoBehaviour
     [HideInInspector] public Vector3 rotationAxis;
     [HideInInspector] public float rotationSpeed;
     [HideInInspector] public GameObject moonsParent;
+    [SerializeField] public FoliageHandler foliageHandler;
 
+    [Header("Terrain")]
+    [SerializeField, Range(0, 1)] private float waterLevel = 0.92f;
     [SerializeField] private List<TerrainLayer> terrainLayers;
+    [SerializeField] private BiomeSettings biomeSettings;
 
     private float threshold;
-    public FoliageHandler foliageHandler;
     public bool rotateMoons;
     private bool moonsLocked = true;
     private Vector3[] moonsrelativeDistances;
@@ -76,13 +79,13 @@ public class Planet : MonoBehaviour
         if (marchingCubes == null)
         {
             threshold = 23 + (float) rand.Value() * 4;
-            marchingCubes = new MarchingCubes(1, meshGenerator, threshold, radius, terrainLayers);
+            marchingCubes = new MarchingCubes(rand.Value() * 123.123f, 1, meshGenerator, threshold, radius, terrainLayers, biomeSettings);
         }
 
         // Init water
         if (willGeneratePlanetLife)
         {
-            waterDiameter = Mathf.Abs((threshold / 255 - 1) * 2 * radius * 0.93f);
+            waterDiameter = Mathf.Abs((threshold / 255 - 1) * 2 * radius * waterLevel);
         }
         else
         {

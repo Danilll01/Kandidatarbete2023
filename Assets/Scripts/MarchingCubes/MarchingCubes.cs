@@ -17,22 +17,30 @@ public class MarchingCubes
     readonly float threshold;
     public readonly float radius;
     public int chunkResolution;
+    public float seed;
 
-    public List<TerrainLayer> terrainLayers;
+    private List<TerrainLayer> terrainLayers;
+    private BiomeSettings biomeSettings;
 
     /// <summary>
     /// Initializes the MarchingCubes script
     /// </summary>
-    /// <param name="meshGenerator">The meshgenerator compute shader</param>
-    /// <param name="threshold">The cut off threshold to be used</param>
-    /// <param name="radius"></param>
-    public MarchingCubes(int chunkResolution, ComputeShader meshGenerator, float threshold, float radius, List<TerrainLayer> terrainLayers)
+    /// <param name="seed">The seed for the planet</param>
+    /// <param name="chunkResolution">The resolution of the chunks overall</param>
+    /// <param name="meshGenerator">The computer shader for the marching cubes</param>
+    /// <param name="threshold">Cutoffpoint for the terrain</param>
+    /// <param name="radius">Radius of the planet</param>
+    /// <param name="terrainLayers">The terrainlayers</param>
+    /// <param name="biomeSettings">Settings for the biomes</param>
+    public MarchingCubes(float seed, int chunkResolution, ComputeShader meshGenerator, float threshold, float radius, List<TerrainLayer> terrainLayers, BiomeSettings biomeSettings)
     {
+        this.seed = seed;
         this.chunkResolution = chunkResolution;
         this.meshGenerator = meshGenerator;
         this.threshold = threshold;
         this.radius = radius;
         this.terrainLayers = terrainLayers;
+        this.biomeSettings = biomeSettings;
     }
 
     /// <summary>
@@ -52,12 +60,16 @@ public class MarchingCubes
         trianglesBuffer.SetCounterValue(0);
 
         // Set up buffer for the terrain layers
-        ComputeBuffer layersBuffer = new ComputeBuffer(terrainLayers.Count, sizeof(float) * 7 + sizeof(int));
+        ComputeBuffer layersBuffer = new ComputeBuffer(terrainLayers.Count, sizeof(float) * 10 + sizeof(int));
         layersBuffer.SetData(terrainLayers.ToArray());
+
+        // Set up buffer for the Biome settings
+        ComputeBuffer biomesBuffer = new ComputeBuffer(1, sizeof(float) * 8);
+        biomesBuffer.SetData(biomeSettings.ToArray());
 
         // Run generateMesh in compute shader
         int kernelIndex = meshGenerator.FindKernel("GenerateMesh");
-
+        meshGenerator.SetFloat("seed", seed);
         meshGenerator.SetInt("chunkIndex", index);
         meshGenerator.SetInt("chunkResolution", chunkResolution);
         meshGenerator.SetInt("resolution", resolution << 3);
@@ -66,6 +78,7 @@ public class MarchingCubes
         meshGenerator.SetBuffer(kernelIndex, "triangles", trianglesBuffer);
         meshGenerator.SetInt("numTerrainLayers", terrainLayers.Count);
         meshGenerator.SetBuffer(kernelIndex, "terrainLayers", layersBuffer);
+        meshGenerator.SetBuffer(kernelIndex, "biomeSettings", biomesBuffer);
         meshGenerator.Dispatch(kernelIndex, resolution >> chunkResolution, resolution >> chunkResolution, resolution >> chunkResolution);
 
         // Retrieve triangles
@@ -78,6 +91,7 @@ public class MarchingCubes
         // Release all buffers
         trianglesBuffer.Release();
         layersBuffer.Release();
+        biomesBuffer.Release();
 
         // Process our data from the compute shader
         int[] meshTriangles = new int[length * 3];
