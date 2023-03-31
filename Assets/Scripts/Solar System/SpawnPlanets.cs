@@ -69,7 +69,7 @@ public class SpawnPlanets : MonoBehaviour
         Sun SunPlanetBody = sun.GetComponent<Sun>();
         SunPlanetBody.diameter = radiusMaxValue * 2;
         SunPlanetBody.SetUpPlanetValues();
-        SunPlanetBody.Initialize(player.transform, random.Next());
+        SunPlanetBody.Initialize(random.Next());
 
         sun.transform.GetChild(0).localScale = new Vector3(SunPlanetBody.diameter, SunPlanetBody.diameter, SunPlanetBody.diameter);
 

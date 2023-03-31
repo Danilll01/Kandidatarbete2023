@@ -15,7 +15,7 @@ public class Sun : MonoBehaviour
     /// <summary>
     /// Initialize mesh for marching cubes
     /// </summary>
-    public void Initialize(Transform player, int randomSeed)
+    public void Initialize(int randomSeed)
     {
         RandomX rand = new RandomX(randomSeed);
 

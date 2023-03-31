@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Water material is now done a little better">
+    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Water now shades correctly by the atmosphere inside and outside">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Planets/Planet.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Planets/Planet.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Atmosphere/AtmosphereHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Atmosphere/AtmosphereHandler.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Planets/Sun.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Planets/Sun.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/MarchingCubes/Sun.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/MarchingCubes/Sun.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Solar System/SpawnPlanets.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Solar System/SpawnPlanets.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -40,6 +41,7 @@
     <setting file="mock://D:/Unity/Projects/Kandidatarbete2023/Assets/Prefabs/Planets/Planet.prefab" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://D:/Unity/Projects/Kandidatarbete2023/Assets/Scenes/Individual/Global volumes/Global Volume Profile.asset" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://D:/Unity/Projects/Kandidatarbete2023/Assets/Scenes/Main.unity" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://D:/Unity/Projects/Kandidatarbete2023/Assets/Scripts/Atmosphere/AtmosphereHandler.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Atmosphere/AtmosphereHandler.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="mock://D:/Unity/Projects/Kandidatarbete2023/Assets/Shaders/Atmosphere/AtmosphericScattering.shader" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://D:/Unity/Projects/Kandidatarbete2023/Packages/com.unity.render-pipelines.universal@12.1.8/Runtime/Data/UniversalRendererData.asset" root0="SKIP_HIGHLIGHTING" />
@@ -300,7 +302,13 @@
       <option name="presentableId" value="LOCAL−00029" />
       <updated>1680221001694</updated>
     </task>
-    <option name="localTasksCounter" value="30" />
+    <task id="LOCAL−00030" summary="Water now shades correctly by the atmosphere inside and outside">
+      <created>1680222157899</created>
+      <option name="number" value="LOCAL−00030" />
+      <option name="presentableId" value="LOCAL−00030" />
+      <updated>1680222157899</updated>
+    </task>
+    <option name="localTasksCounter" value="31" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -322,7 +330,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="Added atmospheres to planets" />
     <MESSAGE value="Atmpsphere light now faces right direction" />
     <MESSAGE value="You can now temporarily increase atmosphere saturation" />
     <MESSAGE value="Added back blending light intensity. Changed values to make atmpsphere look better" />
@@ -347,6 +354,7 @@
     <MESSAGE value="Longer camera cut of distance to not make sun disappear + better shadow quality" />
     <MESSAGE value="Water now get rendered at the right time when under water" />
     <MESSAGE value="Water material is now done a little better" />
-    <option name="LAST_COMMIT_MESSAGE" value="Water material is now done a little better" />
+    <MESSAGE value="Water now shades correctly by the atmosphere inside and outside" />
+    <option name="LAST_COMMIT_MESSAGE" value="Water now shades correctly by the atmosphere inside and outside" />
   </component>
 </project>
