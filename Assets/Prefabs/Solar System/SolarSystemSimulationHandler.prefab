@@ -50,11 +50,9 @@ MonoBehaviour:
   sunPrefab: {fileID: 2953080420391832282, guid: 6a6d6f237df81984a8500d5732188d1b,
     type: 3}
   planetsParent: {fileID: 0}
-  numberOfPlanets: 1
+  numberOfPlanets: 3
   radiusMinValue: 500
-  radiusMaxValue: 1000
-  orbitOffsetMinValue: 0
-  orbitOffsetMaxValue: 0
+  radiusMaxValue: 2000
   chanceOfMoonsLimit: 5
   minNumberOfMoons: 1
   maxNumberOfMoons: 3

@@ -842,12 +842,6 @@ PrefabInstance:
       objectReference: {fileID: 755283109212808068}
     - target: {fileID: 776431053636631548, guid: 93094628cce30c64195c2ae1633e7e60,
         type: 3}
-      propertyPath: sunPrefab
-      value: 
-      objectReference: {fileID: 2953080420391832282, guid: 6a6d6f237df81984a8500d5732188d1b,
-        type: 3}
-    - target: {fileID: 776431053636631548, guid: 93094628cce30c64195c2ae1633e7e60,
-        type: 3}
       propertyPath: sunLightning
       value: 
       objectReference: {fileID: 1676012113}
@@ -856,57 +850,6 @@ PrefabInstance:
       propertyPath: planetsParent
       value: 
       objectReference: {fileID: 210303240}
-    - target: {fileID: 776431053636631548, guid: 93094628cce30c64195c2ae1633e7e60,
-        type: 3}
-      propertyPath: planetsPrefab
-      value: 
-      objectReference: {fileID: 938852981703260768, guid: a63d80705e6906648b6df8c31608d660,
-        type: 3}
-    - target: {fileID: 776431053636631548, guid: 93094628cce30c64195c2ae1633e7e60,
-        type: 3}
-      propertyPath: radiusMaxValue
-      value: 2000
-      objectReference: {fileID: 0}
-    - target: {fileID: 776431053636631548, guid: 93094628cce30c64195c2ae1633e7e60,
-        type: 3}
-      propertyPath: radiusMinValue
-      value: 500
-      objectReference: {fileID: 0}
-    - target: {fileID: 776431053636631548, guid: 93094628cce30c64195c2ae1633e7e60,
-        type: 3}
-      propertyPath: numberOfPlanets
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 776431053636631548, guid: 93094628cce30c64195c2ae1633e7e60,
-        type: 3}
-      propertyPath: maxNumberOfMoons
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 776431053636631548, guid: 93094628cce30c64195c2ae1633e7e60,
-        type: 3}
-      propertyPath: minNumberOfMoons
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 776431053636631548, guid: 93094628cce30c64195c2ae1633e7e60,
-        type: 3}
-      propertyPath: chanceOfMoonsLimit
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 776431053636631548, guid: 93094628cce30c64195c2ae1633e7e60,
-        type: 3}
-      propertyPath: orbitOffsetMaxValue
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 776431053636631548, guid: 93094628cce30c64195c2ae1633e7e60,
-        type: 3}
-      propertyPath: orbitOffsetMinValue
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 776431053636631548, guid: 93094628cce30c64195c2ae1633e7e60,
-        type: 3}
-      propertyPath: randomizeSpawnPlanet
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 93094628cce30c64195c2ae1633e7e60, type: 3}
 --- !u!114 &882231452 stripped
