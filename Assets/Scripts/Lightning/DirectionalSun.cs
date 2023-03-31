@@ -16,6 +16,8 @@ public class DirectionalSun : MonoBehaviour
     public void Initialize()
     {
         sun = Universe.sunPosition;
+        
+        GetComponent<Light>().colorTemperature = sun.GetComponent<Sun>().temperature;
         currentPlayer = player.GetComponent<PillPlayerController>();
     }
 

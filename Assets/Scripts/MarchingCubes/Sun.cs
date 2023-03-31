@@ -11,6 +11,7 @@ public class Sun : MonoBehaviour
     public float surfaceGravity;
     public string bodyName = "Sun";
     public float mass;
+    public float temperature;
     private static readonly int Temperature = Shader.PropertyToID("_temperature");
 
     /// <summary>
@@ -20,7 +21,8 @@ public class Sun : MonoBehaviour
     {
         RandomX rand = new RandomX(randomSeed);
 
-        transform.GetChild(0).GetComponent<MeshRenderer>().material.SetFloat(Temperature, rand.Value(3000, 8000));
+        temperature = rand.Value(3000, 8000);
+        transform.GetChild(0).GetComponent<MeshRenderer>().material.SetFloat(Temperature, temperature);
         radius = diameter / 2;
     }
 

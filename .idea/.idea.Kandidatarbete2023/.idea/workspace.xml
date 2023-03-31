@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Sun has nice new moving material based on temperature">
+    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Sun temperature is now randomized between 3000 and 8000 degrees kelvin">
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Lightning/DirectionalSun.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Lightning/DirectionalSun.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/MarchingCubes/Sun.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/MarchingCubes/Sun.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -311,7 +312,13 @@
       <option name="presentableId" value="LOCAL−00031" />
       <updated>1680226249878</updated>
     </task>
-    <option name="localTasksCounter" value="32" />
+    <task id="LOCAL−00032" summary="Sun temperature is now randomized between 3000 and 8000 degrees kelvin">
+      <created>1680227109330</created>
+      <option name="number" value="LOCAL−00032" />
+      <option name="presentableId" value="LOCAL−00032" />
+      <updated>1680227109330</updated>
+    </task>
+    <option name="localTasksCounter" value="33" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -333,7 +340,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="You can now temporarily increase atmosphere saturation" />
     <MESSAGE value="Added back blending light intensity. Changed values to make atmpsphere look better" />
     <MESSAGE value="Ambient light now lerps to space value" />
     <MESSAGE value="Fixed some comments" />
@@ -358,6 +364,7 @@
     <MESSAGE value="Water material is now done a little better" />
     <MESSAGE value="Water now shades correctly by the atmosphere inside and outside" />
     <MESSAGE value="Sun has nice new moving material based on temperature" />
-    <option name="LAST_COMMIT_MESSAGE" value="Sun has nice new moving material based on temperature" />
+    <MESSAGE value="Sun temperature is now randomized between 3000 and 8000 degrees kelvin" />
+    <option name="LAST_COMMIT_MESSAGE" value="Sun temperature is now randomized between 3000 and 8000 degrees kelvin" />
   </component>
 </project>
