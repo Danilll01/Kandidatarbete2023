@@ -56,7 +56,7 @@ Material:
     - _RadiusPower: 2.58
     - _Seafloor: 0.846
     - _SrcBlend: 5
-    - _Strength: 0.049
+    - _Strength: 0.002
     - _Surface: 1
     - _UnderWater: 0
     - _VignetIntensity: 0.738
