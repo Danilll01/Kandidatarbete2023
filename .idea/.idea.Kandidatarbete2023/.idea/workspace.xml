@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Directional light matches sun temperature and color" />
+    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Added back water shadow as the back side of the planet otherwise would have sunlight through the ground" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -37,9 +37,9 @@
     <setting file="mock://D:/Unity/Projects/Kandidatarbete2023/Assets/Scenes/Individual/Global volumes/Global Volume Profile.asset" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://D:/Unity/Projects/Kandidatarbete2023/Assets/Scenes/Main.unity" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://D:/Unity/Projects/Kandidatarbete2023/Assets/Scripts/Atmosphere/AtmosphereHandler.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Atmosphere/AtmosphereHandler.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Atmosphere/AtmosphereHandler.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="mock://D:/Unity/Projects/Kandidatarbete2023/Assets/Shaders/Atmosphere/AtmosphericScattering.shader" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/Shaders/Atmosphere/AtmosphericScattering.shader" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Shaders/Atmosphere/AtmosphericScattering.shader" root0="FORCE_HIGHLIGHTING" />
     <setting file="mock://D:/Unity/Projects/Kandidatarbete2023/Packages/com.unity.render-pipelines.universal@12.1.8/Runtime/Data/UniversalRendererData.asset" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="MarkdownSettingsMigration">
@@ -322,7 +322,13 @@
       <option name="presentableId" value="LOCAL−00033" />
       <updated>1680227470916</updated>
     </task>
-    <option name="localTasksCounter" value="34" />
+    <task id="LOCAL−00034" summary="Added back water shadow as the back side of the planet otherwise would have sunlight through the ground">
+      <created>1680231070165</created>
+      <option name="number" value="LOCAL−00034" />
+      <option name="presentableId" value="LOCAL−00034" />
+      <updated>1680231070165</updated>
+    </task>
+    <option name="localTasksCounter" value="35" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -344,7 +350,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="Ambient light now lerps to space value" />
     <MESSAGE value="Fixed some comments" />
     <MESSAGE value="Added random atmosphere color values" />
     <MESSAGE value="Planet atmosphere color is now randomized" />
@@ -369,6 +374,7 @@
     <MESSAGE value="Sun has nice new moving material based on temperature" />
     <MESSAGE value="Sun temperature is now randomized between 3000 and 8000 degrees kelvin" />
     <MESSAGE value="Directional light matches sun temperature and color" />
-    <option name="LAST_COMMIT_MESSAGE" value="Directional light matches sun temperature and color" />
+    <MESSAGE value="Added back water shadow as the back side of the planet otherwise would have sunlight through the ground" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added back water shadow as the back side of the planet otherwise would have sunlight through the ground" />
   </component>
 </project>
