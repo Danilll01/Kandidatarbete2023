@@ -90,6 +90,7 @@ public class Creature : MonoBehaviour
 
     private Creature breedingPartner;
     public bool isDying = false;
+    public GameObject gettingEatenBy = null;
 
     // Overlap sphere optimizations
     private static int foodLayerMask = (1 << 9);
@@ -263,6 +264,8 @@ public class Creature : MonoBehaviour
         if (getResourceTicks <= 0)
         {
             nearestResource = GetNearestGameobject(resource);
+            // Set this object as the consumer of the nearest creature
+            if (nearestResource != null && resource == ResourceType.Creature) nearestResource.GetComponent<Creature>().gettingEatenBy = gameObject;
             lastResourceFound = nearestResource;
             getResourceTicks = getResourceTickSkips;
         } else
@@ -412,8 +415,10 @@ public class Creature : MonoBehaviour
 
                     CreatureType creatureType = creature.GetCreatureType;
                     if (creatureDiet != creatureType) continue;
+
                     if (SameSpecies(coll.gameObject.name)) continue;
 
+                    if (creature.gettingEatenBy != null) continue;
                 }
                 
                 float distanceToGameObject = Vector3.Distance(transform.position, coll.transform.position);
