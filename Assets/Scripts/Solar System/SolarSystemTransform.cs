@@ -148,6 +148,8 @@ public class SolarSystemTransform : MonoBehaviour
         {
             Planet planet = spawnPlanets.bodies[i];
             planet.solarSystemRotationActive = false;
+            Vector3 parentPos = planet.transform.parent.position;
+            planet.transform.parent.position = new Vector3(parentPos.x, 0, parentPos.z);
             planet.ResetMoons();
             planet.transform.parent.GetComponent<KeplerOrbitMover>().SetAutoCircleOrbit();
             planet.transform.parent.GetComponent<KeplerOrbitMover>().LockOrbitEditing = true;
