@@ -17,7 +17,7 @@ public class CreatureHandler : MonoBehaviour
         isInstantiated = true;
 
 
-        density = planet.radius * 0.00001f; // Magic numbers * "random"
+        density = planet.radius * 0.000002f; // Magic numbers * "random"
     }
 
     public float PlanetRadius

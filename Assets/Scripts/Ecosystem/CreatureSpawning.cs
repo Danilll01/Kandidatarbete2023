@@ -1,12 +1,11 @@
 using ExtendedRandom;
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
 public class CreatureSpawning : MonoBehaviour
 {
     [SerializeField] private float terrainSteepnesAngle = 30f;
+    [SerializeField] private int packsPerBatchedSpawn = 5;
 
     public bool initialized = false;
     public bool finishedSpawning = false;
@@ -24,6 +23,12 @@ public class CreatureSpawning : MonoBehaviour
     private int objectsToSpawnIndex = 0;
     private bool readyToSpawn = false;
 
+    /// <summary>
+    /// Initializes creature spawning and primes ray start positions
+    /// </summary>
+    /// <param name="meshVerticesLength"></param>
+    /// <param name="position"></param>
+    /// <param name="seed"></param>
     public void Initialize(int meshVerticesLength, Vector3 position, int seed)
     {
         creatureHandler = transform.parent.parent.parent.GetComponent<Planet>().creatureHandler;
@@ -65,9 +70,11 @@ public class CreatureSpawning : MonoBehaviour
         objectsToSpawn = new SpawnPack[creatureSpots.Length];
     }
 
-    public void SpawnCreatures()
+    /// <summary>
+    /// Shoots rays to determinate where a pack should spawn and add it the "objectsToSpawn" array.
+    /// </summary>
+    public void GeneratePackSpawns()
     {
-        
         // Not initialized or already spawned
         if (creatureSpots == null) return;
 
@@ -97,7 +104,8 @@ public class CreatureSpawning : MonoBehaviour
             if (hit.transform == transform.parent && hit.distance < radius - waterRadius)
             {
                 Quaternion rotation = Quaternion.FromToRotation(Vector3.forward, hit.normal);
-                //SpawnPack(rayOrigin, rotation, GetCreatureToSpawn());
+
+                // Add pack to array of objects to spawn
                 objectsToSpawn[objectsToSpawnIndex] = new SpawnPack(rayOrigin, rotation, GetCreatureToSpawn());
                 objectsToSpawnIndex++;
 
@@ -120,12 +128,15 @@ public class CreatureSpawning : MonoBehaviour
         readyToSpawn = true;
     }
 
-    public void PackSpawning()
+    /// <summary>
+    /// Spawns "packsPerBatchedSpawn" number of packs each call
+    /// </summary>
+    public void BatchedSpawning()
     {
         if (readyToSpawn && objectsToSpawn.Length > 0)
         {
             int totalIndex = objectsToSpawnIndex;
-            while (totalIndex < objectsToSpawnIndex + 5)
+            while (totalIndex < objectsToSpawnIndex + packsPerBatchedSpawn)
             {
                 if (totalIndex >= objectsToSpawn.Length || objectsToSpawn[totalIndex] == null)
                 {

@@ -122,7 +122,7 @@ public class Chunk : MonoBehaviour
                     }
                     if (!creatures.finishedSpawning)
                     {
-                        creatures.PackSpawning();
+                        creatures.BatchedSpawning();
                     }
 
                 } else

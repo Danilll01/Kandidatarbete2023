@@ -216,7 +216,7 @@ public class ChunksHandler : MonoBehaviour
                 {
                     chunksHighRes[index].foliage.SpawnFoliageOnChunk();
                     CreatureSpawning cretureSpawning = chunksHighRes[index].creatures;
-                    if (cretureSpawning.initialized) cretureSpawning.SpawnCreatures();
+                    if (cretureSpawning.initialized) cretureSpawning.GeneratePackSpawns();
                 }
                     
             }

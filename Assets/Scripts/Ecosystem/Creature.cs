@@ -333,15 +333,17 @@ public class Creature : MonoBehaviour
         Collider[] hitColliders = Physics.OverlapSphere(transform.position, detectionRadius, creatureLayerMask);
         GameObject nearestObject = null;
         float nearestDistance = Mathf.Infinity;
+        bool foundPartner;
+        float distanceToGameObject;
 
         foreach (Collider coll in hitColliders)
         {
             if (coll != collider && coll.gameObject.CompareTag("Creature")) 
             {
-                bool foundPartner = coll.GetComponent<Creature>().wantToReproduce && coll.name.Contains(gameObject.name);
+                foundPartner = coll.GetComponent<Creature>().wantToReproduce && coll.name.Contains(gameObject.name);
                 if (!foundPartner) continue;
 
-                float distanceToGameObject = Vector3.Distance(transform.position, coll.transform.position);
+                distanceToGameObject = Vector3.Distance(transform.position, coll.transform.position);
 
                 if (nearestDistance > distanceToGameObject)
                 {
@@ -705,11 +707,17 @@ public class Creature : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Returns creature type
+    /// </summary>
     public CreatureType GetCreatureType
     {
         get { return creatureType; }
     }
     
+    /// <summary>
+    /// Returns creature diet
+    /// </summary>
     public CreatureType GetCreatureDiet
     {
         get { return creatureDiet; }
