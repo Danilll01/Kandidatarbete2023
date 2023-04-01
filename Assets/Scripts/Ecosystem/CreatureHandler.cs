@@ -6,6 +6,7 @@ public class CreatureHandler : MonoBehaviour
 {
 
     [SerializeField] public CreaturePack[] packs;
+    [SerializeField] private float densityMultiplier = 0.0000012f;
     public bool isInstantiated = false;
     public bool debug = true;
     private Planet planet;
@@ -16,8 +17,7 @@ public class CreatureHandler : MonoBehaviour
         this.planet = planet;
         isInstantiated = true;
 
-
-        density = planet.radius * 0.000002f; // Magic numbers * "random"
+        density = planet.radius * densityMultiplier; // Magic numbers * "random"
     }
 
     public float PlanetRadius
