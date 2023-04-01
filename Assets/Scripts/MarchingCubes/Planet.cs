@@ -180,6 +180,8 @@ public class Planet : MonoBehaviour
             orbitMover.ForceUpdateOrbitData();
             orbitMover.SetAutoCircleOrbit();
         }
+
+        setUpSystemRotationComponents = false;
     }
     
     // Lock or unlock the moons orbits

@@ -152,6 +152,7 @@ public class SolarSystemTransform : MonoBehaviour
             planet.transform.parent.GetComponent<KeplerOrbitMover>().SetAutoCircleOrbit();
             planet.transform.parent.GetComponent<KeplerOrbitMover>().LockOrbitEditing = true;
         }
+        setUpSolarSystemRotation = false;
     }
 
     private void RotateSolarSystem()
@@ -187,7 +188,6 @@ public class SolarSystemTransform : MonoBehaviour
     {
         Transform planetTransform = planet.transform;
         
-        planet.transform.parent.GetComponent<KeplerOrbitMover>().VelocityHandle.localPosition = new Vector3(100, 0, 0);
         
         //Turn of orbiting on the sun
         KeplerOrbitMover sunOrbitMover = sun.GetComponent<KeplerOrbitMover>();
@@ -195,13 +195,15 @@ public class SolarSystemTransform : MonoBehaviour
 
         // Reset solar system and planet rotations
         planetsParent.transform.rotation = Quaternion.identity;
-        planetTransform.rotation = Quaternion.Inverse(planet.moonsParent.transform.rotation);
         
         planetTransform.parent.SetParent(planetsParent.transform, true);
+        planetTransform.rotation = Quaternion.Inverse(planet.moonsParent.transform.rotation);
+        planet.transform.parent.GetComponent<KeplerOrbitMover>().VelocityHandle.localPosition = new Vector3(100, 0, 0);
         
         // Place the sun back at origo
         Vector3 distanceFromOrigin = sun.transform.position - Vector3.zero;
         planetsParent.transform.position -= distanceFromOrigin;
+        planetTransform.parent.position = fakeOrbitObject.transform.position;
     }
 
     private void MovePlanets()
@@ -227,6 +229,7 @@ public class SolarSystemTransform : MonoBehaviour
     {
         // Activate orbit with attraction to planet
         KeplerOrbitMover sunOrbitMover = sun.GetComponent<KeplerOrbitMover>();
+        sunOrbitMover.ResetOrbit();
         sunOrbitMover.AttractorSettings.AttractorObject = planetToOrbit.transform;
 
         // AttractorMass is set to be the same mass as the sun to get the same velocity the planet had.
