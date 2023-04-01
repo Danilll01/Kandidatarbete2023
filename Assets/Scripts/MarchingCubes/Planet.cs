@@ -17,7 +17,7 @@ public class Planet : MonoBehaviour
     [HideInInspector] public float mass;
     [HideInInspector] public List<Planet> moons;
     
-    [HideInInspector] public List<Vector3> waterPoints;
+    public List<Vector3> waterPoints;
 
     [HideInInspector] public Transform player;
     [HideInInspector] public MarchingCubes marchingCubes;
