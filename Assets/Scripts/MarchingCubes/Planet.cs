@@ -237,18 +237,22 @@ public class Planet : MonoBehaviour
     private void KeepPlanetAtSameDistanceToSun()
     {
         Vector3 sunPosition = parentOrbitMover.AttractorSettings.AttractorObject.transform.position;
+        Transform sunTransform = parentOrbitMover.AttractorSettings.AttractorObject.transform;
 
         Vector3 direction = parentOrbitMover.transform.position - sunPosition;
         parentOrbitMover.transform.position = sunPosition + (direction.normalized * positionrelativeToSunDistance);
 
-        //Vector3 v = sunPosition - Vector3.zero;
-        //Vector3 dir = Vector3.Cross(v, Vector3.right).normalized;
-        //Vector3 v2 = Vector3.ProjectOnPlane(parentOrbitMover.transform.position, dir);
-        //parentOrbitMover.transform.position = sunPosition + v2;
-        //parentOrbitMover.transform.up = parentOrbitMover.AttractorSettings.AttractorObject.transform.up;
+        parentOrbitMover.transform.position = ClosestPointOnPlane(sunPosition, sunTransform.transform.TransformDirection(Vector3.up), parentOrbitMover.transform.position);
+    }
 
-        //parentOrbitMover.ForceUpdateOrbitData();
-        //parentOrbitMover.SetAutoCircleOrbit();
+    private Vector3 ClosestPointOnPlane(Vector3 planeOffset, Vector3 planeNormal, Vector3 point)
+    {
+        return point + DistanceFromPlane(planeOffset, planeNormal, point) * planeNormal;
+    }
+
+    private float DistanceFromPlane(Vector3 planeOffset, Vector3 planeNormal, Vector3 point)
+    {
+        return Vector3.Dot(planeOffset - point, planeNormal);
     }
 
     private void KeepMoonsAtSameDistanceFromPlanet()
