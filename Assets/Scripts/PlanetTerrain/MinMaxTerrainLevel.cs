@@ -7,13 +7,22 @@ public class MinMaxTerrainLevel
 {
     private float minHight = Mathf.Infinity;
     private float maxHight = -Mathf.Infinity;
+    private float waterLevel;
+    private float delta = 5f;
+
+    public List<Vector3> waterPoints = new List<Vector3>();
+
+    public MinMaxTerrainLevel(float waterDiameter)
+    {
+        waterLevel = waterDiameter / 2;
+    }
 
     /// <summary>
     /// Potencially uppdates the min or max distance
     /// </summary>
     /// <param name="distance"></param>
-    public void UpdateMinMax(Vector3 vertex) {
-        float distance = math.length(vertex);
+    public void UpdateMinMax(float distance) {
+        //float distance = math.length(vertex);
 
         // This is not doing anything right now
         if (distance < minHight && distance > 1) {
@@ -24,6 +33,20 @@ public class MinMaxTerrainLevel
         if (distance > maxHight) {
             maxHight = distance;
         }
+    }
+
+    public void UpdateWaterPoints(float distance, Vector3 vertex)
+    {
+        //float distance = math.length(vertex);
+        //Debug.Log("Dist:" + distance);
+
+        // Check if the vertex is above waterlevel
+        
+        if (distance < waterLevel + delta && distance > waterLevel - delta)
+        {
+            waterPoints.Add(vertex);
+        }
+        
     }
 
     /// <summary>

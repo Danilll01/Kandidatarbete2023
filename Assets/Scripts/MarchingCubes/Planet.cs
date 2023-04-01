@@ -17,7 +17,7 @@ public class Planet : MonoBehaviour
     [HideInInspector] public float mass;
     [HideInInspector] public List<Planet> moons;
     
-    [HideInInspector] public List<Vector3> waterPoints;
+    public List<Vector3> waterPoints;
 
     [HideInInspector] public Transform player;
     [HideInInspector] public MarchingCubes marchingCubes;
@@ -51,7 +51,17 @@ public class Planet : MonoBehaviour
 
         this.player = player;
 
-        MinMaxTerrainLevel terrainLevel = new MinMaxTerrainLevel();
+        // Init water
+        if (willGeneratePlanetLife)
+        {
+            waterDiameter = Mathf.Abs((threshold / 255 - 1) * 2 * radius * waterLevel);
+        }
+        else
+        {
+            waterDiameter = 0;
+        }
+
+        MinMaxTerrainLevel terrainLevel = new MinMaxTerrainLevel(waterDiameter);
 
         willGeneratePlanetLife = rand.Value() < chanceToSpawnPlanetLife;
 
@@ -62,15 +72,7 @@ public class Planet : MonoBehaviour
             marchingCubes = new MarchingCubes(rand.Value() * 123.123f, 1, meshGenerator, threshold, radius, terrainLayers, biomeSettings);
         }
 
-        // Init water
-        if (willGeneratePlanetLife)
-        {
-            waterDiameter = Mathf.Abs((threshold / 255 - 1) * 2 * radius * waterLevel);
-        }
-        else
-        {
-            waterDiameter = 0; 
-        }
+        
 
         if (!bodyName.Contains("Moon"))
         {
@@ -89,6 +91,8 @@ public class Planet : MonoBehaviour
 
         chunksHandler.Initialize(this, terrainLevel, spawn, rand.Next());
 
+        waterPoints = terrainLevel.waterPoints;
+
         if (willGeneratePlanetLife) 
         {
             if (waterHandler != null && bodyName != "Sun")
@@ -101,7 +105,7 @@ public class Planet : MonoBehaviour
         {
             // Will generate planet life currently decides if there is atmosphere, could change this later when a better system is created
             // Depending on system, it could be advantageous to give the strength of the atmosphere too, this will have to be sent in as a parameter then 
-            atmosphereHandler.Initialize(radius, waterDiameter / 2, willGeneratePlanetLife,rand.Next()); 
+            atmosphereHandler.Initialize(radius, waterDiameter / 2, willGeneratePlanetLife, rand.Next()); 
             
         }
     }

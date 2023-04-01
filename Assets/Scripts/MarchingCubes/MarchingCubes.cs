@@ -104,7 +104,10 @@ public class MarchingCubes
             for (int j = 0; j < 3; j++)
             {
                 meshTriangles[i * 3 + j] = i * 3 + j;
-                hightFillerTerrainLevel.UpdateMinMax(triangles[i][j]);  //This is slow, need to implement fix so that this is only called the first time the chunks are created
+                float distance = math.length(triangles[i][j]);
+                //if (i == 0 && j == 0) Debug.Log("dist: " + distance); 
+                hightFillerTerrainLevel.UpdateMinMax(distance);  //This is slow, need to implement fix so that this is only called the first time the chunks are created
+                hightFillerTerrainLevel.UpdateWaterPoints(distance, triangles[i][j]);
                 meshVertices[i * 3 + j] = triangles[i][j];
             }
         }
