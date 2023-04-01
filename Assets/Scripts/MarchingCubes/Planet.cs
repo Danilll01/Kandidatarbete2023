@@ -43,7 +43,6 @@ public class Planet : MonoBehaviour
     public ChunksHandler chunksHandler;
     public WaterHandler waterHandler;
     public AtmosphereHandler atmosphereHandler;
-    public FoliageHandler foliageHandler;
 
     [Header("Terrain")]
     [SerializeField, Range(0, 1)] private float waterLevel = 0.92f;
