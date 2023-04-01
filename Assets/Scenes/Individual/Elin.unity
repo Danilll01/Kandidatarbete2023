@@ -135,14 +135,13 @@ GameObject:
   - component: {fileID: 189985440}
   - component: {fileID: 189985439}
   - component: {fileID: 189985438}
-  - component: {fileID: 189985442}
   m_Layer: 0
   m_Name: TeleportObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!135 &189985438
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -221,21 +220,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &189985442
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 189985437}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 000c5c935796a6445bf122d29fb17ead, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ObjectToLineUpWith: {fileID: 477184451}
-  OtherObject: {fileID: 218333842}
-  relativeDistance: 0
 --- !u!1 &218333842
 GameObject:
   m_ObjectHideFlags: 0
@@ -248,14 +232,13 @@ GameObject:
   - component: {fileID: 218333845}
   - component: {fileID: 218333844}
   - component: {fileID: 218333843}
-  - component: {fileID: 218333847}
   m_Layer: 0
   m_Name: Sphere (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!135 &218333843
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -334,18 +317,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: -26.506, y: 0, z: 0}
---- !u!114 &218333847
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 218333842}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 74cdb2934bd4e374ea6b1920bd752e04, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &477184451
 GameObject:
   m_ObjectHideFlags: 0
@@ -358,14 +329,13 @@ GameObject:
   - component: {fileID: 477184454}
   - component: {fileID: 477184453}
   - component: {fileID: 477184452}
-  - component: {fileID: 477184456}
   m_Layer: 0
   m_Name: Sphere (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!135 &477184452
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -445,18 +415,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: -26.506, y: 0, z: 0}
---- !u!114 &477184456
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 477184451}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 74cdb2934bd4e374ea6b1920bd752e04, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &632213049
 PrefabInstance:
   m_ObjectHideFlags: 0
