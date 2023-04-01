@@ -124,9 +124,7 @@ public class SolarSystemTransform : MonoBehaviour
             
             int activePlanetIndex = spawnPlanets.bodies.IndexOf(activePlanet);
             Vector3 direction = sun.transform.position - fakeOrbitObject.transform.position;
-            sun.transform.position = direction.normalized * relativePlanetSunDistances[activePlanetIndex].magnitude; 
-            sun.GetComponent<KeplerOrbitMover>().ForceUpdateOrbitData();
-            sun.GetComponent<KeplerOrbitMover>().SetAutoCircleOrbit();
+            sun.transform.position = direction.normalized * relativePlanetSunDistances[activePlanetIndex].magnitude;
         }
     }
     // Setup components for solar system rotation

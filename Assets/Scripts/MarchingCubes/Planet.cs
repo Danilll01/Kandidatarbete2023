@@ -230,9 +230,6 @@ public class Planet : MonoBehaviour
         Vector3 sunPosition = parentOrbitMover.AttractorSettings.AttractorObject.transform.position;
         Vector3 direction = parentOrbitMover.transform.position - sunPosition;
         parentOrbitMover.transform.position = sunPosition + (direction.normalized * positionrelativeToSunDistance);
-        
-        parentOrbitMover.ForceUpdateOrbitData();
-        parentOrbitMover.SetAutoCircleOrbit();
     }
 
     private void KeepMoonsAtSameDistanceFromPlanet()
@@ -244,9 +241,6 @@ public class Planet : MonoBehaviour
                 Transform moon = moons[i].transform;
                 Vector3 direction = moon.parent.transform.position - moonsParent.transform.position;
                 moon.parent.transform.position = moonsParent.transform.position + (direction.normalized * moonsrelativeDistances[i].magnitude);
-                
-                moon.parent.GetComponent<KeplerOrbitMover>().ForceUpdateOrbitData();
-                moon.parent.GetComponent<KeplerOrbitMover>().SetAutoCircleOrbit();
             }
         }
     }
@@ -255,6 +249,10 @@ public class Planet : MonoBehaviour
     {
         if (setUpSystemRotationComponents) return;
         parentOrbitMover.LockOrbitEditing = false;
+        parentOrbitMover.ResetOrbit();
+        parentOrbitMover.SetUp();
+        parentOrbitMover.ForceUpdateOrbitData();
+        parentOrbitMover.SetAutoCircleOrbit();
         setUpSystemRotationComponents = true;
     }
 }
