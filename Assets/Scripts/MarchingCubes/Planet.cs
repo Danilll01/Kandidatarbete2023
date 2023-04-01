@@ -1,11 +1,8 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using Unity.Mathematics;
 using ExtendedRandom;
 using UnityEngine;
 
-[RequireComponent(typeof(GenerateCreatures))]
 [RequireComponent(typeof(TerrainColor))]
 public class Planet : MonoBehaviour
 {
@@ -25,14 +22,10 @@ public class Planet : MonoBehaviour
     [HideInInspector] public Transform player;
     [HideInInspector] public MarchingCubes marchingCubes;
 
-    [SerializeField] private bool willGenerateCreature = false;
-    //[SerializeField, Range(1, 4)] 
     [SerializeField, Range(1, 14)] public int resolution = 5;
 
     public bool willGeneratePlanetLife = false;
-    [Range(0f, 1f)]
-    [SerializeField] private float chanceToSpawnPlanetLife = 0.8f; 
-    [SerializeField] private GenerateCreatures generateCreatures;
+    [SerializeField, Range(0f, 1f)] private float chanceToSpawnPlanetLife = 0.8f;
     public ChunksHandler chunksHandler;
     public WaterHandler waterHandler;
     public AtmosphereHandler atmosphereHandler;
