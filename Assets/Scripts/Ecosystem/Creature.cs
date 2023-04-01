@@ -263,10 +263,15 @@ public class Creature : MonoBehaviour
         GameObject nearestResource;
         if (getResourceTicks <= 0)
         {
+            // Unsubsribe to the last resource to enable other creatures to eat it
+            if (lastResourceFound != null && resource == ResourceType.Creature) lastResourceFound.GetComponent<Creature>().gettingEatenBy = null;
+
             nearestResource = GetNearestGameobject(resource);
+            
             // Set this object as the consumer of the nearest creature
             if (nearestResource != null && resource == ResourceType.Creature) nearestResource.GetComponent<Creature>().gettingEatenBy = gameObject;
             lastResourceFound = nearestResource;
+            
             getResourceTicks = getResourceTickSkips;
         } else
         {
