@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 2176386958015389607}
   - component: {fileID: 8085060048720669979}
   - component: {fileID: 3175307376905995560}
-  - component: {fileID: 7065241369011201559}
   - component: {fileID: 6742904736247445569}
   - component: {fileID: 6368680446637308804}
   - component: {fileID: 8648917880508793817}
@@ -64,11 +63,9 @@ MonoBehaviour:
   moons: []
   waterPoints: []
   player: {fileID: 0}
-  willGenerateCreature: 0
   resolution: 4
   willGeneratePlanetLife: 0
   chanceToSpawnPlanetLife: 0.8
-  generateCreatures: {fileID: 0}
   chunksHandler: {fileID: 6742904736247445569}
   waterHandler: {fileID: 7974886500941765792}
   atmosphereHandler: {fileID: 8052205839722006373}
@@ -141,34 +138,6 @@ MonoBehaviour:
   angleBlending: 0.5
   shader: {fileID: -6465566751694194690, guid: 582627e993e00c442b71e98ced60fb20, type: 3}
   bottomColor: {r: 0, g: 0, b: 0, a: 0}
---- !u!114 &7065241369011201559
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 938852981703260768}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0e711f09e57fe0846be5f77dc317df2b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  packs:
-  - prefab: {fileID: 1311290861401530, guid: 5904fbfe921140647a4ebddf4adda389, type: 3}
-    ratio: 1
-    minPackSize: 5
-    maxPackSize: 12
-    packRadius: 40
-    prefabRadius: 1
-  - prefab: {fileID: 1655403738057260, guid: dcc3bfa5cf419b64e86c7effdae2b6f2, type: 3}
-    ratio: 1
-    minPackSize: 2
-    maxPackSize: 5
-    packRadius: 30
-    prefabRadius: 1
-  maxPackCount: 5000
-  terrainSteepnesAngle: 30
-  DEBUG: 0
 --- !u!114 &6742904736247445569
 MonoBehaviour:
   m_ObjectHideFlags: 0
