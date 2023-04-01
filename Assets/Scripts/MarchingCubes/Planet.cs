@@ -240,7 +240,6 @@ public class Planet : MonoBehaviour
         Transform sunTransform = parentOrbitMover.AttractorSettings.AttractorObject.transform;
         
         parentOrbitMover.transform.position = ClosestPointOnPlane(sunPosition, sunTransform.transform.TransformDirection(Vector3.up), parentOrbitMover.transform.position);
-        parentOrbitMover.transform.up = sunTransform.up;
 
         Vector3 direction = parentOrbitMover.transform.position - sunPosition;
         parentOrbitMover.transform.position = sunPosition + (direction.normalized * positionrelativeToSunDistance);
@@ -265,6 +264,12 @@ public class Planet : MonoBehaviour
             {
                 Transform moon = moons[i].transform;
                 Vector3 direction = moon.parent.transform.position - moonsParent.transform.position;
+
+                Vector3 sunPosition = parentOrbitMover.AttractorSettings.AttractorObject.transform.position;
+                Transform sunTransform = parentOrbitMover.AttractorSettings.AttractorObject.transform;
+
+                moon.parent.transform.position = ClosestPointOnPlane(sunPosition, sunTransform.TransformDirection(Vector3.up), moon.parent.transform.position);
+
                 moon.parent.transform.position = moonsParent.transform.position + (direction.normalized * moonsrelativeDistances[i].magnitude);
             }
         }
