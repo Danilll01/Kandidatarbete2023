@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 7717084306753335414}
   m_Layer: 9
   m_Name: Bush_01
-  m_TagString: Food
+  m_TagString: Plant
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 126
