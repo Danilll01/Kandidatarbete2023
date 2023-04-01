@@ -237,8 +237,18 @@ public class Planet : MonoBehaviour
     private void KeepPlanetAtSameDistanceToSun()
     {
         Vector3 sunPosition = parentOrbitMover.AttractorSettings.AttractorObject.transform.position;
+
         Vector3 direction = parentOrbitMover.transform.position - sunPosition;
         parentOrbitMover.transform.position = sunPosition + (direction.normalized * positionrelativeToSunDistance);
+
+        //Vector3 v = sunPosition - Vector3.zero;
+        //Vector3 dir = Vector3.Cross(v, Vector3.right).normalized;
+        //Vector3 v2 = Vector3.ProjectOnPlane(parentOrbitMover.transform.position, dir);
+        //parentOrbitMover.transform.position = sunPosition + v2;
+        //parentOrbitMover.transform.up = parentOrbitMover.AttractorSettings.AttractorObject.transform.up;
+
+        //parentOrbitMover.ForceUpdateOrbitData();
+        //parentOrbitMover.SetAutoCircleOrbit();
     }
 
     private void KeepMoonsAtSameDistanceFromPlanet()
