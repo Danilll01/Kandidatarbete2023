@@ -70,6 +70,7 @@ public class WaterHandler : MonoBehaviour
         material.SetColor("_ShallowWaterColor", color);
         material.SetColor("_DeepWaterColor", color);
         material.SetInt("_IsUnderWater", 0);
+        material.renderQueue = 2800;
     }
     /// <summary>
     /// Generates separate game object for the different meshes

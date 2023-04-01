@@ -2,8 +2,10 @@
 #define __noise_hlsl_
 
 float lerp(float a, float b, float t);
+float fade(float t);
 float2 fade(float2 t);
 float3 fade(float3 t);
+float grad(int hash, float x);
 float grad(int hash, float x, float y);
 float grad(int hash, float x, float y, float z);
 
@@ -95,6 +97,21 @@ class Perlin
 			lerp(grad(p[A + 1], pos.x, pos.y - 1),
 				grad(p[B + 1], pos.x - 1, pos.y - 1), f.x), f.y);
     }
+    
+    float Evaluate(float x)
+    {
+        //Find unit interval that contains x
+        int X = (int) floor(x) & 255;
+
+		//Find relative point in this interval
+        x -= floor(x);
+
+		//Compute fade curve
+        float u = fade(x);
+
+		//Add blended results from edges of interval
+        return lerp(u, grad(p[X], x), grad(p[X + 1], x - 1)) * 2;
+    }
 };
 
 Perlin perlin;
@@ -107,6 +124,12 @@ void EvaluatePerlin_float(float3 UV, float Scale, out float Out)
     
 // Evaluate at point UV using Scale
 void EvaluatePerlin_float(float2 UV, float Scale, out float Out)
+{
+    Out = perlin.Evaluate(UV * Scale);
+}
+
+// Evalute at point UV using Scale
+void EvaluatePerlin_float(float UV, float Scale, out float Out)
 {
     Out = perlin.Evaluate(UV * Scale);
 }
@@ -358,6 +381,11 @@ float lerp(float a, float b, float t)
     return a + t * (b - a);
 }
 
+float fade(float t)
+{
+    return t * t * t * (t * (t * 6 - 15) + 10);
+}
+
 float2 fade(float2 t)
 {
     return t * t * t * (t * (t * 6 - 15) + 10);
@@ -366,6 +394,11 @@ float2 fade(float2 t)
 float3 fade(float3 t)
 {
     return t * t * t * (t * (t * 6 - 15) + 10);
+}
+
+float grad(int hash, float x)
+{
+    return (hash & 1) == 0 ? x : -x; //Let LSB represent direction vector -1 or 1
 }
 
 float grad(int hash, float x, float y) {

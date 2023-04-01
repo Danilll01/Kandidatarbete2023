@@ -12,9 +12,9 @@ GameObject:
   - component: {fileID: 33071364687384846}
   - component: {fileID: 23932516492071008}
   - component: {fileID: 205767385942840526}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: forestpack_foliage_mushroom_red_small
-  m_TagString: Untagged
+  m_TagString: Foliage
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -98,7 +98,7 @@ LODGroup:
   m_AnimateCrossFading: 0
   m_LastLODIsBillboard: 0
   m_LODs:
-  - screenRelativeHeight: 0.023883952
+  - screenRelativeHeight: 0.006680848
     fadeTransitionWidth: 0
     renderers:
     - renderer: {fileID: 23932516492071008}

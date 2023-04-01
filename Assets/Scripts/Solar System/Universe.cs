@@ -7,11 +7,12 @@ public static class Universe
 {
     public const float gravitationalConstant = 2f;
     public static int nrOfPlanets = 3;
-    public static int seed = 123456789;
+    public static int seed = 112233;
     public static RandomX random;
 
     //Guaranteed set after Awake()
     public static PillPlayerController player = null;
+    public static Transform sunPosition = null;
 
     /// <summary>
     /// Initializes the System.Random with the given seed

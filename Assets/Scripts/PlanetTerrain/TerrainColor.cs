@@ -24,7 +24,7 @@ public class TerrainColor : MonoBehaviour {
     {
         new Color[] { new Color(49/255f, 55/255f, 21/255f), new Color(209/255f, 96/255f, 20/255f), new Color(147/255f, 159/255f, 92/255f), new Color(187/255f, 206/255f, 138/255f), new Color(226/255f, 249/255f, 184/255f) }, // Olive green palette
         new Color[] { new Color(70/255f, 34/255f, 85/255f), new Color(49/255f, 59/255f, 114/255f), new Color(98/255f, 168/255f, 124/255f), new Color(126/255f, 224/255f, 129/255f), new Color(195/255f, 243/255f, 192/255f) }, // Green blue palette
-        new Color[] { new Color(242/255f, 220/255f, 93/255f), new Color(242/255f, 163, 89/255f), new Color(219/255f, 144/255f, 101/255f), new Color(164/255f, 3/255f, 31/255f), new Color(36/255f, 11/255f, 54/255f) }, // Yellow red palette
+        new Color[] { new Color(32/255f, 220/255f, 93/255f), new Color(242/255f, 163/255f, 89/255f), new Color(219/255f, 144/255f, 101/255f), new Color(164/255f, 3/255f, 31/255f), new Color(36/255f, 11/255f, 54/255f) }, // Yellow red palette
         new Color[] { new Color(163/255f, 231/255f, 252/255f), new Color(38/255f, 196/255f, 133/255f), new Color(50/255f, 144/255f, 143/255f), new Color(85/255f, 58/255f, 65/255f), new Color(47/255f, 6/255f, 1/255f) }, // Turcoise blue palette
         new Color[] { new Color(58/255f, 64/255f, 90/255f), new Color(174/255f, 197/255f, 235/255f), new Color(249/255f, 222/255f, 201/255f), new Color(233/255f, 175/255f, 163/255f), new Color(104/255f, 80/255f, 68/255f) }, // Skin color blue brown palette
         new Color[] { new Color(197/255f, 197/255f, 197/255f), new Color(76/255f, 91/255f, 97/255f), new Color(130/255f, 145/255f, 145/255f), new Color(148/255f, 155/255f, 150/255f), new Color(44/255f, 66/255f, 63/255f) }, // Muted green palette
@@ -91,7 +91,7 @@ public class TerrainColor : MonoBehaviour {
         Color[] colors = new Color[textureRes];
 
         // Gets color palette and puts it into a gradient
-        Color[] takePalette = crazyColorPaletts[random.Next(crazyColorPaletts.Length - 1)];
+        Color[] takePalette = crazyColorPaletts[random.Next(crazyColorPaletts.Length)];
         float[] keyPos = new float[] { 0f, 0.015f, 0.144f, 0.618f, 1f };
         GradientColorKey[] gradientKeys = new GradientColorKey[takePalette.Length];
         Color[] takePaletteRand = takePalette.OrderBy(x => random.Next()).ToArray();
