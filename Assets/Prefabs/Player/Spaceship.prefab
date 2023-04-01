@@ -24,7 +24,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6981819381346188164}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.3, z: -1.4}
+  m_LocalPosition: {x: 0, y: 0.4, z: -0.65}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -46,7 +46,7 @@ GameObject:
   - component: {fileID: 6829154278086644410}
   - component: {fileID: 1742721160409974857}
   - component: {fileID: 98033806165277618}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: Spaceship
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -175,7 +175,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa09b77b991f636468f658edd23070f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shipMovespeed: 30
+  shipMovespeed: 100
   shipRotationSpeed: 90
   boarded: 0
   mountedPos: {fileID: 659449604949046378}

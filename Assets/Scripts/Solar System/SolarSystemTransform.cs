@@ -65,7 +65,7 @@ public class SolarSystemTransform : MonoBehaviour
         {
             sun = spawnPlanets.sun;
         }
-        if (!spawnPlanets.solarySystemGenerated)
+        if (!spawnPlanets.solarSystemGenerated)
         {
             return;
         }

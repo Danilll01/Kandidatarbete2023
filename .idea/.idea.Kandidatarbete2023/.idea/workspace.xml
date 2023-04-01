@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="">
+    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Better spawn planet">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/MarchingCubes/Planet.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/MarchingCubes/Planet.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Solar System/SolarSystemTransform.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Solar System/SolarSystemTransform.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Atmosphere/AtmosphereHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Atmosphere/AtmosphereHandler.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Water/WaterHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Water/WaterHandler.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Shaders/Water/WaterSurfaceShader.shadergraph" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Shaders/Water/WaterSurfaceShader.shadergraph" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -31,6 +32,16 @@
       </UrlAndAccount>
     </option>
   </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/4746c126b0b54f3b834845974d1a9190159000/57/36c84f50/Component.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://D:/Unity/Projects/Kandidatarbete2023/Assets/Prefabs/Planets/Planet.prefab" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://D:/Unity/Projects/Kandidatarbete2023/Assets/Prefabs/Planets/Planet.prefab" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Atmosphere/AtmosphereHandler.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://D:/Unity/Projects/Kandidatarbete2023/Assets/Scripts/MarchingCubes/Planet.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://D:/Unity/Projects/Kandidatarbete2023/Assets/Scripts/MarchingCubes/Planet.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://D:/Unity/Projects/Kandidatarbete2023/Assets/Scripts/PlanetTerrain/TerrainColor.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Shaders/Atmosphere/AtmosphericScattering.shader" root0="FORCE_HIGHLIGHTING" />
+  </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
@@ -47,6 +58,7 @@
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settings.ide.settings.spelling&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
   &quot;keyToStringList&quot;: {
@@ -116,6 +128,14 @@
       <option name="presentableId" value="Default" />
       <updated>1679325034818</updated>
       <workItem from="1679325039380" duration="1612000" />
+      <workItem from="1679411316898" duration="2921000" />
+      <workItem from="1679438130511" duration="8982000" />
+      <workItem from="1679477641954" duration="19864000" />
+      <workItem from="1679949244321" duration="4552000" />
+      <workItem from="1680030356711" duration="11781000" />
+      <workItem from="1680116449264" duration="153000" />
+      <workItem from="1680116721177" duration="10746000" />
+      <workItem from="1680265180898" duration="5422000" />
     </task>
     <task id="LOCAL−00003" summary="Changed file">
       <created>1679327563589</created>
@@ -123,7 +143,205 @@
       <option name="presentableId" value="LOCAL−00003" />
       <updated>1679327563589</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL−00004" summary="Changed directional light color to be based on temperature">
+      <created>1679448209679</created>
+      <option name="number" value="LOCAL−00004" />
+      <option name="presentableId" value="LOCAL−00004" />
+      <updated>1679448209679</updated>
+    </task>
+    <task id="LOCAL−00005" summary="Added atmospheres to planets">
+      <created>1679451895994</created>
+      <option name="number" value="LOCAL−00005" />
+      <option name="presentableId" value="LOCAL−00005" />
+      <updated>1679451895994</updated>
+    </task>
+    <task id="LOCAL−00006" summary="Atmpsphere light now faces right direction">
+      <created>1679452532570</created>
+      <option name="number" value="LOCAL−00006" />
+      <option name="presentableId" value="LOCAL−00006" />
+      <updated>1679452532570</updated>
+    </task>
+    <task id="LOCAL−00007" summary="You can now temporarily increase atmosphere saturation">
+      <created>1679529725777</created>
+      <option name="number" value="LOCAL−00007" />
+      <option name="presentableId" value="LOCAL−00007" />
+      <updated>1679529725777</updated>
+    </task>
+    <task id="LOCAL−00008" summary="Added back blending light intensity. Changed values to make atmpsphere look better">
+      <created>1679886408947</created>
+      <option name="number" value="LOCAL−00008" />
+      <option name="presentableId" value="LOCAL−00008" />
+      <updated>1679886408948</updated>
+    </task>
+    <task id="LOCAL−00009" summary="Ambient light now lerps to space value">
+      <created>1679971671703</created>
+      <option name="number" value="LOCAL−00009" />
+      <option name="presentableId" value="LOCAL−00009" />
+      <updated>1679971671703</updated>
+    </task>
+    <task id="LOCAL−00010" summary="Fixed some comments">
+      <created>1680031048046</created>
+      <option name="number" value="LOCAL−00010" />
+      <option name="presentableId" value="LOCAL−00010" />
+      <updated>1680031048046</updated>
+    </task>
+    <task id="LOCAL−00011" summary="Added random atmosphere color values">
+      <created>1680035072429</created>
+      <option name="number" value="LOCAL−00011" />
+      <option name="presentableId" value="LOCAL−00011" />
+      <updated>1680035072429</updated>
+    </task>
+    <task id="LOCAL−00012" summary="Planet atmosphere color is now randomized">
+      <created>1680035806398</created>
+      <option name="number" value="LOCAL−00012" />
+      <option name="presentableId" value="LOCAL−00012" />
+      <updated>1680035806398</updated>
+    </task>
+    <task id="LOCAL−00013" summary="Have moved ambient light calculation to corresponding planet atmosphere">
+      <created>1680037748440</created>
+      <option name="number" value="LOCAL−00013" />
+      <option name="presentableId" value="LOCAL−00013" />
+      <updated>1680037748440</updated>
+    </task>
+    <task id="LOCAL−00014" summary="Fixed atmosphere update calling to mirror the players actual current planet">
+      <created>1680041024317</created>
+      <option name="number" value="LOCAL−00014" />
+      <option name="presentableId" value="LOCAL−00014" />
+      <updated>1680041024317</updated>
+    </task>
+    <task id="LOCAL−00015" summary="Better shadow resolution near player">
+      <created>1680041526117</created>
+      <option name="number" value="LOCAL−00015" />
+      <option name="presentableId" value="LOCAL−00015" />
+      <updated>1680041526117</updated>
+    </task>
+    <task id="LOCAL−00016" summary="Ambient light is now customized for each atmosphere">
+      <created>1680048932693</created>
+      <option name="number" value="LOCAL−00016" />
+      <option name="presentableId" value="LOCAL−00016" />
+      <updated>1680048932693</updated>
+    </task>
+    <task id="LOCAL−00017" summary="Planet strength is now randomized and can be of if there is no water">
+      <created>1680121415788</created>
+      <option name="number" value="LOCAL−00017" />
+      <option name="presentableId" value="LOCAL−00017" />
+      <updated>1680121415789</updated>
+    </task>
+    <task id="LOCAL−00018" summary="Atmosphere height/thickness is now randomized">
+      <created>1680122939013</created>
+      <option name="number" value="LOCAL−00018" />
+      <option name="presentableId" value="LOCAL−00018" />
+      <updated>1680122939013</updated>
+    </task>
+    <task id="LOCAL−00019" summary="Ambient light now blends with no atmosphere gradient when the atmosphere is weaker">
+      <created>1680128863663</created>
+      <option name="number" value="LOCAL−00019" />
+      <option name="presentableId" value="LOCAL−00019" />
+      <updated>1680128863663</updated>
+    </task>
+    <task id="LOCAL−00020" summary="Changed spacing">
+      <created>1680129444127</created>
+      <option name="number" value="LOCAL−00020" />
+      <option name="presentableId" value="LOCAL−00020" />
+      <updated>1680129444127</updated>
+    </task>
+    <task id="LOCAL−00021" summary="Fixed blinking lights">
+      <created>1680212574667</created>
+      <option name="number" value="LOCAL−00021" />
+      <option name="presentableId" value="LOCAL−00021" />
+      <updated>1680212574667</updated>
+    </task>
+    <task id="LOCAL−00022" summary="Increased FOV">
+      <created>1680212982534</created>
+      <option name="number" value="LOCAL−00022" />
+      <option name="presentableId" value="LOCAL−00022" />
+      <updated>1680212982534</updated>
+    </task>
+    <task id="LOCAL−00023" summary="Changed player position in ship to better suit the new FOV">
+      <created>1680213412454</created>
+      <option name="number" value="LOCAL−00023" />
+      <option name="presentableId" value="LOCAL−00023" />
+      <updated>1680213412454</updated>
+    </task>
+    <task id="LOCAL−00024" summary="Made ship glass a little more transparent">
+      <created>1680213569157</created>
+      <option name="number" value="LOCAL−00024" />
+      <option name="presentableId" value="LOCAL−00024" />
+      <updated>1680213569157</updated>
+    </task>
+    <task id="LOCAL−00025" summary="Turned on camera dithering to make color banding much less noticeable">
+      <created>1680213838376</created>
+      <option name="number" value="LOCAL−00025" />
+      <option name="presentableId" value="LOCAL−00025" />
+      <updated>1680213838376</updated>
+    </task>
+    <task id="LOCAL−00026" summary="Added tonemapping for much better colors (Will not be as washed out as before)">
+      <created>1680215737793</created>
+      <option name="number" value="LOCAL−00026" />
+      <option name="presentableId" value="LOCAL−00026" />
+      <updated>1680215737793</updated>
+    </task>
+    <task id="LOCAL−00027" summary="Longer camera cut of distance to not make sun disappear + better shadow quality">
+      <created>1680217837140</created>
+      <option name="number" value="LOCAL−00027" />
+      <option name="presentableId" value="LOCAL−00027" />
+      <updated>1680217837140</updated>
+    </task>
+    <task id="LOCAL−00028" summary="Water now get rendered at the right time when under water">
+      <created>1680220284901</created>
+      <option name="number" value="LOCAL−00028" />
+      <option name="presentableId" value="LOCAL−00028" />
+      <updated>1680220284901</updated>
+    </task>
+    <task id="LOCAL−00029" summary="Water material is now done a little better">
+      <created>1680221001694</created>
+      <option name="number" value="LOCAL−00029" />
+      <option name="presentableId" value="LOCAL−00029" />
+      <updated>1680221001694</updated>
+    </task>
+    <task id="LOCAL−00030" summary="Water now shades correctly by the atmosphere inside and outside">
+      <created>1680222157899</created>
+      <option name="number" value="LOCAL−00030" />
+      <option name="presentableId" value="LOCAL−00030" />
+      <updated>1680222157899</updated>
+    </task>
+    <task id="LOCAL−00031" summary="Sun has nice new moving material based on temperature">
+      <created>1680226249878</created>
+      <option name="number" value="LOCAL−00031" />
+      <option name="presentableId" value="LOCAL−00031" />
+      <updated>1680226249878</updated>
+    </task>
+    <task id="LOCAL−00032" summary="Sun temperature is now randomized between 3000 and 8000 degrees kelvin">
+      <created>1680227109330</created>
+      <option name="number" value="LOCAL−00032" />
+      <option name="presentableId" value="LOCAL−00032" />
+      <updated>1680227109330</updated>
+    </task>
+    <task id="LOCAL−00033" summary="Directional light matches sun temperature and color">
+      <created>1680227470916</created>
+      <option name="number" value="LOCAL−00033" />
+      <option name="presentableId" value="LOCAL−00033" />
+      <updated>1680227470916</updated>
+    </task>
+    <task id="LOCAL−00034" summary="Added back water shadow as the back side of the planet otherwise would have sunlight through the ground">
+      <created>1680231070165</created>
+      <option name="number" value="LOCAL−00034" />
+      <option name="presentableId" value="LOCAL−00034" />
+      <updated>1680231070165</updated>
+    </task>
+    <task id="LOCAL−00035" summary="Fixed green sun bug">
+      <created>1680267288470</created>
+      <option name="number" value="LOCAL−00035" />
+      <option name="presentableId" value="LOCAL−00035" />
+      <updated>1680267288470</updated>
+    </task>
+    <task id="LOCAL−00036" summary="Better spawn planet">
+      <created>1680269111791</created>
+      <option name="number" value="LOCAL−00036" />
+      <option name="presentableId" value="LOCAL−00036" />
+      <updated>1680269111791</updated>
+    </task>
+    <option name="localTasksCounter" value="37" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -145,9 +363,31 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="Removed unused model and cleaned up code" />
-    <MESSAGE value="Fixed typo" />
-    <MESSAGE value="Changed file" />
-    <option name="LAST_COMMIT_MESSAGE" value="Changed file" />
+    <MESSAGE value="Planet atmosphere color is now randomized" />
+    <MESSAGE value="Have moved ambient light calculation to corresponding planet atmosphere" />
+    <MESSAGE value="Fixed atmosphere update calling to mirror the players actual current planet" />
+    <MESSAGE value="Better shadow resolution near player" />
+    <MESSAGE value="Ambient light is now customized for each atmosphere" />
+    <MESSAGE value="Planet strength is now randomized and can be of if there is no water" />
+    <MESSAGE value="Atmosphere height/thickness is now randomized" />
+    <MESSAGE value="Ambient light now blends with no atmosphere gradient when the atmosphere is weaker" />
+    <MESSAGE value="Changed spacing" />
+    <MESSAGE value="Fixed blinking lights" />
+    <MESSAGE value="Increased FOV" />
+    <MESSAGE value="Changed player position in ship to better suit the new FOV" />
+    <MESSAGE value="Made ship glass a little more transparent" />
+    <MESSAGE value="Turned on camera dithering to make color banding much less noticeable" />
+    <MESSAGE value="Added tonemapping for much better colors (Will not be as washed out as before)" />
+    <MESSAGE value="Longer camera cut of distance to not make sun disappear + better shadow quality" />
+    <MESSAGE value="Water now get rendered at the right time when under water" />
+    <MESSAGE value="Water material is now done a little better" />
+    <MESSAGE value="Water now shades correctly by the atmosphere inside and outside" />
+    <MESSAGE value="Sun has nice new moving material based on temperature" />
+    <MESSAGE value="Sun temperature is now randomized between 3000 and 8000 degrees kelvin" />
+    <MESSAGE value="Directional light matches sun temperature and color" />
+    <MESSAGE value="Added back water shadow as the back side of the planet otherwise would have sunlight through the ground" />
+    <MESSAGE value="Fixed green sun bug" />
+    <MESSAGE value="Better spawn planet" />
+    <option name="LAST_COMMIT_MESSAGE" value="Better spawn planet" />
   </component>
 </project>
