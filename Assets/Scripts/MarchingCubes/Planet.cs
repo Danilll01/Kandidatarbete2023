@@ -190,6 +190,8 @@ public class Planet : MonoBehaviour
         {
             Transform moon = moons[i].transform;
             KeplerOrbitMover orbitMover = moon.parent.GetComponent<KeplerOrbitMover>();
+            moon.localPosition = new Vector3(moon.localPosition.x, 0, moon.localPosition.z);
+            orbitMover.ResetOrbit();
             orbitMover.ForceUpdateOrbitData();
             orbitMover.SetAutoCircleOrbit();
         }
