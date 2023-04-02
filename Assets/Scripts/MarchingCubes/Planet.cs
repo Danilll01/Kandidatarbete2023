@@ -140,7 +140,7 @@ public class Planet : MonoBehaviour
         
     }
 
-    private void LateUpdate()
+    private void FixedUpdate()
     {
         if (player.parent != transform)
         {
@@ -156,6 +156,10 @@ public class Planet : MonoBehaviour
             LockMoons(false);
             KeepPlanetAtSameDistanceToSun();
             KeepMoonsAtSameDistanceFromPlanet();
+
+            parentOrbitMover.ResetOrbit();
+            parentOrbitMover.ForceUpdateOrbitData();
+            parentOrbitMover.SetAutoCircleOrbit();
         }
     }
 
@@ -243,7 +247,7 @@ public class Planet : MonoBehaviour
 
         Vector3 direction = parentOrbitMover.transform.position - sunPosition;
         parentOrbitMover.transform.position = sunPosition + (direction.normalized * positionrelativeToSunDistance);
-
+        parentOrbitMover.transform.up = sunTransform.up;
     }
 
     private Vector3 ClosestPointOnPlane(Vector3 planeOffset, Vector3 planeNormal, Vector3 point)
@@ -271,6 +275,7 @@ public class Planet : MonoBehaviour
                 moon.parent.transform.position = ClosestPointOnPlane(sunPosition, sunTransform.TransformDirection(Vector3.up), moon.parent.transform.position);
 
                 moon.parent.transform.position = moonsParent.transform.position + (direction.normalized * moonsrelativeDistances[i].magnitude);
+                moon.parent.transform.transform.up = sunTransform.up;
             }
         }
     }

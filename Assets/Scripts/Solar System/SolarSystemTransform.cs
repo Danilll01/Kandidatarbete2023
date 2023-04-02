@@ -115,7 +115,7 @@ public class SolarSystemTransform : MonoBehaviour
         }
     }
 
-    private void LateUpdate()
+    private void FixedUpdate()
     {
         if (rotateSolarSystem)
         {
@@ -125,6 +125,10 @@ public class SolarSystemTransform : MonoBehaviour
             int activePlanetIndex = spawnPlanets.bodies.IndexOf(activePlanet);
             Vector3 direction = sun.transform.position - fakeOrbitObject.transform.position;
             sun.transform.position = direction.normalized * relativePlanetSunDistances[activePlanetIndex].magnitude;
+
+            sun.GetComponent<KeplerOrbitMover>().ResetOrbit();
+            sun.GetComponent<KeplerOrbitMover>().ForceUpdateOrbitData();
+            sun.GetComponent<KeplerOrbitMover>().SetAutoCircleOrbit();
         }
     }
     // Setup components for solar system rotation
@@ -159,7 +163,7 @@ public class SolarSystemTransform : MonoBehaviour
 
     private void RotateSolarSystem()
     {
-        planetsParent.transform.RotateAround(activePlanet.transform.position, -rotationAxis,  rotationspeed * Time.deltaTime);
+        sun.transform.RotateAround(activePlanet.transform.position, -rotationAxis,  rotationspeed * Time.deltaTime);
     }
 
     private void UpdateClosestPlanet()
