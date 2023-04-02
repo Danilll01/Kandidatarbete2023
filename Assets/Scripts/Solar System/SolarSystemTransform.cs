@@ -22,7 +22,10 @@ public class SolarSystemTransform : MonoBehaviour
     
     private bool releasePlayer = false;
     private Planet planetToReleasePlayerFrom;
-
+    private Quaternion planetsParentRotation;
+    private Vector3 playerToSunDirection;
+    public bool resetSolarSystem;
+    private bool reset;
 
     void Start()
     {
@@ -97,8 +100,9 @@ public class SolarSystemTransform : MonoBehaviour
         {
             CheckWhenToReleasePlayer();
         }
-        
+
         Universe.player.Planet = activePlanet;
+
     }
 
     private void CheckWhenToReleasePlayer()
@@ -106,12 +110,16 @@ public class SolarSystemTransform : MonoBehaviour
         Vector3 distance = planetToReleasePlayerFrom.transform.parent.position;
         if (distance.magnitude > 100f)
         {
-            player.transform.SetParent(null, true);
-            releasePlayer = false;
-            player.attractor = null;
+            //player.transform.rotation = Quaternion.FromToRotation(player.transform.forward, playerToSunDirection);
+            Vector3 newPlayerToSunDirection = player.transform.position - sun.transform.position;
+            float angleDiff = Vector3.Angle(playerToSunDirection, newPlayerToSunDirection);
+            //oldActivePlanet.transform.parent.rotation = Quaternion.AngleAxis(angleDiff, -rotationAxis);
             planetToReleasePlayerFrom.ResetMoons();
             ResetPlanets();
             TurnOnOrbit(planetToReleasePlayerFrom.transform.parent.gameObject);
+            player.transform.SetParent(null, true);
+            releasePlayer = false;
+            player.attractor = null;
         }
     }
 
@@ -119,12 +127,13 @@ public class SolarSystemTransform : MonoBehaviour
     {
         if (rotateSolarSystem)
         {
-            SetUpRotation();
-            RotateSolarSystem();
-            
+
             int activePlanetIndex = spawnPlanets.bodies.IndexOf(activePlanet);
             Vector3 direction = sun.transform.position - fakeOrbitObject.transform.position;
             sun.transform.position = direction.normalized * relativePlanetSunDistances[activePlanetIndex].magnitude;
+
+            SetUpRotation();
+            RotateSolarSystem();
 
             KeplerOrbitMover keplerOrbitMover = sun.GetComponent<KeplerOrbitMover>();
             keplerOrbitMover.ResetOrbit();
@@ -164,6 +173,8 @@ public class SolarSystemTransform : MonoBehaviour
             keplerOrbitMover.SetAutoCircleOrbit();
             keplerOrbitMover.LockOrbitEditing = true;
         }
+
+        planetToReleasePlayerFrom.transform.rotation = Quaternion.Inverse(planetsParentRotation);
         setUpSolarSystemRotation = false;
     }
 
@@ -213,15 +224,19 @@ public class SolarSystemTransform : MonoBehaviour
             otherPlanet.transform.parent.SetParent(planetsParent.transform, true);
         }
 
-        Quaternion planetRotation = planetsParent.transform.rotation;
+        planetsParentRotation = planetsParent.transform.rotation;
+
+        playerToSunDirection = player.transform.position - sun.transform.position;
 
         // Reset solar system and planet rotations
         planetsParent.transform.rotation = Quaternion.identity;
-        
-        planetTransform.rotation = Quaternion.Inverse(planetRotation);
+
+
+        //planetTransform.rotation = Quaternion.Inverse(planetRotation);
         planetTransform.parent.SetParent(planetsParent.transform, true);
         
         // Place the sun back at origo
+        sun.transform.rotation = Quaternion.identity;
         Vector3 distanceFromOrigin = sun.transform.position - Vector3.zero;
         planetsParent.transform.position -= distanceFromOrigin;
         planetTransform.parent.position = fakeOrbitObject.transform.position;

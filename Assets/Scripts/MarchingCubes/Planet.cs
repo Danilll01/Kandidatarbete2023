@@ -171,14 +171,17 @@ public class Planet : MonoBehaviour
     private void RotateMoons()
     {
         LockMoons(false);
-        moonsParent.transform.Rotate(-rotationAxis, rotationSpeed * Time.deltaTime, Space.World);
+
+        //moonsParent.transform.Rotate(-rotationAxis, rotationSpeed * Time.deltaTime, Space.World);
         
+        /*
         for (int i = 0; i < moons.Count; i++)
         {
             Transform moon = moons[i].transform;
             Vector3 direction = moon.parent.transform.position - moonsParent.transform.position;
             moon.parent.transform.position = direction.normalized * moonsrelativeDistances[i].magnitude;
         }
+        */
     }
 
     // Reset the moons rotation
@@ -244,12 +247,14 @@ public class Planet : MonoBehaviour
     {
         Vector3 sunPosition = parentOrbitMover.AttractorSettings.AttractorObject.transform.position;
         Transform sunTransform = parentOrbitMover.AttractorSettings.AttractorObject.transform;
-        
-        parentOrbitMover.transform.position = ClosestPointOnPlane(sunPosition, sunTransform.transform.TransformDirection(Vector3.up), parentOrbitMover.transform.position);
 
+        Vector3d orbitNormal3D = parentOrbitMover.AttractorSettings.AttractorObject.GetComponent<KeplerOrbitMover>().OrbitData.OrbitNormal;
+        Vector3 orbitNormal = new Vector3((float)orbitNormal3D.x, (float)orbitNormal3D.y, (float)orbitNormal3D.z);
+        parentOrbitMover.transform.position = ClosestPointOnPlane(Vector3.zero, orbitNormal, parentOrbitMover.transform.position);
+        parentOrbitMover.transform.up = orbitNormal;
+        
         Vector3 direction = parentOrbitMover.transform.position - sunPosition;
         parentOrbitMover.transform.position = sunPosition + (direction.normalized * positionrelativeToSunDistance);
-        parentOrbitMover.transform.up = sunTransform.up;
     }
 
     private Vector3 ClosestPointOnPlane(Vector3 planeOffset, Vector3 planeNormal, Vector3 point)
@@ -274,10 +279,13 @@ public class Planet : MonoBehaviour
                 Vector3 sunPosition = parentOrbitMover.AttractorSettings.AttractorObject.transform.position;
                 Transform sunTransform = parentOrbitMover.AttractorSettings.AttractorObject.transform;
 
-                moon.parent.transform.position = ClosestPointOnPlane(sunPosition, sunTransform.TransformDirection(Vector3.up), moon.parent.transform.position);
+
+                Vector3d orbitNormal3D = parentOrbitMover.AttractorSettings.AttractorObject.GetComponent<KeplerOrbitMover>().OrbitData.OrbitNormal;
+                Vector3 orbitNormal = new Vector3((float)orbitNormal3D.x, (float)orbitNormal3D.y, (float)orbitNormal3D.z);
+                moon.parent.transform.position = ClosestPointOnPlane(Vector3.zero, orbitNormal, moon.parent.transform.position);
+                moon.parent.transform.up = orbitNormal;
 
                 moon.parent.transform.position = moonsParent.transform.position + (direction.normalized * moonsrelativeDistances[i].magnitude);
-                moon.parent.transform.transform.up = sunTransform.up;
             }
         }
     }
