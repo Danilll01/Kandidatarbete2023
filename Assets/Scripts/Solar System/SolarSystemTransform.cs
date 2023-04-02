@@ -101,6 +101,8 @@ public class SolarSystemTransform : MonoBehaviour
             CheckWhenToReleasePlayer();
         }
 
+        
+
         Universe.player.Planet = activePlanet;
 
     }
@@ -129,20 +131,26 @@ public class SolarSystemTransform : MonoBehaviour
         {
             SetUpRotation();
 
-            int activePlanetIndex = spawnPlanets.bodies.IndexOf(activePlanet);
-            Vector3 direction = sun.transform.position - fakeOrbitObject.transform.position;
-            //sun.transform.position = direction.normalized * relativePlanetSunDistances[activePlanetIndex].magnitude;
+            
 
             //RotateSolarSystem();
 
-            /*
+            
+            sun.transform.RotateAround(fakeOrbitObject.transform.position, Vector3.up, 5f * Time.deltaTime);
+            planetsParent.transform.RotateAround(fakeOrbitObject.transform.position, -rotationAxis, rotationspeed * Time.deltaTime);
+
+            int activePlanetIndex = spawnPlanets.bodies.IndexOf(activePlanet);
+            Vector3 direction = sun.transform.position - fakeOrbitObject.transform.position;
+            sun.transform.position = direction.normalized * relativePlanetSunDistances[activePlanetIndex].magnitude;
+
+            
             KeplerOrbitMover keplerOrbitMover = sun.GetComponent<KeplerOrbitMover>();
-            keplerOrbitMover.ResetOrbit();
+            //keplerOrbitMover.ResetOrbit();
             keplerOrbitMover.ForceUpdateOrbitData();
             keplerOrbitMover.SetAutoCircleOrbit();
-            */
+            
 
-            planetsParent.transform.RotateAround(fakeOrbitObject.transform.position, Vector3.up, 5f * Time.deltaTime);
+            sun.GetComponent<Sun>().distanceToAttractor = (sun.transform.position - fakeOrbitObject.transform.position).magnitude;
         }
     }
 
@@ -151,17 +159,19 @@ public class SolarSystemTransform : MonoBehaviour
     {
         if (setUpSolarSystemRotation) return;
 
+        rotationAxis = activePlanet.rotationAxis;
+        rotationspeed = activePlanet.rotationSpeed;
+
         for (int i = 0; i < spawnPlanets.bodies.Count; i++)
         {
             Planet planet = spawnPlanets.bodies[i];
-            planet.HandleSolarSystemOrbit();
+            planet.HandleSolarSystemOrbit(rotationAxis);
 
-            if (planet == activePlanet || planet.bodyName.Contains("Moon")) continue;
+            //if (planet == activePlanet || planet.bodyName.Contains("Moon")) continue;
 
-            planet.transform.parent.SetParent(null, true);
+            //planet.transform.parent.SetParent(null, true);
         }
-        rotationAxis = activePlanet.rotationAxis;
-        rotationspeed = activePlanet.rotationSpeed;
+
         setUpSolarSystemRotation = true;
     }
 

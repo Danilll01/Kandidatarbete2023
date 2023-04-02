@@ -58,6 +58,8 @@ public class Planet : MonoBehaviour
     private KeplerOrbitMover parentOrbitMover;
     public bool solarSystemRotationActive;
 
+    public Vector3 axisToRotateAround;
+
     [Header("Orbits")]
     [SerializeField] private string attractorName = "";
     [SerializeField] private float distanceToAttractor = 0;
@@ -161,14 +163,16 @@ public class Planet : MonoBehaviour
             attractorName = "Sun";
             //LockMoons(false);
             parentOrbitMover.transform.RotateAround(Universe.sunPosition.position, Vector3.up, 5f * Time.deltaTime);
+            //parentOrbitMover.transform.up = Universe.sunPosition.up;
+            //parentOrbitMover.transform.RotateAround(Universe.sunPosition.GetComponent<KeplerOrbitMover>().AttractorSettings.AttractorObject.position, -axisToRotateAround, rotationSpeed * Time.deltaTime);
             KeepPlanetAtSameDistanceToSun();
 
             distanceToAttractor = (parentOrbitMover.transform.position - Universe.sunPosition.position).magnitude;
             //KeepMoonsAtSameDistanceFromPlanet();
 
             //parentOrbitMover.ResetOrbit();
-            //parentOrbitMover.ForceUpdateOrbitData();
-            //parentOrbitMover.SetAutoCircleOrbit();
+            parentOrbitMover.ForceUpdateOrbitData();
+            parentOrbitMover.SetAutoCircleOrbit();
         }
     }
 
@@ -243,11 +247,11 @@ public class Planet : MonoBehaviour
     }
 
     // Set up the components for solar system orbit
-    public void HandleSolarSystemOrbit()
+    public void HandleSolarSystemOrbit(Vector3 rotationaxis)
     {
         if (bodyName.Contains("Planet") && player.parent != transform)
         {
-            SetUpComponents();
+            SetUpComponents(rotationAxis);
             solarSystemRotationActive = true;
         }
     }
@@ -303,9 +307,10 @@ public class Planet : MonoBehaviour
         }
     }
 
-    private void SetUpComponents()
+    private void SetUpComponents(Vector3 rotationAxis)
     {
         if (setUpSystemRotationComponents) return;
+        axisToRotateAround = rotationAxis;
         parentOrbitMover.LockOrbitEditing = false;
         parentOrbitMover.ResetOrbit();
         //parentOrbitMover.SetUp();
