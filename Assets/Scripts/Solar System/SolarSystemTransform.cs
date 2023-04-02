@@ -127,7 +127,7 @@ public class SolarSystemTransform : MonoBehaviour
     {
         if (rotateSolarSystem)
         {
-            //SetUpRotation();
+            SetUpRotation();
 
             int activePlanetIndex = spawnPlanets.bodies.IndexOf(activePlanet);
             Vector3 direction = sun.transform.position - fakeOrbitObject.transform.position;
@@ -155,6 +155,10 @@ public class SolarSystemTransform : MonoBehaviour
         {
             Planet planet = spawnPlanets.bodies[i];
             planet.HandleSolarSystemOrbit();
+
+            if (planet == activePlanet || planet.bodyName.Contains("Moon")) continue;
+
+            planet.transform.parent.SetParent(null, true);
         }
         rotationAxis = activePlanet.rotationAxis;
         rotationspeed = activePlanet.rotationSpeed;
