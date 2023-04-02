@@ -167,8 +167,25 @@ public class Planet : MonoBehaviour
             //parentOrbitMover.transform.RotateAround(Universe.sunPosition.GetComponent<KeplerOrbitMover>().AttractorSettings.AttractorObject.position, -axisToRotateAround, rotationSpeed * Time.deltaTime);
             KeepPlanetAtSameDistanceToSun();
 
-            distanceToAttractor = (parentOrbitMover.transform.position - Universe.sunPosition.position).magnitude;
+            if (!rotateMoons)
+            {
+                Vector3 sunPosition = parentOrbitMover.AttractorSettings.AttractorObject.transform.position;
+                Transform sunTransform = parentOrbitMover.AttractorSettings.AttractorObject.transform;
+                moonsParent.transform.position = ClosestPointOnPlane(sunPosition, sunTransform.TransformDirection(Vector3.up), moonsParent.transform.position);
+                moonsParent.transform.up = sunTransform.up;
+
+                for (int i = 0; i < moons.Count; i++)
+                {
+                    Transform moon = moons[i].transform;
+                    Vector3 direction = moon.parent.transform.position - moonsParent.transform.position;
+                    moon.parent.transform.position = moonsParent.transform.position + (direction.normalized * moonsrelativeDistances[i].magnitude);
+                }
+            }
+
+            
             //KeepMoonsAtSameDistanceFromPlanet();
+
+            distanceToAttractor = (parentOrbitMover.transform.position - Universe.sunPosition.position).magnitude;
 
             //parentOrbitMover.ResetOrbit();
             parentOrbitMover.ForceUpdateOrbitData();
@@ -183,18 +200,20 @@ public class Planet : MonoBehaviour
 
     private void RotateMoons()
     {
-        LockMoons(false);
+        Vector3 sunPosition = parentOrbitMover.AttractorSettings.AttractorObject.transform.position;
+        Transform sunTransform = parentOrbitMover.AttractorSettings.AttractorObject.transform;
+        moonsParent.transform.position = ClosestPointOnPlane(sunPosition, sunTransform.TransformDirection(Vector3.up), moonsParent.transform.position);
+        moonsParent.transform.up = sunTransform.up;
 
-        //moonsParent.transform.Rotate(-rotationAxis, rotationSpeed * Time.deltaTime, Space.World);
-        
-        /*
         for (int i = 0; i < moons.Count; i++)
         {
             Transform moon = moons[i].transform;
             Vector3 direction = moon.parent.transform.position - moonsParent.transform.position;
-            moon.parent.transform.position = direction.normalized * moonsrelativeDistances[i].magnitude;
+            moon.parent.transform.position = moonsParent.transform.position + (direction.normalized * moonsrelativeDistances[i].magnitude);
+
+            moon.parent.GetComponent<KeplerOrbitMover>().ForceUpdateOrbitData();
+            moon.parent.GetComponent<KeplerOrbitMover>().SetAutoCircleOrbit();
         }
-        */
     }
 
     // Reset the moons rotation
@@ -264,7 +283,7 @@ public class Planet : MonoBehaviour
         Vector3 direction = parentOrbitMover.transform.position - sunPosition;
         parentOrbitMover.transform.position = sunPosition + (direction.normalized * positionrelativeToSunDistance);
 
-        parentOrbitMover.transform.position = ClosestPointOnPlane(sunPosition, sunTransform.transform.TransformDirection(Vector3.up), parentOrbitMover.transform.position);
+        parentOrbitMover.transform.position = ClosestPointOnPlane(sunPosition, sunTransform.TransformDirection(Vector3.up), parentOrbitMover.transform.position);
 
         /*
         Vector3d orbitNormal3D = parentOrbitMover.AttractorSettings.AttractorObject.GetComponent<KeplerOrbitMover>().OrbitData.OrbitNormal;
