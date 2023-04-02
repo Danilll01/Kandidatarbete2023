@@ -154,6 +154,7 @@ public class SolarSystemTransform : MonoBehaviour
 
             sun.GetComponent<Sun>().distanceToAttractor = (sun.transform.position - fakeOrbitObject.transform.position).magnitude;
 
+
             foreach (var planetBody in spawnPlanets.bodies)
             {
                 planetBody.Run();

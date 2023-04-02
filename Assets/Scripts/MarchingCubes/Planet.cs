@@ -153,7 +153,7 @@ public class Planet : MonoBehaviour
         {
             RotateAroundAxis();
         }
-        else if (rotateMoons && !bodyName.Contains("Moon"))
+        else if (rotateMoons)
         {
             RotateMoons();
         }
@@ -166,23 +166,9 @@ public class Planet : MonoBehaviour
             //parentOrbitMover.transform.up = Universe.sunPosition.up;
             //parentOrbitMover.transform.RotateAround(Universe.sunPosition.GetComponent<KeplerOrbitMover>().AttractorSettings.AttractorObject.position, -axisToRotateAround, rotationSpeed * Time.deltaTime);
             KeepPlanetAtSameDistanceToSun();
+            RotateMoons();
 
-            if (!rotateMoons)
-            {
-                Vector3 sunPosition = parentOrbitMover.AttractorSettings.AttractorObject.transform.position;
-                Transform sunTransform = parentOrbitMover.AttractorSettings.AttractorObject.transform;
-                moonsParent.transform.position = ClosestPointOnPlane(sunPosition, sunTransform.TransformDirection(Vector3.up), moonsParent.transform.position);
-                moonsParent.transform.up = sunTransform.up;
 
-                for (int i = 0; i < moons.Count; i++)
-                {
-                    Transform moon = moons[i].transform;
-                    Vector3 direction = moon.parent.transform.position - moonsParent.transform.position;
-                    moon.parent.transform.position = moonsParent.transform.position + (direction.normalized * moonsrelativeDistances[i].magnitude);
-                }
-            }
-
-            
             //KeepMoonsAtSameDistanceFromPlanet();
 
             distanceToAttractor = (parentOrbitMover.transform.position - Universe.sunPosition.position).magnitude;
@@ -208,8 +194,14 @@ public class Planet : MonoBehaviour
         for (int i = 0; i < moons.Count; i++)
         {
             Transform moon = moons[i].transform;
+            moon.transform.Rotate(rotationAxis, rotationSpeed * Time.deltaTime, Space.World);
+            moon.parent.transform.RotateAround(moonsParent.transform.position, Vector3.up, 5f * Time.deltaTime);
+
             Vector3 direction = moon.parent.transform.position - moonsParent.transform.position;
             moon.parent.transform.position = moonsParent.transform.position + (direction.normalized * moonsrelativeDistances[i].magnitude);
+
+            moon.parent.transform.position = ClosestPointOnPlane(moonsParent.transform.position, moonsParent.transform.TransformDirection(Vector3.up), moon.parent.transform.position);
+            moon.parent.transform.up = moonsParent.transform.up;
 
             moon.parent.GetComponent<KeplerOrbitMover>().ForceUpdateOrbitData();
             moon.parent.GetComponent<KeplerOrbitMover>().SetAutoCircleOrbit();
