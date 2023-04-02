@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using ExtendedRandom;
 using UnityEngine;
 using SimpleKeplerOrbits;
+using UnityEngine.Serialization;
 
 public class SpawnPlanets : MonoBehaviour
 {
@@ -19,12 +20,12 @@ public class SpawnPlanets : MonoBehaviour
     [SerializeField] private int minNumberOfMoons = 1;
     [SerializeField] private int maxNumberOfMoons = 5;
 
-    [SerializeField] private Material sunMaterial;
+    [SerializeField] private Material sunMaterial;      // Can this be removed?
     [SerializeField] private PillPlayerController player;
     [SerializeField] private DirectionalSun sunLightning;
     [HideInInspector] public GameObject sun;
 
-    [HideInInspector] public bool solarySystemGenerated = false;
+    [HideInInspector] public bool solarSystemGenerated = false;
 
     [SerializeField] private bool randomizeSpawnPlanet = false;
     private RandomX random;
@@ -41,9 +42,9 @@ public class SpawnPlanets : MonoBehaviour
         random = Universe.random;
         GetValues();
         CreatePlanets();
-        sunLightning.Initialize(sun.transform);
         player.Initialize(bodies[spawnPlanetIndex], random.Next());
-        solarySystemGenerated = true;
+        sunLightning.Initialize();
+        solarSystemGenerated = true;
     }
 
     private void GetValues()
@@ -60,36 +61,37 @@ public class SpawnPlanets : MonoBehaviour
         bodies = new List<Planet>();
 
         // Create a sun object
-        GameObject Sun = Instantiate(sunPrefab);
-        Sun.transform.parent = planetsParent.transform;
-        Sun.transform.localPosition = new Vector3(0, 0, 0);
-        Sun.gameObject.name = "Sun";
+        sun = Instantiate(sunPrefab);
+        sun.transform.parent = planetsParent.transform;
+        sun.transform.localPosition = new Vector3(0, 0, 0);
+        sun.gameObject.name = "Sun";
 
-        Sun SunPlanetBody = Sun.GetComponent<Sun>();
+        Sun SunPlanetBody = sun.GetComponent<Sun>();
         SunPlanetBody.diameter = radiusMaxValue * 2;
         SunPlanetBody.SetUpPlanetValues();
-        SunPlanetBody.Initialize(player.transform, random.Next());
+        SunPlanetBody.Initialize(random.Next());
 
-        Sun.transform.GetChild(0).localScale = new Vector3(SunPlanetBody.diameter, SunPlanetBody.diameter, SunPlanetBody.diameter);
+        sun.transform.GetChild(0).localScale = new Vector3(SunPlanetBody.diameter, SunPlanetBody.diameter, SunPlanetBody.diameter);
 
         GameObject velocityHelper = new GameObject();
         velocityHelper.gameObject.name = "VelocityHelper";
-        velocityHelper.transform.parent = Sun.transform;
+        velocityHelper.transform.parent = sun.transform;
         velocityHelper.transform.localPosition = new Vector3(-100, 0, 0);
 
-        Sun.GetComponent<KeplerOrbitMover>().VelocityHandle = velocityHelper.transform;
-        sun = Sun;
-        InstantiatePlanets(Sun);
+        sun.GetComponent<KeplerOrbitMover>().VelocityHandle = velocityHelper.transform;
+
+        Universe.sunPosition = sun.transform;
+        
+        InstantiatePlanets(sun);
     }
 
     // Instantiates the all the components on all the planets
-    private void InstantiatePlanets(GameObject Sun)
+    private void InstantiatePlanets(GameObject sun)
     {
         // Create all other planets and helpers
         for (int i = 0; i < numberOfPlanets; i++)
         {
-            GameObject planet = Instantiate(planetsPrefab);
-            planet.transform.parent = planetsParent.transform;
+            GameObject planet = Instantiate(planetsPrefab, planetsParent.transform, true);
 
             Planet planetBody = planet.GetComponent<Planet>();
             planetBody.bodyName = "Planet " + i;
@@ -106,7 +108,7 @@ public class SpawnPlanets : MonoBehaviour
             InstantiateMoons(planetBody, nrOfMoonsForPlanet);
             bodies.Add(planetBody);
 
-            SetupOrbitComponents(Sun, planet);
+            SetupOrbitComponents(sun, planet);
         }
     }
 

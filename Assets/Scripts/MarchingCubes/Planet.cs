@@ -10,7 +10,7 @@ using UnityEngine;
 public class Planet : MonoBehaviour
 {
     [SerializeField] private ComputeShader meshGenerator;
-    [SerializeField] private Material waterMaterial;
+    [SerializeField] private Material waterMaterial; // Can this be removed?
     [HideInInspector] public float waterDiameter;
 
     [HideInInspector, Obsolete]public float diameter;
@@ -29,13 +29,14 @@ public class Planet : MonoBehaviour
     //[SerializeField, Range(1, 4)] 
     [SerializeField, Range(1, 14)] public int resolution = 5;
 
-    [SerializeField] public bool willGeneratePlanetLife = false;
+    public bool willGeneratePlanetLife = false;
     [Range(0f, 1f)]
     [SerializeField] private float chanceToSpawnPlanetLife = 0.8f; 
     [SerializeField] private GenerateCreatures generateCreatures;
-    [SerializeField] public ChunksHandler chunksHandler;
-    [SerializeField] public WaterHandler waterHandler;
-    [SerializeField] public FoliageHandler foliageHandler;
+    public ChunksHandler chunksHandler;
+    public WaterHandler waterHandler;
+    public AtmosphereHandler atmosphereHandler;
+    public FoliageHandler foliageHandler;
 
     [Header("Terrain")]
     [SerializeField, Range(0, 1)] private float waterLevel = 0.92f;
@@ -101,6 +102,13 @@ public class Planet : MonoBehaviour
             }
         }
 
+        if (atmosphereHandler != null && bodyName != "Sun")
+        {
+            // Will generate planet life currently decides if there is atmosphere, could change this later when a better system is created
+            // Depending on system, it could be advantageous to give the strength of the atmosphere too, this will have to be sent in as a parameter then 
+            atmosphereHandler.Initialize(radius, waterDiameter / 2, willGeneratePlanetLife,rand.Next()); 
+            
+        }
     }
 
     /// <summary>
