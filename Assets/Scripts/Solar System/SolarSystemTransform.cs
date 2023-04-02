@@ -127,20 +127,25 @@ public class SolarSystemTransform : MonoBehaviour
     {
         if (rotateSolarSystem)
         {
+            //SetUpRotation();
 
             int activePlanetIndex = spawnPlanets.bodies.IndexOf(activePlanet);
             Vector3 direction = sun.transform.position - fakeOrbitObject.transform.position;
-            sun.transform.position = direction.normalized * relativePlanetSunDistances[activePlanetIndex].magnitude;
+            //sun.transform.position = direction.normalized * relativePlanetSunDistances[activePlanetIndex].magnitude;
 
-            SetUpRotation();
-            RotateSolarSystem();
+            //RotateSolarSystem();
 
+            /*
             KeplerOrbitMover keplerOrbitMover = sun.GetComponent<KeplerOrbitMover>();
             keplerOrbitMover.ResetOrbit();
             keplerOrbitMover.ForceUpdateOrbitData();
             keplerOrbitMover.SetAutoCircleOrbit();
+            */
+
+            planetsParent.transform.RotateAround(fakeOrbitObject.transform.position, Vector3.up, 5f * Time.deltaTime);
         }
     }
+
     // Setup components for solar system rotation
     private void SetUpRotation()
     {
@@ -254,14 +259,6 @@ public class SolarSystemTransform : MonoBehaviour
         planetsParent.transform.position -= distanceFromOrigin;
         planetTransform.parent.parent = null;
         fakeOrbitObject.transform.position = Vector3.zero;
-
-        for (int i = 0; i < spawnPlanets.bodies.Count; i++)
-        {
-            Planet planet = spawnPlanets.bodies[i];
-            if (planet == activePlanet || planet.bodyName.Contains("Moon")) continue;
-
-            planet.transform.parent.parent = null;
-        }
         
         player.attractor = activePlanet;
 
@@ -294,9 +291,10 @@ public class SolarSystemTransform : MonoBehaviour
         // Turns on orbit for the given planet
         KeplerOrbitMover orbitMover = planet.GetComponent<KeplerOrbitMover>();
         orbitMover.ResetOrbit();
-        orbitMover.SetUp();
+        //orbitMover.SetUp();
         orbitMover.ForceUpdateOrbitData();
         orbitMover.SetAutoCircleOrbit();
-        orbitMover.enabled = true;
+        orbitMover.enabled = false;
+        //orbitMover.enabled = true;
     }
 }

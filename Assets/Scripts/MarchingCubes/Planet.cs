@@ -248,13 +248,15 @@ public class Planet : MonoBehaviour
         Vector3 sunPosition = parentOrbitMover.AttractorSettings.AttractorObject.transform.position;
         Transform sunTransform = parentOrbitMover.AttractorSettings.AttractorObject.transform;
 
+        Vector3 direction = parentOrbitMover.transform.position - sunPosition;
+        parentOrbitMover.transform.position = sunPosition + (direction.normalized * positionrelativeToSunDistance);
+
         Vector3d orbitNormal3D = parentOrbitMover.AttractorSettings.AttractorObject.GetComponent<KeplerOrbitMover>().OrbitData.OrbitNormal;
         Vector3 orbitNormal = new Vector3((float)orbitNormal3D.x, (float)orbitNormal3D.y, (float)orbitNormal3D.z);
         parentOrbitMover.transform.position = ClosestPointOnPlane(Vector3.zero, orbitNormal, parentOrbitMover.transform.position);
         parentOrbitMover.transform.up = orbitNormal;
         
-        Vector3 direction = parentOrbitMover.transform.position - sunPosition;
-        parentOrbitMover.transform.position = sunPosition + (direction.normalized * positionrelativeToSunDistance);
+        
     }
 
     private Vector3 ClosestPointOnPlane(Vector3 planeOffset, Vector3 planeNormal, Vector3 point)
@@ -278,6 +280,7 @@ public class Planet : MonoBehaviour
 
                 Vector3 sunPosition = parentOrbitMover.AttractorSettings.AttractorObject.transform.position;
                 Transform sunTransform = parentOrbitMover.AttractorSettings.AttractorObject.transform;
+                moon.parent.transform.position = moonsParent.transform.position + (direction.normalized * moonsrelativeDistances[i].magnitude);
 
 
                 Vector3d orbitNormal3D = parentOrbitMover.AttractorSettings.AttractorObject.GetComponent<KeplerOrbitMover>().OrbitData.OrbitNormal;
@@ -285,7 +288,6 @@ public class Planet : MonoBehaviour
                 moon.parent.transform.position = ClosestPointOnPlane(Vector3.zero, orbitNormal, moon.parent.transform.position);
                 moon.parent.transform.up = orbitNormal;
 
-                moon.parent.transform.position = moonsParent.transform.position + (direction.normalized * moonsrelativeDistances[i].magnitude);
             }
         }
     }

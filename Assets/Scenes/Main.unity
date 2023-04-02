@@ -550,6 +550,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spawnPlanets: {fileID: 882231452}
   player: {fileID: 1898646053}
+  resetSolarSystem: 0
 --- !u!1 &459511075
 GameObject:
   m_ObjectHideFlags: 0
@@ -997,12 +998,12 @@ PrefabInstance:
     - target: {fileID: 776431053636631548, guid: 93094628cce30c64195c2ae1633e7e60,
         type: 3}
       propertyPath: radiusMaxValue
-      value: 2000
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 776431053636631548, guid: 93094628cce30c64195c2ae1633e7e60,
         type: 3}
       propertyPath: radiusMinValue
-      value: 500
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 776431053636631548, guid: 93094628cce30c64195c2ae1633e7e60,
         type: 3}

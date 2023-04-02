@@ -74,9 +74,23 @@ public class SpawnPlanets : MonoBehaviour
         GameObject velocityHelper = new GameObject();
         velocityHelper.gameObject.name = "VelocityHelper";
         velocityHelper.transform.parent = sun.transform;
-        velocityHelper.transform.localPosition = new Vector3(-100, 0, 0);
+        velocityHelper.transform.localPosition = new Vector3(100, 0, 0);
 
-        sun.GetComponent<KeplerOrbitMover>().VelocityHandle = velocityHelper.transform;
+        // Assign needed scripts to the planet
+        sun.AddComponent<KeplerOrbitMover>();
+        sun.AddComponent<KeplerOrbitLineDisplay>();
+
+
+        // Setup settings for the orbit script with the sun as the central body
+        KeplerOrbitMover planetOrbitMover = sun.GetComponent<KeplerOrbitMover>();
+        planetOrbitMover.AttractorSettings.GravityConstant = Universe.gravitationalConstant;
+        planetOrbitMover.VelocityHandle = velocityHelper.transform;
+        //planetOrbitMover.SetUp();
+        planetOrbitMover.SetAutoCircleOrbit();
+        planetOrbitMover.ForceUpdateOrbitData();
+        planetOrbitMover.LockOrbitEditing = true;
+        planetOrbitMover.enabled = false;
+        planetOrbitMover.TimeScale = 0;
 
         Universe.sunPosition = sun.transform;
         
@@ -249,5 +263,7 @@ public class SpawnPlanets : MonoBehaviour
         planetOrbitMover.SetAutoCircleOrbit();
         planetOrbitMover.ForceUpdateOrbitData();
         planetOrbitMover.LockOrbitEditing = true;
+        planetOrbitMover.enabled = false;
+        planetOrbitMover.TimeScale = 0;
     }
 }
