@@ -137,6 +137,7 @@ public class SolarSystemTransform : MonoBehaviour
 
             
             sun.transform.RotateAround(fakeOrbitObject.transform.position, Vector3.up, 5f * Time.deltaTime);
+            
             planetsParent.transform.RotateAround(fakeOrbitObject.transform.position, -rotationAxis, rotationspeed * Time.deltaTime);
 
             int activePlanetIndex = spawnPlanets.bodies.IndexOf(activePlanet);
@@ -145,12 +146,18 @@ public class SolarSystemTransform : MonoBehaviour
 
             
             KeplerOrbitMover keplerOrbitMover = sun.GetComponent<KeplerOrbitMover>();
+
             //keplerOrbitMover.ResetOrbit();
             keplerOrbitMover.ForceUpdateOrbitData();
             keplerOrbitMover.SetAutoCircleOrbit();
             
 
             sun.GetComponent<Sun>().distanceToAttractor = (sun.transform.position - fakeOrbitObject.transform.position).magnitude;
+
+            foreach (var planetBody in spawnPlanets.bodies)
+            {
+                planetBody.Run();
+            }
         }
     }
 

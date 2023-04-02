@@ -147,7 +147,7 @@ public class Planet : MonoBehaviour
         
     }
 
-    private void FixedUpdate()
+    public void Run()
     {
         if (player.parent != transform)
         {
@@ -259,10 +259,12 @@ public class Planet : MonoBehaviour
     private void KeepPlanetAtSameDistanceToSun()
     {
         Vector3 sunPosition = Universe.sunPosition.position;
-        //Transform sunTransform = parentOrbitMover.AttractorSettings.AttractorObject.transform;
+        Transform sunTransform = parentOrbitMover.AttractorSettings.AttractorObject.transform;
 
         Vector3 direction = parentOrbitMover.transform.position - sunPosition;
         parentOrbitMover.transform.position = sunPosition + (direction.normalized * positionrelativeToSunDistance);
+
+        parentOrbitMover.transform.position = ClosestPointOnPlane(sunPosition, sunTransform.transform.TransformDirection(Vector3.up), parentOrbitMover.transform.position);
 
         /*
         Vector3d orbitNormal3D = parentOrbitMover.AttractorSettings.AttractorObject.GetComponent<KeplerOrbitMover>().OrbitData.OrbitNormal;
@@ -270,8 +272,8 @@ public class Planet : MonoBehaviour
         parentOrbitMover.transform.position = ClosestPointOnPlane(Vector3.zero, orbitNormal, parentOrbitMover.transform.position);
         parentOrbitMover.transform.up = orbitNormal;
         */
-        
-        
+
+
     }
 
     private Vector3 ClosestPointOnPlane(Vector3 planeOffset, Vector3 planeNormal, Vector3 point)
