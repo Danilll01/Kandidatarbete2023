@@ -173,7 +173,7 @@ public class SolarSystemTransform : MonoBehaviour
         for (int i = 0; i < spawnPlanets.bodies.Count; i++)
         {
             Planet planet = spawnPlanets.bodies[i];
-            planet.HandleSolarSystemOrbit(rotationAxis);
+            planet.HandleSolarSystemOrbit(rotationAxis, rotationspeed);
 
             //if (planet == activePlanet || planet.bodyName.Contains("Moon")) continue;
 

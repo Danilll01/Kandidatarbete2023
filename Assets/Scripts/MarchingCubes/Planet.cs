@@ -59,6 +59,7 @@ public class Planet : MonoBehaviour
     public bool solarSystemRotationActive;
 
     public Vector3 axisToRotateAround;
+    public float speedToRotateAroundWith;
 
     [Header("Orbits")]
     [SerializeField] private string attractorName = "";
@@ -188,6 +189,7 @@ public class Planet : MonoBehaviour
     {
         Vector3 sunPosition = parentOrbitMover.AttractorSettings.AttractorObject.transform.position;
         Transform sunTransform = parentOrbitMover.AttractorSettings.AttractorObject.transform;
+        moonsParent.transform.RotateAround(Vector3.zero, -axisToRotateAround,  speedToRotateAroundWith * Time.deltaTime);
         moonsParent.transform.position = ClosestPointOnPlane(sunPosition, sunTransform.TransformDirection(Vector3.up), moonsParent.transform.position);
         moonsParent.transform.up = sunTransform.up;
 
@@ -258,11 +260,11 @@ public class Planet : MonoBehaviour
     }
 
     // Set up the components for solar system orbit
-    public void HandleSolarSystemOrbit(Vector3 rotationaxis)
+    public void HandleSolarSystemOrbit(Vector3 rotationaxis, float speed)
     {
         if (bodyName.Contains("Planet") && player.parent != transform)
         {
-            SetUpComponents(rotationAxis);
+            SetUpComponents(rotationAxis, speed);
             solarSystemRotationActive = true;
         }
     }
@@ -320,10 +322,11 @@ public class Planet : MonoBehaviour
         }
     }
 
-    private void SetUpComponents(Vector3 rotationAxis)
+    private void SetUpComponents(Vector3 rotationAxis, float speed)
     {
         if (setUpSystemRotationComponents) return;
         axisToRotateAround = rotationAxis;
+        speedToRotateAroundWith = speed;
         parentOrbitMover.LockOrbitEditing = false;
         parentOrbitMover.ResetOrbit();
         //parentOrbitMover.SetUp();
