@@ -14,20 +14,16 @@ public class SolarSystemTransform : MonoBehaviour
     [SerializeField] private PillPlayerController player;
     private bool rotateSolarSystem;
     private bool setUpSolarSystemRotation;
-    private KeplerOrbitMover sunKeplerOrbitMover;
     private Vector3[] relativePlanetSunDistances;
     private Vector3 rotationAxis;
     private float rotationspeed;
-    private GameObject fakeOrbitObject;
-    
+
     private bool releasePlayer = false;
     private Planet planetToReleasePlayerFrom;
     private Quaternion planetsParentRotation;
-    private Vector3 playerToSunDirection;
     public bool resetSolarSystem;
     private bool reset;
-    private bool updateDebugOrbits;
-    private float timePassed;
+    private GameObject fakeOrbitObject;
 
     void Start()
     {
@@ -38,8 +34,7 @@ public class SolarSystemTransform : MonoBehaviour
         
         planetsParent = this.gameObject;
         planetToReleasePlayerFrom = null;
-        timePassed = 0;
-        
+
         // Create a fake orbit object the sun can orbit around while solar system is rotating
         fakeOrbitObject = new GameObject("fake orbit object")
         {
@@ -144,26 +139,21 @@ public class SolarSystemTransform : MonoBehaviour
     {
         if (releasePlayer) return;
 
-        timePassed += Time.deltaTime;
-        updateDebugOrbits = false;
-
-        if (updateDebugOrbits) timePassed = 0;
-
         if (rotateSolarSystem)
         {
             SetUpRotation();
 
-            sun.transform.RotateAround(fakeOrbitObject.transform.position, Vector3.up, 2f * Time.deltaTime);
+            sun.transform.RotateAround(Vector3.zero, Vector3.up, 2f * Time.deltaTime);
             
-            planetsParent.transform.RotateAround(fakeOrbitObject.transform.position, -rotationAxis, rotationspeed * Time.deltaTime);
+            planetsParent.transform.RotateAround(Vector3.zero, -rotationAxis, rotationspeed * Time.deltaTime);
 
             int activePlanetIndex = spawnPlanets.bodies.IndexOf(activePlanet);
-            Vector3 direction = sun.transform.position - fakeOrbitObject.transform.position;
+            Vector3 direction = sun.transform.position - Vector3.zero;
             sun.transform.position = direction.normalized * relativePlanetSunDistances[activePlanetIndex].magnitude;
 
             sun.transform.position = ClosestPointOnPlane(Vector3.zero, sun.transform.TransformDirection(Vector3.up), sun.transform.position);
 
-            sun.GetComponent<Sun>().distanceToAttractor = (sun.transform.position - fakeOrbitObject.transform.position).magnitude;
+            sun.GetComponent<Sun>().distanceToAttractor = (sun.transform.position - Vector3.zero).magnitude;
 
             foreach (var planetBody in spawnPlanets.bodies)
             {
@@ -189,8 +179,8 @@ public class SolarSystemTransform : MonoBehaviour
         {
             return;
         }
-        float radius = (sun.transform.position - fakeOrbitObject.transform.position).magnitude;
-        Universe.DrawGizmosCircle(fakeOrbitObject.transform.position, sun.transform.up, radius, 32);
+        float radius = (sun.transform.position - Vector3.zero).magnitude;
+        Universe.DrawGizmosCircle(Vector3.zero, sun.transform.up, radius, 32);
     }
 
     private Vector3 ClosestPointOnPlane(Vector3 planeOffset, Vector3 planeNormal, Vector3 point)
