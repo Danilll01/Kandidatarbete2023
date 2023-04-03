@@ -282,7 +282,8 @@ public class SolarSystemTransform : MonoBehaviour
         Vector3 newPlanetPos = fakeOrbitObject.transform.position;
         newPlanetPos.y = 0;
         planetTransform.parent.position = newPlanetPos;
-        //planetTransform.parent.rotation = Quaternion.identity;
+        float angleBetweenRotations = Quaternion.Angle(planetsParentRotation, planetsParent.transform.rotation);
+        planetTransform.rotation *= Quaternion.AngleAxis(angleBetweenRotations, -rotationAxis);
     }
 
     private void MovePlanets()
