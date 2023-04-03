@@ -74,36 +74,56 @@ public class SolarSystemTransform : MonoBehaviour
         }
         InitializeValues();
 
-        if (!releasePlayer)
+        if (!resetSolarSystem)
         {
-            UpdateClosestPlanet();
+            if (!releasePlayer)
+            {
+                UpdateClosestPlanet();
 
-            // If the player is not on any planet, reset the solar system
-            if (activePlanet != oldActivePlanet && activePlanet == null)
-            {
-                rotateSolarSystem = false;
-                ResetPlanetOrbit(oldActivePlanet);
-                oldActivePlanet.ResetMoons();
-                planetToReleasePlayerFrom = oldActivePlanet;
-                releasePlayer = true;
-                oldActivePlanet = activePlanet;
+                // If the player is not on any planet, reset the solar system
+                if (activePlanet != oldActivePlanet && activePlanet == null)
+                {
+                    rotateSolarSystem = false;
+                    ResetPlanetOrbit(oldActivePlanet);
+                    oldActivePlanet.ResetMoons();
+                    planetToReleasePlayerFrom = oldActivePlanet;
+                    releasePlayer = true;
+                    oldActivePlanet = activePlanet;
+                }
+                // If the player has entered a new planet, move the solar system accordingly
+                else if (activePlanet != oldActivePlanet)
+                {
+                    MovePlanets();
+                    activePlanet.rotateMoons = true;
+                    oldActivePlanet = activePlanet;
+                }
             }
-            // If the player has entered a new planet, move the solar system accordingly
-            else if (activePlanet != oldActivePlanet)
+            else
             {
-                MovePlanets();
-                activePlanet.rotateMoons = true;
-                oldActivePlanet = activePlanet;
+                CheckWhenToReleasePlayer();
             }
+
+
+
+            Universe.player.Planet = activePlanet;
         }
-        else
+        else if(!reset)
+        {
+            rotateSolarSystem = false;
+            ResetPlanetOrbit(oldActivePlanet);
+            oldActivePlanet.ResetMoons();
+            planetToReleasePlayerFrom = oldActivePlanet;
+            releasePlayer = true;
+            oldActivePlanet = activePlanet;
+            reset = true;
+        }
+
+        if (releasePlayer && reset)
         {
             CheckWhenToReleasePlayer();
         }
 
         
-
-        Universe.player.Planet = activePlanet;
 
     }
 
@@ -121,7 +141,7 @@ public class SolarSystemTransform : MonoBehaviour
             TurnOnOrbit(planetToReleasePlayerFrom.transform.parent.gameObject);
             player.transform.SetParent(null, true);
             releasePlayer = false;
-            player.attractor = null;
+            //player.attractor = null;
         }
     }
 
@@ -130,12 +150,8 @@ public class SolarSystemTransform : MonoBehaviour
         if (rotateSolarSystem)
         {
             SetUpRotation();
-
-            
-
             //RotateSolarSystem();
 
-            
             sun.transform.RotateAround(fakeOrbitObject.transform.position, Vector3.up, 5f * Time.deltaTime);
             
             planetsParent.transform.RotateAround(fakeOrbitObject.transform.position, -rotationAxis, rotationspeed * Time.deltaTime);
@@ -159,6 +175,17 @@ public class SolarSystemTransform : MonoBehaviour
             {
                 planetBody.Run();
             }
+        }
+        else
+        {
+            if (relativePlanetSunDistances != null)
+            {
+                foreach (var planetBody in spawnPlanets.bodies)
+                {
+                    planetBody.Run();
+                }
+            }
+            
         }
     }
 
@@ -243,6 +270,7 @@ public class SolarSystemTransform : MonoBehaviour
         KeplerOrbitMover sunOrbitMover = sun.GetComponent<KeplerOrbitMover>();
         sunOrbitMover.enabled = false;
 
+        /*
         for (int i = 0; i < spawnPlanets.bodies.Count; i++)
         {
             Planet otherPlanet = spawnPlanets.bodies[i];
@@ -250,6 +278,7 @@ public class SolarSystemTransform : MonoBehaviour
 
             otherPlanet.transform.parent.SetParent(planetsParent.transform, true);
         }
+        */
 
         planetsParentRotation = planetsParent.transform.rotation;
 

@@ -153,10 +153,33 @@ public class Planet : MonoBehaviour
         if (player.parent != transform)
         {
             RotateAroundAxis();
+            //LockMoons(false);
+            parentOrbitMover.transform.RotateAround(Universe.sunPosition.position, Vector3.up, 5f * Time.deltaTime);
+            //parentOrbitMover.transform.up = Universe.sunPosition.up;
+            //parentOrbitMover.transform.RotateAround(Universe.sunPosition.GetComponent<KeplerOrbitMover>().AttractorSettings.AttractorObject.position, -axisToRotateAround, rotationSpeed * Time.deltaTime);
+            KeepPlanetAtSameDistanceToSun();
+            RotateMoons(false);
+
+            parentOrbitMover.ForceUpdateOrbitData();
+            parentOrbitMover.SetAutoCircleOrbit();
         }
         else if (rotateMoons)
         {
             RotateMoons(true);
+        }
+
+        attractorName = "Sun";
+        distanceToAttractor = (parentOrbitMover.transform.position - Universe.sunPosition.position).magnitude;
+        /*
+
+        if (!solarSystemRotationActive && !rotateMoons)
+        {
+            parentOrbitMover.transform.RotateAround(Universe.sunPosition.position, Vector3.up, 5f * Time.deltaTime);
+            KeepPlanetAtSameDistanceToSun();
+            RotateMoons(false);
+
+            parentOrbitMover.ForceUpdateOrbitData();
+            parentOrbitMover.SetAutoCircleOrbit();
         }
 
         if (solarSystemRotationActive)
@@ -178,6 +201,9 @@ public class Planet : MonoBehaviour
             parentOrbitMover.ForceUpdateOrbitData();
             parentOrbitMover.SetAutoCircleOrbit();
         }
+        */
+
+        
     }
 
     private void RotateAroundAxis()
