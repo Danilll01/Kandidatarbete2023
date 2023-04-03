@@ -228,7 +228,7 @@ public class SolarSystemTransform : MonoBehaviour
             planet.solarSystemRotationActive = false;
             Vector3 parentPos = planet.transform.parent.position;
             //planet.transform.parent.rotation = Quaternion.identity;
-            planet.transform.parent.position = new Vector3(parentPos.x, 0, parentPos.z);
+            //planet.transform.parent.position = new Vector3(parentPos.x, 0, parentPos.z);
             planet.ResetMoons();
         }
 
@@ -267,20 +267,31 @@ public class SolarSystemTransform : MonoBehaviour
 
         planetsParentRotation = planetsParent.transform.rotation;
 
-        playerToSunDirection = player.transform.position - sun.transform.position;
 
         // Reset solar system and planet rotations
         planetsParent.transform.rotation = Quaternion.identity;
 
+        Vector3 sunPos = sun.transform.position;
+        Vector3 sunPosOnYPlane = sunPos;
+        sunPosOnYPlane.y = 0;
+
+        float angle = Vector3.Angle(sunPos, sunPosOnYPlane);
+        planetsParent.transform.rotation = Quaternion.AngleAxis(angle, -rotationAxis);
 
         //planetTransform.rotation = Quaternion.Inverse(planetRotation);
         planetTransform.parent.SetParent(planetsParent.transform, true);
+        //sun.transform.rotation = new Quaternion(Quaternion.identity.x, sun.transform.rotation.y, Quaternion.identity.z);
         
         // Place the sun back at origo
-        sun.transform.rotation = Quaternion.identity;
+        //ssun.transform.rotation = Quaternion.identity;
         Vector3 distanceFromOrigin = sun.transform.position - Vector3.zero;
         planetsParent.transform.position -= distanceFromOrigin;
-        planetTransform.parent.position = fakeOrbitObject.transform.position;
+
+        sun.transform.rotation = Quaternion.Euler(0, transform.rotation.y, 0);
+
+        Vector3 newPlanetPos = fakeOrbitObject.transform.position;
+        newPlanetPos.y = 0;
+        planetTransform.parent.position = newPlanetPos;
         //planetTransform.parent.rotation = Quaternion.identity;
     }
 

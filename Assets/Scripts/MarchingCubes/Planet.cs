@@ -225,7 +225,7 @@ public class Planet : MonoBehaviour
         for (int i = 0; i < moons.Count; i++)
         {
             Transform moon = moons[i].transform;
-            moon.localPosition = new Vector3(moon.localPosition.x, 0, moon.localPosition.z);
+            //moon.localPosition = new Vector3(moon.localPosition.x, 0, moon.localPosition.z);
         }
 
         setUpSystemRotationComponents = false;
