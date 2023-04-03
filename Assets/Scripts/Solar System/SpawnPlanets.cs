@@ -71,27 +71,6 @@ public class SpawnPlanets : MonoBehaviour
 
         sun.transform.GetChild(0).localScale = new Vector3(SunPlanetBody.diameter, SunPlanetBody.diameter, SunPlanetBody.diameter);
 
-        GameObject velocityHelper = new GameObject();
-        velocityHelper.gameObject.name = "VelocityHelper";
-        velocityHelper.transform.parent = sun.transform;
-        velocityHelper.transform.localPosition = new Vector3(100, 0, 0);
-
-        // Assign needed scripts to the planet
-        sun.AddComponent<KeplerOrbitMover>();
-        sun.AddComponent<KeplerOrbitLineDisplay>();
-
-
-        // Setup settings for the orbit script with the sun as the central body
-        KeplerOrbitMover planetOrbitMover = sun.GetComponent<KeplerOrbitMover>();
-        planetOrbitMover.AttractorSettings.GravityConstant = Universe.gravitationalConstant;
-        planetOrbitMover.VelocityHandle = velocityHelper.transform;
-        //planetOrbitMover.SetUp();
-        planetOrbitMover.SetAutoCircleOrbit();
-        planetOrbitMover.ForceUpdateOrbitData();
-        planetOrbitMover.LockOrbitEditing = true;
-        planetOrbitMover.enabled = false;
-        planetOrbitMover.TimeScale = 0;
-
         Universe.sunPosition = sun.transform;
         
         InstantiatePlanets(sun);
@@ -126,8 +105,6 @@ public class SpawnPlanets : MonoBehaviour
             planet.gameObject.name = "Planet " + i + " body";
             planetBody.SetUpPlanetValues();
 
-
-            SetupOrbitComponents(sun, planetOrbitObject);
             planetBody.Initialize(player.transform, random.Next(), i == spawnPlanetIndex);
             InstantiateMoons(planetBody, nrOfMoonsForPlanet);
             bodies.Add(planetBody);
@@ -216,7 +193,6 @@ public class SpawnPlanets : MonoBehaviour
             moonBody.SetUpPlanetValues();
             moonBody.Initialize(player.transform, random.Next(), false); //False here beacause we don't spawn on moons
             parentPlanet.moons.Add(moonBody);
-            SetupOrbitComponents(parentPlanet.gameObject, moonsOrbitObject);
         }
         parentPlanet.moonsParent = moonsParent;
         parentPlanet.InitializeMoonValues();
@@ -227,43 +203,5 @@ public class SpawnPlanets : MonoBehaviour
     {
         var vector2 = random.OnUnitCircle() * radius;
         return new Vector3(vector2.x, 0, vector2.y);
-    }
-
-    // Adds all componets for orbit movement for given planet and it's attractor
-    private void SetupOrbitComponents(GameObject Attractor, GameObject planet)
-    {
-        GameObject velocityHelper = new GameObject();
-        velocityHelper.gameObject.name = "VelocityHelper";
-        velocityHelper.transform.parent = planet.transform;
-
-        velocityHelper.transform.localPosition = new Vector3(100, 0, 0);
-
-        // Assign needed scripts to the planet
-        planet.AddComponent<KeplerOrbitMover>();
-        planet.AddComponent<KeplerOrbitLineDisplay>();
-
-        // Not nessecarry, used for debug
-        planet.GetComponent<KeplerOrbitLineDisplay>().MaxOrbitWorldUnitsDistance = (Attractor.transform.position - planet.transform.position).magnitude * 1.2f;
-        planet.GetComponent<KeplerOrbitLineDisplay>().LineRendererReference = planet.GetComponent<LineRenderer>();
-
-        // Setup settings for the orbit script with the sun as the central body
-        KeplerOrbitMover planetOrbitMover = planet.GetComponent<KeplerOrbitMover>();
-        planetOrbitMover.AttractorSettings.AttractorObject = Attractor.transform;
-        if (Attractor.gameObject.name == "Sun")
-        {
-            planetOrbitMover.AttractorSettings.AttractorMass = Attractor.GetComponent<Sun>().mass;
-        }
-        else
-        {
-            planetOrbitMover.AttractorSettings.AttractorMass = Attractor.GetComponent<Planet>().mass;
-        }
-        planetOrbitMover.AttractorSettings.GravityConstant = Universe.gravitationalConstant;
-        planetOrbitMover.VelocityHandle = velocityHelper.transform;
-        planetOrbitMover.SetUp();
-        planetOrbitMover.SetAutoCircleOrbit();
-        planetOrbitMover.ForceUpdateOrbitData();
-        planetOrbitMover.LockOrbitEditing = true;
-        planetOrbitMover.enabled = false;
-        planetOrbitMover.TimeScale = 0;
     }
 }
