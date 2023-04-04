@@ -30,8 +30,8 @@ public class TestRotation : MonoBehaviour
 
         directionAfter = Sun.transform.position - PlayerPlanet.transform.position;
 
-        PlayerPlanet.transform.rotation *= Quaternion.Inverse(rotationBefore) * Quaternion.FromToRotation(directionBefore, directionAfter);
-        //PlayerPlanet.transform.rotation ;
+        PlayerPlanet.transform.rotation *= Quaternion.Inverse(rotationBefore);
+        //PlayerPlanet.transform.rotation *= Quaternion.FromToRotation(directionBefore, directionAfter); ;
 
     }
 
