@@ -269,13 +269,12 @@ public class SolarSystemTransform : MonoBehaviour
         float angle = Vector3.Angle(sunPos, sunPosOnYPlane);
         planetsParent.transform.rotation = Quaternion.AngleAxis(angle, -rotationAxis);
 
-        //planetTransform.rotation = Quaternion.Inverse(planetRotation);
+
         planetTransform.parent.SetParent(planetsParent.transform, true);
         //sun.transform.rotation = new Quaternion(Quaternion.identity.x, sun.transform.rotation.y, Quaternion.identity.z);
-        //sun.transform.rotation = Quaternion.Euler(0, transform.rotation.y, 0);
+        sun.transform.rotation = Quaternion.Euler(0, transform.rotation.y, 0);
         
         // Place the sun back at origo
-        //ssun.transform.rotation = Quaternion.identity;
         Vector3 distanceFromOrigin = sun.transform.position - Vector3.zero;
         planetsParent.transform.position -= distanceFromOrigin;
 
@@ -283,9 +282,6 @@ public class SolarSystemTransform : MonoBehaviour
         Vector3 newPlanetPos = fakeOrbitObject.transform.position;
         //newPlanetPos.y = 0;
         planetTransform.parent.position = newPlanetPos;
-        //planetTransform.parent.rotation = Quaternion.identity;
-        float angleBetweenRotations = Quaternion.Angle(planetsParentRotation, planetsParent.transform.rotation);
-        //planetTransform.rotation *= Quaternion.AngleAxis(angleBetweenRotations, -rotationAxis);
 
         Vector3 activePlanetToSunDirectionAfter = sun.transform.position - planetTransform.position;
         planetTransform.rotation *= Quaternion.FromToRotation(activePlanetToSunDirectionBefore, activePlanetToSunDirectionAfter);
