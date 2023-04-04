@@ -65,7 +65,7 @@ public class TestRotation : MonoBehaviour
         Gizmos.DrawRay(Sun.transform.position, sunUpBefore * heightDiff);
 
         Gizmos.color = Color.green;
-        Vector3 newVector = Sun.transform.position + Sun.transform.up * heightDiff - PlayerPlanet.transform.position;
+        Vector3 newVector = Sun.transform.position + sunUpBefore * heightDiff - PlayerPlanet.transform.position;
         Gizmos.DrawRay(PlayerPlanet.transform.position, newVector);
     }
 }

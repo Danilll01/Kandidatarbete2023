@@ -259,6 +259,18 @@ public class SolarSystemTransform : MonoBehaviour
         Vector3 activePlanetToSunDirectionBefore = sun.transform.position - planetTransform.position;
         //Vector3 activePlanetToSunDirectionAfter = sun.transform.position - planetTransform.position;
 
+
+        Quaternion rotationBefore = sun.transform.rotation;
+        Quaternion planetRotationBefore = planet.transform.rotation;
+
+        Vector3 sunUpBefore = planet.GetComponent<Planet>().moonsParent.transform.up;//sun.transform.up;
+
+        float heightDiff = sun.transform.position.y - fakeOrbitObject.transform.position.y;
+        Vector3 directionBefore = sun.transform.position - fakeOrbitObject.transform.position;
+        Vector3 directionBY = directionBefore;
+        directionBY.y = 0;
+        directionBY = planet.transform.rotation * directionBY;
+
         // Reset solar system and planet rotations
         planetsParent.transform.rotation = Quaternion.identity;
 
@@ -280,11 +292,15 @@ public class SolarSystemTransform : MonoBehaviour
 
 
         Vector3 newPlanetPos = fakeOrbitObject.transform.position;
-        //newPlanetPos.y = 0;
+        newPlanetPos.y = 0;
         planetTransform.parent.position = newPlanetPos;
 
         Vector3 activePlanetToSunDirectionAfter = sun.transform.position - planetTransform.position;
-        planetTransform.rotation *= Quaternion.FromToRotation(activePlanetToSunDirectionBefore, activePlanetToSunDirectionAfter);
+        // planetTransform.rotation *= Quaternion.FromToRotation(activePlanetToSunDirectionBefore, activePlanetToSunDirectionAfter);
+        Vector3 newVector = sun.transform.position + sunUpBefore * heightDiff - planet.transform.position;
+        planet.transform.rotation *= Quaternion.FromToRotation(directionBY, newVector);
+        planet.transform.rotation *= Quaternion.Inverse(rotationBefore);
+        //planet.transform.rotation *= planetRotationBefore;
     }
 
     private void MovePlanets()
