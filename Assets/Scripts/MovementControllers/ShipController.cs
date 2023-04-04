@@ -13,6 +13,7 @@ public class ShipController : MonoBehaviour
     private Vector3 dismountedPos = new Vector3(-2.6f, 2, -2f);
 
     [SerializeField] private float landingTime;
+    [SerializeField] private float maxLandingAngle;
     private float transitionProgress = 0;
     private Vector3 transitionFromPos = Vector3.zero;
     private Quaternion transitionFromRot = Quaternion.identity;
@@ -22,24 +23,31 @@ public class ShipController : MonoBehaviour
     private Rigidbody body;
     private new Camera camera;
 
+    private AudioSource audioPlayer;
+    [SerializeField] AudioClip errorSound;
+
     public void Initialize(Rigidbody body, Camera camera)
     {
         player = Universe.player;
         this.body = body;
         this.camera = camera;
 
-        //Place ship next to player and make ship child to planets
-        Physics.Raycast(player.transform.position, player.attractor.transform.position - player.transform.position, out RaycastHit hit, 20, 1 << (LayerMask.NameToLayer("Planet")));
-        transform.position = hit.point;
-        transform.rotation = Quaternion.LookRotation(Vector3.ProjectOnPlane(transform.TransformVector(Vector3.forward), hit.normal), hit.normal);
-        transform.position += transform.TransformDirection(Vector3.right * 5);
-        transform.SetParent(player.Planet.transform);
+        //Place ship where the player is and embark them
+        transform.position = player.transform.position;
+        transform.rotation = player.transform.rotation;
+        EmbarkInShip();
+        transitionToPos = transform.position;
+        transitionToRot = transform.rotation;
+        transitionProgress = float.MaxValue;
+        HandleTransition();
 
         // If mounted pos transform is not set in editor it will grab the object at least
         if (mountedPos.Equals(null))
         {
             mountedPos = transform.GetChild(0);
         }
+
+        audioPlayer = gameObject.GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -79,28 +87,25 @@ public class ShipController : MonoBehaviour
     {
         // More efficient code
         Transform playerTransform = player.transform;
-        
+
         //Left planet and should no longer hold altitude
         if (shipHoldingUprightRotation && (holdingOverPlanet != player.Planet))
         {
             shipHoldingUprightRotation = false;
         }
 
-        //TODO check ability to board. Will do this after the ability to lose ship is mitigated
+        //Embark / Disembark
         if (Input.GetKeyDown(KeyCode.F))
         {
             if (boarded)
             {
-                //Disembark
-                Physics.Raycast(playerTransform.position, -player.Up, out RaycastHit hit, 20, 1 << (LayerMask.NameToLayer("Planet")));
-
-                if (hit.collider != null)
+                if (GetLandingSpot(out (Vector3 position, Quaternion rotation) landingTarget))
                 {
                     //Set up transition to/from
                     transitionFromPos = playerTransform.localPosition;
                     transitionFromRot = playerTransform.localRotation;
-                    transitionToPos = player.Planet.transform.InverseTransformPoint(hit.point - Quaternion.FromToRotation(Vector3.up, player.Up) * (Vector3.up * transform.localPosition.y));
-                    transitionToRot = Quaternion.LookRotation(Vector3.ProjectOnPlane(transform.TransformVector(Vector3.forward), hit.normal), hit.normal);
+                    transitionToPos = landingTarget.position;
+                    transitionToRot = landingTarget.rotation;
                     transitioning = true;
                     //Transition method handles moving the player out of the ship
                 }
@@ -111,11 +116,14 @@ public class ShipController : MonoBehaviour
                 //Move player into ship
                 EmbarkInShip();
 
+                //Get raised spot
+                GetTakeoffSpot(out (Vector3 position, Quaternion rotation) takeoffTarget);
+
                 //Set up transition to/from
                 transitionFromPos = playerTransform.localPosition;
                 transitionFromRot = playerTransform.localRotation;
-                transitionToPos = transitionFromPos + player.Up * 10;
-                transitionToRot = Gravity.UprightRotation(playerTransform, player.Planet.transform);
+                transitionToPos = takeoffTarget.position;
+                transitionToRot = takeoffTarget.rotation;
                 transitioning = true;
                 player.boarded = true;
             }
@@ -188,11 +196,90 @@ public class ShipController : MonoBehaviour
         }
     }
 
+    private bool GetLandingSpot(out (Vector3 position, Quaternion rotation) landingSpot)
+    {
+        Vector3[] gearPositions = {
+            new Vector3(2.7f, 0f, -4f),   //Right back
+            new Vector3(-2.7f, 0f, -4f),  //Left back
+            new Vector3(0f, 0.16f, 10f)     //Front
+        };
+        Vector3 altFrontPosition = new Vector3(0f, 0.16f, 3f);
+        LayerMask planetMask = 1 << (LayerMask.NameToLayer("Planet"));
+
+        landingSpot = (Vector3.zero, Quaternion.identity);
+
+
+        Transform playerTransform = player.transform;
+
+        //Convert all gearPositions to their landed coordinates
+        Vector3[] gearLandingPositions = new Vector3[gearPositions.Length];
+        for (int i = 0; i < gearPositions.Length; i++)
+        {
+            Vector3 gearPosWorld = transform.TransformPoint(gearPositions[i]);
+            Physics.Raycast(gearPosWorld, -player.Up, out RaycastHit hit, 20, planetMask);
+
+            if (hit.collider != null)
+            {
+                gearLandingPositions[i] = hit.point;
+                continue;
+            }
+            else
+            {
+                audioPlayer.PlayOneShot(errorSound);
+                return false;
+            }
+        }
+
+        //Assumes 3 gearPositions
+        //Create plane which the ship will land on
+        Plane landingPlane = new Plane(gearLandingPositions[0], gearLandingPositions[1], gearLandingPositions[2]);
+        //Makes sure landing is upright
+        if (Vector3.Dot(landingPlane.normal, player.Up) < 0)
+        {
+            landingPlane.Flip();
+        }
+        //Check if middle is too far into ground
+        Physics.Raycast(transform.TransformPoint(altFrontPosition), -player.Up, out RaycastHit altHit, 20, planetMask);
+        if (landingPlane.GetDistanceToPoint(altHit.point) > 0)
+        {
+            landingPlane = new Plane(gearLandingPositions[0], gearLandingPositions[1], altHit.point);
+            //Makes sure new landing is upright
+            if (Vector3.Dot(landingPlane.normal, player.Up) < 0)
+            {
+                landingPlane.Flip();
+            }
+        }
+        //Check if landing angle is allowed
+        if (Vector3.Angle(landingPlane.normal, player.Up) > maxLandingAngle)
+        {
+            audioPlayer.PlayOneShot(errorSound);
+            return false;
+        }
+
+        //Land ship and calculate offsets
+        landingPlane.Raycast(new Ray(playerTransform.position, -player.Up), out float height);
+        Vector3 landingPos = playerTransform.position + (-player.Up * height);
+        Vector3 playerPositionOffset = Quaternion.FromToRotation(Vector3.up, player.Up) * (Vector3.up * transform.localPosition.y * transform.parent.localScale.y);
+
+        //Set up transition to/from
+        landingSpot.position = player.Planet.transform.InverseTransformPoint(landingPos - playerPositionOffset);
+        landingSpot.rotation = Quaternion.LookRotation(Vector3.ProjectOnPlane(transform.TransformVector(Vector3.forward), landingPlane.normal), landingPlane.normal);
+
+        return true;
+    }
+
+    private void GetTakeoffSpot(out (Vector3 position, Quaternion rotation) takeoffSpot)
+    {
+        takeoffSpot.position = player.transform.localPosition + player.Up * 10;
+        takeoffSpot.rotation = Gravity.UprightRotation(player.transform, player.Planet.transform);
+    }
+
     private void DisembarkFromShip()
     {
         transform.SetParent(player.Planet.gameObject.transform);
         player.transform.position = transform.position + (transform.rotation * dismountedPos);
         player.transform.rotation = transform.rotation;
+        body.velocity = Vector3.zero;
     }
 
     private void EmbarkInShip()
