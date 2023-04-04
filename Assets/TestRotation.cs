@@ -31,6 +31,8 @@ public class TestRotation : MonoBehaviour
         directionBY.y = 0;
 
         Sun.transform.rotation = Quaternion.identity;
+        Sun.transform.position = pointToTeleportSunTo.position;
+        PlayerPlanet.transform.position = pointToTeleportPlanetTo.position;
 
         Vector3 resetVector = sunUpBefore;
         directionAfter = resetVector - PlayerPlanet.transform.position;
