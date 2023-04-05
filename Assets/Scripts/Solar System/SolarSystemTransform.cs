@@ -196,7 +196,7 @@ public class SolarSystemTransform : MonoBehaviour
                 planetsParent.transform.position = startingPos;
                 planetsParent.transform.rotation = startingRotation;
                 rotationBefore = sun.transform.rotation;
-                rotationBefore = Quaternion.Euler(sun.transform.rotation.x, 0, sun.transform.rotation.z);
+                //rotationBefore = Quaternion.Euler(sun.transform.rotation.x, 0, sun.transform.rotation.z);
                 resetSolarSystemPosAndRotation = false;
             }
 
@@ -210,7 +210,8 @@ public class SolarSystemTransform : MonoBehaviour
                 {
                     planetBody.Run();
                 }
-
+                float heightDiffFromSunToOrigo = sun.transform.position.y;
+                planetsParent.transform.position -= new Vector3(0, heightDiffFromSunToOrigo, 0);
                 planetTransform.parent.SetParent(planetsParent.transform, true);
                 resetSunRotation = false;
 
