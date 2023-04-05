@@ -255,25 +255,12 @@ public class SolarSystemTransform : MonoBehaviour
     {
         Transform planetTransform = planet.transform;
 
-        //planetsParentRotation = planetsParent.transform.rotation;
-        Vector3 activePlanetToSunDirectionBefore = sun.transform.position - planetTransform.position;
-        //Vector3 activePlanetToSunDirectionAfter = sun.transform.position - planetTransform.position;
-
-
-        Quaternion rotationBefore = sun.transform.rotation;
-        Quaternion planetRotationBefore = planet.transform.rotation;
-
-        Vector3 sunUpBefore = planet.GetComponent<Planet>().moonsParent.transform.up;//sun.transform.up;
-
-        float heightDiff = sun.transform.position.y - fakeOrbitObject.transform.position.y;
-        Vector3 directionBefore = sun.transform.position - fakeOrbitObject.transform.position;
-        Vector3 directionBY = directionBefore;
-        directionBY.y = 0;
-        directionBY = planet.transform.rotation * directionBY;
+        Quaternion planetRotationBefore = planetsParent.transform.rotation;
 
         // Reset solar system and planet rotations
         planetsParent.transform.rotation = Quaternion.identity;
 
+        // Rotate the solar system to put sun at 0 on the y-plane
         Vector3 sunPos = sun.transform.position;
         Vector3 sunPosOnYPlane = sunPos;
         sunPosOnYPlane.y = 0;
@@ -281,26 +268,27 @@ public class SolarSystemTransform : MonoBehaviour
         float angle = Vector3.Angle(sunPos, sunPosOnYPlane);
         planetsParent.transform.rotation = Quaternion.AngleAxis(angle, -rotationAxis);
 
-
+        
         planetTransform.parent.SetParent(planetsParent.transform, true);
-        //sun.transform.rotation = new Quaternion(Quaternion.identity.x, sun.transform.rotation.y, Quaternion.identity.z);
-        sun.transform.rotation = Quaternion.Euler(0, transform.rotation.y, 0);
+
+        Quaternion rotationBefore = sun.transform.rotation;
+        rotationBefore = Quaternion.Euler(sun.transform.rotation.x, 0, sun.transform.rotation.z);
+
+        sun.transform.rotation = Quaternion.Euler(0, sun.transform.rotation.y, 0);
         
         // Place the sun back at origo
         Vector3 distanceFromOrigin = sun.transform.position - Vector3.zero;
         planetsParent.transform.position -= distanceFromOrigin;
 
-
+        // Align the planet with the others
         Vector3 newPlanetPos = fakeOrbitObject.transform.position;
         newPlanetPos.y = 0;
         planetTransform.parent.position = newPlanetPos;
 
-        Vector3 activePlanetToSunDirectionAfter = sun.transform.position - planetTransform.position;
-        // planetTransform.rotation *= Quaternion.FromToRotation(activePlanetToSunDirectionBefore, activePlanetToSunDirectionAfter);
-        Vector3 newVector = sun.transform.position + sunUpBefore * heightDiff - planet.transform.position;
-        planet.transform.rotation *= Quaternion.FromToRotation(directionBY, newVector);
+        // Rotate the planet 
+        planet.transform.rotation *= Quaternion.Inverse(planetRotationBefore);
+        planet.transform.rotation *= Quaternion.AngleAxis(angle, -rotationAxis);
         planet.transform.rotation *= Quaternion.Inverse(rotationBefore);
-        //planet.transform.rotation *= planetRotationBefore;
     }
 
     private void MovePlanets()
