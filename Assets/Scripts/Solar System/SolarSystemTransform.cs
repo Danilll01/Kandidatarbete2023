@@ -297,7 +297,7 @@ public class SolarSystemTransform : MonoBehaviour
         planet.transform.rotation *= Quaternion.Inverse(planetRotationBefore);
         planet.transform.rotation *= Quaternion.AngleAxis(angle, -rotationAxis);
         planet.transform.rotation *= Quaternion.Inverse(rotationBefore);
-        planet.transform.rotation *= Quaternion.AngleAxis(-1 * angleForHeightDiff, planetToSunDirection);
+        //planet.transform.rotation *= Quaternion.AngleAxis(-1 * angleForHeightDiff, planetToSunDirection);
 
     }
 
