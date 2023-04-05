@@ -22,7 +22,7 @@ public class SolarSystemTransform : MonoBehaviour
     private bool releasePlayer = false;
     private Planet planetToReleasePlayerFrom;
     private Quaternion planetsParentRotation;
-    public bool resetSolarSystem;
+    public bool stopSolarSystem;
     private bool reset;
     private GameObject fakeOrbitObject;
     private float angleForHeightDiff;
@@ -33,7 +33,6 @@ public class SolarSystemTransform : MonoBehaviour
     private Quaternion rotationBefore;
     public bool resetSunRotation;
     public bool placeSunAtOrigo;
-    public bool alignPlanetWithOthers;
     public bool rotatePlanetWithSolarSystemRotationBefore;
     public bool rotatePlanetWithSunRotationBefore;
 
@@ -97,7 +96,7 @@ public class SolarSystemTransform : MonoBehaviour
         }
         InitializeValues();
 
-        if (!resetSolarSystem)
+        if (!stopSolarSystem)
         {
             if (!releasePlayer)
             {
@@ -188,7 +187,7 @@ public class SolarSystemTransform : MonoBehaviour
         }
         */
 
-        if (!rotateSolarSystem && reset && resetSolarSystem)
+        if (!rotateSolarSystem && reset && stopSolarSystem)
         {
             if (resetSolarSystemPosAndRotation)
             {
@@ -196,7 +195,7 @@ public class SolarSystemTransform : MonoBehaviour
                 planetsParent.transform.position = startingPos;
                 planetsParent.transform.rotation = startingRotation;
                 rotationBefore = sun.transform.rotation;
-                //rotationBefore = Quaternion.Euler(sun.transform.rotation.x, 0, sun.transform.rotation.z);
+                rotationBefore = Quaternion.Euler(sun.transform.rotation.x, 0, sun.transform.rotation.z);
                 resetSolarSystemPosAndRotation = false;
             }
 
@@ -226,21 +225,6 @@ public class SolarSystemTransform : MonoBehaviour
                 Vector3 distanceFromOrigin = sun.transform.position - Vector3.zero;
                 planetsParent.transform.position -= distanceFromOrigin;
                 placeSunAtOrigo = false;
-            }
-
-            if (alignPlanetWithOthers)
-            {
-                Debug.Log("Aligned the planet with the others at the y-plane");
-                // Align the planet with the others
-                Vector3 oldPos = planetTransform.parent.position;
-                Vector3 newPlanetPos = planetTransform.parent.position;
-                newPlanetPos.y = 0;
-                planetTransform.parent.position = newPlanetPos;
-
-                Vector3 SunToPlanetDirection = planetTransform.parent.position - sun.transform.position;
-                Vector3 SunToOldPosDirection = oldPos - sun.transform.position;
-                angleForHeightDiff = Vector3.Angle(SunToOldPosDirection, SunToPlanetDirection);
-                alignPlanetWithOthers = false;
             }
 
 
