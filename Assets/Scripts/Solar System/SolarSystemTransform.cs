@@ -24,6 +24,9 @@ public class SolarSystemTransform : MonoBehaviour
     public bool resetSolarSystem;
     private bool reset;
     private GameObject fakeOrbitObject;
+    public bool rotate;
+    private float angleForHeightDiff;
+    private Vector3 planetToSunDirection;
 
     void Start()
     {
@@ -60,7 +63,20 @@ public class SolarSystemTransform : MonoBehaviour
         Universe.player.Planet = activePlanet;
     }
 
-    void Update()
+    private void CheckWhenToReleasePlayer()
+    {
+        Vector3 distance = planetToReleasePlayerFrom.transform.parent.position;
+        if (distance.magnitude > 100f)
+        {
+            planetToReleasePlayerFrom.ResetMoons();
+            ResetPlanets();
+            //player.transform.SetParent(null, true);
+            //player.attractor = null;
+            releasePlayer = false;
+        }
+    }
+
+    private void FixedUpdate()
     {
         if (sun == null && spawnPlanets.bodies != null)
         {
@@ -105,7 +121,7 @@ public class SolarSystemTransform : MonoBehaviour
 
             Universe.player.Planet = activePlanet;
         }
-        else if(!reset)
+        else if (!reset)
         {
             rotateSolarSystem = false;
             ResetPlanetOrbit(oldActivePlanet);
@@ -120,23 +136,7 @@ public class SolarSystemTransform : MonoBehaviour
         {
             CheckWhenToReleasePlayer();
         }
-    }
 
-    private void CheckWhenToReleasePlayer()
-    {
-        Vector3 distance = planetToReleasePlayerFrom.transform.parent.position;
-        if (distance.magnitude > 100f)
-        {
-            planetToReleasePlayerFrom.ResetMoons();
-            ResetPlanets();
-            //player.transform.SetParent(null, true);
-            //player.attractor = null;
-            releasePlayer = false;
-        }
-    }
-
-    private void FixedUpdate()
-    {
         if (releasePlayer) return;
 
         if (rotateSolarSystem)
@@ -281,14 +281,24 @@ public class SolarSystemTransform : MonoBehaviour
         planetsParent.transform.position -= distanceFromOrigin;
 
         // Align the planet with the others
+        Vector3 oldPos = planetTransform.parent.position;
         Vector3 newPlanetPos = fakeOrbitObject.transform.position;
         newPlanetPos.y = 0;
         planetTransform.parent.position = newPlanetPos;
+        float heightDiff = planetTransform.parent.position.y - oldPos.y;
+
+        Vector3 SunToPlanetDirection = planet.transform.parent.position - sun.transform.position;
+        Vector3 SunToOldPosDirection = oldPos - sun.transform.position;
+        angleForHeightDiff = Vector3.Angle(SunToOldPosDirection, SunToPlanetDirection);
+
+        planetToSunDirection = sun.transform.position - planet.transform.parent.position;
+
 
         // Rotate the planet 
         planet.transform.rotation *= Quaternion.Inverse(planetRotationBefore);
         planet.transform.rotation *= Quaternion.AngleAxis(angle, -rotationAxis);
         planet.transform.rotation *= Quaternion.Inverse(rotationBefore);
+        
     }
 
     private void MovePlanets()
