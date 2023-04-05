@@ -35,6 +35,8 @@ public class SolarSystemTransform : MonoBehaviour
     public bool placeSunAtOrigo;
     public bool rotatePlanetWithSolarSystemRotationBefore;
     public bool rotatePlanetWithSunRotationBefore;
+    private float heightDiffFromSunToOrigo;
+    public bool rotateToFixHeightChangeOfSun;
 
     void Start()
     {
@@ -209,7 +211,7 @@ public class SolarSystemTransform : MonoBehaviour
                 {
                     planetBody.Run();
                 }
-                float heightDiffFromSunToOrigo = sun.transform.position.y;
+                heightDiffFromSunToOrigo = sun.transform.position.y;
                 planetsParent.transform.position -= new Vector3(0, heightDiffFromSunToOrigo, 0);
                 planetTransform.parent.SetParent(planetsParent.transform, true);
                 resetSunRotation = false;
@@ -240,6 +242,13 @@ public class SolarSystemTransform : MonoBehaviour
                 Debug.Log("Rotate planet by the earlier sun rotation: " + rotationBefore);
                 planetTransform.rotation *= Quaternion.Inverse(rotationBefore);
                 rotatePlanetWithSunRotationBefore = false;
+            }
+
+            if (rotateToFixHeightChangeOfSun)
+            {
+                float angle = Vector3.Angle(planetTransform.position + new Vector3(0, heightDiffFromSunToOrigo, 0), planetTransform.position);
+                //planetTransform.rotation *= Quaternion.AngleAxis(-angle, sun.transform.position - planetTransform.position);
+                rotateToFixHeightChangeOfSun = false;
             }
         }
     }
