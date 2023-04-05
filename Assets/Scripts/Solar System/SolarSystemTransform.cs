@@ -279,7 +279,7 @@ public class SolarSystemTransform : MonoBehaviour
         Quaternion rotationBefore = sun.transform.rotation;
         rotationBefore = Quaternion.Euler(sun.transform.rotation.x, 0, sun.transform.rotation.z);
 
-        sun.transform.rotation = Quaternion.Euler(0, sun.transform.rotation.y, 0);
+        sun.transform.rotation = Quaternion.identity;
         planetTransform.parent.SetParent(planetsParent.transform, true);
         
         // Place the sun back at origo
@@ -290,7 +290,7 @@ public class SolarSystemTransform : MonoBehaviour
         Vector3 oldPos = planetTransform.parent.position;
         Vector3 newPlanetPos = planetTransform.parent.position;
         newPlanetPos.y = 0;
-        planetTransform.parent.position = newPlanetPos;
+        //planetTransform.parent.position = newPlanetPos;
 
         Vector3 SunToPlanetDirection = planet.transform.parent.position - sun.transform.position;
         Vector3 SunToOldPosDirection = oldPos - sun.transform.position;
