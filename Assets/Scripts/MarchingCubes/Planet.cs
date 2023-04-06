@@ -223,11 +223,6 @@ public class Planet : MonoBehaviour
     {
         rotateMoons = false;
         moonsParent.transform.rotation = Quaternion.identity;
-        for (int i = 0; i < moons.Count; i++)
-        {
-            Transform moon = moons[i].transform;
-            //moon.localPosition = new Vector3(moon.localPosition.x, 0, moon.localPosition.z);
-        }
 
         setUpSystemRotationComponents = false;
     }
@@ -257,15 +252,16 @@ public class Planet : MonoBehaviour
         }
     }
 
-    private void KeepPlanetAtSameDistanceToSun()
+    public void KeepPlanetAtSameDistanceToSun()
     {
         Vector3 sunPosition = Universe.sunPosition.position;
         Transform sunTransform = Universe.sunPosition.transform;
+        
+        parentOrbitMover.transform.position = ClosestPointOnPlane(sunPosition, sunTransform.TransformDirection(Vector3.up), parentOrbitMover.transform.position);
 
         Vector3 direction = parentOrbitMover.transform.position - sunPosition;
         parentOrbitMover.transform.position = sunPosition + (direction.normalized * positionrelativeToSunDistance);
 
-        parentOrbitMover.transform.position = ClosestPointOnPlane(sunPosition, sunTransform.TransformDirection(Vector3.up), parentOrbitMover.transform.position);
     }
 
     private Vector3 ClosestPointOnPlane(Vector3 planeOffset, Vector3 planeNormal, Vector3 point)
@@ -276,21 +272,6 @@ public class Planet : MonoBehaviour
     private float DistanceFromPlane(Vector3 planeOffset, Vector3 planeNormal, Vector3 point)
     {
         return Vector3.Dot(planeOffset - point, planeNormal);
-    }
-
-    private void KeepMoonsAtSameDistanceFromPlanet()
-    {
-        if (!rotateMoons)
-        {
-            for (int i = 0; i < moons.Count; i++)
-            {
-                Transform moon = moons[i].transform;
-                Vector3 direction = moon.parent.transform.position - moonsParent.transform.position;
-                moon.parent.transform.position = moonsParent.transform.position + (direction.normalized * moonsrelativeDistances[i].magnitude);
-
-                moon.parent.transform.position = ClosestPointOnPlane(moonsParent.transform.position, moonsParent.transform.TransformDirection(Vector3.up), moon.parent.transform.position);
-            }
-        }
     }
 
     private void SetUpComponents(Vector3 rotationAxis, float speed)
