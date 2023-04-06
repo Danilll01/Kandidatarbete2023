@@ -246,8 +246,10 @@ public class SolarSystemTransform : MonoBehaviour
 
             if (rotateToFixHeightChangeOfSun)
             {
-                float angle = Vector3.Angle(planetTransform.position + new Vector3(0, heightDiffFromSunToOrigo, 0), planetTransform.position);
-                //planetTransform.rotation *= Quaternion.AngleAxis(-angle, sun.transform.position - planetTransform.position);
+                Vector3 planetToSunWithHeight = sun.transform.position + new Vector3(0, heightDiffFromSunToOrigo, 0) - planetTransform.position;
+                Vector3 planetToSunWithoutHeight = sun.transform.position - planetTransform.position;
+                //float angle = Vector3.Angle(planetTransform.position + new Vector3(0, heightDiffFromSunToOrigo, 0), planetTransform.position);
+                planetTransform.rotation *= Quaternion.FromToRotation(planetToSunWithHeight, planetToSunWithoutHeight);
                 rotateToFixHeightChangeOfSun = false;
             }
         }
