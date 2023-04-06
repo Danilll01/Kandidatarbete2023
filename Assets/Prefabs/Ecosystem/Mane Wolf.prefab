@@ -75,7 +75,7 @@ CapsuleCollider:
   m_GameObject: {fileID: 1013483036717700}
   m_Material: {fileID: 13400000, guid: 54174b87a6301064ea8788686f85bda8, type: 2}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   m_Radius: 0.09
   m_Height: 0.31
   m_Direction: 0
@@ -372,7 +372,7 @@ SkinnedMeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1265442489732930}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -504,7 +504,7 @@ CapsuleCollider:
   m_GameObject: {fileID: 1265571620263468}
   m_Material: {fileID: 13400000, guid: 54174b87a6301064ea8788686f85bda8, type: 2}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   m_Radius: 0.11309509
   m_Height: 0.45255604
   m_Direction: 0
@@ -680,7 +680,7 @@ CapsuleCollider:
   m_GameObject: {fileID: 1421985612334498}
   m_Material: {fileID: 13400000, guid: 54174b87a6301064ea8788686f85bda8, type: 2}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   m_Radius: 0.12989005
   m_Height: 0.36457258
   m_Direction: 0
@@ -1021,7 +1021,7 @@ SphereCollider:
   m_GameObject: {fileID: 1642213810400434}
   m_Material: {fileID: 13400000, guid: 54174b87a6301064ea8788686f85bda8, type: 2}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Radius: 0.095
   m_Center: {x: 0, y: 0.06, z: 0}
@@ -1039,7 +1039,7 @@ GameObject:
   - component: {fileID: 5967490473235420340}
   - component: {fileID: 2083974084113956184}
   - component: {fileID: 4424857231441827145}
-  m_Layer: 20
+  m_Layer: 10
   m_Name: Mane Wolf
   m_TagString: Creature
   m_Icon: {fileID: 0}
@@ -1539,7 +1539,7 @@ CapsuleCollider:
   m_GameObject: {fileID: 1749889702195024}
   m_Material: {fileID: 13400000, guid: 54174b87a6301064ea8788686f85bda8, type: 2}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   m_Radius: 0.121
   m_Height: 0.45255604
   m_Direction: 0

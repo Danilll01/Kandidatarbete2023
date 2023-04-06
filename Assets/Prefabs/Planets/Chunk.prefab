@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7934873690560713984}
+  - component: {fileID: 869320547627217463}
   m_Layer: 8
   m_Name: Creatures
   m_TagString: Untagged
@@ -31,6 +32,19 @@ Transform:
   m_Father: {fileID: 1774170019036865003}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &869320547627217463
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 29495426740527193}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93354df1c8e69094386ae78a6ed27266, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  initialized: 0
 --- !u!1 &215672015598872203
 GameObject:
   m_ObjectHideFlags: 0
@@ -80,10 +94,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1390dfc43497b014e82ec9e475a4b2ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  creatures: {fileID: 7934873690560713984}
+  creatures: {fileID: 869320547627217463}
   foliage: {fileID: 4463972851511975120}
   foliageGameObject: {fileID: 5421812029566821119}
   creatureGameObject: {fileID: 29495426740527193}
+  chunkSize: 0
   position: {x: 0, y: 0, z: 0}
   initialized: 0
 --- !u!33 &2490762531431628404

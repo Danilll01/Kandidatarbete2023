@@ -90,6 +90,15 @@ public class Creature : MonoBehaviour
 
     private Creature breedingPartner;
     public bool isDying = false;
+    public GameObject gettingEatenBy = null;
+
+    // Overlap sphere optimizations
+    private static int foodLayerMask = (1 << 9);
+    private static int creatureLayerMask = (1 << 10);
+    private static int resourceLayerMask = foodLayerMask | creatureLayerMask;
+    private int getResourceTickSkips = 20;
+    private int getResourceTicks = 20;
+    private GameObject lastResourceFound;
 
     // Start is called before the first frame update
     void Start()
@@ -251,7 +260,25 @@ public class Creature : MonoBehaviour
 
     private void LookingForResource(ResourceType resource)
     {
-        GameObject nearestResource = GetNearestGameobject(resource);
+        GameObject nearestResource;
+        if (getResourceTicks <= 0)
+        {
+            // Unsubsribe to the last resource to enable other creatures to eat it
+            if (lastResourceFound != null && resource == ResourceType.Creature) lastResourceFound.GetComponent<Creature>().gettingEatenBy = null;
+
+            nearestResource = GetNearestGameobject(resource);
+            
+            // Set this object as the consumer of the nearest creature
+            if (nearestResource != null && resource == ResourceType.Creature) nearestResource.GetComponent<Creature>().gettingEatenBy = gameObject;
+            lastResourceFound = nearestResource;
+            
+            getResourceTicks = getResourceTickSkips;
+        } else
+        {
+            nearestResource = lastResourceFound;
+            getResourceTicks--;
+        }
+        
         Vector3 resourcePos = Vector3.zero;
 
         // Get position of nearest resource
@@ -308,18 +335,20 @@ public class Creature : MonoBehaviour
 
     private void LookingForPartner()
     {
-        Collider[] hitColliders = Physics.OverlapSphere(transform.position, detectionRadius);
+        Collider[] hitColliders = Physics.OverlapSphere(transform.position, detectionRadius, creatureLayerMask);
         GameObject nearestObject = null;
         float nearestDistance = Mathf.Infinity;
+        bool foundPartner;
+        float distanceToGameObject;
 
         foreach (Collider coll in hitColliders)
         {
             if (coll != collider && coll.gameObject.CompareTag("Creature")) 
             {
-                bool foundPartner = coll.GetComponent<Creature>().wantToReproduce && coll.name.Contains(gameObject.name);
+                foundPartner = coll.GetComponent<Creature>().wantToReproduce && coll.name.Contains(gameObject.name);
                 if (!foundPartner) continue;
 
-                float distanceToGameObject = Vector3.Distance(transform.position, coll.transform.position);
+                distanceToGameObject = Vector3.Distance(transform.position, coll.transform.position);
 
                 if (nearestDistance > distanceToGameObject)
                 {
@@ -376,7 +405,7 @@ public class Creature : MonoBehaviour
 
     private GameObject GetNearestGameobject(ResourceType type)
     {
-        Collider[] hitColliders = Physics.OverlapSphere(transform.position, detectionRadius);
+        Collider[] hitColliders = Physics.OverlapSphere(transform.position, detectionRadius, resourceLayerMask);
         GameObject nearestObject = null;
         float nearestDistance = Mathf.Infinity;
 
@@ -393,8 +422,10 @@ public class Creature : MonoBehaviour
 
                     CreatureType creatureType = creature.GetCreatureType;
                     if (creatureDiet != creatureType) continue;
+
                     if (SameSpecies(coll.gameObject.name)) continue;
 
+                    if (creature.gettingEatenBy != null) continue;
                 }
                 
                 float distanceToGameObject = Vector3.Distance(transform.position, coll.transform.position);
@@ -489,7 +520,7 @@ public class Creature : MonoBehaviour
                     Chunk newChunk = hitChunk.transform.GetComponent<Chunk>();
                     if (newChunk != null)
                     {
-                        transform.parent = newChunk.creatures;
+                        transform.parent = newChunk.creatureGameObject.transform;
                     }
                 }
             }
@@ -681,11 +712,17 @@ public class Creature : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Returns creature type
+    /// </summary>
     public CreatureType GetCreatureType
     {
         get { return creatureType; }
     }
     
+    /// <summary>
+    /// Returns creature diet
+    /// </summary>
     public CreatureType GetCreatureDiet
     {
         get { return creatureDiet; }
