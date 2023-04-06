@@ -195,14 +195,9 @@ public class SolarSystemTransform : MonoBehaviour
             {
                 Debug.Log("Reset solar system to original position and rotation");
                 planetsParent.transform.position = startingPos;
-                planetsParent.transform.rotation = startingRotation;
+                planetsParent.transform.rotation = Quaternion.Euler(startingRotation.x, sun.transform.rotation.y, startingRotation.z);
                 rotationBefore = sun.transform.rotation;
                 rotationBefore = Quaternion.Euler(sun.transform.rotation.x, 0, sun.transform.rotation.z);
-
-                foreach (var planetBody in spawnPlanets.bodies)
-                {
-                    planetBody.Run();
-                }
 
                 resetSolarSystemPosAndRotation = false;
             }
@@ -218,8 +213,9 @@ public class SolarSystemTransform : MonoBehaviour
 
                 foreach (var planetBody in spawnPlanets.bodies)
                 {
-                    planetBody.Run();
+                    planetBody.ResetPlanetAndMoons();
                 }
+
                 planetTransform.parent.SetParent(planetsParent.transform, true);
                 resetSunRotation = false;
 

@@ -169,6 +169,12 @@ public class Planet : MonoBehaviour
         }
     }
 
+    public void ResetPlanetAndMoons()
+    {
+        KeepPlanetAtSameDistanceToSun();
+        ResetMoons();
+    }
+
     private void OnDrawGizmos()
     {
         if (moonsrelativeDistances == null)
@@ -222,7 +228,7 @@ public class Planet : MonoBehaviour
     public void ResetMoons()
     {
         rotateMoons = false;
-        moonsParent.transform.rotation = Quaternion.identity;
+        moonsParent.transform.rotation = Quaternion.Euler(0, moonsParent.transform.rotation.y, 0);//Quaternion.identity;
 
         setUpSystemRotationComponents = false;
     }
