@@ -38,7 +38,11 @@ public class SpaceShipController : MonoBehaviour
 
     void FixedUpdate()
     {
-        //Press Right Mouse Button to accelerate
+        
+        float thrust = Input.GetAxis("Spaceship Thrust");
+        float strafe = Input.GetAxis("Spaceship Strafe");
+        float lift = Input.GetAxis("Spaceship Lift");
+        
         if (Input.GetMouseButton(1))
         {
             speed = Mathf.Lerp(speed, accelerationSpeed, Time.deltaTime * 3);
@@ -49,7 +53,7 @@ public class SpaceShipController : MonoBehaviour
         }
 
         //Set moveDirection to the vertical axis (up and down keys) * speed
-        Vector3 moveDirection = new Vector3(0, 0, speed);
+        Vector3 moveDirection = new Vector3(strafe, lift, thrust) * speed;
         //Transform the vector3 to local space
         moveDirection = transform.TransformDirection(moveDirection);
         //Set the velocity, so you can move
@@ -60,18 +64,20 @@ public class SpaceShipController : MonoBehaviour
         mainCamera.transform.rotation = Quaternion.Lerp(mainCamera.transform.rotation, cameraPosition.rotation, Time.deltaTime * cameraSmooth);
 
         //Rotation
-        float rotationZTmp = 0;
-        if (Input.GetKey(KeyCode.A))
+
+        float rotationZTmp = Input.GetAxis("Spaceship Roll");
+        /*if (Input.GetKey(KeyCode.A))
         {
             rotationZTmp = 1;
         }
         else if (Input.GetKey(KeyCode.D))
         {
             rotationZTmp = -1;
-        }
+        }*/
+        
         mouseXSmooth = Mathf.Lerp(mouseXSmooth, Input.GetAxis("Horizontal Look") * rotationSpeed, Time.deltaTime * cameraSmooth);
         mouseYSmooth = Mathf.Lerp(mouseYSmooth, Input.GetAxis("Vertical Look") * rotationSpeed, Time.deltaTime * cameraSmooth);
-        Quaternion localRotation = Quaternion.Euler(-mouseYSmooth, mouseXSmooth, rotationZTmp * rotationSpeed);
+        Quaternion localRotation = Quaternion.Euler(mouseYSmooth, mouseXSmooth, rotationZTmp * rotationSpeed);
         lookRotation = lookRotation * localRotation;
         transform.rotation = lookRotation;
         rotationZ -= mouseXSmooth;

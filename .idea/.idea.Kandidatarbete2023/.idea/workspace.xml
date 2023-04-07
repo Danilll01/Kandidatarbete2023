@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Better spawn planet">
+    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Added new spaceship controller">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProjectSettings/SelectiveProfiler.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/SelectiveProfiler.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Individual/Joel.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Individual/Joel.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipController.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -34,6 +35,7 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/4746c126b0b54f3b834845974d1a9190159000/57/36c84f50/Component.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Atmosphere/AtmosphereHandler.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Shaders/Atmosphere/AtmosphericScattering.shader" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://D:/Unity/Projects/Kandidatarbete2023/ProjectSettings/SelectiveProfiler.asset" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -129,7 +131,7 @@
       <workItem from="1680116449264" duration="153000" />
       <workItem from="1680116721177" duration="10746000" />
       <workItem from="1680265180898" duration="5422000" />
-      <workItem from="1680825879382" duration="1125000" />
+      <workItem from="1680825879382" duration="4513000" />
     </task>
     <task id="LOCAL−00003" summary="Changed file">
       <created>1679327563589</created>
@@ -335,7 +337,13 @@
       <option name="presentableId" value="LOCAL−00036" />
       <updated>1680269111791</updated>
     </task>
-    <option name="localTasksCounter" value="37" />
+    <task id="LOCAL−00037" summary="Added new spaceship controller">
+      <created>1680827072032</created>
+      <option name="number" value="LOCAL−00037" />
+      <option name="presentableId" value="LOCAL−00037" />
+      <updated>1680827072032</updated>
+    </task>
+    <option name="localTasksCounter" value="38" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -357,7 +365,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="Planet atmosphere color is now randomized" />
     <MESSAGE value="Have moved ambient light calculation to corresponding planet atmosphere" />
     <MESSAGE value="Fixed atmosphere update calling to mirror the players actual current planet" />
     <MESSAGE value="Better shadow resolution near player" />
@@ -382,6 +389,7 @@
     <MESSAGE value="Added back water shadow as the back side of the planet otherwise would have sunlight through the ground" />
     <MESSAGE value="Fixed green sun bug" />
     <MESSAGE value="Better spawn planet" />
-    <option name="LAST_COMMIT_MESSAGE" value="Better spawn planet" />
+    <MESSAGE value="Added new spaceship controller" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added new spaceship controller" />
   </component>
 </project>
