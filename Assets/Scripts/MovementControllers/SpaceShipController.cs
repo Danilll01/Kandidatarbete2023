@@ -22,6 +22,7 @@ public class SpaceShipController : MonoBehaviour
     private float mouseXSmooth = 0;
     private float mouseYSmooth = 0;
     private Vector3 defaultShipRotation;
+    private Vector3 oldMovementVector = new();
 
     // Start is called before the first frame update
     void Start()
@@ -42,6 +43,11 @@ public class SpaceShipController : MonoBehaviour
         float thrust = Input.GetAxis("Spaceship Thrust");
         float strafe = Input.GetAxis("Spaceship Strafe");
         float lift = Input.GetAxis("Spaceship Lift");
+
+        Vector3 newMovementVector = new(strafe, lift, thrust);
+        Debug.Log("New: " + newMovementVector);
+        oldMovementVector = Vector3.Lerp(oldMovementVector, newMovementVector, Time.deltaTime * accelerationSpeed);
+        Debug.Log("Old: " + oldMovementVector);
         
         if (Input.GetMouseButton(1))
         {
@@ -51,9 +57,17 @@ public class SpaceShipController : MonoBehaviour
         {
             speed = Mathf.Lerp(speed, normalSpeed, Time.deltaTime * 10);
         }
+        
+        
+        
+        
 
         //Set moveDirection to the vertical axis (up and down keys) * speed
-        Vector3 moveDirection = new Vector3(strafe, lift, thrust) * speed;
+        //Vector3 moveDirection = new Vector3(strafe, lift, thrust) * speed;
+        
+        Vector3 moveDirection = oldMovementVector * speed;
+        Debug.Log("SKUMMA: " + moveDirection);
+        
         //Transform the vector3 to local space
         moveDirection = transform.TransformDirection(moveDirection);
         //Set the velocity, so you can move
@@ -66,20 +80,15 @@ public class SpaceShipController : MonoBehaviour
         //Rotation
 
         float rotationZTmp = Input.GetAxis("Spaceship Roll");
-        /*if (Input.GetKey(KeyCode.A))
-        {
-            rotationZTmp = 1;
-        }
-        else if (Input.GetKey(KeyCode.D))
-        {
-            rotationZTmp = -1;
-        }*/
+
         
         mouseXSmooth = Mathf.Lerp(mouseXSmooth, Input.GetAxis("Horizontal Look") * rotationSpeed, Time.deltaTime * cameraSmooth);
         mouseYSmooth = Mathf.Lerp(mouseYSmooth, Input.GetAxis("Vertical Look") * rotationSpeed, Time.deltaTime * cameraSmooth);
+        
         Quaternion localRotation = Quaternion.Euler(mouseYSmooth, mouseXSmooth, rotationZTmp * rotationSpeed);
         lookRotation = lookRotation * localRotation;
         transform.rotation = lookRotation;
+        
         rotationZ -= mouseXSmooth;
         rotationZ = Mathf.Clamp(rotationZ, -45, 45);
         spaceshipRoot.transform.localEulerAngles = new Vector3(defaultShipRotation.x, defaultShipRotation.y, rotationZ);
