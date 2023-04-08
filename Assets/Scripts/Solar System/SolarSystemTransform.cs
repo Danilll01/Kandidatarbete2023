@@ -23,13 +23,11 @@ public class SolarSystemTransform : MonoBehaviour
     private bool releasePlayer = false;
     private Planet planetToReleasePlayerFrom;
     private Quaternion planetsParentRotation;
-    public bool stopSolarSystem;
-    private bool reset;
     private Vector3 directionToPlanetBeforeReset;
     private GameObject fakeOrbitObject;
     private float angleForHeightDiff;
     private Vector3 planetToSunDirection;
-    private Quaternion planetRotationBefore;
+    private Quaternion universeRotationBeforeReset;
     private Quaternion rotationBefore;
     private float heightDiffFromSunToOrigo;
 
@@ -135,7 +133,7 @@ public class SolarSystemTransform : MonoBehaviour
 
         sun.transform.RotateAround(Vector3.zero, Vector3.up, orbitSpeed * Time.deltaTime);
 
-        //planetsParent.transform.RotateAround(Vector3.zero, -rotationAxis, rotationspeed * Time.deltaTime);
+        planetsParent.transform.RotateAround(Vector3.zero, -rotationAxis, rotationspeed * Time.deltaTime);
 
         int activePlanetIndex = spawnPlanets.bodies.IndexOf(activePlanet);
         Vector3 direction = sun.transform.position - Vector3.zero;
@@ -157,16 +155,15 @@ public class SolarSystemTransform : MonoBehaviour
         if (activePlanet != oldActivePlanet && activePlanet == null)
         {
             rotateSolarSystem = false;
-            oldActivePlanet.ResetMoons();
             planetToReleasePlayerFrom = oldActivePlanet;
-            planetRotationBefore = planetsParent.transform.rotation;
-            reset = true;
+            universeRotationBeforeReset = planetsParent.transform.rotation;
             directionToPlanetBeforeReset = sun.transform.position - oldActivePlanet.transform.position;
             foreach (var planetBody in spawnPlanets.bodies)
             {
-                planetBody.SetUpResetComponents(planetRotationBefore);
+                planetBody.SetUpResetComponents(universeRotationBeforeReset);
             }
             ResetPlanetOrbit(oldActivePlanet);
+            oldActivePlanet.ResetMoons();
             releasePlayer = true;
             oldActivePlanet = activePlanet;
         }
@@ -287,10 +284,10 @@ public class SolarSystemTransform : MonoBehaviour
         Vector3 distanceFromOrigin = sun.transform.position - Vector3.zero;
         planetsParent.transform.position -= distanceFromOrigin;
 
-        planetTransform.rotation *= Quaternion.Inverse(planetRotationBefore);
+        planetTransform.rotation *= Quaternion.Inverse(universeRotationBeforeReset);
 
 
-        //planetTransform.rotation *= Quaternion.Inverse(rotationBefore);
+        planetTransform.rotation *= Quaternion.Inverse(rotationBefore);
 
         Vector3 planetToSunWithHeight = sun.transform.position + new Vector3(0, heightDiffFromSunToOrigo, 0) - planetTransform.position;
         Vector3 planetToSunWithoutHeight = sun.transform.position - planetTransform.position;
