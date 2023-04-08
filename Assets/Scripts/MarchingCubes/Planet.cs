@@ -36,6 +36,7 @@ public class Planet : MonoBehaviour
     [SerializeField] private GenerateCreatures generateCreatures;
     
     [HideInInspector] public Vector3 rotationAxis;
+    public float orbitSpeed;
     [HideInInspector] public float rotationSpeed;
     [HideInInspector] public GameObject moonsParent;
     [SerializeField] public FoliageHandler foliageHandler;
@@ -85,7 +86,8 @@ public class Planet : MonoBehaviour
         MinMaxTerrainLevel terrainLevel = new MinMaxTerrainLevel();
         
         rotationAxis = rand.OnUnitSphere() * radius;
-        rotationSpeed = rand.Next(1,5);
+        rotationSpeed = rand.Next(5,10);
+        orbitSpeed = 360 / (3f * Mathf.PI * Mathf.Sqrt(Mathf.Pow(transform.position.magnitude, 3)) * 0.000006673f);
 
         willGeneratePlanetLife = rand.Value() < chanceToSpawnPlanetLife;
         willGeneratePlanetLife = false;
@@ -158,7 +160,7 @@ public class Planet : MonoBehaviour
         if (player.parent != transform)
         {
             RotateAroundAxis();
-            parentOrbitMover.transform.RotateAround(Universe.sunPosition.position, Vector3.up, 2f * Time.deltaTime);
+            parentOrbitMover.transform.RotateAround(Universe.sunPosition.position, Vector3.up, orbitSpeed * Time.deltaTime);
             KeepPlanetAtSameDistanceToSun();
             RotateMoons(false);
         }
@@ -234,23 +236,6 @@ public class Planet : MonoBehaviour
             Transform moonsParentTransform = moonsParent.transform;
             float moonRadius = (moon.transform.position - moonsParentTransform.position).magnitude;
             Universe.DrawGizmosCircle(moonsParentTransform.position, moonsParentTransform.up, moonRadius, 32);
-        }
-
-
-        if (reset && player.parent != transform)
-        {
-            Gizmos.color = Color.blue;
-            Gizmos.DrawLine(sunTransform.position, sunTransform.position + directionToSunBeforeReset);
-        }
-        else if (reset)
-        {
-            for (int i = 0; i < moonsDirectionToPlanetBeforeReset.Length; i++)
-            {
-                Vector3 moonDirection = moonsDirectionToPlanetBeforeReset[i];
-
-                Gizmos.color = Color.red;
-                Gizmos.DrawLine(moonsParent.transform.position, moonsParent.transform.position + moonDirection);
-            }
         }
     }
 
