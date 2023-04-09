@@ -11,7 +11,11 @@ RWStructuredBuffer<Vector3> vertices;
 RWStructuredBuffer<int> trianglesUp;
 RWStructuredBuffer<int> trianglesDown;
 
+
+int posx;
+int posy;
 int resolution;
+int sideResolution;
 float radius;
 
 float3 localUp, axisA, axisB;
@@ -26,8 +30,8 @@ void CSMesh(uint3 id : SV_DispatchThreadID)
     
     float2 percent =
     {
-        x / (resolution - 1.0),
-        y / (resolution - 1.0)
+        (x + (resolution - 1.0) * posx) / ((resolution - 1.0) * sideResolution),
+        (y + (resolution - 1.0) * posy) / ((resolution - 1.0) * sideResolution)
     };
     
     float3 pointOnUnitCube = localUp + (percent.x - .5) * 2 * axisA + (percent.y - .5) * 2 * axisB;

@@ -21,12 +21,16 @@ public class WaterHandler : MonoBehaviour
     private Planet planet = null;
     private float waterRadius;
     private bool underWaterState = false;
+    public int sideResolution = 3;
+    public GameObject testBoi;
 
     /// <summary>
     /// Checks if the plater is under water
     /// </summary>
     void Update()
     {
+        if (planet == null) return;
+        UpdateWater();
         if (playerWater != null && underWaterState != playerWater.underWater) //&& ReferenceEquals(planet, playerWater.planet))
         {
             if (playerWater.underWater)
@@ -62,6 +66,18 @@ public class WaterHandler : MonoBehaviour
         GenerateColour();
     }
 
+    public void InitializeTest(float waterDiameter, Color color)
+    {
+        //playerWater = Camera.main.gameObject.transform.parent.GetComponent<PlayerWater>();
+
+        waterRadius = Mathf.Abs(waterDiameter / 2) - 1;
+
+        GenerateMaterial(color);
+        GenerateWater();
+        GenerateMesh();
+        GenerateColour();
+    }
+
     private void GenerateMaterial(Color color)
     {
         material = new Material(waterShader);
@@ -78,23 +94,21 @@ public class WaterHandler : MonoBehaviour
     private void GenerateWater()
     {
         if (meshFilters == null || meshFilters.Length == 0)
-            meshFilters = new MeshFilter[6];
+            meshFilters = new MeshFilter[6 * sideResolution * sideResolution];
 
-        waterfaces = new Water[6];
+        waterfaces = new Water[6 * sideResolution * sideResolution];
 
-        for (int i = 0; i < 6; i++)
+        for (int i = 0; i < 6 * sideResolution * sideResolution; i++)
         {
-            if (meshFilters[i] == null)
-            {
-                GameObject meshObj = new GameObject("waterMesh");
-                meshObj.transform.parent = transform;
-                meshObj.transform.localPosition = new Vector3(0, 0, 0);
-
-                meshObj.AddComponent<MeshRenderer>().sharedMaterial = new Material(Shader.Find("Standard"));
-                meshFilters[i] = meshObj.AddComponent<MeshFilter>();
-                meshFilters[i].sharedMesh = new Mesh();
-            }
-            waterfaces[i] = new Water(computeShader, meshFilters[i], resolution * 32, waterRadius, directions[i]);
+            
+            GameObject meshObj = new GameObject("waterMesh");
+            meshObj.transform.parent = transform;
+            meshObj.transform.localPosition = Vector3.zero;
+            meshObj.AddComponent<MeshRenderer>().sharedMaterial = new Material(Shader.Find("Standard"));
+            meshFilters[i] = meshObj.AddComponent<MeshFilter>();
+            meshFilters[i].sharedMesh = new Mesh();
+            
+            waterfaces[i] = new Water(computeShader, meshFilters[i], resolution * 32, waterRadius, directions[i/ (sideResolution * sideResolution)], i % (sideResolution * sideResolution), sideResolution, meshObj);
         }
     }
 
@@ -130,4 +144,32 @@ public class WaterHandler : MonoBehaviour
             waterface.UnderWater(underWater);
         }
     }
+
+    private void UpdateWater()
+    {
+        if (planet == Universe.player.attractor)
+        {
+            Vector3 playerPos = Universe.player.transform.position;
+            foreach (Water waterface in waterfaces)
+            {
+                if(Vector3.Magnitude(playerPos - waterface.waterPos) > 1000)
+                {
+                    if (waterface.resolution != 2)
+                    {
+                        waterface.resolution = 2;
+                        waterface.ConstructMesh();
+                    }
+                }
+                else
+                {
+                    if(waterface.resolution != 8)
+                    {
+                        waterface.resolution = 8;
+                        waterface.ConstructMesh();
+                    }
+                }
+            }
+        }
+    }
+
 }

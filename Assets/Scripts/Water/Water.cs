@@ -8,12 +8,16 @@ public class Water
 {
     private Mesh mesh;
     private MeshFilter meshFilter;
-    private int resolution;
+    public int resolution;
     private int[] trianglesUp;
     private int[] trianglesDown;
     private Vector3 localUp, axisA, axisB;
     private ComputeShader computeShader;
     private float waterRadius;
+    private int position;
+    private int sideResolution;
+    public Vector3 waterPos;
+    public GameObject parent;
 
     /// <summary>
     /// Initializes the water mesh
@@ -23,16 +27,25 @@ public class Water
     /// <param name="resolution"></param>
     /// <param name="waterRadius"></param>
     /// <param name="localUp"></param>
-    public Water(ComputeShader computeShader, MeshFilter meshFilter, int resolution, float waterRadius, Vector3 localUp)
+    public Water(ComputeShader computeShader, MeshFilter meshFilter, int resolution, float waterRadius, Vector3 localUp, int position, int sideResolution, GameObject parent)
     {
         this.computeShader = computeShader;
         this.meshFilter = meshFilter;
         this.resolution = resolution;
         this.waterRadius = waterRadius;
         this.localUp = localUp;
+        this.position = position;
+        this.sideResolution = sideResolution;
+        this.parent = parent;
+
 
         axisA = new Vector3(localUp.y, localUp.z, localUp.x);
         axisB = Vector3.Cross(localUp, axisA);
+
+        waterPos = (localUp + 
+            (1 / (2.0f * sideResolution) + (position % sideResolution) / (float)sideResolution - .5f) * 2 * axisA +
+            (1 / (2.0f * sideResolution) + (position / sideResolution) / (float)sideResolution - .5f) * 2 * axisB).normalized * waterRadius;
+
     }
 
     /// <summary>
@@ -52,6 +65,7 @@ public class Water
         mesh.RecalculateBounds();
 
         meshFilter.sharedMesh = mesh;
+
     }
 
     /// <summary>
@@ -80,6 +94,9 @@ public class Water
         computeShader.SetBuffer(kernelId, "vertices", bufferVertices);
 
         computeShader.SetInt("resolution", resolution);
+        computeShader.SetInt("sideResolution", sideResolution);
+        computeShader.SetInt("posx", position % sideResolution);
+        computeShader.SetInt("posy", position / sideResolution);
         computeShader.SetFloat("radius", waterRadius);
 
         computeShader.SetFloats("localUp", new float[] { localUp.x, localUp.y, localUp.z });
