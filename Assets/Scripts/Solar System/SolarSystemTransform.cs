@@ -211,6 +211,12 @@ public class SolarSystemTransform : MonoBehaviour
         }
         float radius = (sun.transform.position - Vector3.zero).magnitude;
         Universe.DrawGizmosCircle(Vector3.zero, sun.transform.up, radius, 32);
+
+        if (reset)
+        {
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawLine(planetToReleasePlayerFrom.transform.position, planetToReleasePlayerFrom.transform.position + directionToPlanetBeforeReset);
+        }
     }
 
     private Vector3 ClosestPointOnPlane(Vector3 planeOffset, Vector3 planeNormal, Vector3 point)
