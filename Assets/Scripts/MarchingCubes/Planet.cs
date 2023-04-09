@@ -200,8 +200,8 @@ public class Planet : MonoBehaviour
         directionatZeroY.y = 0;
         directionToSunBeforeReset = Quaternion.FromToRotation(directionToSunBeforeReset, directionatZeroY) * directionToSunBeforeReset;
 
-        parentOrbitMover.transform.rotation = Quaternion.identity;
-        parentOrbitMover.transform.position = Universe.sunPosition.position + directionToSunBeforeReset;
+        //parentOrbitMover.transform.rotation = Quaternion.identity;
+       // parentOrbitMover.transform.position = Universe.sunPosition.position + directionToSunBeforeReset;
 
         moonsParent.transform.rotation = Quaternion.identity;
         moonsParent.transform.localPosition = Vector3.zero;
@@ -215,8 +215,8 @@ public class Planet : MonoBehaviour
             moonDirection = Quaternion.FromToRotation(moonDirection, moonDirectionAtZeroY) * moonDirection;
 
             moonsDirectionToPlanetBeforeReset[i] = moonDirection;
-            moons[i].transform.parent.rotation = Quaternion.identity;
-            moons[i].transform.parent.position = parentOrbitMover.transform.position + moonDirection;
+            //moons[i].transform.parent.rotation = Quaternion.identity;
+            //moons[i].transform.parent.position = parentOrbitMover.transform.position + moonDirection;
         }
     }
 
@@ -236,6 +236,22 @@ public class Planet : MonoBehaviour
             Transform moonsParentTransform = moonsParent.transform;
             float moonRadius = (moon.transform.position - moonsParentTransform.position).magnitude;
             Universe.DrawGizmosCircle(moonsParentTransform.position, moonsParentTransform.up, moonRadius, 32);
+        }
+
+        if (reset && player.parent != transform)
+        {
+            Gizmos.color = Color.blue;
+            Gizmos.DrawLine(sunTransform.position, sunTransform.position + directionToSunBeforeReset);
+        }
+        else if (reset)
+        {
+            for (int i = 0; i < moonsDirectionToPlanetBeforeReset.Length; i++)
+            {
+                Vector3 moonDirection = moonsDirectionToPlanetBeforeReset[i];
+
+                Gizmos.color = Color.red;
+                Gizmos.DrawLine(moonsParent.transform.position, moonsParent.transform.position + moonDirection);
+            }
         }
     }
 
