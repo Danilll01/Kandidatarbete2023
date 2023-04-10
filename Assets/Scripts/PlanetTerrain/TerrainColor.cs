@@ -91,7 +91,7 @@ public class TerrainColor : MonoBehaviour {
         Color[] colors = new Color[textureRes];
 
         // Gets color palette and puts it into a gradient
-        Color[] takePalette = crazyColorPaletts[random.Next(crazyColorPaletts.Length)];
+        Color[] takePalette = normalColorPalette[random.Next(normalColorPalette.Length)];
         float[] keyPos = new float[] { 0f, 0.015f, 0.144f, 0.618f, 1f };
         GradientColorKey[] gradientKeys = new GradientColorKey[takePalette.Length];
         Color[] takePaletteRand = takePalette.OrderBy(x => random.Next()).ToArray();
