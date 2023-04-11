@@ -81,7 +81,7 @@ public class Planet : MonoBehaviour
 
             if (creatureHandler != null)
             {
-                creatureHandler.Initialize(this);
+                creatureHandler.Initialize(this, rand.Next());
             }
         }
 
