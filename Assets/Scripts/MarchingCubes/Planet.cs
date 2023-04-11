@@ -237,6 +237,22 @@ public class Planet : MonoBehaviour
             float moonRadius = (moon.transform.position - moonsParentTransform.position).magnitude;
             Universe.DrawGizmosCircle(moonsParentTransform.position, moonsParentTransform.up, moonRadius, 32);
         }
+        
+        if (reset && player.parent != transform)
+        {
+            Gizmos.color = Color.blue;
+            Gizmos.DrawLine(sunTransform.position, sunTransform.position + directionToSunBeforeReset);
+        }
+        else if (reset)
+        {
+            for (int i = 0; i < moonsDirectionToPlanetBeforeReset.Length; i++)
+            {
+                Vector3 moonDirection = moonsDirectionToPlanetBeforeReset[i];
+
+                Gizmos.color = Color.red;
+                Gizmos.DrawLine(moonsParent.transform.position, moonsParent.transform.position + moonDirection);
+            }
+        }
     }
 
     private void RotateAroundAxis()

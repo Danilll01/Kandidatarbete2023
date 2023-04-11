@@ -30,6 +30,9 @@ public class SolarSystemTransform : MonoBehaviour
     private Quaternion universeRotationBeforeReset;
     private Quaternion rotationBefore;
     private float heightDiffFromSunToOrigo;
+    public bool stopSolarSystem;
+    public bool resetSolarSystem;
+    private bool reset;
 
     void Start()
     {
@@ -73,8 +76,8 @@ public class SolarSystemTransform : MonoBehaviour
         {
             planetToReleasePlayerFrom.ResetMoons();
             ResetPlanets();
-            player.transform.SetParent(null, true);
-            player.attractor = null;
+            //player.transform.SetParent(null, true);
+            //player.attractor = null;
             releasePlayer = false;
         }
     }
@@ -91,39 +94,58 @@ public class SolarSystemTransform : MonoBehaviour
         }
         InitializeValues();
 
-        if (!releasePlayer)
+        if (!stopSolarSystem)
         {
-            UpdateClosestPlanet();
-            HandleUpdatedActivePlanet();
-        }
-        else
-        {
-            CheckWhenToReleasePlayer();
-        }
-
-        Universe.player.Planet = activePlanet;
-
-        if (releasePlayer)
-        {
-            CheckWhenToReleasePlayer();
-        }
-
-        if (releasePlayer) return;
-
-        if (rotateSolarSystem)
-        {
-            RotateSolarSystem();
-        }
-        else
-        {
-            if (relativePlanetSunDistances != null)
+            if (!releasePlayer)
             {
-                foreach (var planetBody in spawnPlanets.bodies)
-                {
-                    planetBody.Run();
-                }
+                UpdateClosestPlanet();
+                HandleUpdatedActivePlanet();
+            }
+            else
+            {
+                CheckWhenToReleasePlayer();
             }
 
+            Universe.player.Planet = activePlanet;
+
+            if (releasePlayer)
+            {
+                CheckWhenToReleasePlayer();
+            }
+
+            if (releasePlayer) return;
+
+            if (rotateSolarSystem)
+            {
+                RotateSolarSystem();
+            }
+            else
+            {
+                if (relativePlanetSunDistances != null)
+                {
+                    foreach (var planetBody in spawnPlanets.bodies)
+                    {
+                        planetBody.Run();
+                    }
+                }
+
+            }
+        }
+        else if (resetSolarSystem && !reset)
+        {
+            rotateSolarSystem = false;
+            planetToReleasePlayerFrom = oldActivePlanet;
+            universeRotationBeforeReset = planetsParent.transform.rotation;
+            directionToPlanetBeforeReset = sun.transform.position - oldActivePlanet.transform.position;
+            foreach (var planetBody in spawnPlanets.bodies)
+            {
+                planetBody.SetUpResetComponents(universeRotationBeforeReset);
+            }
+            ResetPlanetOrbit(oldActivePlanet);
+            oldActivePlanet.ResetMoons();
+            releasePlayer = true;
+            oldActivePlanet = activePlanet;
+            reset = true;
         }
     }
 
