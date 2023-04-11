@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Added controlls back to new ship movement">
+    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Individual/Joel.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Individual/Joel.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectSettings/InputManager.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/InputManager.asset" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -32,10 +33,8 @@
   </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/4746c126b0b54f3b834845974d1a9190159000/57/36c84f50/Component.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://D:/Unity/Projects/Kandidatarbete2023/Assets/Scenes/Individual/Joel.unity" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Atmosphere/AtmosphereHandler.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Shaders/Atmosphere/AtmosphericScattering.shader" root0="FORCE_HIGHLIGHTING" />
-    <setting file="mock://D:/Unity/Projects/Kandidatarbete2023/ProjectSettings/SelectiveProfiler.asset" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -131,7 +130,8 @@
       <workItem from="1680116449264" duration="153000" />
       <workItem from="1680116721177" duration="10746000" />
       <workItem from="1680265180898" duration="5422000" />
-      <workItem from="1680825879382" duration="5897000" />
+      <workItem from="1680825879382" duration="6852000" />
+      <workItem from="1681200751634" duration="407000" />
     </task>
     <task id="LOCAL−00003" summary="Changed file">
       <created>1679327563589</created>
@@ -349,7 +349,13 @@
       <option name="presentableId" value="LOCAL−00038" />
       <updated>1680830748010</updated>
     </task>
-    <option name="localTasksCounter" value="39" />
+    <task id="LOCAL−00039" summary="Ship movement is now smooth">
+      <created>1680832302577</created>
+      <option name="number" value="LOCAL−00039" />
+      <option name="presentableId" value="LOCAL−00039" />
+      <updated>1680832302577</updated>
+    </task>
+    <option name="localTasksCounter" value="40" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -371,7 +377,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="Fixed atmosphere update calling to mirror the players actual current planet" />
     <MESSAGE value="Better shadow resolution near player" />
     <MESSAGE value="Ambient light is now customized for each atmosphere" />
     <MESSAGE value="Planet strength is now randomized and can be of if there is no water" />
@@ -396,6 +401,7 @@
     <MESSAGE value="Better spawn planet" />
     <MESSAGE value="Added new spaceship controller" />
     <MESSAGE value="Added controlls back to new ship movement" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added controlls back to new ship movement" />
+    <MESSAGE value="Ship movement is now smooth" />
+    <option name="LAST_COMMIT_MESSAGE" value="Ship movement is now smooth" />
   </component>
 </project>
