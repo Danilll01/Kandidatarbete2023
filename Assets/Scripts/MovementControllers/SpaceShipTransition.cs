@@ -4,33 +4,50 @@ using UnityEngine;
 
 public class SpaceShipTransition : MonoBehaviour
 {
+    // Ship stuff
+    [SerializeField] private Camera shipCamera;
     
-    private bool transitioning = false;
+    // Player stuff
+    private PillPlayerController player;
+    
+    // Transition
     [HideInInspector] public bool boarded = false;
+    private bool transitioning = false;
+    private float transitionProgress = 0;
     
+    // Positions / rotations
     private Vector3 transitionFromPos = Vector3.zero;
     private Quaternion transitionFromRot = Quaternion.identity;
     private Vector3 transitionToPos = Vector3.zero;
     private Quaternion transitionToRot = Quaternion.identity;
-    
-    private PillPlayerController player;
-    [SerializeField] private float maxLandingAngle = 20f;
-    private float transitionProgress = 0;
-    [SerializeField] private float landingTime = 1f;
     private readonly Vector3 dismountedPos = new Vector3(-2.6f, 2, -2f);
+    [SerializeField] private Transform mountedPos;
     
+    // Landing
+    [SerializeField] private float maxLandingAngle = 20f;
+    [SerializeField] private float landingTime = 1f;
+    
+    // Audio
     private AudioSource audioPlayer;
     [SerializeField] private AudioClip errorSound;
     
-    // Start is called before the first frame update
-    void Start()
+    /// <summary>
+    /// Initializes ship transition script
+    /// </summary>
+    public void Initialize()
     {
         player = Universe.player;
+        
+        transform.position = player.transform.position;
+        transform.rotation = player.transform.rotation;
+        EmbarkInShip();
+        transitionToPos = transform.position;
+        transitionToRot = transform.rotation;
+        transitionProgress = float.MaxValue;
+        HandleTransition();
     }
 
     // Handles ship transition. Taken from original ship controller
-    
-    // Update is called once per frame
     void Update()
     {
         if (transitioning)
@@ -49,39 +66,39 @@ public class SpaceShipTransition : MonoBehaviour
         // More efficient code
         Transform playerTransform = player.transform;
         
-        //Embark / Disembark
-        if (Input.GetKeyDown(KeyCode.F))
+        // If transition is not starter, return 
+        if (!Input.GetKeyDown(KeyCode.F)) return;
+        
+        // Transition is started
+        if (boarded)
         {
-            if (boarded)
+            if (GetLandingSpot(out (Vector3 position, Quaternion rotation) landingTarget))
             {
-                if (GetLandingSpot(out (Vector3 position, Quaternion rotation) landingTarget))
-                {
-                    //Set up transition to/from
-                    transitionFromPos = playerTransform.localPosition;
-                    transitionFromRot = playerTransform.localRotation;
-                    transitionToPos = landingTarget.position;
-                    transitionToRot = landingTarget.rotation;
-                    transitioning = true;
-                    //Transition method handles moving the player out of the ship
-                }
-            }
-            else
-            {
-                //Embark
-                //Move player into ship
-                EmbarkInShip();
-
-                //Get raised spot
-                GetTakeoffSpot(out (Vector3 position, Quaternion rotation) takeoffTarget);
-
                 //Set up transition to/from
                 transitionFromPos = playerTransform.localPosition;
                 transitionFromRot = playerTransform.localRotation;
-                transitionToPos = takeoffTarget.position;
-                transitionToRot = takeoffTarget.rotation;
+                transitionToPos = landingTarget.position;
+                transitionToRot = landingTarget.rotation;
                 transitioning = true;
-                player.boarded = true;
+                //Transition method handles moving the player out of the ship
             }
+        }
+        else
+        {
+            //Embark
+            //Move player into ship
+            EmbarkInShip();
+
+            //Get raised spot
+            GetTakeoffSpot(out (Vector3 position, Quaternion rotation) takeoffTarget);
+
+            //Set up transition to/from
+            transitionFromPos = playerTransform.localPosition;
+            transitionFromRot = playerTransform.localRotation;
+            transitionToPos = takeoffTarget.position;
+            transitionToRot = takeoffTarget.rotation;
+            transitioning = true;
+            player.boarded = true;
         }
     }
     
@@ -101,30 +118,45 @@ public class SpaceShipTransition : MonoBehaviour
                 DisembarkFromShip();
             }
             transitionProgress = 0;
-            Boarded = !boarded;
+            BoardedRecord = !boarded;
         }
     }
     
     private void EmbarkInShip()
     {
-        //player.transform.position = transform.position + (transform.rotation * mountedPos.localPosition);
-        player.transform.rotation = transform.rotation;
+        Transform shipTransform = transform;
+        Transform playerTransform = player.transform;
+        
+        playerTransform.position = shipTransform.position + (shipTransform.rotation * mountedPos.localPosition);
+        playerTransform.rotation = shipTransform.rotation;
+
+        player.firstPersonCamera.enabled = false;
+        shipCamera.enabled = true;
+        
         //camera.transform.localRotation = Quaternion.identity;
         //body.velocity = Vector3.zero;
-        transform.SetParent(player.transform);
+        Debug.Log("HEJEJEJEJEJEJEJEJEJEJEJEJE");
+        player.transform.SetParent(mountedPos);
     }
     
     private void GetTakeoffSpot(out (Vector3 position, Quaternion rotation) takeoffSpot)
     {
         takeoffSpot.position = player.transform.localPosition + player.Up * 10;
-        takeoffSpot.rotation = Gravity.UprightRotation(player.transform, player.Planet.transform);
+        takeoffSpot.rotation = Gravity.UprightRotation(player.transform, player.attractor.transform);
     }
     
     private void DisembarkFromShip()
     {
-        transform.SetParent(player.Planet.gameObject.transform);
-        player.transform.position = transform.position + (transform.rotation * dismountedPos);
-        player.transform.rotation = transform.rotation;
+        Transform shipTransform = transform;
+        Transform playerTransform = player.transform;
+        
+        transform.SetParent(player.attractor.transform);
+        
+        playerTransform.position = shipTransform.position + (shipTransform.rotation * dismountedPos);
+        playerTransform.rotation = shipTransform.rotation;
+
+        shipCamera.enabled = false;
+        player.firstPersonCamera.enabled = true;
         //body.velocity = Vector3.zero;
     }
     
@@ -191,22 +223,22 @@ public class SpaceShipTransition : MonoBehaviour
         //Land ship and calculate offsets
         landingPlane.Raycast(new Ray(playerTransform.position, -player.Up), out float height);
         Vector3 landingPos = playerTransform.position + (-player.Up * height);
-        Vector3 playerPositionOffset = Quaternion.FromToRotation(Vector3.up, player.Up) * (Vector3.up * transform.localPosition.y * transform.parent.localScale.y);
+        Vector3 playerPositionOffset = Quaternion.FromToRotation(Vector3.up, player.Up) * Vector3.up * (transform.localPosition.y * transform.parent.localScale.y);
 
         //Set up transition to/from
-        landingSpot.position = player.Planet.transform.InverseTransformPoint(landingPos - playerPositionOffset);
+        landingSpot.position = player.attractor.transform.InverseTransformPoint(landingPos - playerPositionOffset);
         landingSpot.rotation = Quaternion.LookRotation(Vector3.ProjectOnPlane(transform.TransformVector(Vector3.forward), landingPlane.normal), landingPlane.normal);
 
         return true;
     }
     
-    private bool Boarded
+    private bool BoardedRecord
     {
         set
         {
             player.boarded = value;
             boarded = value;
         }
-        get { return boarded; }
+        get => boarded;
     }
 }

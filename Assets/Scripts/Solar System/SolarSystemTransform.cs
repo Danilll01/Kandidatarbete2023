@@ -11,7 +11,8 @@ public class SolarSystemTransform : MonoBehaviour
     private Planet[] planets;
     private GameObject sun;
     private GameObject planetsParent;
-    [SerializeField] private GameObject player;
+    private Transform player;
+    private Transform spaceShip;
 
 
     void Start()
@@ -22,6 +23,7 @@ public class SolarSystemTransform : MonoBehaviour
         }
         planetsParent = this.gameObject;
         planets = planetsParent.GetComponentsInChildren<Planet>();
+        player = Universe.player.transform;
     }
 
 
@@ -51,20 +53,20 @@ public class SolarSystemTransform : MonoBehaviour
             MovePlanets(activePlanet);
             oldActivePlanet = activePlanet;
         }
-        Universe.player.Planet = activePlanet;
+        Universe.player.attractor = activePlanet;
     }
 
     private void UpdateClosestPlanet()
     {
         //Check if the active planet has been left
-        if (activePlanet != null && Vector3.Distance(player.transform.position, activePlanet.transform.GetChild(0).position) >= activePlanet.radius * 4)
+        if (activePlanet != null && Vector3.Distance(player.position, activePlanet.transform.GetChild(0).position) >= activePlanet.radius * 4)
         {
             activePlanet = null;
         }
         // Loops over all planets and checks if the player is on it or has left it
         foreach (Planet planet in planets)
         {
-            float distance = Vector3.Distance(player.transform.position, planet.transform.GetChild(0).position);
+            float distance = Vector3.Distance(player.position, planet.transform.GetChild(0).position);
             float activeDistance;
             if (activePlanet == null)
             {
@@ -72,14 +74,23 @@ public class SolarSystemTransform : MonoBehaviour
             }
             else
             {
-                activeDistance = Vector3.Distance(player.transform.position, activePlanet.transform.GetChild(0).position);
+                activeDistance = Vector3.Distance(player.position, activePlanet.transform.GetChild(0).position);
             }
 
             // Check if the player has entered a new planet
             if (distance < planet.radius * 4 && distance <= activeDistance * 1.1f)
             {
                 activePlanet = planet;
-                player.transform.parent = activePlanet.transform;
+
+                if (!Universe.player.boarded)
+                {
+                    player.parent = activePlanet.transform;
+                }
+                else
+                {
+                    Universe.spaceShip.parent = activePlanet.transform;
+                }
+                
             }
         }
     }
@@ -94,7 +105,15 @@ public class SolarSystemTransform : MonoBehaviour
 
         // Center the solar system at origo again and remove player as a child of planet
         planetsParent.transform.position = Vector3.zero;
-        player.transform.parent = null;
+
+        if (!Universe.player.boarded)
+        {
+            player.parent = null;
+        }
+        else
+        {
+            Universe.spaceShip.parent = null;
+        }
 
     }
 

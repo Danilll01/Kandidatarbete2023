@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="">
+    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Added file">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Materials/TemporaryWorld.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Materials/TemporaryWorld.mat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Individual/Joel.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Individual/Joel.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Player/ShipMain.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Player/ShipMain.prefab" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/MovementControllers/PillPlayerController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/MovementControllers/PillPlayerController.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProjectSettings/ProjectSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/ProjectSettings.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProjectSettings/SelectiveProfiler.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/SelectiveProfiler.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProjectSettings/ShaderGraphSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/ShaderGraphSettings.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipTransition.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipTransition.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Solar System/SolarSystemTransform.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Solar System/SolarSystemTransform.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Solar System/Universe.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Solar System/Universe.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Shaders/Water/CameraWater.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Shaders/Water/CameraWater.mat" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -38,7 +38,9 @@
   </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/4746c126b0b54f3b834845974d1a9190159000/57/36c84f50/Component.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://D:/Unity/Projects/Kandidatarbete2023/Assets/Scenes/Individual/Joel.unity" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Atmosphere/AtmosphereHandler.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipTransition.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Shaders/Atmosphere/AtmosphericScattering.shader" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="MarkdownSettingsMigration">
@@ -137,7 +139,7 @@
       <workItem from="1680265180898" duration="5422000" />
       <workItem from="1680825879382" duration="6852000" />
       <workItem from="1681200751634" duration="407000" />
-      <workItem from="1681221233720" duration="2459000" />
+      <workItem from="1681221233720" duration="9737000" />
     </task>
     <task id="LOCAL−00003" summary="Changed file">
       <created>1679327563589</created>
@@ -361,7 +363,19 @@
       <option name="presentableId" value="LOCAL−00039" />
       <updated>1680832302577</updated>
     </task>
-    <option name="localTasksCounter" value="40" />
+    <task id="LOCAL−00040" summary="Added Ship transition class">
+      <created>1681223983727</created>
+      <option name="number" value="LOCAL−00040" />
+      <option name="presentableId" value="LOCAL−00040" />
+      <updated>1681223983727</updated>
+    </task>
+    <task id="LOCAL−00041" summary="Added file">
+      <created>1681224191861</created>
+      <option name="number" value="LOCAL−00041" />
+      <option name="presentableId" value="LOCAL−00041" />
+      <updated>1681224191861</updated>
+    </task>
+    <option name="localTasksCounter" value="42" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -383,8 +397,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="Better shadow resolution near player" />
-    <MESSAGE value="Ambient light is now customized for each atmosphere" />
     <MESSAGE value="Planet strength is now randomized and can be of if there is no water" />
     <MESSAGE value="Atmosphere height/thickness is now randomized" />
     <MESSAGE value="Ambient light now blends with no atmosphere gradient when the atmosphere is weaker" />
@@ -408,6 +420,8 @@
     <MESSAGE value="Added new spaceship controller" />
     <MESSAGE value="Added controlls back to new ship movement" />
     <MESSAGE value="Ship movement is now smooth" />
-    <option name="LAST_COMMIT_MESSAGE" value="Ship movement is now smooth" />
+    <MESSAGE value="Added Ship transition class" />
+    <MESSAGE value="Added file" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added file" />
   </component>
 </project>

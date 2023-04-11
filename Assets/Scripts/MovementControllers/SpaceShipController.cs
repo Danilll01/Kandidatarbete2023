@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
+[RequireComponent(typeof(SpaceShipTransition))]
 
 public class SpaceShipController : MonoBehaviour
 {
@@ -15,6 +16,7 @@ public class SpaceShipController : MonoBehaviour
     [SerializeField] private float rotationSpeed = 2.0f;
     [SerializeField] private float cameraSmooth = 4f;
     [SerializeField] private RectTransform crosshairTexture;
+    [SerializeField] private SpaceShipTransition shipTransitionScript;
 
     // Ship movement
     private float speed;
@@ -26,8 +28,10 @@ public class SpaceShipController : MonoBehaviour
     private Vector3 defaultShipRotation;
     private Vector3 oldMovementVector = new();
 
-    // Start is called before the first frame update
-    void Start()
+    /// <summary>
+    /// Initializes ship controller script
+    /// </summary>
+    public void Initialize()
     {
         physicsBody = GetComponent<Rigidbody>();
         physicsBody.useGravity = false;
@@ -37,11 +41,16 @@ public class SpaceShipController : MonoBehaviour
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+
+        shipTransitionScript.Initialize();
+        Universe.spaceShip = transform;
     }
 
     // Handles movement of ship
     void FixedUpdate()
     {
+        // If player is not boarded, we do not need to do ship movement
+        if (!Universe.player.boarded) { return; }
         
         float thrust = Input.GetAxis("Spaceship Thrust");
         float strafe = Input.GetAxis("Spaceship Strafe");

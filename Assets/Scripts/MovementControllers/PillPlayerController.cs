@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using ExtendedRandom;
 using UnityEngine.Serialization;
@@ -25,7 +26,7 @@ public class PillPlayerController : MonoBehaviour
     private bool isSprinting = false;
 
     [Header("Ship")]
-    [SerializeField] private ShipController ship;
+    [SerializeField] private SpaceShipController ship;
     [HideInInspector] public bool boarded = false;
 
     // Animations
@@ -64,7 +65,7 @@ public class PillPlayerController : MonoBehaviour
 
         if (ship == null)
         {
-            ship = GameObject.Find("ShipMain").GetComponent<ShipController>();
+            ship = GameObject.Find("ShipMain").GetComponent<SpaceShipController>();
         }
 
         body = GetComponent<Rigidbody>();
@@ -276,10 +277,11 @@ public class PillPlayerController : MonoBehaviour
         Vector3 spawnLocationAbovePlanet = planet.transform.position + (rand.OnUnitSphere() * planet.radius * 1.5f);
         transform.position = spawnLocationAbovePlanet;
         transform.LookAt(planet.transform);
-        ship.Initialize(body, firstPersonCamera);
+        ship.Initialize();
     }
 
-    public Planet Planet
+    // Deprecated
+    [Obsolete] public Planet Planet
     {
         get => attractor;
         set => attractor = value;
