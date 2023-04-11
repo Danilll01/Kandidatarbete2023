@@ -20,7 +20,7 @@ public class CreatureSpawning : MonoBehaviour
     private Vector3 chunkPosition;
     private int positionArrayLength;
 
-    private SpawnPack[] objectsToSpawn;
+    private Queue<SpawnPack> objectsToSpawn;
     private int objectsToSpawnIndex = 0;
     private bool readyToSpawn = false;
 
@@ -67,7 +67,7 @@ public class CreatureSpawning : MonoBehaviour
             creatureSpots[i] = localpos;
         }
 
-        objectsToSpawn = new SpawnPack[creatureSpots.Length];
+        objectsToSpawn = new Queue<SpawnPack>();
     }
 
     /// <summary>
@@ -103,13 +103,17 @@ public class CreatureSpawning : MonoBehaviour
             // Checks if the ray hit the correct chunk
             if (hit.transform == transform.parent && hit.distance < radius - waterRadius)
             {
+                hits++;
                 Quaternion rotation = Quaternion.FromToRotation(Vector3.forward, hit.normal);
 
                 // Add pack to array of objects to spawn
-                objectsToSpawn[objectsToSpawnIndex] = new SpawnPack(rayOrigin, rotation, GetCreatureToSpawn(hit.point));
+                bool foundCreature = GetCreatureToSpawn(hit.point, out CreaturePack newCreature);
+                if (!foundCreature)
+                {
+                    continue;
+                }
+                objectsToSpawn.Enqueue(new SpawnPack(rayOrigin, rotation, newCreature));
                 objectsToSpawnIndex++;
-
-                hits++;
             }
 
             // Exits early if max nr of things has spawned
@@ -133,18 +137,18 @@ public class CreatureSpawning : MonoBehaviour
     /// </summary>
     public void BatchedSpawning()
     {
-        if (readyToSpawn && objectsToSpawn.Length > 0)
+        if (readyToSpawn && objectsToSpawn.Count > 0)
         {
             int totalIndex = objectsToSpawnIndex;
             while (totalIndex < objectsToSpawnIndex + packsPerBatchedSpawn)
             {
-                if (totalIndex >= objectsToSpawn.Length || objectsToSpawn[totalIndex] == null)
+                if (totalIndex >= objectsToSpawn.Count || objectsToSpawn.Count == 0)
                 {
                     finishedSpawning = true;
                     return;
                 }
-
-                SpawnPack(objectsToSpawn[totalIndex].rayOrigin, objectsToSpawn[totalIndex].rotation, objectsToSpawn[totalIndex].creature);
+                SpawnPack newPack = objectsToSpawn.Dequeue();
+                SpawnPack(newPack.rayOrigin, newPack.rotation, newPack.creature);
 
                 totalIndex++;
             }
@@ -243,7 +247,7 @@ public class CreatureSpawning : MonoBehaviour
         return false;
     }
 
-    private CreaturePack GetCreatureToSpawn(Vector3 position)
+    private bool GetCreatureToSpawn(Vector3 position, out CreaturePack packToSpawn)
     {
         int total = 0;
 
@@ -276,11 +280,21 @@ public class CreatureSpawning : MonoBehaviour
             }
             else
             {
-                return acceptablePacks[i];
+                packToSpawn = acceptablePacks[i];
+                return true;
             }
         }
 
-        return acceptablePacks[0];
+        if (acceptablePacks.Count != 0)
+        {
+            packToSpawn = acceptablePacks[0];
+            return true;
+        }
+        else
+        {
+            packToSpawn = new CreaturePack();
+            return false;
+        }
     }
 
     private int[] GetSpawningRatios()
