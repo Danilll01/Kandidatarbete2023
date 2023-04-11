@@ -96,7 +96,7 @@ public struct BiomeValue
         this.trees = trees;
     }
 
-    public bool IsInsideRange(ref BiomeRange range)
+    public bool IsInsideRange(BiomeRange range)
     {
         return
             (!range.mountainRelevant || (range.mountainMin <= mountains && mountains <= range.mountainMax)) &&
