@@ -106,17 +106,17 @@ public struct BiomeValue
 }
 
 [Serializable]
-public struct BiomeRange
+public class BiomeRange
 {
-    public bool mountainRelevant;
-    public float mountainMin;
-    public float mountainMax;
-    public bool temperatureDependent;
-    public float temperatureMin;
-    public float temperatureMax;
-    public bool treesDependent;
-    public float treesMin;
-    public float treesMax;
+    public bool mountainRelevant = false;
+    public float mountainMin = 0;
+    public float mountainMax = 1;
+    public bool temperatureDependent = false;
+    public float temperatureMin = 0;
+    public float temperatureMax = 1;
+    public bool treesDependent = false;
+    public float treesMin = 0;
+    public float treesMax = 1;
 }
 
 /// <summary>
