@@ -282,13 +282,13 @@ MonoBehaviour:
     range:
       mountainRelevant: 0
       mountainMin: 0
-      mountainMax: 0
-      temperatureDependent: 0
-      temperatureMin: 0
-      temperatureMax: 0
-      treesDependent: 0
-      treesMin: 0
-      treesMax: 0
+      mountainMax: 1
+      temperatureDependent: 1
+      temperatureMin: 0.4
+      temperatureMax: 1
+      treesDependent: 1
+      treesMin: 0.3
+      treesMax: 1
   - prefab: {fileID: 1655403738057260, guid: dcc3bfa5cf419b64e86c7effdae2b6f2, type: 3}
     ratio: 1
     minPackSize: 2
@@ -298,13 +298,13 @@ MonoBehaviour:
     range:
       mountainRelevant: 0
       mountainMin: 0
-      mountainMax: 0
-      temperatureDependent: 0
-      temperatureMin: 0
-      temperatureMax: 0
+      mountainMax: 1
+      temperatureDependent: 1
+      temperatureMin: 0.2
+      temperatureMax: 1
       treesDependent: 0
       treesMin: 0
-      treesMax: 0
+      treesMax: 1
   keepPackRatio: 0.8
   densityMultiplier: 0.0000012
   isInstantiated: 0
