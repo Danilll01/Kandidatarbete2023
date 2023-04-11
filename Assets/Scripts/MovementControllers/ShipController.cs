@@ -89,7 +89,7 @@ public class ShipController : MonoBehaviour
         Transform playerTransform = player.transform;
 
         //Left planet and should no longer hold altitude
-        if (shipHoldingUprightRotation && (holdingOverPlanet != player.Planet))
+        if (shipHoldingUprightRotation && (holdingOverPlanet != player.attractor))
         {
             shipHoldingUprightRotation = false;
         }
@@ -135,13 +135,13 @@ public class ShipController : MonoBehaviour
             return;
         }
         //Controls
-        if (Input.GetKeyDown(KeyCode.Space) && player.Planet != null)
+        if (Input.GetKeyDown(KeyCode.Space) && player.attractor != null)
         {
-            holdingOverPlanet = player.Planet;
+            holdingOverPlanet = player.attractor;
             shipHoldingUprightRotation = !shipHoldingUprightRotation;
             if (shipHoldingUprightRotation)
             {
-                shipHoldingAltitude = Vector3.Distance(player.Planet.transform.position, playerTransform.position);
+                shipHoldingAltitude = Vector3.Distance(player.attractor.transform.position, playerTransform.position);
             }
         }
         //Rotation
@@ -155,7 +155,7 @@ public class ShipController : MonoBehaviour
 
             //This may lead to slowly slipping away from planet. Hasn't noticed so maybe so minute that it may be ignored :)
             Quaternion rot = playerTransform.rotation;
-            Gravity.KeepUpright(playerTransform, player.Planet.transform);
+            Gravity.KeepUpright(playerTransform, player.attractor.transform);
             Vector3 velocity = playerTransform.InverseTransformDirection(body.velocity);
             velocity.y = 0;
             body.velocity = playerTransform.TransformDirection(velocity);
@@ -167,7 +167,7 @@ public class ShipController : MonoBehaviour
                 shipHoldingAltitude += Input.GetAxis("Spaceship Lift") * shipMovespeed * Time.deltaTime;
             }
 
-            holdingOverPlanet = player.Planet;
+            holdingOverPlanet = player.attractor;
         }
         //Translation
         float strafe = Input.GetAxis("Spaceship Strafe");
@@ -176,7 +176,7 @@ public class ShipController : MonoBehaviour
         body.velocity += transform.rotation * new Vector3(strafe, lift, thrust) * (Time.deltaTime * shipMovespeed);
         //Slowdown due to being inside of a planet
         //TODO. Maybe integrate with actual air resistance
-        if (player.Planet != null)
+        if (player.attractor != null)
         {
             if (body.velocity.magnitude > shipMovespeed * 5)
             {
@@ -262,7 +262,7 @@ public class ShipController : MonoBehaviour
         Vector3 playerPositionOffset = Quaternion.FromToRotation(Vector3.up, player.Up) * (Vector3.up * transform.localPosition.y * transform.parent.localScale.y);
 
         //Set up transition to/from
-        landingSpot.position = player.Planet.transform.InverseTransformPoint(landingPos - playerPositionOffset);
+        landingSpot.position = player.attractor.transform.InverseTransformPoint(landingPos - playerPositionOffset);
         landingSpot.rotation = Quaternion.LookRotation(Vector3.ProjectOnPlane(transform.TransformVector(Vector3.forward), landingPlane.normal), landingPlane.normal);
 
         return true;
@@ -271,12 +271,12 @@ public class ShipController : MonoBehaviour
     private void GetTakeoffSpot(out (Vector3 position, Quaternion rotation) takeoffSpot)
     {
         takeoffSpot.position = player.transform.localPosition + player.Up * 10;
-        takeoffSpot.rotation = Gravity.UprightRotation(player.transform, player.Planet.transform);
+        takeoffSpot.rotation = Gravity.UprightRotation(player.transform, player.attractor.transform);
     }
 
     private void DisembarkFromShip()
     {
-        transform.SetParent(player.Planet.gameObject.transform);
+        transform.SetParent(player.attractor.gameObject.transform);
         player.transform.position = transform.position + (transform.rotation * dismountedPos);
         player.transform.rotation = transform.rotation;
         body.velocity = Vector3.zero;

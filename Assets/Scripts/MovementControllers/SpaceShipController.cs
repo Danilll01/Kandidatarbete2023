@@ -50,17 +50,21 @@ public class SpaceShipController : MonoBehaviour
     void FixedUpdate()
     {
         // If player is not boarded, we do not need to do ship movement
-        if (!Universe.player.boarded) { return; }
+        if (!Universe.player.boarded)
+        {
+            physicsBody.isKinematic = true;
+            return;
+        }
+
+        physicsBody.isKinematic = false;
         
         float thrust = Input.GetAxis("Spaceship Thrust");
         float strafe = Input.GetAxis("Spaceship Strafe");
         float lift = Input.GetAxis("Spaceship Lift");
 
         Vector3 newMovementVector = new(strafe, lift, thrust);
-        Debug.Log("New: " + newMovementVector);
         oldMovementVector = Vector3.Lerp(oldMovementVector, newMovementVector, Time.deltaTime * accelerationSpeed);
-        Debug.Log("Old: " + oldMovementVector);
-        
+
         if (Input.GetMouseButton(1))
         {
             speed = Mathf.Lerp(speed, accelerationSpeed, Time.deltaTime * 3);
@@ -74,8 +78,7 @@ public class SpaceShipController : MonoBehaviour
         //Vector3 moveDirection = new Vector3(strafe, lift, thrust) * speed;
         
         Vector3 moveDirection = oldMovementVector * speed;
-        Debug.Log("SKUMMA: " + moveDirection);
-        
+
         //Transform the vector3 to local space
         moveDirection = transform.TransformDirection(moveDirection);
         //Set the velocity, so you can move
@@ -88,7 +91,6 @@ public class SpaceShipController : MonoBehaviour
         //Rotation
 
         float rotationZTmp = Input.GetAxis("Spaceship Roll");
-
         
         mouseXSmooth = Mathf.Lerp(mouseXSmooth, Input.GetAxis("Horizontal Look") * rotationSpeed, Time.deltaTime * cameraSmooth);
         mouseYSmooth = Mathf.Lerp(mouseYSmooth, Input.GetAxis("Vertical Look") * rotationSpeed, Time.deltaTime * cameraSmooth);

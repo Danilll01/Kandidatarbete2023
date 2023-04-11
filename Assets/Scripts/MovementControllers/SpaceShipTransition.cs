@@ -11,7 +11,6 @@ public class SpaceShipTransition : MonoBehaviour
     private PillPlayerController player;
     
     // Transition
-    [HideInInspector] public bool boarded = false;
     private bool transitioning = false;
     private float transitionProgress = 0;
     
@@ -26,6 +25,7 @@ public class SpaceShipTransition : MonoBehaviour
     // Landing
     [SerializeField] private float maxLandingAngle = 20f;
     [SerializeField] private float landingTime = 1f;
+    private bool shouldDisembark = false;
     
     // Audio
     private AudioSource audioPlayer;
@@ -70,25 +70,23 @@ public class SpaceShipTransition : MonoBehaviour
         if (!Input.GetKeyDown(KeyCode.F)) return;
         
         // Transition is started
-        if (boarded)
+        if (Universe.player.boarded)
         {
             if (GetLandingSpot(out (Vector3 position, Quaternion rotation) landingTarget))
             {
                 //Set up transition to/from
-                transitionFromPos = playerTransform.localPosition;
-                transitionFromRot = playerTransform.localRotation;
+                transitionFromPos = transform.localPosition;
+                transitionFromRot = transform.localRotation;
                 transitionToPos = landingTarget.position;
                 transitionToRot = landingTarget.rotation;
                 transitioning = true;
+                shouldDisembark = true;
+                
                 //Transition method handles moving the player out of the ship
             }
         }
         else
         {
-            //Embark
-            //Move player into ship
-            EmbarkInShip();
-
             //Get raised spot
             GetTakeoffSpot(out (Vector3 position, Quaternion rotation) takeoffTarget);
 
@@ -97,8 +95,12 @@ public class SpaceShipTransition : MonoBehaviour
             transitionFromRot = playerTransform.localRotation;
             transitionToPos = takeoffTarget.position;
             transitionToRot = takeoffTarget.rotation;
+            
+            //Embark
+            //Move player into ship
+            EmbarkInShip();
+            
             transitioning = true;
-            player.boarded = true;
         }
     }
     
@@ -107,36 +109,36 @@ public class SpaceShipTransition : MonoBehaviour
         // For now basic linear interpolation
         transitionProgress += Time.deltaTime;
 
-        player.transform.localPosition = Vector3.Lerp(transitionFromPos, transitionToPos, transitionProgress / landingTime);
-        player.transform.rotation = Quaternion.Lerp(transitionFromRot, transitionToRot, transitionProgress / landingTime);
+        transform.position = Vector3.Lerp(transitionFromPos, transitionToPos, transitionProgress / landingTime);
+        transform.rotation = Quaternion.Lerp(transitionFromRot, transitionToRot, transitionProgress / landingTime);
 
         if (transitionProgress / landingTime >= 1)
         {
             transitioning = false;
-            if (boarded)
+            if (shouldDisembark)
             {
                 DisembarkFromShip();
+                shouldDisembark = false;
             }
             transitionProgress = 0;
-            BoardedRecord = !boarded;
         }
     }
     
     private void EmbarkInShip()
     {
-        Transform shipTransform = transform;
         Transform playerTransform = player.transform;
         
-        playerTransform.position = shipTransform.position + (shipTransform.rotation * mountedPos.localPosition);
-        playerTransform.rotation = shipTransform.rotation;
+        playerTransform.SetParent(mountedPos);
+        playerTransform.localPosition = Vector3.zero;
+        playerTransform.localRotation = Quaternion.identity;
 
-        player.firstPersonCamera.enabled = false;
+        player.ShipPlayerTransition();
         shipCamera.enabled = true;
         
         //camera.transform.localRotation = Quaternion.identity;
         //body.velocity = Vector3.zero;
-        Debug.Log("HEJEJEJEJEJEJEJEJEJEJEJEJE");
-        player.transform.SetParent(mountedPos);
+
+        
     }
     
     private void GetTakeoffSpot(out (Vector3 position, Quaternion rotation) takeoffSpot)
@@ -150,13 +152,13 @@ public class SpaceShipTransition : MonoBehaviour
         Transform shipTransform = transform;
         Transform playerTransform = player.transform;
         
-        transform.SetParent(player.attractor.transform);
+        shipTransform.SetParent(player.attractor.transform);
         
         playerTransform.position = shipTransform.position + (shipTransform.rotation * dismountedPos);
         playerTransform.rotation = shipTransform.rotation;
 
         shipCamera.enabled = false;
-        player.firstPersonCamera.enabled = true;
+        player.ShipPlayerTransition();
         //body.velocity = Vector3.zero;
     }
     
@@ -171,9 +173,7 @@ public class SpaceShipTransition : MonoBehaviour
         LayerMask planetMask = 1 << (LayerMask.NameToLayer("Planet"));
 
         landingSpot = (Vector3.zero, Quaternion.identity);
-
-
-        Transform playerTransform = player.transform;
+        
 
         //Convert all gearPositions to their landed coordinates
         Vector3[] gearLandingPositions = new Vector3[gearPositions.Length];
@@ -185,7 +185,6 @@ public class SpaceShipTransition : MonoBehaviour
             if (hit.collider != null)
             {
                 gearLandingPositions[i] = hit.point;
-                continue;
             }
             else
             {
@@ -220,25 +219,18 @@ public class SpaceShipTransition : MonoBehaviour
             return false;
         }
 
+        Transform playerTransform = player.transform;
+        
         //Land ship and calculate offsets
-        landingPlane.Raycast(new Ray(playerTransform.position, -player.Up), out float height);
-        Vector3 landingPos = playerTransform.position + (-player.Up * height);
+        landingPlane.Raycast(new Ray(transform.position, -player.Up), out float height);
+        Vector3 landingPos = transform.localPosition + (-player.Up * height);
         Vector3 playerPositionOffset = Quaternion.FromToRotation(Vector3.up, player.Up) * Vector3.up * (transform.localPosition.y * transform.parent.localScale.y);
-
+        playerPositionOffset = Vector3.zero;
+            
         //Set up transition to/from
         landingSpot.position = player.attractor.transform.InverseTransformPoint(landingPos - playerPositionOffset);
         landingSpot.rotation = Quaternion.LookRotation(Vector3.ProjectOnPlane(transform.TransformVector(Vector3.forward), landingPlane.normal), landingPlane.normal);
 
         return true;
-    }
-    
-    private bool BoardedRecord
-    {
-        set
-        {
-            player.boarded = value;
-            boarded = value;
-        }
-        get => boarded;
     }
 }

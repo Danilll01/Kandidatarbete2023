@@ -29,8 +29,7 @@ public class Chunk : MonoBehaviour
     private MeshFilter meshFilter;
     private MeshCollider meshCollider;
     private Mesh mesh;
-    public MarchingCubes marchingCubes;
-    private Transform player;
+    private MarchingCubes marchingCubes;
     private Planet planet;
     private MinMaxTerrainLevel terrainLevel;
     [HideInInspector] public float chunkSize;
@@ -51,20 +50,21 @@ public class Chunk : MonoBehaviour
     }
 
     /// <summary>
-    /// Initalizes a given chunk
+    /// Initializes a given chunk
     /// </summary>
-    /// <param name="resolution"></param>
-    /// <param name="player"></param>
-    /// <param name="terrainLevel"></param>
-    public int Initialize(Planet planet, Transform player, MinMaxTerrainLevel terrainLevel, ChunksHandler chunkHandler, int seed)
+    /// <param name="planet">The current planet</param>
+    /// <param name="terrainLevel">How high/low the terrain is</param>
+    /// <param name="chunkHandler">The chunk handler</param>
+    /// <param name="seed">The random seed for the chunk</param>
+    /// <returns>How many vertices there are in mesh</returns>
+    public int Initialize(Planet planet, MinMaxTerrainLevel terrainLevel, ChunksHandler chunkHandler, int seed)
     {
         this.planet = planet;
         highRes = chunkHandler.highRes;
         mediumRes = chunkHandler.mediumRes;
         lowRes = chunkHandler.lowRes;
         random = new RandomX(seed);
-
-        this.player = player;
+        
         this.terrainLevel = terrainLevel;
         chunkSize = (2 * chunkHandler.planetRadius) / (1 << marchingCubes.chunkResolution);
 
@@ -92,13 +92,15 @@ public class Chunk : MonoBehaviour
     {
         if(initialized && !lowChunkResChunks)
         {
+            Vector3 playerPosition = Universe.player.transform.position;
+            
             // Check every 5 meter so that we don't check all the time
-            if (Vector3.Magnitude(player.localPosition - previousPlayerPos) < 5)
+            if (Vector3.Distance(playerPosition, previousPlayerPos) < 5)
                 return;
             
-            previousPlayerPos = player.localPosition;
+            previousPlayerPos = playerPosition;
 
-            float playerDistance = Vector3.Magnitude(player.localPosition - position);
+            float playerDistance = Vector3.Distance(playerPosition, position);
             if (playerDistance < highRes.upperRadius * chunkSize)
             {
                 meshCollider.enabled = true;

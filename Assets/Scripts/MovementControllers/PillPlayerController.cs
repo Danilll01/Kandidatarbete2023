@@ -280,11 +280,16 @@ public class PillPlayerController : MonoBehaviour
         ship.Initialize();
     }
 
-    // Deprecated
-    [Obsolete] public Planet Planet
+    /// <summary>
+    /// Changes player settings to enable/disable spaceShip controlls
+    /// </summary>
+    public void ShipPlayerTransition()
     {
-        get => attractor;
-        set => attractor = value;
+        Debug.Log("SWITCH: " + boarded);
+        body.isKinematic = !boarded;
+        firstPersonCamera.enabled = boarded;
+        GetComponent<Collider>().enabled = boarded;
+        boarded = !boarded;
     }
 
     /// <summary>

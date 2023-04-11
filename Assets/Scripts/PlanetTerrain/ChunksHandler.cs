@@ -105,17 +105,23 @@ public class ChunksHandler : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (playerOnPlanet != ReferenceEquals(transform, player.transform.parent))
-        {
-            updateChunks = true;
-            playerOnPlanet = ReferenceEquals(transform, player.transform.parent);
-        }
-
+        
         if (foliageInitialized != 0)
         {
             foliageInitialized--;
         }
 
+        if (Universe.player.attractor == null)
+        {
+            return;
+        }
+        
+        if (playerOnPlanet != ReferenceEquals(transform, Universe.player.attractor.transform))
+        {
+            updateChunks = true;
+            playerOnPlanet = ReferenceEquals(transform, Universe.player.attractor.transform);
+        }
+        
         // Check if the chunks needs updating
         if (updateChunks)
         {
@@ -180,7 +186,7 @@ public class ChunksHandler : MonoBehaviour
         for (int i = chunksList.Count - 1; i != -1; i--)
         {
             // Remove chunks without vertices
-            if (chunksList[i].Initialize(planet, player, terrainLevel, this, rand.Next()) == 0)
+            if (chunksList[i].Initialize(planet, terrainLevel, this, rand.Next()) == 0)
             {
                 Destroy(chunksList[i].gameObject);
                 chunksList.RemoveAt(i);
