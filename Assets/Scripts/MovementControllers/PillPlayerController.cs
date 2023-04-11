@@ -25,7 +25,7 @@ public class PillPlayerController : MonoBehaviour
     private bool isSprinting = false;
 
     [Header("Ship")]
-    private ShipController ship;
+    [SerializeField] private ShipController ship;
     [HideInInspector] public bool boarded = false;
 
     // Animations
@@ -62,8 +62,12 @@ public class PillPlayerController : MonoBehaviour
             }
         }
 
+        if (ship == null)
+        {
+            ship = GameObject.Find("ShipMain").GetComponent<ShipController>();
+        }
+
         body = GetComponent<Rigidbody>();
-        ship = GameObject.Find("Spaceship").GetComponent<ShipController>();
         Spawn(planetToSpawnOn, seed);
         //Lock the mouse inside of the game
         Cursor.lockState = CursorLockMode.Locked;
@@ -277,17 +281,14 @@ public class PillPlayerController : MonoBehaviour
 
     public Planet Planet
     {
-        get { return attractor; }
-        set { attractor = value; }
+        get => attractor;
+        set => attractor = value;
     }
 
     /// <summary>
     /// The altitude of the player from the currently attracting planet.
     /// </summary>
-    public float Altitude
-    {
-        get { return (attractor.transform.position - transform.position).magnitude; }
-    }
+    public float Altitude => (attractor.transform.position - transform.position).magnitude;
 
 
     /// <summary>

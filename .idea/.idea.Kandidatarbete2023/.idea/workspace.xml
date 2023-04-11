@@ -3,8 +3,13 @@
   <component name="ChangeListManager">
     <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Materials/TemporaryWorld.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Materials/TemporaryWorld.mat" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scenes/Individual/Joel.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Individual/Joel.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProjectSettings/InputManager.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/InputManager.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/MovementControllers/PillPlayerController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/MovementControllers/PillPlayerController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectSettings/ProjectSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/ProjectSettings.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectSettings/SelectiveProfiler.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/SelectiveProfiler.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectSettings/ShaderGraphSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/ShaderGraphSettings.asset" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -132,6 +137,7 @@
       <workItem from="1680265180898" duration="5422000" />
       <workItem from="1680825879382" duration="6852000" />
       <workItem from="1681200751634" duration="407000" />
+      <workItem from="1681221233720" duration="2459000" />
     </task>
     <task id="LOCAL−00003" summary="Changed file">
       <created>1679327563589</created>

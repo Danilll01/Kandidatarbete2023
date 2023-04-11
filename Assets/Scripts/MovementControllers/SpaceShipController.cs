@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -15,6 +16,7 @@ public class SpaceShipController : MonoBehaviour
     [SerializeField] private float cameraSmooth = 4f;
     [SerializeField] private RectTransform crosshairTexture;
 
+    // Ship movement
     private float speed;
     private Rigidbody physicsBody;
     private Quaternion lookRotation;
@@ -37,6 +39,7 @@ public class SpaceShipController : MonoBehaviour
         Cursor.visible = false;
     }
 
+    // Handles movement of ship
     void FixedUpdate()
     {
         
@@ -57,10 +60,6 @@ public class SpaceShipController : MonoBehaviour
         {
             speed = Mathf.Lerp(speed, normalSpeed, Time.deltaTime * 10);
         }
-        
-        
-        
-        
 
         //Set moveDirection to the vertical axis (up and down keys) * speed
         //Vector3 moveDirection = new Vector3(strafe, lift, thrust) * speed;
