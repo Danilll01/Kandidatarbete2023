@@ -16,7 +16,6 @@ public class CreatureSpawning : MonoBehaviour
     private CreatureHandler creatureHandler;
     private RandomX random;
     private Vector3 chunkPosition;
-    private int[] spawningRatios;
     private int positionArrayLength;
 
     private SpawnPack[] objectsToSpawn;
@@ -41,8 +40,6 @@ public class CreatureSpawning : MonoBehaviour
 
         // Where to start shooting rays from
         chunkPosition = position;
-
-        spawningRatios = GetSpawningRatios();
 
         // Generates all spawn points for this chunk
         InitCreatures();
@@ -245,24 +242,22 @@ public class CreatureSpawning : MonoBehaviour
 
     private CreaturePack GetCreatureToSpawn()
     {
-        if (spawningRatios.Length != creatureHandler.packs.Length) Debug.Log("Creatures and ratios needs to be the same size");
-
         int total = 0;
 
-        foreach (int ratio in spawningRatios)
+        foreach (CreaturePack pack in creatureHandler.packs)
         {
-            total += ratio;
+            total += pack.ratio;
         }
 
         float randomNum = random.Next(0, total);
 
         float accumulatedSum = 0;
 
-        for (int i = 0; i < spawningRatios.Length; i++)
+        for (int i = 0; i < creatureHandler.packs.Length; i++)
         {
             if (randomNum > accumulatedSum)
             {
-                accumulatedSum += spawningRatios[i];
+                accumulatedSum += creatureHandler.packs[i].ratio;
             }
             else
             {
