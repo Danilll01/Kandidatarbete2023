@@ -124,4 +124,9 @@ public class Planet : MonoBehaviour
     {
         get { return biomeSettings; }
     }
+
+    public float DistanceToSun
+    {
+        get { return Vector3.Distance(transform.position, Universe.sunPosition.position); }
+    }
 }

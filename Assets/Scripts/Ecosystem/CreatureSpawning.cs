@@ -1,4 +1,5 @@
 using ExtendedRandom;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -13,6 +14,7 @@ public class CreatureSpawning : MonoBehaviour
     // Spawning spots
     private Vector3[] creatureSpots = null;
 
+    private Planet planet;
     private CreatureHandler creatureHandler;
     private RandomX random;
     private Vector3 chunkPosition;
@@ -30,7 +32,8 @@ public class CreatureSpawning : MonoBehaviour
     /// <param name="seed"></param>
     public void Initialize(int meshVerticesLength, Vector3 position, int seed)
     {
-        creatureHandler = transform.parent.parent.parent.GetComponent<Planet>().creatureHandler;
+        planet = transform.parent.parent.parent.GetComponent<Planet>();
+        creatureHandler = planet.creatureHandler;
         if (creatureHandler == null && creatureHandler.isInstantiated) return;
 
         random = new RandomX(seed);
@@ -103,7 +106,7 @@ public class CreatureSpawning : MonoBehaviour
                 Quaternion rotation = Quaternion.FromToRotation(Vector3.forward, hit.normal);
 
                 // Add pack to array of objects to spawn
-                objectsToSpawn[objectsToSpawnIndex] = new SpawnPack(rayOrigin, rotation, GetCreatureToSpawn());
+                objectsToSpawn[objectsToSpawnIndex] = new SpawnPack(rayOrigin, rotation, GetCreatureToSpawn(hit.point));
                 objectsToSpawnIndex++;
 
                 hits++;
@@ -240,11 +243,23 @@ public class CreatureSpawning : MonoBehaviour
         return false;
     }
 
-    private CreaturePack GetCreatureToSpawn()
+    private CreaturePack GetCreatureToSpawn(Vector3 position)
     {
         int total = 0;
 
-        foreach (CreaturePack pack in creatureHandler.packs)
+        //Remove packs based on local biome
+        BiomeValue localBiome = Biomes.EvaluteBiomeMap(planet.Biome, position, planet.DistanceToSun);
+        List<CreaturePack> acceptablePacks = new List<CreaturePack>();
+        for (int i = 0; i < creatureHandler.packs.Length; i++)
+        {
+            if (localBiome.IsInsideRange(creatureHandler.packs[i].range))
+            {
+                //THIS MAY BE PERFORMANCE REDUCING DUE TO CREATUREPACK BEING STRUCT WHICH MEAN ALOT OF COPYING IS NEEDED DUE TO NO REFERENCES
+                acceptablePacks.Add(creatureHandler.packs[i]);
+            }
+        }
+
+        foreach (CreaturePack pack in acceptablePacks)
         {
             total += pack.ratio;
         }
@@ -253,19 +268,19 @@ public class CreatureSpawning : MonoBehaviour
 
         float accumulatedSum = 0;
 
-        for (int i = 0; i < creatureHandler.packs.Length; i++)
+        for (int i = 0; i < acceptablePacks.Count; i++)
         {
             if (randomNum > accumulatedSum)
             {
-                accumulatedSum += creatureHandler.packs[i].ratio;
+                accumulatedSum += acceptablePacks[i].ratio;
             }
             else
             {
-                return creatureHandler.packs[i];
+                return acceptablePacks[i];
             }
         }
 
-        return creatureHandler.packs[0];
+        return acceptablePacks[0];
     }
 
     private int[] GetSpawningRatios()
