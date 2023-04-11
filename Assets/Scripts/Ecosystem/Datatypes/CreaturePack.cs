@@ -16,4 +16,6 @@ public struct CreaturePack
     public float packRadius;
     [Range(0, 20)]
     public float prefabRadius;
+    [Header("Biome")]
+    public BiomeRange range;
 }

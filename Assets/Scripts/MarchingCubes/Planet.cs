@@ -119,4 +119,9 @@ public class Planet : MonoBehaviour
     {
         return chunksHandler.terrainColor.bottomColor;
     }
+
+    public BiomeSettings Biome
+    {
+        get { return biomeSettings; }
+    }
 }

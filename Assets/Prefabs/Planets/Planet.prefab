@@ -253,6 +253,7 @@ MonoBehaviour:
   - {fileID: 5440707293445505367, guid: 494f6d43e170e9145bc7865d243ee00b, type: 3}
   - {fileID: 1127315056602366, guid: 3a9df2c30188f10438112114dc22bae1, type: 3}
   - {fileID: 1240686429475702, guid: da33a1bfeaaabaa4597896ca7003b785, type: 3}
+  densityMultiplier: 0.000002
   isInstantiated: 0
   treeNr: 0
   bushNr: 0
@@ -278,12 +279,34 @@ MonoBehaviour:
     maxPackSize: 12
     packRadius: 40
     prefabRadius: 1
+    range:
+      mountainRelevant: 0
+      mountainMin: 0
+      mountainMax: 0
+      temperatureDependent: 0
+      temperatureMin: 0
+      temperatureMax: 0
+      treesDependent: 0
+      treesMin: 0
+      treesMax: 0
   - prefab: {fileID: 1655403738057260, guid: dcc3bfa5cf419b64e86c7effdae2b6f2, type: 3}
     ratio: 1
     minPackSize: 2
     maxPackSize: 5
     packRadius: 30
     prefabRadius: 1
+    range:
+      mountainRelevant: 0
+      mountainMin: 0
+      mountainMax: 0
+      temperatureDependent: 0
+      temperatureMin: 0
+      temperatureMax: 0
+      treesDependent: 0
+      treesMin: 0
+      treesMax: 0
+  keepPackRatio: 0.8
+  densityMultiplier: 0.0000012
   isInstantiated: 0
   debug: 0
 --- !u!1 &2724481626477248778

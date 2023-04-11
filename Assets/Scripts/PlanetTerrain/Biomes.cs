@@ -95,6 +95,28 @@ public struct BiomeValue
         this.temperature = temperature;
         this.trees = trees;
     }
+
+    public bool IsInsideRange(ref BiomeRange range)
+    {
+        return
+            (!range.mountainRelevant || (range.mountainMin <= mountains && mountains <= range.mountainMax)) &&
+            (!range.temperatureDependent || (range.temperatureMin <= temperature && temperature <= range.temperatureMax)) &&
+            (!range.treesDependent || (range.treesMin <= trees && trees <= range.treesMax));
+    }
+}
+
+[Serializable]
+public struct BiomeRange
+{
+    public bool mountainRelevant;
+    public float mountainMin;
+    public float mountainMax;
+    public bool temperatureDependent;
+    public float temperatureMin;
+    public float temperatureMax;
+    public bool treesDependent;
+    public float treesMin;
+    public float treesMax;
 }
 
 /// <summary>
