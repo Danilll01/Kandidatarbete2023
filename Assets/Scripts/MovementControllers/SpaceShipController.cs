@@ -50,9 +50,10 @@ public class SpaceShipController : MonoBehaviour
     void FixedUpdate()
     {
         // If player is not boarded, we do not need to do ship movement
-        if (!Universe.player.boarded)
+        if (!Universe.player.boarded || shipTransitionScript.UnderTransition())
         {
             physicsBody.isKinematic = true;
+            lookRotation = transform.rotation;
             return;
         }
 
