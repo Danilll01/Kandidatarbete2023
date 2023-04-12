@@ -59,7 +59,10 @@ public class Planet : MonoBehaviour
         if (marchingCubes == null)
         {
             threshold = 23 + (float) rand.Value() * 4;
-            marchingCubes = new MarchingCubes(rand.Value() * 123.123f, 1, meshGenerator, threshold, radius, terrainLayers, biomeSettings);
+            float biomeSeed = rand.Value();
+            biomeSettings.seed = biomeSeed;
+            
+            marchingCubes = new MarchingCubes(biomeSeed, 1, meshGenerator, threshold, radius, terrainLayers, biomeSettings);
         }
 
         // Init water
