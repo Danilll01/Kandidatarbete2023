@@ -20,6 +20,8 @@ public class TerrainColor : MonoBehaviour {
     private const int textureRes = 50;
     private RandomX random;
 
+    private BiomeSettings biomeSettings;
+
     private Color[][] crazyColorPaletts =
     {
         new Color[] { new Color(49/255f, 55/255f, 21/255f), new Color(209/255f, 96/255f, 20/255f), new Color(147/255f, 159/255f, 92/255f), new Color(187/255f, 206/255f, 138/255f), new Color(226/255f, 249/255f, 184/255f) }, // Olive green palette
@@ -47,8 +49,10 @@ public class TerrainColor : MonoBehaviour {
     /// </summary>
     /// <param name="terrainLevel">The terrain level, this contains min and max hight for colors</param>
     /// <param name="randomSeedGen">Random seed to be used when creating new random</param>
-    public Material GetPlanetMaterial(MinMaxTerrainLevel terrainLevel, int randomSeedGen) 
+    public Material GetPlanetMaterial(MinMaxTerrainLevel terrainLevel, int randomSeedGen, BiomeSettings biomeSettings) 
     {
+        this.biomeSettings = biomeSettings;
+
         random = new RandomX(randomSeedGen);
 
         material = new Material(shader);
@@ -65,6 +69,7 @@ public class TerrainColor : MonoBehaviour {
         UpdateMinMaxHight();
         SetMaterialColor();
         UpdateAngleColorCutOf();
+        UpdateBiomeSetting();
 
         return material;
     }
@@ -83,6 +88,20 @@ public class TerrainColor : MonoBehaviour {
         float maxVal = Mathf.Clamp((cutOf), 0, 1);
 
         material.SetVector("_AngleCutAndBlend", new Vector4(minVal, maxVal));
+    }
+
+    private void UpdateBiomeSetting()
+    {
+        material.SetFloat("_Seed", biomeSettings.seed);
+        material.SetFloat("_Distance", 400);
+        material.SetFloat("_MountainFrequency", biomeSettings.mountainFrequency);
+        material.SetFloat("_TempFrequency", biomeSettings.temperatureFrequency);
+        material.SetFloat("_TemperatureDecay", biomeSettings.temperatureDecay);
+        material.SetFloat("_FarTemperature", biomeSettings.farTemperature);
+        material.SetFloat("_Roughness", biomeSettings.temperatureRoughness);
+        material.SetFloat("_MountainAffect", biomeSettings.mountainTemperatureAffect);
+        material.SetFloat("_TreeFrequency", biomeSettings.treeFrequency);
+
     }
 
     // Sets the material color bands to use based on hight
