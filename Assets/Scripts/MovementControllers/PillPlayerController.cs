@@ -333,11 +333,6 @@ public class PillPlayerController : MonoBehaviour
         }
     }
 
-    public Vector3 Up
-    {
-        get { return (transform.position - attractor.transform.position).normalized; }
-    }
-
     private bool Swimming
     {
         get

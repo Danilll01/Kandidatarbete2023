@@ -26,7 +26,7 @@ public class ShipController : MonoBehaviour
     private AudioSource audioPlayer;
     [SerializeField] AudioClip errorSound;
 
-    public void Initialize(Rigidbody body, Camera camera)
+    /*public void Initialize(Rigidbody body, Camera camera)
     {
         player = Universe.player;
         this.body = body;
@@ -299,5 +299,5 @@ public class ShipController : MonoBehaviour
             boarded = value;
         }
         get { return boarded; }
-    }
+    }*/
 }
