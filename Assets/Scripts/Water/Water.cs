@@ -63,7 +63,9 @@ public class Water
         mesh.vertices = vertices;
         mesh.triangles = trianglesUp;
         mesh.RecalculateBounds();
+        mesh.RecalculateNormals();
 
+        Object.Destroy(meshFilter.sharedMesh);
         meshFilter.sharedMesh = mesh;
 
     }
@@ -121,6 +123,7 @@ public class Water
     {
         mesh.triangles = (underWater) ? trianglesDown : trianglesUp;
         mesh.RecalculateBounds();
+        mesh.RecalculateNormals();
         meshFilter.sharedMesh = mesh;
     }
 }

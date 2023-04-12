@@ -30,7 +30,7 @@ public class WaterHandler : MonoBehaviour
     void Update()
     {
         if (planet == null) return;
-        //UpdateWater();
+        UpdateWater();
         if (playerWater != null && underWaterState != playerWater.underWater) //&& ReferenceEquals(planet, playerWater.planet))
         {
             if (playerWater.underWater)
@@ -152,9 +152,9 @@ public class WaterHandler : MonoBehaviour
             {
                 if(Vector3.Magnitude(playerPos - waterface.waterPos) > 1000)
                 {
-                    if (waterface.resolution != 2)
+                    if (waterface.resolution != 1)
                     {
-                        waterface.resolution = 2;
+                        waterface.resolution = 1;
                         waterface.ConstructMesh();
                     }
                 }
