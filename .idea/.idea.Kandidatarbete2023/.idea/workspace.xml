@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Ship now lands correctly">
+    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Landing and embarking now works as intended">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipTransition.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipTransition.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Lightning/DirectionalSun.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Lightning/DirectionalSun.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -93,10 +92,10 @@
       </option>
       <method v="2" />
     </configuration>
-    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost">
+    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost" ignored-value-for-modified-check="16756">
       <option name="allowRunningInParallel" value="false" />
       <option name="listenPortForConnections" value="false" />
-      <option name="pid" />
+      <option name="pid" value="16756" />
       <option name="projectPathOnTarget" />
       <option name="selectedOptions">
         <list />
@@ -377,7 +376,13 @@
       <option name="presentableId" value="LOCAL−00042" />
       <updated>1681255649832</updated>
     </task>
-    <option name="localTasksCounter" value="43" />
+    <task id="LOCAL−00043" summary="Landing and embarking now works as intended">
+      <created>1681260372695</created>
+      <option name="number" value="LOCAL−00043" />
+      <option name="presentableId" value="LOCAL−00043" />
+      <updated>1681260372695</updated>
+    </task>
+    <option name="localTasksCounter" value="44" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -399,7 +404,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="Atmosphere height/thickness is now randomized" />
     <MESSAGE value="Ambient light now blends with no atmosphere gradient when the atmosphere is weaker" />
     <MESSAGE value="Changed spacing" />
     <MESSAGE value="Fixed blinking lights" />
@@ -424,6 +428,7 @@
     <MESSAGE value="Added Ship transition class" />
     <MESSAGE value="Added file" />
     <MESSAGE value="Ship now lands correctly" />
-    <option name="LAST_COMMIT_MESSAGE" value="Ship now lands correctly" />
+    <MESSAGE value="Landing and embarking now works as intended" />
+    <option name="LAST_COMMIT_MESSAGE" value="Landing and embarking now works as intended" />
   </component>
 </project>

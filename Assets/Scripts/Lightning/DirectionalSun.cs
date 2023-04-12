@@ -5,8 +5,7 @@ using UnityEngine;
 
 public class DirectionalSun : MonoBehaviour
 {
-    [SerializeField] private Transform player;     // Player to point light towards
-
+    
     private Transform sun;                          // Sun to point light from
     private PillPlayerController currentPlayer;
 
@@ -18,7 +17,7 @@ public class DirectionalSun : MonoBehaviour
         sun = Universe.sunPosition;
         
         GetComponent<Light>().colorTemperature = sun.GetComponent<Sun>().temperature;
-        currentPlayer = player.GetComponent<PillPlayerController>();
+        currentPlayer = Universe.player;
     }
 
     // Update is called once per frame
@@ -41,7 +40,7 @@ public class DirectionalSun : MonoBehaviour
     private void UpdateDirection()
     {
         if (sun == null) return;
-        Vector3 sunToPlayerVector = Vector3.Normalize(player.transform.position - sun.position);
+        Vector3 sunToPlayerVector = Vector3.Normalize(currentPlayer.transform.position - sun.position);
         transform.rotation = Quaternion.LookRotation(sunToPlayerVector);
     }
 }
