@@ -2,19 +2,26 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(SpaceShipTransition))]
 
 public class SpaceShipController : MonoBehaviour
 {
+    [Header("Movement stuff")]
+    [SerializeField] private float movementDampening = 25f;
     [SerializeField] private float normalSpeed = 25f;
-    [SerializeField] private float accelerationSpeed = 45f;
+    [SerializeField] private float maxSpeed = 45f;
+    
+    [Header("Camera stuff")]
+    [SerializeField] private float rotationSpeed = 2.0f;
+    [SerializeField] private float cameraSmooth = 4f;
+    
+    [Header("Spaceship setup stuff")]
     [SerializeField] private Transform cameraPosition;
     [SerializeField] private Camera mainCamera;
     [SerializeField] private Transform spaceshipRoot;
-    [SerializeField] private float rotationSpeed = 2.0f;
-    [SerializeField] private float cameraSmooth = 4f;
     [SerializeField] private RectTransform crosshairTexture;
     [SerializeField] private SpaceShipTransition shipTransitionScript;
 
@@ -64,20 +71,18 @@ public class SpaceShipController : MonoBehaviour
         float lift = Input.GetAxis("Spaceship Lift");
 
         Vector3 newMovementVector = new(strafe, lift, thrust);
-        oldMovementVector = Vector3.Lerp(oldMovementVector, newMovementVector, Time.deltaTime * accelerationSpeed);
+        oldMovementVector = Vector3.Lerp(oldMovementVector, newMovementVector, Time.deltaTime * movementDampening);
 
-        if (Input.GetMouseButton(1))
+        if (Math.Abs(Input.GetAxisRaw("Sprint") - 1) > 0.001)
         {
-            speed = Mathf.Lerp(speed, accelerationSpeed, Time.deltaTime * 3);
+            speed = Mathf.Lerp(speed, normalSpeed, Time.deltaTime);
         }
         else
         {
-            speed = Mathf.Lerp(speed, normalSpeed, Time.deltaTime * 10);
+            speed = Mathf.Lerp(speed, maxSpeed, Time.deltaTime * 2);
         }
 
         //Set moveDirection to the vertical axis (up and down keys) * speed
-        //Vector3 moveDirection = new Vector3(strafe, lift, thrust) * speed;
-        
         Vector3 moveDirection = oldMovementVector * speed;
 
         //Transform the vector3 to local space
@@ -90,7 +95,6 @@ public class SpaceShipController : MonoBehaviour
         mainCamera.transform.rotation = Quaternion.Lerp(mainCamera.transform.rotation, cameraPosition.rotation, Time.deltaTime * cameraSmooth);
 
         //Rotation
-
         float rotationZTmp = Input.GetAxis("Spaceship Roll");
         
         mouseXSmooth = Mathf.Lerp(mouseXSmooth, Input.GetAxis("Horizontal Look") * rotationSpeed, Time.deltaTime * cameraSmooth);

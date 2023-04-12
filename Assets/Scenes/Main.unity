@@ -602,8 +602,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3421500242679807733, guid: 479edb22e1790754688e5f093ada7ddf,
         type: 3}
+      propertyPath: maxSpeed
+      value: 4000
+      objectReference: {fileID: 0}
+    - target: {fileID: 3421500242679807733, guid: 479edb22e1790754688e5f093ada7ddf,
+        type: 3}
       propertyPath: normalSpeed
-      value: 5000
+      value: 500
+      objectReference: {fileID: 0}
+    - target: {fileID: 3421500242679807733, guid: 479edb22e1790754688e5f093ada7ddf,
+        type: 3}
+      propertyPath: movementDampening
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3421500242679807733, guid: 479edb22e1790754688e5f093ada7ddf,
         type: 3}

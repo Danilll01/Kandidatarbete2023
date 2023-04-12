@@ -5,6 +5,7 @@ using UnityEngine;
 public class SpaceShipTransition : MonoBehaviour
 {
     // Ship stuff
+    [Header("Ship stuff")]
     [SerializeField] private Camera shipCamera;
 
     // Player stuff
@@ -23,11 +24,13 @@ public class SpaceShipTransition : MonoBehaviour
     [SerializeField] private Transform mountedPos;
     
     // Landing
+    [Header("Landing stuff")]
     [SerializeField] private float maxLandingAngle = 20f;
     [SerializeField] private float landingTime = 1f;
     private bool shouldDisembark = false;
     
     // Audio
+    [Header("Audio stuff")]
     private AudioSource audioPlayer;
     [SerializeField] private AudioClip errorSound;
     
@@ -148,11 +151,7 @@ public class SpaceShipTransition : MonoBehaviour
 
         player.ShipPlayerTransition();
         shipCamera.enabled = true;
-        
-        //camera.transform.localRotation = Quaternion.identity;
-        //body.velocity = Vector3.zero;
 
-        
     }
     
     private void GetTakeoffSpot(out (Vector3 position, Quaternion rotation) takeoffSpot)
@@ -173,7 +172,6 @@ public class SpaceShipTransition : MonoBehaviour
 
         shipCamera.enabled = false;
         player.ShipPlayerTransition();
-        //body.velocity = Vector3.zero;
     }
     
     private bool GetLandingSpot(out (Vector3 position, Quaternion rotation) landingSpot)
