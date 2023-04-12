@@ -30,7 +30,7 @@ public class WaterHandler : MonoBehaviour
     void Update()
     {
         if (planet == null) return;
-        UpdateWater();
+        //UpdateWater();
         if (playerWater != null && underWaterState != playerWater.underWater) //&& ReferenceEquals(planet, playerWater.planet))
         {
             if (playerWater.underWater)
@@ -68,8 +68,6 @@ public class WaterHandler : MonoBehaviour
 
     public void InitializeTest(float waterDiameter, Color color)
     {
-        //playerWater = Camera.main.gameObject.transform.parent.GetComponent<PlayerWater>();
-
         waterRadius = Mathf.Abs(waterDiameter / 2) - 1;
 
         GenerateMaterial(color);

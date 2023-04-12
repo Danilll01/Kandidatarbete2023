@@ -270,7 +270,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 537524f187c5f6742bbf4898336ffd36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  wh: {fileID: 1326980885}
+  waterHandler: {fileID: 1326980885}
 --- !u!4 &1260127768
 Transform:
   m_ObjectHideFlags: 0
