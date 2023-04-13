@@ -103,6 +103,11 @@ public class SpaceShipController : MonoBehaviour
         Quaternion localRotation = Quaternion.Euler(mouseYSmooth, mouseXSmooth, rotationZTmp * rotationSpeed);
         lookRotation = lookRotation * localRotation;
         transform.rotation = lookRotation;
+
+        if (Input.GetKeyDown(KeyCode.H))
+        {
+            transform.rotation = Gravity.UprightRotation(transform, transform.parent.transform);
+        }
         
         rotationZ -= mouseXSmooth;
         rotationZ = Mathf.Clamp(rotationZ, -45, 45);

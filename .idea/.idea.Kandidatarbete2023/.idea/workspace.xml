@@ -1,13 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Removed some player dependencies in ship transition script">
+    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Changes spaceship speed">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipTransition.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipTransition.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProjectSettings/PackageManagerSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/PackageManagerSettings.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProjectSettings/SelectiveProfiler.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/SelectiveProfiler.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProjectSettings/ShaderGraphSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/ShaderGraphSettings.asset" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -135,7 +131,7 @@
       <workItem from="1680825879382" duration="6852000" />
       <workItem from="1681200751634" duration="407000" />
       <workItem from="1681221233720" duration="9737000" />
-      <workItem from="1681299331750" duration="4076000" />
+      <workItem from="1681299331750" duration="8787000" />
     </task>
     <task id="LOCAL−00003" summary="Changed file">
       <created>1679327563589</created>
@@ -395,7 +391,13 @@
       <option name="presentableId" value="LOCAL−00045" />
       <updated>1681262997136</updated>
     </task>
-    <option name="localTasksCounter" value="46" />
+    <task id="LOCAL−00046" summary="Changes spaceship speed">
+      <created>1681304977264</created>
+      <option name="number" value="LOCAL−00046" />
+      <option name="presentableId" value="LOCAL−00046" />
+      <updated>1681304977264</updated>
+    </task>
+    <option name="localTasksCounter" value="47" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -417,7 +419,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="Fixed blinking lights" />
     <MESSAGE value="Increased FOV" />
     <MESSAGE value="Changed player position in ship to better suit the new FOV" />
     <MESSAGE value="Made ship glass a little more transparent" />
@@ -442,6 +443,7 @@
     <MESSAGE value="Landing and embarking now works as intended" />
     <MESSAGE value="Small modification in directional sunlight script" />
     <MESSAGE value="Removed some player dependencies in ship transition script" />
-    <option name="LAST_COMMIT_MESSAGE" value="Removed some player dependencies in ship transition script" />
+    <MESSAGE value="Changes spaceship speed" />
+    <option name="LAST_COMMIT_MESSAGE" value="Changes spaceship speed" />
   </component>
 </project>
