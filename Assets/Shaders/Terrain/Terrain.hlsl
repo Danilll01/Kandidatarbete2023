@@ -71,10 +71,18 @@ float getTerrain(float3 pos, RWStructuredBuffer<TerrainLayer> terrainLayers, int
         // Add the current noiselayer
         noiseValue += noiseLayer;
     }
-    
-    return length(pos) < (.7 + noiseValue) ? ((.7 + noiseValue) - length(pos)) * 255 : 0;
-}
 
+    float ground = length(pos) < (.7 + noiseValue) ? ((.7 + noiseValue) - length(pos)) * 255 : 0;
+    
+    float caveFrequency = 13;
+    float caveDensity = 55;
+    
+    // Create the caves
+    float caveNoise = (simplex.Evaluate(pos * caveFrequency) + 1) * .5;
+    ground *= (1 - 1 / (caveDensity * caveNoise + 1)) * (1 + 1 / caveDensity); //function to control cave density
+    
+    return ground;
+}
 
 // Note, TemperatureRoughness and MountainTemperatureAffect must be in the range 0-1
 void EvaluateBiomeMap_float(float3 UV, float Distance, float Seed, float TemperatureDecay, float FarTemperature, float MountainFrequency, float TemperatureFrequency, float TemperatureRoughness, float MountainTemperatureAffect, float TreeFrequency, out float3 Out)
