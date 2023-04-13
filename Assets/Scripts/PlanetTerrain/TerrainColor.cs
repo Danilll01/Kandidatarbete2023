@@ -104,6 +104,17 @@ public class TerrainColor : MonoBehaviour {
         material.SetFloat("_MountainAffect", biomeSettings.mountainTemperatureAffect);
         material.SetFloat("_TreeFrequency", biomeSettings.treeFrequency);
 
+        Color[] colors = new Color[textureRes];
+        Texture2D texture = new Texture2D(textureRes, 1);
+        for (int i = 0; i < textureRes; i++)
+        {
+            colors[i] = monutain.Evaluate(i / (textureRes - 1f));
+        }
+        texture.SetPixels(colors);
+        texture.Apply();
+
+        material.SetTexture("_MountainGradient", texture);
+
     }
 
     // Sets the material color bands to use based on hight
