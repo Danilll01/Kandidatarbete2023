@@ -19,7 +19,7 @@ public class CreatureHandler : MonoBehaviour
         RandomX rand = new RandomX(seed);
         this.planet = planet;
 
-        //Remove some creatures form packs
+        //Remove some pack types
         List<CreaturePack> culledPack = new List<CreaturePack>();
         for (int i = 0; i < packs.Length; i++)
         {
