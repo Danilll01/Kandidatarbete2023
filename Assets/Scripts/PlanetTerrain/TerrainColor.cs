@@ -44,6 +44,8 @@ public class TerrainColor : MonoBehaviour {
       new Color[] { new Color(140/255f, 140 / 255f, 140 / 255f), new Color(180/255f, 179/255f, 20/255f), new Color(73/255f, 200/255f, 40/255f), new Color(149 / 255f, 149 / 255f, 149 / 255f), new Color(1, 1, 1) } // Earth like palette
     };
 
+    [SerializeField] private Gradient monutain;
+
     /// <summary>
     /// Will color the planet with a random color
     /// </summary>
