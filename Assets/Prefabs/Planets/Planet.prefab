@@ -284,7 +284,7 @@ MonoBehaviour:
       mountainMin: 0
       mountainMax: 1
       temperatureDependent: 1
-      temperatureMin: 0.4
+      temperatureMin: 0.3
       temperatureMax: 1
       treesDependent: 1
       treesMin: 0.3
