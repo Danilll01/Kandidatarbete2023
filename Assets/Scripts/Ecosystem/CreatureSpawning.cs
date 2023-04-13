@@ -39,7 +39,7 @@ public class CreatureSpawning : MonoBehaviour
         random = new RandomX(seed);
 
         // Determines how much foliage there should be on this chunk
-        positionArrayLength = (int) (meshVerticesLength * creatureHandler.Density);
+        positionArrayLength = (int)(meshVerticesLength * creatureHandler.Density);
 
         // Where to start shooting rays from
         chunkPosition = position;
@@ -124,7 +124,7 @@ public class CreatureSpawning : MonoBehaviour
             }
 
         }
-        if (creatureHandler.debug) Debug.Log("Hits: " + hits + " %: " + hits / (float) positionArrayLength * 100f);
+        if (creatureHandler.debug) Debug.Log("Hits: " + hits + " %: " + hits / (float)positionArrayLength * 100f);
 
         // Removes spots making the chunk unable to spawn new trees
         creatureSpots = null;
@@ -188,7 +188,7 @@ public class CreatureSpawning : MonoBehaviour
                     if (creatureHandler.debug) Debug.Log("Hit water");
                     continue;
                 }
-                
+
                 // Check if "hit.point" is close to a point in positions
                 if (CloseToListOfPoints(positions, hit.point, packData.prefabRadius))
                 {
@@ -295,17 +295,5 @@ public class CreatureSpawning : MonoBehaviour
             packToSpawn = new CreaturePack();
             return false;
         }
-    }
-
-    private int[] GetSpawningRatios()
-    {
-        int[] ratios = new int[creatureHandler.packs.Count()];
-
-        for (int i = 0; i < creatureHandler.packs.Count(); i++)
-        {
-            ratios[i] = creatureHandler.packs[i].ratio;
-        }
-
-        return ratios;
     }
 }
