@@ -1,10 +1,6 @@
 using System;
 using Unity.Mathematics;
-using Unity.VisualScripting;
 using UnityEngine;
-using MathNet.Numerics.LinearAlgebra;
-using MathNet.Numerics.LinearAlgebra.Double;
-using UnityEngine.UIElements;
 
 namespace Noise
 {
@@ -621,16 +617,22 @@ namespace Noise
         /// </summary>
         public static Vector2 randomVector(Vector2 UV, float offset)
         {
-            Matrix<double> m = DenseMatrix.OfArray(new double[,] {
-                { 15.27f, 47.63f }, 
-                { 99.41f, 89.98f } });
+            float[,] m = { { 15.27f, 47.63f }, { 99.41f, 89.98f } };
 
-            Matrix<double> uv = DenseMatrix.OfArray(new double[,] { { UV.x, UV.y } });
+            UV = mulVect(UV, m);
 
-            UV.x = Mathf.Sin((float)(uv * m)[0, 0]) % 1;
-            UV.y = Mathf.Sin((float)(uv * m)[0, 1]) % 1;
+            UV.x = Mathf.Sin(UV.x) % 1;
+            UV.y = Mathf.Sin(UV.y) % 1;
 
             return new Vector2(Mathf.Sin(UV.y * +offset) * 0.5f + 0.5f, Mathf.Cos(UV.x * offset) * 0.5f + 0.5f);
+        }
+
+        private static float2 mulVect(float2 vec, float[,] m)
+        {
+            float2 res = new float2();
+            res.x = vec.x * m[0, 0] + vec.y * m[0, 1];
+            res.y = vec.x * m[1, 0] + vec.y * m[1, 1];
+            return res;
         }
 
         /// <summary>
@@ -638,18 +640,27 @@ namespace Noise
         /// </summary>
         public static Vector3 randomVector(Vector3 UV, float offset)
         {
-            Matrix<double> m = DenseMatrix.OfArray(new double[,] {
-                { 52.61, 24.96, 66.04 },
-                {  4.22, 70.89, 26.07 },
-                { 46.86, 40.52, 21.76 } });
+            float[,] m = {
+                { 52.61f, 24.96f, 66.04f },
+                {  4.22f, 70.89f, 26.07f },
+                { 46.86f, 40.52f, 21.76f } };
 
-            Matrix<double> uv = DenseMatrix.OfArray(new double[,] { { UV.x, UV.y, UV.z } });
+            UV = mulVect(UV, m);
 
-            UV.x = Mathf.Sin((float)(uv * m)[0, 0]) % 1;
-            UV.y = Mathf.Sin((float)(uv * m)[0, 1]) % 1;
-            UV.z = Mathf.Sin((float)(uv * m)[0, 2]) % 1;
+            UV.x = Mathf.Sin(UV.x) % 1;
+            UV.y = Mathf.Sin(UV.y) % 1;
+            UV.z = Mathf.Sin(UV.z) % 1;
 
             return new Vector3(Mathf.Sin(UV.z * +offset) * 0.5f + 0.5f, Mathf.Cos(UV.x * offset) * 0.5f + 0.5f, Mathf.Sin(UV.y * +offset) * 0.5f + 0.5f);
+        }
+
+        private static float3 mulVect(float3 vec, float[,] m)
+        {
+            float3 res = new float3();
+            res.x = vec.x * m[0, 0] + vec.y * m[0, 1] + vec.z * m[0, 2];
+            res.y = vec.x * m[1, 0] + vec.y * m[1, 1] + vec.z * m[1, 2];
+            res.z = vec.x * m[2, 0] + vec.y * m[2, 1] + vec.z * m[2, 2];
+            return res;
         }
 
         /// <summary>
