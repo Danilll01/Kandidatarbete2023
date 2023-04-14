@@ -1,5 +1,10 @@
 using System;
+using Unity.Mathematics;
+using Unity.VisualScripting;
 using UnityEngine;
+using MathNet.Numerics.LinearAlgebra;
+using MathNet.Numerics.LinearAlgebra.Double;
+using UnityEngine.UIElements;
 
 namespace Noise
 {
@@ -355,6 +360,65 @@ namespace Noise
         }
     }
 
+    public static class Worley
+    {
+        /// <summary>
+        /// Evaluate cells at position
+        /// </summary>
+        public static float EvaluateCells(float2 pos, float angleOffset)
+        {
+            float X = Mathf.Floor(pos.x);
+            float Y = Mathf.Floor(pos.y);
+            float2 f = pos - new float2(X, Y);
+            float2 res = new float2(8.0f, 0f);
+
+            for (int y = -1; y <= 1; y++)
+            {
+                for (int x = -1; x <= 1; x++)
+                {
+                    float2 lattice = new float2(x, y);
+                    float2 offset = Details.randomVector(lattice + new float2(X, Y), angleOffset);
+                    float2 diff = lattice + offset - f;
+                    float d = Mathf.Sqrt(diff.x * diff.x + diff.y * diff.y);
+
+                    if (d < res.x)
+                    {
+                        res = new float2(d, offset.x);
+                    }
+                }
+            }
+            return res.y;
+        }
+
+        /// <summary>
+        /// Evaluate noise at position
+        /// </summary>
+        public static float EvaluateNoise(float2 pos, float angleOffset)
+        {
+            float X = Mathf.Floor(pos.x);
+            float Y = Mathf.Floor(pos.y);
+            float2 f = pos - new float2(X, Y);
+            float res = 8.0f;
+
+            for (int y = -1; y <= 1; y++)
+            {
+                for (int x = -1; x <= 1; x++)
+                {
+                    float2 lattice = new float2(x, y);
+                    float2 offset = Details.randomVector(lattice + new float2(X, Y), angleOffset);
+                    float2 diff = lattice + offset - f;
+                    float d = Mathf.Sqrt(diff.x * diff.x + diff.y * diff.y);
+
+                    if (d < res)
+                    {
+                        res = d;
+                    }
+                }
+            }
+            return res;
+        }
+    }
+
 
     /// <summary>
     /// Details class only used as helper class, not to be used outside Noise.cs
@@ -422,6 +486,23 @@ namespace Noise
             float u = h < 8 ? x : y;                 // into 12 gradient vectors.
             float v = h < 4 ? y : h == 12 || h == 14 ? x : z;
             return ((h & 1) == 0 ? u : -u) + ((h & 2) == 0 ? v : -v);
+        }
+
+        /// <summary>
+        /// Returns a random vector
+        /// </summary>
+        public static Vector2 randomVector(Vector2 UV, float offset)
+        {
+            Matrix<double> m = DenseMatrix.OfArray(new double[,] {
+                { 15.27f, 47.63f }, 
+                { 99.41f, 89.98f } });
+
+            Matrix<double> uv = DenseMatrix.OfArray(new double[,] { { UV.x, UV.y } });
+
+            UV.x = Mathf.Sin((float)(uv * m)[0, 0]) % 1;
+            UV.y = Mathf.Sin((float)(uv * m)[0, 1]) % 1;
+
+            return new Vector2(Mathf.Sin(UV.y * +offset) * 0.5f + 0.5f, Mathf.Cos(UV.x * offset) * 0.5f + 0.5f);
         }
 
         /// <summary>
