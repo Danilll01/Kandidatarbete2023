@@ -6,8 +6,8 @@ on:
   workflow_dispatch: {}
 
 env:
-  MAJOR_RELEASE_NR: 9
-  MINOR_OFFSET: 78
+  MAJOR_RELEASE_NR: 8
+  MINOR_OFFSET: 76
 
 jobs:
   release-project:
