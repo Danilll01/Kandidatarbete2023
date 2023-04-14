@@ -28,7 +28,7 @@ public class WaterHandler : MonoBehaviour
     void Update()
     {
         if (planet == null) return;
-        //UpdateWater();
+        UpdateWater();
         if (playerWater != null && underWaterState != playerWater.underWater) //&& ReferenceEquals(planet, playerWater.planet))
         {
             if (playerWater.underWater)
