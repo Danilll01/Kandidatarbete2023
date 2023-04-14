@@ -53,8 +53,7 @@ public class Water
     /// </summary>
     public void ConstructMesh()
     {
-        mesh = new Mesh();
-        mesh.indexFormat = IndexFormat.UInt32;
+        mesh = new Mesh{indexFormat = IndexFormat.UInt32};
 
         Vector3[] vertices = new Vector3[resolution * resolution];
 
@@ -76,8 +75,7 @@ public class Water
     /// <param name="vertices"></param>
     private void ConstructUnitSphere(Vector3[] vertices)
     {
-
-        trianglesUp = new int[(resolution - 1) * (resolution - 1) * 2 * 3];
+        trianglesUp   = new int[(resolution - 1) * (resolution - 1) * 2 * 3];
         trianglesDown = new int[(resolution - 1) * (resolution - 1) * 2 * 3];
 
         //Calculate the vertices on the GPU
