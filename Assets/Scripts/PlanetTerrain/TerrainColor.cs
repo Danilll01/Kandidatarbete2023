@@ -51,6 +51,9 @@ public class TerrainColor : MonoBehaviour {
     };
 
     [SerializeField] private BiomeColor[] mountainGradients;
+    [SerializeField] private BiomeColor[] plainsGradients;
+    [SerializeField] private BiomeColor[] polarCapGradients;
+    [SerializeField] private BiomeColor[] equatorGradients;
 
     /// <summary>
     /// Will color the planet with a random color
@@ -110,9 +113,10 @@ public class TerrainColor : MonoBehaviour {
         material.SetFloat("_MountainAffect", biomeSettings.mountainTemperatureAffect);
         material.SetFloat("_TreeFrequency", biomeSettings.treeFrequency);
 
-        Texture mountainTexture = GetTextureFromGradients(mountainGradients);
-
-        material.SetTexture("_MountainGradient", mountainTexture);
+        material.SetTexture("_MountainGradient", GetTextureFromGradients(mountainGradients));
+        material.SetTexture("_TreeGradient", GetTextureFromGradients(plainsGradients));
+        material.SetTexture("_PolarCapGradient", GetTextureFromGradients(polarCapGradients));
+        material.SetTexture("_EquatorGradient", GetTextureFromGradients(equatorGradients));
 
     }
 
@@ -155,7 +159,12 @@ public class TerrainColor : MonoBehaviour {
     private Texture GetTextureFromGradients(BiomeColor[] gradients)
     {
         Gradient gradient = gradients[random.Next(0, gradients.Length - 1)].gradient;
+        
+        return GetTextureFromGradient(gradient);
+    }
 
+    private Texture GetTextureFromGradient(Gradient gradient)
+    {
         Color[] colors = new Color[textureRes];
         Texture2D texture = new Texture2D(textureRes, 1);
         for (int i = 0; i < textureRes; i++)
@@ -164,7 +173,7 @@ public class TerrainColor : MonoBehaviour {
         }
         texture.SetPixels(colors);
         texture.Apply();
-        
+
         return texture;
     }
 }
