@@ -4,7 +4,13 @@ using System.Linq;
 using Unity.Mathematics;
 using ExtendedRandom;
 using UnityEngine;
+using Unity.VisualScripting;
 
+[System.Serializable]
+struct BiomeColor
+{
+    public Gradient gradient;
+}
 public class TerrainColor : MonoBehaviour {
 
     [SerializeField] private Gradient gradient = new Gradient();
@@ -44,7 +50,7 @@ public class TerrainColor : MonoBehaviour {
       new Color[] { new Color(140/255f, 140 / 255f, 140 / 255f), new Color(180/255f, 179/255f, 20/255f), new Color(73/255f, 200/255f, 40/255f), new Color(149 / 255f, 149 / 255f, 149 / 255f), new Color(1, 1, 1) } // Earth like palette
     };
 
-    [SerializeField] private Gradient monutain;
+    [SerializeField] private BiomeColor[] mountainGradients;
 
     /// <summary>
     /// Will color the planet with a random color
@@ -104,16 +110,9 @@ public class TerrainColor : MonoBehaviour {
         material.SetFloat("_MountainAffect", biomeSettings.mountainTemperatureAffect);
         material.SetFloat("_TreeFrequency", biomeSettings.treeFrequency);
 
-        Color[] colors = new Color[textureRes];
-        Texture2D texture = new Texture2D(textureRes, 1);
-        for (int i = 0; i < textureRes; i++)
-        {
-            colors[i] = monutain.Evaluate(i / (textureRes - 1f));
-        }
-        texture.SetPixels(colors);
-        texture.Apply();
+        Texture mountainTexture = GetTextureFromGradients(mountainGradients);
 
-        material.SetTexture("_MountainGradient", texture);
+        material.SetTexture("_MountainGradient", mountainTexture);
 
     }
 
@@ -123,7 +122,7 @@ public class TerrainColor : MonoBehaviour {
         Color[] colors = new Color[textureRes];
 
         // Gets color palette and puts it into a gradient
-        Color[] takePalette = normalColorPalette[random.Next(normalColorPalette.Length)];
+        Color[] takePalette = crazyColorPaletts[random.Next(crazyColorPaletts.Length)];
         float[] keyPos = new float[] { 0f, 0.015f, 0.144f, 0.618f, 1f };
         GradientColorKey[] gradientKeys = new GradientColorKey[takePalette.Length];
         Color[] takePaletteRand = takePalette.OrderBy(x => random.Next()).ToArray();
@@ -151,5 +150,21 @@ public class TerrainColor : MonoBehaviour {
         // Use this for water
         bottomColor = colors[0];
 
+    }
+
+    private Texture GetTextureFromGradients(BiomeColor[] gradients)
+    {
+        Gradient gradient = gradients[random.Next(0, gradients.Length - 1)].gradient;
+
+        Color[] colors = new Color[textureRes];
+        Texture2D texture = new Texture2D(textureRes, 1);
+        for (int i = 0; i < textureRes; i++)
+        {
+            colors[i] = gradient.Evaluate(i / (textureRes - 1f));
+        }
+        texture.SetPixels(colors);
+        texture.Apply();
+        
+        return texture;
     }
 }
