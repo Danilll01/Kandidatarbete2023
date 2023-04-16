@@ -90,7 +90,6 @@ public class SolarSystemTransform : MonoBehaviour
         }
             
         Universe.player.Planet = activePlanet;
-        
     }
     
     private void CheckWhenToReleasePlayer()
@@ -98,8 +97,8 @@ public class SolarSystemTransform : MonoBehaviour
         // Check if sun has moved to Vector3.zero
         if (sun.transform.position.magnitude <= 5f)
         {
-            //player.transform.SetParent(null);
-            //player.attractor = null;
+            player.transform.SetParent(null, true);
+            player.attractor = null;
             setUpSolarSystemRotation = false;
             releasePlayer = false;
         }
@@ -128,25 +127,20 @@ public class SolarSystemTransform : MonoBehaviour
     private void HandleUpdatedActivePlanet()
     {
         // If the player is not on any planet, reset the solar system
-        if (resetPlanetOrbit) //(activePlanet != oldActivePlanet && activePlanet == null)
+        if (activePlanet != oldActivePlanet && activePlanet == null)
         {
-            activePlanet = null;
             rotateSolarSystem = false;
             ResetPlanetOrbit();
             oldActivePlanet.rotateMoons = false;
             releasePlayer = true;
             oldActivePlanet = activePlanet;
-            resetPlanetOrbit = false;
         }
         // If the player has entered a new planet, move the solar system accordingly
-        else if(movePlanets) //(activePlanet != oldActivePlanet)
+        if (activePlanet != oldActivePlanet)
         {
-            activePlanet = spawnPlanets.bodies[0];
-            player.transform.parent = activePlanet.transform;
             MovePlanets();
             activePlanet.rotateMoons = true;
             oldActivePlanet = activePlanet;
-            movePlanets = false;
         }
     }
 
@@ -190,31 +184,26 @@ public class SolarSystemTransform : MonoBehaviour
 
     private void UpdateClosestPlanet()
     {
-        if (!started)
+        // Loops over all planets and checks if the player is on it or has left it
+        foreach (Planet planet in spawnPlanets.bodies)
         {
-            // Loops over all planets and checks if the player is on it or has left it
-            foreach (Planet planet in spawnPlanets.bodies)
+            
+            // We are not looking to land on the moon right now. Will be fixed later
+            if (planet.bodyName.Contains("Moon")) continue;
+            
+            float distance =  (player.transform.position - planet.transform.position).magnitude;
+            if (distance <= (planet.radius * 1.26) && planet != activePlanet)
             {
-            
-                // We are not looking to land on the moon right now. Will be fixed later
-                if (planet.bodyName.Contains("Moon")) continue;
-            
-                float distance =  (player.transform.position - planet.transform.position).magnitude;
-                if (distance <= (planet.radius * 1.26) && planet != activePlanet)
-                {
-                    activePlanet = planet;
-                    player.transform.parent = activePlanet.transform;
-                    started = true;
-                    break;
-                }
-                if(planet == activePlanet && distance > (planet.radius * 1.4))
-                {
-                    activePlanet = null;
-                    break;
-                }
+                activePlanet = planet;
+                player.transform.parent = activePlanet.transform;
+                break;
+            }
+            if(planet == activePlanet && distance > (planet.radius * 1.4))
+            {
+                activePlanet = null;
+                break;
             }
         }
-        
     }
 
     private void ResetPlanetOrbit()
@@ -243,7 +232,7 @@ public class SolarSystemTransform : MonoBehaviour
         planetsParent.transform.position -= distanceFromOrigin;
         planetTransform.parent.SetParent(null, true);
 
-        player.attractor = spawnPlanets.bodies[0];
+        player.attractor = activePlanet;
 
         rotateSolarSystem = true;
     }

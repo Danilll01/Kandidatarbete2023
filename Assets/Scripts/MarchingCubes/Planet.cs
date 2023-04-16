@@ -312,5 +312,19 @@ public class Planet : MonoBehaviour
         if (setUpSystemRotationComponents) return;
         axisToRotateAround = rotationAxis;
         speedToRotateAroundWith = speed;
+        
+        for (int i = 0; i < moons.Count; i++)
+        {
+            Transform moon = moons[i].transform;
+            moon.transform.parent.SetParent(null,true);
+        }
+
+        moonsParent.transform.rotation = Universe.sunPosition.rotation;
+            
+        for (int i = 0; i < moons.Count; i++)
+        {
+            Transform moon = moons[i].transform;
+            moon.transform.parent.SetParent(moonsParent.transform,true);
+        }
     }
 }
