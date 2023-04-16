@@ -12,9 +12,10 @@ GameObject:
   - component: {fileID: 3336898}
   - component: {fileID: 2378942}
   - component: {fileID: 5827015680792281185}
-  m_Layer: 0
+  - component: {fileID: 2709872994354800275}
+  m_Layer: 6
   m_Name: Tree Type6 04
-  m_TagString: Untagged
+  m_TagString: Foliage
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -103,3 +104,17 @@ LODGroup:
     renderers:
     - renderer: {fileID: 2378942}
   m_Enabled: 1
+--- !u!136 &2709872994354800275
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 127928}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 1.11
+  m_Height: 7.0091023
+  m_Direction: 1
+  m_Center: {x: -0.31, y: 3.4442966, z: -0.17}

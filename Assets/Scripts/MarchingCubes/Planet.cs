@@ -1,13 +1,10 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using Unity.Mathematics;
 using ExtendedRandom;
 using SimpleKeplerOrbits;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-[RequireComponent(typeof(GenerateCreatures))]
 [RequireComponent(typeof(TerrainColor))]
 public class Planet : MonoBehaviour
 {
@@ -21,27 +18,21 @@ public class Planet : MonoBehaviour
     [HideInInspector] public string bodyName = "TBT";
     [HideInInspector] public float mass;
     [HideInInspector] public List<Planet> moons;
-
-    [HideInInspector] public List<Vector3> waterPoints;
+    
+    public List<Vector3> waterPoints;
 
     [HideInInspector] public Transform player;
     [HideInInspector] public MarchingCubes marchingCubes;
 
-    [SerializeField] private bool willGenerateCreature = false;
-
-    //[SerializeField, Range(1, 4)] 
     [SerializeField, Range(1, 14)] public int resolution = 5;
 
     public bool willGeneratePlanetLife = false;
-    [Range(0f, 1f)] [SerializeField] private float chanceToSpawnPlanetLife = 0.8f;
-    [SerializeField] private GenerateCreatures generateCreatures;
-
-
-    [SerializeField] public FoliageHandler foliageHandler;
-
+    [SerializeField, Range(0f, 1f)] private float chanceToSpawnPlanetLife = 0.8f;
     public ChunksHandler chunksHandler;
     public WaterHandler waterHandler;
     public AtmosphereHandler atmosphereHandler;
+    public FoliageHandler foliageHandler;
+    public CreatureHandler creatureHandler;
 
     [Header("Terrain")] [SerializeField, Range(0, 1)]
     private float waterLevel = 0.92f;
@@ -109,24 +100,25 @@ public class Planet : MonoBehaviour
             waterDiameter = 0;
         }
 
-        if (foliageHandler != null && !bodyName.Contains("Moon"))
+        if (!bodyName.Contains("Moon"))
         {
-            foliageHandler.Initialize(this);
+            if (foliageHandler != null)
+            {
+                foliageHandler.Initialize(this);
+            }
+
+            if (creatureHandler != null)
+            {
+                creatureHandler.Initialize(this);
+            }
         }
 
         terrainLevel.SetMin(Mathf.Abs((waterDiameter + 1) / 2));
 
         chunksHandler.Initialize(this, terrainLevel, spawn, rand.Next());
 
-
-        if (willGeneratePlanetLife)
+        if (willGeneratePlanetLife) 
         {
-            // Generate the creatures
-            if (generateCreatures != null && !bodyName.Contains("Moon"))
-            {
-                generateCreatures.Initialize(this, rand.Next(), spawn);
-            }
-
             if (waterHandler != null && bodyName != "Sun")
             {
                 waterHandler.Initialize(this, waterDiameter, GetGroundColor());

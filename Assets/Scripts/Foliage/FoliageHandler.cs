@@ -32,6 +32,8 @@ public class FoliageHandler : MonoBehaviour
     // How many extra hits every chunks has
     public readonly int MISS_COMPLIMENT = 200;
 
+    [SerializeField] private float densityMultiplier = 0.000002f;
+
     public bool isInstantiated = false;
     private Planet planet;
     private float waterRadius;
@@ -60,7 +62,7 @@ public class FoliageHandler : MonoBehaviour
     {
         this.planet = planet;
         waterRadius = Mathf.Abs(planet.waterDiameter / 2);
-        density = planet.radius * 0.000002f; // Magic numbers * "random"
+        density = planet.radius * densityMultiplier; // Magic numbers * "random"
         InitArrays();
         InitForestTypes();
 

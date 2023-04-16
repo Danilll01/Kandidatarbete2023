@@ -11,11 +11,11 @@ using static ChunksHandler;
 
 public class Chunk : MonoBehaviour
 {
-    [SerializeField] public Transform creatures;
+    [SerializeField] public CreatureSpawning creatures;
     [SerializeField] public Foliage foliage;
 
     [SerializeField] private GameObject foliageGameObject;
-    [SerializeField] private GameObject creatureGameObject;
+    [SerializeField] public GameObject creatureGameObject;
 
     private int index;
 
@@ -104,14 +104,32 @@ public class Chunk : MonoBehaviour
                 meshCollider.enabled = true;
                 foliageGameObject.SetActive(true);
                 creatureGameObject.SetActive(true);
-                if (!foliage.initialized && planet.willGeneratePlanetLife)
+
+                if (planet.willGeneratePlanetLife)
                 {
                     int numVerts = UpdateMesh(highRes.resolution);
-                    if (numVerts > 500)
-                        foliage.Initialize(numVerts, position, random.Next());
-                }
-                else
+
+                    if (!foliage.initialized)
+                    {
+                        if (numVerts > 500)
+                            foliage.Initialize(numVerts, position, random.Next());
+                    }
+
+                    if (!creatures.initialized)
+                    {
+                        if (numVerts > 500)
+                            creatures.Initialize(numVerts, position, random.Next());
+                    }
+                    if (!creatures.finishedSpawning)
+                    {
+                        creatures.BatchedSpawning();
+                    }
+
+                } else
+                {
                     UpdateMesh(highRes.resolution);
+                }
+                    
                     
             } 
             else if (mediumRes.lowerRadius * chunkSize < playerDistance && playerDistance < mediumRes.upperRadius * chunkSize)
