@@ -15,57 +15,59 @@ public class Planet : MonoBehaviour
     [SerializeField] private Material waterMaterial; // Can this be removed?
     [HideInInspector] public float waterDiameter;
 
-    [HideInInspector, Obsolete]public float diameter;
+    [HideInInspector, Obsolete] public float diameter;
     [HideInInspector] public float radius;
     [HideInInspector] public float surfaceGravity;
     [HideInInspector] public string bodyName = "TBT";
     [HideInInspector] public float mass;
     [HideInInspector] public List<Planet> moons;
-    
+
     [HideInInspector] public List<Vector3> waterPoints;
 
     [HideInInspector] public Transform player;
     [HideInInspector] public MarchingCubes marchingCubes;
 
     [SerializeField] private bool willGenerateCreature = false;
+
     //[SerializeField, Range(1, 4)] 
     [SerializeField, Range(1, 14)] public int resolution = 5;
 
     public bool willGeneratePlanetLife = false;
-    [Range(0f, 1f)]
-    [SerializeField] private float chanceToSpawnPlanetLife = 0.8f; 
+    [Range(0f, 1f)] [SerializeField] private float chanceToSpawnPlanetLife = 0.8f;
     [SerializeField] private GenerateCreatures generateCreatures;
-    
-    [HideInInspector] public Vector3 rotationAxis;
-    public float orbitSpeed;
-    [HideInInspector] public float rotationSpeed;
-    [HideInInspector] public GameObject moonsParent;
+
+
     [SerializeField] public FoliageHandler foliageHandler;
 
     public ChunksHandler chunksHandler;
     public WaterHandler waterHandler;
     public AtmosphereHandler atmosphereHandler;
 
-    [Header("Terrain")]
-    [SerializeField, Range(0, 1)] private float waterLevel = 0.92f;
+    [Header("Terrain")] [SerializeField, Range(0, 1)]
+    private float waterLevel = 0.92f;
+
     [SerializeField] private List<TerrainLayer> terrainLayers;
     [SerializeField] private BiomeSettings biomeSettings;
 
     private float threshold;
-    
-    [Header("Orbits")]
-    public Vector3 axisToRotateAround;
-    public float speedToRotateAroundWith;
-    
+
+    [Header("Orbits")] public float orbitSpeed;
+    [HideInInspector] public Vector3 rotationAxis;
+    [HideInInspector] public float rotationSpeed;
+    [HideInInspector] public GameObject moonsParent;
+
+    private Vector3 axisToRotateAround;
+    private float speedToRotateAroundWith;
+
     public bool rotateMoons;
-    
+
     private Vector3[] moonsRelativeDistances;
     [HideInInspector] public float positionRelativeToSunDistance;
-    
+
     private bool setUpSystemRotationComponents;
     private Transform parentOrbitMover;
     public bool solarSystemRotationActive;
-    
+
     private bool reset;
 
 
@@ -80,11 +82,11 @@ public class Planet : MonoBehaviour
         RandomX rand = new RandomX(randomSeed);
 
         this.player = player;
-        
+
         MinMaxTerrainLevel terrainLevel = new MinMaxTerrainLevel();
-        
+
         rotationAxis = rand.OnUnitSphere() * radius;
-        rotationSpeed = rand.Next(3,6);
+        rotationSpeed = rand.Next(3, 6);
         orbitSpeed = 360 / (3f * Mathf.PI * Mathf.Sqrt(Mathf.Pow(transform.position.magnitude, 3)) * 0.000006673f);
 
         willGeneratePlanetLife = rand.Value() < chanceToSpawnPlanetLife;
@@ -93,8 +95,9 @@ public class Planet : MonoBehaviour
         // Initialize the meshgenerator
         if (marchingCubes == null)
         {
-            threshold = 23 + (float) rand.Value() * 4;
-            marchingCubes = new MarchingCubes(rand.Value() * 123.123f, 1, meshGenerator, threshold, radius, terrainLayers, biomeSettings);
+            threshold = 23 + (float)rand.Value() * 4;
+            marchingCubes = new MarchingCubes(rand.Value() * 123.123f, 1, meshGenerator, threshold, radius,
+                terrainLayers, biomeSettings);
         }
 
         // Init water
@@ -104,7 +107,7 @@ public class Planet : MonoBehaviour
         }
         else
         {
-            waterDiameter = 0; 
+            waterDiameter = 0;
         }
 
         if (foliageHandler != null && !bodyName.Contains("Moon"))
@@ -117,10 +120,11 @@ public class Planet : MonoBehaviour
         chunksHandler.Initialize(this, terrainLevel, spawn, rand.Next());
 
 
-        if (willGeneratePlanetLife) 
+        if (willGeneratePlanetLife)
         {
             // Generate the creatures
-            if (generateCreatures != null && !bodyName.Contains("Moon")) {
+            if (generateCreatures != null && !bodyName.Contains("Moon"))
+            {
                 generateCreatures.Initialize(this, rand.Next(), spawn);
             }
 
@@ -134,8 +138,7 @@ public class Planet : MonoBehaviour
         {
             // Will generate planet life currently decides if there is atmosphere, could change this later when a better system is created
             // Depending on system, it could be advantageous to give the strength of the atmosphere too, this will have to be sent in as a parameter then 
-            atmosphereHandler.Initialize(radius, waterDiameter / 2, willGeneratePlanetLife,rand.Next()); 
-            
+            atmosphereHandler.Initialize(radius, waterDiameter / 2, willGeneratePlanetLife, rand.Next());
         }
     }
 
@@ -148,17 +151,16 @@ public class Planet : MonoBehaviour
         {
             moonsRelativeDistances[i] = moons[i].transform.parent.position - transform.position;
         }
-        
+
         parentOrbitMover = transform.parent;
-        
     }
-    
+
     private void SetUpRotationComponents(Vector3 rotationAxisOfActivePlanet, float speed)
     {
         if (setUpSystemRotationComponents) return;
         axisToRotateAround = rotationAxisOfActivePlanet;
         speedToRotateAroundWith = speed;
-        
+
         ResetMoonsParentRotation();
     }
 
@@ -167,7 +169,17 @@ public class Planet : MonoBehaviour
         if (player.parent != transform)
         {
             RotateAroundAxis();
-            parentOrbitMover.transform.RotateAround(Universe.sunPosition.position, Vector3.up, orbitSpeed * Time.deltaTime);
+            if (solarSystemRotationActive)
+            {
+                parentOrbitMover.transform.RotateAround(Universe.sunPosition.position, Vector3.up,
+                    orbitSpeed * Time.deltaTime * 2.5f);
+            }
+            else
+            {
+                parentOrbitMover.transform.RotateAround(Universe.sunPosition.position, Vector3.up,
+                    orbitSpeed * Time.deltaTime);
+            }
+
             KeepPlanetAtSameDistanceToSun();
             RotateAndOrbitMoons(false);
         }
@@ -191,18 +203,21 @@ public class Planet : MonoBehaviour
             // Rotate the active planets moons manually since it is not affected by solar system rotation
             if (moonsParentIsActivePlanet)
             {
-               moonsParent.transform.RotateAround(Vector3.zero, -axisToRotateAround,  speedToRotateAroundWith * Time.deltaTime);
+                moonsParent.transform.RotateAround(Vector3.zero, -axisToRotateAround,
+                    speedToRotateAroundWith * Time.deltaTime);
             }
+
             moonsParent.transform.localPosition = Vector3.zero;
             moonsParent.transform.up = sunTransform.up;
 
             for (int i = 0; i < moons.Count; i++)
             {
-                Transform moon = moons[i].transform;
+                Planet moon = moons[i];
                 MakeMoonOrbitAndRotate(moon, i);
 
-                Transform parent = moon.parent.transform;
-                parent.position = ClosestPointOnPlane(moonsParent.transform.position, moonsParent.transform.TransformDirection(Vector3.up), parent.transform.position);
+                Transform parent = moon.transform.parent.transform;
+                parent.position = ClosestPointOnPlane(moonsParent.transform.position,
+                    moonsParent.transform.TransformDirection(Vector3.up), parent.transform.position);
                 parent.up = moonsParent.transform.up;
             }
         }
@@ -210,24 +225,23 @@ public class Planet : MonoBehaviour
         {
             for (int i = 0; i < moons.Count; i++)
             {
-                Transform moon = moons[i].transform;
+                Planet moon = moons[i];
                 MakeMoonOrbitAndRotate(moon, i);
             }
         }
-
-        
     }
 
-    private void MakeMoonOrbitAndRotate(Transform moon, int i)
+    private void MakeMoonOrbitAndRotate(Planet moon, int i)
     {
         moon.transform.Rotate(rotationAxis, rotationSpeed * Time.deltaTime, Space.World);
-        
-        Transform parentTransform = moon.parent.transform;
+
+        Transform parentTransform = moon.transform.parent.transform;
         Transform moonsParentTransform = moonsParent.transform;
-        parentTransform.RotateAround(moonsParentTransform.position, Vector3.up, 2f * Time.deltaTime);
+        parentTransform.RotateAround(moonsParentTransform.position, Vector3.up, moon.orbitSpeed * Time.deltaTime);
 
         Vector3 direction = parentTransform.position - moonsParentTransform.position;
-        parentTransform.position = moonsParentTransform.position + (direction.normalized * moonsRelativeDistances[i].magnitude);
+        parentTransform.position =
+            moonsParentTransform.position + (direction.normalized * moonsRelativeDistances[i].magnitude);
     }
 
     /// <summary>
@@ -287,11 +301,11 @@ public class Planet : MonoBehaviour
         Vector3 sunPosition = Universe.sunPosition.position;
         Transform sunTransform = Universe.sunPosition.transform;
 
-        parentOrbitMover.transform.position = ClosestPointOnPlane(sunPosition, sunTransform.TransformDirection(Vector3.up), parentOrbitMover.transform.position);
+        parentOrbitMover.transform.position = ClosestPointOnPlane(sunPosition,
+            sunTransform.TransformDirection(Vector3.up), parentOrbitMover.transform.position);
 
         Vector3 direction = parentOrbitMover.transform.position - sunPosition;
         parentOrbitMover.transform.position = sunPosition + (direction.normalized * positionRelativeToSunDistance);
-
     }
 
     private Vector3 ClosestPointOnPlane(Vector3 planeOffset, Vector3 planeNormal, Vector3 point)
@@ -303,7 +317,7 @@ public class Planet : MonoBehaviour
     {
         return Vector3.Dot(planeOffset - point, planeNormal);
     }
-    
+
     private void OnDrawGizmos()
     {
         if (moonsRelativeDistances == null)
@@ -322,6 +336,4 @@ public class Planet : MonoBehaviour
             Universe.DrawGizmosCircle(moonsParentTransform.position, moonsParentTransform.up, moonRadius, 32);
         }
     }
-
-    
 }
