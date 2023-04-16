@@ -46,20 +46,22 @@ Material:
     - _Blend: 0
     - _CastShadows: 1
     - _Cull: 2
-    - _Darkness: 0.22
-    - _Depth: 42.6
+    - _Cutoff: 0.0013
+    - _Darkness: 0.869
+    - _Depth: -38
     - _DstBlend: 10
     - _FullscreenIntensity: 1
-    - _Intensity: 0.351
+    - _Intensity: 0.115
     - _QueueControl: 1
     - _QueueOffset: 0
-    - _RadiusPower: 2.58
-    - _Seafloor: 0.846
+    - _RadiusPower: 1.64
+    - _Seafloor: 0.046
     - _SrcBlend: 5
-    - _Strength: 0.002
+    - _Strength: 0.013
     - _Surface: 1
     - _UnderWater: 0
-    - _VignetIntensity: 0.738
+    - _VignetIntensity: 0.6
+    - _VignetteIntensity: 0.5
     - _WaterRadius: 1
     - _ZTest: 4
     - _ZWrite: 0
