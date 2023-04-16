@@ -90,7 +90,6 @@ public class Planet : MonoBehaviour
         orbitSpeed = 360 / (3f * Mathf.PI * Mathf.Sqrt(Mathf.Pow(transform.position.magnitude, 3)) * 0.000006673f);
 
         willGeneratePlanetLife = rand.Value() < chanceToSpawnPlanetLife;
-        willGeneratePlanetLife = false;
 
         // Initialize the meshgenerator
         if (marchingCubes == null)
@@ -112,7 +111,7 @@ public class Planet : MonoBehaviour
 
         if (foliageHandler != null && !bodyName.Contains("Moon"))
         {
-            //foliageHandler.Initialize(this);
+            foliageHandler.Initialize(this);
         }
 
         terrainLevel.SetMin(Mathf.Abs((waterDiameter + 1) / 2));
