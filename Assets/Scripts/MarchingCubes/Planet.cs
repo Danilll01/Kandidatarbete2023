@@ -168,58 +168,6 @@ public class Planet : MonoBehaviour
         {
             RotateMoons(true);
         }
-        else
-        {
-            // For testing, remove later
-            RotateMoons(false);
-        }
-    }
-
-    public void SetUpResetComponents(Quaternion planetRotationBefore)
-    {
-        solarSystemRotationBeforeReset = planetRotationBefore;
-        directionToSunBeforeReset = parentOrbitMover.transform.position - Universe.sunPosition.position;
-
-        
-        moonsDirectionToPlanetBeforeReset = new Vector3[moons.Count];
-        for (int i = 0; i < moons.Count; i++)
-        {
-            Transform moonTransform = moons[i].transform;
-            moonsDirectionToPlanetBeforeReset[i] = moonTransform.position - parentOrbitMover.transform.position;
-        }
-        reset = true;
-    }
-
-    public void ResetPlanetAndMoons()
-    {
-        //KeepPlanetAtSameDistanceToSun();
-        //ResetMoons();
-        //parentOrbitMover.transform.rotation = Quaternion.identity;
-
-        /*
-        //directionToSunBeforeReset = Quaternion.Inverse(solarSystemRotationBeforeReset) * directionToSunBeforeReset;
-        Vector3 directionatZeroY = Vector3.zero + directionToSunBeforeReset;
-        directionatZeroY.y = 0;
-        directionToSunBeforeReset = Quaternion.FromToRotation(Vector3.zero + directionToSunBeforeReset, directionatZeroY) * directionToSunBeforeReset;
-        parentOrbitMover.transform.position = Vector3.zero + directionToSunBeforeReset;
-        parentOrbitMover.transform.position = Vector3.zero + directionToSunBeforeReset;
-
-        moonsParent.transform.rotation = Quaternion.identity;
-        moonsParent.transform.localPosition = Vector3.zero;
-        for (int i = 0; i < moonsDirectionToPlanetBeforeReset.Length; i++)
-        {
-            Vector3 moonDirection = moonsDirectionToPlanetBeforeReset[i];
-
-            moonDirection = Quaternion.Inverse(solarSystemRotationBeforeReset) * moonDirection;
-            Vector3 moonDirectionAtZeroY = moonDirection;
-            moonDirectionAtZeroY.y = 0;
-            moonDirection = Quaternion.FromToRotation(moonDirection, moonDirectionAtZeroY) * moonDirection;
-
-            moonsDirectionToPlanetBeforeReset[i] = moonDirection;
-            moons[i].transform.parent.rotation = Quaternion.identity;
-            moons[i].transform.parent.position = parentOrbitMover.transform.position + moonDirection;
-        }
-        */
     }
 
     private void OnDrawGizmos()
@@ -238,22 +186,6 @@ public class Planet : MonoBehaviour
             Transform moonsParentTransform = moonsParent.transform;
             float moonRadius = (moon.transform.position - moonsParentTransform.position).magnitude;
             Universe.DrawGizmosCircle(moonsParentTransform.position, moonsParentTransform.up, moonRadius, 32);
-        }
-        
-        if (reset && player.parent != transform)
-        {
-            Gizmos.color = Color.blue;
-            Gizmos.DrawLine(sunTransform.position, sunTransform.position + directionToSunBeforeReset);
-        }
-        else if (reset)
-        {
-            for (int i = 0; i < moonsDirectionToPlanetBeforeReset.Length; i++)
-            {
-                Vector3 moonDirection = moonsDirectionToPlanetBeforeReset[i];
-
-                Gizmos.color = Color.red;
-                Gizmos.DrawLine(moonsParent.transform.position, moonsParent.transform.position + moonDirection);
-            }
         }
     }
 
@@ -286,16 +218,7 @@ public class Planet : MonoBehaviour
             moon.parent.transform.up = moonsParent.transform.up;
         }
     }
-
-    // Reset the moons rotation
-    public void ResetMoons()
-    {
-        rotateMoons = false;
-        moonsParent.transform.rotation = Quaternion.Euler(0, moonsParent.transform.rotation.y, 0);
-        setUpSystemRotationComponents = false;
-    }
     
-
     /// <summary>
     /// Set up the values for the planets
     /// </summary>
