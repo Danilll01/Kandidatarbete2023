@@ -96,13 +96,33 @@ public class SpaceShipController : MonoBehaviour
 
         //Rotation
         float rotationZTmp = Input.GetAxis("Spaceship Roll");
-        
+
         mouseXSmooth = Mathf.Lerp(mouseXSmooth, Input.GetAxis("Horizontal Look") * rotationSpeed, Time.deltaTime * cameraSmooth);
         mouseYSmooth = Mathf.Lerp(mouseYSmooth, Input.GetAxis("Vertical Look") * rotationSpeed, Time.deltaTime * cameraSmooth);
         
         Quaternion localRotation = Quaternion.Euler(mouseYSmooth, mouseXSmooth, rotationZTmp * rotationSpeed);
+
+        Debug.Log(Gravity.UprightRotation(transform, transform.parent.transform));
         lookRotation = lookRotation * localRotation;
-        transform.rotation = lookRotation;
+
+        /*Quaternion rotationBefore = transform.rotation;
+        Quaternion rotationAfter = Gravity.UprightRotation(transform, transform.parent.transform);
+        Quaternion rotationDifference = Quaternion.Inverse(rotationBefore) * rotationAfter;*/
+        
+
+        transform.rotation = Gravity.UprightRotation(transform, transform.parent.transform) * lookRotation;
+        lookRotation = transform.rotation * Quaternion.Inverse(Gravity.UprightRotation(transform, transform.parent.transform));
+    
+        
+        
+        Quaternion Upright(Transform entity, Transform centerOfGravity)
+        {
+            Vector3 directionFromCenter = entity.position - centerOfGravity.transform.position;
+            directionFromCenter = directionFromCenter.normalized;
+            return Quaternion.FromToRotation(entity.up, directionFromCenter);
+        }
+        
+      
 
         if (Input.GetKeyDown(KeyCode.H))
         {
