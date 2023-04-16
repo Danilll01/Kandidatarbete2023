@@ -16,13 +16,10 @@ public class SolarSystemTransform : MonoBehaviour
     private bool setUpSolarSystemRotation;
     private Vector3[] relativePlanetSunDistances;
     private Vector3 rotationAxis;
-    private float rotationspeed;
+    private float rotationSpeed;
     private float orbitSpeed;
     private bool releasePlayer = false;
     private GameObject fakeOrbitObject;
-    public bool stopSolarSystem;
-    public bool resetSolarSystem;
-    private bool reset;
 
     void Start()
     {
@@ -72,46 +69,29 @@ public class SolarSystemTransform : MonoBehaviour
         }
         InitializeValues();
 
-        if (!stopSolarSystem)
+        if (!releasePlayer)
         {
-            if (!releasePlayer)
-            {
-                UpdateClosestPlanet();
-                HandleUpdatedActivePlanet();
+            UpdateClosestPlanet();
+            HandleUpdatedActivePlanet();
                 
-                if (rotateSolarSystem)
-                {
-                    RotateSolarSystem();
-                }
-                else
-                {
-                    if (relativePlanetSunDistances != null)
-                    {
-                        foreach (var planetBody in spawnPlanets.bodies)
-                        {
-                            planetBody.Run();
-                        }
-                    }
-
-                }
-            }
-            else
+            if (rotateSolarSystem)
             {
-                CheckWhenToReleasePlayer();
+                RotateSolarSystem();
             }
-            
-            Universe.player.Planet = activePlanet;
+            else if(relativePlanetSunDistances != null)
+            {
+                foreach (var planetBody in spawnPlanets.bodies)
+                {
+                    planetBody.Run();
+                }
+            }
         }
-        if (resetSolarSystem && !reset)
+        else
         {
-            rotateSolarSystem = false;
-            ResetPlanetOrbit();
-            oldActivePlanet.rotateMoons = false;
-            releasePlayer = true;
-            oldActivePlanet = activePlanet;
-            reset = true;
+            CheckWhenToReleasePlayer();
         }
-
+            
+        Universe.player.Planet = activePlanet;
         
     }
     
@@ -133,7 +113,7 @@ public class SolarSystemTransform : MonoBehaviour
 
         sun.transform.RotateAround(Vector3.zero, Vector3.up, orbitSpeed * Time.deltaTime);
 
-        planetsParent.transform.RotateAround(Vector3.zero, -rotationAxis, rotationspeed * Time.deltaTime);
+        planetsParent.transform.RotateAround(Vector3.zero, -rotationAxis, rotationSpeed * Time.deltaTime);
 
         int activePlanetIndex = spawnPlanets.bodies.IndexOf(activePlanet);
         Vector3 direction = sun.transform.position - Vector3.zero;
@@ -196,13 +176,13 @@ public class SolarSystemTransform : MonoBehaviour
         if (setUpSolarSystemRotation) return;
 
         rotationAxis = activePlanet.rotationAxis;
-        rotationspeed = activePlanet.rotationSpeed;
+        rotationSpeed = activePlanet.rotationSpeed;
         orbitSpeed = activePlanet.orbitSpeed;
 
         for (int i = 0; i < spawnPlanets.bodies.Count; i++)
         {
             Planet planet = spawnPlanets.bodies[i];
-            planet.HandleSolarSystemOrbit(rotationAxis, rotationspeed);
+            planet.HandleSolarSystemOrbit(rotationAxis, rotationSpeed);
         }
 
         setUpSolarSystemRotation = true;
