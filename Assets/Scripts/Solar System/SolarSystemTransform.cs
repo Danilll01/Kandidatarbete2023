@@ -78,36 +78,35 @@ public class SolarSystemTransform : MonoBehaviour
             {
                 UpdateClosestPlanet();
                 HandleUpdatedActivePlanet();
+                
+                if (rotateSolarSystem)
+                {
+                    RotateSolarSystem();
+                }
+                else
+                {
+                    if (relativePlanetSunDistances != null)
+                    {
+                        foreach (var planetBody in spawnPlanets.bodies)
+                        {
+                            planetBody.Run();
+                        }
+                    }
+
+                }
             }
             else
             {
                 CheckWhenToReleasePlayer();
             }
-
+            
             Universe.player.Planet = activePlanet;
-
-            if (releasePlayer) return;
-
-            if (rotateSolarSystem)
-            {
-                RotateSolarSystem();
-            }
-            else
-            {
-                if (relativePlanetSunDistances != null)
-                {
-                    foreach (var planetBody in spawnPlanets.bodies)
-                    {
-                        planetBody.Run();
-                    }
-                }
-
-            }
         }
-        else if (resetSolarSystem && !reset)
+        if (resetSolarSystem && !reset)
         {
             rotateSolarSystem = false;
-            ResetPlanetOrbit(oldActivePlanet);
+            ResetPlanetOrbit();
+            oldActivePlanet.rotateMoons = false;
             releasePlayer = true;
             oldActivePlanet = activePlanet;
             reset = true;
@@ -156,7 +155,8 @@ public class SolarSystemTransform : MonoBehaviour
         if (activePlanet != oldActivePlanet && activePlanet == null)
         {
             rotateSolarSystem = false;
-            ResetPlanetOrbit(oldActivePlanet);
+            ResetPlanetOrbit();
+            oldActivePlanet.rotateMoons = false;
             releasePlayer = true;
             oldActivePlanet = activePlanet;
         }
@@ -232,7 +232,7 @@ public class SolarSystemTransform : MonoBehaviour
         }
     }
 
-    private void ResetPlanetOrbit(Planet planet)
+    private void ResetPlanetOrbit()
     {
         for (int i = 0; i < spawnPlanets.bodies.Count; i++)
         {
@@ -247,6 +247,7 @@ public class SolarSystemTransform : MonoBehaviour
         {
             Planet body = spawnPlanets.bodies[i];
             body.transform.parent.SetParent(planetsParent.transform);
+            body.ResetOrbitComponents();
         }
     }
 

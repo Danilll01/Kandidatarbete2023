@@ -162,11 +162,23 @@ public class Planet : MonoBehaviour
             RotateAroundAxis();
             parentOrbitMover.transform.RotateAround(Universe.sunPosition.position, Vector3.up, orbitSpeed * Time.deltaTime);
             KeepPlanetAtSameDistanceToSun();
-            RotateMoons(false);
+            RotateAndRenameMoons(false);
         }
         else if (rotateMoons)
         {
-            RotateMoons(true);
+            RotateAndRenameMoons(true);
+        }
+        else
+        {
+            for (int i = 0; i < moons.Count; i++)
+            {
+                Transform moon = moons[i].transform;
+                moon.transform.Rotate(rotationAxis, moons[i].rotationSpeed * Time.deltaTime, Space.World);
+                moon.parent.transform.RotateAround(moonsParent.transform.position, Vector3.up, 2f * Time.deltaTime);
+
+                Vector3 direction = moon.parent.transform.position - moonsParent.transform.position;
+                moon.parent.transform.position = moonsParent.transform.position + (direction.normalized * moonsrelativeDistances[i].magnitude);
+            }
         }
     }
 
@@ -194,29 +206,46 @@ public class Planet : MonoBehaviour
         transform.Rotate(rotationAxis, rotationSpeed * Time.deltaTime, Space.World);
     }
 
-    private void RotateMoons(bool moonsParentIsActivePlanet)
+    private void RotateAndRenameMoons(bool moonsParentIsActivePlanet)
     {
         Transform sunTransform = Universe.sunPosition;
 
-        if (moonsParentIsActivePlanet)
+        if (solarSystemRotationActive)
         {
-            moonsParent.transform.RotateAround(Vector3.zero, -axisToRotateAround,  speedToRotateAroundWith * Time.deltaTime);
-        }
-        moonsParent.transform.localPosition = Vector3.zero;
-        moonsParent.transform.up = sunTransform.up;
+            if (moonsParentIsActivePlanet)
+            {
+                moonsParent.transform.RotateAround(Vector3.zero, -axisToRotateAround,  speedToRotateAroundWith * Time.deltaTime);
+            }
+            moonsParent.transform.localPosition = Vector3.zero;
+            moonsParent.transform.up = sunTransform.up;
 
-        for (int i = 0; i < moons.Count; i++)
+            for (int i = 0; i < moons.Count; i++)
+            {
+                Transform moon = moons[i].transform;
+                moon.transform.Rotate(rotationAxis, rotationSpeed * Time.deltaTime, Space.World);
+                moon.parent.transform.RotateAround(moonsParent.transform.position, Vector3.up, 2f * Time.deltaTime);
+
+                Vector3 direction = moon.parent.transform.position - moonsParent.transform.position;
+                moon.parent.transform.position = moonsParent.transform.position + (direction.normalized * moonsrelativeDistances[i].magnitude);
+
+                moon.parent.transform.position = ClosestPointOnPlane(moonsParent.transform.position, moonsParent.transform.TransformDirection(Vector3.up), moon.parent.transform.position);
+                moon.parent.transform.up = moonsParent.transform.up;
+            }
+        }
+        else
         {
-            Transform moon = moons[i].transform;
-            moon.transform.Rotate(rotationAxis, rotationSpeed * Time.deltaTime, Space.World);
-            moon.parent.transform.RotateAround(moonsParent.transform.position, Vector3.up, 2f * Time.deltaTime);
+            for (int i = 0; i < moons.Count; i++)
+            {
+                Transform moon = moons[i].transform;
+                moon.transform.Rotate(rotationAxis, rotationSpeed * Time.deltaTime, Space.World);
+                moon.parent.transform.RotateAround(moonsParent.transform.position, Vector3.up, 2f * Time.deltaTime);
 
-            Vector3 direction = moon.parent.transform.position - moonsParent.transform.position;
-            moon.parent.transform.position = moonsParent.transform.position + (direction.normalized * moonsrelativeDistances[i].magnitude);
-
-            moon.parent.transform.position = ClosestPointOnPlane(moonsParent.transform.position, moonsParent.transform.TransformDirection(Vector3.up), moon.parent.transform.position);
-            moon.parent.transform.up = moonsParent.transform.up;
+                Vector3 direction = moon.parent.transform.position - moonsParent.transform.position;
+                moon.parent.transform.position = moonsParent.transform.position + (direction.normalized * moonsrelativeDistances[i].magnitude);
+            }
         }
+
+        
     }
     
     /// <summary>
@@ -236,10 +265,18 @@ public class Planet : MonoBehaviour
     // Set up the components for solar system orbit
     public void HandleSolarSystemOrbit(Vector3 rotationaxis, float speed)
     {
-        if (bodyName.Contains("Planet") && player.parent != transform)
+        if (bodyName.Contains("Planet"))
         {
             SetUpComponents(rotationAxis, speed);
             solarSystemRotationActive = true;
+        }
+    }
+
+    public void ResetOrbitComponents()
+    {
+        if (bodyName.Contains("Planet"))
+        {
+            solarSystemRotationActive = false;
         }
     }
 
