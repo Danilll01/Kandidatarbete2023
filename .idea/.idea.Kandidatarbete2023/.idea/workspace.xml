@@ -5,7 +5,6 @@
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/MarchingCubes/Planet.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/MarchingCubes/Planet.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Solar System/SolarSystemTransform.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Solar System/SolarSystemTransform.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Solar System/SpawnPlanets.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Solar System/SpawnPlanets.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -139,7 +138,7 @@
       <workItem from="1680116449264" duration="153000" />
       <workItem from="1680116721177" duration="10746000" />
       <workItem from="1680265180898" duration="5422000" />
-      <workItem from="1681663590681" duration="2335000" />
+      <workItem from="1681663590681" duration="6277000" />
     </task>
     <task id="LOCAL−00003" summary="Changed file">
       <created>1679327563589</created>
@@ -399,13 +398,13 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/Assets/Scripts/Solar System/SolarSystemTransform.cs</url>
-          <line>136</line>
+          <line>133</line>
           <properties documentPath="C:\Users\elinf\Documents\GitHub\Kandidatarbete2023\Assets\Scripts\Solar System\SolarSystemTransform.cs" initialLine="155" containingFunctionPresentation="method 'HandleUpdatedActivePlanet'">
             <startOffsets>
-              <option value="4067" />
+              <option value="3861" />
             </startOffsets>
             <endOffsets>
-              <option value="4093" />
+              <option value="3887" />
             </endOffsets>
           </properties>
           <option name="timeStamp" value="1" />

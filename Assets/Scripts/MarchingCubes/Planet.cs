@@ -201,7 +201,7 @@ public class Planet : MonoBehaviour
             // Rotate the active planets moons manually since it is not affected by solar system rotation
             if (moonsParentIsActivePlanet)
             {
-                moonsParent.transform.RotateAround(Vector3.zero, -axisToRotateAround,  speedToRotateAroundWith * Time.deltaTime);
+               moonsParent.transform.RotateAround(Vector3.zero, -axisToRotateAround,  speedToRotateAroundWith * Time.deltaTime);
             }
             moonsParent.transform.localPosition = Vector3.zero;
             moonsParent.transform.up = sunTransform.up;
@@ -264,6 +264,20 @@ public class Planet : MonoBehaviour
     {
         if (bodyName.Contains("Planet"))
         {
+            for (int i = 0; i < moons.Count; i++)
+            {
+                Transform moon = moons[i].transform;
+                moon.transform.parent.SetParent(null,true);
+            }
+
+            moonsParent.transform.rotation = Universe.sunPosition.rotation;
+            
+            for (int i = 0; i < moons.Count; i++)
+            {
+                Transform moon = moons[i].transform;
+                moon.transform.parent.SetParent(moonsParent.transform,true);
+            }
+            
             solarSystemRotationActive = false;
         }
     }

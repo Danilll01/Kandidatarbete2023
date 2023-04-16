@@ -19,7 +19,9 @@ public class SolarSystemTransform : MonoBehaviour
     private float rotationSpeed;
     private float orbitSpeed;
     private bool releasePlayer = false;
-    private GameObject fakeOrbitObject;
+    public bool movePlanets;
+    public bool resetPlanetOrbit;
+    private bool started;
 
     void Start()
     {
@@ -27,17 +29,7 @@ public class SolarSystemTransform : MonoBehaviour
         {
             sun = spawnPlanets.sun;
         }
-        
         planetsParent = this.gameObject;
-
-        // Create a fake orbit object the sun can orbit around while solar system is rotating
-        fakeOrbitObject = new GameObject("fake orbit object")
-        {
-            transform =
-            {
-                parent = planetsParent.transform
-            }
-        };
     }
     
     private void InitializeValues()
@@ -51,6 +43,7 @@ public class SolarSystemTransform : MonoBehaviour
                 Planet planet = spawnPlanets.bodies[i];
                 relativePlanetSunDistances[i] = planet.transform.parent.position;
             }
+            
         }
         Universe.player.Planet = activePlanet;
     }
@@ -73,7 +66,12 @@ public class SolarSystemTransform : MonoBehaviour
         {
             UpdateClosestPlanet();
             HandleUpdatedActivePlanet();
-                
+
+            if (releasePlayer)
+            {
+                return;
+            }
+
             if (rotateSolarSystem)
             {
                 RotateSolarSystem();
@@ -100,8 +98,8 @@ public class SolarSystemTransform : MonoBehaviour
         // Check if sun has moved to Vector3.zero
         if (sun.transform.position.magnitude <= 5f)
         {
-            player.transform.SetParent(null);
-            player.attractor = null;
+            //player.transform.SetParent(null);
+            //player.attractor = null;
             setUpSolarSystemRotation = false;
             releasePlayer = false;
         }
@@ -121,8 +119,6 @@ public class SolarSystemTransform : MonoBehaviour
 
         sun.transform.position = ClosestPointOnPlane(Vector3.zero, sun.transform.TransformDirection(Vector3.up), sun.transform.position);
 
-        sun.GetComponent<Sun>().distanceToAttractor = (sun.transform.position - Vector3.zero).magnitude;
-
         foreach (var planetBody in spawnPlanets.bodies)
         {
             planetBody.Run();
@@ -132,20 +128,25 @@ public class SolarSystemTransform : MonoBehaviour
     private void HandleUpdatedActivePlanet()
     {
         // If the player is not on any planet, reset the solar system
-        if (activePlanet != oldActivePlanet && activePlanet == null)
+        if (resetPlanetOrbit) //(activePlanet != oldActivePlanet && activePlanet == null)
         {
+            activePlanet = null;
             rotateSolarSystem = false;
             ResetPlanetOrbit();
             oldActivePlanet.rotateMoons = false;
             releasePlayer = true;
             oldActivePlanet = activePlanet;
+            resetPlanetOrbit = false;
         }
         // If the player has entered a new planet, move the solar system accordingly
-        else if (activePlanet != oldActivePlanet)
+        else if(movePlanets) //(activePlanet != oldActivePlanet)
         {
+            activePlanet = spawnPlanets.bodies[0];
+            player.transform.parent = activePlanet.transform;
             MovePlanets();
             activePlanet.rotateMoons = true;
             oldActivePlanet = activePlanet;
+            movePlanets = false;
         }
     }
 
@@ -179,9 +180,8 @@ public class SolarSystemTransform : MonoBehaviour
         rotationSpeed = activePlanet.rotationSpeed;
         orbitSpeed = activePlanet.orbitSpeed;
 
-        for (int i = 0; i < spawnPlanets.bodies.Count; i++)
+        foreach (Planet planet in spawnPlanets.bodies)
         {
-            Planet planet = spawnPlanets.bodies[i];
             planet.HandleSolarSystemOrbit(rotationAxis, rotationSpeed);
         }
 
@@ -190,42 +190,45 @@ public class SolarSystemTransform : MonoBehaviour
 
     private void UpdateClosestPlanet()
     {
-        // Loops over all planets and checks if the player is on it or has left it
-        foreach (Planet planet in spawnPlanets.bodies)
+        if (!started)
         {
-            
-            // We are not looking to land on the moon right now. Will be fixed later
-            if (planet.bodyName.Contains("Moon")) continue;
-            
-            float distance =  (player.transform.position - planet.transform.position).magnitude;
-            if (distance <= (planet.radius * 1.26) && planet != activePlanet)
+            // Loops over all planets and checks if the player is on it or has left it
+            foreach (Planet planet in spawnPlanets.bodies)
             {
-                activePlanet = planet;
-                player.transform.parent = activePlanet.transform;
-                break;
-            }
-            if(planet == activePlanet && distance > (planet.radius * 1.4))
-            {
-                activePlanet = null;
-                break;
+            
+                // We are not looking to land on the moon right now. Will be fixed later
+                if (planet.bodyName.Contains("Moon")) continue;
+            
+                float distance =  (player.transform.position - planet.transform.position).magnitude;
+                if (distance <= (planet.radius * 1.26) && planet != activePlanet)
+                {
+                    activePlanet = planet;
+                    player.transform.parent = activePlanet.transform;
+                    started = true;
+                    break;
+                }
+                if(planet == activePlanet && distance > (planet.radius * 1.4))
+                {
+                    activePlanet = null;
+                    break;
+                }
             }
         }
+        
     }
 
     private void ResetPlanetOrbit()
     {
-        for (int i = 0; i < spawnPlanets.bodies.Count; i++)
+        foreach (Planet body in spawnPlanets.bodies)
         {
-            Planet body = spawnPlanets.bodies[i];
             body.transform.parent.SetParent(sun.transform);
         }
         
         sun.transform.position = Vector3.zero;
         sun.transform.rotation = Quaternion.Euler(0, sun.transform.rotation.y, 0);
         
-        for (int i = 0; i < spawnPlanets.bodies.Count; i++)
+        foreach (Planet body in spawnPlanets.bodies)
         {
-            Planet body = spawnPlanets.bodies[i];
             body.transform.parent.SetParent(planetsParent.transform);
             body.ResetOrbitComponents();
         }
@@ -238,10 +241,9 @@ public class SolarSystemTransform : MonoBehaviour
         Transform planetTransform = activePlanet.transform;
         Vector3 distanceFromOrigin = planetTransform.transform.position - Vector3.zero;
         planetsParent.transform.position -= distanceFromOrigin;
-        planetTransform.parent.parent = null;
-        fakeOrbitObject.transform.position = Vector3.zero;
-        
-        player.attractor = activePlanet;
+        planetTransform.parent.SetParent(null, true);
+
+        player.attractor = spawnPlanets.bodies[0];
 
         rotateSolarSystem = true;
     }
