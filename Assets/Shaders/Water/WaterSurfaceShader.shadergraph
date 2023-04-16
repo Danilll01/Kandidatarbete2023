@@ -44,6 +44,9 @@
         },
         {
             "m_Id": "f311593fe9914067acd2571bce21fca1"
+        },
+        {
+            "m_Id": "daae20bebb1a4bf686385c5baf08e77d"
         }
     ],
     "m_Keywords": [],
@@ -10349,7 +10352,11 @@
     "m_Type": "UnityEditor.ShaderGraph.CategoryData",
     "m_ObjectId": "c13c16371e5f41749b517b8631572a1d",
     "m_Name": "",
-    "m_ChildObjectList": []
+    "m_ChildObjectList": [
+        {
+            "m_Id": "daae20bebb1a4bf686385c5baf08e77d"
+        }
+    ]
 }
 
 {
@@ -11543,6 +11550,33 @@
     },
     "m_Property": {
         "m_Id": "e83315c1442d481e97376ab9ee2a5814"
+    }
+}
+
+{
+    "m_SGVersion": 1,
+    "m_Type": "UnityEditor.ShaderGraph.Internal.Vector1ShaderProperty",
+    "m_ObjectId": "daae20bebb1a4bf686385c5baf08e77d",
+    "m_Guid": {
+        "m_GuidSerialized": "16f9d859-1ac2-402b-8fc3-effe012057f8"
+    },
+    "m_Name": "NoiseOffset",
+    "m_DefaultRefNameVersion": 1,
+    "m_RefNameGeneratedByDisplayName": "NoiseOffset",
+    "m_DefaultReferenceName": "_NoiseOffset",
+    "m_OverrideReferenceName": "",
+    "m_GeneratePropertyBlock": true,
+    "m_UseCustomSlotLabel": false,
+    "m_CustomSlotLabel": "",
+    "m_Precision": 0,
+    "overrideHLSLDeclaration": false,
+    "hlslDeclarationOverride": 0,
+    "m_Hidden": false,
+    "m_Value": 0.0,
+    "m_FloatType": 0,
+    "m_RangeValues": {
+        "x": 0.0,
+        "y": 1.0
     }
 }
 

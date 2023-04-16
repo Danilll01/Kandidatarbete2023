@@ -15,11 +15,9 @@ public class WaterHandler : MonoBehaviour
     readonly private Vector3[] directions = { Vector3.forward, Vector3.back, Vector3.left, Vector3.right, Vector3.up, Vector3.down };
     private MeshFilter[] meshFilters;
     private Water[] waterfaces;
-    private PlayerWater playerWater;
     private Planet planet = null;
     private float waterRadius;
     public int sideResolution = 3;
-    public GameObject testBoi;
 
     /// <summary>
     /// Checks if the plater is under water
@@ -38,8 +36,6 @@ public class WaterHandler : MonoBehaviour
     /// <param name="color"></param>
     public void Initialize(Planet planet, float waterDiameter, Color color)
     {
-        playerWater = Camera.main.gameObject.transform.parent.GetComponent<PlayerWater>();
-
         this.planet = planet;
         waterRadius = Mathf.Abs(waterDiameter / 2) - 1;
 
