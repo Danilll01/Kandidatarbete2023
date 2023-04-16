@@ -18,7 +18,6 @@ public class WaterHandler : MonoBehaviour
     private PlayerWater playerWater;
     private Planet planet = null;
     private float waterRadius;
-    private bool underWaterState = false;
     public int sideResolution = 3;
     public GameObject testBoi;
 
@@ -29,20 +28,6 @@ public class WaterHandler : MonoBehaviour
     {
         if (planet == null) return;
         UpdateWater();
-        if (playerWater != null && underWaterState != playerWater.underWater) //&& ReferenceEquals(planet, playerWater.planet))
-        {
-            if (playerWater.underWater)
-            {
-                if(ReferenceEquals(planet, playerWater.planet)) SetWaterOnMesh(true);
-                material.SetInt("_IsUnderWater", 1);
-            }
-            else
-            {
-                if (ReferenceEquals(planet, playerWater.planet)) SetWaterOnMesh(false);
-                material.SetInt("_IsUnderWater", 0);
-            }
-            underWaterState = playerWater.underWater;
-        }
     }
 
     /// <summary>
@@ -79,7 +64,6 @@ public class WaterHandler : MonoBehaviour
         material = new Material(waterShader);
         material.SetColor("_ShallowWaterColor", color);
         material.SetColor("_DeepWaterColor", color);
-        material.SetInt("_IsUnderWater", 0);
         material.renderQueue = 2800;
     }
     /// <summary>
@@ -124,18 +108,6 @@ public class WaterHandler : MonoBehaviour
         foreach (MeshFilter meshFilter in meshFilters)
         {
             meshFilter.GetComponent<MeshRenderer>().sharedMaterial = material;
-        }
-    }
-
-    /// <summary>
-    /// Applies water to the meshes
-    /// </summary>
-    /// <param name="underWater"></param>
-    private void SetWaterOnMesh(bool underWater)
-    {
-        foreach (Water waterface in waterfaces)
-        {
-            waterface.UnderWater(underWater);
         }
     }
 

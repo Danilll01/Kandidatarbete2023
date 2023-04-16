@@ -10,7 +10,6 @@ public class Water
     private MeshFilter meshFilter;
     public int resolution;
     private int[] trianglesUp;
-    private int[] trianglesDown;
     private Vector3 localUp, axisA, axisB;
     private ComputeShader computeShader;
     private float waterRadius;
@@ -76,7 +75,6 @@ public class Water
     private void ConstructUnitSphere(Vector3[] vertices)
     {
         trianglesUp   = new int[(resolution - 1) * (resolution - 1) * 2 * 3];
-        trianglesDown = new int[(resolution - 1) * (resolution - 1) * 2 * 3];
 
         //Calculate the vertices on the GPU
         ComputeBuffer bufferVertices = new ComputeBuffer(resolution * resolution, 3 * sizeof(float));
@@ -85,7 +83,6 @@ public class Water
 
         bufferVertices.SetData(vertices);
         bufferTrianglesUp.SetData(trianglesUp);
-        bufferTrianglesDown.SetData(trianglesDown);
 
         int kernelId = computeShader.FindKernel("CSMesh");
 
@@ -107,21 +104,9 @@ public class Water
 
         bufferVertices.GetData(vertices);
         bufferTrianglesUp.GetData(trianglesUp);
-        bufferTrianglesDown.GetData(trianglesDown);
 
         bufferVertices.Dispose();
         bufferTrianglesUp.Dispose();
         bufferTrianglesDown.Dispose();
-    }
-    /// <summary>
-    /// Checks which side of the water the mesh should be renderd on
-    /// </summary>
-    /// <param name="underWater"></param>
-    public void UnderWater(bool underWater)
-    {
-        mesh.triangles = (underWater) ? trianglesDown : trianglesUp;
-        mesh.RecalculateBounds();
-        mesh.RecalculateNormals();
-        meshFilter.sharedMesh = mesh;
     }
 }

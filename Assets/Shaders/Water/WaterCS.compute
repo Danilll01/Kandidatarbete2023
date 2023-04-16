@@ -9,7 +9,6 @@ struct Vector3
 
 RWStructuredBuffer<Vector3> vertices;
 RWStructuredBuffer<int> trianglesUp;
-RWStructuredBuffer<int> trianglesDown;
 
 
 int posx;
@@ -50,15 +49,6 @@ void CSMesh(uint3 id : SV_DispatchThreadID)
         trianglesUp[triIndex + 3] = index;
         trianglesUp[triIndex + 4] = index + 1;
         trianglesUp[triIndex + 5] = index + resolution + 1;
-        
-        trianglesDown[triIndex + 2] = index;
-        trianglesDown[triIndex + 1] = index + resolution + 1;
-        trianglesDown[triIndex]     = index + resolution;
-        
-        trianglesDown[triIndex + 5] = index;
-        trianglesDown[triIndex + 4] = index + 1;
-        trianglesDown[triIndex + 3] = index + resolution + 1;
-        
     }
 }
 
