@@ -191,7 +191,7 @@ GameObject:
   - component: {fileID: 7009522980770883506}
   - component: {fileID: 5319189935782859708}
   m_Layer: 10
-  m_Name: Fox Cub
+  m_Name: ManeWolfC
   m_TagString: Creature
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
