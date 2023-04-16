@@ -194,14 +194,14 @@ public class Planet : MonoBehaviour
     {
         //KeepPlanetAtSameDistanceToSun();
         //ResetMoons();
+        //parentOrbitMover.transform.rotation = Quaternion.identity;
 
+        /*
         //directionToSunBeforeReset = Quaternion.Inverse(solarSystemRotationBeforeReset) * directionToSunBeforeReset;
         Vector3 directionatZeroY = Vector3.zero + directionToSunBeforeReset;
         directionatZeroY.y = 0;
         directionToSunBeforeReset = Quaternion.FromToRotation(Vector3.zero + directionToSunBeforeReset, directionatZeroY) * directionToSunBeforeReset;
         parentOrbitMover.transform.position = Vector3.zero + directionToSunBeforeReset;
-        /*
-        parentOrbitMover.transform.rotation = Quaternion.identity;
         parentOrbitMover.transform.position = Vector3.zero + directionToSunBeforeReset;
 
         moonsParent.transform.rotation = Quaternion.identity;
@@ -291,7 +291,7 @@ public class Planet : MonoBehaviour
     public void ResetMoons()
     {
         rotateMoons = false;
-        moonsParent.transform.rotation = Quaternion.Euler(0, moonsParent.transform.rotation.y, 0);//Quaternion.identity;
+        moonsParent.transform.rotation = Quaternion.Euler(0, moonsParent.transform.rotation.y, 0);
         setUpSystemRotationComponents = false;
     }
     
