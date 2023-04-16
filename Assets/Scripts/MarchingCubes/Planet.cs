@@ -163,6 +163,9 @@ public class Planet : MonoBehaviour
         ResetMoonsParentRotation();
     }
 
+    /// <summary>
+    /// Basically an update function that is called from the SolarSystemTransform script
+    /// </summary>
     public void Run()
     {
         if (player.parent != transform)
@@ -257,7 +260,9 @@ public class Planet : MonoBehaviour
         return chunksHandler.terrainColor.bottomColor;
     }
 
-    // Set up the components for solar system orbit
+    /// <summary>
+    /// Set up the components for solar system orbit
+    /// </summary>
     public void HandleSolarSystemOrbit(Vector3 rotationAxisOfActivePlanet, float speed)
     {
         if (bodyName.Contains("Planet"))
@@ -267,6 +272,9 @@ public class Planet : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Reset the orbit components of the planet and the moons
+    /// </summary>
     public void ResetOrbitComponents()
     {
         if (bodyName.Contains("Planet"))
