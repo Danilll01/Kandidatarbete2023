@@ -192,16 +192,17 @@ public class Planet : MonoBehaviour
 
     public void ResetPlanetAndMoons()
     {
-        KeepPlanetAtSameDistanceToSun();
-        ResetMoons();
+        //KeepPlanetAtSameDistanceToSun();
+        //ResetMoons();
 
-        directionToSunBeforeReset = Quaternion.Inverse(solarSystemRotationBeforeReset) * directionToSunBeforeReset;
-        Vector3 directionatZeroY = directionToSunBeforeReset;
+        //directionToSunBeforeReset = Quaternion.Inverse(solarSystemRotationBeforeReset) * directionToSunBeforeReset;
+        Vector3 directionatZeroY = Vector3.zero + directionToSunBeforeReset;
         directionatZeroY.y = 0;
-        directionToSunBeforeReset = Quaternion.FromToRotation(directionToSunBeforeReset, directionatZeroY) * directionToSunBeforeReset;
-
+        directionToSunBeforeReset = Quaternion.FromToRotation(Vector3.zero + directionToSunBeforeReset, directionatZeroY) * directionToSunBeforeReset;
+        parentOrbitMover.transform.position = Vector3.zero + directionToSunBeforeReset;
+        /*
         parentOrbitMover.transform.rotation = Quaternion.identity;
-        parentOrbitMover.transform.position = Universe.sunPosition.position + directionToSunBeforeReset;
+        parentOrbitMover.transform.position = Vector3.zero + directionToSunBeforeReset;
 
         moonsParent.transform.rotation = Quaternion.identity;
         moonsParent.transform.localPosition = Vector3.zero;
@@ -218,6 +219,7 @@ public class Planet : MonoBehaviour
             moons[i].transform.parent.rotation = Quaternion.identity;
             moons[i].transform.parent.position = parentOrbitMover.transform.position + moonDirection;
         }
+        */
     }
 
     private void OnDrawGizmos()

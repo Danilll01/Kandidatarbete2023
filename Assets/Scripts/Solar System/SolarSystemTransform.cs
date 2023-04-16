@@ -33,6 +33,7 @@ public class SolarSystemTransform : MonoBehaviour
     public bool stopSolarSystem;
     public bool resetSolarSystem;
     private bool reset;
+    public bool testResetOnYPlane;
 
     void Start()
     {
@@ -147,6 +148,35 @@ public class SolarSystemTransform : MonoBehaviour
             oldActivePlanet = activePlanet;
             reset = true;
         }
+
+        if (testResetOnYPlane)
+        {
+            
+
+            for (int i = 0; i < spawnPlanets.bodies.Count; i++)
+            {
+                Planet planet = spawnPlanets.bodies[i];
+                planet.transform.parent.SetParent(sun.transform);
+                
+                /*
+                Vector3 directionToSunBeforeReset =  planet.transform.parent.position - Universe.sunPosition.position;
+                Vector3 directionToClosestPointOnYPlane = ClosestPointOnPlane(sun.transform.position, Vector3.up, directionToSunBeforeReset);
+                
+                Vector3 newPos = sun.transform.position + directionToClosestPointOnYPlane;
+                newPos = new Vector3(newPos.x, sun.transform.position.y, newPos.z);
+
+                Vector3 newPosDirection = newPos - sun.transform.position;
+                planet.transform.parent.position = sun.transform.position + newPosDirection.normalized * relativePlanetSunDistances[i].magnitude;
+                */
+
+            }
+            
+            Quaternion fromTo = Quaternion.FromToRotation(sun.transform.position + sun.transform.up, Vector3.up);
+            sun.transform.rotation = Quaternion.Euler(0, sun.transform.rotation.y, 0);
+
+            testResetOnYPlane = false;
+
+        }
     }
 
     private void RotateSolarSystem()
@@ -185,7 +215,7 @@ public class SolarSystemTransform : MonoBehaviour
                 planetBody.SetUpResetComponents(universeRotationBeforeReset);
             }
             ResetPlanetOrbit(oldActivePlanet);
-            oldActivePlanet.ResetMoons();
+            //oldActivePlanet.ResetMoons();
             releasePlayer = true;
             oldActivePlanet = activePlanet;
         }
@@ -206,6 +236,38 @@ public class SolarSystemTransform : MonoBehaviour
         }
         float radius = (sun.transform.position - Vector3.zero).magnitude;
         Universe.DrawGizmosCircle(Vector3.zero, sun.transform.up, radius, 32);
+
+        if (stopSolarSystem)
+        {
+            float angleBetweenSunUpAndTrueUp = Vector3.Angle(sun.transform.position + Vector3.up, sun.transform.up);
+            
+            Gizmos.color = Color.green;
+            Gizmos.DrawLine(sun.transform.position, sun.transform.position + Vector3.up * 10000f);
+
+
+
+            foreach (var body in spawnPlanets.bodies)
+            {
+                Vector3 directionToSunBeforeReset = body.transform.position - Universe.sunPosition.position;
+                Gizmos.color = Color.blue;
+                Gizmos.DrawLine(sun.transform.position, sun.transform.position + directionToSunBeforeReset);
+            }
+            
+            for (int i = 0; i < spawnPlanets.bodies.Count; i++)
+            {
+                Planet planet = spawnPlanets.bodies[i];
+                Vector3 directionToSunBeforeReset =  planet.transform.parent.position - Universe.sunPosition.position;
+                Vector3 directionToClosestPointOnYPlane = ClosestPointOnPlane(sun.transform.position, Vector3.up, directionToSunBeforeReset);
+                
+                Vector3 newPos = sun.transform.position + directionToClosestPointOnYPlane;
+                newPos = new Vector3(newPos.x, sun.transform.position.y, newPos.z);
+
+                Vector3 newPosDirection = newPos - sun.transform.position;
+                Gizmos.color = Color.red;
+                Gizmos.DrawLine(sun.transform.position, sun.transform.position + newPosDirection.normalized * relativePlanetSunDistances[i].magnitude);
+
+            }
+        }
     }
 
     private Vector3 ClosestPointOnPlane(Vector3 planeOffset, Vector3 planeNormal, Vector3 point)
@@ -277,6 +339,15 @@ public class SolarSystemTransform : MonoBehaviour
     private void ResetPlanetOrbit(Planet planet)
     {
         Transform planetTransform = planet.transform;
+        //sun.transform.rotation = Quaternion.identity;
+        sun.transform.position = Vector3.zero;
+        
+        foreach (var planetBody in spawnPlanets.bodies)
+        {
+            planetBody.ResetPlanetAndMoons();
+        }
+        /*
+        Transform planetTransform = planet.transform;
         planetsParent.transform.position = startingPos;
 
         Quaternion rotation = planetsParent.transform.rotation;
@@ -290,7 +361,7 @@ public class SolarSystemTransform : MonoBehaviour
         rotationBefore = sun.transform.rotation;
         rotationBefore = Quaternion.Euler(sun.transform.rotation.x, 0, sun.transform.rotation.z);
 
-        sun.transform.rotation = Quaternion.identity;
+        //sun.transform.rotation = Quaternion.identity;
         heightDiffFromSunToOrigo = sun.transform.position.y;
         planetsParent.transform.position -= new Vector3(0, heightDiffFromSunToOrigo, 0);
 
@@ -299,7 +370,7 @@ public class SolarSystemTransform : MonoBehaviour
             planetBody.ResetPlanetAndMoons();
         }
 
-        sun.transform.position = planetTransform.transform.position + directionToPlanetBeforeReset;
+        //sun.transform.position = planetTransform.transform.position + directionToPlanetBeforeReset;
         planetTransform.parent.SetParent(planetsParent.transform, true);
 
         // Place the sun back at origo
@@ -315,7 +386,7 @@ public class SolarSystemTransform : MonoBehaviour
         Vector3 planetToSunWithoutHeight = sun.transform.position - planetTransform.position;
         //float angle = Vector3.Angle(planetTransform.position + new Vector3(0, heightDiffFromSunToOrigo, 0), planetTransform.position);
         planetTransform.rotation *= Quaternion.FromToRotation(planetToSunWithHeight, planetToSunWithoutHeight);
-
+        */
     }
 
     private void MovePlanets()
