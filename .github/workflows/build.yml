@@ -4,6 +4,9 @@ on:
   pull_request:
     types: [closed]
   workflow_dispatch: {}
+  push: 
+    branches: 
+      -"0.25-Bygg-med-de-nya-paketen"
 
 env:
   MAJOR_RELEASE_NR: 9
@@ -50,7 +53,9 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         with:
-          fetch-depth: 0
+          fetch-depth: 1
+          token: secrets.PAT_TOKEN
+          submodules: true
       - uses: actions/cache@v3
         with:
           path: Library
