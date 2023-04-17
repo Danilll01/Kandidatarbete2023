@@ -19,6 +19,8 @@ public class MarchingCubes
     public int chunkResolution;
     public float seed;
 
+    [HideInInspector] public Caves caves;
+
     private List<TerrainLayer> terrainLayers;
     private BiomeSettings biomeSettings;
 
@@ -79,6 +81,7 @@ public class MarchingCubes
         meshGenerator.SetInt("numTerrainLayers", terrainLayers.Count);
         meshGenerator.SetBuffer(kernelIndex, "terrainLayers", layersBuffer);
         meshGenerator.SetBuffer(kernelIndex, "biomeSettings", biomesBuffer);
+        meshGenerator.SetTexture(kernelIndex, "caves", caves.GetCaves());
         meshGenerator.Dispatch(kernelIndex, resolution >> chunkResolution, resolution >> chunkResolution, resolution >> chunkResolution);
 
         // Retrieve triangles

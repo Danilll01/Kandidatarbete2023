@@ -44,6 +44,8 @@ public class ChunksHandler : MonoBehaviour
     private int index = 0;
     [SerializeField] private int maxChunkChecksPerFrame = 50;
 
+    private Caves caves;
+
     enum ChunkResolution
     {
         High,
@@ -71,6 +73,8 @@ public class ChunksHandler : MonoBehaviour
     /// <param name="player"></param>
     public void Initialize(Planet planet, MinMaxTerrainLevel terrainLevel, bool spawn, int seed)
     {
+        
+
         rand = new RandomX(seed);
 
         this.planet = planet;
@@ -78,6 +82,9 @@ public class ChunksHandler : MonoBehaviour
         marchingCubes = planet.marchingCubes;
         planetRadius = planet.radius;
         this.terrainLevel = terrainLevel;
+
+        caves = new Caves(planet.resolution, chunkResolution);
+        marchingCubes.caves = caves;
 
         playerOnPlanet = spawn;
 

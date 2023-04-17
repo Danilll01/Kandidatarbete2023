@@ -20,6 +20,7 @@ AppendStructuredBuffer<Triangle> triangles;
 int numTerrainLayers;
 RWStructuredBuffer<TerrainLayer> terrainLayers;
 RWStructuredBuffer<BiomeSettings> biomeSettings;
+RWTexture3D<float4> caves;
 
 float seed;
 uint resolution;
