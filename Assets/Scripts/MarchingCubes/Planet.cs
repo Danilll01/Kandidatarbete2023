@@ -197,11 +197,11 @@ public class Planet : MonoBehaviour
             // Rotate the active planets moons manually since it is not affected by solar system rotation
             if (moonsParentIsActivePlanet)
             {
-                moonsParent.transform.RotateAround(Universe.player.attractor.transform.position, -axisToRotateAround,
+                moonsParent.transform.RotateAround(Vector3.zero, -axisToRotateAround,
                     speedToRotateAroundWith * Time.deltaTime);
             }
 
-            moonsParent.transform.localPosition = transform.localPosition;
+            moonsParent.transform.localPosition = Vector3.zero;
             moonsParent.transform.up = sunTransform.up;
 
             for (int i = 0; i < moons.Count; i++)

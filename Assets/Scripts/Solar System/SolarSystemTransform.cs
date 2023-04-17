@@ -169,7 +169,7 @@ public class SolarSystemTransform : MonoBehaviour
         // Calculate the distance from the planet that should be centered at origo
         // Move the solar system by that distance to place planet in origo
         Transform planetTransform = activePlanet.transform;
-        Vector3 distanceFromOrigin = planetTransform.transform.parent.position - Vector3.zero;
+        Vector3 distanceFromOrigin = planetTransform.transform.position - Vector3.zero;
         planetsParent.transform.position -= distanceFromOrigin;
         planetTransform.parent.SetParent(null, true);
 
