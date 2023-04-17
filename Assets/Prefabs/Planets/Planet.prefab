@@ -55,7 +55,6 @@ MonoBehaviour:
   meshGenerator: {fileID: 7200000, guid: 2b54143d75bd2344bb987facb6cb4950, type: 3}
   waterMaterial: {fileID: 0}
   waterDiameter: 0
-  diameter: 0
   radius: 0
   surfaceGravity: 10
   bodyName: TBT
@@ -91,6 +90,9 @@ MonoBehaviour:
     temperatureRoughness: 0.52
     mountainTemperatureAffect: 0.527
     treeFrequency: 1
+  caveSettings:
+    scale: 0
+    rules: []
 --- !u!114 &3175307376905995560
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -253,6 +255,7 @@ MonoBehaviour:
   - {fileID: 5440707293445505367, guid: 494f6d43e170e9145bc7865d243ee00b, type: 3}
   - {fileID: 1127315056602366, guid: 3a9df2c30188f10438112114dc22bae1, type: 3}
   - {fileID: 1240686429475702, guid: da33a1bfeaaabaa4597896ca7003b785, type: 3}
+  densityMultiplier: 0.000002
   isInstantiated: 0
   treeNr: 0
   bushNr: 0
@@ -284,6 +287,7 @@ MonoBehaviour:
     maxPackSize: 5
     packRadius: 30
     prefabRadius: 1
+  densityMultiplier: 0.0000012
   isInstantiated: 0
   debug: 0
 --- !u!1 &2724481626477248778

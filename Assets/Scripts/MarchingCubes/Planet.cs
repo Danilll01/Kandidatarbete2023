@@ -35,6 +35,7 @@ public class Planet : MonoBehaviour
     [SerializeField, Range(0, 1)] private float waterLevel = 0.92f;
     [SerializeField] private List<TerrainLayer> terrainLayers;
     [SerializeField] private BiomeSettings biomeSettings;
+    public Caves.CaveSettings caveSettings;
 
     private float threshold;
    

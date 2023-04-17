@@ -73,8 +73,6 @@ public class ChunksHandler : MonoBehaviour
     /// <param name="player"></param>
     public void Initialize(Planet planet, MinMaxTerrainLevel terrainLevel, bool spawn, int seed)
     {
-        
-
         rand = new RandomX(seed);
 
         this.planet = planet;
@@ -83,7 +81,7 @@ public class ChunksHandler : MonoBehaviour
         planetRadius = planet.radius;
         this.terrainLevel = terrainLevel;
 
-        caves = new Caves(planet.resolution, chunkResolution);
+        caves = new Caves(planet.resolution, chunkResolution, planet.caveSettings);
         marchingCubes.caves = caves;
 
         playerOnPlanet = spawn;
