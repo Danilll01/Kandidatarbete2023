@@ -40,7 +40,7 @@ public class SolarSystemTransform : MonoBehaviour
             }
         }
 
-        Universe.player.Planet = activePlanet;
+        Universe.player.attractor = activePlanet;
     }
 
 
@@ -82,7 +82,7 @@ public class SolarSystemTransform : MonoBehaviour
             CheckWhenToReleasePlayer();
         }
 
-        Universe.player.Planet = activePlanet;
+        Universe.player.attractor = activePlanet;
     }
 
     private void UpdateClosestPlanet()
