@@ -92,7 +92,8 @@ public class SpawnPlanets : MonoBehaviour
             };
             
             GameObject planet = Instantiate(planetsPrefab, planetOrbitObject.transform, true);
-            planet.transform.localPosition = Vector3.zero;
+            int randomHeightOffset = random.Next(-5000, 5000);
+            planet.transform.localPosition = new Vector3(0, randomHeightOffset, 0);
 
             Planet planetBody = planet.GetComponent<Planet>();
             planetBody.bodyName = "Planet " + i + " body";
@@ -122,7 +123,7 @@ public class SpawnPlanets : MonoBehaviour
         {
             float totalRadiusOfCurrentPlanet = planet.radius + (planet.radius * moonsNumber);
             float sunRadius = sun.GetComponent<Sun>().diameter;
-            float offset = random.Next(radiusMinValue, radiusMaxValue) * 1.2f;
+            float offset = random.Next(radiusMinValue, radiusMaxValue) * 2f;
             float distanceFromSun = sunRadius + totalRadiusOfCurrentPlanet + offset;
 
             pos = RandomPointOnCircleEdge(distanceFromSun);
@@ -167,7 +168,7 @@ public class SpawnPlanets : MonoBehaviour
             transform =
             {
                 parent = parentPlanet.transform.parent.transform,
-                localPosition = Vector3.zero
+                localPosition = parentPlanet.transform.localPosition
             }
         };
 
@@ -183,7 +184,8 @@ public class SpawnPlanets : MonoBehaviour
             };
             
             GameObject moon = Instantiate(planetsPrefab, moonsOrbitObject.transform);
-            moon.transform.localPosition = Vector3.zero;
+            int randomHeightOffset = random.Next(-2500, 2500);
+            moon.transform.localPosition = new Vector3(0, randomHeightOffset, 0);
             moonsOrbitObject.transform.localPosition = RandomPointOnCircleEdge(parentPlanet.radius * (i + 1.2f));
             moon.gameObject.name = "Moon " + i;
 
