@@ -14,8 +14,6 @@ public class SpawnPlanets : MonoBehaviour
     [SerializeField] private int numberOfPlanets;
     [SerializeField] private int radiusMinValue = 500;
     [SerializeField] private int radiusMaxValue = 1500;
-    [SerializeField] private int orbitOffsetMinValue = -10;
-    [SerializeField] private int orbitOffsetMaxValue = 10;
     [SerializeField] private int chanceOfMoonsLimit = 5;
     [SerializeField] private int minNumberOfMoons = 1;
     [SerializeField] private int maxNumberOfMoons = 5;
@@ -73,13 +71,6 @@ public class SpawnPlanets : MonoBehaviour
 
         sun.transform.GetChild(0).localScale = new Vector3(SunPlanetBody.diameter, SunPlanetBody.diameter, SunPlanetBody.diameter);
 
-        GameObject velocityHelper = new GameObject();
-        velocityHelper.gameObject.name = "VelocityHelper";
-        velocityHelper.transform.parent = sun.transform;
-        velocityHelper.transform.localPosition = new Vector3(-100, 0, 0);
-
-        sun.GetComponent<KeplerOrbitMover>().VelocityHandle = velocityHelper.transform;
-
         Universe.sunPosition = sun.transform;
         
         InstantiatePlanets(sun);
@@ -91,24 +82,33 @@ public class SpawnPlanets : MonoBehaviour
         // Create all other planets and helpers
         for (int i = 0; i < numberOfPlanets; i++)
         {
-            GameObject planet = Instantiate(planetsPrefab, planetsParent.transform, true);
+            GameObject planetOrbitObject = new GameObject("Planet " + i )
+            {
+                transform =
+                {
+                    parent = planetsParent.transform,
+                    localPosition = Vector3.zero
+                }
+            };
+            
+            GameObject planet = Instantiate(planetsPrefab, planetOrbitObject.transform, true);
+            planet.transform.localPosition = Vector3.zero;
 
             Planet planetBody = planet.GetComponent<Planet>();
-            planetBody.bodyName = "Planet " + i;
+            planetBody.bodyName = "Planet " + i + " body";
             planetBody.radius = random.Next(radiusMinValue, radiusMaxValue);
 
 
             int nrOfMoonsForPlanet = GetNrOfMoonsToGenerate();
-            planet.transform.localPosition = CalculatePositionForPlanet(planetBody, i, nrOfMoonsForPlanet);
-            planet.gameObject.name = "Planet " + i;
-
-
+            planetOrbitObject.transform.localPosition = CalculatePositionForPlanet(planetBody, i, nrOfMoonsForPlanet);
+            planetBody.positionRelativeToSunDistance = planetOrbitObject.transform.localPosition.magnitude;
+            planet.gameObject.name = "Planet " + i + " body";
             planetBody.SetUpPlanetValues();
+
             planetBody.Initialize(player.transform, random.Next(), i == spawnPlanetIndex);
             InstantiateMoons(planetBody, nrOfMoonsForPlanet);
             bodies.Add(planetBody);
 
-            SetupOrbitComponents(sun, planet);
         }
     }
 
@@ -122,7 +122,7 @@ public class SpawnPlanets : MonoBehaviour
         {
             float totalRadiusOfCurrentPlanet = planet.radius + (planet.radius * moonsNumber);
             float sunRadius = sun.GetComponent<Sun>().diameter;
-            float offset = random.Next(radiusMinValue, radiusMaxValue) * 1.2f;
+            float offset = random.Next(radiusMinValue, radiusMaxValue) * 2f;
             float distanceFromSun = sunRadius + totalRadiusOfCurrentPlanet + offset;
 
             pos = RandomPointOnCircleEdge(distanceFromSun);
@@ -138,7 +138,7 @@ public class SpawnPlanets : MonoBehaviour
 
             float totalRadiusOfCurrentPlanet = planet.radius + (planet.radius * moonsNumber);
 
-            float offset = random.Next(radiusMinValue, radiusMaxValue + 1) * 1.2f;
+            float offset = random.Next(radiusMaxValue, radiusMaxValue * 2) * 2f;
             float distanceFromSun = previousPlanetPosMagnitude + totalRadiusOfPreviousPlanet + totalRadiusOfCurrentPlanet + offset;
             pos = RandomPointOnCircleEdge(distanceFromSun);
         }
@@ -162,11 +162,29 @@ public class SpawnPlanets : MonoBehaviour
     // Instantiate moons for the given planet
     private void InstantiateMoons(Planet parentPlanet, int numberOfMoons)
     {
+        GameObject moonsParent = new GameObject("Moons parent")
+        {
+            transform =
+            {
+                parent = parentPlanet.transform.parent.transform,
+                localPosition = Vector3.zero
+            }
+        };
+
         for (int i = 1; i < numberOfMoons + 1; i++)
         {
-            GameObject moon = Instantiate(planetsPrefab);
-            moon.transform.parent = parentPlanet.transform;
-            moon.transform.localPosition = RandomPointOnCircleEdge(parentPlanet.radius * (i + 1));
+            GameObject moonsOrbitObject = new GameObject("Moon orbit object")
+            {
+                transform =
+                {
+                    parent = moonsParent.transform,
+                    localPosition = Vector3.zero
+                }
+            };
+            
+            GameObject moon = Instantiate(planetsPrefab, moonsOrbitObject.transform);
+            moon.transform.localPosition = Vector3.zero;
+            moonsOrbitObject.transform.localPosition = RandomPointOnCircleEdge(parentPlanet.radius * (i + 1.2f));
             moon.gameObject.name = "Moon " + i;
 
             Planet moonBody = moon.GetComponent<Planet>();
@@ -175,8 +193,9 @@ public class SpawnPlanets : MonoBehaviour
             moonBody.SetUpPlanetValues();
             moonBody.Initialize(player.transform, random.Next(), false); //False here beacause we don't spawn on moons
             parentPlanet.moons.Add(moonBody);
-            SetupOrbitComponents(parentPlanet.gameObject, moon);
         }
+        parentPlanet.moonsParent = moonsParent;
+        parentPlanet.InitializeMoonValues();
     }
 
     // Gives back a random position on the edge of a circle given the radius of the circle
@@ -184,42 +203,5 @@ public class SpawnPlanets : MonoBehaviour
     {
         var vector2 = random.OnUnitCircle() * radius;
         return new Vector3(vector2.x, 0, vector2.y);
-    }
-
-    // Adds all componets for orbit movement for given planet and it's attractor
-    private void SetupOrbitComponents(GameObject Attractor, GameObject planet)
-    {
-        GameObject velocityHelper = new GameObject();
-        velocityHelper.gameObject.name = "VelocityHelper";
-        velocityHelper.transform.parent = planet.transform;
-
-        int orbitOffset = random.Next(orbitOffsetMinValue, orbitOffsetMaxValue);
-        velocityHelper.transform.localPosition = new Vector3(100, orbitOffset, orbitOffset);
-
-        // Assign needed scripts to the planet
-        planet.AddComponent<KeplerOrbitMover>();
-        planet.AddComponent<KeplerOrbitLineDisplay>();
-
-        // Not nessecarry, used for debug
-        planet.GetComponent<KeplerOrbitLineDisplay>().MaxOrbitWorldUnitsDistance = (Attractor.transform.position - planet.transform.position).magnitude * 1.2f;
-        planet.GetComponent<KeplerOrbitLineDisplay>().LineRendererReference = planet.GetComponent<LineRenderer>();
-
-        // Setup settings for the orbit script with the sun as the central body
-        KeplerOrbitMover planetOrbitMover = planet.GetComponent<KeplerOrbitMover>();
-        planetOrbitMover.AttractorSettings.AttractorObject = Attractor.transform;
-        if (Attractor.gameObject.name == "Sun")
-        {
-            planetOrbitMover.AttractorSettings.AttractorMass = Attractor.GetComponent<Sun>().mass;
-        }
-        else
-        {
-            planetOrbitMover.AttractorSettings.AttractorMass = Attractor.GetComponent<Planet>().mass;
-        }
-        planetOrbitMover.AttractorSettings.GravityConstant = Universe.gravitationalConstant;
-        planetOrbitMover.VelocityHandle = velocityHelper.transform;
-        planetOrbitMover.SetUp();
-        planetOrbitMover.SetAutoCircleOrbit();
-        planetOrbitMover.ForceUpdateOrbitData();
-        planetOrbitMover.LockOrbitEditing = true;
     }
 }
