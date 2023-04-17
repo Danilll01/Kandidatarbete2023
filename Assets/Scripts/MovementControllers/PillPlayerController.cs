@@ -269,7 +269,7 @@ public class PillPlayerController : MonoBehaviour
     private void Spawn(Planet planet, int seed)
     {
         RandomX rand = new RandomX(seed);
-        Vector3 spawnLocationAbovePlanet = planet.transform.position + (rand.OnUnitSphere() * planet.radius * 1.5f);
+        Vector3 spawnLocationAbovePlanet = planet.transform.position + (rand.OnUnitSphere() * planet.radius * 1.15f);
         transform.position = spawnLocationAbovePlanet;
         transform.LookAt(planet.transform);
         ship.Initialize(body, firstPersonCamera);
