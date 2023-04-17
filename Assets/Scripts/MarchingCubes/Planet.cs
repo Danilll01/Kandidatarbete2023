@@ -10,7 +10,6 @@ public class Planet : MonoBehaviour
     [SerializeField] private Material waterMaterial; // Can this be removed?
     [HideInInspector] public float waterDiameter;
 
-    [HideInInspector, Obsolete]public float diameter;
     [HideInInspector] public float radius;
     [HideInInspector] public float surfaceGravity;
     [HideInInspector] public string bodyName = "TBT";
