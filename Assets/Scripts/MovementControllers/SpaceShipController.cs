@@ -71,15 +71,15 @@ public class SpaceShipController : MonoBehaviour
         float lift = Input.GetAxis("Spaceship Lift");
 
         Vector3 newMovementVector = new(strafe, lift, thrust);
-        oldMovementVector = Vector3.Lerp(oldMovementVector, newMovementVector, Time.deltaTime * movementDampening);
+        oldMovementVector = Vector3.Lerp(oldMovementVector, newMovementVector, Time.fixedDeltaTime * movementDampening);
 
         if (Math.Abs(Input.GetAxisRaw("Sprint") - 1) > 0.001)
         {
-            speed = Mathf.Lerp(speed, normalSpeed, Time.deltaTime);
+            speed = Mathf.Lerp(speed, normalSpeed, Time.fixedDeltaTime);
         }
         else
         {
-            speed = Mathf.Lerp(speed, maxSpeed, Time.deltaTime * 2);
+            speed = Mathf.Lerp(speed, maxSpeed, Time.fixedDeltaTime * 2);
         }
 
         //Set moveDirection to the vertical axis (up and down keys) * speed
@@ -91,27 +91,28 @@ public class SpaceShipController : MonoBehaviour
         physicsBody.velocity = new Vector3(moveDirection.x, moveDirection.y, moveDirection.z);
 
         //Camera follow
-        mainCamera.transform.position = Vector3.Lerp(mainCamera.transform.position, cameraPosition.position, Time.deltaTime * cameraSmooth);
-        mainCamera.transform.rotation = Quaternion.Lerp(mainCamera.transform.rotation, cameraPosition.rotation, Time.deltaTime * cameraSmooth);
+        mainCamera.transform.position = Vector3.Lerp(mainCamera.transform.position, cameraPosition.position, Time.fixedDeltaTime * cameraSmooth);
+        mainCamera.transform.rotation = Quaternion.Lerp(mainCamera.transform.rotation, cameraPosition.rotation, Time.fixedDeltaTime * cameraSmooth);
 
         //Rotation
         float rotationZTmp = Input.GetAxis("Spaceship Roll");
 
-        mouseXSmooth = Mathf.Lerp(mouseXSmooth, Input.GetAxis("Horizontal Look") * rotationSpeed, Time.deltaTime * cameraSmooth);
-        mouseYSmooth = Mathf.Lerp(mouseYSmooth, Input.GetAxis("Vertical Look") * rotationSpeed, Time.deltaTime * cameraSmooth);
+        mouseXSmooth = Mathf.Lerp(mouseXSmooth, Input.GetAxis("Horizontal Look") * rotationSpeed, Time.fixedDeltaTime * cameraSmooth);
+        mouseYSmooth = Mathf.Lerp(mouseYSmooth, Input.GetAxis("Vertical Look") * rotationSpeed, Time.fixedDeltaTime * cameraSmooth);
         
-        Quaternion localRotation = Quaternion.Euler(mouseYSmooth, mouseXSmooth, rotationZTmp * rotationSpeed);
+        Quaternion localRotationY = Quaternion.Euler(mouseYSmooth, 0, rotationZTmp * rotationSpeed);
+        Quaternion localRotationX = Quaternion.Euler(0, mouseXSmooth, 0);
 
         Debug.Log(Gravity.UprightRotation(transform, transform.parent.transform));
-        lookRotation = lookRotation * localRotation;
+        lookRotation = lookRotation * localRotationY;
 
         /*Quaternion rotationBefore = transform.rotation;
         Quaternion rotationAfter = Gravity.UprightRotation(transform, transform.parent.transform);
         Quaternion rotationDifference = Quaternion.Inverse(rotationBefore) * rotationAfter;*/
         
 
-        transform.rotation = Gravity.UprightRotation(transform, transform.parent.transform) * lookRotation;
-        lookRotation = transform.rotation * Quaternion.Inverse(Gravity.UprightRotation(transform, transform.parent.transform));
+        transform.rotation = Gravity.UprightRotation(transform, transform.parent.transform) * (localRotationX * lookRotation);
+        //lookRotation = transform.rotation * Quaternion.Inverse(Gravity.UprightRotation(transform, transform.parent.transform));
     
         
         
@@ -132,7 +133,7 @@ public class SpaceShipController : MonoBehaviour
         rotationZ -= mouseXSmooth;
         rotationZ = Mathf.Clamp(rotationZ, -45, 45);
         spaceshipRoot.transform.localEulerAngles = new Vector3(defaultShipRotation.x, defaultShipRotation.y, rotationZ);
-        rotationZ = Mathf.Lerp(rotationZ, defaultShipRotation.z, Time.deltaTime * cameraSmooth);
+        rotationZ = Mathf.Lerp(rotationZ, defaultShipRotation.z, Time.fixedDeltaTime * cameraSmooth);
 
         //Update crosshair texture
         if (crosshairTexture)

@@ -4,9 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="">
+    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Better spawn planet">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/BoughtAssets" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/BoughtAssets" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/BoughtAssets/GPUInstancer/Resources/Settings/GPUIShaderVariantCollection.shadervariants" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/BoughtAssets/GPUInstancer/Resources/Settings/GPUIShaderVariantCollection.shadervariants" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/BoughtAssets/GPUInstancer/Resources/Settings/GPUInstancerSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/BoughtAssets/GPUInstancer/Resources/Settings/GPUInstancerSettings.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Main.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Main.unity" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/PlanetTerrain/MinMaxTerrainLevel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/PlanetTerrain/MinMaxTerrainLevel.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -35,6 +41,7 @@
   </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Atmosphere/AtmosphereHandler.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipController.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Shaders/Atmosphere/AtmosphericScattering.shader" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="MarkdownSettingsMigration">
@@ -46,29 +53,47 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Discover.Launch.Via.Unity": "true",
-    "Git.Branch.Popup.ShowAllRemotes": "true",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "settings.editor.selected.configurable": "reference.settings.ide.settings.spelling",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Discover.Launch.Via.Unity&quot;: &quot;true&quot;,
+    &quot;Git.Branch.Popup.ShowAllRemotes&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settings.ide.settings.spelling&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
-  "keyToStringList": {
-    "rider.external.source.directories": [
-      "C:\\Users\\johil\\AppData\\Roaming\\JetBrains\\Rider2022.3\\resharper-host\\DecompilerCache",
-      "C:\\Users\\johil\\AppData\\Roaming\\JetBrains\\Rider2022.3\\resharper-host\\SourcesCache",
-      "C:\\Users\\johil\\AppData\\Local\\Symbols\\src"
+  &quot;keyToStringList&quot;: {
+    &quot;rider.external.source.directories&quot;: [
+      &quot;C:\\Users\\User\\AppData\\Roaming\\JetBrains\\Rider2023.1\\resharper-host\\DecompilerCache&quot;,
+      &quot;C:\\Users\\User\\AppData\\Roaming\\JetBrains\\Rider2023.1\\resharper-host\\SourcesCache&quot;,
+      &quot;C:\\Users\\User\\AppData\\Local\\Symbols\\src&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="RunManager" selected="Attach to Unity Editor.Attach to Unity Editor">
+    <configuration name="Standalone Player" type="RunUnityExe" factoryName="Unity Executable">
+      <option name="EXE_PATH" value="$USER_HOME$/Desktop/Build\Kandidatarbete 2023.exe" />
+      <option name="PROGRAM_PARAMETERS" value="" />
+      <option name="WORKING_DIRECTORY" value="C:\Users\elinf\Desktop\Build" />
+      <option name="PASS_PARENT_ENVS" value="1" />
+      <option name="USE_EXTERNAL_CONSOLE" value="0" />
+      <method v="2" />
+    </configuration>
     <configuration name="Start Unity" type="RunUnityExe" factoryName="Unity Executable">
-      <option name="EXE_PATH" value="C:\Program Files\Unity\Hub\Editor\2021.3.16f1\Editor\Unity.exe" />
+      <option name="EXE_PATH" value="D:\Unity\2021.3.16f1\Editor\Unity.exe" />
       <option name="PROGRAM_PARAMETERS" value="-projectPath D:\Unity\Projects\Kandidatarbete2023 -debugCodeOptimization" />
+      <option name="WORKING_DIRECTORY" value="D:\Unity\Projects\Kandidatarbete2023" />
+      <option name="PASS_PARENT_ENVS" value="1" />
+      <option name="USE_EXTERNAL_CONSOLE" value="0" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Unit Tests (batch mode)" type="RunUnityExe" factoryName="Unity Executable">
+      <option name="EXE_PATH" value="D:\Unity\2021.3.16f1\Editor\Unity.exe" />
+      <option name="PROGRAM_PARAMETERS" value="-runTests -batchmode -projectPath D:\Unity\Projects\Kandidatarbete2023 -testResults Logs/results.xml -testPlatform EditMode -debugCodeOptimization" />
       <option name="WORKING_DIRECTORY" value="D:\Unity\Projects\Kandidatarbete2023" />
       <option name="PASS_PARENT_ENVS" value="1" />
       <option name="USE_EXTERNAL_CONSOLE" value="0" />
@@ -132,10 +157,9 @@
       <workItem from="1680116449264" duration="153000" />
       <workItem from="1680116721177" duration="10746000" />
       <workItem from="1680265180898" duration="5422000" />
-      <workItem from="1680825879382" duration="6852000" />
-      <workItem from="1681200751634" duration="407000" />
-      <workItem from="1681221233720" duration="9737000" />
-      <workItem from="1681299331750" duration="8787000" />
+      <workItem from="1681663590681" duration="10897000" />
+      <workItem from="1681700172082" duration="663000" />
+      <workItem from="1681740646976" duration="1537000" />
     </task>
     <task id="LOCAL−00003" summary="Changed file">
       <created>1679327563589</created>
@@ -341,67 +365,7 @@
       <option name="presentableId" value="LOCAL−00036" />
       <updated>1680269111791</updated>
     </task>
-    <task id="LOCAL−00037" summary="Added new spaceship controller">
-      <created>1680827072032</created>
-      <option name="number" value="LOCAL−00037" />
-      <option name="presentableId" value="LOCAL−00037" />
-      <updated>1680827072032</updated>
-    </task>
-    <task id="LOCAL−00038" summary="Added controlls back to new ship movement">
-      <created>1680830748010</created>
-      <option name="number" value="LOCAL−00038" />
-      <option name="presentableId" value="LOCAL−00038" />
-      <updated>1680830748010</updated>
-    </task>
-    <task id="LOCAL−00039" summary="Ship movement is now smooth">
-      <created>1680832302577</created>
-      <option name="number" value="LOCAL−00039" />
-      <option name="presentableId" value="LOCAL−00039" />
-      <updated>1680832302577</updated>
-    </task>
-    <task id="LOCAL−00040" summary="Added Ship transition class">
-      <created>1681223983727</created>
-      <option name="number" value="LOCAL−00040" />
-      <option name="presentableId" value="LOCAL−00040" />
-      <updated>1681223983727</updated>
-    </task>
-    <task id="LOCAL−00041" summary="Added file">
-      <created>1681224191861</created>
-      <option name="number" value="LOCAL−00041" />
-      <option name="presentableId" value="LOCAL−00041" />
-      <updated>1681224191861</updated>
-    </task>
-    <task id="LOCAL−00042" summary="Ship now lands correctly">
-      <created>1681255649832</created>
-      <option name="number" value="LOCAL−00042" />
-      <option name="presentableId" value="LOCAL−00042" />
-      <updated>1681255649832</updated>
-    </task>
-    <task id="LOCAL−00043" summary="Landing and embarking now works as intended">
-      <created>1681260372695</created>
-      <option name="number" value="LOCAL−00043" />
-      <option name="presentableId" value="LOCAL−00043" />
-      <updated>1681260372695</updated>
-    </task>
-    <task id="LOCAL−00044" summary="Small modification in directional sunlight script">
-      <created>1681261335833</created>
-      <option name="number" value="LOCAL−00044" />
-      <option name="presentableId" value="LOCAL−00044" />
-      <updated>1681261335833</updated>
-    </task>
-    <task id="LOCAL−00045" summary="Removed some player dependencies in ship transition script">
-      <created>1681262997136</created>
-      <option name="number" value="LOCAL−00045" />
-      <option name="presentableId" value="LOCAL−00045" />
-      <updated>1681262997136</updated>
-    </task>
-    <task id="LOCAL−00046" summary="Changes spaceship speed">
-      <created>1681304977264</created>
-      <option name="number" value="LOCAL−00046" />
-      <option name="presentableId" value="LOCAL−00046" />
-      <updated>1681304977264</updated>
-    </task>
-    <option name="localTasksCounter" value="47" />
+    <option name="localTasksCounter" value="37" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -423,6 +387,16 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
+    <MESSAGE value="Planet atmosphere color is now randomized" />
+    <MESSAGE value="Have moved ambient light calculation to corresponding planet atmosphere" />
+    <MESSAGE value="Fixed atmosphere update calling to mirror the players actual current planet" />
+    <MESSAGE value="Better shadow resolution near player" />
+    <MESSAGE value="Ambient light is now customized for each atmosphere" />
+    <MESSAGE value="Planet strength is now randomized and can be of if there is no water" />
+    <MESSAGE value="Atmosphere height/thickness is now randomized" />
+    <MESSAGE value="Ambient light now blends with no atmosphere gradient when the atmosphere is weaker" />
+    <MESSAGE value="Changed spacing" />
+    <MESSAGE value="Fixed blinking lights" />
     <MESSAGE value="Increased FOV" />
     <MESSAGE value="Changed player position in ship to better suit the new FOV" />
     <MESSAGE value="Made ship glass a little more transparent" />
@@ -438,16 +412,6 @@
     <MESSAGE value="Added back water shadow as the back side of the planet otherwise would have sunlight through the ground" />
     <MESSAGE value="Fixed green sun bug" />
     <MESSAGE value="Better spawn planet" />
-    <MESSAGE value="Added new spaceship controller" />
-    <MESSAGE value="Added controlls back to new ship movement" />
-    <MESSAGE value="Ship movement is now smooth" />
-    <MESSAGE value="Added Ship transition class" />
-    <MESSAGE value="Added file" />
-    <MESSAGE value="Ship now lands correctly" />
-    <MESSAGE value="Landing and embarking now works as intended" />
-    <MESSAGE value="Small modification in directional sunlight script" />
-    <MESSAGE value="Removed some player dependencies in ship transition script" />
-    <MESSAGE value="Changes spaceship speed" />
-    <option name="LAST_COMMIT_MESSAGE" value="Changes spaceship speed" />
+    <option name="LAST_COMMIT_MESSAGE" value="Better spawn planet" />
   </component>
 </project>
