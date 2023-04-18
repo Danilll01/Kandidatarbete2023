@@ -99,7 +99,7 @@ public class TerrainColor : MonoBehaviour {
         float minVal = Mathf.Clamp((cutOf - newAngleBlend), 0, 1);
         float maxVal = Mathf.Clamp((cutOf), 0, 1);
 
-        material.SetVector("_AngleCutAndBlend", new Vector4(minVal, maxVal));
+        material.SetVector("_AngleCutAndBlend", new Vector4(0.4f, 0f));//new Vector4(minVal, maxVal));
     }
 
     private void UpdateBiomeSetting()
