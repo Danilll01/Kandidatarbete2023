@@ -4,9 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Rider test again">
-      <change beforePath="$PROJECT_DIR$/Assets/BoughtAssets" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/BoughtAssets" afterDir="false" />
-    </list>
+    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Can you push this without something braking" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -401,7 +399,13 @@
       <option name="presentableId" value="LOCAL−00042" />
       <updated>1681860785135</updated>
     </task>
-    <option name="localTasksCounter" value="43" />
+    <task id="LOCAL−00043" summary="Can you push this without something braking">
+      <created>1681861195436</created>
+      <option name="number" value="LOCAL−00043" />
+      <option name="presentableId" value="LOCAL−00043" />
+      <updated>1681861195436</updated>
+    </task>
+    <option name="localTasksCounter" value="44" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -423,7 +427,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="Atmosphere height/thickness is now randomized" />
     <MESSAGE value="Ambient light now blends with no atmosphere gradient when the atmosphere is weaker" />
     <MESSAGE value="Changed spacing" />
     <MESSAGE value="Fixed blinking lights" />
@@ -448,6 +451,7 @@
     <MESSAGE value="Test Rider dual repository commits and pushes. Cleaned up code." />
     <MESSAGE value="Something with the bought assets" />
     <MESSAGE value="Rider test again" />
-    <option name="LAST_COMMIT_MESSAGE" value="Rider test again" />
+    <MESSAGE value="Can you push this without something braking" />
+    <option name="LAST_COMMIT_MESSAGE" value="Can you push this without something braking" />
   </component>
 </project>
