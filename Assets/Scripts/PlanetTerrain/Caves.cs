@@ -48,8 +48,6 @@ public class Caves
     /// <returns>Returns the <see cref="Texture3D"/> for the caves</returns>
     public Texture3D GenerateCaves()
     {
-
-
         return caves;
     }
 }
