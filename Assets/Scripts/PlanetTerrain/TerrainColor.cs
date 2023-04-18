@@ -166,7 +166,7 @@ public class TerrainColor : MonoBehaviour {
         if (addGroundColor)
         {
             GradientColorKey[] oldColorKeyArr = gradient.colorKeys;
-            oldColorKeyArr[0] = new GradientColorKey(groundColor, oldColorKeyArr[1].time);
+            oldColorKeyArr[0] = new GradientColorKey(groundColor, oldColorKeyArr[0].time);
             gradient.SetKeys(oldColorKeyArr, gradient.alphaKeys);
         }
         

@@ -138,6 +138,7 @@ MonoBehaviour:
   angleBlending: 0.5
   shader: {fileID: -6465566751694194690, guid: 582627e993e00c442b71e98ced60fb20, type: 3}
   bottomColor: {r: 0, g: 0, b: 0, a: 0}
+  groundColor: {r: 0, g: 0, b: 0, a: 0}
   mountainGradients:
   - gradient:
       serializedVersion: 2
@@ -149,7 +150,7 @@ MonoBehaviour:
       key5: {r: 0, g: 0, b: 0, a: 0}
       key6: {r: 0, g: 0, b: 0, a: 0}
       key7: {r: 0, g: 0, b: 0, a: 0}
-      ctime0: 5975
+      ctime0: 2120
       ctime1: 13107
       ctime2: 43754
       ctime3: 47802
@@ -178,7 +179,7 @@ MonoBehaviour:
       key5: {r: 0, g: 0, b: 0, a: 0}
       key6: {r: 0, g: 0, b: 0, a: 0}
       key7: {r: 0, g: 0, b: 0, a: 0}
-      ctime0: 5975
+      ctime0: 2117
       ctime1: 13107
       ctime2: 51464
       ctime3: 55705
@@ -207,7 +208,7 @@ MonoBehaviour:
       key5: {r: 0, g: 0, b: 0, a: 0}
       key6: {r: 0, g: 0, b: 0, a: 0}
       key7: {r: 0, g: 0, b: 0, a: 0}
-      ctime0: 5975
+      ctime0: 1901
       ctime1: 13107
       ctime2: 44525
       ctime3: 52235
