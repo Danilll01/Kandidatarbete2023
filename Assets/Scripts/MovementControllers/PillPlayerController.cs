@@ -285,23 +285,16 @@ public class PillPlayerController : MonoBehaviour
     /// </summary>
     public void ShipPlayerTransition()
     {
-        Debug.Log("SWITCH: " + boarded);
         body.isKinematic = !boarded;
         firstPersonCamera.enabled = boarded;
         GetComponent<Collider>().enabled = boarded;
         boarded = !boarded;
     }
-
-    /// <summary>
-    /// The altitude of the player from the currently attracting planet.
-    /// </summary>
-    public float Altitude => (attractor.transform.position - transform.position).magnitude;
-
-
+    
     /// <summary>
     /// The Vector3 of the normal ground the player is standing on. Returns Vector3.Zero if not on ground.
     /// </summary>
-    public Vector3 GroundNormal
+    private Vector3 GroundNormal
     {
         get
         {
@@ -317,9 +310,8 @@ public class PillPlayerController : MonoBehaviour
     }
 
 
-    public bool Grounded
+    private bool Grounded
     {
-   
         get 
         { 
             if (attractor == null)

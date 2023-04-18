@@ -16,7 +16,6 @@ public class SolarSystemTransform : MonoBehaviour
     private float orbitSpeed;
     private bool releasePlayer;
     private PillPlayerController player;
-    private Transform spaceShip;
 
 
     void Start()
@@ -29,7 +28,6 @@ public class SolarSystemTransform : MonoBehaviour
         planetsParent = gameObject;
 
         player = Universe.player;
-        spaceShip = Universe.spaceShip;
     }
 
     private void InitializeValues()
@@ -51,7 +49,6 @@ public class SolarSystemTransform : MonoBehaviour
 
     private void FixedUpdate()
     {
-        Debug.Log(activePlanet);
         if (sun == null && spawnPlanets.bodies != null)
         {
             sun = spawnPlanets.sun;
@@ -88,7 +85,7 @@ public class SolarSystemTransform : MonoBehaviour
             CheckWhenToReleasePlayer();
         }
 
-        Universe.player.attractor = activePlanet;
+        player.attractor = activePlanet;
     }
 
     private void UpdateClosestPlanet()
@@ -104,7 +101,7 @@ public class SolarSystemTransform : MonoBehaviour
             {
                 activePlanet = planet;
                 
-                if (!Universe.player.boarded)
+                if (!player.boarded)
                 {
                     player.transform.parent = activePlanet.transform;
                 }
@@ -144,7 +141,7 @@ public class SolarSystemTransform : MonoBehaviour
             activePlanet.rotateMoons = true;
             oldActivePlanet = activePlanet;
         }
-        Universe.player.attractor = activePlanet;
+        player.attractor = activePlanet;
     }
 
     private void CheckWhenToReleasePlayer()

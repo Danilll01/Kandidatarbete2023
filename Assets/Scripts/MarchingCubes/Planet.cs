@@ -295,7 +295,7 @@ public class Planet : MonoBehaviour
     /// <summary>
     /// Adjusts the planets position to keep the same distance to the sun
     /// </summary>
-    public void KeepPlanetAtSameDistanceToSun()
+    private void KeepPlanetAtSameDistanceToSun()
     {
         Vector3 sunPosition = Universe.sunPosition.position;
         Transform sunTransform = Universe.sunPosition.transform;

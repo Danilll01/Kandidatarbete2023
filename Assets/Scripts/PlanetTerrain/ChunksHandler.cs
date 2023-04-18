@@ -154,10 +154,15 @@ public class ChunksHandler : MonoBehaviour
 
         Destroy(chunksParent);
 
-        chunksParent = new GameObject();
-        chunksParent.name = (res == ChunkResolution.High) ? "chunksHighRes" : "chunksLowRes";
-        chunksParent.transform.parent = transform;
-        chunksParent.transform.localPosition = Vector3.zero;
+        chunksParent = new GameObject
+        {
+            name = (res == ChunkResolution.High) ? "chunksHighRes" : "chunksLowRes",
+            transform =
+            {
+                parent = transform,
+                localPosition = Vector3.zero
+            }
+        };
 
         marchingCubes.chunkResolution = chunkResolution;
 
