@@ -56,7 +56,7 @@ jobs:
         with:
           repository: Danilll01/Kandidatarbete2023
           fetch-depth: 1
-          token: secrets.PAT_TOKEN
+          ssh-key: ${{ secrets.SSH_KEY }}
           submodules: recursive
       - uses: actions/cache@v3
         with:
