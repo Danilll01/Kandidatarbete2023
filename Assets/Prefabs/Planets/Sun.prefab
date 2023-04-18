@@ -10,8 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 5190945669579510727}
   - component: {fileID: 7773135667726461693}
-  - component: {fileID: 3492992090644474545}
-  - component: {fileID: 4447131288340475015}
   m_Layer: 0
   m_Name: Sun
   m_TagString: Untagged
@@ -52,99 +50,7 @@ MonoBehaviour:
   surfaceGravity: 10
   bodyName: Sun
   mass: 0
---- !u!114 &3492992090644474545
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2953080420391832282}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 360a38c11d75bf24991bdc7b1fcddb56, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  AttractorSettings:
-    AttractorObject: {fileID: 0}
-    AttractorMass: 1000
-    GravityConstant: 0.1
-  VelocityHandle: {fileID: 0}
-  VelocityHandleLengthScale: 0
-  TimeScale: 1
-  OrbitData:
-    GravConst: 1
-    Position:
-      x: 0
-      y: 0
-      z: 0
-    AttractorDistance: 0
-    AttractorMass: 0
-    Velocity:
-      x: 0
-      y: 0
-      z: 0
-    MG: 0
-    SemiMinorAxis: 0
-    SemiMajorAxis: 0
-    FocalParameter: 0
-    Eccentricity: 0
-    Period: 0
-    TrueAnomaly: 0
-    MeanAnomaly: 0
-    EccentricAnomaly: 0
-    MeanMotion: 0
-    Periapsis:
-      x: 0
-      y: 0
-      z: 0
-    PeriapsisDistance: 0
-    Apoapsis:
-      x: 0
-      y: 0
-      z: 0
-    ApoapsisDistance: 0
-    CenterPoint:
-      x: 0
-      y: 0
-      z: 0
-    OrbitCompressionRatio: 0
-    OrbitNormal:
-      x: 0
-      y: 0
-      z: 0
-    SemiMinorAxisBasis:
-      x: 0
-      y: 0
-      z: 0
-    SemiMajorAxisBasis:
-      x: 0
-      y: 0
-      z: 0
-    OrbitNormalDotEclipticNormal: 0
-  LockOrbitEditing: 0
---- !u!114 &4447131288340475015
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2953080420391832282}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f6830bec90f469e45947a153a51aa976, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  OrbitPointsCount: 50
-  MaxOrbitWorldUnitsDistance: 1000
-  LineRendererReference: {fileID: 0}
-  ShowOrbitGizmoInEditor: 1
-  ShowOrbitGizmoWhileInPlayMode: 1
-  ShowVelocityGizmoInEditor: 1
-  ShowPeriapsisApoapsisGizmosInEditor: 1
-  ShowAscendingNodeInEditor: 1
-  ShowAxisGizmosInEditor: 0
-  GizmosAlphaMain: 1
-  GizmosAlphaSecondary: 0.3
+  temperature: 0
 --- !u!1 &6863588668323883224
 GameObject:
   m_ObjectHideFlags: 0
