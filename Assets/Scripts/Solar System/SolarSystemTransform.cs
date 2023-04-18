@@ -8,7 +8,6 @@ public class SolarSystemTransform : MonoBehaviour
     private Planet oldActivePlanet;
     private GameObject sun;
     private GameObject planetsParent;
-    [SerializeField] private PillPlayerController player;
     private bool rotateSolarSystem;
     private bool setUpSolarSystemRotation;
     private Vector3[] relativePlanetSunDistances;
@@ -16,7 +15,7 @@ public class SolarSystemTransform : MonoBehaviour
     private float rotationSpeed;
     private float orbitSpeed;
     private bool releasePlayer;
-    private Transform player;
+    private PillPlayerController player;
     private Transform spaceShip;
 
 
@@ -27,9 +26,10 @@ public class SolarSystemTransform : MonoBehaviour
             sun = spawnPlanets.sun;
         }
 
-        planetsParent = this.gameObject;
-        planets = planetsParent.GetComponentsInChildren<Planet>();
-        player = Universe.player.transform;
+        planetsParent = gameObject;
+
+        player = Universe.player;
+        spaceShip = Universe.spaceShip;
     }
 
     private void InitializeValues()
@@ -51,6 +51,7 @@ public class SolarSystemTransform : MonoBehaviour
 
     private void FixedUpdate()
     {
+        Debug.Log(activePlanet);
         if (sun == null && spawnPlanets.bodies != null)
         {
             sun = spawnPlanets.sun;
@@ -76,7 +77,7 @@ public class SolarSystemTransform : MonoBehaviour
             }
             else if (relativePlanetSunDistances != null)
             {
-                foreach (var planetBody in spawnPlanets.bodies)
+                foreach (Planet planetBody in spawnPlanets.bodies)
                 {
                     planetBody.Run();
                 }
@@ -102,7 +103,17 @@ public class SolarSystemTransform : MonoBehaviour
             if (distance <= (planet.radius * 1.26) && planet != activePlanet)
             {
                 activePlanet = planet;
-                player.transform.parent = activePlanet.transform;
+                
+                if (!Universe.player.boarded)
+                {
+                    player.transform.parent = activePlanet.transform;
+                }
+                else
+                {
+                    //player.transform.parent = activePlanet.transform;
+                    Universe.spaceShip.parent = activePlanet.transform;
+                }
+                
                 break;
             }
 
@@ -141,7 +152,18 @@ public class SolarSystemTransform : MonoBehaviour
         // Check if sun has moved to Vector3.zero
         if (sun.transform.position.magnitude <= 5f)
         {
-            player.transform.SetParent(null, true);
+            //player.transform.SetParent(null, true);
+            
+            if (!Universe.player.boarded)
+            {
+                player.transform.SetParent(null, true);
+            }
+            else
+            {
+                //player.transform.SetParent(null, true);
+                Universe.spaceShip.SetParent(null, true);
+            }
+            
             player.attractor = null;
             setUpSolarSystemRotation = false;
             releasePlayer = false;
@@ -164,7 +186,7 @@ public class SolarSystemTransform : MonoBehaviour
         newSunPos = ClosestPointOnPlane(Vector3.zero, sun.transform.TransformDirection(Vector3.up), newSunPos);
         sun.transform.position = newSunPos;
 
-        foreach (var planetBody in spawnPlanets.bodies)
+        foreach (Planet planetBody in spawnPlanets.bodies)
         {
             planetBody.Run();
         }
@@ -218,12 +240,12 @@ public class SolarSystemTransform : MonoBehaviour
         setUpSolarSystemRotation = true;
     }
 
-    private Vector3 ClosestPointOnPlane(Vector3 planeOffset, Vector3 planeNormal, Vector3 point)
+    private static Vector3 ClosestPointOnPlane(Vector3 planeOffset, Vector3 planeNormal, Vector3 point)
     {
         return point + DistanceFromPlane(planeOffset, planeNormal, point) * planeNormal;
     }
 
-    private float DistanceFromPlane(Vector3 planeOffset, Vector3 planeNormal, Vector3 point)
+    private static float DistanceFromPlane(Vector3 planeOffset, Vector3 planeNormal, Vector3 point)
     {
         return Vector3.Dot(planeOffset - point, planeNormal);
     }

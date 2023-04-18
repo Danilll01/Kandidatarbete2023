@@ -160,7 +160,7 @@ public class Planet : MonoBehaviour
     /// </summary>
     public void Run()
     {
-        if (player.parent != transform)
+        if (Universe.player.attractor.transform != transform)
         {
             RotateAroundAxis();
             if (solarSystemRotationActive)

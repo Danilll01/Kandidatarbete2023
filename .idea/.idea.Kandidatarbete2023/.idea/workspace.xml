@@ -5,14 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Better spawn planet">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/BoughtAssets" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/BoughtAssets" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/BoughtAssets/GPUInstancer/Resources/Settings/GPUIShaderVariantCollection.shadervariants" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/BoughtAssets/GPUInstancer/Resources/Settings/GPUIShaderVariantCollection.shadervariants" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/BoughtAssets/GPUInstancer/Resources/Settings/GPUInstancerSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/BoughtAssets/GPUInstancer/Resources/Settings/GPUInstancerSettings.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Main.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Main.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/MarchingCubes/Planet.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/MarchingCubes/Planet.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/PlanetTerrain/MinMaxTerrainLevel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/PlanetTerrain/MinMaxTerrainLevel.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Solar System/SolarSystemTransform.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Solar System/SolarSystemTransform.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -42,6 +38,7 @@
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Atmosphere/AtmosphereHandler.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipController.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://D:/Unity/Projects/Kandidatarbete2023/Assets/Scripts/Solar System/SolarSystemTransform.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Shaders/Atmosphere/AtmosphericScattering.shader" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="MarkdownSettingsMigration">
