@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028352, g: 0.22571376, b: 0.30692244, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -316,14 +316,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e5afd10aafb50748a86c734411262e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  resolution: 8
+  resolution: 2
   computeShader: {fileID: 7200000, guid: a3ea61cf1daaef9468701842c0c49e63, type: 3}
   waterShader: {fileID: -6465566751694194690, guid: 1ce4e973287db1a4ea2f21145f0c4770,
     type: 3}
-  normal1: {fileID: 2800000, guid: c21511cdc86c86847bdae740c8b071da, type: 3}
-  normal2: {fileID: 2800000, guid: 9f04018992f98ef4997b6883c48cc0f8, type: 3}
-  sideResolution: 4
-  testBoi: {fileID: 9103161053431881372, guid: 3d0d5ab07100a804ab34c91787727f8d, type: 3}
+  sideResolution: 3
+  material: {fileID: 0}
 --- !u!4 &1326980886
 Transform:
   m_ObjectHideFlags: 0

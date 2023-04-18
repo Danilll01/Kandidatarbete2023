@@ -5,27 +5,22 @@ using UnityEngine;
 
 public class WaterHandler : MonoBehaviour
 {
-
     [Header("Settings")]
     [SerializeField, Range(1, 12)] private int resolution = 1;
     [SerializeField] private ComputeShader computeShader;
     [SerializeField] private Shader waterShader;
+    [SerializeField] private int sideResolution = 3;
 
-    private Material material;
+    [SerializeField] private Material material;
     readonly private Vector3[] directions = { Vector3.forward, Vector3.back, Vector3.left, Vector3.right, Vector3.up, Vector3.down };
-    private MeshFilter[] meshFilters;
     private Water[] waterfaces;
     private Planet planet = null;
     private float waterRadius;
-    public int sideResolution = 3;
 
-    /// <summary>
-    /// Checks if the plater is under water
-    /// </summary>
     void Update()
     {
-        if (planet == null) return;
-        UpdateWater();
+        //if (planet == null) return;
+        //UpdateWater();
     }
 
     /// <summary>
@@ -42,17 +37,14 @@ public class WaterHandler : MonoBehaviour
         GenerateMaterial(color);
         GenerateWater();
         GenerateMesh();
-        GenerateColour();
     }
 
     public void InitializeTest(float waterDiameter, Color color)
     {
         waterRadius = Mathf.Abs(waterDiameter / 2) - 1;
-
         GenerateMaterial(color);
         GenerateWater();
         GenerateMesh();
-        GenerateColour();
     }
 
     private void GenerateMaterial(Color color)
@@ -67,22 +59,17 @@ public class WaterHandler : MonoBehaviour
     /// </summary>
     private void GenerateWater()
     {
-        if (meshFilters == null || meshFilters.Length == 0)
-            meshFilters = new MeshFilter[6 * sideResolution * sideResolution];
-
         waterfaces = new Water[6 * sideResolution * sideResolution];
 
         for (int i = 0; i < 6 * sideResolution * sideResolution; i++)
         {
-            
             GameObject meshObj = new GameObject("waterMesh");
             meshObj.transform.parent = transform;
             meshObj.transform.localPosition = Vector3.zero;
-            meshObj.AddComponent<MeshRenderer>().sharedMaterial = new Material(Shader.Find("Standard"));
-            meshFilters[i] = meshObj.AddComponent<MeshFilter>();
-            meshFilters[i].sharedMesh = new Mesh();
-            
-            waterfaces[i] = new Water(computeShader, meshFilters[i], 32, waterRadius, directions[i/ (sideResolution * sideResolution)], i % (sideResolution * sideResolution), sideResolution, meshObj);
+            meshObj.AddComponent<MeshRenderer>().sharedMaterial = material;
+            MeshFilter meshFilter = meshObj.AddComponent<MeshFilter>();
+
+            waterfaces[i] = new Water(computeShader, meshFilter, 32 * resolution, waterRadius, directions[i / (sideResolution * sideResolution)], i % (sideResolution * sideResolution), sideResolution);
         }
     }
 
@@ -96,16 +83,6 @@ public class WaterHandler : MonoBehaviour
             waterface.ConstructMesh();
         }
     }
-    /// <summary>
-    /// Applies the material to the meshes
-    /// </summary>
-    private void GenerateColour()
-    {
-        foreach (MeshFilter meshFilter in meshFilters)
-        {
-            meshFilter.GetComponent<MeshRenderer>().sharedMaterial = material;
-        }
-    }
 
     private void UpdateWater()
     {
@@ -114,24 +91,22 @@ public class WaterHandler : MonoBehaviour
             Vector3 playerPos = Universe.player.transform.position;
             foreach (Water waterface in waterfaces)
             {
-                if(Vector3.Magnitude(playerPos - waterface.waterPos) > 1000)
+                if (Vector3.Magnitude(playerPos - waterface.waterPos) > 1000)
                 {
-                    if(waterface.resolution != 1 * 32)
+                    if (!waterface.highRes)
                     {
-                        waterface.resolution = 1 * 32;
-                        waterface.ConstructMesh();
+                        waterface.ApplyMesh(false);
                     }
                 }
                 else
                 {
-                    if (waterface.resolution != resolution * 32)
+                    if (waterface.highRes)
                     {
-                        waterface.resolution = resolution * 32;
-                        waterface.ConstructMesh();
+                        waterface.ApplyMesh(true);
                     }
                 }
             }
         }
-    }
 
+    }
 }

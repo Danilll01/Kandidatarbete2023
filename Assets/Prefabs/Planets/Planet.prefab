@@ -710,12 +710,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e5afd10aafb50748a86c734411262e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  resolution: 8
+  resolution: 4
   computeShader: {fileID: 7200000, guid: a3ea61cf1daaef9468701842c0c49e63, type: 3}
   waterShader: {fileID: -6465566751694194690, guid: 1ce4e973287db1a4ea2f21145f0c4770,
     type: 3}
-  sideResolution: 5
-  testBoi: {fileID: 0}
+  sideResolution: 3
+  material: {fileID: 0}
 --- !u!1 &3939805141923606249
 GameObject:
   m_ObjectHideFlags: 0
