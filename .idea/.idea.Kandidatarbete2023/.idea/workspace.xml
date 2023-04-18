@@ -4,13 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Finally found what the issue was with the main merge">
+    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Small script changes">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/MarchingCubes/Chunk.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/MarchingCubes/Chunk.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/MarchingCubes/Planet.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/MarchingCubes/Planet.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/MovementControllers/PillPlayerController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/MovementControllers/PillPlayerController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/PlanetTerrain/ChunksHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/PlanetTerrain/ChunksHandler.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Solar System/SolarSystemTransform.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Solar System/SolarSystemTransform.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/BoughtAssets/GPUInstancer/Resources/Settings/GPUIShaderVariantCollection.shadervariants" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/BoughtAssets/GPUInstancer/Resources/Settings/GPUIShaderVariantCollection.shadervariants" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/BoughtAssets/GPUInstancer/Resources/Settings/GPUInstancerSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/BoughtAssets/GPUInstancer/Resources/Settings/GPUInstancerSettings.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Main.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Main.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Shaders/Water/CameraWater.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Shaders/Water/CameraWater.mat" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -38,6 +38,9 @@
     </option>
   </component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/ILViewer/4746c126b0b54f3b834845974d1a9190159000/8d/0b68c7ce/020001F7.il" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/ILViewer/4746c126b0b54f3b834845974d1a9190159000/8d/0b68c7ce/020001F7High.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/4746c126b0b54f3b834845974d1a9190159000/7c/3d95f205/Quaternion.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Atmosphere/AtmosphereHandler.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="mock://D:/Unity/Projects/Kandidatarbete2023/Assets/Scripts/MarchingCubes/Planet.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipController.cs" root0="FORCE_HIGHLIGHTING" />
@@ -371,7 +374,13 @@
       <option name="presentableId" value="LOCAL−00037" />
       <updated>1681848544197</updated>
     </task>
-    <option name="localTasksCounter" value="38" />
+    <task id="LOCAL−00038" summary="Small script changes">
+      <created>1681850058375</created>
+      <option name="number" value="LOCAL−00038" />
+      <option name="presentableId" value="LOCAL−00038" />
+      <updated>1681850058375</updated>
+    </task>
+    <option name="localTasksCounter" value="39" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -393,7 +402,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="Have moved ambient light calculation to corresponding planet atmosphere" />
     <MESSAGE value="Fixed atmosphere update calling to mirror the players actual current planet" />
     <MESSAGE value="Better shadow resolution near player" />
     <MESSAGE value="Ambient light is now customized for each atmosphere" />
@@ -418,6 +426,7 @@
     <MESSAGE value="Fixed green sun bug" />
     <MESSAGE value="Better spawn planet" />
     <MESSAGE value="Finally found what the issue was with the main merge" />
-    <option name="LAST_COMMIT_MESSAGE" value="Finally found what the issue was with the main merge" />
+    <MESSAGE value="Small script changes" />
+    <option name="LAST_COMMIT_MESSAGE" value="Small script changes" />
   </component>
 </project>

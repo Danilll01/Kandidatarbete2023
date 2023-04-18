@@ -34,6 +34,7 @@ public class SpaceShipController : MonoBehaviour
     private float mouseYSmooth = 0;
     private Vector3 defaultShipRotation;
     private Vector3 oldMovementVector = new();
+    private GameObject standardShip;
 
     /// <summary>
     /// Initializes ship controller script
@@ -51,6 +52,7 @@ public class SpaceShipController : MonoBehaviour
 
         shipTransitionScript.Initialize();
         Universe.spaceShip = transform;
+        standardShip = new GameObject();
     }
 
     // Handles movement of ship
@@ -100,7 +102,7 @@ public class SpaceShipController : MonoBehaviour
         mouseXSmooth = Mathf.Lerp(mouseXSmooth, Input.GetAxis("Horizontal Look") * rotationSpeed, Time.fixedDeltaTime * cameraSmooth);
         mouseYSmooth = Mathf.Lerp(mouseYSmooth, Input.GetAxis("Vertical Look") * rotationSpeed, Time.fixedDeltaTime * cameraSmooth);
         
-        Quaternion localRotationY = Quaternion.Euler(mouseYSmooth, 0, rotationZTmp * rotationSpeed);
+        Quaternion localRotationY = Quaternion.Euler(mouseYSmooth, mouseXSmooth, rotationZTmp * rotationSpeed);
         Quaternion localRotationX = Quaternion.Euler(0, mouseXSmooth, 0);
 
         //Debug.Log(Gravity.UprightRotation(transform, transform.parent.transform));
@@ -109,9 +111,15 @@ public class SpaceShipController : MonoBehaviour
         /*Quaternion rotationBefore = transform.rotation;
         Quaternion rotationAfter = Gravity.UprightRotation(transform, transform.parent.transform);
         Quaternion rotationDifference = Quaternion.Inverse(rotationBefore) * rotationAfter;*/
-        
 
-        transform.rotation = Gravity.UprightRotation(transform, transform.parent.transform) * (localRotationX * lookRotation);
+        standardShip.transform.position = transform.position;
+        
+        standardShip.transform.rotation = Gravity.UprightRotation(standardShip.transform, transform.parent.transform);
+
+        //transform.rotation = Upright(transform, transform.parent.transform) * (transform.rotation * localRotationX * lookRotation);// * (localRotationX * lookRotation);
+
+        transform.rotation = standardShip.transform.rotation * lookRotation;
+        
         //lookRotation = transform.rotation * Quaternion.Inverse(Gravity.UprightRotation(transform, transform.parent.transform));
     
         
@@ -120,11 +128,12 @@ public class SpaceShipController : MonoBehaviour
         {
             Vector3 directionFromCenter = entity.position - centerOfGravity.transform.position;
             directionFromCenter = directionFromCenter.normalized;
+            Debug.Log(Quaternion.FromToRotation(entity.up, directionFromCenter) * entity.rotation);
             return Quaternion.FromToRotation(entity.up, directionFromCenter);
         }
         
       
-
+        // BORT
         if (Input.GetKeyDown(KeyCode.H))
         {
             transform.rotation = Gravity.UprightRotation(transform, transform.parent.transform);
