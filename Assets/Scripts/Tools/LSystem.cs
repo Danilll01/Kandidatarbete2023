@@ -85,7 +85,7 @@ public class LSystem
     private MovementSettings movementSettings;
 
     private Position currentPos;
-    private Position branchPos;
+    private Stack<Position> branchPos;
     private int index;
 
     /// <summary>
@@ -105,7 +105,7 @@ public class LSystem
         this.movementSettings = movementSettings;
 
         currentPos = new Position(Vector3.zero, Vector3.forward, Vector3.up);
-        branchPos = currentPos;
+        branchPos = new Stack<Position>();
         index = 0;
     }
 
@@ -145,10 +145,10 @@ public class LSystem
                 this.currentPos.normal = Quaternion.AngleAxis(-movementSettings.pitchAngle, rotationAxis) * this.currentPos.normal;
                 break;
             case Movement.StartBranch:
-                branchPos = this.currentPos;
+                branchPos.Push(this.currentPos);
                 break;
             case Movement.EndBranch:
-                this.currentPos = branchPos;
+                this.currentPos = branchPos.Pop();
                 break;
         }
 
