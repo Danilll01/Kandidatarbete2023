@@ -12,6 +12,7 @@ public class LSystem
     public enum Movement
     {
         Forward,
+        Stay,
         YawClockwise,
         YawCounterClockwise,
         PitchUp,
@@ -104,7 +105,7 @@ public class LSystem
 
         this.movementSettings = movementSettings;
 
-        currentPos = new Position(Vector3.zero, Vector3.forward, Vector3.up);
+        currentPos = new Position(Vector3.zero, Vector3.up, Vector3.forward);
         branchPos = new Stack<Position>();
         index = 0;
     }
@@ -130,7 +131,8 @@ public class LSystem
             case Movement.Forward:
                 this.currentPos.position += this.currentPos.direction * movementSettings.stepSize;
                 break;
-            case Movement.YawClockwise: 
+            case Movement.Stay: break;
+            case Movement.YawClockwise:
                 this.currentPos.direction = Quaternion.AngleAxis(movementSettings.yawAngle, this.currentPos.normal) * this.currentPos.direction;
                 break;
             case Movement.YawCounterClockwise:
