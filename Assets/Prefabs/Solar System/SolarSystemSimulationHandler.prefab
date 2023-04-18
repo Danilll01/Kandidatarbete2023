@@ -47,13 +47,18 @@ MonoBehaviour:
   bodies: []
   planetsPrefab: {fileID: 938852981703260768, guid: a63d80705e6906648b6df8c31608d660,
     type: 3}
+  sunPrefab: {fileID: 2953080420391832282, guid: 6a6d6f237df81984a8500d5732188d1b,
+    type: 3}
   planetsParent: {fileID: 0}
   numberOfPlanets: 3
   radiusMinValue: 500
   radiusMaxValue: 2000
-  orbitOffsetMinValue: -1
-  orbitOffsetMaxValue: 1
   chanceOfMoonsLimit: 5
   minNumberOfMoons: 1
-  maxNumberOfMoons: 5
+  maxNumberOfMoons: 3
   sunMaterial: {fileID: 2100000, guid: c7d5f095bd03ec34d954c874818413bc, type: 2}
+  player: {fileID: 0}
+  sunLightning: {fileID: 0}
+  sun: {fileID: 0}
+  solarySystemGenerated: 0
+  randomizeSpawnPlanet: 0
