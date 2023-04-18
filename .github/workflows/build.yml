@@ -54,9 +54,9 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         with:
-          fetch-depth: 1
+          fetch-depth: 0
           token: secrets.PAT_TOKEN
-          submodules: true
+          submodules: 'recursive'
       - uses: actions/cache@v3
         with:
           path: Library
