@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using Unity.Burst.CompilerServices;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -86,6 +87,7 @@ public class Creature : MonoBehaviour
     private LODGroup lodGroup;
     private new Renderer renderer;
     private Animator animator;
+    private AnimatorParameterAdapter animatorParameters;
     private AudioSource audioSource;
 
     private Creature breedingPartner;
@@ -112,6 +114,7 @@ public class Creature : MonoBehaviour
         lodGroup = meshObj.GetComponent<LODGroup>();
         renderer = lodGroup.transform.GetComponent<Renderer>();
         animator = GetComponent<Animator>();
+        animatorParameters = new AnimatorParameterAdapter(animator);
         audioSource = GetComponent<AudioSource>();
         audioSource.volume = volume;
         audioSource.spatialBlend = 1.0f;
@@ -126,8 +129,9 @@ public class Creature : MonoBehaviour
             thirst = Random.Range(30, maxThirst);
         }
 
-        animator.SetFloat("Speed", speed);
+        animatorParameters.SetFloat("Speed", speed);
         animator.keepAnimatorStateOnDisable = true;
+        animator.SetBool("isWalking", true);
 
         if (isChild) canReproduce = false;
 
@@ -562,7 +566,7 @@ public class Creature : MonoBehaviour
     private void InteractWithResourceAction(GameObject resource, bool disable, ResourceType type)
     {
         currentState = CreatureState.PerformingAction;
-        animator.SetBool("Eat", true);
+        animatorParameters.SetBool("isAttacking", true);
         
         StartCoroutine(InteractWithResource(resource, disable, type));
     }
@@ -571,7 +575,7 @@ public class Creature : MonoBehaviour
     {
         // Wait until walk animation is done
         yield return new WaitForSeconds(0.1f);
-        animator.SetBool("Walk", false);
+        animatorParameters.SetBool("isWalking", false);
         
         // Animation clip length
         float clipLength = animator.GetCurrentAnimatorStateInfo(0).length;
@@ -597,8 +601,8 @@ public class Creature : MonoBehaviour
         }
 
         // Set the state to idle
-        animator.SetBool("Eat", false);
-        animator.SetBool("Walk", true);
+        animatorParameters.SetBool("isAttacking", false);
+        animatorParameters.SetBool("isWalking", true);
 
         yield return new WaitForSeconds(1);
 
@@ -726,5 +730,41 @@ public class Creature : MonoBehaviour
     public CreatureType GetCreatureDiet
     {
         get { return creatureDiet; }
+    }
+
+    private class AnimatorParameterAdapter
+    {
+        readonly Animator animator;
+        readonly AnimatorControllerParameter[] parameters;
+
+        public AnimatorParameterAdapter(Animator animator)
+        {
+            this.animator = animator;
+            parameters = animator.parameters;
+        }
+
+        public void SetBool(string name, bool value)
+        {
+            for (int i = 0; i < parameters.Length; i++)
+            {
+                if (parameters[i].type == AnimatorControllerParameterType.Bool && 
+                    parameters[i].name == name)
+                {
+                    animator.SetBool(name, value);
+                }
+            }
+        }
+
+        public void SetFloat(string name, float value)
+        {
+            for (int i = 0; i < parameters.Length; i++)
+            {
+                if (parameters[i].type == AnimatorControllerParameterType.Float &&
+                    parameters[i].name == name)
+                {
+                    animator.SetFloat(name, value);
+                }
+            }
+        }
     }
 }
