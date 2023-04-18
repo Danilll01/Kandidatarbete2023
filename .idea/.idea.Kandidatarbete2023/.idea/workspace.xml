@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Something with the bought assets">
+    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Rider test again">
       <change beforePath="$PROJECT_DIR$/Assets/BoughtAssets" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/BoughtAssets" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -389,7 +389,19 @@
       <option name="presentableId" value="LOCAL−00040" />
       <updated>1681860168983</updated>
     </task>
-    <option name="localTasksCounter" value="41" />
+    <task id="LOCAL−00041" summary="Something with the bought assets">
+      <created>1681860269821</created>
+      <option name="number" value="LOCAL−00041" />
+      <option name="presentableId" value="LOCAL−00041" />
+      <updated>1681860269821</updated>
+    </task>
+    <task id="LOCAL−00042" summary="Rider test again">
+      <created>1681860785135</created>
+      <option name="number" value="LOCAL−00042" />
+      <option name="presentableId" value="LOCAL−00042" />
+      <updated>1681860785135</updated>
+    </task>
+    <option name="localTasksCounter" value="43" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -411,7 +423,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="Planet strength is now randomized and can be of if there is no water" />
     <MESSAGE value="Atmosphere height/thickness is now randomized" />
     <MESSAGE value="Ambient light now blends with no atmosphere gradient when the atmosphere is weaker" />
     <MESSAGE value="Changed spacing" />
@@ -436,6 +447,7 @@
     <MESSAGE value="Finally fixed rotations for the spaceship while traveling around the planet" />
     <MESSAGE value="Test Rider dual repository commits and pushes. Cleaned up code." />
     <MESSAGE value="Something with the bought assets" />
-    <option name="LAST_COMMIT_MESSAGE" value="Something with the bought assets" />
+    <MESSAGE value="Rider test again" />
+    <option name="LAST_COMMIT_MESSAGE" value="Rider test again" />
   </component>
 </project>
