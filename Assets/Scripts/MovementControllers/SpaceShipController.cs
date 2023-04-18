@@ -101,43 +101,18 @@ public class SpaceShipController : MonoBehaviour
 
         mouseXSmooth = Mathf.Lerp(mouseXSmooth, Input.GetAxis("Horizontal Look") * rotationSpeed, Time.fixedDeltaTime * cameraSmooth);
         mouseYSmooth = Mathf.Lerp(mouseYSmooth, Input.GetAxis("Vertical Look") * rotationSpeed, Time.fixedDeltaTime * cameraSmooth);
+        Quaternion localRotation = Quaternion.Euler(mouseYSmooth, mouseXSmooth, rotationZTmp * rotationSpeed);
+
+        // The mouse local look rotation
+        lookRotation = lookRotation * localRotation;
         
-        Quaternion localRotationY = Quaternion.Euler(mouseYSmooth, mouseXSmooth, rotationZTmp * rotationSpeed);
-        Quaternion localRotationX = Quaternion.Euler(0, mouseXSmooth, 0);
-
-        //Debug.Log(Gravity.UprightRotation(transform, transform.parent.transform));
-        lookRotation = lookRotation * localRotationY;
-
-        /*Quaternion rotationBefore = transform.rotation;
-        Quaternion rotationAfter = Gravity.UprightRotation(transform, transform.parent.transform);
-        Quaternion rotationDifference = Quaternion.Inverse(rotationBefore) * rotationAfter;*/
-
+        // The standard ship rotation origin
         standardShip.transform.position = transform.position;
-        
         standardShip.transform.rotation = Gravity.UprightRotation(standardShip.transform, transform.parent.transform);
-
-        //transform.rotation = Upright(transform, transform.parent.transform) * (transform.rotation * localRotationX * lookRotation);// * (localRotationX * lookRotation);
-
+        
+        // Adding the mouse look rotation to the base planet rotation
         transform.rotation = standardShip.transform.rotation * lookRotation;
         
-        //lookRotation = transform.rotation * Quaternion.Inverse(Gravity.UprightRotation(transform, transform.parent.transform));
-    
-        
-        
-        Quaternion Upright(Transform entity, Transform centerOfGravity)
-        {
-            Vector3 directionFromCenter = entity.position - centerOfGravity.transform.position;
-            directionFromCenter = directionFromCenter.normalized;
-            Debug.Log(Quaternion.FromToRotation(entity.up, directionFromCenter) * entity.rotation);
-            return Quaternion.FromToRotation(entity.up, directionFromCenter);
-        }
-        
-      
-        // BORT
-        if (Input.GetKeyDown(KeyCode.H))
-        {
-            transform.rotation = Gravity.UprightRotation(transform, transform.parent.transform);
-        }
         
         rotationZ -= mouseXSmooth;
         rotationZ = Mathf.Clamp(rotationZ, -45, 45);
