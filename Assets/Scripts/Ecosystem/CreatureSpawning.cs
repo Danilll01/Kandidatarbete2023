@@ -274,11 +274,8 @@ public class CreatureSpawning : MonoBehaviour
 
         for (int i = 0; i < acceptablePacks.Count; i++)
         {
-            if (randomNum > accumulatedSum)
-            {
-                accumulatedSum += acceptablePacks[i].ratio;
-            }
-            else
+            accumulatedSum += acceptablePacks[i].ratio;
+            if (randomNum <= accumulatedSum)
             {
                 packToSpawn = acceptablePacks[i];
                 return true;
