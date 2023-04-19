@@ -1614,7 +1614,7 @@ LODGroup:
   m_GameObject: {fileID: 4623556101495578333}
   serializedVersion: 2
   m_LocalReferencePoint: {x: 0.0028724968, y: 0.37567392, z: 0.1830442}
-  m_Size: 2
+  m_Size: 1.3065231
   m_FadeMode: 0
   m_AnimateCrossFading: 0
   m_LastLODIsBillboard: 0
@@ -1694,15 +1694,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc2db926f95bed34580350e7d08b7a3a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 1
-  detectionRadius: 35
-  consumeRadius: 0.05
+  speed: 1.3
+  detectionRadius: 50
+  consumeRadius: 0.15
   meshObj: {fileID: 4623556101495578333}
   creatureType: 1
   hunger: 100
   thirst: 100
   randomizeStats: 1
-  maxHunger: 20
+  maxHunger: 100
   maxThirst: 100
   hungerThreshold: 80
   thirstThreshold: 80
@@ -1722,7 +1722,7 @@ MonoBehaviour:
   reproductionTimer: 0
   reproductionCost: 15
   reproductionChance: 0.9
-  maxChildren: 2
+  maxChildren: 15
   childrenCount: 0
   isChild: 0
   growUpTime: 10
