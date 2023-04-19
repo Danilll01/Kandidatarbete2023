@@ -14,6 +14,10 @@ public class Sun : MonoBehaviour
     public float temperature;
     private static readonly int Temperature = Shader.PropertyToID("_temperature");
 
+    [Header("Orbits")]
+    [SerializeField] public string attractorName = "";
+    [SerializeField] public float distanceToAttractor = 0;
+
     /// <summary>
     /// Initialize mesh for marching cubes
     /// </summary>
