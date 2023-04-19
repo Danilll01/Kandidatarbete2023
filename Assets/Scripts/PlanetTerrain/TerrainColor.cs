@@ -93,13 +93,8 @@ public class TerrainColor : MonoBehaviour {
 
     // Updates the angle color value
     private void UpdateAngleColorCutOf() {
-
-        float cutOf = angleCutOf / 180;
-        float newAngleBlend = Mathf.Lerp(0, (cutOf), angleBlending);
-        float minVal = Mathf.Clamp((cutOf - newAngleBlend), 0, 1);
-        float maxVal = Mathf.Clamp((cutOf), 0, 1);
-
-        material.SetVector("_AngleCutAndBlend", new Vector4(0.4f, 0f));//new Vector4(minVal, maxVal));
+        
+        material.SetVector("_AngleCutAndBlend", new Vector4(0.4f, 0f));
     }
 
     private void UpdateBiomeSetting()
