@@ -1698,7 +1698,7 @@ MonoBehaviour:
   detectionRadius: 35
   consumeRadius: 0.05
   meshObj: {fileID: 4623556101495578333}
-  creatureType: 1
+  creatureType: 0
   hunger: 100
   thirst: 100
   randomizeStats: 1
