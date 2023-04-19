@@ -160,7 +160,10 @@ public class Planet : MonoBehaviour
     /// </summary>
     public void Run()
     {
-        if (Universe.player.attractor.transform != transform)
+        
+        Transform currentPlayerMover = Universe.player.boarded ? Universe.spaceShip.parent : player.parent;
+        
+        if (currentPlayerMover != transform)
         {
             RotateAroundAxis();
             if (solarSystemRotationActive)

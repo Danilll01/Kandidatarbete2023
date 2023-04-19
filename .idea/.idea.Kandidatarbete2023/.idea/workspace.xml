@@ -4,7 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Can you push this without something braking" />
+    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Continuation of the test script removal">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/MarchingCubes/Planet.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/MarchingCubes/Planet.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipController.cs" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -405,7 +409,19 @@
       <option name="presentableId" value="LOCAL−00043" />
       <updated>1681861195436</updated>
     </task>
-    <option name="localTasksCounter" value="44" />
+    <task id="LOCAL−00044" summary="Deleted the test script">
+      <created>1681861356251</created>
+      <option name="number" value="LOCAL−00044" />
+      <option name="presentableId" value="LOCAL−00044" />
+      <updated>1681861356251</updated>
+    </task>
+    <task id="LOCAL−00045" summary="Continuation of the test script removal">
+      <created>1681861381900</created>
+      <option name="number" value="LOCAL−00045" />
+      <option name="presentableId" value="LOCAL−00045" />
+      <updated>1681861381900</updated>
+    </task>
+    <option name="localTasksCounter" value="46" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -427,8 +443,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="Ambient light now blends with no atmosphere gradient when the atmosphere is weaker" />
-    <MESSAGE value="Changed spacing" />
     <MESSAGE value="Fixed blinking lights" />
     <MESSAGE value="Increased FOV" />
     <MESSAGE value="Changed player position in ship to better suit the new FOV" />
@@ -452,6 +466,8 @@
     <MESSAGE value="Something with the bought assets" />
     <MESSAGE value="Rider test again" />
     <MESSAGE value="Can you push this without something braking" />
-    <option name="LAST_COMMIT_MESSAGE" value="Can you push this without something braking" />
+    <MESSAGE value="Deleted the test script" />
+    <MESSAGE value="Continuation of the test script removal" />
+    <option name="LAST_COMMIT_MESSAGE" value="Continuation of the test script removal" />
   </component>
 </project>
