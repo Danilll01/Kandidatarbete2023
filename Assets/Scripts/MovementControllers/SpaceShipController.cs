@@ -111,6 +111,13 @@ public class SpaceShipController : MonoBehaviour
         {
             standardShip.transform.position = transform.position;
             standardShip.transform.rotation = Gravity.UprightRotation(standardShip.transform, transform.parent.transform);
+            
+            // Adding the mouse look rotation to the base planet rotation
+            transform.rotation = standardShip.transform.rotation * lookRotation;
+        }
+        else
+        {
+            transform.rotation = lookRotation;
         }
         
         
