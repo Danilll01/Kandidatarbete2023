@@ -268,7 +268,7 @@ public class CreatureSpawning : MonoBehaviour
             total += pack.ratio;
         }
 
-        float randomNum = random.Next(0, total);
+        float randomNum = random.Next(0, total + 1);
 
         float accumulatedSum = 0;
 
