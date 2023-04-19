@@ -274,7 +274,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   packs:
   - prefab: {fileID: 1311290861401530, guid: 5904fbfe921140647a4ebddf4adda389, type: 3}
-    ratio: 1
+    ratio: 10
     minPackSize: 5
     maxPackSize: 12
     packRadius: 40
@@ -290,7 +290,7 @@ MonoBehaviour:
       treesMin: 0.3
       treesMax: 1
   - prefab: {fileID: 1655403738057260, guid: dcc3bfa5cf419b64e86c7effdae2b6f2, type: 3}
-    ratio: 1
+    ratio: 2
     minPackSize: 2
     maxPackSize: 5
     packRadius: 30
@@ -307,7 +307,7 @@ MonoBehaviour:
       treesMax: 1
   - prefab: {fileID: 4623556101495578335, guid: 35ac99dff6947ea49803b114e95b9605,
       type: 3}
-    ratio: 1
+    ratio: 5
     minPackSize: 5
     maxPackSize: 10
     packRadius: 50
@@ -318,6 +318,22 @@ MonoBehaviour:
       mountainMax: 1
       temperatureDependent: 1
       temperatureMin: 0.2
+      temperatureMax: 1
+      treesDependent: 0
+      treesMin: 0
+      treesMax: 1
+  - prefab: {fileID: 1294271778169428, guid: e98cab776b592874cad87582bd326a92, type: 3}
+    ratio: 1
+    minPackSize: 3
+    maxPackSize: 10
+    packRadius: 60
+    prefabRadius: 5
+    range:
+      mountainRelevant: 1
+      mountainMin: 0
+      mountainMax: 0.6
+      temperatureDependent: 1
+      temperatureMin: 0.3
       temperatureMax: 1
       treesDependent: 0
       treesMin: 0
