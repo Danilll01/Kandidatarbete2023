@@ -1,17 +1,14 @@
 run-name: Build project
 
 on:
-  push: 
-    branches: 
-      - '0.25-Bygg-med-de-nya-paketen'
   pull_request:
     types: [closed]
   workflow_dispatch: {}
   
 
 env:
-  MAJOR_RELEASE_NR: 9
-  MINOR_OFFSET: 78
+  MAJOR_RELEASE_NR: 10
+  MINOR_OFFSET: 90
 
 jobs:
   release-project:
