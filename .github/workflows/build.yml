@@ -54,10 +54,13 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         with:
-          repository: Danilll01/Kandidatarbete2023
           fetch-depth: 1
-          ssh-key: ${{ secrets.SSH_KEY }}
-          submodules: recursive
+      - uses: actions/checkout@v3
+        with:
+          repository: Danilll01/BoughtAssets
+          path: Assets/BoughtAssets
+          fetch-depth: 1
+          token: ${{ secrets.PAT_TOKEN }}
       - uses: actions/cache@v3
         with:
           path: Library
