@@ -166,6 +166,7 @@ public class SpaceShipTransition : MonoBehaviour
         Transform playerTransform = player.transform;
         
         shipTransform.SetParent(player.attractor.transform);
+        playerTransform.SetParent(player.attractor.transform);
         
         playerTransform.position = shipTransform.position + (shipTransform.rotation * dismountedPos);
         playerTransform.rotation = shipTransform.rotation;

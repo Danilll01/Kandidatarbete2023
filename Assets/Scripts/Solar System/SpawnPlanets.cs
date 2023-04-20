@@ -38,6 +38,7 @@ public class SpawnPlanets : MonoBehaviour
             Universe.InitializeRandomWithSeed();
         }
         random = Universe.random;
+        Universe.player = player;
         GetValues();
         CreatePlanets();
         player.Initialize(bodies[spawnPlanetIndex], random.Next());

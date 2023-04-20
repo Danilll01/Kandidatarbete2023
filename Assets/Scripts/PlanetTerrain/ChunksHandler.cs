@@ -105,23 +105,18 @@ public class ChunksHandler : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        Transform currentPlayerMoverParent = Universe.player.boarded ? Universe.spaceShip.parent : player.transform.parent;
+        if (playerOnPlanet != ReferenceEquals(transform, currentPlayerMoverParent))
+        {
+            updateChunks = true;
+            playerOnPlanet = ReferenceEquals(transform, currentPlayerMoverParent);
+        }
+
         if (foliageInitialized != 0)
         {
             foliageInitialized--;
         }
 
-        if (Universe.player.attractor == null)
-        {
-            return;
-        }
-        
-        if (playerOnPlanet != ReferenceEquals(transform, Universe.player.attractor.transform))
-        {
-            updateChunks = true;
-            playerOnPlanet = ReferenceEquals(transform, Universe.player.attractor.transform);
-        }
-        
         // Check if the chunks needs updating
         if (updateChunks)
         {
@@ -191,7 +186,7 @@ public class ChunksHandler : MonoBehaviour
         for (int i = chunksList.Count - 1; i != -1; i--)
         {
             // Remove chunks without vertices
-            if (chunksList[i].Initialize(planet, terrainLevel, this, rand.Next()) == 0)
+            if (chunksList[i].Initialize(planet, player, terrainLevel, this, rand.Next()) == 0)
             {
                 Destroy(chunksList[i].gameObject);
                 chunksList.RemoveAt(i);
@@ -200,8 +195,9 @@ public class ChunksHandler : MonoBehaviour
     }
     private void UpdateChunksVisibility()
     {
-        Vector3 playerPos = player.localPosition;
 
+        Vector3 playerPos = Universe.player.boarded ? Universe.spaceShip.localPosition : player.localPosition;
+        
         // Only update chunks if player has moved a certain distance
         if (Vector3.Magnitude(playerPos - playerLastPosition) < 3)
             return;

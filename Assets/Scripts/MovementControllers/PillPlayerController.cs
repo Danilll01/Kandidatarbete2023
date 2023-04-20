@@ -54,15 +54,6 @@ public class PillPlayerController : MonoBehaviour
     {
         Universe.player = this;
 
-        if (attractor == null)
-        {
-            attractor = planetToSpawnOn;
-            if (attractor == null)
-            {
-                Debug.LogError("Player spawned without a planet");
-            }
-        }
-
         if (ship == null)
         {
             ship = GameObject.Find("ShipMain").GetComponent<SpaceShipController>();
@@ -77,6 +68,23 @@ public class PillPlayerController : MonoBehaviour
         paused = false;
 
         playerWater.Initialize(attractor);
+    }
+    
+    private void Spawn(Planet planet, int seed)
+    {
+        RandomX rand = new RandomX(seed);
+        Vector3 spawnLocationAbovePlanet = planet.transform.position + (rand.OnUnitSphere() * planet.radius * 1.15f);
+        transform.position = spawnLocationAbovePlanet;
+        transform.LookAt(planet.transform);
+        ship.Initialize();
+
+        if (attractor != null) return;
+        
+        attractor = planet;
+        if (attractor == null)
+        {
+            Debug.LogError("Player spawned without a planet");
+        }
     }
 
     // Update is called once per frame
@@ -269,15 +277,6 @@ public class PillPlayerController : MonoBehaviour
         if (boarded) return;
         Gravity.KeepUpright(transform, attractor.transform);
         Gravity.Attract(transform.position, body, attractor.transform.position, attractor.mass);
-    }
-
-    private void Spawn(Planet planet, int seed)
-    {
-        RandomX rand = new RandomX(seed);
-        Vector3 spawnLocationAbovePlanet = planet.transform.position + (rand.OnUnitSphere() * planet.radius * 1.15f);
-        transform.position = spawnLocationAbovePlanet;
-        transform.LookAt(planet.transform);
-        ship.Initialize();
     }
 
     /// <summary>

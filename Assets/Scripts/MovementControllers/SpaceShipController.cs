@@ -121,12 +121,12 @@ public class SpaceShipController : MonoBehaviour
             // If the ship comes into orbit, match the look rotation with the standard ship rotation
             if (isOutsidePlanet)
             {
-                lookRotation = Quaternion.Inverse(standardShip.transform.rotation) * transform.rotation;
+                //lookRotation = Quaternion.Inverse(standardShip.transform.rotation) * transform.rotation;
                 isOutsidePlanet = false;
             }
         }
         
-        transform.rotation = standardShip.transform.rotation * lookRotation;
+        transform.rotation = lookRotation;
 
         // Visual rotation
         rotationZ -= mouseXSmooth;

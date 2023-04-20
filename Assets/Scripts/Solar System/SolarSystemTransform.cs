@@ -85,7 +85,7 @@ public class SolarSystemTransform : MonoBehaviour
             CheckWhenToReleasePlayer();
         }
 
-        player.attractor = activePlanet;
+        Universe.player.attractor = activePlanet;
     }
 
     private void UpdateClosestPlanet()
@@ -141,7 +141,6 @@ public class SolarSystemTransform : MonoBehaviour
             activePlanet.rotateMoons = true;
             oldActivePlanet = activePlanet;
         }
-        player.attractor = activePlanet;
     }
 
     private void CheckWhenToReleasePlayer()
