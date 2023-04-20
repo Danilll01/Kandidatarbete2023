@@ -4,8 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Continuation of the test script removal">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="You can now go into planet orbit without the camera jumping">
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipController.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -37,6 +36,7 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/4746c126b0b54f3b834845974d1a9190159000/7c/3d95f205/Quaternion.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Atmosphere/AtmosphereHandler.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipController.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://D:/Unity/Projects/Kandidatarbete2023/Assets/Scripts/MovementControllers/SpaceShipController.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Shaders/Atmosphere/AtmosphericScattering.shader" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="MarkdownSettingsMigration">
@@ -155,7 +155,7 @@
       <workItem from="1681663590681" duration="10897000" />
       <workItem from="1681700172082" duration="663000" />
       <workItem from="1681740646976" duration="1537000" />
-      <workItem from="1682004115726" duration="9146000" />
+      <workItem from="1682004115726" duration="10019000" />
     </task>
     <task id="LOCAL−00003" summary="Changed file">
       <created>1679327563589</created>
@@ -415,7 +415,13 @@
       <option name="presentableId" value="LOCAL−00045" />
       <updated>1681861381900</updated>
     </task>
-    <option name="localTasksCounter" value="46" />
+    <task id="LOCAL−00046" summary="You can now go into planet orbit without the camera jumping">
+      <created>1682025137024</created>
+      <option name="number" value="LOCAL−00046" />
+      <option name="presentableId" value="LOCAL−00046" />
+      <updated>1682025137024</updated>
+    </task>
+    <option name="localTasksCounter" value="47" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -437,7 +443,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="Fixed blinking lights" />
     <MESSAGE value="Increased FOV" />
     <MESSAGE value="Changed player position in ship to better suit the new FOV" />
     <MESSAGE value="Made ship glass a little more transparent" />
@@ -462,6 +467,7 @@
     <MESSAGE value="Can you push this without something braking" />
     <MESSAGE value="Deleted the test script" />
     <MESSAGE value="Continuation of the test script removal" />
-    <option name="LAST_COMMIT_MESSAGE" value="Continuation of the test script removal" />
+    <MESSAGE value="You can now go into planet orbit without the camera jumping" />
+    <option name="LAST_COMMIT_MESSAGE" value="You can now go into planet orbit without the camera jumping" />
   </component>
 </project>
