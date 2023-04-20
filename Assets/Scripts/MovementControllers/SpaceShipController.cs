@@ -35,6 +35,7 @@ public class SpaceShipController : MonoBehaviour
     private Vector3 defaultShipRotation;
     private Vector3 oldMovementVector = new();
     private GameObject standardShip;
+    private bool isOutsidePlanet = false;
 
     /// <summary>
     /// Initializes ship controller script
@@ -52,7 +53,7 @@ public class SpaceShipController : MonoBehaviour
 
         shipTransitionScript.Initialize();
         Universe.spaceShip = transform;
-        standardShip = new GameObject();
+        standardShip = new GameObject { hideFlags = HideFlags.HideInHierarchy };
     }
 
     // Handles movement of ship
@@ -105,8 +106,61 @@ public class SpaceShipController : MonoBehaviour
 
         // The mouse local look rotation
         lookRotation = lookRotation * localRotation;
+
         
-        // The standard ship rotation origin
+        if (Universe.player.attractor == null)
+        {
+            isOutsidePlanet = true;
+        }
+        else
+        {
+            standardShip.transform.position = transform.position;
+            standardShip.transform.rotation = Gravity.UprightRotation(standardShip.transform, transform.parent.transform);
+            
+            
+            if (isOutsidePlanet)
+            {
+                //lookRotation = Quaternion.FromToRotation(standardShip.transform.up, transform.up);
+
+                // Quaternion.Inverse(q1) * q_main;
+
+                //lookRotation = Quaternion.LookRotation(transform.forward, transform.up);
+                
+                lookRotation = Quaternion.Inverse(standardShip.transform.rotation) * Quaternion.LookRotation(transform.forward, transform.up);
+                
+                //lookRotation = RotateToVector(transform.forward, transform.up, standardShip.transform.rotation);
+                isOutsidePlanet = false;
+            }
+        }
+        
+        transform.rotation = standardShip.transform.rotation * lookRotation;
+        
+        
+        Quaternion RotateToVector(Vector3 forward, Vector3 up, Quaternion fromRotation)
+        {
+            // Normalize input vectors
+            forward.Normalize();
+            up.Normalize();
+    
+            // Calculate the new forward and right vectors based on the input vectors
+            Vector3 newForward = forward;
+            Vector3 newRight = Vector3.Cross(up, newForward).normalized;
+            Vector3 newUp = Vector3.Cross(newForward, newRight).normalized;
+    
+            // Construct the rotation matrix using the new vectors
+            Matrix4x4 rotationMatrix = new Matrix4x4();
+            rotationMatrix.SetColumn(0, new Vector4(newRight.x, newRight.y, newRight.z, 0));
+            rotationMatrix.SetColumn(1, new Vector4(newUp.x, newUp.y, newUp.z, 0));
+            rotationMatrix.SetColumn(2, new Vector4(newForward.x, newForward.y, newForward.z, 0));
+            rotationMatrix.SetColumn(3, new Vector4(0, 0, 0, 1));
+    
+            // Apply the rotation matrix to the input quaternion
+            Quaternion newRotation = rotationMatrix.rotation;
+            return newRotation * fromRotation;
+        }
+        
+        
+        /*// The standard ship rotation origin
         if (Universe.player.attractor != null)
         {
             standardShip.transform.position = transform.position;
@@ -117,12 +171,13 @@ public class SpaceShipController : MonoBehaviour
         }
         else
         {
+            standardShip.transform.rotation = transform.rotation;
             transform.rotation = lookRotation;
-        }
+        }*/
         
         
         // Adding the mouse look rotation to the base planet rotation
-        transform.rotation = standardShip.transform.rotation * lookRotation;
+        //transform.rotation = standardShip.transform.rotation * lookRotation;
         
         
         rotationZ -= mouseXSmooth;
