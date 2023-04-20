@@ -149,15 +149,13 @@ public class SolarSystemTransform : MonoBehaviour
         // Check if sun has moved to Vector3.zero
         if (sun.transform.position.magnitude <= 5f)
         {
-            //player.transform.SetParent(null, true);
-            
+
             if (!Universe.player.boarded)
             {
                 player.transform.SetParent(null, true);
             }
             else
             {
-                //player.transform.SetParent(null, true);
                 Universe.spaceShip.SetParent(null, true);
             }
             
