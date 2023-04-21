@@ -9,10 +9,8 @@ using UnityEngine.Serialization;
 public class Planet : MonoBehaviour
 {
     [SerializeField] private ComputeShader meshGenerator;
-    [SerializeField] private Material waterMaterial; // Can this be removed?
     [HideInInspector] public float waterDiameter;
-
-    [HideInInspector, Obsolete] public float diameter;
+    
     [HideInInspector] public float radius;
     [HideInInspector] public float surfaceGravity;
     [HideInInspector] public string bodyName = "TBT";
@@ -85,7 +83,7 @@ public class Planet : MonoBehaviour
         // Initialize the meshgenerator
         if (marchingCubes == null)
         {
-            threshold = 23 + (float)rand.Value() * 4;
+            threshold = 23 + rand.Value() * 4;
             marchingCubes = new MarchingCubes(rand.Value() * 123.123f, 1, meshGenerator, threshold, radius,
                 terrainLayers, biomeSettings);
         }
@@ -237,8 +235,7 @@ public class Planet : MonoBehaviour
         parentTransform.RotateAround(moonsParentTransform.position, Vector3.up, moon.orbitSpeed * Time.deltaTime);
 
         Vector3 direction = parentTransform.position - moonsParentTransform.position;
-        parentTransform.position =
-            moonsParentTransform.position + (direction.normalized * moonsRelativeDistances[i].magnitude);
+        parentTransform.position = moonsParentTransform.position + (direction.normalized * moonsRelativeDistances[i].magnitude);
     }
 
     /// <summary>
@@ -315,7 +312,7 @@ public class Planet : MonoBehaviour
         return point + DistanceFromPlane(planeOffset, planeNormal, point) * planeNormal;
     }
 
-    private float DistanceFromPlane(Vector3 planeOffset, Vector3 planeNormal, Vector3 point)
+    private static float DistanceFromPlane(Vector3 planeOffset, Vector3 planeNormal, Vector3 point)
     {
         return Vector3.Dot(planeOffset - point, planeNormal);
     }

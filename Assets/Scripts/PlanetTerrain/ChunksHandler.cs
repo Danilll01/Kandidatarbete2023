@@ -166,8 +166,7 @@ public class ChunksHandler : MonoBehaviour
         int noChunks = (1 << chunkResolution) * (1 << chunkResolution) * (1 << chunkResolution);
         for (int i = 0; i < noChunks; i++)
         {
-            Chunk chunk = Instantiate(chunkPrefab);
-            chunk.transform.parent = chunksParent.transform;
+            Chunk chunk = Instantiate(chunkPrefab, chunksParent.transform, true);
             chunk.transform.localPosition = Vector3.zero;
             chunk.name = "chunk" + i;
             chunk.Setup(i, marchingCubes);

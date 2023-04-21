@@ -94,66 +94,64 @@ public class Chunk : MonoBehaviour
 
     private void Update()
     {
-        if(initialized && !lowChunkResChunks)
+        if (!initialized || lowChunkResChunks) return;
+        
+        Vector3 playerPos = player.boarded ? Universe.spaceShip.localPosition : player.transform.localPosition;
+            
+        // Check every 5 meter so that we don't check all the time
+        if (Vector3.Magnitude(playerPos - previousPlayerPos) < 5)
+            return;
+            
+        previousPlayerPos = playerPos;
+
+        float playerDistance = Vector3.Magnitude(playerPos - position);
+        if (playerDistance < highRes.upperRadius * chunkSize)
         {
-            
-            Vector3 playerPos = player.boarded ? Universe.spaceShip.localPosition : player.transform.localPosition;
-            
-            // Check every 5 meter so that we don't check all the time
-            if (Vector3.Magnitude(playerPos - previousPlayerPos) < 5)
-                return;
-            
-            previousPlayerPos = playerPos;
+            meshCollider.enabled = true;
+            foliageGameObject.SetActive(true);
+            creatureGameObject.SetActive(true);
 
-            float playerDistance = Vector3.Magnitude(playerPos - position);
-            if (playerDistance < highRes.upperRadius * chunkSize)
+            if (planet.willGeneratePlanetLife)
             {
-                meshCollider.enabled = true;
-                foliageGameObject.SetActive(true);
-                creatureGameObject.SetActive(true);
+                int numVerts = UpdateMesh(highRes.resolution);
 
-                if (planet.willGeneratePlanetLife)
+                if (!foliage.initialized)
                 {
-                    int numVerts = UpdateMesh(highRes.resolution);
-
-                    if (!foliage.initialized)
-                    {
-                        if (numVerts > 500)
-                            foliage.Initialize(numVerts, position, random.Next());
-                    }
-
-                    if (!creatures.initialized)
-                    {
-                        if (numVerts > 500)
-                            creatures.Initialize(numVerts, position, random.Next());
-                    }
-                    if (!creatures.finishedSpawning)
-                    {
-                        creatures.BatchedSpawning();
-                    }
-
-                } else
-                {
-                    UpdateMesh(highRes.resolution);
+                    if (numVerts > 500)
+                        foliage.Initialize(numVerts, position, random.Next());
                 }
-                    
-                    
-            } 
-            else if (mediumRes.lowerRadius * chunkSize < playerDistance && playerDistance < mediumRes.upperRadius * chunkSize)
+
+                if (!creatures.initialized)
+                {
+                    if (numVerts > 500)
+                        creatures.Initialize(numVerts, position, random.Next());
+                }
+                if (!creatures.finishedSpawning)
+                {
+                    creatures.BatchedSpawning();
+                }
+
+            } else
             {
-                foliageGameObject.SetActive(false);
-                creatureGameObject.SetActive(false);
-                meshCollider.enabled = false;
-                UpdateMesh(mediumRes.resolution);
+                UpdateMesh(highRes.resolution);
+            }
+                    
+                    
+        } 
+        else if (mediumRes.lowerRadius * chunkSize < playerDistance && playerDistance < mediumRes.upperRadius * chunkSize)
+        {
+            foliageGameObject.SetActive(false);
+            creatureGameObject.SetActive(false);
+            meshCollider.enabled = false;
+            UpdateMesh(mediumRes.resolution);
                 
-            }
-            else if (lowRes.lowerRadius * chunkSize < playerDistance)
-            {
-                foliageGameObject.SetActive(false);
-                creatureGameObject.SetActive(false);
-                meshCollider.enabled = false;
-                UpdateMesh(lowRes.resolution);
-            }
+        }
+        else if (lowRes.lowerRadius * chunkSize < playerDistance)
+        {
+            foliageGameObject.SetActive(false);
+            creatureGameObject.SetActive(false);
+            meshCollider.enabled = false;
+            UpdateMesh(lowRes.resolution);
         }
     }
 
