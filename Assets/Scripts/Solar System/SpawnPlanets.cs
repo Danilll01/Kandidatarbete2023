@@ -106,7 +106,7 @@ public class SpawnPlanets : MonoBehaviour
             planet.gameObject.name = "Planet " + i + " body";
             planetBody.SetUpPlanetValues();
 
-            planetBody.Initialize(player.transform, random.Next(), i == spawnPlanetIndex);
+            planetBody.Initialize(random.Next(), i == spawnPlanetIndex);
             InstantiateMoons(planetBody, nrOfMoonsForPlanet);
             bodies.Add(planetBody);
 
@@ -192,7 +192,7 @@ public class SpawnPlanets : MonoBehaviour
             moonBody.bodyName = "Moon " + i;
             moonBody.radius = random.Next((int)(parentPlanet.radius / 5), (int)((parentPlanet.radius / 2) + 1));
             moonBody.SetUpPlanetValues();
-            moonBody.Initialize(player.transform, random.Next(), false); //False here beacause we don't spawn on moons
+            moonBody.Initialize(random.Next(), false); //False here beacause we don't spawn on moons
             parentPlanet.moons.Add(moonBody);
         }
         parentPlanet.moonsParent = moonsParent;

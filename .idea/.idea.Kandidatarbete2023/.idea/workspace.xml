@@ -4,14 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Cleaned up code">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Planet chunk loading is now fixed">
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Ecosystem/PlanetTester.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Ecosystem/PlanetTester.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/MarchingCubes/Chunk.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/MarchingCubes/Chunk.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/MovementControllers/PillPlayerController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/MovementControllers/PillPlayerController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipTransition.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipTransition.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/MarchingCubes/Planet.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/MarchingCubes/Planet.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/PlanetTerrain/ChunksHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/PlanetTerrain/ChunksHandler.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Solar System/SolarSystemTransform.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Solar System/SolarSystemTransform.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Solar System/SpawnPlanets.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Solar System/SpawnPlanets.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -452,7 +449,13 @@
       <option name="presentableId" value="LOCAL−00047" />
       <updated>1682025445799</updated>
     </task>
-    <option name="localTasksCounter" value="48" />
+    <task id="LOCAL−00048" summary="Planet chunk loading is now fixed">
+      <created>1682034879347</created>
+      <option name="number" value="LOCAL−00048" />
+      <option name="presentableId" value="LOCAL−00048" />
+      <updated>1682034879347</updated>
+    </task>
+    <option name="localTasksCounter" value="49" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -474,7 +477,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="Changed player position in ship to better suit the new FOV" />
     <MESSAGE value="Made ship glass a little more transparent" />
     <MESSAGE value="Turned on camera dithering to make color banding much less noticeable" />
     <MESSAGE value="Added tonemapping for much better colors (Will not be as washed out as before)" />
@@ -499,6 +501,7 @@
     <MESSAGE value="Continuation of the test script removal" />
     <MESSAGE value="You can now go into planet orbit without the camera jumping" />
     <MESSAGE value="Cleaned up code" />
-    <option name="LAST_COMMIT_MESSAGE" value="Cleaned up code" />
+    <MESSAGE value="Planet chunk loading is now fixed" />
+    <option name="LAST_COMMIT_MESSAGE" value="Planet chunk loading is now fixed" />
   </component>
 </project>

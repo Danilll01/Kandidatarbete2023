@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Threading;
 using Unity.Mathematics;
 using ExtendedRandom;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.UIElements;
@@ -30,7 +31,7 @@ public class Chunk : MonoBehaviour
     private MeshCollider meshCollider;
     private Mesh mesh;
     public MarchingCubes marchingCubes;
-    private Transform player;
+    private PillPlayerController player;
     private Planet planet;
     private MinMaxTerrainLevel terrainLevel;
     [HideInInspector] public float chunkSize;
@@ -59,7 +60,7 @@ public class Chunk : MonoBehaviour
     /// <param name="chunkHandler"></param>
     /// <param name="seed"></param>
     /// <returns></returns>
-    public int Initialize(Planet planet, Transform player, MinMaxTerrainLevel terrainLevel, ChunksHandler chunkHandler, int seed)
+    public int Initialize(Planet planet, MinMaxTerrainLevel terrainLevel, ChunksHandler chunkHandler, int seed)
     {
         this.planet = planet;
         highRes = chunkHandler.highRes;
@@ -67,7 +68,7 @@ public class Chunk : MonoBehaviour
         lowRes = chunkHandler.lowRes;
         random = new RandomX(seed);
 
-        this.player = player;
+        this.player = Universe.player;
         this.terrainLevel = terrainLevel;
         chunkSize = (2 * chunkHandler.planetRadius) / (1 << marchingCubes.chunkResolution);
 
@@ -96,7 +97,7 @@ public class Chunk : MonoBehaviour
         if(initialized && !lowChunkResChunks)
         {
             
-            Vector3 playerPos = Universe.player.boarded ? Universe.spaceShip.localPosition : player.localPosition;
+            Vector3 playerPos = player.boarded ? Universe.spaceShip.localPosition : player.transform.localPosition;
             
             // Check every 5 meter so that we don't check all the time
             if (Vector3.Magnitude(playerPos - previousPlayerPos) < 5)

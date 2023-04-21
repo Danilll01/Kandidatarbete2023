@@ -10,7 +10,7 @@ using UnityEngine;
 public class ChunksHandler : MonoBehaviour
 {
     private Planet planet;
-    private Transform player;
+    private PillPlayerController player;
     private Vector3 playerLastPosition;
     private int foliageInitialized = 10;
     private int chunkResolution; //This is 2^chunkResolution
@@ -74,7 +74,7 @@ public class ChunksHandler : MonoBehaviour
         rand = new RandomX(seed);
 
         this.planet = planet;
-        player = planet.player;
+        player = Universe.player;
         marchingCubes = planet.marchingCubes;
         planetRadius = planet.radius;
         this.terrainLevel = terrainLevel;
@@ -105,7 +105,7 @@ public class ChunksHandler : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Transform currentPlayerMoverParent = Universe.player.boarded ? Universe.spaceShip.parent : player.transform.parent;
+        Transform currentPlayerMoverParent = player.boarded ? Universe.spaceShip.parent : player.transform.parent;
         if (playerOnPlanet != ReferenceEquals(transform, currentPlayerMoverParent))
         {
             updateChunks = true;
@@ -186,7 +186,7 @@ public class ChunksHandler : MonoBehaviour
         for (int i = chunksList.Count - 1; i != -1; i--)
         {
             // Remove chunks without vertices
-            if (chunksList[i].Initialize(planet, player, terrainLevel, this, rand.Next()) == 0)
+            if (chunksList[i].Initialize(planet, terrainLevel, this, rand.Next()) == 0)
             {
                 Destroy(chunksList[i].gameObject);
                 chunksList.RemoveAt(i);
@@ -196,7 +196,7 @@ public class ChunksHandler : MonoBehaviour
     private void UpdateChunksVisibility()
     {
 
-        Vector3 playerPos = Universe.player.boarded ? Universe.spaceShip.localPosition : player.localPosition;
+        Vector3 playerPos = player.boarded ? Universe.spaceShip.localPosition : player.transform.localPosition;
         
         // Only update chunks if player has moved a certain distance
         if (Vector3.Magnitude(playerPos - playerLastPosition) < 3)

@@ -21,7 +21,7 @@ public class Planet : MonoBehaviour
     
     public List<Vector3> waterPoints;
 
-    [HideInInspector] public Transform player;
+    private Transform player;
     [HideInInspector] public MarchingCubes marchingCubes;
 
     [SerializeField, Range(1, 14)] public int resolution = 5;
@@ -68,11 +68,11 @@ public class Planet : MonoBehaviour
     /// <param name="player">The player</param>
     /// <param name="randomSeed">Seed to be used</param>
     /// <param name="spawn">True if the player will spawn on the planet</param>
-    public void Initialize(Transform player, int randomSeed, bool spawn)
+    public void Initialize(int randomSeed, bool spawn)
     {
         RandomX rand = new RandomX(randomSeed);
 
-        this.player = player;
+        player = Universe.player.transform;
 
         MinMaxTerrainLevel terrainLevel = new MinMaxTerrainLevel();
 
