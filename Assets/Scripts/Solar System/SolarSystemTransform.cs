@@ -43,7 +43,7 @@ public class SolarSystemTransform : MonoBehaviour
             }
         }
 
-        Universe.player.attractor = activePlanet;
+        player.attractor = activePlanet;
     }
 
 
@@ -85,7 +85,7 @@ public class SolarSystemTransform : MonoBehaviour
             CheckWhenToReleasePlayer();
         }
 
-        Universe.player.attractor = activePlanet;
+        player.attractor = activePlanet;
     }
 
     private void UpdateClosestPlanet()
@@ -149,6 +149,8 @@ public class SolarSystemTransform : MonoBehaviour
         if (sun.transform.position.magnitude <= 5f)
         {
 
+            player.attractor = null;
+            
             if (!Universe.player.boarded)
             {
                 player.transform.SetParent(null, true);
@@ -158,7 +160,7 @@ public class SolarSystemTransform : MonoBehaviour
                 Universe.spaceShip.SetParent(null, true);
             }
             
-            player.attractor = null;
+            
             setUpSolarSystemRotation = false;
             releasePlayer = false;
         }
