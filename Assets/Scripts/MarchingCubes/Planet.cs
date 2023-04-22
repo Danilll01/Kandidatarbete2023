@@ -111,7 +111,7 @@ public class Planet : MonoBehaviour
 
             if (creatureHandler != null)
             {
-                creatureHandler.Initialize(this);
+                creatureHandler.Initialize(this, rand.Next());
             }
         }
 
@@ -252,6 +252,16 @@ public class Planet : MonoBehaviour
     public Color GetGroundColor()
     {
         return chunksHandler.terrainColor.bottomColor;
+    }
+
+    public BiomeSettings Biome
+    {
+        get { return biomeSettings; }
+    }
+
+    public float DistanceToSun
+    {
+        get { return Vector3.Distance(transform.position, Universe.sunPosition.position); }
     }
 
     /// <summary>
