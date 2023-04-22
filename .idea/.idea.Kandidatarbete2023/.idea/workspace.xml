@@ -4,12 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Rotations now finally working prefectly as wanted. No camera jumps">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/BoughtAssets" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/BoughtAssets" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Solar System/SolarSystemTransform.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Solar System/SolarSystemTransform.cs" afterDir="false" />
-    </list>
+    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Added game icon" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -142,12 +137,6 @@
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
-    <task id="LOCAL−00002" summary="Fixed typo">
-      <created>1679287226597</created>
-      <option name="number" value="LOCAL−00002" />
-      <option name="presentableId" value="LOCAL−00002" />
-      <updated>1679287226597</updated>
-    </task>
     <task active="true" id="Default" summary="Default task">
       <changelist id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Fixed typo" />
       <created>1679325034818</created>
@@ -168,12 +157,6 @@
       <workItem from="1681740646976" duration="1537000" />
       <workItem from="1682004115726" duration="10682000" />
       <workItem from="1682086929011" duration="4323000" />
-    </task>
-    <task id="LOCAL−00003" summary="Changed file">
-      <created>1679327563589</created>
-      <option name="number" value="LOCAL−00003" />
-      <option name="presentableId" value="LOCAL−00003" />
-      <updated>1679327563589</updated>
     </task>
     <task id="LOCAL−00004" summary="Changed directional light color to be based on temperature">
       <created>1679448209679</created>
@@ -457,7 +440,19 @@
       <option name="presentableId" value="LOCAL−00050" />
       <updated>1682035985387</updated>
     </task>
-    <option name="localTasksCounter" value="51" />
+    <task id="LOCAL−00051" summary="Rotations now finally working perfectly as wanted. No camera jumps">
+      <created>1682125352374</created>
+      <option name="number" value="LOCAL−00051" />
+      <option name="presentableId" value="LOCAL−00051" />
+      <updated>1682125352374</updated>
+    </task>
+    <task id="LOCAL−00052" summary="Added game icon">
+      <created>1682125845984</created>
+      <option name="number" value="LOCAL−00052" />
+      <option name="presentableId" value="LOCAL−00052" />
+      <updated>1682125845984</updated>
+    </task>
+    <option name="localTasksCounter" value="53" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -479,8 +474,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="Added tonemapping for much better colors (Will not be as washed out as before)" />
-    <MESSAGE value="Longer camera cut of distance to not make sun disappear + better shadow quality" />
     <MESSAGE value="Water now get rendered at the right time when under water" />
     <MESSAGE value="Water material is now done a little better" />
     <MESSAGE value="Water now shades correctly by the atmosphere inside and outside" />
@@ -504,6 +497,8 @@
     <MESSAGE value="Removed player initialize parameter" />
     <MESSAGE value="Cleaned up code" />
     <MESSAGE value="Rotations now finally working prefectly as wanted. No camera jumps" />
-    <option name="LAST_COMMIT_MESSAGE" value="Rotations now finally working prefectly as wanted. No camera jumps" />
+    <MESSAGE value="Rotations now finally working perfectly as wanted. No camera jumps" />
+    <MESSAGE value="Added game icon" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added game icon" />
   </component>
 </project>
