@@ -118,7 +118,7 @@ public class SpaceShipController : MonoBehaviour
                 isOutsidePlanet = true;
             }
         }
-        else 
+        else
         {
             // Model the standard ship around the planet
             standardShip.transform.position = transform.position;
