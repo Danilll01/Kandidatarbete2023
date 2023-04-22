@@ -110,7 +110,13 @@ public class SpaceShipController : MonoBehaviour
         // Ship rotation
         if (Universe.player.attractor == null)
         {
-            isOutsidePlanet = true;
+            // If the ship goes away from planet, rotate ship correctly
+            if (!isOutsidePlanet)
+            {
+                // The inverse is only needed when automatic orbiting is turned on
+                lookRotation = Quaternion.Inverse(standardShip.transform.rotation) * transform.rotation;
+                isOutsidePlanet = true;
+            }
         }
         else
         {
@@ -121,13 +127,17 @@ public class SpaceShipController : MonoBehaviour
             // If the ship comes into orbit, match the look rotation with the standard ship rotation
             if (isOutsidePlanet)
             {
-                //lookRotation = Quaternion.Inverse(standardShip.transform.rotation) * transform.rotation;
+                // Camera fix when entering planets if automatic planet following is turned on
+                lookRotation = Quaternion.Inverse(standardShip.transform.rotation) * transform.rotation;
                 isOutsidePlanet = false;
             }
         }
         
-        transform.rotation = lookRotation;
+        // Rotate the main ship (remove standardShip if automatic planet following is turned of)
+        transform.rotation = standardShip.transform.rotation * lookRotation;
 
+        
+        
         // Visual rotation
         rotationZ -= mouseXSmooth;
         rotationZ = Mathf.Clamp(rotationZ, -45, 45);

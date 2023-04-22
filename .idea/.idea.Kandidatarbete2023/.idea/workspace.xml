@@ -4,16 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="">
+    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Rotations now finally working prefectly as wanted. No camera jumps">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/BoughtAssets" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/BoughtAssets" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/BoughtAssets/GPUInstancer/Resources/Settings/GPUIShaderVariantCollection.shadervariants" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/BoughtAssets/GPUInstancer/Resources/Settings/GPUIShaderVariantCollection.shadervariants" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/BoughtAssets/GPUInstancer/Resources/Settings/GPUInstancerSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/BoughtAssets/GPUInstancer/Resources/Settings/GPUInstancerSettings.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/PlanetTerrain/ChunksHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/PlanetTerrain/ChunksHandler.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipController.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Solar System/SolarSystemTransform.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Solar System/SolarSystemTransform.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Shaders/Water/CameraWater.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Shaders/Water/CameraWater.mat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Packages/manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/manifest.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Packages/packages-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/packages-lock.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -484,7 +479,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="Turned on camera dithering to make color banding much less noticeable" />
     <MESSAGE value="Added tonemapping for much better colors (Will not be as washed out as before)" />
     <MESSAGE value="Longer camera cut of distance to not make sun disappear + better shadow quality" />
     <MESSAGE value="Water now get rendered at the right time when under water" />
@@ -509,6 +503,7 @@
     <MESSAGE value="Planet chunk loading is now fixed" />
     <MESSAGE value="Removed player initialize parameter" />
     <MESSAGE value="Cleaned up code" />
-    <option name="LAST_COMMIT_MESSAGE" value="Cleaned up code" />
+    <MESSAGE value="Rotations now finally working prefectly as wanted. No camera jumps" />
+    <option name="LAST_COMMIT_MESSAGE" value="Rotations now finally working prefectly as wanted. No camera jumps" />
   </component>
 </project>

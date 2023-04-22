@@ -66,25 +66,26 @@ public class SolarSystemTransform : MonoBehaviour
             UpdateClosestPlanet();
             HandleUpdatedActivePlanet();
 
-            if (releasePlayer) return;
-
-            if (rotateSolarSystem)
+            if (releasePlayer)
             {
-                RotateSolarSystem();
+                CheckWhenToReleasePlayer();
             }
-            else if (relativePlanetSunDistances != null)
+            else
             {
-                foreach (Planet planetBody in spawnPlanets.bodies)
+                if (rotateSolarSystem)
                 {
-                    planetBody.Run();
+                    RotateSolarSystem();
+                }
+                else if (relativePlanetSunDistances != null)
+                {
+                    foreach (Planet planetBody in spawnPlanets.bodies)
+                    {
+                        planetBody.Run();
+                    }
                 }
             }
         }
-        else
-        {
-            CheckWhenToReleasePlayer();
-        }
-
+        
         player.attractor = activePlanet;
     }
 
