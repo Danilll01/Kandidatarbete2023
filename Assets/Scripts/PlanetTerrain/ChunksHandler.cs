@@ -87,7 +87,7 @@ public class ChunksHandler : MonoBehaviour
         SetupChunks(highChunkRes, ref chunksHighRes, ref chunksParentHighRes, ChunkResolution.High);
         CreateMeshes(terrainLevel, ref chunksHighRes);
 
-        planetMaterial = terrainColor.GetPlanetMaterial(terrainLevel, rand.Next());
+        planetMaterial = terrainColor.GetPlanetMaterial(terrainLevel, rand.Next(), planet.biomeSettings);
 
         SetChunksMaterials(chunksLowRes);
         SetChunksMaterials(chunksHighRes);
@@ -189,7 +189,7 @@ public class ChunksHandler : MonoBehaviour
     }
     private void UpdateChunksVisibility()
     {
-        Vector3 playerPos = player.position;
+        Vector3 playerPos = player.localPosition;
 
         // Only update chunks if player has moved a certain distance
         if (Vector3.Magnitude(playerPos - playerLastPosition) < 3)

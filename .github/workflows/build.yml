@@ -4,10 +4,11 @@ on:
   pull_request:
     types: [closed]
   workflow_dispatch: {}
+  
 
 env:
-  MAJOR_RELEASE_NR: 9
-  MINOR_OFFSET: 78
+  MAJOR_RELEASE_NR: 10
+  MINOR_OFFSET: 90
 
 jobs:
   release-project:
@@ -46,11 +47,17 @@ jobs:
       fail-fast: false
       matrix:
         targetPlatform:
-          - StandaloneWindows64 # Build a Windows 64-bit standalone.
+          - StandaloneWindows64 # Build a Windows 64-bit standalone
     steps:
       - uses: actions/checkout@v3
         with:
-          fetch-depth: 0
+          fetch-depth: 1
+      - uses: actions/checkout@v3
+        with:
+          repository: Danilll01/BoughtAssets
+          path: Assets/BoughtAssets
+          fetch-depth: 1
+          token: ${{ secrets.PAT_TOKEN }}
       - uses: actions/cache@v3
         with:
           path: Library
