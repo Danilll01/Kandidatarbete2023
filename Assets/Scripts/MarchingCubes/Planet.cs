@@ -38,7 +38,7 @@ public class Planet : MonoBehaviour
     private float waterLevel = 0.92f;
 
     [SerializeField] private List<TerrainLayer> terrainLayers;
-    [SerializeField] private BiomeSettings biomeSettings;
+    public BiomeSettings biomeSettings;
 
     private float threshold;
 
@@ -85,9 +85,11 @@ public class Planet : MonoBehaviour
         // Initialize the meshgenerator
         if (marchingCubes == null)
         {
-            threshold = 23 + (float)rand.Value() * 4;
-            marchingCubes = new MarchingCubes(rand.Value() * 123.123f, 1, meshGenerator, threshold, radius,
-                terrainLayers, biomeSettings);
+            threshold = 23 + (float) rand.Value() * 4;
+            float biomeSeed = rand.Value();
+            biomeSettings.seed = biomeSeed;
+            
+            marchingCubes = new MarchingCubes(biomeSeed, 1, meshGenerator, threshold, radius, terrainLayers, biomeSettings);
         }
 
         // Init water

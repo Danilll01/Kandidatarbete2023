@@ -4,7 +4,13 @@ using System.Linq;
 using Unity.Mathematics;
 using ExtendedRandom;
 using UnityEngine;
+using Unity.VisualScripting;
 
+[System.Serializable]
+struct BiomeColor
+{
+    public Gradient gradient;
+}
 public class TerrainColor : MonoBehaviour {
 
     [SerializeField] private Gradient gradient = new Gradient();
@@ -15,10 +21,13 @@ public class TerrainColor : MonoBehaviour {
     [SerializeField] private Shader shader;
 
     [HideInInspector] public Color bottomColor;
+    [HideInInspector] public Color groundColor;
     private Material material;
     private Texture2D texture;
     private const int textureRes = 50;
     private RandomX random;
+
+    private BiomeSettings biomeSettings;
 
     private Color[][] crazyColorPaletts =
     {
@@ -42,13 +51,20 @@ public class TerrainColor : MonoBehaviour {
       new Color[] { new Color(140/255f, 140 / 255f, 140 / 255f), new Color(180/255f, 179/255f, 20/255f), new Color(73/255f, 200/255f, 40/255f), new Color(149 / 255f, 149 / 255f, 149 / 255f), new Color(1, 1, 1) } // Earth like palette
     };
 
+    [SerializeField] private BiomeColor[] mountainGradients;
+    [SerializeField] private BiomeColor[] plainsGradients;
+    [SerializeField] private BiomeColor[] polarCapGradients;
+    [SerializeField] private BiomeColor[] equatorGradients;
+
     /// <summary>
     /// Will color the planet with a random color
     /// </summary>
     /// <param name="terrainLevel">The terrain level, this contains min and max hight for colors</param>
     /// <param name="randomSeedGen">Random seed to be used when creating new random</param>
-    public Material GetPlanetMaterial(MinMaxTerrainLevel terrainLevel, int randomSeedGen) 
+    public Material GetPlanetMaterial(MinMaxTerrainLevel terrainLevel, int randomSeedGen, BiomeSettings biomeSettings) 
     {
+        this.biomeSettings = biomeSettings;
+
         random = new RandomX(randomSeedGen);
 
         material = new Material(shader);
@@ -65,6 +81,7 @@ public class TerrainColor : MonoBehaviour {
         UpdateMinMaxHight();
         SetMaterialColor();
         UpdateAngleColorCutOf();
+        UpdateBiomeSetting();
 
         return material;
     }
@@ -76,13 +93,27 @@ public class TerrainColor : MonoBehaviour {
 
     // Updates the angle color value
     private void UpdateAngleColorCutOf() {
+        
+        material.SetVector("_AngleCutAndBlend", new Vector4(0.4f, 0f));
+    }
 
-        float cutOf = angleCutOf / 180;
-        float newAngleBlend = Mathf.Lerp(0, (cutOf), angleBlending);
-        float minVal = Mathf.Clamp((cutOf - newAngleBlend), 0, 1);
-        float maxVal = Mathf.Clamp((cutOf), 0, 1);
+    private void UpdateBiomeSetting()
+    {
+        material.SetFloat("_Seed", biomeSettings.seed);
+        material.SetFloat("_Distance", 0);
+        material.SetFloat("_MountainFrequency", biomeSettings.mountainFrequency);
+        material.SetFloat("_TempFrequency", biomeSettings.temperatureFrequency);
+        material.SetFloat("_TemperatureDecay", biomeSettings.temperatureDecay);
+        material.SetFloat("_FarTemperature", biomeSettings.farTemperature);
+        material.SetFloat("_Roughness", biomeSettings.temperatureRoughness);
+        material.SetFloat("_MountainAffect", biomeSettings.mountainTemperatureAffect);
+        material.SetFloat("_TreeFrequency", biomeSettings.treeFrequency);
+        
+        material.SetTexture("_MountainGradient", GetTextureFromGradients(mountainGradients, true));
+        material.SetTexture("_TreeGradient", GetTextureFromGradients(plainsGradients));
+        material.SetTexture("_PolarCapGradient", GetTextureFromGradients(polarCapGradients));
+        material.SetTexture("_EquatorGradient", GetTextureFromGradients(equatorGradients));
 
-        material.SetVector("_AngleCutAndBlend", new Vector4(minVal, maxVal));
     }
 
     // Sets the material color bands to use based on hight
@@ -119,5 +150,35 @@ public class TerrainColor : MonoBehaviour {
         // Use this for water
         bottomColor = colors[0];
 
+        
+        groundColor = takePaletteRand[2];
+    }
+
+    private Texture GetTextureFromGradients(BiomeColor[] gradients, bool addGroundColor = false)
+    {
+        Gradient gradient = gradients[random.Next(0, gradients.Length - 1)].gradient;
+
+        if (addGroundColor)
+        {
+            GradientColorKey[] oldColorKeyArr = gradient.colorKeys;
+            oldColorKeyArr[0] = new GradientColorKey(groundColor, oldColorKeyArr[0].time);
+            gradient.SetKeys(oldColorKeyArr, gradient.alphaKeys);
+        }
+        
+        return GetTextureFromGradient(gradient);
+    }
+
+    private Texture GetTextureFromGradient(Gradient gradient)
+    {
+        Color[] colors = new Color[textureRes];
+        Texture2D texture = new Texture2D(textureRes, 1);
+        for (int i = 0; i < textureRes; i++)
+        {
+            colors[i] = gradient.Evaluate(i / (textureRes - 1f));
+        }
+        texture.SetPixels(colors);
+        texture.Apply();
+
+        return texture;
     }
 }
