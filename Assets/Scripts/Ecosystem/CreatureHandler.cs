@@ -19,18 +19,6 @@ public class CreatureHandler : MonoBehaviour
         RandomX rand = new RandomX(seed);
         this.planet = planet;
 
-        //Remove some pack types
-        List<CreaturePack> culledPack = new List<CreaturePack>();
-        for (int i = 0; i < packs.Length; i++)
-        {
-            //Is true (keepPackRatio %) number of times
-            if (rand.Value() < keepPackRatio)
-            {
-                culledPack.Add(packs[i]);
-            }
-        }
-        packs = culledPack.ToArray();
-
         isInstantiated = true;
 
         density = planet.radius * densityMultiplier; // Magic numbers * "random"
