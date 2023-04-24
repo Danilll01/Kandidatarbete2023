@@ -16,6 +16,11 @@ public class SolarSystemTransform : MonoBehaviour
     private float rotationSpeed;
     private float orbitSpeed;
     private bool releasePlayer;
+    private bool moonIsActivePlanet;
+    private int activePlanetIndex;
+    private Planet activeMoonParentPlanet;
+
+    
 
     void Start()
     {
@@ -90,23 +95,38 @@ public class SolarSystemTransform : MonoBehaviour
         // Loops over all planets and checks if the player is on it or has left it
         foreach (Planet planet in spawnPlanets.bodies)
         {
-            // We are not looking to land on the moon right now. Will be fixed later
-            if (planet.bodyName.Contains("Moon")) continue;
-
-            float distance = (player.transform.position - planet.transform.position).magnitude;
-            if (distance <= (planet.radius * 1.26) && planet != activePlanet)
+            if (CheckIfNewActivePlanet(planet)) break;
+            
+            foreach (Planet moon in planet.moons)
             {
-                activePlanet = planet;
-                player.transform.parent = activePlanet.transform;
-                break;
+                if (CheckIfNewActivePlanet(moon))
+                {
+                    moonIsActivePlanet = true;
+                    activeMoonParentPlanet = planet;
+                    break;
+                }
             }
 
-            if (planet == activePlanet && distance > (planet.radius * 1.4))
-            {
-                activePlanet = null;
-                break;
-            }
         }
+    }
+
+    private bool CheckIfNewActivePlanet(Planet planet)
+    {
+        float distance = (player.transform.position - planet.transform.position).magnitude;
+        if (distance <= (planet.radius * 1.26) && planet != activePlanet)
+        {
+            activePlanet = planet;
+            player.transform.parent = activePlanet.transform;
+            return true;
+        }
+
+        if (planet == activePlanet && distance > (planet.radius * 1.4))
+        {
+            activePlanet = null;
+            return true;
+        }
+
+        return false;
     }
 
     private void HandleUpdatedActivePlanet()
@@ -125,7 +145,7 @@ public class SolarSystemTransform : MonoBehaviour
         if (activePlanet != oldActivePlanet)
         {
             MovePlanets();
-            activePlanet.rotateMoons = true;
+            //activePlanet.rotateMoons = true;
             oldActivePlanet = activePlanet;
         }
     }
@@ -150,10 +170,20 @@ public class SolarSystemTransform : MonoBehaviour
 
         planetsParent.transform.RotateAround(Vector3.zero, -rotationAxis, rotationSpeed * Time.deltaTime);
 
-        int activePlanetIndex = spawnPlanets.bodies.IndexOf(activePlanet);
         Vector3 newSunPos = sun.transform.position;
-        Vector3 direction = newSunPos - Vector3.zero;
-        newSunPos = direction.normalized * relativePlanetSunDistances[activePlanetIndex].magnitude;
+        Vector3 direction;
+        if (moonIsActivePlanet)
+        {
+            direction = newSunPos - activeMoonParentPlanet.transform.position;
+            newSunPos = direction.normalized * relativePlanetSunDistances[activePlanetIndex].magnitude;
+        }
+        else
+        {
+            direction = newSunPos - Vector3.zero;
+            newSunPos = direction.normalized * relativePlanetSunDistances[activePlanetIndex].magnitude;
+        }
+        
+        
 
         newSunPos = ClosestPointOnPlane(Vector3.zero, sun.transform.TransformDirection(Vector3.up), newSunPos);
         sun.transform.position = newSunPos;
@@ -171,9 +201,20 @@ public class SolarSystemTransform : MonoBehaviour
         Transform planetTransform = activePlanet.transform;
         Vector3 distanceFromOrigin = planetTransform.transform.position - Vector3.zero;
         planetsParent.transform.position -= distanceFromOrigin;
-        planetTransform.parent.SetParent(null, true);
-
+        
         player.attractor = activePlanet;
+
+        if (!moonIsActivePlanet)
+        {
+            planetTransform.parent.SetParent(null, true);
+            activePlanetIndex = spawnPlanets.bodies.IndexOf(activePlanet);
+        }
+        else
+        {
+            planetTransform.parent.parent.parent.SetParent(null, true);
+            activePlanetIndex = spawnPlanets.bodies.IndexOf(activeMoonParentPlanet);
+            activeMoonParentPlanet.playerIsOnMoon = true;
+        }
 
         rotateSolarSystem = true;
     }
