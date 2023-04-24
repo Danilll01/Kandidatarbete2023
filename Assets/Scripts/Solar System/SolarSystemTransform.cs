@@ -185,7 +185,15 @@ public class SolarSystemTransform : MonoBehaviour
         Vector3 direction;
         
         direction = newSunPos - Vector3.zero;
-        newSunPos = direction.normalized * relativePlanetSunDistances[activePlanetIndex].magnitude;
+
+        if (moonIsActivePlanet)
+        {
+            newSunPos = direction.normalized * relativePlanetSunDistances[activePlanetIndex].magnitude + activeMoonParentPlanet.moonsRelativeDistances[activeMoonParentPlanet.activeMoonIndex];
+        }
+        else
+        {
+            newSunPos = direction.normalized * relativePlanetSunDistances[activePlanetIndex].magnitude;
+        }
 
         newSunPos = ClosestPointOnPlane(Vector3.zero, sun.transform.TransformDirection(Vector3.up), newSunPos);
         sun.transform.position = newSunPos;

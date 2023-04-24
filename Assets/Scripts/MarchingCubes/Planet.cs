@@ -52,7 +52,7 @@ public class Planet : MonoBehaviour
 
     public bool rotateMoons;
 
-    private Vector3[] moonsRelativeDistances;
+    public Vector3[] moonsRelativeDistances;
     [HideInInspector] public float positionRelativeToSunDistance;
 
     private bool setUpSystemRotationComponents;
