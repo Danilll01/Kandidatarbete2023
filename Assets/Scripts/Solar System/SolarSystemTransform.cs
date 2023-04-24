@@ -139,8 +139,8 @@ public class SolarSystemTransform : MonoBehaviour
             rotateSolarSystem = false;
             ResetPlanetOrbit();
             oldActivePlanet.rotateMoons = false;
-            releasePlayer = true;
             oldActivePlanet = activePlanet;
+            releasePlayer = true;
         }
 
         // If the player has entered a new planet, move the solar system accordingly
@@ -168,9 +168,18 @@ public class SolarSystemTransform : MonoBehaviour
     {
         SetUpRotation();
 
-        sun.transform.RotateAround(Vector3.zero, Vector3.up, orbitSpeed * Time.deltaTime);
+        if (moonIsActivePlanet)
+        {
+            sun.transform.RotateAround(activeMoonParentPlanet.transform.position, Vector3.up, 0.2f * Time.deltaTime);
 
-        planetsParent.transform.RotateAround(Vector3.zero, -rotationAxis, rotationSpeed * Time.deltaTime);
+            planetsParent.transform.RotateAround(activeMoonParentPlanet.transform.position, -rotationAxis, 0.2f * Time.deltaTime);
+        }
+        else
+        {
+            sun.transform.RotateAround(Vector3.zero, Vector3.up, 0.2f * Time.deltaTime);
+
+            planetsParent.transform.RotateAround(Vector3.zero, -rotationAxis, 0.2f * Time.deltaTime);
+        }
 
         Vector3 newSunPos = sun.transform.position;
         Vector3 direction;
@@ -223,11 +232,18 @@ public class SolarSystemTransform : MonoBehaviour
 
     private void ResetPlanetOrbit()
     {
+        if (moonIsActivePlanet)
+        {
+            oldActivePlanet.transform.parent.SetParent(activeMoonParentPlanet.moonsParent.transform, true);
+            activeMoonParentPlanet.playerIsOnMoon = false;
+            moonIsActivePlanet = false;
+        }
+        
         foreach (Planet body in spawnPlanets.bodies)
         {
             body.transform.parent.SetParent(sun.transform);
         }
-
+        
         sun.transform.rotation = Quaternion.Euler(0, sun.transform.rotation.y, 0);
         sun.transform.position = Vector3.zero;
 
