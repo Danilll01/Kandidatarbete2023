@@ -229,11 +229,11 @@ public class Planet : MonoBehaviour
             Vector3 direction = transform.parent.position - Vector3.zero;
             parentOrbitMover.position = Vector3.zero + (direction.normalized * moonsRelativeDistances[activeMoonIndex].magnitude);
             parentOrbitMover.position = ClosestPointOnPlane(Vector3.zero, sunTransform.TransformDirection(Vector3.up), parentOrbitMover.position);
-            parentOrbitMover.transform.up = sunTransform.up;
+            parentOrbitMover.transform.rotation = sunTransform.rotation;
 
             moonsParent.transform.RotateAround(parentOrbitMover.position, -axisToRotateAround, speedToRotateAroundWith* Time.deltaTime);
             moonsParent.transform.localPosition = Vector3.zero;
-            moonsParent.transform.up = sunTransform.up;
+            moonsParent.transform.rotation = sunTransform.rotation;
 
             for (int i = 0; i < moons.Count; i++)
             {
@@ -271,7 +271,7 @@ public class Planet : MonoBehaviour
             }
 
             moonsParent.transform.localPosition = Vector3.zero;
-            moonsParent.transform.up = sunTransform.up;
+            moonsParent.transform.rotation = sunTransform.rotation;
 
             for (int i = 0; i < moons.Count; i++)
             {
@@ -280,7 +280,7 @@ public class Planet : MonoBehaviour
 
                 Transform parent = moon.transform.parent.transform;
                 parent.position = ClosestPointOnPlane(moonsParent.transform.position, moonsParent.transform.TransformDirection(Vector3.up), parent.transform.position);
-                parent.up = moonsParent.transform.up;
+                parent.rotation = moonsParent.transform.rotation;
             }
         }
         else

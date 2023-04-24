@@ -168,18 +168,9 @@ public class SolarSystemTransform : MonoBehaviour
     {
         SetUpRotation();
 
-        if (moonIsActivePlanet)
-        {
-            sun.transform.RotateAround(activeMoonParentPlanet.transform.position, Vector3.up, orbitSpeed * Time.deltaTime);
+        sun.transform.RotateAround(Vector3.zero, Vector3.up, orbitSpeed * Time.deltaTime);
 
-            planetsParent.transform.RotateAround(activeMoonParentPlanet.transform.position, -rotationAxis, orbitSpeed * Time.deltaTime);
-        }
-        else
-        {
-            sun.transform.RotateAround(Vector3.zero, Vector3.up, rotationSpeed * Time.deltaTime);
-
-            planetsParent.transform.RotateAround(Vector3.zero, -rotationAxis, rotationSpeed * Time.deltaTime);
-        }
+        planetsParent.transform.RotateAround(Vector3.zero, -rotationAxis, rotationSpeed * Time.deltaTime);
 
         Vector3 newSunPos = sun.transform.position;
         Vector3 direction;
@@ -188,7 +179,7 @@ public class SolarSystemTransform : MonoBehaviour
 
         if (moonIsActivePlanet)
         {
-            newSunPos = direction.normalized * relativePlanetSunDistances[activePlanetIndex].magnitude + activeMoonParentPlanet.moonsRelativeDistances[activeMoonParentPlanet.activeMoonIndex];
+            newSunPos = direction.normalized * relativePlanetSunDistances[activePlanetIndex].magnitude;
         }
         else
         {
