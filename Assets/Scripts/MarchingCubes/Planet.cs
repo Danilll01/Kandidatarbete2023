@@ -80,7 +80,15 @@ public class Planet : MonoBehaviour
 
         rotationAxis = rand.OnUnitSphere() * radius;
         rotationSpeed = rand.Next(3, 6);
-        orbitSpeed = 360 / (3f * Mathf.PI * Mathf.Sqrt(Mathf.Pow(transform.position.magnitude, 3)) * 0.000006673f);
+
+        if (bodyName.Contains("Moon"))
+        {
+            orbitSpeed = 1;
+        }
+        else
+        {
+            orbitSpeed = 360 / (3f * Mathf.PI * Mathf.Sqrt(Mathf.Pow(transform.position.magnitude, 3)) * 0.000006673f);
+        }
 
         willGeneratePlanetLife = rand.Value() < chanceToSpawnPlanetLife;
 
@@ -199,7 +207,7 @@ public class Planet : MonoBehaviour
                 parentOrbitMover.transform.RotateAround(Vector3.zero, Vector3.up,
                     speedToRotateAroundWith * Time.deltaTime);
             }
-            KeepPlanetAtSameDistanceToSun();
+            
             RotateAndOrbitMoonsAndParentPlanet();
         }
     }
@@ -217,11 +225,13 @@ public class Planet : MonoBehaviour
         {
             // Rotate the active planets moons manually since it is not affected by solar system rotation
             
-            transform.parent.RotateAround(Vector3.zero, -axisToRotateAround, speedToRotateAroundWith * Time.deltaTime);
+            parentOrbitMover.RotateAround(Vector3.zero, -axisToRotateAround, speedToRotateAroundWith * Time.deltaTime);
             Vector3 direction = transform.parent.position - Vector3.zero;
-            transform.parent.position = Vector3.zero + (direction.normalized * moonsRelativeDistances[activeMoonIndex].magnitude);
+            parentOrbitMover.position = Vector3.zero + (direction.normalized * moonsRelativeDistances[activeMoonIndex].magnitude);
+            parentOrbitMover.position = ClosestPointOnPlane(Vector3.zero, sunTransform.TransformDirection(Vector3.up), parentOrbitMover.position);
+            parentOrbitMover.transform.up = sunTransform.up;
 
-            moonsParent.transform.RotateAround(transform.parent.position, -axisToRotateAround, speedToRotateAroundWith* Time.deltaTime);
+            moonsParent.transform.RotateAround(parentOrbitMover.position, -axisToRotateAround, speedToRotateAroundWith* Time.deltaTime);
             moonsParent.transform.localPosition = Vector3.zero;
             moonsParent.transform.up = sunTransform.up;
 
@@ -231,8 +241,6 @@ public class Planet : MonoBehaviour
                 if (activeMoonIndex != i)
                 {
                     MakeMoonOrbitAndRotate(moon, i);
-                    Debug.Log("Orbit moon " + moon.bodyName);
-
                     Transform parent = moon.transform.parent.transform;
                     parent.position = ClosestPointOnPlane(moonsParent.transform.position, moonsParent.transform.TransformDirection(Vector3.up), parent.transform.position);
                     parent.up = moonsParent.transform.up;
@@ -291,7 +299,7 @@ public class Planet : MonoBehaviour
 
         Transform parentTransform = moon.transform.parent.transform;
         Transform moonsParentTransform = moonsParent.transform;
-        parentTransform.RotateAround(moonsParentTransform.position, Vector3.up, moon.orbitSpeed * Time.deltaTime);
+        parentTransform.RotateAround(moonsParentTransform.position, Vector3.up, moon.orbitSpeed * Time.deltaTime * 2.5f);
 
         Vector3 direction = parentTransform.position - moonsParentTransform.position;
         parentTransform.position = moonsParentTransform.position + (direction.normalized * moonsRelativeDistances[i].magnitude);
