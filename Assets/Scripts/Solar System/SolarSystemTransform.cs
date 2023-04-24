@@ -96,17 +96,19 @@ public class SolarSystemTransform : MonoBehaviour
         foreach (Planet planet in spawnPlanets.bodies)
         {
             if (CheckIfNewActivePlanet(planet)) break;
-            
-            foreach (Planet moon in planet.moons)
+
+            for (int i = 0; i < planet.moons.Count; i++)
             {
+                Planet moon = planet.moons[i];
                 if (CheckIfNewActivePlanet(moon))
                 {
                     moonIsActivePlanet = true;
                     activeMoonParentPlanet = planet;
+                    planet.playerIsOnMoon = true;
+                    planet.activeMoonIndex = i;
                     break;
                 }
             }
-
         }
     }
 
@@ -172,6 +174,7 @@ public class SolarSystemTransform : MonoBehaviour
 
         Vector3 newSunPos = sun.transform.position;
         Vector3 direction;
+        
         if (moonIsActivePlanet)
         {
             direction = newSunPos - activeMoonParentPlanet.transform.position;
@@ -213,7 +216,6 @@ public class SolarSystemTransform : MonoBehaviour
         {
             planetTransform.parent.parent.parent.SetParent(null, true);
             activePlanetIndex = spawnPlanets.bodies.IndexOf(activeMoonParentPlanet);
-            activeMoonParentPlanet.playerIsOnMoon = true;
         }
 
         rotateSolarSystem = true;
