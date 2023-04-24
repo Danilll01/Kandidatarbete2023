@@ -192,12 +192,12 @@ public class Planet : MonoBehaviour
             if (solarSystemRotationActive)
             {
                 parentOrbitMover.transform.RotateAround(Vector3.zero, Vector3.up,
-                    0.1f * Time.deltaTime);
+                    speedToRotateAroundWith * Time.deltaTime * 2.5f);
             }
             else
             {
                 parentOrbitMover.transform.RotateAround(Vector3.zero, Vector3.up,
-                    0.1f * Time.deltaTime);
+                    speedToRotateAroundWith * Time.deltaTime);
             }
             KeepPlanetAtSameDistanceToSun();
             RotateAndOrbitMoonsAndParentPlanet();
@@ -217,20 +217,21 @@ public class Planet : MonoBehaviour
         {
             // Rotate the active planets moons manually since it is not affected by solar system rotation
             
-            transform.parent.RotateAround(Vector3.zero, -axisToRotateAround, 0.1f * Time.deltaTime);
+            transform.parent.RotateAround(Vector3.zero, -axisToRotateAround, speedToRotateAroundWith * Time.deltaTime);
             Vector3 direction = transform.parent.position - Vector3.zero;
             transform.parent.position = Vector3.zero + (direction.normalized * moonsRelativeDistances[activeMoonIndex].magnitude);
 
-            moonsParent.transform.RotateAround(transform.parent.position, -axisToRotateAround, 0.1f * Time.deltaTime);
+            moonsParent.transform.RotateAround(transform.parent.position, -axisToRotateAround, speedToRotateAroundWith* Time.deltaTime);
             moonsParent.transform.localPosition = Vector3.zero;
             moonsParent.transform.up = sunTransform.up;
 
             for (int i = 0; i < moons.Count; i++)
             {
                 Planet moon = moons[i];
-                if (player.parent != moon.transform)
+                if (activeMoonIndex != i)
                 {
                     MakeMoonOrbitAndRotate(moon, i);
+                    Debug.Log("Orbit moon " + moon.bodyName);
 
                     Transform parent = moon.transform.parent.transform;
                     parent.position = ClosestPointOnPlane(moonsParent.transform.position, moonsParent.transform.TransformDirection(Vector3.up), parent.transform.position);
@@ -258,7 +259,7 @@ public class Planet : MonoBehaviour
             // Rotate the active planets moons manually since it is not affected by solar system rotation
             if (moonsParentIsActivePlanet)
             {
-                moonsParent.transform.RotateAround(Vector3.zero, -axisToRotateAround, 0.1f * Time.deltaTime);
+                moonsParent.transform.RotateAround(Vector3.zero, -axisToRotateAround, speedToRotateAroundWith * Time.deltaTime);
             }
 
             moonsParent.transform.localPosition = Vector3.zero;
@@ -392,15 +393,21 @@ public class Planet : MonoBehaviour
             return;
         }
 
-        Transform sunTransform = Universe.sunPosition;
-        float radius = (parentOrbitMover.position - sunTransform.position).magnitude;
-        Universe.DrawGizmosCircle(sunTransform.position, sunTransform.up, radius, 32);
-
-        foreach (Planet moon in moons)
+        if (bodyName.Contains("Planet"))
         {
-            Transform moonsParentTransform = moonsParent.transform;
-            float moonRadius = (moon.transform.position - moonsParentTransform.position).magnitude;
-            Universe.DrawGizmosCircle(moonsParentTransform.position, moonsParentTransform.up, moonRadius, 32);
+            Transform sunTransform = Universe.sunPosition;
+            float radius = (parentOrbitMover.position - sunTransform.position).magnitude;
+            Universe.DrawGizmosCircle(sunTransform.position, sunTransform.up, radius, 32);
+            
+            foreach (Planet moon in moons)
+            {
+                Transform moonsParentTransform = moonsParent.transform;
+                float moonRadius = (moon.transform.position - moonsParentTransform.position).magnitude;
+                Universe.DrawGizmosCircle(moonsParentTransform.position, moonsParentTransform.up, moonRadius, 32);
+            }
         }
+        
+
+        
     }
 }
