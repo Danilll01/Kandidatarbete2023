@@ -4,7 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Added game icon" />
+    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -14,6 +16,7 @@
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
         <entry key="$PROJECT_DIR$" value="#4.9-Fix-astronaut-player-model" />
+        <entry key="$PROJECT_DIR$/Assets/BoughtAssets" value="fbb557d69f00b0d3130c931e29858df9fe25e29f" />
       </map>
     </option>
     <option name="ROOT_SYNC" value="DONT_SYNC" />
@@ -41,6 +44,7 @@
     <setting file="mock://D:/Unity/Projects/Kandidatarbete2023/Assets/Scripts/MarchingCubes/Planet.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://D:/Unity/Projects/Kandidatarbete2023/Assets/Scripts/MarchingCubes/SpawnPlanet.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://D:/Unity/Projects/Kandidatarbete2023/Assets/Scripts/MovementControllers/PillPlayerController.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://D:/Unity/Projects/Kandidatarbete2023/Assets/Scripts/MovementControllers/SpaceShipController.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipController.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipTransition.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="mock://D:/Unity/Projects/Kandidatarbete2023/Assets/Scripts/PlanetTerrain/ChunksHandler.cs" root0="SKIP_HIGHLIGHTING" />
@@ -157,30 +161,6 @@
       <workItem from="1681740646976" duration="1537000" />
       <workItem from="1682004115726" duration="10682000" />
       <workItem from="1682086929011" duration="4323000" />
-    </task>
-    <task id="LOCAL−00004" summary="Changed directional light color to be based on temperature">
-      <created>1679448209679</created>
-      <option name="number" value="LOCAL−00004" />
-      <option name="presentableId" value="LOCAL−00004" />
-      <updated>1679448209679</updated>
-    </task>
-    <task id="LOCAL−00005" summary="Added atmospheres to planets">
-      <created>1679451895994</created>
-      <option name="number" value="LOCAL−00005" />
-      <option name="presentableId" value="LOCAL−00005" />
-      <updated>1679451895994</updated>
-    </task>
-    <task id="LOCAL−00006" summary="Atmpsphere light now faces right direction">
-      <created>1679452532570</created>
-      <option name="number" value="LOCAL−00006" />
-      <option name="presentableId" value="LOCAL−00006" />
-      <updated>1679452532570</updated>
-    </task>
-    <task id="LOCAL−00007" summary="You can now temporarily increase atmosphere saturation">
-      <created>1679529725777</created>
-      <option name="number" value="LOCAL−00007" />
-      <option name="presentableId" value="LOCAL−00007" />
-      <updated>1679529725777</updated>
     </task>
     <task id="LOCAL−00008" summary="Added back blending light intensity. Changed values to make atmpsphere look better">
       <created>1679886408947</created>
@@ -452,7 +432,31 @@
       <option name="presentableId" value="LOCAL−00052" />
       <updated>1682125845984</updated>
     </task>
-    <option name="localTasksCounter" value="53" />
+    <task id="LOCAL−00053" summary="Investigation">
+      <created>1682126097797</created>
+      <option name="number" value="LOCAL−00053" />
+      <option name="presentableId" value="LOCAL−00053" />
+      <updated>1682126097797</updated>
+    </task>
+    <task id="LOCAL−00054" summary="Pointer change">
+      <created>1682126116103</created>
+      <option name="number" value="LOCAL−00054" />
+      <option name="presentableId" value="LOCAL−00054" />
+      <updated>1682126116103</updated>
+    </task>
+    <task id="LOCAL−00055" summary="More investigation">
+      <created>1682126191119</created>
+      <option name="number" value="LOCAL−00055" />
+      <option name="presentableId" value="LOCAL−00055" />
+      <updated>1682126191119</updated>
+    </task>
+    <task id="LOCAL−00056" summary="Pointer change again">
+      <created>1682126202179</created>
+      <option name="number" value="LOCAL−00056" />
+      <option name="presentableId" value="LOCAL−00056" />
+      <updated>1682126202179</updated>
+    </task>
+    <option name="localTasksCounter" value="57" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -474,10 +478,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="Water now get rendered at the right time when under water" />
-    <MESSAGE value="Water material is now done a little better" />
-    <MESSAGE value="Water now shades correctly by the atmosphere inside and outside" />
-    <MESSAGE value="Sun has nice new moving material based on temperature" />
     <MESSAGE value="Sun temperature is now randomized between 3000 and 8000 degrees kelvin" />
     <MESSAGE value="Directional light matches sun temperature and color" />
     <MESSAGE value="Added back water shadow as the back side of the planet otherwise would have sunlight through the ground" />
@@ -499,6 +499,10 @@
     <MESSAGE value="Rotations now finally working prefectly as wanted. No camera jumps" />
     <MESSAGE value="Rotations now finally working perfectly as wanted. No camera jumps" />
     <MESSAGE value="Added game icon" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added game icon" />
+    <MESSAGE value="Investigation" />
+    <MESSAGE value="Pointer change" />
+    <MESSAGE value="More investigation" />
+    <MESSAGE value="Pointer change again" />
+    <option name="LAST_COMMIT_MESSAGE" value="Pointer change again" />
   </component>
 </project>
