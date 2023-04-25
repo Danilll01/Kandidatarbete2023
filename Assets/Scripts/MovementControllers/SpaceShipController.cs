@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -13,6 +14,9 @@ public class SpaceShipController : MonoBehaviour
     [SerializeField] private float movementDampening = 25f;
     [SerializeField] private float normalSpeed = 25f;
     [SerializeField] private float maxSpeed = 45f;
+
+    [Header("Ship setting stuff")] 
+    [SerializeField] private float inactiveTime = 10f;
     
     [Header("Camera stuff")]
     [SerializeField] private float rotationSpeed = 2.0f;
@@ -36,6 +40,9 @@ public class SpaceShipController : MonoBehaviour
     private Vector3 oldMovementVector = new();
     private GameObject standardShip;
     private bool isOutsidePlanet = false;
+    
+    // Backend stuff
+    private float inactiveTimer = 0;
 
     /// <summary>
     /// Initializes ship controller script
@@ -47,6 +54,7 @@ public class SpaceShipController : MonoBehaviour
         lookRotation = transform.rotation;
         defaultShipRotation = spaceshipRoot.localEulerAngles;
         rotationZ = defaultShipRotation.z;
+        inactiveTimer = inactiveTime;
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
@@ -99,14 +107,49 @@ public class SpaceShipController : MonoBehaviour
 
         //Rotation
         float rotationZTmp = Input.GetAxis("Spaceship Roll");
-
-        mouseXSmooth = Mathf.Lerp(mouseXSmooth, Input.GetAxis("Horizontal Look") * rotationSpeed, Time.fixedDeltaTime * cameraSmooth);
-        mouseYSmooth = Mathf.Lerp(mouseYSmooth, Input.GetAxis("Vertical Look") * rotationSpeed, Time.fixedDeltaTime * cameraSmooth);
+        float currentMouseXMovement = Input.GetAxis("Horizontal Look");
+        float currentMouseYMovement = Input.GetAxis("Vertical Look");
+        Vector3 currentRotationVector = new Vector3(currentMouseXMovement, currentMouseYMovement, rotationZTmp);
+        
+        mouseXSmooth = Mathf.Lerp(mouseXSmooth, currentMouseXMovement * rotationSpeed, Time.fixedDeltaTime * cameraSmooth);
+        mouseYSmooth = Mathf.Lerp(mouseYSmooth, currentMouseYMovement * rotationSpeed, Time.fixedDeltaTime * cameraSmooth);
         Quaternion localRotation = Quaternion.Euler(mouseYSmooth, mouseXSmooth, rotationZTmp * rotationSpeed);
 
         // The mouse local look rotation
         lookRotation = lookRotation * localRotation;
 
+        if (Universe.player.attractor == null || currentRotationVector != Vector3.zero || newMovementVector != Vector3.zero)
+        {
+            inactiveTimer = inactiveTime;
+        }
+        else
+        {
+            if (inactiveTimer < 0 && Universe.player.attractor != null)
+            {
+                lookRotation = Quaternion.Lerp(lookRotation, Quaternion.identity, Time.fixedDeltaTime / 3f);
+            }
+            else
+            {
+                inactiveTimer -= Time.deltaTime;
+            }
+        }
+        
+        
+        RotateMainShip();
+        
+        RotateVisualShipModel();
+
+        //Update crosshair texture
+        if (crosshairTexture)
+        {
+            crosshairTexture.position = mainCamera.WorldToScreenPoint(transform.position + transform.forward * 100);
+        }
+    }
+
+  
+    // Rotates the main ship body
+    private void RotateMainShip()
+    {
         // Ship rotation
         if (Universe.player.attractor == null)
         {
@@ -132,22 +175,22 @@ public class SpaceShipController : MonoBehaviour
                 isOutsidePlanet = false;
             }
         }
-        
+
         // Rotate the main ship (remove standardShip if automatic planet following is turned of)
         transform.rotation = standardShip.transform.rotation * lookRotation;
-
-        
-        
+    }
+    
+    
+    
+    
+    // Rotates visual model
+    private void RotateVisualShipModel()
+    {
         // Visual rotation
         rotationZ -= mouseXSmooth;
         rotationZ = Mathf.Clamp(rotationZ, -45, 45);
         spaceshipRoot.transform.localEulerAngles = new Vector3(defaultShipRotation.x, defaultShipRotation.y, rotationZ);
         rotationZ = Mathf.Lerp(rotationZ, defaultShipRotation.z, Time.fixedDeltaTime * cameraSmooth);
-
-        //Update crosshair texture
-        if (crosshairTexture)
-        {
-            crosshairTexture.position = mainCamera.WorldToScreenPoint(transform.position + transform.forward * 100);
-        }
     }
+
 }
