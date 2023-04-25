@@ -99,6 +99,7 @@ public class Creature : MonoBehaviour
     private int getResourceTickSkips = 20;
     private int getResourceTicks = 20;
     private GameObject lastResourceFound;
+    private Vector3 foundWaterAt = Vector3.zero;
 
     // Start is called before the first frame update
     void Start()
@@ -288,14 +289,15 @@ public class Creature : MonoBehaviour
                 resourcePos = nearestResource.transform.position;
         } else
         {
-            resourcePos = GetNearestWaterSource();        
+            // Dont try to find new water if water is already found
+            resourcePos = foundWaterAt == Vector3.zero ? GetNearestWaterSource() : foundWaterAt;
         }
 
         // If there is no resource, walk around randomly
-        if (nearestResource != null && resourcePos != Vector3.zero)
+        if (nearestResource == null ^ resourcePos == Vector3.zero)
         {
             // If the resource is within consume radius, consume it
-            if (IsCloseToDestination(resourcePos))
+            if (IsCloseToDestination(resourcePos) || (resource == ResourceType.Water && Vector3.Distance(transform.position, planet.transform.position) < planet.waterDiameter / 2))
             {
                 if (DEBUG) Debug.Log("Found it " + Vector3.Distance(transform.position, nearestResource.transform.position) + " away");
                 atDestination = true;
@@ -305,6 +307,7 @@ public class Creature : MonoBehaviour
                 if (resource == ResourceType.Water)
                 {
                     thirst = Mathf.Min(maxThirst, thirst + thirstIncrease);
+                    foundWaterAt = Vector3.zero;
                 }
                 else
                 {
@@ -320,7 +323,7 @@ public class Creature : MonoBehaviour
                     if (disable) nearestResource.GetComponent<Resource>().ConsumeResource();
                 }
             }
-            else if (Vector3.Distance(transform.position, resourcePos) > consumeRadius)
+            else //if (Vector3.Distance(transform.position, resourcePos) > consumeRadius)
             {
                 atDestination = false;
                 destination = resourcePos;
@@ -444,23 +447,28 @@ public class Creature : MonoBehaviour
 
     private Vector3 GetNearestWaterSource()
     {
-        Vector3 closestWaterSource = Vector3.zero;
-        float closestDistance = Mathf.Infinity;
-
-        // We can implement caching here to get faster results. Ex save the 40 closest sources and only update when we are searching for water again
-        
-        foreach (Vector3 pos in planet.waterPoints)
+        // Get random points around the creature and try to find water
+        for (int i = 0; i < 2; i++)
         {
-            // Calculate distance from creature to pos
-            float distance = Vector3.Distance(transform.position, pos);
-            if (distance < closestDistance && distance < detectionRadius * 4)
+            Vector3 randPos = transform.position + transform.rotation * Random.onUnitSphere * detectionRadius * 2;
+
+            Ray ray = new(randPos, planet.transform.position - randPos);
+            RaycastHit hit;
+
+            if (Physics.Raycast(ray, out hit, planet.radius))
             {
-                closestDistance = distance;
-                closestWaterSource = pos;
+                // Check if the point hit is below water level
+                if (Vector3.Distance(hit.point, planet.transform.position) < planet.waterDiameter / 2)
+                {
+                    if (DEBUG) Debug.DrawLine(randPos, hit.point, Color.red, 10f);
+                    foundWaterAt = hit.point;
+                    return hit.point;
+                }
+                
             }
         }
 
-        return closestWaterSource;
+        return Vector3.zero;
     }
 
     private void GotoPosition(Vector3 pos)
