@@ -187,8 +187,8 @@ public class SpaceShipController : MonoBehaviour
     private void RotateVisualShipModel()
     {
         // Visual rotation
-        rotationZ -= mouseXSmooth;
-        rotationZ = Mathf.Clamp(rotationZ, -45, 45);
+        rotationZ -= mouseXSmooth/10f;
+        rotationZ = Mathf.Clamp(rotationZ, -15, 15);
         spaceshipRoot.transform.localEulerAngles = new Vector3(defaultShipRotation.x, defaultShipRotation.y, rotationZ);
         rotationZ = Mathf.Lerp(rotationZ, defaultShipRotation.z, Time.fixedDeltaTime * cameraSmooth);
     }
