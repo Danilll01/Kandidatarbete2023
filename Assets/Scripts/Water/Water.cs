@@ -1,19 +1,23 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Rendering;
 
 public class Water
 {
-    private Mesh mesh;
-    private MeshFilter meshFilter;
-    private int resolution;
-    private int[] trianglesUp;
-    private int[] trianglesDown;
+    
     private Vector3 localUp, axisA, axisB;
-    private ComputeShader computeShader;
-    private float waterRadius;
+    public Vector3 waterPos;
+
+    private readonly float waterRadius;
+    private readonly int position;
+    private readonly int sideResolution;
+    public int resolution;
+    public bool highRes = false;
+
+    private readonly ComputeShader computeShader;
+    private MeshFilter meshFilter;
+    private Mesh meshLow;
+    private Mesh meshHigh;
+
 
     /// <summary>
     /// Initializes the water mesh
@@ -23,16 +27,23 @@ public class Water
     /// <param name="resolution"></param>
     /// <param name="waterRadius"></param>
     /// <param name="localUp"></param>
-    public Water(ComputeShader computeShader, MeshFilter meshFilter, int resolution, float waterRadius, Vector3 localUp)
+    public Water(ComputeShader computeShader, MeshFilter meshFilter, int resolution, float waterRadius, Vector3 localUp, int position, int sideResolution)
     {
         this.computeShader = computeShader;
         this.meshFilter = meshFilter;
         this.resolution = resolution;
         this.waterRadius = waterRadius;
         this.localUp = localUp;
+        this.position = position;
+        this.sideResolution = sideResolution;
+
 
         axisA = new Vector3(localUp.y, localUp.z, localUp.x);
         axisB = Vector3.Cross(localUp, axisA);
+
+        waterPos = (localUp + 
+            (1 / (2.0f * sideResolution) + (position % sideResolution) / (float)sideResolution - .5f) * 2 * axisA +
+            (1 / (2.0f * sideResolution) + (position / sideResolution) / (float)sideResolution - .5f) * 2 * axisB).normalized * waterRadius;
     }
 
     /// <summary>
@@ -40,29 +51,48 @@ public class Water
     /// </summary>
     public void ConstructMesh()
     {
-        mesh = new Mesh();
-        mesh.indexFormat = IndexFormat.UInt32;
+        ConsturctMeshResolution(ref meshHigh);
+        resolution = 64;
+        ConsturctMeshResolution(ref meshLow);
+        ApplyMesh(true);
+    }
 
+    private void ConsturctMeshResolution(ref Mesh mesh)
+    {
+        mesh = new Mesh { indexFormat = IndexFormat.UInt32 };
         Vector3[] vertices = new Vector3[resolution * resolution];
+        int[] trianglesUp = new int[(resolution - 1) * (resolution - 1) * 2 * 3];
 
-        ConstructUnitSphere(vertices);
+        ConstructUnitSphere(vertices, trianglesUp);
 
         mesh.vertices = vertices;
         mesh.triangles = trianglesUp;
         mesh.RecalculateBounds();
+        mesh.RecalculateNormals();
+    }
 
-        meshFilter.sharedMesh = mesh;
+
+    public void ApplyMesh(bool highResolution)
+    {
+        if(highResolution)
+        {
+            meshFilter.sharedMesh = meshHigh;
+            highRes = true;
+        }
+        else
+        {
+            meshFilter.sharedMesh = meshLow;
+            highRes = false;
+        }
+            
     }
 
     /// <summary>
     /// Calls the GPU which creates the mesh
     /// </summary>
     /// <param name="vertices"></param>
-    private void ConstructUnitSphere(Vector3[] vertices)
+    private void ConstructUnitSphere(Vector3[] vertices, int[] trianglesUp)
     {
-
-        trianglesUp = new int[(resolution - 1) * (resolution - 1) * 2 * 3];
-        trianglesDown = new int[(resolution - 1) * (resolution - 1) * 2 * 3];
 
         //Calculate the vertices on the GPU
         ComputeBuffer bufferVertices = new ComputeBuffer(resolution * resolution, 3 * sizeof(float));
@@ -71,7 +101,6 @@ public class Water
 
         bufferVertices.SetData(vertices);
         bufferTrianglesUp.SetData(trianglesUp);
-        bufferTrianglesDown.SetData(trianglesDown);
 
         int kernelId = computeShader.FindKernel("CSMesh");
 
@@ -80,6 +109,9 @@ public class Water
         computeShader.SetBuffer(kernelId, "vertices", bufferVertices);
 
         computeShader.SetInt("resolution", resolution);
+        computeShader.SetInt("sideResolution", sideResolution);
+        computeShader.SetInt("posx", position % sideResolution);
+        computeShader.SetInt("posy", position / sideResolution);
         computeShader.SetFloat("radius", waterRadius);
 
         computeShader.SetFloats("localUp", new float[] { localUp.x, localUp.y, localUp.z });
@@ -90,20 +122,9 @@ public class Water
 
         bufferVertices.GetData(vertices);
         bufferTrianglesUp.GetData(trianglesUp);
-        bufferTrianglesDown.GetData(trianglesDown);
 
         bufferVertices.Dispose();
         bufferTrianglesUp.Dispose();
         bufferTrianglesDown.Dispose();
-    }
-    /// <summary>
-    /// Checks which side of the water the mesh should be renderd on
-    /// </summary>
-    /// <param name="underWater"></param>
-    public void UnderWater(bool underWater)
-    {
-        mesh.triangles = (underWater) ? trianglesDown : trianglesUp;
-        mesh.RecalculateBounds();
-        meshFilter.sharedMesh = mesh;
     }
 }
