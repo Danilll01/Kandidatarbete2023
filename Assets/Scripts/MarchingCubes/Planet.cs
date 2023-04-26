@@ -210,6 +210,11 @@ public class Planet : MonoBehaviour
             
             RotateAndOrbitMoonsAndParentPlanet();
         }
+        else if (rotateMoons)
+        {
+            Debug.Log("Rotate moons");
+            RotateAndOrbitMoons(true);
+        }
     }
 
     private void RotateAroundAxis()

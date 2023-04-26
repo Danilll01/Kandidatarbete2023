@@ -147,7 +147,7 @@ public class SolarSystemTransform : MonoBehaviour
         if (activePlanet != oldActivePlanet)
         {
             MovePlanets();
-            //activePlanet.rotateMoons = true;
+            activePlanet.rotateMoons = true;
             oldActivePlanet = activePlanet;
         }
     }
