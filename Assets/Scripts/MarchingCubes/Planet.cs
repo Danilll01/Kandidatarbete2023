@@ -83,7 +83,8 @@ public class Planet : MonoBehaviour
 
         if (bodyName.Contains("Moon"))
         {
-            orbitSpeed = 1;
+            Vector3 localPos = (transform.parent.parent.position - transform.position);
+            orbitSpeed =  360 / (3f * Mathf.PI * Mathf.Sqrt(Mathf.Pow(localPos.magnitude, 3)) * 0.00006673f) * 5f;
         }
         else
         {
