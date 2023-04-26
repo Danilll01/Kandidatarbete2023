@@ -97,6 +97,10 @@ public class PillPlayerController : MonoBehaviour
             DisplayDebug.AddOrSetDebugVariable("Planet radius", attractor.radius.ToString());
             DisplayDebug.AddOrSetDebugVariable("Planet mass", attractor.mass.ToString());
             DisplayDebug.AddOrSetDebugVariable("Planet surface gravity", attractor.surfaceGravity.ToString());
+            BiomeValue currentBiome = Biomes.EvaluteBiomeMap(attractor.Biome, transform.position, attractor.DistanceToSun);
+            DisplayDebug.AddOrSetDebugVariable("Biome: Mountain", currentBiome.mountains.ToString());
+            DisplayDebug.AddOrSetDebugVariable("Biome: Temperature", currentBiome.temperature.ToString());
+            DisplayDebug.AddOrSetDebugVariable("Biome: Trees", currentBiome.trees.ToString());
         }
         else
         {
@@ -104,6 +108,9 @@ public class PillPlayerController : MonoBehaviour
             DisplayDebug.AddOrSetDebugVariable("Planet radius", "N/A");
             DisplayDebug.AddOrSetDebugVariable("Planet mass", "N/A");
             DisplayDebug.AddOrSetDebugVariable("Planet surface gravity", "N/A");
+            DisplayDebug.AddOrSetDebugVariable("Biome: Mountain", "N/A");
+            DisplayDebug.AddOrSetDebugVariable("Biome: Temperature", "N/A");
+            DisplayDebug.AddOrSetDebugVariable("Biome: Trees", "N/A");
         }
     }
 
@@ -269,7 +276,7 @@ public class PillPlayerController : MonoBehaviour
     private void Spawn(Planet planet, int seed)
     {
         RandomX rand = new RandomX(seed);
-        Vector3 spawnLocationAbovePlanet = planet.transform.position + (rand.OnUnitSphere() * planet.radius * 1.5f);
+        Vector3 spawnLocationAbovePlanet = planet.transform.position + (rand.OnUnitSphere() * planet.radius * 1.15f);
         transform.position = spawnLocationAbovePlanet;
         transform.LookAt(planet.transform);
         ship.Initialize(body, firstPersonCamera);

@@ -11,6 +11,7 @@ public class PlanetTester : MonoBehaviour
     void Start()
     {
         Universe.InitializeRandomWithSeed();
+        planet.radius = 500;
         planet.Initialize(player.transform, Universe.random.Next(), true);
         planet.SetUpPlanetValues();
         player.Initialize(planet, Universe.random.Next());
