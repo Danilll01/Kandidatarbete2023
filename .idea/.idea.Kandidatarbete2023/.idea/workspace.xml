@@ -4,10 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Clamped ship visual model rotation when turning">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipController.cs" afterDir="false" />
-    </list>
+    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -17,7 +14,7 @@
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
         <entry key="$PROJECT_DIR$" value="#4.9-Fix-astronaut-player-model" />
-        <entry key="$PROJECT_DIR$/Assets/BoughtAssets" value="fbb557d69f00b0d3130c931e29858df9fe25e29f" />
+        <entry key="$PROJECT_DIR$/Assets/BoughtAssets" value="master" />
       </map>
     </option>
     <option name="ROOT_SYNC" value="DONT_SYNC" />
@@ -151,13 +148,7 @@
       <workItem from="1681740646976" duration="1537000" />
       <workItem from="1682004115726" duration="10682000" />
       <workItem from="1682086929011" duration="4323000" />
-      <workItem from="1682460846051" duration="12232000" />
-    </task>
-    <task id="LOCAL−00010" summary="Fixed some comments">
-      <created>1680031048046</created>
-      <option name="number" value="LOCAL−00010" />
-      <option name="presentableId" value="LOCAL−00010" />
-      <updated>1680031048046</updated>
+      <workItem from="1682460846051" duration="12716000" />
     </task>
     <task id="LOCAL−00011" summary="Added random atmosphere color values">
       <created>1680035072429</created>
@@ -447,7 +438,13 @@
       <option name="presentableId" value="LOCAL−00058" />
       <updated>1682466358537</updated>
     </task>
-    <option name="localTasksCounter" value="59" />
+    <task id="LOCAL−00059" summary="Fixed nice ship visual view bobbing and a cross-hair to see where you go">
+      <created>1682473958065</created>
+      <option name="number" value="LOCAL−00059" />
+      <option name="presentableId" value="LOCAL−00059" />
+      <updated>1682473958065</updated>
+    </task>
+    <option name="localTasksCounter" value="60" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -469,7 +466,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="Added back water shadow as the back side of the planet otherwise would have sunlight through the ground" />
     <MESSAGE value="Fixed green sun bug" />
     <MESSAGE value="Better spawn planet" />
     <MESSAGE value="Finally found what the issue was with the main merge" />
@@ -494,6 +490,7 @@
     <MESSAGE value="Pointer change again" />
     <MESSAGE value="Ship now rotates upright after 10 seconds" />
     <MESSAGE value="Clamped ship visual model rotation when turning" />
-    <option name="LAST_COMMIT_MESSAGE" value="Clamped ship visual model rotation when turning" />
+    <MESSAGE value="Fixed nice ship visual view bobbing and a cross-hair to see where you go" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fixed nice ship visual view bobbing and a cross-hair to see where you go" />
   </component>
 </project>

@@ -566,18 +566,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d3eddb10af46364493eb06ed6f1faac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &301720328 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3966985094543174574, guid: 479edb22e1790754688e5f093ada7ddf,
-    type: 3}
-  m_PrefabInstance: {fileID: 423776090}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3edcea02ed206bd499f01d505fe3ec35, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &423776090
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -585,14 +573,9 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 3421500241588532620, guid: 479edb22e1790754688e5f093ada7ddf,
+    - target: {fileID: 3421500242409074447, guid: 479edb22e1790754688e5f093ada7ddf,
         type: 3}
-      propertyPath: m_Name
-      value: ShipCamera
-      objectReference: {fileID: 0}
-    - target: {fileID: 3421500241588532626, guid: 479edb22e1790754688e5f093ada7ddf,
-        type: 3}
-      propertyPath: m_Enabled
+      propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3421500242409074447, guid: 479edb22e1790754688e5f093ada7ddf,
@@ -627,58 +610,13 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3421500242679807733, guid: 479edb22e1790754688e5f093ada7ddf,
         type: 3}
-      propertyPath: maxSpeed
-      value: 4000
-      objectReference: {fileID: 0}
-    - target: {fileID: 3421500242679807733, guid: 479edb22e1790754688e5f093ada7ddf,
-        type: 3}
-      propertyPath: normalSpeed
-      value: 500
-      objectReference: {fileID: 0}
-    - target: {fileID: 3421500242679807733, guid: 479edb22e1790754688e5f093ada7ddf,
-        type: 3}
       propertyPath: crosshairTexture
       value: 
       objectReference: {fileID: 1922088171}
-    - target: {fileID: 3421500242679807733, guid: 479edb22e1790754688e5f093ada7ddf,
-        type: 3}
-      propertyPath: movementDampening
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3421500242679807733, guid: 479edb22e1790754688e5f093ada7ddf,
-        type: 3}
-      propertyPath: shipTransitionScript
-      value: 
-      objectReference: {fileID: 301720328}
-    - target: {fileID: 3421500242679807738, guid: 479edb22e1790754688e5f093ada7ddf,
-        type: 3}
-      propertyPath: m_UseGravity
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3421500242679807738, guid: 479edb22e1790754688e5f093ada7ddf,
-        type: 3}
-      propertyPath: m_AngularDrag
-      value: 100
-      objectReference: {fileID: 0}
     - target: {fileID: 3421500242679807739, guid: 479edb22e1790754688e5f093ada7ddf,
         type: 3}
       propertyPath: m_RootOrder
       value: 9
-      objectReference: {fileID: 0}
-    - target: {fileID: 3421500242679807739, guid: 479edb22e1790754688e5f093ada7ddf,
-        type: 3}
-      propertyPath: m_LocalScale.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3421500242679807739, guid: 479edb22e1790754688e5f093ada7ddf,
-        type: 3}
-      propertyPath: m_LocalScale.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3421500242679807739, guid: 479edb22e1790754688e5f093ada7ddf,
-        type: 3}
-      propertyPath: m_LocalScale.z
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3421500242679807739, guid: 479edb22e1790754688e5f093ada7ddf,
         type: 3}
@@ -728,26 +666,6 @@ PrefabInstance:
     - target: {fileID: 3421500242679807739, guid: 479edb22e1790754688e5f093ada7ddf,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3421500242679807739, guid: 479edb22e1790754688e5f093ada7ddf,
-        type: 3}
-      propertyPath: m_ConstrainProportionsScale
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3966985094543174574, guid: 479edb22e1790754688e5f093ada7ddf,
-        type: 3}
-      propertyPath: mountedPos
-      value: 
-      objectReference: {fileID: 882204424}
-    - target: {fileID: 3966985094543174574, guid: 479edb22e1790754688e5f093ada7ddf,
-        type: 3}
-      propertyPath: shipCamera
-      value: 
-      objectReference: {fileID: 948442365}
-    - target: {fileID: 7681827850640083987, guid: 479edb22e1790754688e5f093ada7ddf,
-        type: 3}
-      propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -1102,12 +1020,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 878722367}
   m_CullTransparentMesh: 1
---- !u!4 &882204424 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 3421500243360975441, guid: 479edb22e1790754688e5f093ada7ddf,
-    type: 3}
-  m_PrefabInstance: {fileID: 423776090}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &882231451
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1261,12 +1173,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f512af7b99590c141bb60bcbda8019b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!20 &948442365 stripped
-Camera:
-  m_CorrespondingSourceObject: {fileID: 7746035291320629583, guid: 479edb22e1790754688e5f093ada7ddf,
-    type: 3}
-  m_PrefabInstance: {fileID: 423776090}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &959912409
 GameObject:
   m_ObjectHideFlags: 0
@@ -2250,7 +2156,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1922088171
 RectTransform:
   m_ObjectHideFlags: 0
