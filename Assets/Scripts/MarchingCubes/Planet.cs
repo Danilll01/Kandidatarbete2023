@@ -112,17 +112,14 @@ public class Planet : MonoBehaviour
             waterDiameter = 0;
         }
 
-        if (!bodyName.Contains("Moon"))
+        if (foliageHandler != null)
         {
-            if (foliageHandler != null)
-            {
-                foliageHandler.Initialize(this);
-            }
+            foliageHandler.Initialize(this);
+        }
 
-            if (creatureHandler != null)
-            {
-                creatureHandler.Initialize(this, rand.Next());
-            }
+        if (creatureHandler != null)
+        {
+            creatureHandler.Initialize(this, rand.Next());
         }
 
         terrainLevel.SetMin(Mathf.Abs((waterDiameter + 1) / 2));
