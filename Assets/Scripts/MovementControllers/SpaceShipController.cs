@@ -17,6 +17,7 @@ public class SpaceShipController : MonoBehaviour
 
     [Header("Ship setting stuff")] 
     [SerializeField] private float inactiveTime = 10f;
+    [SerializeField] private float crossHairMovement = 30f;
     
     [Header("Camera stuff")]
     [SerializeField] private float rotationSpeed = 2.0f;
@@ -33,6 +34,8 @@ public class SpaceShipController : MonoBehaviour
     private float speed;
     private Rigidbody physicsBody;
     private Quaternion lookRotation;
+    private float rotationX = 0;
+    private float rotationY = 0;
     private float rotationZ = 0;
     private float mouseXSmooth = 0;
     private float mouseYSmooth = 0;
@@ -40,6 +43,7 @@ public class SpaceShipController : MonoBehaviour
     private Vector3 oldMovementVector = new();
     private GameObject standardShip;
     private bool isOutsidePlanet = false;
+   
     
     // Backend stuff
     private float inactiveTimer = 0;
@@ -53,7 +57,7 @@ public class SpaceShipController : MonoBehaviour
         physicsBody.useGravity = false;
         lookRotation = transform.rotation;
         defaultShipRotation = spaceshipRoot.localEulerAngles;
-        rotationZ = defaultShipRotation.z;
+        rotationY = defaultShipRotation.z;
         inactiveTimer = inactiveTime;
 
         Cursor.lockState = CursorLockMode.Locked;
@@ -82,7 +86,7 @@ public class SpaceShipController : MonoBehaviour
         float lift = Input.GetAxis("Spaceship Lift");
 
         Vector3 newMovementVector = new(strafe, lift, thrust);
-        oldMovementVector = Vector3.Lerp(oldMovementVector, newMovementVector, Time.fixedDeltaTime * movementDampening);
+        oldMovementVector = Vector3.Lerp(oldMovementVector, newMovementVector, Time.deltaTime * movementDampening);
 
         if (Math.Abs(Input.GetAxisRaw("Sprint") - 1) > 0.001)
         {
@@ -102,8 +106,8 @@ public class SpaceShipController : MonoBehaviour
         physicsBody.velocity = new Vector3(moveDirection.x, moveDirection.y, moveDirection.z);
 
         //Camera follow
-        mainCamera.transform.position = Vector3.Lerp(mainCamera.transform.position, cameraPosition.position, Time.fixedDeltaTime * cameraSmooth);
-        mainCamera.transform.rotation = Quaternion.Lerp(mainCamera.transform.rotation, cameraPosition.rotation, Time.fixedDeltaTime * cameraSmooth);
+        mainCamera.transform.position = Vector3.Lerp(mainCamera.transform.position, cameraPosition.position, Time.deltaTime * cameraSmooth);
+        mainCamera.transform.rotation = Quaternion.Lerp(mainCamera.transform.rotation, cameraPosition.rotation, Time.deltaTime * cameraSmooth);
 
         //Rotation
         float rotationZTmp = Input.GetAxis("Spaceship Roll");
@@ -111,8 +115,8 @@ public class SpaceShipController : MonoBehaviour
         float currentMouseYMovement = Input.GetAxis("Vertical Look");
         Vector3 currentRotationVector = new Vector3(currentMouseXMovement, currentMouseYMovement, rotationZTmp);
         
-        mouseXSmooth = Mathf.Lerp(mouseXSmooth, currentMouseXMovement * rotationSpeed, Time.fixedDeltaTime * cameraSmooth);
-        mouseYSmooth = Mathf.Lerp(mouseYSmooth, currentMouseYMovement * rotationSpeed, Time.fixedDeltaTime * cameraSmooth);
+        mouseXSmooth = Mathf.Lerp(mouseXSmooth, currentMouseXMovement * rotationSpeed, Time.deltaTime * cameraSmooth);
+        mouseYSmooth = Mathf.Lerp(mouseYSmooth, currentMouseYMovement * rotationSpeed, Time.deltaTime * cameraSmooth);
         Quaternion localRotation = Quaternion.Euler(mouseYSmooth, mouseXSmooth, rotationZTmp * rotationSpeed);
 
         // The mouse local look rotation
@@ -142,7 +146,7 @@ public class SpaceShipController : MonoBehaviour
         //Update crosshair texture
         if (crosshairTexture)
         {
-            crosshairTexture.position = mainCamera.WorldToScreenPoint(transform.position + transform.forward * 100);
+            crosshairTexture.anchoredPosition = new Vector2(rotationY + defaultShipRotation.y, -(rotationX + defaultShipRotation.x - 20)) * crossHairMovement;
         }
     }
 
@@ -182,15 +186,18 @@ public class SpaceShipController : MonoBehaviour
     
     
     
-    
     // Rotates visual model
     private void RotateVisualShipModel()
     {
         // Visual rotation
-        rotationZ -= mouseXSmooth/10f;
-        rotationZ = Mathf.Clamp(rotationZ, -15, 15);
-        spaceshipRoot.transform.localEulerAngles = new Vector3(defaultShipRotation.x, defaultShipRotation.y, rotationZ);
-        rotationZ = Mathf.Lerp(rotationZ, defaultShipRotation.z, Time.fixedDeltaTime * cameraSmooth);
+        rotationY += mouseXSmooth/10f;
+        rotationX += mouseYSmooth/10f;
+        rotationY = Mathf.Clamp(rotationY, -15, 15);
+        rotationX = Mathf.Clamp(rotationX, -15, 15);
+        spaceshipRoot.transform.localEulerAngles = new Vector3(rotationX, rotationY, rotationZ);
+        rotationY = Mathf.Lerp(rotationY, defaultShipRotation.y, Time.deltaTime * cameraSmooth);
+        rotationX = Mathf.Lerp(rotationX, defaultShipRotation.x, Time.deltaTime * cameraSmooth);
+        rotationZ = Mathf.Lerp(rotationZ, Input.GetAxis("Spaceship Roll") * 2f, Time.deltaTime * cameraSmooth);
     }
 
 }
