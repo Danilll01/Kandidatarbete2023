@@ -71,6 +71,13 @@ public class SolarSystemTransform : MonoBehaviour
 
             if (releasePlayer) return;
 
+            if (activePlanet == null && player.transform.position.magnitude >= 2500f)
+            {
+                Vector3 distanceFromOrigin = player.transform.position - Vector3.zero;
+                planetsParent.transform.position -= distanceFromOrigin;
+                player.transform.position -= distanceFromOrigin;
+            }
+
             if (rotateSolarSystem)
             {
                 RotateSolarSystem();
@@ -158,7 +165,7 @@ public class SolarSystemTransform : MonoBehaviour
         // Check if sun has moved to Vector3.zero
         if (sun.transform.position.magnitude <= 5f)
         {
-            player.transform.SetParent(planetsParent.transform, true);
+            player.transform.SetParent(null, true);
             player.attractor = null;
             setUpSolarSystemRotation = false;
             releasePlayer = false;
