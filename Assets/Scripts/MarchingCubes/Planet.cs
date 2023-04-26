@@ -212,7 +212,6 @@ public class Planet : MonoBehaviour
         }
         else if (rotateMoons)
         {
-            Debug.Log("Rotate moons");
             RotateAndOrbitMoons(true);
         }
     }
