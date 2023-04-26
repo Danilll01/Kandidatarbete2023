@@ -29,7 +29,6 @@ public class SpawnPlanets : MonoBehaviour
     private RandomX random;
 
     private int spawnPlanetIndex;
-    private Planet startMoonPlanet;
 
     void Awake()
     {
@@ -194,12 +193,6 @@ public class SpawnPlanets : MonoBehaviour
             moonBody.SetUpPlanetValues();
             moonBody.Initialize(player.transform, random.Next(), false); //False here beacause we don't spawn on moons
             parentPlanet.moons.Add(moonBody);
-
-            if (i == 1)
-            {
-                startMoonPlanet = moonBody;
-            }
-            
         }
         parentPlanet.moonsParent = moonsParent;
         parentPlanet.InitializeMoonValues();
