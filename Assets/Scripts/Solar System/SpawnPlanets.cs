@@ -41,7 +41,7 @@ public class SpawnPlanets : MonoBehaviour
         random = Universe.random;
         GetValues();
         CreatePlanets();
-        player.Initialize(startMoonPlanet, random.Next());
+        player.Initialize(bodies[spawnPlanetIndex], random.Next());
         sunLightning.Initialize();
         solarSystemGenerated = true;
     }
@@ -134,7 +134,7 @@ public class SpawnPlanets : MonoBehaviour
         {
             Planet previousPlanet = bodies[index - 1];
             int nrOfMoonsOnPreviousPlanet = previousPlanet.moons.Count;
-            float totalRadiusOfPreviousPlanet = previousPlanet.radius + (previousPlanet.radius * nrOfMoonsOnPreviousPlanet);
+            float totalRadiusOfPreviousPlanet = previousPlanet.radius + (previousPlanet.radius * nrOfMoonsOnPreviousPlanet * 2f);
             float previousPlanetPosMagnitude = previousPlanet.gameObject.transform.position.magnitude;
 
             float totalRadiusOfCurrentPlanet = planet.radius + (planet.radius * moonsNumber);
@@ -185,7 +185,7 @@ public class SpawnPlanets : MonoBehaviour
             
             GameObject moon = Instantiate(planetsPrefab, moonsOrbitObject.transform);
             moon.transform.localPosition = Vector3.zero;
-            moonsOrbitObject.transform.localPosition = RandomPointOnCircleEdge(parentPlanet.radius * (i + 1.2f));
+            moonsOrbitObject.transform.localPosition = RandomPointOnCircleEdge(parentPlanet.radius * (i + 2f));
             moon.gameObject.name = "Moon " + i;
 
             Planet moonBody = moon.GetComponent<Planet>();
