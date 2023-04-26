@@ -19,8 +19,9 @@ public class SolarSystemTransform : MonoBehaviour
     private bool moonIsActivePlanet;
     private int activePlanetIndex;
     private Planet activeMoonParentPlanet;
+    private static readonly int RotationAxis = Shader.PropertyToID("_RotationAxis");
+    private static readonly int Rotation = Shader.PropertyToID("_Rotation");
 
-    
 
     void Start()
     {
@@ -171,6 +172,9 @@ public class SolarSystemTransform : MonoBehaviour
         sun.transform.RotateAround(Vector3.zero, Vector3.up, orbitSpeed * Time.deltaTime);
 
         planetsParent.transform.RotateAround(Vector3.zero, -rotationAxis, rotationSpeed * Time.deltaTime);
+        
+        RenderSettings.skybox.SetVector(RotationAxis, -rotationAxis);
+        RenderSettings.skybox.SetFloat(Rotation, Time.time * rotationSpeed);
 
         Vector3 newSunPos = sun.transform.position;
         Vector3 direction;
