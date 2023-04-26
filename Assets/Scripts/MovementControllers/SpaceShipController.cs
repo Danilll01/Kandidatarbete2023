@@ -14,6 +14,7 @@ public class SpaceShipController : MonoBehaviour
     [SerializeField] private float movementDampening = 25f;
     [SerializeField] private float normalSpeed = 25f;
     [SerializeField] private float maxSpeed = 45f;
+    [SerializeField] [Range(0,1)] private float planetSlowdownFactor = 0.6f;
 
     [Header("Ship setting stuff")] 
     [SerializeField] private float inactiveTime = 10f;
@@ -86,6 +87,12 @@ public class SpaceShipController : MonoBehaviour
         float lift = Input.GetAxis("Spaceship Lift");
 
         Vector3 newMovementVector = new(strafe, lift, thrust);
+
+        if (Universe.player.attractor != null)
+        {
+            newMovementVector *= planetSlowdownFactor;
+        }
+        
         oldMovementVector = Vector3.Lerp(oldMovementVector, newMovementVector, Time.deltaTime * movementDampening);
 
         if (Math.Abs(Input.GetAxisRaw("Sprint") - 1) > 0.001)
@@ -94,7 +101,7 @@ public class SpaceShipController : MonoBehaviour
         }
         else
         {
-            speed = Mathf.Lerp(speed, maxSpeed, Time.fixedDeltaTime * 2);
+            speed = Mathf.Lerp(speed, maxSpeed, Time.fixedDeltaTime);
         }
 
         //Set moveDirection to the vertical axis (up and down keys) * speed
