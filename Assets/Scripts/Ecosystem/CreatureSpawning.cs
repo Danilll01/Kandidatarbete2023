@@ -1,4 +1,5 @@
 using ExtendedRandom;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -13,13 +14,13 @@ public class CreatureSpawning : MonoBehaviour
     // Spawning spots
     private Vector3[] creatureSpots = null;
 
+    private Planet planet;
     private CreatureHandler creatureHandler;
     private RandomX random;
     private Vector3 chunkPosition;
-    private int[] spawningRatios;
     private int positionArrayLength;
 
-    private SpawnPack[] objectsToSpawn;
+    private Queue<SpawnPack> objectsToSpawn;
     private int objectsToSpawnIndex = 0;
     private bool readyToSpawn = false;
 
@@ -31,18 +32,17 @@ public class CreatureSpawning : MonoBehaviour
     /// <param name="seed"></param>
     public void Initialize(int meshVerticesLength, Vector3 position, int seed)
     {
-        creatureHandler = transform.parent.parent.parent.GetComponent<Planet>().creatureHandler;
+        planet = transform.parent.parent.parent.GetComponent<Planet>();
+        creatureHandler = planet.creatureHandler;
         if (creatureHandler == null && creatureHandler.isInstantiated) return;
 
         random = new RandomX(seed);
 
         // Determines how much foliage there should be on this chunk
-        positionArrayLength = (int) (meshVerticesLength * creatureHandler.Density);
+        positionArrayLength = (int)(meshVerticesLength * creatureHandler.Density);
 
         // Where to start shooting rays from
         chunkPosition = position;
-
-        spawningRatios = GetSpawningRatios();
 
         // Generates all spawn points for this chunk
         InitCreatures();
@@ -67,7 +67,7 @@ public class CreatureSpawning : MonoBehaviour
             creatureSpots[i] = localpos;
         }
 
-        objectsToSpawn = new SpawnPack[creatureSpots.Length];
+        objectsToSpawn = new Queue<SpawnPack>();
     }
 
     /// <summary>
@@ -103,13 +103,17 @@ public class CreatureSpawning : MonoBehaviour
             // Checks if the ray hit the correct chunk
             if (hit.transform == transform.parent && hit.distance < radius - waterRadius)
             {
+                hits++;
                 Quaternion rotation = Quaternion.FromToRotation(Vector3.forward, hit.normal);
 
                 // Add pack to array of objects to spawn
-                objectsToSpawn[objectsToSpawnIndex] = new SpawnPack(rayOrigin, rotation, GetCreatureToSpawn());
+                bool foundCreature = GetCreatureToSpawn(hit.point, out CreaturePack newCreature);
+                if (!foundCreature)
+                {
+                    continue;
+                }
+                objectsToSpawn.Enqueue(new SpawnPack(rayOrigin, rotation, newCreature));
                 objectsToSpawnIndex++;
-
-                hits++;
             }
 
             // Exits early if max nr of things has spawned
@@ -120,7 +124,7 @@ public class CreatureSpawning : MonoBehaviour
             }
 
         }
-        if (creatureHandler.debug) Debug.Log("Hits: " + hits + " %: " + hits / (float) positionArrayLength * 100f);
+        if (creatureHandler.debug) Debug.Log("Hits: " + hits + " %: " + hits / (float)positionArrayLength * 100f);
 
         // Removes spots making the chunk unable to spawn new trees
         creatureSpots = null;
@@ -133,18 +137,18 @@ public class CreatureSpawning : MonoBehaviour
     /// </summary>
     public void BatchedSpawning()
     {
-        if (readyToSpawn && objectsToSpawn.Length > 0)
+        if (readyToSpawn && objectsToSpawn.Count > 0)
         {
             int totalIndex = objectsToSpawnIndex;
             while (totalIndex < objectsToSpawnIndex + packsPerBatchedSpawn)
             {
-                if (totalIndex >= objectsToSpawn.Length || objectsToSpawn[totalIndex] == null)
+                if (totalIndex >= objectsToSpawn.Count || objectsToSpawn.Count == 0)
                 {
                     finishedSpawning = true;
                     return;
                 }
-
-                SpawnPack(objectsToSpawn[totalIndex].rayOrigin, objectsToSpawn[totalIndex].rotation, objectsToSpawn[totalIndex].creature);
+                SpawnPack newPack = objectsToSpawn.Dequeue();
+                SpawnPack(newPack.rayOrigin, newPack.rotation, newPack.creature);
 
                 totalIndex++;
             }
@@ -184,7 +188,7 @@ public class CreatureSpawning : MonoBehaviour
                     if (creatureHandler.debug) Debug.Log("Hit water");
                     continue;
                 }
-                
+
                 // Check if "hit.point" is close to a point in positions
                 if (CloseToListOfPoints(positions, hit.point, packData.prefabRadius))
                 {
@@ -243,45 +247,53 @@ public class CreatureSpawning : MonoBehaviour
         return false;
     }
 
-    private CreaturePack GetCreatureToSpawn()
+    private bool GetCreatureToSpawn(Vector3 position, out CreaturePack packToSpawn)
     {
-        if (spawningRatios.Length != creatureHandler.packs.Length) Debug.Log("Creatures and ratios needs to be the same size");
-
         int total = 0;
 
-        foreach (int ratio in spawningRatios)
+        //Remove packs based on local biome
+        BiomeValue localBiome = Biomes.EvaluteBiomeMap(planet.Biome, position, planet.DistanceToSun);
+        List<CreaturePack> acceptablePacks = new List<CreaturePack>();
+        for (int i = 0; i < creatureHandler.packs.Length; i++)
         {
-            total += ratio;
+            if (localBiome.IsInsideRange(creatureHandler.packs[i].range))
+            {
+                //THIS MAY BE PERFORMANCE REDUCING DUE TO CREATUREPACK BEING STRUCT WHICH MEAN ALOT OF COPYING IS NEEDED DUE TO NO REFERENCES
+                acceptablePacks.Add(creatureHandler.packs[i]);
+            }
+        }
+
+        foreach (CreaturePack pack in acceptablePacks)
+        {
+            total += pack.ratio;
         }
 
         float randomNum = random.Next(0, total);
 
         float accumulatedSum = 0;
 
-        for (int i = 0; i < spawningRatios.Length; i++)
+        for (int i = 0; i < acceptablePacks.Count; i++)
         {
             if (randomNum > accumulatedSum)
             {
-                accumulatedSum += spawningRatios[i];
+                accumulatedSum += acceptablePacks[i].ratio;
             }
             else
             {
-                return creatureHandler.packs[i];
+                packToSpawn = acceptablePacks[i];
+                return true;
             }
         }
 
-        return creatureHandler.packs[0];
-    }
-
-    private int[] GetSpawningRatios()
-    {
-        int[] ratios = new int[creatureHandler.packs.Count()];
-
-        for (int i = 0; i < creatureHandler.packs.Count(); i++)
+        if (acceptablePacks.Count != 0)
         {
-            ratios[i] = creatureHandler.packs[i].ratio;
+            packToSpawn = acceptablePacks[0];
+            return true;
         }
-
-        return ratios;
+        else
+        {
+            packToSpawn = new CreaturePack();
+            return false;
+        }
     }
 }

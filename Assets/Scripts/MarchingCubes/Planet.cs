@@ -35,8 +35,31 @@ public class Planet : MonoBehaviour
     [Header("Terrain")] [SerializeField, Range(0, 1)]
     private float waterLevel = 0.92f;
 
+    private static readonly Color[] seaColors = new Color[] {
+        new Color (219f/255, 144f/255, 101f/255),
+        new Color (125f/255, 219f/255, 102f/255),
+        new Color (102/255,  219f/255, 195f/255),
+        new Color (102f/255, 183f/255, 219f/255),
+        new Color (102f/255, 219f/255, 144f/255),
+        new Color (102f/255, 105f/255, 219f/255),
+        new Color (207f/255, 102f/255, 219f/255),
+        new Color (219f/255, 102f/255, 142f/255),
+        new Color (219f/255, 102f/255, 102f/255),
+        new Color (251f/255, 70f/255, 47f/255),
+        new Color (46f/255,  250f/255, 198f/255),
+        new Color (47f/255,  233f/255, 250f/255),
+        new Color (47f/255,  186f/255, 250f/255),
+        new Color (47f/255,  137f/255, 250f/255),
+        new Color (163f/255, 47f/255, 250f/255),
+        new Color (0f/255,   44f/255, 147f/255),
+        new Color (0f/255,   147f/255, 135f/255),
+        new Color (0f/255,   147f/255, 136f/255),
+        new Color (146f/255, 255f/255, 247f/255)
+    };
+    private Color seaColor;
+
     [SerializeField] private List<TerrainLayer> terrainLayers;
-    [SerializeField] private BiomeSettings biomeSettings;
+    public BiomeSettings biomeSettings;
 
     private float threshold;
 
@@ -73,6 +96,8 @@ public class Planet : MonoBehaviour
         player = Universe.player.transform;
 
         MinMaxTerrainLevel terrainLevel = new MinMaxTerrainLevel();
+        
+        seaColor = seaColors[rand.Next(seaColors.Length)];
 
         rotationAxis = rand.OnUnitSphere() * radius;
         rotationSpeed = rand.Next(3, 6);
@@ -84,8 +109,10 @@ public class Planet : MonoBehaviour
         if (marchingCubes == null)
         {
             threshold = 23 + rand.Value() * 4;
-            marchingCubes = new MarchingCubes(rand.Value() * 123.123f, 1, meshGenerator, threshold, radius,
-                terrainLayers, biomeSettings);
+            float biomeSeed = rand.Value();
+            biomeSettings.seed = biomeSeed;
+            
+            marchingCubes = new MarchingCubes(biomeSeed, 1, meshGenerator, threshold, radius, terrainLayers, biomeSettings);
         }
 
         // Init water
@@ -107,7 +134,7 @@ public class Planet : MonoBehaviour
 
             if (creatureHandler != null)
             {
-                creatureHandler.Initialize(this);
+                creatureHandler.Initialize(this, rand.Next());
             }
         }
 
@@ -119,7 +146,7 @@ public class Planet : MonoBehaviour
         {
             if (waterHandler != null && bodyName != "Sun")
             {
-                waterHandler.Initialize(this, waterDiameter, GetGroundColor());
+                waterHandler.Initialize(this, waterDiameter, GetSeaColor());
             }
         }
 
@@ -247,9 +274,19 @@ public class Planet : MonoBehaviour
         gameObject.name = bodyName;
     }
 
-    public Color GetGroundColor()
+    public Color GetSeaColor()
     {
-        return chunksHandler.terrainColor.bottomColor;
+        return seaColor;
+    }
+
+    public BiomeSettings Biome
+    {
+        get { return biomeSettings; }
+    }
+
+    public float DistanceToSun
+    {
+        get { return Vector3.Distance(transform.position, Universe.sunPosition.position); }
     }
 
     /// <summary>
