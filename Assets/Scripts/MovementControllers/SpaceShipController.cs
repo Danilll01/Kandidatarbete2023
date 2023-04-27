@@ -15,7 +15,11 @@ public class SpaceShipController : MonoBehaviour
     [SerializeField] private float normalSpeed = 25f;
     [SerializeField] private float maxSpeed = 45f;
     [SerializeField] [Range(0,1)] private float planetSlowdownFactor = 0.6f;
-
+    
+    [Header("Hovering stuff")]
+    [SerializeField] private float strength = 10f;
+    [SerializeField] private float hoverDampening = 100f;
+    
     [Header("Ship setting stuff")] 
     [SerializeField] private float inactiveTime = 10f;
     [SerializeField] private float crossHairMovement = 30f;
@@ -44,6 +48,7 @@ public class SpaceShipController : MonoBehaviour
     private Vector3 oldMovementVector = new();
     private GameObject standardShip;
     private bool isOutsidePlanet = false;
+    private bool canMove = true;
    
     
     // Backend stuff
@@ -110,7 +115,14 @@ public class SpaceShipController : MonoBehaviour
         //Transform the vector3 to local space
         moveDirection = transform.TransformDirection(moveDirection);
         //Set the velocity, so you can move
-        physicsBody.velocity = new Vector3(moveDirection.x, moveDirection.y, moveDirection.z);
+        if (canMove)
+        {
+            physicsBody.velocity = new Vector3(moveDirection.x, moveDirection.y, moveDirection.z);
+        }
+        else
+        {
+            physicsBody.velocity += new Vector3(moveDirection.x, moveDirection.y, moveDirection.z);
+        }
 
         //Camera follow
         mainCamera.transform.position = Vector3.Lerp(mainCamera.transform.position, cameraPosition.position, Time.deltaTime * cameraSmooth);
@@ -207,4 +219,37 @@ public class SpaceShipController : MonoBehaviour
         rotationZ = Mathf.Lerp(rotationZ, Input.GetAxis("Spaceship Roll") * 2f, Time.deltaTime * cameraSmooth);
     }
 
+    private void OnCollisionEnter(Collision other)
+    {
+        canMove = false;
+    }
+
+
+    private void OnTriggerStay(Collider other)
+    {
+        //ContactPoint contact = other.GetContact(0);
+        float force = GetHoverForce(other.contactOffset);
+        physicsBody.AddForceAtPosition(Vector3.Normalize(transform.position - Universe.player.attractor.transform.position) * force, transform.position);
+        Debug.Log("INNE: " + other.contactOffset);
+    }
+
+    /*private void OnColisionStay(C other)
+    {
+        ContactPoint contact = other.GetContact(0);
+        float force = GetHoverForce(contact.separation);
+        physicsBody.AddForceAtPosition(contact.normal * force, transform.position);
+        Debug.Log("INNE: " + contact.separation);
+    }*/
+
+    private float GetHoverForce(float distance)
+    {
+        float force = strength * distance;// + (hoverDampening * physicsBody.velocity.magnitude);
+        return Mathf.Max(0f, force);
+    }
+    
+    private void OnCollisionExit(Collision other)
+    {
+        canMove = true;
+    }
+    
 }

@@ -136,6 +136,7 @@ GameObject:
   - component: {fileID: 8501261649151649146}
   - component: {fileID: 5970688288339473150}
   - component: {fileID: 1925086625348583439}
+  - component: {fileID: 6498144847820173870}
   - component: {fileID: 8221699819142902854}
   m_Layer: 0
   m_Name: ShipMain
@@ -176,7 +177,9 @@ MonoBehaviour:
   movementDampening: 1
   normalSpeed: 500
   maxSpeed: 4000
+  planetSlowdownFactor: 0.6
   inactiveTime: 10
+  crossHairMovement: 30
   rotationSpeed: 2
   cameraSmooth: 4
   cameraPosition: {fileID: 3421500242648797224}
@@ -256,6 +259,20 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 2.1090705, y: 1.2203598, z: 6.9984365}
   m_Center: {x: 0.0052443743, y: 1.5102427, z: -3.9844868}
+--- !u!136 &6498144847820173870
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3421500242679807732}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  m_Radius: 6
+  m_Height: 20
+  m_Direction: 2
+  m_Center: {x: 0, y: 0.45, z: 1.45}
 --- !u!82 &8221699819142902854
 AudioSource:
   m_ObjectHideFlags: 0
