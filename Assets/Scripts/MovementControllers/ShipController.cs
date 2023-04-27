@@ -278,7 +278,7 @@ public class ShipController : MonoBehaviour
 
     private void DisembarkFromShip()
     {
-        backgroundMusic.UpdateClipIndex(HandleBackgroundMusic.BackgroundClips.Planet);
+        StartCoroutine(backgroundMusic.UpdateClipIndex(HandleBackgroundMusic.BackgroundClips.Planet));
         transform.SetParent(player.Planet.gameObject.transform);
         player.transform.position = transform.position + (transform.rotation * dismountedPos);
         player.transform.rotation = transform.rotation;
@@ -287,7 +287,7 @@ public class ShipController : MonoBehaviour
 
     private void EmbarkInShip()
     {
-        backgroundMusic.UpdateClipIndex(HandleBackgroundMusic.BackgroundClips.Space);
+        StartCoroutine(backgroundMusic.UpdateClipIndex(HandleBackgroundMusic.BackgroundClips.Space));
         player.transform.position = transform.position + (transform.rotation * mountedPos.localPosition);
         player.transform.rotation = transform.rotation;
         camera.transform.localRotation = Quaternion.identity;
