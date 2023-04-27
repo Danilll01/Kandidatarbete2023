@@ -25,12 +25,14 @@ public class ShipController : MonoBehaviour
 
     private AudioSource audioPlayer;
     [SerializeField] AudioClip errorSound;
+    [SerializeField] private HandleBackgroundMusic backgroundMusic;
 
     public void Initialize(Rigidbody body, Camera camera)
     {
         player = Universe.player;
         this.body = body;
         this.camera = camera;
+        backgroundMusic.Initialize();
 
         //Place ship where the player is and embark them
         transform.position = player.transform.position;
@@ -276,6 +278,7 @@ public class ShipController : MonoBehaviour
 
     private void DisembarkFromShip()
     {
+        backgroundMusic.UpdateClipIndex(HandleBackgroundMusic.BackgroundClips.Planet);
         transform.SetParent(player.Planet.gameObject.transform);
         player.transform.position = transform.position + (transform.rotation * dismountedPos);
         player.transform.rotation = transform.rotation;
@@ -284,6 +287,7 @@ public class ShipController : MonoBehaviour
 
     private void EmbarkInShip()
     {
+        backgroundMusic.UpdateClipIndex(HandleBackgroundMusic.BackgroundClips.Space);
         player.transform.position = transform.position + (transform.rotation * mountedPos.localPosition);
         player.transform.rotation = transform.rotation;
         camera.transform.localRotation = Quaternion.identity;
