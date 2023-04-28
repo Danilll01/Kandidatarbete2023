@@ -4,11 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="">
+    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Moved water color handling to water handler script on each planet">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/MarchingCubes/Planet.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/MarchingCubes/Planet.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Water/PlayerWater.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Water/PlayerWater.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Water/WaterHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Water/WaterHandler.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipController.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -154,13 +152,7 @@
       <workItem from="1682004115726" duration="10682000" />
       <workItem from="1682086929011" duration="4323000" />
       <workItem from="1682460846051" duration="12716000" />
-      <workItem from="1682638268486" duration="2213000" />
-    </task>
-    <task id="LOCAL−00013" summary="Have moved ambient light calculation to corresponding planet atmosphere">
-      <created>1680037748440</created>
-      <option name="number" value="LOCAL−00013" />
-      <option name="presentableId" value="LOCAL−00013" />
-      <updated>1680037748440</updated>
+      <workItem from="1682638268486" duration="4517000" />
     </task>
     <task id="LOCAL−00014" summary="Fixed atmosphere update calling to mirror the players actual current planet">
       <created>1680041024317</created>
@@ -450,7 +442,13 @@
       <option name="presentableId" value="LOCAL−00061" />
       <updated>1682554414382</updated>
     </task>
-    <option name="localTasksCounter" value="62" />
+    <task id="LOCAL−00062" summary="Moved water color handling to water handler script on each planet">
+      <created>1682640815206</created>
+      <option name="number" value="LOCAL−00062" />
+      <option name="presentableId" value="LOCAL−00062" />
+      <updated>1682640815206</updated>
+    </task>
+    <option name="localTasksCounter" value="63" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -472,7 +470,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="Finally found what the issue was with the main merge" />
     <MESSAGE value="Small script changes" />
     <MESSAGE value="Finally fixed rotations for the spaceship while traveling around the planet" />
     <MESSAGE value="Test Rider dual repository commits and pushes. Cleaned up code." />
@@ -497,6 +494,7 @@
     <MESSAGE value="Fixed nice ship visual view bobbing and a cross-hair to see where you go" />
     <MESSAGE value="Added planet slowdown factor" />
     <MESSAGE value="Hovering in progress" />
-    <option name="LAST_COMMIT_MESSAGE" value="Hovering in progress" />
+    <MESSAGE value="Moved water color handling to water handler script on each planet" />
+    <option name="LAST_COMMIT_MESSAGE" value="Moved water color handling to water handler script on each planet" />
   </component>
 </project>

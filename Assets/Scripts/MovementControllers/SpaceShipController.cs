@@ -228,16 +228,18 @@ public class SpaceShipController : MonoBehaviour
     private void OnTriggerStay(Collider other)
     {
         //ContactPoint contact = other.GetContact(0);
+        
+        
         float force = GetHoverForce(other.contactOffset);
         physicsBody.AddForceAtPosition(Vector3.Normalize(transform.position - Universe.player.attractor.transform.position) * force, transform.position);
         Debug.Log("INNE: " + other.contactOffset);
     }
 
-    /*private void OnColisionStay(C other)
+    /*private void OnCollisionStay(Collision other)
     {
         ContactPoint contact = other.GetContact(0);
         float force = GetHoverForce(contact.separation);
-        physicsBody.AddForceAtPosition(contact.normal * force, transform.position);
+        physicsBody.AddForceAtPosition(contact.normal * force, physicsBody.worldCenterOfMass);
         Debug.Log("INNE: " + contact.separation);
     }*/
 
