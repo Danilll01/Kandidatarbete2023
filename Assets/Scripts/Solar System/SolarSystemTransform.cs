@@ -77,8 +77,8 @@ public class SolarSystemTransform : MonoBehaviour
             if (activePlanet == null && player.transform.position.magnitude >= 2500f)
             {
                 Vector3 distanceFromOrigin = player.transform.position - Vector3.zero;
-                //planetsParent.transform.position -= distanceFromOrigin;
-                //player.transform.position -= distanceFromOrigin;
+                planetsParent.transform.position -= distanceFromOrigin;
+                player.transform.position -= distanceFromOrigin;
             }
 
             if (rotateSolarSystem)
@@ -167,7 +167,7 @@ public class SolarSystemTransform : MonoBehaviour
     private void CheckWhenToReleasePlayer()
     {
         // Check if sun has moved to Vector3.zero
-        if (timerToReleasePlayer > 5f)
+        if (sun.transform.position.magnitude < 5f)
         {
             player.transform.SetParent(null, true);
             player.attractor = null;
@@ -256,7 +256,6 @@ public class SolarSystemTransform : MonoBehaviour
         {
             oldActivePlanet.transform.parent.SetParent(activeMoonParentPlanet.moonsParent.transform, true);
             activeMoonParentPlanet.playerIsOnMoon = false;
-            moonIsActivePlanet = false;
         }
         
         foreach (Planet body in spawnPlanets.bodies)
@@ -266,26 +265,28 @@ public class SolarSystemTransform : MonoBehaviour
         
         sun.transform.rotation = Quaternion.Euler(0, sun.transform.rotation.y, 0);
         sun.transform.position = Vector3.zero;
-        
-        foreach (Planet body in spawnPlanets.bodies)
+
+        if (moonIsActivePlanet)
         {
-            body.transform.parent.SetParent(planetsParent.transform);
-            body.ResetOrbitComponents();
+            float distanceFromMoonToPlanet = (activeMoonParentPlanet.transform.position - oldActivePlanet.transform.position).magnitude;
+        
+            foreach (Planet planet in spawnPlanets.bodies)
+            {
+                if (planet != activeMoonParentPlanet)
+                {
+                    planet.DecreaseDistanceToSunByAmount(distanceFromMoonToPlanet);
+                }
+                planet.transform.parent.SetParent(planetsParent.transform);
+                planet.ResetOrbitComponents();
+            }
+            moonIsActivePlanet = false;
         }
+        
         
         Vector3 playerPosAfter = player.transform.position - oldActivePlanet.transform.position;
         float angleBetweenPlayerPositions = Vector3.Angle(playerPosBefore, playerPosAfter);
         skyboxRotationAngle -= angleBetweenPlayerPositions;
         RenderSettings.skybox.SetFloat(Rotation, skyboxRotationAngle);
-        
-        float distanceFromMoonToPlanet = (activeMoonParentPlanet.transform.position - oldActivePlanet.transform.position).magnitude;
-        foreach (var planet in spawnPlanets.bodies)
-        {
-            if (planet != activeMoonParentPlanet)
-            {
-                planet.DecreaseDistanceToSunByAmount(distanceFromMoonToPlanet);
-            }
-        }
 
     }
 

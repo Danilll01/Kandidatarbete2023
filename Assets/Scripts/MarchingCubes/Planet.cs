@@ -351,7 +351,7 @@ public class Planet : MonoBehaviour
         if (bodyName.Contains("Planet"))
         {
             ResetMoonsParentRotation();
-
+            KeepPlanetAtSameDistanceToSun();
             solarSystemRotationActive = false;
         }
     }
