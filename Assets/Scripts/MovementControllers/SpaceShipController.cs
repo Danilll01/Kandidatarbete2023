@@ -49,6 +49,7 @@ public class SpaceShipController : MonoBehaviour
     private GameObject standardShip;
     private bool isOutsidePlanet = false;
     private bool canMove = true;
+    private Vector3 enterGroundPosition;
    
     
     // Backend stuff
@@ -224,11 +225,13 @@ public class SpaceShipController : MonoBehaviour
         canMove = false;
     }
 
-
+    private void OnTriggerEnter(Collider other)
+    {
+        enterGroundPosition = transform.position;
+    }
+    
     private void OnTriggerStay(Collider other)
     {
-        //ContactPoint contact = other.GetContact(0);
-        
         
         float force = GetHoverForce(other.contactOffset);
         physicsBody.AddForceAtPosition(Vector3.Normalize(transform.position - Universe.player.attractor.transform.position) * force, transform.position);
@@ -247,6 +250,11 @@ public class SpaceShipController : MonoBehaviour
     {
         float force = strength * distance;// + (hoverDampening * physicsBody.velocity.magnitude);
         return Mathf.Max(0f, force);
+    }
+    
+    private void OnTriggerExit(Collider other)
+    {
+        //enterGroundPosition = null;
     }
     
     private void OnCollisionExit(Collision other)
