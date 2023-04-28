@@ -131,8 +131,8 @@ public class SpaceShipController : MonoBehaviour
 
         //Rotation
         float rotationZTmp = Input.GetAxis("Spaceship Roll");
-        float currentMouseXMovement = Input.GetAxis("Horizontal Look");
-        float currentMouseYMovement = Input.GetAxis("Vertical Look");
+        float currentMouseXMovement = Input.GetButton("ShipFreeLook") ? 0 : Input.GetAxis("Horizontal Look");
+        float currentMouseYMovement = Input.GetButton("ShipFreeLook") ? 0 : Input.GetAxis("Vertical Look");
         Vector3 currentRotationVector = new Vector3(currentMouseXMovement, currentMouseYMovement, rotationZTmp);
         
         mouseXSmooth = Mathf.Lerp(mouseXSmooth, currentMouseXMovement * rotationSpeed,  0.01f * cameraSmooth);

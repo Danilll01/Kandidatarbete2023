@@ -4,12 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Added camera positions for spaceship">
+    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Added cinamachine free spin camera">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Player/ShipMain.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Player/ShipMain.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipCameraMover.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipCameraMover.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipController.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Shaders/Water/CameraWater.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Shaders/Water/CameraWater.mat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Packages/manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/manifest.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Packages/packages-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/packages-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectSettings/InputManager.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/InputManager.asset" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -155,13 +156,7 @@
       <workItem from="1682638268486" duration="4517000" />
       <workItem from="1682696553423" duration="246000" />
       <workItem from="1682697009257" duration="2425000" />
-      <workItem from="1682716360996" duration="2293000" />
-    </task>
-    <task id="LOCAL−00016" summary="Ambient light is now customized for each atmosphere">
-      <created>1680048932693</created>
-      <option name="number" value="LOCAL−00016" />
-      <option name="presentableId" value="LOCAL−00016" />
-      <updated>1680048932693</updated>
+      <workItem from="1682716360996" duration="5200000" />
     </task>
     <task id="LOCAL−00017" summary="Planet strength is now randomized and can be of if there is no water">
       <created>1680121415788</created>
@@ -451,7 +446,13 @@
       <option name="presentableId" value="LOCAL−00064" />
       <updated>1682717370166</updated>
     </task>
-    <option name="localTasksCounter" value="65" />
+    <task id="LOCAL−00065" summary="Added cinamachine free spin camera">
+      <created>1682720355229</created>
+      <option name="number" value="LOCAL−00065" />
+      <option name="presentableId" value="LOCAL−00065" />
+      <updated>1682720355229</updated>
+    </task>
+    <option name="localTasksCounter" value="66" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -473,7 +474,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="Test Rider dual repository commits and pushes. Cleaned up code." />
     <MESSAGE value="Something with the bought assets" />
     <MESSAGE value="Rider test again" />
     <MESSAGE value="Can you push this without something braking" />
@@ -498,6 +498,7 @@
     <MESSAGE value="Moved water color handling to water handler script on each planet" />
     <MESSAGE value="Added SpaceShipCameraMover script" />
     <MESSAGE value="Added camera positions for spaceship" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added camera positions for spaceship" />
+    <MESSAGE value="Added cinamachine free spin camera" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added cinamachine free spin camera" />
   </component>
 </project>
