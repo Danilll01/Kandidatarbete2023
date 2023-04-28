@@ -178,7 +178,7 @@ MonoBehaviour:
   movementDampening: 1
   normalSpeed: 500
   maxSpeed: 4000
-  planetSlowdownFactor: 0.6
+  planetSlowdownFactor: 0.3
   strength: 10
   hoverDampening: 100
   inactiveTime: 10
@@ -222,7 +222,10 @@ MonoBehaviour:
   realCameraPosition: {fileID: 3421500242648797224}
   cameraPositions:
   - {x: 0, y: 1.665, z: -0.67}
-  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 4.5, z: -8.15}
+  - {x: 0, y: 5.3, z: -12}
+  - {x: -2.6, y: 2, z: -1.9}
+  - {x: 0, y: 0.2, z: 8}
 --- !u!54 &3421500242679807738
 Rigidbody:
   m_ObjectHideFlags: 0

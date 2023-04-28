@@ -14,12 +14,9 @@ public class SpaceShipCameraMover : MonoBehaviour
     {
         if (!Input.GetKeyDown(KeyCode.V)) { return; }
 
+        // If the player is boarded, change camera position to next in position list
         if (Universe.player.boarded)
         {
-            Debug.Log(currentCameraIndex);
-            Debug.Log(((cameraPositions.Length - 1) == currentCameraIndex));
-            Debug.Log(cameraPositions.Length - 1);
-            
             currentCameraIndex = ((cameraPositions.Length - 1) == currentCameraIndex) ? 0 : currentCameraIndex += 1;
             realCameraPosition.localPosition = cameraPositions[currentCameraIndex];
         }

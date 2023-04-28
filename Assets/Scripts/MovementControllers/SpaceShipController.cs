@@ -135,8 +135,8 @@ public class SpaceShipController : MonoBehaviour
         float currentMouseYMovement = Input.GetAxis("Vertical Look");
         Vector3 currentRotationVector = new Vector3(currentMouseXMovement, currentMouseYMovement, rotationZTmp);
         
-        mouseXSmooth = Mathf.Lerp(mouseXSmooth, currentMouseXMovement * rotationSpeed, Time.deltaTime * cameraSmooth);
-        mouseYSmooth = Mathf.Lerp(mouseYSmooth, currentMouseYMovement * rotationSpeed, Time.deltaTime * cameraSmooth);
+        mouseXSmooth = Mathf.Lerp(mouseXSmooth, currentMouseXMovement * rotationSpeed,  0.01f * cameraSmooth);
+        mouseYSmooth = Mathf.Lerp(mouseYSmooth, currentMouseYMovement * rotationSpeed, 0.01f * cameraSmooth);
         Quaternion localRotation = Quaternion.Euler(mouseYSmooth, mouseXSmooth, rotationZTmp * rotationSpeed);
 
         // The mouse local look rotation
