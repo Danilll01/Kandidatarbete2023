@@ -265,22 +265,24 @@ public class SolarSystemTransform : MonoBehaviour
         
         sun.transform.rotation = Quaternion.Euler(0, sun.transform.rotation.y, 0);
         sun.transform.position = Vector3.zero;
-
-        if (moonIsActivePlanet)
-        {
-            float distanceFromMoonToPlanet = (activeMoonParentPlanet.transform.position - oldActivePlanet.transform.position).magnitude;
         
-            foreach (Planet planet in spawnPlanets.bodies)
+        foreach (Planet planet in spawnPlanets.bodies)
+        {
+            if (moonIsActivePlanet)
             {
                 if (planet != activeMoonParentPlanet)
                 {
+                    float distanceFromMoonToPlanet = (activeMoonParentPlanet.transform.position - oldActivePlanet.transform.position).magnitude;
                     planet.DecreaseDistanceToSunByAmount(distanceFromMoonToPlanet);
                 }
-                planet.transform.parent.SetParent(planetsParent.transform);
-                planet.ResetOrbitComponents();
             }
-            moonIsActivePlanet = false;
+            
+            planet.transform.parent.SetParent(planetsParent.transform);
+            planet.ResetOrbitComponents();
         }
+        moonIsActivePlanet = false;
+            
+        
         
         
         Vector3 playerPosAfter = player.transform.position - oldActivePlanet.transform.position;
