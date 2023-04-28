@@ -113,7 +113,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3421500242648797227}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.665, z: -0.671}
+  m_LocalPosition: {x: 0, y: 1.665, z: -0.67}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -132,6 +132,7 @@ GameObject:
   - component: {fileID: 3421500242679807739}
   - component: {fileID: 3421500242679807733}
   - component: {fileID: 3966985094543174574}
+  - component: {fileID: 6720220075474735342}
   - component: {fileID: 3421500242679807738}
   - component: {fileID: 8501261649151649146}
   - component: {fileID: 5970688288339473150}
@@ -178,6 +179,8 @@ MonoBehaviour:
   normalSpeed: 500
   maxSpeed: 4000
   planetSlowdownFactor: 0.6
+  strength: 10
+  hoverDampening: 100
   inactiveTime: 10
   crossHairMovement: 30
   rotationSpeed: 2
@@ -204,6 +207,22 @@ MonoBehaviour:
   maxLandingAngle: 20
   landingTime: 1
   errorSound: {fileID: 8300000, guid: 777bc69d78b1fde48b38e8078a4d7eb1, type: 3}
+--- !u!114 &6720220075474735342
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3421500242679807732}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 21ae545af32fae34c917adbcf20ffed3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  realCameraPosition: {fileID: 3421500242648797224}
+  cameraPositions:
+  - {x: 0, y: 1.665, z: -0.67}
+  - {x: 0, y: 0, z: 0}
 --- !u!54 &3421500242679807738
 Rigidbody:
   m_ObjectHideFlags: 0
