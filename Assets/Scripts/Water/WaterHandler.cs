@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using ExtendedRandom;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -12,29 +13,51 @@ public class WaterHandler : MonoBehaviour
     [SerializeField] private int sideResolution = 3;
 
     [SerializeField] private Material material;
-    readonly private Vector3[] directions = { Vector3.forward, Vector3.back, Vector3.left, Vector3.right, Vector3.up, Vector3.down };
-    private Water[] waterfaces;
+    private readonly Vector3[] directions = { Vector3.forward, Vector3.back, Vector3.left, Vector3.right, Vector3.up, Vector3.down };
+    private Water[] waterFaces;
     private Planet planet = null;
     private float waterRadius;
 
-    void Update()
-    {
-        //if (planet == null) return;
-        //UpdateWater();
-    }
+    private static readonly Color[] seaColors = new Color[] {
+        new Color (219f/255, 144f/255, 101f/255),
+        new Color (125f/255, 219f/255, 102f/255),
+        new Color (102/255,  219f/255, 195f/255),
+        new Color (102f/255, 183f/255, 219f/255),
+        new Color (102f/255, 219f/255, 144f/255),
+        new Color (102f/255, 105f/255, 219f/255),
+        new Color (207f/255, 102f/255, 219f/255),
+        new Color (219f/255, 102f/255, 142f/255),
+        new Color (219f/255, 102f/255, 102f/255),
+        new Color (251f/255, 70f/255, 47f/255),
+        new Color (46f/255,  250f/255, 198f/255),
+        new Color (47f/255,  233f/255, 250f/255),
+        new Color (47f/255,  186f/255, 250f/255),
+        new Color (47f/255,  137f/255, 250f/255),
+        new Color (163f/255, 47f/255, 250f/255),
+        new Color (0f/255,   44f/255, 147f/255),
+        new Color (0f/255,   147f/255, 135f/255),
+        new Color (0f/255,   147f/255, 136f/255),
+        new Color (146f/255, 255f/255, 247f/255)
+    };
+
+    private Color seaColor;
+
 
     /// <summary>
     /// Initializes the water handler and all meshes
     /// </summary>
-    /// <param name="planet"></param>
-    /// <param name="waterDiameter"></param>
-    /// <param name="color"></param>
-    public void Initialize(Planet planet, float waterDiameter, Color color)
+    /// <param name="planet">The planet connected to this waterhandler</param>
+    /// <param name="waterDiameter">The current water diameter</param>
+    /// <param name="randSeed">The rand seed to be used to calculate water color</param>
+    public void Initialize(Planet planet, float waterDiameter, int randSeed)
     {
         this.planet = planet;
         waterRadius = Mathf.Abs(waterDiameter / 2) - 1;
 
-        GenerateMaterial(color);
+        RandomX rand = new RandomX();
+        seaColor = seaColors[rand.Next(seaColors.Length)];
+
+        GenerateMaterial(seaColor);
         GenerateWater();
         GenerateMesh();
     }
@@ -46,6 +69,8 @@ public class WaterHandler : MonoBehaviour
         GenerateWater();
         GenerateMesh();
     }
+
+    public Color GetWaterColor => seaColor;
 
     private void GenerateMaterial(Color color)
     {
@@ -59,7 +84,7 @@ public class WaterHandler : MonoBehaviour
     /// </summary>
     private void GenerateWater()
     {
-        waterfaces = new Water[6 * sideResolution * sideResolution];
+        waterFaces = new Water[6 * sideResolution * sideResolution];
 
         for (int i = 0; i < 6 * sideResolution * sideResolution; i++)
         {
@@ -69,7 +94,7 @@ public class WaterHandler : MonoBehaviour
             meshObj.AddComponent<MeshRenderer>().sharedMaterial = material;
             MeshFilter meshFilter = meshObj.AddComponent<MeshFilter>();
 
-            waterfaces[i] = new Water(computeShader, meshFilter, 32 * resolution, waterRadius, directions[i / (sideResolution * sideResolution)], i % (sideResolution * sideResolution), sideResolution);
+            waterFaces[i] = new Water(computeShader, meshFilter, 32 * resolution, waterRadius, directions[i / (sideResolution * sideResolution)], i % (sideResolution * sideResolution), sideResolution);
         }
     }
 
@@ -78,7 +103,7 @@ public class WaterHandler : MonoBehaviour
     /// </summary>
     private void GenerateMesh()
     {
-        foreach (Water waterface in waterfaces)
+        foreach (Water waterface in waterFaces)
         {
             waterface.ConstructMesh();
         }
@@ -89,7 +114,7 @@ public class WaterHandler : MonoBehaviour
         if (planet == Universe.player.attractor)
         {
             Vector3 playerPos = Universe.player.transform.position;
-            foreach (Water waterface in waterfaces)
+            foreach (Water waterface in waterFaces)
             {
                 if (Vector3.Magnitude(playerPos - waterface.waterPos) > 1000)
                 {

@@ -26,37 +26,14 @@ public class Planet : MonoBehaviour
 
     public bool willGeneratePlanetLife = false;
     [SerializeField, Range(0f, 1f)] private float chanceToSpawnPlanetLife = 0.8f;
-    public ChunksHandler chunksHandler;
-    public WaterHandler waterHandler;
+    [SerializeField] private ChunksHandler chunksHandler;
+    [SerializeField] private WaterHandler waterHandler;
     public AtmosphereHandler atmosphereHandler;
     public FoliageHandler foliageHandler;
     public CreatureHandler creatureHandler;
 
     [Header("Terrain")] [SerializeField, Range(0, 1)]
     private float waterLevel = 0.92f;
-
-    private static readonly Color[] seaColors = new Color[] {
-        new Color (219f/255, 144f/255, 101f/255),
-        new Color (125f/255, 219f/255, 102f/255),
-        new Color (102/255,  219f/255, 195f/255),
-        new Color (102f/255, 183f/255, 219f/255),
-        new Color (102f/255, 219f/255, 144f/255),
-        new Color (102f/255, 105f/255, 219f/255),
-        new Color (207f/255, 102f/255, 219f/255),
-        new Color (219f/255, 102f/255, 142f/255),
-        new Color (219f/255, 102f/255, 102f/255),
-        new Color (251f/255, 70f/255, 47f/255),
-        new Color (46f/255,  250f/255, 198f/255),
-        new Color (47f/255,  233f/255, 250f/255),
-        new Color (47f/255,  186f/255, 250f/255),
-        new Color (47f/255,  137f/255, 250f/255),
-        new Color (163f/255, 47f/255, 250f/255),
-        new Color (0f/255,   44f/255, 147f/255),
-        new Color (0f/255,   147f/255, 135f/255),
-        new Color (0f/255,   147f/255, 136f/255),
-        new Color (146f/255, 255f/255, 247f/255)
-    };
-    private Color seaColor;
 
     [SerializeField] private List<TerrainLayer> terrainLayers;
     public BiomeSettings biomeSettings;
@@ -81,6 +58,7 @@ public class Planet : MonoBehaviour
     public bool solarSystemRotationActive;
 
     private bool reset;
+    
 
 
     /// <summary>
@@ -97,7 +75,6 @@ public class Planet : MonoBehaviour
 
         MinMaxTerrainLevel terrainLevel = new MinMaxTerrainLevel();
         
-        seaColor = seaColors[rand.Next(seaColors.Length)];
 
         rotationAxis = rand.OnUnitSphere() * radius;
         rotationSpeed = rand.Next(3, 6);
@@ -146,7 +123,7 @@ public class Planet : MonoBehaviour
         {
             if (waterHandler != null && bodyName != "Sun")
             {
-                waterHandler.Initialize(this, waterDiameter, GetSeaColor());
+                waterHandler.Initialize(this, waterDiameter, rand.Next());
             }
         }
 
@@ -274,20 +251,11 @@ public class Planet : MonoBehaviour
         gameObject.name = bodyName;
     }
 
-    public Color GetSeaColor()
-    {
-        return seaColor;
-    }
+    public BiomeSettings Biome => biomeSettings;
 
-    public BiomeSettings Biome
-    {
-        get { return biomeSettings; }
-    }
+    public Color GetSeaColor => waterHandler.GetWaterColor;
 
-    public float DistanceToSun
-    {
-        get { return Vector3.Distance(transform.position, Universe.sunPosition.position); }
-    }
+    public float DistanceToSun => Vector3.Distance(transform.position, Universe.sunPosition.position);
 
     /// <summary>
     /// Set up the components for solar system orbit
