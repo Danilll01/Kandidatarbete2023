@@ -21,6 +21,7 @@ public class SolarSystemTransform : MonoBehaviour
     private Planet activeMoonParentPlanet;
     private static readonly int RotationAxis = Shader.PropertyToID("_RotationAxis");
     private static readonly int Rotation = Shader.PropertyToID("_Rotation");
+    private float skyboxRotationAngle = 0;
 
 
     void Start()
@@ -179,9 +180,10 @@ public class SolarSystemTransform : MonoBehaviour
         sun.transform.RotateAround(Vector3.zero, Vector3.up, orbitSpeed * Time.deltaTime);
 
         planetsParent.transform.RotateAround(Vector3.zero, -rotationAxis, rotationSpeed * Time.deltaTime);
-        
+
+        skyboxRotationAngle += Time.deltaTime * rotationSpeed;
         RenderSettings.skybox.SetVector(RotationAxis, -rotationAxis);
-        RenderSettings.skybox.SetFloat(Rotation, Time.time * rotationSpeed);
+        RenderSettings.skybox.SetFloat(Rotation, skyboxRotationAngle);
 
         Vector3 newSunPos = sun.transform.position;
         Vector3 direction;
@@ -232,6 +234,7 @@ public class SolarSystemTransform : MonoBehaviour
 
     private void ResetPlanetOrbit()
     {
+        Vector3 playerPosBefore = player.transform.position - oldActivePlanet.transform.position;
         if (moonIsActivePlanet)
         {
             oldActivePlanet.transform.parent.SetParent(activeMoonParentPlanet.moonsParent.transform, true);
@@ -246,12 +249,18 @@ public class SolarSystemTransform : MonoBehaviour
         
         sun.transform.rotation = Quaternion.Euler(0, sun.transform.rotation.y, 0);
         sun.transform.position = Vector3.zero;
-
+        
         foreach (Planet body in spawnPlanets.bodies)
         {
             body.transform.parent.SetParent(planetsParent.transform);
             body.ResetOrbitComponents();
         }
+        
+        Vector3 playerPosAfter = player.transform.position - oldActivePlanet.transform.position;
+        float angleBetweenPlayerPositions = Vector3.Angle(playerPosBefore, playerPosAfter);
+        skyboxRotationAngle -= angleBetweenPlayerPositions;
+        RenderSettings.skybox.SetFloat(Rotation, skyboxRotationAngle);
+
     }
 
     // Setup components for solar system rotation
