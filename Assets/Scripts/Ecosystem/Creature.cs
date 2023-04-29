@@ -326,7 +326,7 @@ public class Creature : MonoBehaviour
                     if (disable) nearestResource.GetComponent<Resource>().ConsumeResource();
                 }
             }
-            else //if (Vector3.Distance(transform.position, resourcePos) > consumeRadius)
+            else
             {
                 atDestination = false;
                 destination = resourcePos;
@@ -366,7 +366,7 @@ public class Creature : MonoBehaviour
 
         if (nearestObject != null)
         {
-            if (IsCloseToDestination(nearestObject.transform.position))
+            if (IsCloseToObject(nearestObject.transform.position))
             {
                 atDestination = true;
                 breedingPartner = nearestObject.GetComponent<Creature>();
@@ -476,7 +476,7 @@ public class Creature : MonoBehaviour
 
     private void GotoPosition(Vector3 pos)
     {
-        if (!pos.Equals(Vector2.zero) && !IsCloseToDestination(pos))
+        if (!pos.Equals(Vector2.zero) && !IsCloseToObject(pos))
         {
             // Move the ridgidbody based on velocity
             rigidbody.MovePosition(transform.position + speed * Time.deltaTime * (pos - transform.position).normalized);
@@ -486,14 +486,11 @@ public class Creature : MonoBehaviour
             atDestination = true;
         }
     }
-
-    private bool IsCloseToDestination(Vector3 pos)
+    
+    private bool IsCloseToObject(Vector3 pos)
     {
-        Vector3 creatureToPlanetCenter = (planet.transform.position - transform.position);
-        Vector3 posToPlanetCenter = planet.transform.position - pos;
-
-        float angle = Vector3.Angle(creatureToPlanetCenter, posToPlanetCenter);
-        return angle < consumeRadius;
+        // Gets the smallest distance from collider to pos
+        return collider.bounds.SqrDistance(pos) < 0.15f;
     }
 
     private void Rotate()
