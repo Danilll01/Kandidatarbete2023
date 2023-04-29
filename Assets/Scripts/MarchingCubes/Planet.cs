@@ -241,7 +241,6 @@ public class Planet : MonoBehaviour
         {
             RotateAndOrbitMoons(true);
         }
-        parentOrbitMover.transform.rotation = Quaternion.identity;
     }
 
     private void RotateAroundAxis()
