@@ -453,7 +453,7 @@ public class Creature : MonoBehaviour
         // Get random points around the creature and try to find water
         for (int i = 0; i < 2; i++)
         {
-            Vector3 randPos = transform.position + transform.rotation * Random.onUnitSphere * detectionRadius * 2;
+            Vector3 randPos = transform.position + transform.rotation * Random.insideUnitCircle * detectionRadius * 3;
 
             Ray ray = new(randPos, planet.transform.position - randPos);
             RaycastHit hit;
@@ -550,23 +550,30 @@ public class Creature : MonoBehaviour
     private Vector3 GetRandomPoint()
     {
         Quaternion rotation = Quaternion.FromToRotation(Vector3.forward, transform.position);
-        Vector3 randomPoint;
-        int tries = 0;
+        Vector3 randomRayPoint;
 
-        // Get a random point on the planet, if it fails try again
-        do
+        // Randomize points around the creature
+        for (int i = 0; i < 100; i++)
         {
-            randomPoint = transform.position + rotation * Random.insideUnitCircle * detectionRadius * 2;
-            tries++;
+            randomRayPoint = transform.position + rotation * Random.insideUnitCircle * detectionRadius * 1.5f;
+            
+            Ray ray = new(randomRayPoint, planet.transform.position - randomRayPoint);
+            RaycastHit hit;
 
-            // At 100 tries, just walk back the way you came
-            if (tries > 100)
+            if (Physics.Raycast(ray, out hit, planet.radius))
             {
-                return transform.position - transform.forward * 4f;
-            }
-        } while (Vector3.Distance(randomPoint, planet.transform.position) < Mathf.Abs(planet.waterDiameter) / 2);
+                // Check if the point hit is below water level
+                if (Vector3.Distance(hit.point, planet.transform.position) > planet.waterDiameter / 2)
+                {
+                    Debug.DrawLine(randomRayPoint, hit.point, Color.green, 10f);
+                    return hit.point;
+                }
 
-        return randomPoint;
+            }
+        }
+        
+        // If no apropriate position is found try to go back. 
+        return transform.position - transform.forward * 30f;
     }
 
     // Interacts with a resource and plays eat animation
