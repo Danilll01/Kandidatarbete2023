@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Cinemachine;
 using UnityEngine;
 
 public class SpaceShipCameraMover : MonoBehaviour
@@ -15,6 +16,7 @@ public class SpaceShipCameraMover : MonoBehaviour
     {
         // 
         freeLookCamera.SetActive(Input.GetButton("ShipFreeLook"));
+        
 
         if (!Input.GetKeyDown(KeyCode.V)) { return; }
 
