@@ -438,8 +438,16 @@ public class Planet : MonoBehaviour
         if (bodyName.Contains("Planet"))
         {
             Transform sunTransform = Universe.sunPosition;
-            float radius = (parentOrbitMover.position - sunTransform.position).magnitude;
-            Universe.DrawGizmosCircle(sunTransform.position, sunTransform.up, radius, 32);
+            if (playerIsOnMoon)
+            {
+                float radius = (parentOrbitMover.position - moons[activeMoonIndex].transform.position).magnitude;
+                Universe.DrawGizmosCircle(moons[activeMoonIndex].transform.position, sunTransform.up, radius, 32);
+            }
+            else
+            {
+                float radius = (parentOrbitMover.position - sunTransform.position).magnitude;
+                Universe.DrawGizmosCircle(sunTransform.position, sunTransform.up, radius, 32);
+            }
             
             foreach (Planet moon in moons)
             {

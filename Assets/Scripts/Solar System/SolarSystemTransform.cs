@@ -307,7 +307,16 @@ public class SolarSystemTransform : MonoBehaviour
             return;
         }
 
-        float radius = (sun.transform.position - Vector3.zero).magnitude;
-        Universe.DrawGizmosCircle(Vector3.zero, sun.transform.up, radius, 32);
+        if (moonIsActivePlanet)
+        {
+            float radius = (sun.transform.position - activeMoonParentPlanet.transform.position).magnitude;
+            Universe.DrawGizmosCircle(activeMoonParentPlanet.transform.position, sun.transform.up, radius, 32);
+        }
+        else if(rotateSolarSystem)
+        {
+            float radius = (sun.transform.position - Vector3.zero).magnitude;
+            Universe.DrawGizmosCircle(Vector3.zero, sun.transform.up, radius, 32);
+        }
+        
     }
 }
