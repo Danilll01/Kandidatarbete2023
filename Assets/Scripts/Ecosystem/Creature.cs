@@ -69,6 +69,9 @@ public class Creature : MonoBehaviour
     [SerializeField] private float timeBetweenSteps = 1f/3f;
     private float idleSoundTimer;
 
+    [Header("Misc")]
+    [SerializeField] private bool hasDrinkAnimation = false;
+
     [Header("Debug")]
     [SerializeField] private CreatureState currentState;
     [SerializeField] private bool DEBUG = false;
@@ -297,7 +300,7 @@ public class Creature : MonoBehaviour
         if (nearestResource == null ^ resourcePos == Vector3.zero)
         {
             // If the resource is within consume radius, consume it
-            if (IsCloseToDestination(resourcePos) || (resource == ResourceType.Water && Vector3.Distance(transform.position, planet.transform.position) < planet.waterDiameter / 2))
+            if (IsCloseToDestination(resourcePos) || (resource == ResourceType.Water && Vector3.Distance(transform.position, planet.transform.position) + 0.05 < planet.waterDiameter / 2))
             {
                 if (DEBUG) Debug.Log("Found it " + Vector3.Distance(transform.position, nearestResource.transform.position) + " away");
                 atDestination = true;
@@ -570,7 +573,8 @@ public class Creature : MonoBehaviour
     private void InteractWithResourceAction(GameObject resource, bool disable, ResourceType type)
     {
         currentState = CreatureState.PerformingAction;
-        animator.SetBool("Eat", true);
+        string animationType = hasDrinkAnimation && type == ResourceType.Water ? "Drink": "Eat";
+        animator.SetBool(animationType, true);
         
         StartCoroutine(InteractWithResource(resource, disable, type));
     }
@@ -605,7 +609,8 @@ public class Creature : MonoBehaviour
         }
 
         // Set the state to idle
-        animator.SetBool("Eat", false);
+        string animationType = hasDrinkAnimation && type == ResourceType.Water ? "Drink" : "Eat";
+        animator.SetBool(animationType, false);
         animator.SetBool("Walk", true);
 
         yield return new WaitForSeconds(1);
