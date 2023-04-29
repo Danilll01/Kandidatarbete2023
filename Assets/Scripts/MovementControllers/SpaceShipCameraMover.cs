@@ -8,15 +8,22 @@ public class SpaceShipCameraMover : MonoBehaviour
 
     [SerializeField] private Transform realCameraPosition;
     [SerializeField] private Vector3[] cameraPositions;
-    [SerializeField] private GameObject freeLookCamera;
+    [SerializeField] private CinemachineFreeLook freeLookCamera;
     private int currentCameraIndex = 0;
 
     // Update is called once per frame
     void Update()
     {
-        // 
-        freeLookCamera.SetActive(Input.GetButton("ShipFreeLook"));
-        
+        //
+
+        if (!Input.GetButton("ShipFreeLook"))
+        {
+            freeLookCamera.m_YAxis.Value = 0.7f;
+            freeLookCamera.m_XAxis.Value = 0;
+        }
+        freeLookCamera.enabled = Input.GetButton("ShipFreeLook");
+
+        //freeLookCamera.GetComponent<CinemachineFreeLook>().m_YAxis.Value = 0.7f;
 
         if (!Input.GetKeyDown(KeyCode.V)) { return; }
 
