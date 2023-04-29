@@ -54,7 +54,7 @@ public class WaterHandler : MonoBehaviour
         this.planet = planet;
         waterRadius = Mathf.Abs(waterDiameter / 2) - 1;
 
-        RandomX rand = new RandomX();
+        RandomX rand = new RandomX(randSeed);
         seaColor = seaColors[rand.Next(seaColors.Length)];
 
         GenerateMaterial(seaColor);

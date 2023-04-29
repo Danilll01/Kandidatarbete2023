@@ -4,13 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Fixed camera collisions when looking in free cam">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Player/ShipMain.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Player/ShipMain.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Main.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Main.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipCameraMover.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipCameraMover.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Shaders/Water/CameraWater.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Shaders/Water/CameraWater.mat" afterDir="false" />
-    </list>
+    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Free cam is now always centered at the back from the start when you use it" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -156,12 +150,6 @@
       <workItem from="1682696553423" duration="246000" />
       <workItem from="1682697009257" duration="2425000" />
       <workItem from="1682716360996" duration="7517000" />
-    </task>
-    <task id="LOCAL−00019" summary="Ambient light now blends with no atmosphere gradient when the atmosphere is weaker">
-      <created>1680128863663</created>
-      <option name="number" value="LOCAL−00019" />
-      <option name="presentableId" value="LOCAL−00019" />
-      <updated>1680128863663</updated>
     </task>
     <task id="LOCAL−00020" summary="Changed spacing">
       <created>1680129444127</created>
@@ -451,7 +439,13 @@
       <option name="presentableId" value="LOCAL−00067" />
       <updated>1682727015160</updated>
     </task>
-    <option name="localTasksCounter" value="68" />
+    <task id="LOCAL−00068" summary="Free cam is now always centered at the back from the start when you use it">
+      <created>1682734583831</created>
+      <option name="number" value="LOCAL−00068" />
+      <option name="presentableId" value="LOCAL−00068" />
+      <updated>1682734583831</updated>
+    </task>
+    <option name="localTasksCounter" value="69" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -473,7 +467,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="Can you push this without something braking" />
     <MESSAGE value="Deleted the test script" />
     <MESSAGE value="Continuation of the test script removal" />
     <MESSAGE value="You can now go into planet orbit without the camera jumping" />
@@ -498,6 +491,7 @@
     <MESSAGE value="Added cinamachine free spin camera" />
     <MESSAGE value="Camera now spins around in a satisfying way" />
     <MESSAGE value="Fixed camera collisions when looking in free cam" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fixed camera collisions when looking in free cam" />
+    <MESSAGE value="Free cam is now always centered at the back from the start when you use it" />
+    <option name="LAST_COMMIT_MESSAGE" value="Free cam is now always centered at the back from the start when you use it" />
   </component>
 </project>
