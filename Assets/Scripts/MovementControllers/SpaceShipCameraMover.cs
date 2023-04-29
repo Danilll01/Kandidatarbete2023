@@ -14,16 +14,16 @@ public class SpaceShipCameraMover : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //
-
+        // Sets free cam to its starting position
         if (!Input.GetButton("ShipFreeLook"))
         {
             freeLookCamera.m_YAxis.Value = 0.7f;
             freeLookCamera.m_XAxis.Value = 0;
         }
+        
+        // Enable / disable free cam
         freeLookCamera.enabled = Input.GetButton("ShipFreeLook");
-
-        //freeLookCamera.GetComponent<CinemachineFreeLook>().m_YAxis.Value = 0.7f;
+        
 
         if (!Input.GetKeyDown(KeyCode.V)) { return; }
 
