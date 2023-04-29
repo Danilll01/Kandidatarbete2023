@@ -125,14 +125,14 @@ public class SolarSystemTransform : MonoBehaviour
     private bool CheckIfNewActivePlanet(Planet planet)
     {
         float distance = (player.transform.position - planet.transform.position).magnitude;
-        if (distance <= (planet.radius * 1.2) && planet != activePlanet)
+        if (distance <= (planet.radius * 1.3) && planet != activePlanet)
         {
             activePlanet = planet;
             player.transform.parent = activePlanet.transform;
             return true;
         }
 
-        if (planet == activePlanet && distance > (planet.radius * 1.3))
+        if (planet == activePlanet && distance > (planet.radius * 1.4))
         {
             activePlanet = null;
             return true;
