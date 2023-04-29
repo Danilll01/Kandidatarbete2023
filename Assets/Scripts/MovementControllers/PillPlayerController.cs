@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using ExtendedRandom;
+using UnityEngine.Rendering;
 using UnityEngine.Serialization;
 
 [RequireComponent(typeof(Rigidbody))]
@@ -9,6 +10,7 @@ public class PillPlayerController : MonoBehaviour
     public Planet attractor = null;
     public Camera firstPersonCamera;
     [SerializeField] private PlayerWater playerWater;
+    [SerializeField] private SkinnedMeshRenderer playerModelHead;
     private Rigidbody body;
     [HideInInspector] public bool paused;
 
@@ -33,14 +35,14 @@ public class PillPlayerController : MonoBehaviour
     private Animator animator;
     private static readonly int Speed = Animator.StringToHash("Speed");
     private static readonly int Direction = Animator.StringToHash("Direction");
+    private static readonly int Swim = Animator.StringToHash("Swim");
+    private static readonly int Jump = Animator.StringToHash("Jump");
     private Transform animationRig;
     
     [Header("Camera")]
     [SerializeField] [Range(0.2f, 5f)] private float mouseSensitivity = 1f;
     [SerializeField] private float lookLimitAngle = 80f;
     private float pitch = 0f;
-    private static readonly int Swim = Animator.StringToHash("Swim");
-    private static readonly int Jump = Animator.StringToHash("Jump");
 
     private void Awake()
     {
@@ -294,6 +296,7 @@ public class PillPlayerController : MonoBehaviour
         body.isKinematic = !boarded;
         firstPersonCamera.enabled = boarded;
         GetComponent<Collider>().enabled = boarded;
+        playerModelHead.shadowCastingMode = boarded ? ShadowCastingMode.ShadowsOnly : ShadowCastingMode.On;
         boarded = !boarded;
     }
     

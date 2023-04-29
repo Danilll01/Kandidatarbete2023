@@ -23,7 +23,6 @@ public class SpaceShipCameraMover : MonoBehaviour
         
         // Enable / disable free cam
         freeLookCamera.enabled = Input.GetButton("ShipFreeLook");
-        
 
         if (!Input.GetKeyDown(KeyCode.V)) { return; }
 
