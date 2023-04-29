@@ -184,9 +184,17 @@ public class SolarSystemTransform : MonoBehaviour
     {
         SetUpRotation();
 
-        sun.transform.RotateAround(Vector3.zero, sun.transform.TransformDirection(Vector3.up), orbitSpeed * Time.deltaTime * 2f);
-
-        planetsParent.transform.RotateAround(Vector3.zero, -rotationAxis, rotationSpeed * Time.deltaTime);
+        if (moonIsActivePlanet)
+        {
+            sun.transform.RotateAround(activeMoonParentPlanet.transform.position, sun.transform.TransformDirection(Vector3.up), orbitSpeed * Time.deltaTime * 2f);
+            planetsParent.transform.RotateAround(activeMoonParentPlanet.transform.position, -rotationAxis, rotationSpeed * Time.deltaTime);
+        }
+        else
+        {
+            sun.transform.RotateAround(Vector3.zero, sun.transform.TransformDirection(Vector3.up), orbitSpeed * Time.deltaTime * 2f);
+            planetsParent.transform.RotateAround(Vector3.zero, -rotationAxis, rotationSpeed * Time.deltaTime);
+        }
+        
 
         skyboxRotationAngle += Time.deltaTime * rotationSpeed;
         RenderSettings.skybox.SetVector(RotationAxis, -rotationAxis);
@@ -194,9 +202,21 @@ public class SolarSystemTransform : MonoBehaviour
 
         Vector3 newSunPos = sun.transform.position;
         Vector3 direction;
-        
-        direction = newSunPos - Vector3.zero;
 
+        if (moonIsActivePlanet)
+        {
+            direction = newSunPos - activeMoonParentPlanet.transform.position;
+            newSunPos = direction.normalized * relativePlanetSunDistances[activePlanetIndex].magnitude;
+            newSunPos = ClosestPointOnPlane(activeMoonParentPlanet.transform.position, sun.transform.TransformDirection(Vector3.up), newSunPos);
+        }
+        else
+        {
+            direction = newSunPos - Vector3.zero;
+            newSunPos = direction.normalized * relativePlanetSunDistances[activePlanetIndex].magnitude;
+            newSunPos = ClosestPointOnPlane(Vector3.zero, sun.transform.TransformDirection(Vector3.up), newSunPos);
+        }
+
+        /*
         if (moonIsActivePlanet)
         {
             float distanceFromPlanetToMoon = activeMoonParentPlanet.moonsRelativeDistances[activeMoonParentPlanet.activeMoonIndex].magnitude;
@@ -206,9 +226,8 @@ public class SolarSystemTransform : MonoBehaviour
         {
             newSunPos = direction.normalized * relativePlanetSunDistances[activePlanetIndex].magnitude;
         }
+        */
         
-
-        newSunPos = ClosestPointOnPlane(Vector3.zero, sun.transform.TransformDirection(Vector3.up), newSunPos);
         sun.transform.position = newSunPos;
 
         foreach (var planetBody in spawnPlanets.bodies)
@@ -241,7 +260,7 @@ public class SolarSystemTransform : MonoBehaviour
             {
                 if (planet != activeMoonParentPlanet)
                 {
-                    planet.IncreaseDistanceToSunByAmount(distanceFromMoonToPlanet);
+                    //planet.IncreaseDistanceToSunByAmount(distanceFromMoonToPlanet);
                 }
             }
         }
@@ -273,7 +292,7 @@ public class SolarSystemTransform : MonoBehaviour
                 if (planet != activeMoonParentPlanet)
                 {
                     float distanceFromMoonToPlanet = (activeMoonParentPlanet.transform.position - oldActivePlanet.transform.position).magnitude;
-                    planet.DecreaseDistanceToSunByAmount(distanceFromMoonToPlanet);
+                    //planet.DecreaseDistanceToSunByAmount(distanceFromMoonToPlanet);
                 }
             }
             

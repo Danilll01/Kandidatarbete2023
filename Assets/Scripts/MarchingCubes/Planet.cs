@@ -111,7 +111,7 @@ public class Planet : MonoBehaviour
         if (bodyName.Contains("Moon"))
         {
             Vector3 localPos = (transform.parent.parent.position - transform.position);
-            orbitSpeed =  360 / (3f * Mathf.PI * Mathf.Sqrt(Mathf.Pow(localPos.magnitude, 3)) * 0.00006673f) * 5f;
+            orbitSpeed =  360 / (3f * Mathf.PI * Mathf.Sqrt(Mathf.Pow(localPos.magnitude, 3)) * 0.00006673f) * 2.5f;
         }
         else
         {
@@ -389,10 +389,12 @@ public class Planet : MonoBehaviour
 
     private void ResetMoonsParentRotation()
     {
+        
         foreach (Planet moon in moons)
         {
             moon.transform.parent.SetParent(null, true);
         }
+        
 
         moonsParent.transform.rotation = Universe.sunPosition.rotation;
 
