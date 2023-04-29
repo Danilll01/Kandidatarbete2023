@@ -565,7 +565,6 @@ public class Creature : MonoBehaviour
                 // Check if the point hit is below water level
                 if (Vector3.Distance(hit.point, planet.transform.position) > planet.waterDiameter / 2)
                 {
-                    Debug.DrawLine(randomRayPoint, hit.point, Color.green, 10f);
                     return hit.point;
                 }
 
