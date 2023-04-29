@@ -269,6 +269,8 @@ public class SolarSystemTransform : MonoBehaviour
         Vector3 playerPosAfter = player.transform.position - oldActivePlanet.transform.position;
         float angleBetweenPlayerPositions = Vector3.Angle(playerPosBefore, playerPosAfter);
         skyboxRotationAngle -= angleBetweenPlayerPositions;
+        
+        RenderSettings.skybox.SetVector(RotationAxis, rotationAxis);
         RenderSettings.skybox.SetFloat(Rotation, skyboxRotationAngle);
 
     }
