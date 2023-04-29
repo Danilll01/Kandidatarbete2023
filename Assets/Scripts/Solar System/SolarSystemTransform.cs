@@ -151,7 +151,6 @@ public class SolarSystemTransform : MonoBehaviour
             oldActivePlanet.rotateMoons = false;
             oldActivePlanet = activePlanet;
             releasePlayer = true;
-            timerToReleasePlayer = 0f;
         }
 
         // If the player has entered a new planet, move the solar system accordingly
@@ -172,10 +171,6 @@ public class SolarSystemTransform : MonoBehaviour
             player.attractor = null;
             setUpSolarSystemRotation = false;
             releasePlayer = false;
-        }
-        else
-        {
-            timerToReleasePlayer += Time.deltaTime;
         }
     }
 
