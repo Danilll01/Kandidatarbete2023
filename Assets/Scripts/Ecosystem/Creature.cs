@@ -300,7 +300,7 @@ public class Creature : MonoBehaviour
         if (nearestResource == null ^ resourcePos == Vector3.zero)
         {
             // If the resource is within consume radius, consume it
-            if (IsCloseToDestination(resourcePos) || (resource == ResourceType.Water && Vector3.Distance(transform.position, planet.transform.position) + 0.05 < planet.waterDiameter / 2))
+            if (IsCloseToObject(resourcePos) || (resource == ResourceType.Water && Vector3.Distance(transform.position, planet.transform.position) + 0.05 < planet.waterDiameter / 2))
             {
                 if (DEBUG) Debug.Log("Found it " + Vector3.Distance(transform.position, nearestResource.transform.position) + " away");
                 atDestination = true;
