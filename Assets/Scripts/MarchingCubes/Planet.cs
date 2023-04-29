@@ -418,16 +418,6 @@ public class Planet : MonoBehaviour
         parentOrbitMover.transform.position = sunPosition + (direction.normalized * positionRelativeToSunDistance);
     }
 
-    public void IncreaseDistanceToSunByAmount(float amount)
-    {
-        positionRelativeToSunDistance += amount;
-    }
-
-    public void DecreaseDistanceToSunByAmount(float amount)
-    {
-        positionRelativeToSunDistance -= amount;
-    }
-
     private Vector3 ClosestPointOnPlane(Vector3 planeOffset, Vector3 planeNormal, Vector3 point)
     {
         return point + DistanceFromPlane(planeOffset, planeNormal, point) * planeNormal;
