@@ -244,7 +244,6 @@ public class SolarSystemTransform : MonoBehaviour
 
     private void ResetPlanetOrbit()
     {
-        Vector3 playerPosBefore = player.transform.position - oldActivePlanet.transform.position;
         if (moonIsActivePlanet)
         {
             oldActivePlanet.transform.parent.SetParent(activeMoonParentPlanet.moonsParent.transform, true);
@@ -255,7 +254,7 @@ public class SolarSystemTransform : MonoBehaviour
         {
             body.transform.parent.SetParent(sun.transform);
         }
-        
+
         sun.transform.rotation = Quaternion.Euler(0, sun.transform.rotation.y, 0);
         sun.transform.position = Vector3.zero;
         
@@ -265,14 +264,6 @@ public class SolarSystemTransform : MonoBehaviour
             planet.ResetOrbitComponents();
         }
         moonIsActivePlanet = false;
-        
-        Vector3 playerPosAfter = player.transform.position - oldActivePlanet.transform.position;
-        float angleBetweenPlayerPositions = Vector3.Angle(playerPosBefore, playerPosAfter);
-        skyboxRotationAngle -= angleBetweenPlayerPositions;
-        
-        RenderSettings.skybox.SetVector(RotationAxis, rotationAxis);
-        RenderSettings.skybox.SetFloat(Rotation, skyboxRotationAngle);
-
     }
 
     // Setup components for solar system rotation
