@@ -237,7 +237,7 @@ public class SpaceShipTransition : MonoBehaviour
         Vector3 landingPos = transform.position + (-LocalUp() * height);
 
         //Set up transition to/from
-        landingSpot.position = landingPos; //transform.parent.transform.InverseTransformPoint(landingPos);
+        landingSpot.position = landingPos;
         landingSpot.rotation = Quaternion.LookRotation(Vector3.ProjectOnPlane(transform.TransformVector(Vector3.forward), landingPlane.normal), landingPlane.normal);
 
         return true;

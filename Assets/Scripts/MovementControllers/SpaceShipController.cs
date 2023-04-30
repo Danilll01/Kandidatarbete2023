@@ -82,7 +82,13 @@ public class SpaceShipController : MonoBehaviour
         if (!Universe.player.boarded || shipTransitionScript.UnderTransition())
         {
             physicsBody.isKinematic = true;
+            
+            // Setup for Ship transition handover
+            isOutsidePlanet = true;
             lookRotation = transform.rotation;
+            oldMovementVector = Vector3.zero;
+            mouseXSmooth = 0;
+            mouseYSmooth = 0;
             return;
         }
 
@@ -142,6 +148,7 @@ public class SpaceShipController : MonoBehaviour
         // The mouse local look rotation
         lookRotation = lookRotation * localRotation;
 
+        // Turn upright after being inactive
         if (Universe.player.attractor == null || currentRotationVector != Vector3.zero || newMovementVector != Vector3.zero)
         {
             inactiveTimer = inactiveTime;
