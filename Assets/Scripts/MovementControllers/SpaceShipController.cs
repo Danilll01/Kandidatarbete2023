@@ -52,7 +52,7 @@ public class SpaceShipController : MonoBehaviour
     private GameObject standardShip;
     private bool isOutsidePlanet = false;
     private LayerMask collisionCheckMask;
-    private Collider[] activateHoverSpring = new Collider[1];
+    private readonly Collider[] activateHoverSpring = new Collider[1];
 
    
     
