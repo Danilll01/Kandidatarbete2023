@@ -29,7 +29,7 @@ public class LoadManager : MonoBehaviour
         {
 
             loadingSlider.value = progress;
-            loadingText.text = Mathf.Round(progress * 100f) + "%";
+            loadingText.text = "Loading... " + Mathf.Round(progress * 100f) + "%";
             progress += .01f;
 
             yield return new WaitForSeconds(.02f);

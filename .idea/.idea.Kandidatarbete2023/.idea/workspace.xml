@@ -4,9 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Player crosshair is now disabled when not in spaceship">
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Debug/MenuManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Debug/MenuManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipController.cs" afterDir="false" />
+    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Ship crosshair is now shown behind pause menu">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Load Menu.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Load Menu.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Menus/LoadManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Menus/LoadManager.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -156,13 +157,7 @@
       <workItem from="1682696553423" duration="246000" />
       <workItem from="1682697009257" duration="2425000" />
       <workItem from="1682716360996" duration="7517000" />
-      <workItem from="1682861907126" duration="20999000" />
-    </task>
-    <task id="LOCAL−00032" summary="Sun temperature is now randomized between 3000 and 8000 degrees kelvin">
-      <created>1680227109330</created>
-      <option name="number" value="LOCAL−00032" />
-      <option name="presentableId" value="LOCAL−00032" />
-      <updated>1680227109330</updated>
+      <workItem from="1682861907126" duration="22232000" />
     </task>
     <task id="LOCAL−00033" summary="Directional light matches sun temperature and color">
       <created>1680227470916</created>
@@ -452,7 +447,13 @@
       <option name="presentableId" value="LOCAL−00080" />
       <updated>1682895820861</updated>
     </task>
-    <option name="localTasksCounter" value="81" />
+    <task id="LOCAL−00081" summary="Ship crosshair is now shown behind pause menu">
+      <created>1682896625849</created>
+      <option name="number" value="LOCAL−00081" />
+      <option name="presentableId" value="LOCAL−00081" />
+      <updated>1682896625849</updated>
+    </task>
+    <option name="localTasksCounter" value="82" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -474,7 +475,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="Pointer change again" />
     <MESSAGE value="Ship now rotates upright after 10 seconds" />
     <MESSAGE value="Clamped ship visual model rotation when turning" />
     <MESSAGE value="Fixed nice ship visual view bobbing and a cross-hair to see where you go" />
@@ -499,6 +499,7 @@
     <MESSAGE value="Changed max landing angle to 40 degrees" />
     <MESSAGE value="Fixed planet idle pull on other planets" />
     <MESSAGE value="Player crosshair is now disabled when not in spaceship" />
-    <option name="LAST_COMMIT_MESSAGE" value="Player crosshair is now disabled when not in spaceship" />
+    <MESSAGE value="Ship crosshair is now shown behind pause menu" />
+    <option name="LAST_COMMIT_MESSAGE" value="Ship crosshair is now shown behind pause menu" />
   </component>
 </project>
