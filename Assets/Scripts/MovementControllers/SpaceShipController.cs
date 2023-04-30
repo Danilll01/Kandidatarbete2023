@@ -91,6 +91,7 @@ public class SpaceShipController : MonoBehaviour
         if (!Universe.player.boarded || shipTransitionScript.UnderTransition())
         {
             physicsBody.isKinematic = true;
+            crosshairTexture.gameObject.SetActive(false);
             
             // Setup for Ship transition handover
             isOutsidePlanet = true;
@@ -100,8 +101,9 @@ public class SpaceShipController : MonoBehaviour
             mouseYSmooth = 0;
             return;
         }
-
+        
         physicsBody.isKinematic = false;
+        crosshairTexture.gameObject.SetActive(true);
         
         float thrust = Input.GetAxis("Spaceship Thrust");
         float strafe = Input.GetAxis("Spaceship Strafe");

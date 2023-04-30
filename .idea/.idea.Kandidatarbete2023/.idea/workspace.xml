@@ -4,9 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Changed max landing angle to 40 degrees">
+    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Fixed planet idle pull on other planets">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/MovementControllers/RaySpring.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/MovementControllers/RaySpring.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipController.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -39,6 +38,7 @@
   <component name="HighlightingSettingsPerFile">
     <setting file="mock://D:/Unity/Projects/Kandidatarbete2023/Assets/Scenes/Main.unity" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Atmosphere/AtmosphereHandler.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://D:/Unity/Projects/Kandidatarbete2023/Assets/Scripts/MovementControllers/RaySpring.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://D:/Unity/Projects/Kandidatarbete2023/Assets/Scripts/MovementControllers/RaySpring.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipCameraMover.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipController.cs" root0="FORCE_HIGHLIGHTING" />
@@ -156,13 +156,7 @@
       <workItem from="1682696553423" duration="246000" />
       <workItem from="1682697009257" duration="2425000" />
       <workItem from="1682716360996" duration="7517000" />
-      <workItem from="1682861907126" duration="19557000" />
-    </task>
-    <task id="LOCAL−00030" summary="Water now shades correctly by the atmosphere inside and outside">
-      <created>1680222157899</created>
-      <option name="number" value="LOCAL−00030" />
-      <option name="presentableId" value="LOCAL−00030" />
-      <updated>1680222157899</updated>
+      <workItem from="1682861907126" duration="20541000" />
     </task>
     <task id="LOCAL−00031" summary="Sun has nice new moving material based on temperature">
       <created>1680226249878</created>
@@ -452,7 +446,13 @@
       <option name="presentableId" value="LOCAL−00078" />
       <updated>1682892880936</updated>
     </task>
-    <option name="localTasksCounter" value="79" />
+    <task id="LOCAL−00079" summary="Fixed planet idle pull on other planets">
+      <created>1682894850006</created>
+      <option name="number" value="LOCAL−00079" />
+      <option name="presentableId" value="LOCAL−00079" />
+      <updated>1682894850006</updated>
+    </task>
+    <option name="localTasksCounter" value="80" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -474,7 +474,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="Pointer change" />
     <MESSAGE value="More investigation" />
     <MESSAGE value="Pointer change again" />
     <MESSAGE value="Ship now rotates upright after 10 seconds" />
@@ -499,6 +498,7 @@
     <MESSAGE value="Tuned hover springs" />
     <MESSAGE value="Added force that pulls the player down when inactive" />
     <MESSAGE value="Changed max landing angle to 40 degrees" />
-    <option name="LAST_COMMIT_MESSAGE" value="Changed max landing angle to 40 degrees" />
+    <MESSAGE value="Fixed planet idle pull on other planets" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fixed planet idle pull on other planets" />
   </component>
 </project>
