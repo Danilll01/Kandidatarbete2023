@@ -8,6 +8,13 @@ public class RaySpring : MonoBehaviour
 
     private float lastHitDist = 0;
 
+    /// <summary>
+    /// Adds a force to the rigidbody corresponding to a imaginary  spring
+    /// </summary>
+    /// <param name="body">The rigidbody to get force</param>
+    /// <param name="rayLength">The length of the imaginary spring</param>
+    /// <param name="springStrength">The strength of the imaginary spring</param>
+    /// <param name="springDampening">The dampening force when the spring is compressed quick</param>
     public void AddSpringForce(Rigidbody body, float rayLength, float springStrength, float springDampening)
     {
         Debug.DrawRay(transform.position, transform.forward, Color.blue, rayLength);

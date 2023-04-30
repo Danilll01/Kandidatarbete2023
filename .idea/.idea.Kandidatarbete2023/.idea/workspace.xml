@@ -4,13 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Added RaySpring class">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Player/ShipMain.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Player/ShipMain.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Individual/Joel.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Individual/Joel.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/MovementControllers/RaySpring.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/MovementControllers/RaySpring.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipController.cs" afterDir="false" />
-    </list>
+    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Added spring prefab" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -156,19 +150,7 @@
       <workItem from="1682696553423" duration="246000" />
       <workItem from="1682697009257" duration="2425000" />
       <workItem from="1682716360996" duration="7517000" />
-      <workItem from="1682861907126" duration="6222000" />
-    </task>
-    <task id="LOCAL−00023" summary="Changed player position in ship to better suit the new FOV">
-      <created>1680213412454</created>
-      <option name="number" value="LOCAL−00023" />
-      <option name="presentableId" value="LOCAL−00023" />
-      <updated>1680213412454</updated>
-    </task>
-    <task id="LOCAL−00024" summary="Made ship glass a little more transparent">
-      <created>1680213569157</created>
-      <option name="number" value="LOCAL−00024" />
-      <option name="presentableId" value="LOCAL−00024" />
-      <updated>1680213569157</updated>
+      <workItem from="1682861907126" duration="6753000" />
     </task>
     <task id="LOCAL−00025" summary="Turned on camera dithering to make color banding much less noticeable">
       <created>1680213838376</created>
@@ -452,7 +434,19 @@
       <option name="presentableId" value="LOCAL−00071" />
       <updated>1682864353283</updated>
     </task>
-    <option name="localTasksCounter" value="72" />
+    <task id="LOCAL−00072" summary="Force springs now works on spaceship">
+      <created>1682880820059</created>
+      <option name="number" value="LOCAL−00072" />
+      <option name="presentableId" value="LOCAL−00072" />
+      <updated>1682880820059</updated>
+    </task>
+    <task id="LOCAL−00073" summary="Added spring prefab">
+      <created>1682880835345</created>
+      <option name="number" value="LOCAL−00073" />
+      <option name="presentableId" value="LOCAL−00073" />
+      <updated>1682880835345</updated>
+    </task>
+    <option name="localTasksCounter" value="74" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -474,8 +468,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="Planet chunk loading is now fixed" />
-    <MESSAGE value="Removed player initialize parameter" />
     <MESSAGE value="Cleaned up code" />
     <MESSAGE value="Rotations now finally working prefectly as wanted. No camera jumps" />
     <MESSAGE value="Rotations now finally working perfectly as wanted. No camera jumps" />
@@ -499,6 +491,8 @@
     <MESSAGE value="Added Comments" />
     <MESSAGE value="Fixed landing bug when entering and leaving planet" />
     <MESSAGE value="Added RaySpring class" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added RaySpring class" />
+    <MESSAGE value="Force springs now works on spaceship" />
+    <MESSAGE value="Added spring prefab" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added spring prefab" />
   </component>
 </project>
