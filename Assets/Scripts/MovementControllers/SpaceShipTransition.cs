@@ -92,8 +92,8 @@ public class SpaceShipTransition : MonoBehaviour
             if (GetLandingSpot(out (Vector3 position, Quaternion rotation) landingTarget))
             {
                 //Set up transition to/from
-                transitionFromPos = transform.localPosition;
-                transitionFromRot = transform.localRotation;
+                transitionFromPos = transform.position;
+                transitionFromRot = transform.rotation;
                 transitionToPos = landingTarget.position;
                 transitionToRot = landingTarget.rotation;
                 transitioning = true;
@@ -108,8 +108,8 @@ public class SpaceShipTransition : MonoBehaviour
             GetTakeoffSpot(out (Vector3 position, Quaternion rotation) takeoffTarget);
 
             //Set up transition to/from
-            transitionFromPos = transform.localPosition;
-            transitionFromRot = transform.localRotation;
+            transitionFromPos = transform.position;
+            transitionFromRot = transform.rotation;
             transitionToPos = takeoffTarget.position;
             transitionToRot = takeoffTarget.rotation;
             
@@ -156,10 +156,10 @@ public class SpaceShipTransition : MonoBehaviour
     
     private void GetTakeoffSpot(out (Vector3 position, Quaternion rotation) takeoffSpot)
     {
-        takeoffSpot.position = transform.localPosition + LocalUp() * 10;
-        takeoffSpot.rotation = Gravity.UprightRotation(transform, player.attractor.transform);
+        takeoffSpot.position = transform.position + LocalUp() * 10;
+        takeoffSpot.rotation = Gravity.UprightRotation(transform, transform.parent.transform);
     }
-    
+
     private void DisembarkFromShip()
     {
         Transform shipTransform = transform;
@@ -234,10 +234,10 @@ public class SpaceShipTransition : MonoBehaviour
 
         //Land ship and calculate offsets
         landingPlane.Raycast(new Ray(transform.position, -LocalUp()), out float height);
-        Vector3 landingPos = transform.localPosition + (-LocalUp() * height);
+        Vector3 landingPos = transform.position + (-LocalUp() * height);
 
         //Set up transition to/from
-        landingSpot.position = transform.parent.transform.InverseTransformPoint(landingPos);
+        landingSpot.position = landingPos; //transform.parent.transform.InverseTransformPoint(landingPos);
         landingSpot.rotation = Quaternion.LookRotation(Vector3.ProjectOnPlane(transform.TransformVector(Vector3.forward), landingPlane.normal), landingPlane.normal);
 
         return true;

@@ -220,7 +220,7 @@ public class SpaceShipController : MonoBehaviour
         rotationZ = Mathf.Lerp(rotationZ, Input.GetAxis("Spaceship Roll") * 2f, Time.deltaTime * cameraSmooth);
     }
 
-    private void OnCollisionEnter(Collision other)
+    /*private void OnCollisionEnter(Collision other)
     {
         canMove = false;
     }
@@ -234,7 +234,7 @@ public class SpaceShipController : MonoBehaviour
     {
         
         float force = GetHoverForce(other.contactOffset);
-        physicsBody.AddForceAtPosition(Vector3.Normalize(transform.position - Universe.player.attractor.transform.position) * force, transform.position);
+        //physicsBody.AddForceAtPosition(Vector3.Normalize(transform.position - Universe.player.attractor.transform.position) * force, transform.position);
         Debug.Log("INNE: " + other.contactOffset);
     }
 
@@ -244,7 +244,7 @@ public class SpaceShipController : MonoBehaviour
         float force = GetHoverForce(contact.separation);
         physicsBody.AddForceAtPosition(contact.normal * force, physicsBody.worldCenterOfMass);
         Debug.Log("INNE: " + contact.separation);
-    }*/
+    }#1#
 
     private float GetHoverForce(float distance)
     {
@@ -260,6 +260,6 @@ public class SpaceShipController : MonoBehaviour
     private void OnCollisionExit(Collision other)
     {
         canMove = true;
-    }
+    }*/
     
 }
