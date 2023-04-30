@@ -17,7 +17,7 @@ public class RaySpring : MonoBehaviour
     /// <param name="springDampening">The dampening force when the spring is compressed quick</param>
     public void AddSpringForce(Rigidbody body, float rayLength, float springStrength, float springDampening)
     {
-        Debug.DrawRay(transform.position, transform.forward, Color.blue, rayLength);
+        Debug.DrawRay(transform.position, transform.forward * rayLength, Color.blue, rayLength);
 
         if (Physics.Raycast(transform.position, transform.transform.forward, out RaycastHit hit, rayLength))
         {

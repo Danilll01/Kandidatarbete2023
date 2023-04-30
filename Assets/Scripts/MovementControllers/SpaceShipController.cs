@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Pathfinding.Util;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -50,8 +51,9 @@ public class SpaceShipController : MonoBehaviour
     private Vector3 oldMovementVector = new();
     private GameObject standardShip;
     private bool isOutsidePlanet = false;
-    private bool canMove = true;
-    private Vector3 enterGroundPosition;
+    private LayerMask collisionCheckMask;
+    private Collider[] activateHoverSpring = new Collider[1];
+
    
     
     // Backend stuff
@@ -75,6 +77,11 @@ public class SpaceShipController : MonoBehaviour
         shipTransitionScript.Initialize();
         Universe.spaceShip = transform;
         standardShip = new GameObject { hideFlags = HideFlags.HideInHierarchy };
+       
+        collisionCheckMask = LayerMask.GetMask("Planet");
+        collisionCheckMask |= ( 1 << LayerMask.NameToLayer("Foliage"));
+        collisionCheckMask |= ( 1 << LayerMask.NameToLayer("Food"));
+
     }
 
     // Handles movement of ship
@@ -227,55 +234,19 @@ public class SpaceShipController : MonoBehaviour
     }
 
 
+    // Calculates spring hover forces for all springs on the ship
     private void CalculateSpringForces()
     {
+        // If springs are deactivated, do not do any calls
+        int collisions = Physics.OverlapCapsuleNonAlloc(transform.position + transform.forward * 16, transform.position -transform.forward * 14, 20, activateHoverSpring, collisionCheckMask);
+        if (collisions <= 0) return;
+        
+        // Add spring force from springs 
         foreach (RaySpring raySpring in springs)
         {
             raySpring.AddSpringForce(physicsBody, springLength, springStrength, springDampening);
         }
     }
-    
-    
-    /*private void OnCollisionEnter(Collision other)
-    {
-        canMove = false;
-    }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        enterGroundPosition = transform.position;
-    }
-    
-    private void OnTriggerStay(Collider other)
-    {
-        
-        float force = GetHoverForce(other.contactOffset);
-        //physicsBody.AddForceAtPosition(Vector3.Normalize(transform.position - Universe.player.attractor.transform.position) * force, transform.position);
-        Debug.Log("INNE: " + other.contactOffset);
-    }
 
-    /*private void OnCollisionStay(Collision other)
-    {
-        ContactPoint contact = other.GetContact(0);
-        float force = GetHoverForce(contact.separation);
-        physicsBody.AddForceAtPosition(contact.normal * force, physicsBody.worldCenterOfMass);
-        Debug.Log("INNE: " + contact.separation);
-    }#1#
-
-    private float GetHoverForce(float distance)
-    {
-        float force = strength * distance;// + (hoverDampening * physicsBody.velocity.magnitude);
-        return Mathf.Max(0f, force);
-    }
-    
-    private void OnTriggerExit(Collider other)
-    {
-        //enterGroundPosition = null;
-    }
-    
-    private void OnCollisionExit(Collision other)
-    {
-        canMove = true;
-    }*/
-    
 }

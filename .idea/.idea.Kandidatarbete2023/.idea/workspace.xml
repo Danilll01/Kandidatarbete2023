@@ -4,7 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Added spring prefab" />
+    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Added comment">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Assets/Astronaut/Stylized Astronaut/Stylized Astronaut.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Assets/Astronaut/Stylized Astronaut/Stylized Astronaut.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Player/ShipMain.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Player/ShipMain.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/MovementControllers/RaySpring.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/MovementControllers/RaySpring.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Shaders/Water/CameraWater.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Shaders/Water/CameraWater.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectSettings/TagManager.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/TagManager.asset" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -150,13 +158,7 @@
       <workItem from="1682696553423" duration="246000" />
       <workItem from="1682697009257" duration="2425000" />
       <workItem from="1682716360996" duration="7517000" />
-      <workItem from="1682861907126" duration="6753000" />
-    </task>
-    <task id="LOCAL−00025" summary="Turned on camera dithering to make color banding much less noticeable">
-      <created>1680213838376</created>
-      <option name="number" value="LOCAL−00025" />
-      <option name="presentableId" value="LOCAL−00025" />
-      <updated>1680213838376</updated>
+      <workItem from="1682861907126" duration="14469000" />
     </task>
     <task id="LOCAL−00026" summary="Added tonemapping for much better colors (Will not be as washed out as before)">
       <created>1680215737793</created>
@@ -446,7 +448,13 @@
       <option name="presentableId" value="LOCAL−00073" />
       <updated>1682880835345</updated>
     </task>
-    <option name="localTasksCounter" value="74" />
+    <task id="LOCAL−00074" summary="Added comment">
+      <created>1682881225052</created>
+      <option name="number" value="LOCAL−00074" />
+      <option name="presentableId" value="LOCAL−00074" />
+      <updated>1682881225052</updated>
+    </task>
+    <option name="localTasksCounter" value="75" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -468,7 +476,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="Cleaned up code" />
     <MESSAGE value="Rotations now finally working prefectly as wanted. No camera jumps" />
     <MESSAGE value="Rotations now finally working perfectly as wanted. No camera jumps" />
     <MESSAGE value="Added game icon" />
@@ -493,6 +500,7 @@
     <MESSAGE value="Added RaySpring class" />
     <MESSAGE value="Force springs now works on spaceship" />
     <MESSAGE value="Added spring prefab" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added spring prefab" />
+    <MESSAGE value="Added comment" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added comment" />
   </component>
 </project>
