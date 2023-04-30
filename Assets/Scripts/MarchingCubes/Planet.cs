@@ -84,6 +84,7 @@ public class Planet : MonoBehaviour
     public bool solarSystemRotationActive;
     public bool playerIsOnMoon;
     public int activeMoonIndex;
+    private Quaternion[] moonRotationToKeep;
 
     private bool reset;
 
@@ -107,6 +108,11 @@ public class Planet : MonoBehaviour
 
         rotationAxis = rand.OnUnitSphere() * radius;
         rotationSpeed = rand.Next(3, 6);
+        moonRotationToKeep = new Quaternion[moons.Count];
+        for (int i = 0; i < moons.Count; i++)
+        {
+            moonRotationToKeep[i] = moons[i].transform.parent.rotation;
+        }
 
         if (bodyName.Contains("Moon"))
         {
@@ -129,9 +135,7 @@ public class Planet : MonoBehaviour
             
             marchingCubes = new MarchingCubes(biomeSeed, 1, meshGenerator, threshold, radius, terrainLayers, biomeSettings);
         }
-
         
-
         // Init water
         if (willGeneratePlanetLife)
         {
@@ -196,6 +200,11 @@ public class Planet : MonoBehaviour
         if (playerIsOnMoon)
         {
             player.transform.parent.parent.SetParent(null, true);
+        }
+
+        for (int i = 0; i < moons.Count; i++)
+        {
+            moonRotationToKeep[i] = moons[i].transform.parent.rotation;
         }
     }
 
@@ -271,11 +280,10 @@ public class Planet : MonoBehaviour
                 if (activeMoonIndex != i)
                 {
                     MakeMoonOrbitAndRotate(moon, i);
-                    Transform parent = moon.transform.parent.transform;
+                    Transform parent = moon.transform.parent;
                     parent.position = ClosestPointOnPlane(moonsParent.transform.position, moonsParent.transform.TransformDirection(Vector3.up), parent.transform.position);
-                    parent.transform.rotation = Quaternion.identity;
+                    parent.rotation = moonRotationToKeep[i];
                 }
-                
             }
         }
         else
@@ -284,7 +292,6 @@ public class Planet : MonoBehaviour
             {
                 Planet moon = moons[i];
                 MakeMoonOrbitAndRotate(moon, i);
-                moon.transform.parent.rotation = Quaternion.identity;
             }
         }
     }
@@ -309,9 +316,9 @@ public class Planet : MonoBehaviour
                 Planet moon = moons[i];
                 MakeMoonOrbitAndRotate(moon, i);
 
-                Transform parent = moon.transform.parent.transform;
+                Transform parent = moon.transform.parent;
                 parent.position = ClosestPointOnPlane(moonsParent.transform.position, moonsParent.transform.TransformDirection(Vector3.up), parent.transform.position);
-                parent.rotation = Quaternion.identity;
+                parent.rotation = moonRotationToKeep[i];
             }
         }
         else
@@ -320,7 +327,6 @@ public class Planet : MonoBehaviour
             {
                 Planet moon = moons[i];
                 MakeMoonOrbitAndRotate(moon, i);
-                moon.transform.parent.rotation = Quaternion.identity;
             }
         }
     }
@@ -388,14 +394,13 @@ public class Planet : MonoBehaviour
 
     private void ResetMoonsParentRotation()
     {
-        
         foreach (Planet moon in moons)
         {
             moon.transform.parent.SetParent(null, true);
         }
         
-
         moonsParent.transform.rotation = Universe.sunPosition.rotation;
+
 
         foreach (Planet moon in moons)
         {
