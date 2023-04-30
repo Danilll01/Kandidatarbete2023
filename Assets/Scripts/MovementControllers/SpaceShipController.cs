@@ -17,8 +17,10 @@ public class SpaceShipController : MonoBehaviour
     [SerializeField] [Range(0,1)] private float planetSlowdownFactor = 0.6f;
     
     [Header("Hovering stuff")]
-    [SerializeField] private float strength = 10f;
-    [SerializeField] private float hoverDampening = 100f;
+    [SerializeField] private float springLength = 10f;
+    [SerializeField] private float springStrength = 1000f;
+    [SerializeField] private float springDampening = 1000f;
+    [SerializeField] private RaySpring[] springs;
     
     [Header("Ship setting stuff")] 
     [SerializeField] private float inactiveTime = 10f;
@@ -121,15 +123,9 @@ public class SpaceShipController : MonoBehaviour
 
         //Transform the vector3 to local space
         moveDirection = transform.TransformDirection(moveDirection);
+        
         //Set the velocity, so you can move
-        if (canMove)
-        {
-            physicsBody.velocity = new Vector3(moveDirection.x, moveDirection.y, moveDirection.z);
-        }
-        else
-        {
-            physicsBody.velocity += new Vector3(moveDirection.x, moveDirection.y, moveDirection.z);
-        }
+        physicsBody.velocity = new Vector3(moveDirection.x, moveDirection.y, moveDirection.z);
 
         //Camera follow
         mainCamera.transform.position = Vector3.Lerp(mainCamera.transform.position, cameraPosition.position, Time.deltaTime * cameraSmooth);
@@ -175,6 +171,9 @@ public class SpaceShipController : MonoBehaviour
         {
             crosshairTexture.anchoredPosition = new Vector2(rotationY + defaultShipRotation.y, -(rotationX + defaultShipRotation.x - 20)) * crossHairMovement;
         }
+        
+        // Add hover forces
+        CalculateSpringForces();
     }
 
   
@@ -227,6 +226,16 @@ public class SpaceShipController : MonoBehaviour
         rotationZ = Mathf.Lerp(rotationZ, Input.GetAxis("Spaceship Roll") * 2f, Time.deltaTime * cameraSmooth);
     }
 
+
+    private void CalculateSpringForces()
+    {
+        foreach (RaySpring raySpring in springs)
+        {
+            raySpring.AddSpringForce(physicsBody, springLength, springStrength, springDampening);
+        }
+    }
+    
+    
     /*private void OnCollisionEnter(Collision other)
     {
         canMove = false;
