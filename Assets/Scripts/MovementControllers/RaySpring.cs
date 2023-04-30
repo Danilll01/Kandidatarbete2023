@@ -22,7 +22,13 @@ public class RaySpring : MonoBehaviour
         if (Physics.Raycast(transform.position, transform.transform.forward, out RaycastHit hit, rayLength))
         {
             // Calculate spring force
-            float forceAmount = springStrength * (rayLength - hit.distance) + (springDampening * (lastHitDist - hit.distance));
+            Vector3 test = body.velocity;
+            test.Scale(transform.forward);
+            float testSpeed = test.magnitude;
+            
+            //float forceAmount = springStrength * (rayLength - hit.distance) + (springDampening * (lastHitDist - hit.distance));
+            Debug.Log(testSpeed);
+            float forceAmount = springStrength * (rayLength - hit.distance) + (springDampening * testSpeed);
             forceAmount = Mathf.Max(0f, forceAmount);
             lastHitDist = hit.distance;
             

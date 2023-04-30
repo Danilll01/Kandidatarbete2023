@@ -151,7 +151,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1510268757188961703}
-  m_LocalRotation: {x: -0.098537646, y: 1e-45, z: -0, w: 0.99513334}
+  m_LocalRotation: {x: -0.098537646, y: 1e-45, z: 0, w: 0.99513334}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -427,7 +427,6 @@ GameObject:
   - component: {fileID: 8501261649151649146}
   - component: {fileID: 5970688288339473150}
   - component: {fileID: 1925086625348583439}
-  - component: {fileID: 6498144847820173870}
   - component: {fileID: 8221699819142902854}
   m_Layer: 11
   m_Name: ShipMain
@@ -470,9 +469,9 @@ MonoBehaviour:
   normalSpeed: 500
   maxSpeed: 4000
   planetSlowdownFactor: 0.2
-  springLength: 10
-  springStrength: 300
-  springDampening: 300
+  springLength: 7
+  springStrength: 200
+  springDampening: 10
   springs:
   - {fileID: 6501207127035311204}
   - {fileID: 914031143152494733}
@@ -628,20 +627,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 2.1090705, y: 1.2203598, z: 6.9984365}
   m_Center: {x: 0.0052443743, y: 1.5102427, z: -3.9844868}
---- !u!136 &6498144847820173870
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3421500242679807732}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  m_Radius: 20
-  m_Height: 50
-  m_Direction: 2
-  m_Center: {x: 0, y: 0.4499998, z: 2.06}
 --- !u!82 &8221699819142902854
 AudioSource:
   m_ObjectHideFlags: 0
