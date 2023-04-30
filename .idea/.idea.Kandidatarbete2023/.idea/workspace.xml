@@ -4,9 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Now does not cast rays every frame">
+    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Tuned hover springs">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/MovementControllers/RaySpring.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/MovementControllers/RaySpring.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipController.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -37,6 +38,7 @@
   </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Atmosphere/AtmosphereHandler.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://D:/Unity/Projects/Kandidatarbete2023/Assets/Scripts/MovementControllers/RaySpring.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipCameraMover.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipController.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipTransition.cs" root0="FORCE_HIGHLIGHTING" />
@@ -153,13 +155,7 @@
       <workItem from="1682696553423" duration="246000" />
       <workItem from="1682697009257" duration="2425000" />
       <workItem from="1682716360996" duration="7517000" />
-      <workItem from="1682861907126" duration="15234000" />
-    </task>
-    <task id="LOCAL−00027" summary="Longer camera cut of distance to not make sun disappear + better shadow quality">
-      <created>1680217837140</created>
-      <option name="number" value="LOCAL−00027" />
-      <option name="presentableId" value="LOCAL−00027" />
-      <updated>1680217837140</updated>
+      <workItem from="1682861907126" duration="17275000" />
     </task>
     <task id="LOCAL−00028" summary="Water now get rendered at the right time when under water">
       <created>1680220284901</created>
@@ -449,7 +445,13 @@
       <option name="presentableId" value="LOCAL−00075" />
       <updated>1682888804205</updated>
     </task>
-    <option name="localTasksCounter" value="76" />
+    <task id="LOCAL−00076" summary="Tuned hover springs">
+      <created>1682891040209</created>
+      <option name="number" value="LOCAL−00076" />
+      <option name="presentableId" value="LOCAL−00076" />
+      <updated>1682891040209</updated>
+    </task>
+    <option name="localTasksCounter" value="77" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -471,7 +473,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="Rotations now finally working perfectly as wanted. No camera jumps" />
     <MESSAGE value="Added game icon" />
     <MESSAGE value="Investigation" />
     <MESSAGE value="Pointer change" />
@@ -496,6 +497,7 @@
     <MESSAGE value="Added spring prefab" />
     <MESSAGE value="Added comment" />
     <MESSAGE value="Now does not cast rays every frame" />
-    <option name="LAST_COMMIT_MESSAGE" value="Now does not cast rays every frame" />
+    <MESSAGE value="Tuned hover springs" />
+    <option name="LAST_COMMIT_MESSAGE" value="Tuned hover springs" />
   </component>
 </project>

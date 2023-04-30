@@ -6,8 +6,6 @@ using UnityEngine;
 public class RaySpring : MonoBehaviour
 {
 
-    private float lastHitDist = 0;
-
     /// <summary>
     /// Adds a force to the rigidbody corresponding to a imaginary  spring
     /// </summary>
@@ -21,22 +19,16 @@ public class RaySpring : MonoBehaviour
 
         if (Physics.Raycast(transform.position, transform.transform.forward, out RaycastHit hit, rayLength))
         {
+            // Get direction speed for spring dampen
+            Vector3 bodyVelocity = body.velocity;
+            bodyVelocity.Scale(transform.forward);
+            float directionSpeed = bodyVelocity.magnitude;
+
             // Calculate spring force
-            Vector3 test = body.velocity;
-            test.Scale(transform.forward);
-            float testSpeed = test.magnitude;
-            
-            //float forceAmount = springStrength * (rayLength - hit.distance) + (springDampening * (lastHitDist - hit.distance));
-            Debug.Log(testSpeed);
-            float forceAmount = springStrength * (rayLength - hit.distance) + (springDampening * testSpeed);
+            float forceAmount = springStrength * (rayLength - hit.distance) + (springDampening * directionSpeed);
             forceAmount = Mathf.Max(0f, forceAmount);
-            lastHitDist = hit.distance;
-            
+
             body.AddForce(hit.normal * forceAmount);
-        }
-        else
-        {
-            lastHitDist = rayLength * 1.1f;
         }
     }
     

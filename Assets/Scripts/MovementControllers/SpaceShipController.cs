@@ -161,6 +161,7 @@ public class SpaceShipController : MonoBehaviour
             if (inactiveTimer < 0 && Universe.player.attractor != null)
             {
                 lookRotation = Quaternion.Lerp(lookRotation, Quaternion.identity, Time.fixedDeltaTime / 3f);
+                physicsBody.AddForce(-transform.localPosition.normalized * 200);
             }
             else
             {
