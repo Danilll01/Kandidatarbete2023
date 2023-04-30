@@ -150,25 +150,6 @@ public class SpaceShipController : MonoBehaviour
 
         // The mouse local look rotation
         lookRotation = lookRotation * localRotation;
-
-        // Turn upright after being inactive
-        if (Universe.player.attractor == null || currentRotationVector != Vector3.zero || newMovementVector != Vector3.zero)
-        {
-            inactiveTimer = inactiveTime;
-        }
-        else
-        {
-            if (inactiveTimer < 0 && Universe.player.attractor != null)
-            {
-                lookRotation = Quaternion.Lerp(lookRotation, Quaternion.identity, Time.fixedDeltaTime / 3f);
-                physicsBody.AddForce(-transform.localPosition.normalized * 200);
-            }
-            else
-            {
-                inactiveTimer -= Time.deltaTime;
-            }
-        }
-        
         
         RotateMainShip();
         
@@ -180,11 +161,13 @@ public class SpaceShipController : MonoBehaviour
             crosshairTexture.anchoredPosition = new Vector2(rotationY + defaultShipRotation.y, -(rotationX + defaultShipRotation.x - 20)) * crossHairMovement;
         }
         
+        // Turn upright after being inactive
+        PlayerInactiveCheck(currentRotationVector, newMovementVector);
+        
         // Add hover forces
         CalculateSpringForces();
     }
 
-  
     // Rotates the main ship body
     private void RotateMainShip()
     {
@@ -234,7 +217,30 @@ public class SpaceShipController : MonoBehaviour
         rotationZ = Mathf.Lerp(rotationZ, Input.GetAxis("Spaceship Roll") * 2f, Time.deltaTime * cameraSmooth);
     }
 
-
+    // Turns the ship upright and pulls it toward the planet when player is inactive
+    private void PlayerInactiveCheck(Vector3 currentRotationVector, Vector3 newMovementVector)
+    {
+        if (Universe.player.attractor == null || currentRotationVector != Vector3.zero || newMovementVector != Vector3.zero)
+        {
+            inactiveTimer = inactiveTime;
+        }
+        else
+        {
+            // Check if inactive timer has run out
+            if (inactiveTimer < 0 && Universe.player.attractor != null)
+            {
+                // Flip upright and pull towards ground
+                lookRotation = Quaternion.Lerp(lookRotation, Quaternion.identity, Time.fixedDeltaTime / 3f);
+                Vector3 planetCenter = transform.parent.position - transform.position;
+                physicsBody.AddForce(planetCenter.normalized * 200);
+            }
+            else
+            {
+                inactiveTimer -= Time.deltaTime;
+            }
+        }
+    }
+    
     // Calculates spring hover forces for all springs on the ship
     private void CalculateSpringForces()
     {
