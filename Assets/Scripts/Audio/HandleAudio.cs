@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -12,6 +13,7 @@ public class HandleAudio : MonoBehaviour
     private float duration = 2f;
     private const float FADED_OUT_VOLUME = 0.01f;
     private bool stoppedSoundEffects;
+    private bool gameIsPaused;
 
     /// <summary>
     /// Initialize the audio components
@@ -23,6 +25,20 @@ public class HandleAudio : MonoBehaviour
         soundEffectsAudioSource.volume = soundEffectsVolume;
         musicAudioSource.Play();
         StartCoroutine(InitializeBackgroundMusic());
+    }
+
+    private void Update()
+    {
+        if (Time.timeScale == 0 && !gameIsPaused)
+        {
+            soundEffectsAudioSource.mute = true;
+            gameIsPaused = true;
+        }
+        else if (Time.timeScale == 1 && gameIsPaused)
+        {
+            soundEffectsAudioSource.mute = false;
+            gameIsPaused = false;
+        }
     }
 
     /// <summary>
