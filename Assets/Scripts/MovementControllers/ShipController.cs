@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public class ShipController : MonoBehaviour
 {
@@ -26,7 +25,7 @@ public class ShipController : MonoBehaviour
 
     private AudioSource audioPlayer;
     [SerializeField] AudioClip errorSound;
-    [FormerlySerializedAs("backgroundMusic")] [SerializeField] private HandleAudio audio;
+    [SerializeField] private HandleAudio audio;
 
     public void Initialize(Rigidbody body, Camera camera)
     {
