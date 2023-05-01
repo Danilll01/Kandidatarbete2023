@@ -260,8 +260,11 @@ public class SpaceShipController : MonoBehaviour
             // Check if inactive timer has run out
             if (inactiveTimer < 0 && Universe.player.attractor != null)
             {
-                // Flip upright and pull towards ground
-                lookRotation = Quaternion.Lerp(lookRotation, Quaternion.identity, Time.fixedDeltaTime / 3f);
+                // Flip upright
+                Quaternion rotateTowards = orbitPlanetMovement ? Quaternion.identity : Gravity.UprightRotation(transform, transform.parent);
+                lookRotation = Quaternion.Lerp(lookRotation, rotateTowards, Time.fixedDeltaTime / 3f);
+                
+                // Pull towards ground
                 Vector3 planetCenter = transform.parent.position - transform.position;
                 physicsBody.AddForce(planetCenter.normalized * 200);
             }
