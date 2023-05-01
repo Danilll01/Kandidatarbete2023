@@ -37,7 +37,7 @@ public class ShipController : MonoBehaviour
         //Place ship where the player is and embark them
         transform.position = player.transform.position;
         transform.rotation = player.transform.rotation;
-        EmbarkInShip();
+        EmbarkInShip(true);
         transitionToPos = transform.position;
         transitionToRot = transform.rotation;
         transitionProgress = float.MaxValue;
@@ -116,7 +116,7 @@ public class ShipController : MonoBehaviour
             {
                 //Embark
                 //Move player into ship
-                EmbarkInShip();
+                EmbarkInShip(false);
 
                 //Get raised spot
                 GetTakeoffSpot(out (Vector3 position, Quaternion rotation) takeoffTarget);
@@ -285,9 +285,12 @@ public class ShipController : MonoBehaviour
         body.velocity = Vector3.zero;
     }
 
-    private void EmbarkInShip()
+    private void EmbarkInShip(bool initialization)
     {
-        StartCoroutine(backgroundMusic.UpdateClipIndex(HandleBackgroundMusic.BackgroundClips.Space));
+        if (!initialization)
+        {
+            StartCoroutine(backgroundMusic.UpdateClipIndex(HandleBackgroundMusic.BackgroundClips.Space));
+        }
         player.transform.position = transform.position + (transform.rotation * mountedPos.localPosition);
         player.transform.rotation = transform.rotation;
         camera.transform.localRotation = Quaternion.identity;

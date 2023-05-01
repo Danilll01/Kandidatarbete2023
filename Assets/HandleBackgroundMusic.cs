@@ -6,6 +6,7 @@ public class HandleBackgroundMusic : MonoBehaviour
 {
     // Start is called before the first frame update
     [SerializeField] private AudioClip[] audioclips;
+    [SerializeField] private float backgroundMusicVolume = 0.2f;
     private AudioSource audioSource;
     private float duration = 3f;
     private const float FADED_OUT_VOLUME = 0.01f;
@@ -14,13 +15,25 @@ public class HandleBackgroundMusic : MonoBehaviour
     {
         audioSource = GetComponent<AudioSource>();
         audioSource.clip = audioclips[0];
+        audioSource.volume = backgroundMusicVolume;
         audioSource.Play();
+        StartCoroutine(InitializeBackgroundMusic());
     }
 
     public enum BackgroundClips
     {
         Space,
         Planet
+    }
+
+    private IEnumerator InitializeBackgroundMusic()
+    {
+        for (var timePassed = 0f; timePassed < duration; timePassed += Time.deltaTime)
+        {
+            audioSource.volume = Mathf.Lerp(FADED_OUT_VOLUME, backgroundMusicVolume, timePassed / duration);
+
+            yield return null;
+        }
     }
 
     // Update is called once per frame
@@ -58,7 +71,7 @@ public class HandleBackgroundMusic : MonoBehaviour
 
             yield return null;
         }
-
-        audioSource.volume = 0.5f;
+        
+        audioSource.volume = backgroundMusicVolume;
     }
 }
