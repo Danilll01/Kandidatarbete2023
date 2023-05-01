@@ -63,4 +63,12 @@ public class StartManager : MonoBehaviour
         Universe.InitializeRandomWithSeed();
         SceneManager.LoadScene("Load Menu");
     }
+
+    /// <summary>
+    /// Exits the game
+    /// </summary>
+    public void ExitGame()
+    {
+        Application.Quit();
+    }
 }
