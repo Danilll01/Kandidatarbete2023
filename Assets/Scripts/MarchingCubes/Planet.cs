@@ -204,7 +204,7 @@ public class Planet : MonoBehaviour
             if (solarSystemRotationActive)
             {
                 parentOrbitMover.transform.RotateAround(Universe.sunPosition.position, Universe.sunPosition.TransformDirection(Vector3.up),
-                    orbitSpeed * Time.deltaTime * 2.5f);
+                    orbitSpeed * Time.deltaTime * 1f);
             }
             else
             {
@@ -221,7 +221,7 @@ public class Planet : MonoBehaviour
             if (solarSystemRotationActive)
             {
                 parentOrbitMover.transform.RotateAround(Vector3.zero, Universe.sunPosition.TransformDirection(Vector3.up),
-                    speedToRotateAroundWith * Time.deltaTime * 2.5f);
+                    speedToRotateAroundWith * Time.deltaTime * 1f);
             }
             else
             {

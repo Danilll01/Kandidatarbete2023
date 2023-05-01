@@ -116,8 +116,6 @@ public class SolarSystemTransform : MonoBehaviour
             {
                 Universe.spaceShip.position -= distanceFromOrigin;
             }
-
-            //player.transform.position -= distanceFromOrigin;
         }
     }
 
