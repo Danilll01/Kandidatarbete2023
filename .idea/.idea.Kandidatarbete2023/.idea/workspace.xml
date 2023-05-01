@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Ship crosshair is now shown behind pause menu">
+    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Made loading screen loading text better">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scenes/Load Menu.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Load Menu.unity" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Menus/LoadManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Menus/LoadManager.cs" afterDir="false" />
@@ -37,6 +37,7 @@
     </option>
   </component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="mock://D:/Unity/Projects/Kandidatarbete2023/Assets/Scenes/Load Menu.unity" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://D:/Unity/Projects/Kandidatarbete2023/Assets/Scenes/Main.unity" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Atmosphere/AtmosphereHandler.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="mock://D:/Unity/Projects/Kandidatarbete2023/Assets/Scripts/MovementControllers/RaySpring.cs" root0="SKIP_HIGHLIGHTING" />
@@ -157,13 +158,7 @@
       <workItem from="1682696553423" duration="246000" />
       <workItem from="1682697009257" duration="2425000" />
       <workItem from="1682716360996" duration="7517000" />
-      <workItem from="1682861907126" duration="22232000" />
-    </task>
-    <task id="LOCAL−00033" summary="Directional light matches sun temperature and color">
-      <created>1680227470916</created>
-      <option name="number" value="LOCAL−00033" />
-      <option name="presentableId" value="LOCAL−00033" />
-      <updated>1680227470916</updated>
+      <workItem from="1682861907126" duration="27234000" />
     </task>
     <task id="LOCAL−00034" summary="Added back water shadow as the back side of the planet otherwise would have sunlight through the ground">
       <created>1680231070165</created>
@@ -453,7 +448,13 @@
       <option name="presentableId" value="LOCAL−00081" />
       <updated>1682896625849</updated>
     </task>
-    <option name="localTasksCounter" value="82" />
+    <task id="LOCAL−00082" summary="Made loading screen loading text better">
+      <created>1682897468943</created>
+      <option name="number" value="LOCAL−00082" />
+      <option name="presentableId" value="LOCAL−00082" />
+      <updated>1682897468943</updated>
+    </task>
+    <option name="localTasksCounter" value="83" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -475,7 +476,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="Ship now rotates upright after 10 seconds" />
     <MESSAGE value="Clamped ship visual model rotation when turning" />
     <MESSAGE value="Fixed nice ship visual view bobbing and a cross-hair to see where you go" />
     <MESSAGE value="Added planet slowdown factor" />
@@ -500,6 +500,7 @@
     <MESSAGE value="Fixed planet idle pull on other planets" />
     <MESSAGE value="Player crosshair is now disabled when not in spaceship" />
     <MESSAGE value="Ship crosshair is now shown behind pause menu" />
-    <option name="LAST_COMMIT_MESSAGE" value="Ship crosshair is now shown behind pause menu" />
+    <MESSAGE value="Made loading screen loading text better" />
+    <option name="LAST_COMMIT_MESSAGE" value="Made loading screen loading text better" />
   </component>
 </project>
