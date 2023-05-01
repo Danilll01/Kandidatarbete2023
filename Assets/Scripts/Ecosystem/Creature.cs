@@ -550,9 +550,12 @@ public class Creature : MonoBehaviour
         Vector3 randomRayPoint;
 
         // Randomize points around the creature
-        for (int i = 0; i < 100; i++)
+        for (int i = 0; i < 200; i++)
         {
-            randomRayPoint = transform.position + rotation * Random.insideUnitCircle * detectionRadius * 1.5f;
+            randomRayPoint = transform.position + rotation * Random.insideUnitCircle * detectionRadius;
+            
+            // Offset the ray to start in the sky
+            randomRayPoint += (randomRayPoint - planet.transform.position).normalized * (planet.radius / 4);
             
             Ray ray = new(randomRayPoint, planet.transform.position - randomRayPoint);
             RaycastHit hit;
