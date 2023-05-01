@@ -4,9 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Fixed ship rotation when leaving a planet">
+    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Changed moon and planet orbiting speed when on planet / moon">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/MarchingCubes/Planet.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/MarchingCubes/Planet.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Solar System/SolarSystemTransform.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Solar System/SolarSystemTransform.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -167,13 +166,7 @@
       <workItem from="1682697009257" duration="2425000" />
       <workItem from="1682716360996" duration="7517000" />
       <workItem from="1682861907126" duration="33741000" />
-      <workItem from="1682952065891" duration="8835000" />
-    </task>
-    <task id="LOCAL−00044" summary="Deleted the test script">
-      <created>1681861356251</created>
-      <option name="number" value="LOCAL−00044" />
-      <option name="presentableId" value="LOCAL−00044" />
-      <updated>1681861356251</updated>
+      <workItem from="1682952065891" duration="12272000" />
     </task>
     <task id="LOCAL−00045" summary="Continuation of the test script removal">
       <created>1681861381900</created>
@@ -463,7 +456,13 @@
       <option name="presentableId" value="LOCAL−00092" />
       <updated>1682961994384</updated>
     </task>
-    <option name="localTasksCounter" value="93" />
+    <task id="LOCAL−00093" summary="Changed moon and planet orbiting speed when on planet / moon">
+      <created>1682963824987</created>
+      <option name="number" value="LOCAL−00093" />
+      <option name="presentableId" value="LOCAL−00093" />
+      <updated>1682963824987</updated>
+    </task>
+    <option name="localTasksCounter" value="94" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -485,7 +484,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="Free cam is now always centered at the back from the start when you use it" />
     <MESSAGE value="Added Comments" />
     <MESSAGE value="Fixed landing bug when entering and leaving planet" />
     <MESSAGE value="Added RaySpring class" />
@@ -510,6 +508,7 @@
     <MESSAGE value="Solar system is not super messed up anymore" />
     <MESSAGE value="Fixed ship rotation and pause screen" />
     <MESSAGE value="Fixed ship rotation when leaving a planet" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fixed ship rotation when leaving a planet" />
+    <MESSAGE value="Changed moon and planet orbiting speed when on planet / moon" />
+    <option name="LAST_COMMIT_MESSAGE" value="Changed moon and planet orbiting speed when on planet / moon" />
   </component>
 </project>

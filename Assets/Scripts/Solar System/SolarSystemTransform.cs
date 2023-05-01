@@ -226,12 +226,12 @@ public class SolarSystemTransform : MonoBehaviour
             sun.transform.RotateAround(Vector3.zero, sun.transform.TransformDirection(Vector3.up), orbitSpeed * Time.deltaTime * 2f);
             planetsParent.transform.RotateAround(Vector3.zero, -rotationAxis, rotationSpeed * Time.deltaTime);
         }
+
+
+        // Rotates skybox the have the same rotation as the sun
+        RotateSkyBox();
         
-
-        skyboxRotationAngle += Time.deltaTime * rotationSpeed;
-        RenderSettings.skybox.SetVector(RotationAxis, -rotationAxis);
-        RenderSettings.skybox.SetFloat(Rotation, skyboxRotationAngle);
-
+        
         Vector3 newSunPos = sun.transform.position;
         Vector3 direction;
 
@@ -254,6 +254,14 @@ public class SolarSystemTransform : MonoBehaviour
         {
             planetBody.Run();
         }
+    }
+
+    // Rotates skybox after sun rotation
+    private void RotateSkyBox()
+    {
+        sun.transform.rotation.ToAngleAxis(out float sunAngle, out Vector3 sunAxis);
+        RenderSettings.skybox.SetVector(RotationAxis, sunAxis);
+        RenderSettings.skybox.SetFloat(Rotation, sunAngle);
     }
 
     private void MovePlanets()
@@ -302,6 +310,9 @@ public class SolarSystemTransform : MonoBehaviour
             planet.ResetOrbitComponents();
         }
         moonIsActivePlanet = false;
+
+        // Rotate back the skybox after the suns rotation
+        RotateSkyBox();
     }
 
     // Setup components for solar system rotation
