@@ -4,8 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Fixed skybox rotation">
+    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Added new crosshair options">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Assets/SkyBox/NightSkybox.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Assets/SkyBox/NightSkybox.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Debug/MenuManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Debug/MenuManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Solar System/SolarSystemTransform.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Solar System/SolarSystemTransform.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Shaders/Water/CameraWater.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Shaders/Water/CameraWater.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectSettings/InputManager.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/InputManager.asset" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -165,13 +171,7 @@
       <workItem from="1682697009257" duration="2425000" />
       <workItem from="1682716360996" duration="7517000" />
       <workItem from="1682861907126" duration="33741000" />
-      <workItem from="1682952065891" duration="13450000" />
-    </task>
-    <task id="LOCAL−00046" summary="You can now go into planet orbit without the camera jumping">
-      <created>1682025137024</created>
-      <option name="number" value="LOCAL−00046" />
-      <option name="presentableId" value="LOCAL−00046" />
-      <updated>1682025137024</updated>
+      <workItem from="1682952065891" duration="16165000" />
     </task>
     <task id="LOCAL−00047" summary="Cleaned up code">
       <created>1682025445799</created>
@@ -461,7 +461,13 @@
       <option name="presentableId" value="LOCAL−00094" />
       <updated>1682967832537</updated>
     </task>
-    <option name="localTasksCounter" value="95" />
+    <task id="LOCAL−00095" summary="Added new crosshair options">
+      <created>1682979287162</created>
+      <option name="number" value="LOCAL−00095" />
+      <option name="presentableId" value="LOCAL−00095" />
+      <updated>1682979287162</updated>
+    </task>
+    <option name="localTasksCounter" value="96" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -483,7 +489,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="Fixed landing bug when entering and leaving planet" />
     <MESSAGE value="Added RaySpring class" />
     <MESSAGE value="Force springs now works on spaceship" />
     <MESSAGE value="Added spring prefab" />
@@ -508,6 +513,7 @@
     <MESSAGE value="Fixed ship rotation when leaving a planet" />
     <MESSAGE value="Changed moon and planet orbiting speed when on planet / moon" />
     <MESSAGE value="Fixed skybox rotation" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fixed skybox rotation" />
+    <MESSAGE value="Added new crosshair options" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added new crosshair options" />
   </component>
 </project>

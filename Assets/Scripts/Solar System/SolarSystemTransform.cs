@@ -22,7 +22,6 @@ public class SolarSystemTransform : MonoBehaviour
     private Planet activeMoonParentPlanet;
     private static readonly int RotationAxis = Shader.PropertyToID("_RotationAxis");
     private static readonly int Rotation = Shader.PropertyToID("_Rotation");
-    private float skyboxRotationAngle = 0;
     private bool releasedPlayer;
 
 

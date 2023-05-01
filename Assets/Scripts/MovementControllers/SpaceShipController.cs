@@ -56,6 +56,7 @@ public class SpaceShipController : MonoBehaviour
 
     // Backend stuff
     private float inactiveTimer = 0;
+    private bool orbitPlanetMovement = true;
     private readonly Collider[] activateHoverSpring = new Collider[1];
 
     /// <summary>
@@ -93,6 +94,21 @@ public class SpaceShipController : MonoBehaviour
         
         mouseXSmooth = Mathf.Lerp(mouseXSmooth, currentMouseXMovement * rotationSpeed,  0.01f * cameraSmooth);
         mouseYSmooth = Mathf.Lerp(mouseYSmooth, currentMouseYMovement * rotationSpeed, 0.01f * cameraSmooth);
+
+        if (Input.GetButtonDown("ChangeShipMovementType"))
+        {
+            
+            if (orbitPlanetMovement)
+            {
+                lookRotation = standardShip.transform.rotation * lookRotation;
+            }
+            else
+            {
+                lookRotation = Quaternion.Inverse(standardShip.transform.rotation) * transform.rotation;
+            }
+            orbitPlanetMovement = !orbitPlanetMovement;
+            
+        }
     }
 
     // Handles movement of ship
@@ -192,7 +208,7 @@ public class SpaceShipController : MonoBehaviour
             if (!isOutsidePlanet)
             {
                 // The inverse is only needed when automatic orbiting is turned on
-                lookRotation = Quaternion.Inverse(standardShip.transform.rotation) * transform.rotation;
+                lookRotation = orbitPlanetMovement ? Quaternion.Inverse(standardShip.transform.rotation) * transform.rotation : transform.rotation;
                 isOutsidePlanet = true;
             }
         }
@@ -206,13 +222,14 @@ public class SpaceShipController : MonoBehaviour
             if (isOutsidePlanet)
             {
                 // Camera fix when entering planets if automatic planet following is turned on
-                lookRotation = Quaternion.Inverse(standardShip.transform.rotation) * transform.rotation;
+                if (orbitPlanetMovement) { lookRotation = Quaternion.Inverse(standardShip.transform.rotation) * transform.rotation; }
                 isOutsidePlanet = false;
             }
         }
         
         // Rotate the main ship (remove standardShip if automatic planet following is turned of)
-        transform.rotation = standardShip.transform.rotation * lookRotation;
+        transform.rotation = orbitPlanetMovement ? standardShip.transform.rotation * lookRotation : lookRotation;
+
     }
     
     
