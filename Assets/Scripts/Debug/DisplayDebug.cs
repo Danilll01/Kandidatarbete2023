@@ -5,6 +5,7 @@ using TMPro;
 
 public static class DisplayDebug
 {
+#if DEBUG || UNITY_EDITOR
     private static TextMeshProUGUI debugTextContainer;
     private static List<KeyValuePair<string, string>> debugList;
 
@@ -23,12 +24,14 @@ public static class DisplayDebug
     /// </summary>
     public static void UpdateDebugs()
     {
+        
         debugTextContainer.text = "";
 
         foreach (var debug in debugList)
         {
             debugTextContainer.text += debug.Key + ": " + debug.Value + "\n";
         }
+        
     }
 
 
@@ -98,5 +101,5 @@ public static class DisplayDebug
 
         debugList = new List<KeyValuePair<string, string>>();
     }
-
+#endif
 }
