@@ -74,73 +74,14 @@ public class SolarSystemTransform : MonoBehaviour
             UpdateClosestPlanet();
             HandleUpdatedActivePlanet();
 
-            if (releasePlayer) return;
-
-            
-            Vector3 currentPlayerControlPos = Universe.player.boarded ? Universe.spaceShip.position : player.transform.position;
-
-            if (activePlanet == null && currentPlayerControlPos.magnitude >= 2500f)
-            {
-                Vector3 distanceFromOrigin = currentPlayerControlPos - Vector3.zero;
-                planetsParent.transform.position -= distanceFromOrigin;
-
-                if (!player.boarded)
-                {
-                    player.transform.position -= distanceFromOrigin;
-                }
-                else
-                {
-                    Universe.spaceShip.position -= distanceFromOrigin;
-                }
-                
-                //player.transform.position -= distanceFromOrigin;
-            }
-
-            if (rotateSolarSystem)
-            {
-                RotateSolarSystem();
-            }
-            else if (relativePlanetSunDistances != null)
-            {
-                foreach (var planetBody in spawnPlanets.bodies)
-                {
-                    planetBody.Run();
-                }
-            }
-        }
-        else
-        {
-            CheckWhenToReleasePlayer();
-        }
-        
-        player.attractor = activePlanet;
-    }
-    
-    /*private void FixedUpdate()
-    {
-        if (sun == null && spawnPlanets.bodies != null)
-        {
-            sun = spawnPlanets.sun;
-        }
-
-        if (!spawnPlanets.solarSystemGenerated)
-        {
-            return;
-        }
-
-        InitializeValues();
-
-        if (!releasePlayer)
-        {
-            UpdateClosestPlanet();
-            HandleUpdatedActivePlanet();
-
             if (releasePlayer)
             {
                 CheckWhenToReleasePlayer();
             }
             else
             {
+                FloatingPointTeleportationCheck();
+
                 if (rotateSolarSystem)
                 {
                     RotateSolarSystem();
@@ -155,8 +96,30 @@ public class SolarSystemTransform : MonoBehaviour
             }
         }
         
+        
         player.attractor = activePlanet;
-    }*/
+    }
+
+    private void FloatingPointTeleportationCheck()
+    {
+        Vector3 currentPlayerControlPos = Universe.player.boarded ? Universe.spaceShip.position : player.transform.position;
+        if (activePlanet == null && currentPlayerControlPos.magnitude >= 2500f)
+        {
+            Vector3 distanceFromOrigin = currentPlayerControlPos - Vector3.zero;
+            planetsParent.transform.position -= distanceFromOrigin;
+
+            if (!player.boarded)
+            {
+                player.transform.position -= distanceFromOrigin;
+            }
+            else
+            {
+                Universe.spaceShip.position -= distanceFromOrigin;
+            }
+
+            //player.transform.position -= distanceFromOrigin;
+        }
+    }
 
     private void UpdateClosestPlanet()
     {

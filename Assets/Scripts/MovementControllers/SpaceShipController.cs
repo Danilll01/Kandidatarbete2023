@@ -210,7 +210,7 @@ public class SpaceShipController : MonoBehaviour
                 isOutsidePlanet = false;
             }
         }
-
+        
         // Rotate the main ship (remove standardShip if automatic planet following is turned of)
         transform.rotation = standardShip.transform.rotation * lookRotation;
     }
