@@ -131,7 +131,7 @@ public class Creature : MonoBehaviour
 
         animatorParameters.SetFloat("Speed", speed);
         animator.keepAnimatorStateOnDisable = true;
-        animator.SetBool("isWalking", true);
+        animatorParameters.SetBool("isWalking", true);
 
         if (isChild) canReproduce = false;
 
