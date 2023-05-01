@@ -830,6 +830,22 @@ MonoBehaviour:
       treesDependent: 0
       treesMin: 0
       treesMax: 1
+  - prefab: {fileID: 1962661241923896, guid: 7e9ff520eeb53414791ac3716871332b, type: 3}
+    ratio: 1
+    minPackSize: 1
+    maxPackSize: 1
+    packRadius: 60
+    prefabRadius: 5
+    range:
+      mountainRelevant: 1
+      mountainMin: 0
+      mountainMax: 0.4
+      temperatureDependent: 1
+      temperatureMin: 0.5
+      temperatureMax: 0.9
+      treesDependent: 1
+      treesMin: 0.3
+      treesMax: 1
   keepPackRatio: 0.8
   densityMultiplier: 0.0000012
   isInstantiated: 0
