@@ -72,9 +72,10 @@ public class Creature : MonoBehaviour
     // Genes: speed, size, stat decrease, detection radius
     [Header("Genes")]
     [SerializeField] private Genes genes;
-    [SerializeField] private Texture alternativeTexture;
+    [SerializeField] private Texture alternativeTexture = null;
     [SerializeField] private float alternativeTextureProb = 0.1f;
     private bool alternativeTextureActive = false;
+    private bool genesInitialized = false;
 
     [Header("Debug")]
     [SerializeField] private CreatureState currentState;
@@ -261,6 +262,7 @@ public class Creature : MonoBehaviour
 
     private void CreateGenes()
     {
+        if (genesInitialized) return;
         genes = new Genes();
         genes.alternaviteColor = alternativeTextureActive;
         genes.speed = speed;
@@ -272,7 +274,9 @@ public class Creature : MonoBehaviour
     public void ApplyGenes(Genes genes)
     {
         this.genes = genes;
-        if (genes.alternaviteColor)
+        
+        // Only apply alternative texture if i exists
+        if (alternativeTexture != null && genes.alternaviteColor)
         {
             renderer.material.SetTexture("_BaseMap", alternativeTexture);
         }
@@ -281,10 +285,14 @@ public class Creature : MonoBehaviour
         thirstDecrease = genes.statDecrease;
         hungerDecrease = genes.statDecrease;
 
-        transform.localScale = Vector3.one * genes.size;
+        // Only use size property on non children
+        if (!isChild)
+        {
+            transform.localScale = Vector3.one * genes.size;
+        }
 
         detectionRadius = genes.detectionRadius;
-
+        genesInitialized = true;
     }
 
     private Genes MixGenes(Genes otherGenes)
@@ -292,20 +300,21 @@ public class Creature : MonoBehaviour
         Genes newGenes = genes;
         if (alternativeTextureActive == otherGenes.alternaviteColor)
         {
-            newGenes.alternaviteColor = Random.value < 0.8f ? true : false;
+            newGenes.alternaviteColor = Random.value < 0.8f;
         } else
         {
-            newGenes.alternaviteColor = Random.value < 0.5f ? true : false;
+            newGenes.alternaviteColor = Random.value < 0.5f;
         }
+
         float speedMultiplier = Random.value < 0.8 ? 1.1f : 0.9f;
         newGenes.speed = Mathf.Max(genes.speed, otherGenes.speed) * speedMultiplier;
 
         float statDecreaseMean = (genes.statDecrease + otherGenes.statDecrease) / 2;
-        newGenes.statDecrease = statDecreaseMean * Random.value < 0.5f ? 1.1f : 0.9f;
+        newGenes.statDecrease = statDecreaseMean * (Random.value < 0.5f ? 0.9f : 1.1f);
 
-        newGenes.size = Mathf.Max(genes.size, otherGenes.size) * Random.value < 0.5 ? 1.1f : 0.9f;
+        newGenes.size = Mathf.Max(genes.size, otherGenes.size) * (Random.value < 0.5 ? 1.1f : 0.9f);
 
-        newGenes.detectionRadius = Mathf.Max(genes.size, otherGenes.size) * Random.value < 0.8 ? 1.1f : 0.9f;
+        newGenes.detectionRadius = Mathf.Max(genes.detectionRadius, otherGenes.detectionRadius) * (Random.value < 0.8 ? 1.1f : 0.9f);
 
         return newGenes;
     }
