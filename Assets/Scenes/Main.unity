@@ -2388,20 +2388,5 @@ PrefabInstance:
       propertyPath: m_Name
       value: SoundManager
       objectReference: {fileID: 0}
-    - target: {fileID: 4265903889893730575, guid: 0144d9268bb44a447bff4bc281dbebc2,
-        type: 3}
-      propertyPath: soundEffectsAudioClips.Array.size
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 4265903889893730575, guid: 0144d9268bb44a447bff4bc281dbebc2,
-        type: 3}
-      propertyPath: soundEffectsAudioClips.Array.data[1]
-      value: 
-      objectReference: {fileID: 8300000, guid: 89b5f8a75bcb5f247881ecadd54a0241, type: 3}
-    - target: {fileID: 4265903889893730575, guid: 0144d9268bb44a447bff4bc281dbebc2,
-        type: 3}
-      propertyPath: soundEffectsAudioClips.Array.data[2]
-      value: 
-      objectReference: {fileID: 8300000, guid: 59985b339a847e746b279054754fdfea, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0144d9268bb44a447bff4bc281dbebc2, type: 3}
