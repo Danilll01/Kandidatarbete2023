@@ -49,6 +49,7 @@ public class SpaceShipController : MonoBehaviour
     private float mouseYSmooth = 0;
     private Vector3 defaultShipRotation;
     private Vector3 oldMovementVector = new();
+    private Vector3 currentRotationVector = Vector3.zero;
     private GameObject standardShip;
     private bool isOutsidePlanet = false;
     private LayerMask collisionCheckMask;
@@ -80,6 +81,18 @@ public class SpaceShipController : MonoBehaviour
         collisionCheckMask |= ( 1 << LayerMask.NameToLayer("Foliage"));
         collisionCheckMask |= ( 1 << LayerMask.NameToLayer("Food"));
 
+    }
+
+    // Handle mouse input in normal update to handle framerate issues otherwise
+    private void Update()
+    {
+        float rotationZTmp = Input.GetAxis("Spaceship Roll");
+        float currentMouseXMovement = Input.GetButton("ShipFreeLook") ? 0 : Input.GetAxis("Horizontal Look");
+        float currentMouseYMovement = Input.GetButton("ShipFreeLook") ? 0 : Input.GetAxis("Vertical Look");
+        currentRotationVector = new Vector3(currentMouseXMovement, currentMouseYMovement, rotationZTmp);
+        
+        mouseXSmooth = Mathf.Lerp(mouseXSmooth, currentMouseXMovement * rotationSpeed,  0.01f * cameraSmooth);
+        mouseYSmooth = Mathf.Lerp(mouseYSmooth, currentMouseYMovement * rotationSpeed, 0.01f * cameraSmooth);
     }
 
     // Handles movement of ship
@@ -139,14 +152,7 @@ public class SpaceShipController : MonoBehaviour
         mainCamera.transform.rotation = Quaternion.Lerp(mainCamera.transform.rotation, cameraPosition.rotation, Time.deltaTime * cameraSmooth);
 
         //Rotation
-        float rotationZTmp = Input.GetAxis("Spaceship Roll");
-        float currentMouseXMovement = Input.GetButton("ShipFreeLook") ? 0 : Input.GetAxis("Horizontal Look");
-        float currentMouseYMovement = Input.GetButton("ShipFreeLook") ? 0 : Input.GetAxis("Vertical Look");
-        Vector3 currentRotationVector = new Vector3(currentMouseXMovement, currentMouseYMovement, rotationZTmp);
-        
-        mouseXSmooth = Mathf.Lerp(mouseXSmooth, currentMouseXMovement * rotationSpeed,  0.01f * cameraSmooth);
-        mouseYSmooth = Mathf.Lerp(mouseYSmooth, currentMouseYMovement * rotationSpeed, 0.01f * cameraSmooth);
-        Quaternion localRotation = Quaternion.Euler(mouseYSmooth, mouseXSmooth, rotationZTmp * rotationSpeed);
+        Quaternion localRotation = Quaternion.Euler(mouseYSmooth, mouseXSmooth, currentRotationVector.z * rotationSpeed);
 
         // The mouse local look rotation
         lookRotation = lookRotation * localRotation;

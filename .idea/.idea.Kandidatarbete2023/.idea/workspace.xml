@@ -4,7 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Removed visual mesh from hover springs" />
+    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Changed landing error sound">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipController.cs" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -34,6 +37,7 @@
   </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="mock://D:/Unity/Projects/Kandidatarbete2023/Assets/Scenes/Load Menu.unity" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://D:/Unity/Projects/Kandidatarbete2023/Assets/Scenes/Main.unity" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://D:/Unity/Projects/Kandidatarbete2023/Assets/Scenes/Main.unity" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Atmosphere/AtmosphereHandler.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="mock://D:/Unity/Projects/Kandidatarbete2023/Assets/Scripts/MovementControllers/RaySpring.cs" root0="SKIP_HIGHLIGHTING" />
@@ -154,13 +158,7 @@
       <workItem from="1682696553423" duration="246000" />
       <workItem from="1682697009257" duration="2425000" />
       <workItem from="1682716360996" duration="7517000" />
-      <workItem from="1682861907126" duration="30823000" />
-    </task>
-    <task id="LOCAL−00038" summary="Small script changes">
-      <created>1681850058375</created>
-      <option name="number" value="LOCAL−00038" />
-      <option name="presentableId" value="LOCAL−00038" />
-      <updated>1681850058375</updated>
+      <workItem from="1682861907126" duration="32335000" />
     </task>
     <task id="LOCAL−00039" summary="Finally fixed rotations for the spaceship while traveling around the planet">
       <created>1681859828272</created>
@@ -450,7 +448,13 @@
       <option name="presentableId" value="LOCAL−00086" />
       <updated>1682907331464</updated>
     </task>
-    <option name="localTasksCounter" value="87" />
+    <task id="LOCAL−00087" summary="Changed landing error sound">
+      <created>1682908018476</created>
+      <option name="number" value="LOCAL−00087" />
+      <option name="presentableId" value="LOCAL−00087" />
+      <updated>1682908018476</updated>
+    </task>
+    <option name="localTasksCounter" value="88" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -472,7 +476,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="Moved water color handling to water handler script on each planet" />
     <MESSAGE value="Added SpaceShipCameraMover script" />
     <MESSAGE value="Added camera positions for spaceship" />
     <MESSAGE value="Added cinamachine free spin camera" />
@@ -497,6 +500,7 @@
     <MESSAGE value="Updated ship crosshair" />
     <MESSAGE value="Added landing rotation offset to compensate for the visual model" />
     <MESSAGE value="Removed visual mesh from hover springs" />
-    <option name="LAST_COMMIT_MESSAGE" value="Removed visual mesh from hover springs" />
+    <MESSAGE value="Changed landing error sound" />
+    <option name="LAST_COMMIT_MESSAGE" value="Changed landing error sound" />
   </component>
 </project>
