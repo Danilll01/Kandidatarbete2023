@@ -4,9 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Added player boarded check">
+    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Solar system is not super messed up anymore">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Solar System/SolarSystemTransform.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Solar System/SolarSystemTransform.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -163,13 +162,7 @@
       <workItem from="1682697009257" duration="2425000" />
       <workItem from="1682716360996" duration="7517000" />
       <workItem from="1682861907126" duration="33741000" />
-      <workItem from="1682952065891" duration="5157000" />
-    </task>
-    <task id="LOCAL−00041" summary="Something with the bought assets">
-      <created>1681860269821</created>
-      <option name="number" value="LOCAL−00041" />
-      <option name="presentableId" value="LOCAL−00041" />
-      <updated>1681860269821</updated>
+      <workItem from="1682952065891" duration="6168000" />
     </task>
     <task id="LOCAL−00042" summary="Rider test again">
       <created>1681860785135</created>
@@ -459,7 +452,13 @@
       <option name="presentableId" value="LOCAL−00089" />
       <updated>1682955971607</updated>
     </task>
-    <option name="localTasksCounter" value="90" />
+    <task id="LOCAL−00090" summary="Solar system is not super messed up anymore">
+      <created>1682959660785</created>
+      <option name="number" value="LOCAL−00090" />
+      <option name="presentableId" value="LOCAL−00090" />
+      <updated>1682959660785</updated>
+    </task>
+    <option name="localTasksCounter" value="91" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -481,7 +480,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="Added cinamachine free spin camera" />
     <MESSAGE value="Camera now spins around in a satisfying way" />
     <MESSAGE value="Fixed camera collisions when looking in free cam" />
     <MESSAGE value="Free cam is now always centered at the back from the start when you use it" />
@@ -506,6 +504,7 @@
     <MESSAGE value="Changed landing error sound" />
     <MESSAGE value="Unhooked mouse input from framerate for the space ship" />
     <MESSAGE value="Added player boarded check" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added player boarded check" />
+    <MESSAGE value="Solar system is not super messed up anymore" />
+    <option name="LAST_COMMIT_MESSAGE" value="Solar system is not super messed up anymore" />
   </component>
 </project>
