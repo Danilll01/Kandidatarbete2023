@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class ShipController : MonoBehaviour
 {
@@ -25,14 +26,14 @@ public class ShipController : MonoBehaviour
 
     private AudioSource audioPlayer;
     [SerializeField] AudioClip errorSound;
-    [SerializeField] private HandleBackgroundMusic backgroundMusic;
+    [FormerlySerializedAs("backgroundMusic")] [SerializeField] private HandleAudio audio;
 
     public void Initialize(Rigidbody body, Camera camera)
     {
         player = Universe.player;
         this.body = body;
         this.camera = camera;
-        backgroundMusic.Initialize();
+        audio.Initialize();
 
         //Place ship where the player is and embark them
         transform.position = player.transform.position;
@@ -175,7 +176,8 @@ public class ShipController : MonoBehaviour
         float strafe = Input.GetAxis("Spaceship Strafe");
         float lift = Input.GetAxis("Spaceship Lift");
         float thrust = Input.GetAxis("Spaceship Thrust");
-        body.velocity += transform.rotation * new Vector3(strafe, lift, thrust) * (Time.deltaTime * shipMovespeed);
+        Vector3 inputVector = new Vector3(strafe, lift, thrust);
+        body.velocity += transform.rotation * inputVector * (Time.deltaTime * shipMovespeed);
         //Slowdown due to being inside of a planet
         //TODO. Maybe integrate with actual air resistance
         if (player.Planet != null)
@@ -195,6 +197,15 @@ public class ShipController : MonoBehaviour
         else
         {
             DisplayDebug.AddOrSetDebugVariable("Slowdown factor:", "N/A");
+        }
+        
+        if (inputVector.magnitude > 0f)
+        {
+            audio.PlaySoundEffect(HandleAudio.SoundEffects.Thrust, true);
+        }
+        else
+        {
+            audio.TurnOffCurrentSoundEffect();
         }
     }
 
@@ -278,7 +289,8 @@ public class ShipController : MonoBehaviour
 
     private void DisembarkFromShip()
     {
-        StartCoroutine(backgroundMusic.UpdateClipIndex(HandleBackgroundMusic.BackgroundClips.Planet));
+        audio.TurnOffCurrentSoundEffect();
+        StartCoroutine(audio.UpdateMusicClipIndex(HandleAudio.BackgroundClips.Planet));
         transform.SetParent(player.Planet.gameObject.transform);
         player.transform.position = transform.position + (transform.rotation * dismountedPos);
         player.transform.rotation = transform.rotation;
@@ -289,7 +301,7 @@ public class ShipController : MonoBehaviour
     {
         if (!initialization)
         {
-            StartCoroutine(backgroundMusic.UpdateClipIndex(HandleBackgroundMusic.BackgroundClips.Space));
+            StartCoroutine(audio.UpdateMusicClipIndex(HandleAudio.BackgroundClips.Space));
         }
         player.transform.position = transform.position + (transform.rotation * mountedPos.localPosition);
         player.transform.rotation = transform.rotation;
