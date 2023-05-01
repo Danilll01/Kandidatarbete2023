@@ -93,6 +93,30 @@ public class SpaceShipController : MonoBehaviour
         
         mouseXSmooth = Mathf.Lerp(mouseXSmooth, currentMouseXMovement * rotationSpeed,  0.01f * cameraSmooth);
         mouseYSmooth = Mathf.Lerp(mouseYSmooth, currentMouseYMovement * rotationSpeed, 0.01f * cameraSmooth);
+        
+        //Rotation
+        Quaternion localRotation = Quaternion.Euler(mouseYSmooth, mouseXSmooth, currentRotationVector.z * rotationSpeed);
+
+        // The mouse local look rotation
+        lookRotation = lookRotation * localRotation;
+        
+        RotateMainShip();
+        
+        RotateVisualShipModel();
+
+        //Update crosshair texture
+        if (crosshairTexture)
+        {
+            if (!Input.GetButton("ShipFreeLook"))
+            {
+                crosshairTexture.anchoredPosition = new Vector2(rotationY + defaultShipRotation.y, -(rotationX + defaultShipRotation.x - 20)) * crossHairMovement;
+            }
+            else
+            {
+                crosshairTexture.gameObject.SetActive(false);
+            }
+            
+        }
     }
 
     // Handles movement of ship
@@ -151,21 +175,7 @@ public class SpaceShipController : MonoBehaviour
         mainCamera.transform.position = Vector3.Lerp(mainCamera.transform.position, cameraPosition.position, Time.deltaTime * cameraSmooth);
         mainCamera.transform.rotation = Quaternion.Lerp(mainCamera.transform.rotation, cameraPosition.rotation, Time.deltaTime * cameraSmooth);
 
-        //Rotation
-        Quaternion localRotation = Quaternion.Euler(mouseYSmooth, mouseXSmooth, currentRotationVector.z * rotationSpeed);
-
-        // The mouse local look rotation
-        lookRotation = lookRotation * localRotation;
         
-        RotateMainShip();
-        
-        RotateVisualShipModel();
-
-        //Update crosshair texture
-        if (crosshairTexture)
-        {
-            crosshairTexture.anchoredPosition = new Vector2(rotationY + defaultShipRotation.y, -(rotationX + defaultShipRotation.x - 20)) * crossHairMovement;
-        }
         
         // Turn upright after being inactive
         PlayerInactiveCheck(currentRotationVector, newMovementVector);

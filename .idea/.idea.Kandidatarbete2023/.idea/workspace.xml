@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Changed landing error sound">
+    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Unhooked mouse input from framerate for the space ship">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipController.cs" afterDir="false" />
     </list>
@@ -158,13 +158,7 @@
       <workItem from="1682696553423" duration="246000" />
       <workItem from="1682697009257" duration="2425000" />
       <workItem from="1682716360996" duration="7517000" />
-      <workItem from="1682861907126" duration="32335000" />
-    </task>
-    <task id="LOCAL−00039" summary="Finally fixed rotations for the spaceship while traveling around the planet">
-      <created>1681859828272</created>
-      <option name="number" value="LOCAL−00039" />
-      <option name="presentableId" value="LOCAL−00039" />
-      <updated>1681859828272</updated>
+      <workItem from="1682861907126" duration="33741000" />
     </task>
     <task id="LOCAL−00040" summary="Test Rider dual repository commits and pushes. Cleaned up code.">
       <created>1681860168983</created>
@@ -454,7 +448,13 @@
       <option name="presentableId" value="LOCAL−00087" />
       <updated>1682908018476</updated>
     </task>
-    <option name="localTasksCounter" value="88" />
+    <task id="LOCAL−00088" summary="Unhooked mouse input from framerate for the space ship">
+      <created>1682909992620</created>
+      <option name="number" value="LOCAL−00088" />
+      <option name="presentableId" value="LOCAL−00088" />
+      <updated>1682909992620</updated>
+    </task>
+    <option name="localTasksCounter" value="89" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -476,7 +476,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="Added SpaceShipCameraMover script" />
     <MESSAGE value="Added camera positions for spaceship" />
     <MESSAGE value="Added cinamachine free spin camera" />
     <MESSAGE value="Camera now spins around in a satisfying way" />
@@ -501,6 +500,7 @@
     <MESSAGE value="Added landing rotation offset to compensate for the visual model" />
     <MESSAGE value="Removed visual mesh from hover springs" />
     <MESSAGE value="Changed landing error sound" />
-    <option name="LAST_COMMIT_MESSAGE" value="Changed landing error sound" />
+    <MESSAGE value="Unhooked mouse input from framerate for the space ship" />
+    <option name="LAST_COMMIT_MESSAGE" value="Unhooked mouse input from framerate for the space ship" />
   </component>
 </project>
