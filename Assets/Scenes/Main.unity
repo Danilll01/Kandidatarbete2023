@@ -837,7 +837,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 6b3e17cbc41d9f149b7849931a4caca0, type: 3}
   soundEffectsAudioClips:
   - {fileID: 8300000, guid: 80371af793a315a4f99bcd47a0e954ac, type: 3}
-  backgroundMusicVolume: 0.05
+  backgroundMusicVolume: 0.04
   soundEffectsVolume: 0.1
   musicAudioSource: {fileID: 556501570}
   soundEffectsAudioSource: {fileID: 556501573}

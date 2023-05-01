@@ -5,17 +5,19 @@ using UnityEngine.Serialization;
 
 public class HandleAudio : MonoBehaviour
 {
-    // Start is called before the first frame update
     [SerializeField] private AudioClip[] backgroundMusicAudioClips;
     [SerializeField] private AudioClip[] soundEffectsAudioClips;
-    [SerializeField] private float backgroundMusicVolume = 0.03f;
-    [SerializeField] private float soundEffectsVolume = 0.05f;
+    [SerializeField] private float backgroundMusicVolume = 0.04f;
+    [SerializeField] private float soundEffectsVolume = 0.01f;
     [SerializeField] private AudioSource musicAudioSource;
     [SerializeField] private AudioSource soundEffectsAudioSource;
     private float duration = 2f;
     private const float FADED_OUT_VOLUME = 0.01f;
     private bool stoppedSoundEffects;
 
+    /// <summary>
+    /// Initialize the audio components
+    /// </summary>
     public void Initialize()
     {
         musicAudioSource.clip = backgroundMusicAudioClips[0];
@@ -25,17 +27,28 @@ public class HandleAudio : MonoBehaviour
         StartCoroutine(InitializeBackgroundMusic());
     }
 
+    /// <summary>
+    /// Enums for the different types of background clips
+    /// </summary>
     public enum BackgroundClips
     {
         Space,
         Planet
     }
     
+    /// <summary>
+    /// Enums for the different sound effects
+    /// </summary>
     public enum SoundEffects
     {
         Thrust
     }
 
+    /// <summary>
+    /// Play a given sound effect
+    /// </summary>
+    /// <param name="soundEffect"></param>
+    /// <param name="loop"></param>
     public void PlaySoundEffect(SoundEffects soundEffect, bool loop)
     {
         AudioClip newClip = soundEffectsAudioClips[(int)soundEffect];
@@ -58,6 +71,9 @@ public class HandleAudio : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Turn off the currently played sound effect
+    /// </summary>
     public void TurnOffCurrentSoundEffect()
     {
         if (!stoppedSoundEffects)
@@ -99,7 +115,11 @@ public class HandleAudio : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
+    /// <summary>
+    /// Change the background music to the given music clip
+    /// </summary>
+    /// <param name="backgroundClip"></param>
+    /// <returns></returns>
     public IEnumerator UpdateMusicClipIndex(BackgroundClips backgroundClip)
     {
 
