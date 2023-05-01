@@ -590,7 +590,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 0, y: -54.722168}
+  m_AnchoredPosition: {x: 0, y: -54.722107}
   m_SizeDelta: {x: 400, y: -109.4449}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!114 &459511077
@@ -833,11 +833,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   backgroundMusicAudioClips:
-  - {fileID: 8300000, guid: e11b1d45609310740bc1e4b45199c08f, type: 3}
+  - {fileID: 8300000, guid: 1c9c03d682ce76c49a39ffcc716d138e, type: 3}
   - {fileID: 8300000, guid: 6b3e17cbc41d9f149b7849931a4caca0, type: 3}
   soundEffectsAudioClips:
   - {fileID: 8300000, guid: 80371af793a315a4f99bcd47a0e954ac, type: 3}
-  backgroundMusicVolume: 0.03
+  backgroundMusicVolume: 0.05
   soundEffectsVolume: 0.1
   musicAudioSource: {fileID: 556501570}
   soundEffectsAudioSource: {fileID: 556501573}
