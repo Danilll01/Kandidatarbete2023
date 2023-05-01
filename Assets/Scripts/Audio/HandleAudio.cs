@@ -55,7 +55,9 @@ public class HandleAudio : MonoBehaviour
     /// </summary>
     public enum SoundEffects
     {
-        Thrust
+        Thrust,
+        TakeOff,
+        Landing
     }
 
     /// <summary>
@@ -63,7 +65,7 @@ public class HandleAudio : MonoBehaviour
     /// </summary>
     /// <param name="soundEffect"></param>
     /// <param name="loop"></param>
-    public void PlaySoundEffect(SoundEffects soundEffect, bool loop)
+    public void PlaySoundEffect(SoundEffects soundEffect, bool loop, bool instantly)
     {
         AudioClip newClip = soundEffectsAudioClips[(int)soundEffect];
         soundEffectsAudioSource.volume = soundEffectsVolume;
@@ -71,16 +73,33 @@ public class HandleAudio : MonoBehaviour
         {
             soundEffectsAudioSource.clip = soundEffectsAudioClips[(int)soundEffect];
             soundEffectsAudioSource.loop = loop;
-            soundEffectsAudioSource.volume = 0;
-            soundEffectsAudioSource.Play();
-            StartCoroutine(FadeInSoundEffect());
+            if (instantly)
+            {
+                soundEffectsAudioSource.volume = soundEffectsVolume;
+                soundEffectsAudioSource.Play();
+            }
+            else
+            {
+                soundEffectsAudioSource.volume = 0;
+                soundEffectsAudioSource.Play();
+                StartCoroutine(FadeInSoundEffect());
+            }
+            
         }
         else if (stoppedSoundEffects)
         {
             StopCoroutine(FadeOutSoundEffect());
-            soundEffectsAudioSource.volume = 0;
-            soundEffectsAudioSource.Play();
-            StartCoroutine(FadeInSoundEffect());
+            if (instantly)
+            {
+                soundEffectsAudioSource.volume = soundEffectsVolume;
+                soundEffectsAudioSource.Play();
+            }
+            else
+            {
+                soundEffectsAudioSource.volume = 0;
+                soundEffectsAudioSource.Play();
+                StartCoroutine(FadeInSoundEffect());
+            }
             stoppedSoundEffects = false;
         }
     }
