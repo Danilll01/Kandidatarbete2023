@@ -906,7 +906,7 @@ MonoBehaviour:
   childPrefab: {fileID: 1514481875857408}
   parentPrefab: {fileID: 1514481875857408, guid: 959cc272e1707a94a82c590c3f170dfa,
     type: 3}
-  canReproduce: 1
+  canReproduce: 0
   wantToReproduce: 0
   reproductionThreshold: 80
   reproductionCooldown: 100
@@ -915,7 +915,7 @@ MonoBehaviour:
   reproductionChance: 0.5
   maxChildren: 4
   childrenCount: 0
-  isChild: 0
+  isChild: 1
   growUpTime: 100
   breedingParticle: {fileID: 6813416509558619124, guid: 3b7f2c753d435d647a80f1f047a113e3,
     type: 3}
