@@ -238,7 +238,7 @@ public class SpaceShipTransition : MonoBehaviour
 
         //Set up transition to/from
         landingSpot.position = landingPos;
-        landingSpot.rotation = Quaternion.LookRotation(Vector3.ProjectOnPlane(transform.TransformVector(Vector3.forward), landingPlane.normal), landingPlane.normal);
+        landingSpot.rotation = Quaternion.LookRotation(Vector3.ProjectOnPlane(transform.TransformVector(Vector3.forward), landingPlane.normal), landingPlane.normal) * Quaternion.Euler(new Vector3(-10,0,0));
 
         return true;
     }

@@ -213,7 +213,7 @@ public class SpaceShipController : MonoBehaviour
         rotationX += mouseYSmooth/10f;
         rotationY = Mathf.Clamp(rotationY, -15, 15);
         rotationX = Mathf.Clamp(rotationX, -15, 15);
-        spaceshipRoot.transform.localEulerAngles = new Vector3(rotationX, rotationY, rotationZ);
+        spaceshipRoot.localEulerAngles = new Vector3(rotationX, rotationY, rotationZ);
         rotationY = Mathf.Lerp(rotationY, defaultShipRotation.y, Time.deltaTime * cameraSmooth);
         rotationX = Mathf.Lerp(rotationX, defaultShipRotation.x, Time.deltaTime * cameraSmooth);
         rotationZ = Mathf.Lerp(rotationZ, Input.GetAxis("Spaceship Roll") * 2f, Time.deltaTime * cameraSmooth);
