@@ -18,7 +18,6 @@ public class ChunksHandler : MonoBehaviour
     private Material planetMaterial;
     [HideInInspector] public float planetRadius;
     private MinMaxTerrainLevel terrainLevel;
-    private List<Vector3> waterPoints = new List<Vector3>();
     private RandomX rand;
 
     [SerializeField] private Chunk chunkPrefab;
@@ -99,7 +98,6 @@ public class ChunksHandler : MonoBehaviour
             chunksParentLowRes.SetActive(false);
             UpdateChunksVisibility();
         }
-        GatherWaterPoints();
     }
 
     // Update is called once per frame
@@ -226,38 +224,6 @@ public class ChunksHandler : MonoBehaviour
             index = index == 0 ? chunksHighRes.Count - 1 : index - 1;
         }
     }
-
-
-    private void GatherWaterPoints()
-    {
-        float rayOffset = 1f;
-        float minRayDist = 1.3f;
-        float maxRayDist = 2f;
-
-        float maxRayDistance = (planet.radius - Mathf.Abs(planet.waterDiameter) / 2) + rayOffset;
-
-        Vector3 rayOrigin;
-        Vector3 planetCenter = planet.transform.position;
-        RaycastHit hit;
-
-        for (int i = 0; i < 150000; i++)
-        {
-            rayOrigin = planetCenter + rand.OnUnitSphere() * planet.radius;
-            Ray ray = new Ray(rayOrigin, planetCenter - rayOrigin);
-
-            if (Physics.Raycast(ray, out hit, maxRayDistance + maxRayDist))
-            {
-                if (hit.distance > maxRayDistance + minRayDist)
-                {
-                    //if (DEBUG) Debug.DrawLine(rayOrigin, hit.point, Color.blue, 10);
-                    waterPoints.Add(hit.point - planetCenter);
-                }
-            }
-        }
-
-        planet.waterPoints = waterPoints;
-    }
-
 
     private bool CheckIfPointBIsBelowPointA(Vector3 a, Vector3 b, Vector3 up)
     {

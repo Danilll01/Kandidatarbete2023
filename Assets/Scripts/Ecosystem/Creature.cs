@@ -69,6 +69,9 @@ public class Creature : MonoBehaviour
     [SerializeField] private float timeBetweenSteps = 1f/3f;
     private float idleSoundTimer;
 
+    [Header("Misc")]
+    [SerializeField] private bool hasDrinkAnimation = false;
+
     [Header("Debug")]
     [SerializeField] private CreatureState currentState;
     [SerializeField] private bool DEBUG = false;
@@ -99,6 +102,7 @@ public class Creature : MonoBehaviour
     private int getResourceTickSkips = 20;
     private int getResourceTicks = 20;
     private GameObject lastResourceFound;
+    private Vector3 foundWaterAt = Vector3.zero;
 
     // Start is called before the first frame update
     void Start()
@@ -288,14 +292,15 @@ public class Creature : MonoBehaviour
                 resourcePos = nearestResource.transform.position;
         } else
         {
-            resourcePos = GetNearestWaterSource();        
+            // Dont try to find new water if water is already found
+            resourcePos = foundWaterAt == Vector3.zero ? GetNearestWaterSource() : foundWaterAt;
         }
 
         // If there is no resource, walk around randomly
-        if (nearestResource != null && resourcePos != Vector3.zero)
+        if (nearestResource == null ^ resourcePos == Vector3.zero)
         {
             // If the resource is within consume radius, consume it
-            if (IsCloseToObject(resourcePos))
+            if (IsCloseToObject(resourcePos) || (resource == ResourceType.Water && Vector3.Distance(transform.position, planet.transform.position) + 0.05 < planet.waterDiameter / 2))
             {
                 if (DEBUG) Debug.Log("Found it " + Vector3.Distance(transform.position, nearestResource.transform.position) + " away");
                 atDestination = true;
@@ -305,6 +310,7 @@ public class Creature : MonoBehaviour
                 if (resource == ResourceType.Water)
                 {
                     thirst = Mathf.Min(maxThirst, thirst + thirstIncrease);
+                    foundWaterAt = Vector3.zero;
                 }
                 else
                 {
@@ -444,23 +450,28 @@ public class Creature : MonoBehaviour
 
     private Vector3 GetNearestWaterSource()
     {
-        Vector3 closestWaterSource = Vector3.zero;
-        float closestDistance = Mathf.Infinity;
-
-        // We can implement caching here to get faster results. Ex save the 40 closest sources and only update when we are searching for water again
-        
-        foreach (Vector3 pos in planet.waterPoints)
+        // Get random points around the creature and try to find water
+        for (int i = 0; i < 2; i++)
         {
-            // Calculate distance from creature to pos
-            float distance = Vector3.Distance(transform.position, pos);
-            if (distance < closestDistance && distance < detectionRadius * 4)
+            Vector3 randPos = transform.position + transform.rotation * Random.insideUnitCircle * detectionRadius * 3;
+
+            Ray ray = new(randPos, planet.transform.position - randPos);
+            RaycastHit hit;
+
+            if (Physics.Raycast(ray, out hit, planet.radius))
             {
-                closestDistance = distance;
-                closestWaterSource = pos;
+                // Check if the point hit is below water level
+                if (Vector3.Distance(hit.point, planet.transform.position) < planet.waterDiameter / 2)
+                {
+                    if (DEBUG) Debug.DrawLine(randPos, hit.point, Color.red, 10f);
+                    foundWaterAt = hit.point;
+                    return hit.point;
+                }
+                
             }
         }
 
-        return closestWaterSource;
+        return Vector3.zero;
     }
 
     private void GotoPosition(Vector3 pos)
@@ -536,30 +547,40 @@ public class Creature : MonoBehaviour
     private Vector3 GetRandomPoint()
     {
         Quaternion rotation = Quaternion.FromToRotation(Vector3.forward, transform.position);
-        Vector3 randomPoint;
-        int tries = 0;
+        Vector3 randomRayPoint;
 
-        // Get a random point on the planet, if it fails try again
-        do
+        // Randomize points around the creature
+        for (int i = 0; i < 200; i++)
         {
-            randomPoint = transform.position + rotation * Random.insideUnitCircle * detectionRadius * 2;
-            tries++;
+            randomRayPoint = transform.position + rotation * Random.insideUnitCircle * detectionRadius;
+            
+            // Offset the ray to start in the sky
+            randomRayPoint += (randomRayPoint - planet.transform.position).normalized * (planet.radius / 4);
+            
+            Ray ray = new(randomRayPoint, planet.transform.position - randomRayPoint);
+            RaycastHit hit;
 
-            // At 100 tries, just walk back the way you came
-            if (tries > 100)
+            if (Physics.Raycast(ray, out hit, planet.radius))
             {
-                return transform.position - transform.forward * 4f;
-            }
-        } while (Vector3.Distance(randomPoint, planet.transform.position) < Mathf.Abs(planet.waterDiameter) / 2);
+                // Check if the point hit is below water level
+                if (Vector3.Distance(hit.point, planet.transform.position) > planet.waterDiameter / 2)
+                {
+                    return hit.point;
+                }
 
-        return randomPoint;
+            }
+        }
+        
+        // If no apropriate position is found try to go back. 
+        return transform.position - transform.forward * 30f;
     }
 
     // Interacts with a resource and plays eat animation
     private void InteractWithResourceAction(GameObject resource, bool disable, ResourceType type)
     {
         currentState = CreatureState.PerformingAction;
-        animator.SetBool("Eat", true);
+        string animationType = hasDrinkAnimation && type == ResourceType.Water ? "Drink": "Eat";
+        animator.SetBool(animationType, true);
         
         StartCoroutine(InteractWithResource(resource, disable, type));
     }
@@ -594,7 +615,8 @@ public class Creature : MonoBehaviour
         }
 
         // Set the state to idle
-        animator.SetBool("Eat", false);
+        string animationType = hasDrinkAnimation && type == ResourceType.Water ? "Drink" : "Eat";
+        animator.SetBool(animationType, false);
         animator.SetBool("Walk", true);
 
         yield return new WaitForSeconds(1);
