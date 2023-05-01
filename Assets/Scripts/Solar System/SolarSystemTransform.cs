@@ -76,11 +76,24 @@ public class SolarSystemTransform : MonoBehaviour
 
             if (releasePlayer) return;
 
-            if (activePlanet == null && player.transform.position.magnitude >= 2500f)
+            
+            Vector3 currentPlayerControlPos = Universe.player.boarded ? Universe.spaceShip.position : player.transform.position;
+
+            if (activePlanet == null && currentPlayerControlPos.magnitude >= 2500f)
             {
-                Vector3 distanceFromOrigin = player.transform.position - Vector3.zero;
+                Vector3 distanceFromOrigin = currentPlayerControlPos - Vector3.zero;
                 planetsParent.transform.position -= distanceFromOrigin;
-                player.transform.position -= distanceFromOrigin;
+
+                if (!player.boarded)
+                {
+                    player.transform.position -= distanceFromOrigin;
+                }
+                else
+                {
+                    Universe.spaceShip.position -= distanceFromOrigin;
+                }
+                
+                //player.transform.position -= distanceFromOrigin;
             }
 
             if (rotateSolarSystem)
@@ -180,7 +193,6 @@ public class SolarSystemTransform : MonoBehaviour
             }
             else
             {
-                //player.transform.parent = activePlanet.transform;
                 Universe.spaceShip.parent = activePlanet.transform;
             }
             return true;

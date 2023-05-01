@@ -4,9 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Unhooked mouse input from framerate for the space ship">
+    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Added player boarded check">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/MarchingCubes/Planet.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/MarchingCubes/Planet.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Solar System/SolarSystemTransform.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Solar System/SolarSystemTransform.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -39,6 +39,7 @@
     <setting file="mock://D:/Unity/Projects/Kandidatarbete2023/Assets/Scenes/Main.unity" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://D:/Unity/Projects/Kandidatarbete2023/Assets/Scenes/Main.unity" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Atmosphere/AtmosphereHandler.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://D:/Unity/Projects/Kandidatarbete2023/Assets/Scripts/MarchingCubes/Planet.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://D:/Unity/Projects/Kandidatarbete2023/Assets/Scripts/MarchingCubes/Planet.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://D:/Unity/Projects/Kandidatarbete2023/Assets/Scripts/MarchingCubes/Planet.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipCameraMover.cs" root0="FORCE_HIGHLIGHTING" />
@@ -162,13 +163,7 @@
       <workItem from="1682697009257" duration="2425000" />
       <workItem from="1682716360996" duration="7517000" />
       <workItem from="1682861907126" duration="33741000" />
-      <workItem from="1682952065891" duration="3710000" />
-    </task>
-    <task id="LOCAL−00040" summary="Test Rider dual repository commits and pushes. Cleaned up code.">
-      <created>1681860168983</created>
-      <option name="number" value="LOCAL−00040" />
-      <option name="presentableId" value="LOCAL−00040" />
-      <updated>1681860168983</updated>
+      <workItem from="1682952065891" duration="5157000" />
     </task>
     <task id="LOCAL−00041" summary="Something with the bought assets">
       <created>1681860269821</created>
@@ -458,7 +453,13 @@
       <option name="presentableId" value="LOCAL−00088" />
       <updated>1682909992620</updated>
     </task>
-    <option name="localTasksCounter" value="89" />
+    <task id="LOCAL−00089" summary="Added player boarded check">
+      <created>1682955971607</created>
+      <option name="number" value="LOCAL−00089" />
+      <option name="presentableId" value="LOCAL−00089" />
+      <updated>1682955971607</updated>
+    </task>
+    <option name="localTasksCounter" value="90" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -480,7 +481,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="Added camera positions for spaceship" />
     <MESSAGE value="Added cinamachine free spin camera" />
     <MESSAGE value="Camera now spins around in a satisfying way" />
     <MESSAGE value="Fixed camera collisions when looking in free cam" />
@@ -505,6 +505,7 @@
     <MESSAGE value="Removed visual mesh from hover springs" />
     <MESSAGE value="Changed landing error sound" />
     <MESSAGE value="Unhooked mouse input from framerate for the space ship" />
-    <option name="LAST_COMMIT_MESSAGE" value="Unhooked mouse input from framerate for the space ship" />
+    <MESSAGE value="Added player boarded check" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added player boarded check" />
   </component>
 </project>
