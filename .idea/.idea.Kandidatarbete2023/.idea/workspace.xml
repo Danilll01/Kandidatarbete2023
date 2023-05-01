@@ -4,11 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Updated ship crosshair">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipTransition.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipTransition.cs" afterDir="false" />
-    </list>
+    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Removed visual mesh from hover springs" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -158,19 +154,7 @@
       <workItem from="1682696553423" duration="246000" />
       <workItem from="1682697009257" duration="2425000" />
       <workItem from="1682716360996" duration="7517000" />
-      <workItem from="1682861907126" duration="30208000" />
-    </task>
-    <task id="LOCAL−00036" summary="Better spawn planet">
-      <created>1680269111791</created>
-      <option name="number" value="LOCAL−00036" />
-      <option name="presentableId" value="LOCAL−00036" />
-      <updated>1680269111791</updated>
-    </task>
-    <task id="LOCAL−00037" summary="Finally found what the issue was with the main merge">
-      <created>1681848544197</created>
-      <option name="number" value="LOCAL−00037" />
-      <option name="presentableId" value="LOCAL−00037" />
-      <updated>1681848544197</updated>
+      <workItem from="1682861907126" duration="30823000" />
     </task>
     <task id="LOCAL−00038" summary="Small script changes">
       <created>1681850058375</created>
@@ -454,7 +438,19 @@
       <option name="presentableId" value="LOCAL−00084" />
       <updated>1682904667302</updated>
     </task>
-    <option name="localTasksCounter" value="85" />
+    <task id="LOCAL−00085" summary="Added landing rotation offset to compensate for the visual model">
+      <created>1682906930849</created>
+      <option name="number" value="LOCAL−00085" />
+      <option name="presentableId" value="LOCAL−00085" />
+      <updated>1682906930849</updated>
+    </task>
+    <task id="LOCAL−00086" summary="Removed visual mesh from hover springs">
+      <created>1682907331464</created>
+      <option name="number" value="LOCAL−00086" />
+      <option name="presentableId" value="LOCAL−00086" />
+      <updated>1682907331464</updated>
+    </task>
+    <option name="localTasksCounter" value="87" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -476,8 +472,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="Added planet slowdown factor" />
-    <MESSAGE value="Hovering in progress" />
     <MESSAGE value="Moved water color handling to water handler script on each planet" />
     <MESSAGE value="Added SpaceShipCameraMover script" />
     <MESSAGE value="Added camera positions for spaceship" />
@@ -501,6 +495,8 @@
     <MESSAGE value="Made loading screen loading text better" />
     <MESSAGE value="Made loading screen faster and more visually pleasing" />
     <MESSAGE value="Updated ship crosshair" />
-    <option name="LAST_COMMIT_MESSAGE" value="Updated ship crosshair" />
+    <MESSAGE value="Added landing rotation offset to compensate for the visual model" />
+    <MESSAGE value="Removed visual mesh from hover springs" />
+    <option name="LAST_COMMIT_MESSAGE" value="Removed visual mesh from hover springs" />
   </component>
 </project>

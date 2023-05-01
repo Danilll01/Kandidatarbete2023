@@ -570,28 +570,33 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3966985094543174574, guid: 479edb22e1790754688e5f093ada7ddf,
         type: 3}
+      propertyPath: errorSound
+      value: 
+      objectReference: {fileID: 8300000, guid: a2bf0acc56c0dcc438c691b727d48ba8, type: 3}
+    - target: {fileID: 3966985094543174574, guid: 479edb22e1790754688e5f093ada7ddf,
+        type: 3}
       propertyPath: maxLandingAngle
       value: 40
       objectReference: {fileID: 0}
     - target: {fileID: 6251870460322748658, guid: 479edb22e1790754688e5f093ada7ddf,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.00000003463751
+      value: -0.00000003463751
       objectReference: {fileID: 0}
     - target: {fileID: 6251870460322748658, guid: 479edb22e1790754688e5f093ada7ddf,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.0000000017275679
+      value: -0.0000000017275679
       objectReference: {fileID: 0}
     - target: {fileID: 7349901440431997346, guid: 479edb22e1790754688e5f093ada7ddf,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.000000017318756
+      value: -0.000000017318756
       objectReference: {fileID: 0}
     - target: {fileID: 7349901440431997346, guid: 479edb22e1790754688e5f093ada7ddf,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: 8.6378366e-10
+      value: -8.6378366e-10
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 479edb22e1790754688e5f093ada7ddf, type: 3}

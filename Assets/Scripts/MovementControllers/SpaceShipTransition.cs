@@ -40,6 +40,7 @@ public class SpaceShipTransition : MonoBehaviour
     public void Initialize()
     {
         player = Universe.player;
+        audioPlayer = GetComponent<AudioSource>();
 
         transform.position = player.transform.position;
         transform.rotation = player.transform.rotation;
