@@ -1,5 +1,5 @@
 
-
+[System.Serializable]
 public struct Genes
 {
     public bool alternaviteColor;
