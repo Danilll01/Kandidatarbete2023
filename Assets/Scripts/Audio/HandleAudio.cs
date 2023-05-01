@@ -85,9 +85,9 @@ public class HandleAudio : MonoBehaviour
     private IEnumerator FadeOutSoundEffect()
     {
         float currentVolume = soundEffectsAudioSource.volume;
-        for (var timePassed = 0f; timePassed < 1f; timePassed += Time.deltaTime)
+        for (var timePassed = 0f; timePassed < 0.5f; timePassed += Time.deltaTime)
         {
-            soundEffectsAudioSource.volume = Mathf.Lerp(currentVolume, FADED_OUT_VOLUME, timePassed / 1f);
+            soundEffectsAudioSource.volume = Mathf.Lerp(currentVolume, FADED_OUT_VOLUME, timePassed / 0.5f);
 
             yield return null;
         }
