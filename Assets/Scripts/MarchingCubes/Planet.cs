@@ -171,7 +171,16 @@ public class Planet : MonoBehaviour
         
         if (playerIsOnMoon)
         {
-            player.transform.parent.parent.SetParent(null, true);
+            
+            if (!Universe.player.boarded)
+            {
+                player.parent.parent.SetParent(null, true);
+            }
+            else
+            {
+                Universe.spaceShip.parent.parent.SetParent(null, true);
+            }
+            
         }
 
         for (int i = 0; i < moons.Count; i++)
