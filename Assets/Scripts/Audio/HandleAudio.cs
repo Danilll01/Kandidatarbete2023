@@ -133,7 +133,7 @@ public class HandleAudio : MonoBehaviour
     private IEnumerator FadeOutSoundEffect(float fadeDuration)
     {
         float currentVolume = soundEffectsAudioSource.volume;
-        for (var timePassed = 0f; timePassed < fadeDuration; timePassed += Time.deltaTime)
+        for (float timePassed = 0f; timePassed < fadeDuration; timePassed += Time.deltaTime)
         {
             soundEffectsAudioSource.volume = Mathf.Lerp(currentVolume, FADED_OUT_VOLUME, timePassed / fadeDuration);
 
@@ -143,7 +143,7 @@ public class HandleAudio : MonoBehaviour
     
     private IEnumerator FadeInSoundEffect(float fadeInDuration, float volume)
     {
-        for (var timePassed = 0f; timePassed < fadeInDuration; timePassed += Time.deltaTime)
+        for (float timePassed = 0f; timePassed < fadeInDuration; timePassed += Time.deltaTime)
         {
             soundEffectsAudioSource.volume = Mathf.Lerp(FADED_OUT_VOLUME, volume, timePassed / fadeInDuration);
 
@@ -153,7 +153,7 @@ public class HandleAudio : MonoBehaviour
 
     private IEnumerator InitializeBackgroundMusic()
     {
-        for (var timePassed = 0f; timePassed < duration; timePassed += Time.deltaTime)
+        for (float timePassed = 0f; timePassed < duration; timePassed += Time.deltaTime)
         {
             musicAudioSource.volume = Mathf.Lerp(FADED_OUT_VOLUME, backgroundMusicVolume, timePassed / duration);
 
@@ -169,12 +169,12 @@ public class HandleAudio : MonoBehaviour
     public IEnumerator UpdateMusicClipIndex(BackgroundClips backgroundClip, float volume = backgroundMusicVolume)
     {
 
-        var originalVolume = musicAudioSource.volume;
+        float originalVolume = musicAudioSource.volume;
 
         // I prefer using for loops over while to eliminate the danger of infinite loops
         // and the need for "external" variables
         // I personally also find this better to read and maintain
-        for (var timePassed = 0f; timePassed < duration; timePassed += Time.deltaTime)
+        for (float timePassed = 0f; timePassed < duration; timePassed += Time.deltaTime)
         {
             musicAudioSource.volume = Mathf.Lerp(originalVolume, FADED_OUT_VOLUME, timePassed / duration);
 
@@ -194,7 +194,7 @@ public class HandleAudio : MonoBehaviour
         // Actually start playing the new clip
         musicAudioSource.Play();
 
-        for (var timePassed = 0f; timePassed < duration; timePassed += Time.deltaTime)
+        for (float timePassed = 0f; timePassed < duration; timePassed += Time.deltaTime)
         {
             musicAudioSource.volume = Mathf.Lerp(FADED_OUT_VOLUME, volume, timePassed / duration);
 
