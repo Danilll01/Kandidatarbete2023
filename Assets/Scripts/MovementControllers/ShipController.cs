@@ -191,12 +191,8 @@ public class ShipController : MonoBehaviour
             {
                 divideFactor = Mathf.Lerp(2f, 1.2f, body.velocity.magnitude / (shipMovespeed * 5));
             }
-            DisplayDebug.AddOrSetDebugVariable("Slowdown factor:", divideFactor.ToString());
+
             body.velocity /= (divideFactor - 1) * Time.deltaTime + 1;
-        }
-        else
-        {
-            DisplayDebug.AddOrSetDebugVariable("Slowdown factor:", "N/A");
         }
         
         if (inputVector.magnitude > 0f && !transitioning)
@@ -207,6 +203,7 @@ public class ShipController : MonoBehaviour
         {
             audio.TurnOffCurrentSoundEffect(0.2f);
         }
+
     }
 
     private bool GetLandingSpot(out (Vector3 position, Quaternion rotation) landingSpot)
