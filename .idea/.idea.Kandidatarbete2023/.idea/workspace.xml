@@ -4,9 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Changed loading screen text to also have dots...">
+    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Assets/SkyBox/NightSkybox.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Assets/SkyBox/NightSkybox.mat" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -156,13 +156,7 @@
       <workItem from="1682716360996" duration="7517000" />
       <workItem from="1682861907126" duration="33741000" />
       <workItem from="1682952065891" duration="20322000" />
-      <workItem from="1683036367666" duration="3818000" />
-    </task>
-    <task id="LOCAL−00052" summary="Added game icon">
-      <created>1682125845984</created>
-      <option name="number" value="LOCAL−00052" />
-      <option name="presentableId" value="LOCAL−00052" />
-      <updated>1682125845984</updated>
+      <workItem from="1683036367666" duration="5009000" />
     </task>
     <task id="LOCAL−00053" summary="Investigation">
       <created>1682126097797</created>
@@ -452,7 +446,13 @@
       <option name="presentableId" value="LOCAL−00100" />
       <updated>1683037507835</updated>
     </task>
-    <option name="localTasksCounter" value="101" />
+    <task id="LOCAL−00101" summary="Added mouse sensitivity option for spaceship and increased it">
+      <created>1683041015593</created>
+      <option name="number" value="LOCAL−00101" />
+      <option name="presentableId" value="LOCAL−00101" />
+      <updated>1683041015593</updated>
+    </task>
+    <option name="localTasksCounter" value="102" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -474,7 +474,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="Tuned hover springs" />
     <MESSAGE value="Added force that pulls the player down when inactive" />
     <MESSAGE value="Changed max landing angle to 40 degrees" />
     <MESSAGE value="Fixed planet idle pull on other planets" />
@@ -499,6 +498,7 @@
     <MESSAGE value="Hopefully fixed glitched where the two travel mode indicators mismatched" />
     <MESSAGE value="Made ship panel be a little smaller and not as wide" />
     <MESSAGE value="Changed loading screen text to also have dots..." />
-    <option name="LAST_COMMIT_MESSAGE" value="Changed loading screen text to also have dots..." />
+    <MESSAGE value="Added mouse sensitivity option for spaceship and increased it" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added mouse sensitivity option for spaceship and increased it" />
   </component>
 </project>
