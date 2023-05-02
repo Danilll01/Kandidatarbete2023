@@ -74,6 +74,19 @@ public class Creature : MonoBehaviour
     [SerializeField] private Genes genes;
     [SerializeField] private Texture alternativeTexture = null;
     [SerializeField] private float alternativeTextureProb = 0.1f;
+
+    [SerializeField] private float speedMutationProb = 0.8f;
+    [SerializeField] private float speedMultiplierRange = 0.1f;
+
+    [SerializeField] private float sizeMutationProb = 0.4f;
+    [SerializeField] private float sizeMultiplierRange = 0.05f;
+
+    [SerializeField] private float statDecreaseMutationProb = 0.4f;
+    [SerializeField] private float statDecreaseMultiplierRange = 0.09f;
+
+    [SerializeField] private float detectionRadiusMutationProb = 0.5f;
+    [SerializeField] private float detectionRadiusMultiplierRange = 0.05f;
+
     private bool alternativeTextureActive = false;
     private bool genesInitialized = false;
 
@@ -305,16 +318,14 @@ public class Creature : MonoBehaviour
         {
             newGenes.alternaviteColor = Random.value < 0.5f;
         }
+        
+        newGenes.speed = genes.speed * GetMutationMultiplier(speedMutationProb, speedMultiplierRange);
 
-        float speedMultiplier = Random.value < 0.8 ? 1.1f : 0.9f;
-        newGenes.speed = Mathf.Max(genes.speed, otherGenes.speed) * speedMultiplier;
+        newGenes.statDecrease = genes.statDecrease * GetMutationMultiplier(statDecreaseMutationProb, statDecreaseMultiplierRange);
 
-        float statDecreaseMean = (genes.statDecrease + otherGenes.statDecrease) / 2;
-        newGenes.statDecrease = statDecreaseMean * (Random.value < 0.5f ? 0.9f : 1.1f);
+        newGenes.size = genes.size * GetMutationMultiplier(sizeMutationProb, sizeMultiplierRange);
 
-        newGenes.size = Mathf.Max(genes.size, otherGenes.size) * (Random.value < 0.5 ? 1.1f : 0.9f);
-
-        newGenes.detectionRadius = Mathf.Max(genes.detectionRadius, otherGenes.detectionRadius) * (Random.value < 0.8 ? 1.1f : 0.9f);
+        newGenes.detectionRadius = genes.detectionRadius * GetMutationMultiplier(detectionRadiusMutationProb, detectionRadiusMultiplierRange);
 
         return newGenes;
     }
@@ -756,6 +767,18 @@ public class Creature : MonoBehaviour
         Instantiate(breedingParticle, transform.position, transform.rotation, transform.parent);
 
         Destroy(gameObject);
+    }
+
+    private float GetMutationMultiplier(float mutationProb, float mutationRange)
+    {
+        if (Random.value < mutationProb)
+        {
+            return Random.Range(1 - mutationRange, 1 + mutationRange);
+        } else
+        {
+            return 1;
+        }
+        
     }
 
     private AudioClip GetRandomClip(AudioClip[] clips)
