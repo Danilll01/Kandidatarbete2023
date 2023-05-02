@@ -49,7 +49,7 @@ public class Creature : MonoBehaviour
     [SerializeField] private float reproductionCooldown = 100f;
     [SerializeField] private float reproductionTimer = 0f;
     [SerializeField] private float reproductionCost = 30f;
-    [SerializeField] private float reproductionChance = 0.5f;
+    [SerializeField, Range(0f, 1f)] private float reproductionChance = 0.5f;
     [SerializeField] private int maxChildren = 2;
     [SerializeField] private int childrenCount = 0;
     
@@ -73,19 +73,19 @@ public class Creature : MonoBehaviour
     [Header("Genes")]
     [SerializeField] private Genes genes;
     [SerializeField] private Texture alternativeTexture = null;
-    [SerializeField] private float alternativeTextureProb = 0.1f;
+    [SerializeField, Range(0f, 1f)] private float alternativeTextureProb = 0.1f;
 
-    [SerializeField] private float speedMutationProb = 0.8f;
-    [SerializeField] private float speedMultiplierRange = 0.1f;
+    [SerializeField, Range(0f, 1f)] private float speedMutationProb = 0.8f;
+    [SerializeField, Range(0f, 1f)] private float speedMultiplierRange = 0.1f;
 
-    [SerializeField] private float sizeMutationProb = 0.4f;
-    [SerializeField] private float sizeMultiplierRange = 0.05f;
+    [SerializeField, Range(0f, 1f)] private float sizeMutationProb = 0.4f;
+    [SerializeField, Range(0f, 1f)] private float sizeMultiplierRange = 0.05f;
 
-    [SerializeField] private float statDecreaseMutationProb = 0.4f;
-    [SerializeField] private float statDecreaseMultiplierRange = 0.09f;
+    [SerializeField, Range(0f, 1f)] private float statDecreaseMutationProb = 0.4f;
+    [SerializeField, Range(0f, 1f)] private float statDecreaseMultiplierRange = 0.09f;
 
-    [SerializeField] private float detectionRadiusMutationProb = 0.5f;
-    [SerializeField] private float detectionRadiusMultiplierRange = 0.05f;
+    [SerializeField, Range(0f, 1f)] private float detectionRadiusMutationProb = 0.5f;
+    [SerializeField, Range(0f, 1f)] private float detectionRadiusMultiplierRange = 0.05f;
 
     private bool alternativeTextureActive = false;
     private bool genesInitialized = false;
