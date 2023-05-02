@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Cinemachine;
@@ -10,7 +11,7 @@ public class SpaceShipCameraMover : MonoBehaviour
     [SerializeField] private Vector3[] cameraPositions;
     [SerializeField] private CinemachineFreeLook freeLookCamera;
     private int currentCameraIndex = 0;
-
+    
     // Update is called once per frame
     void Update()
     {

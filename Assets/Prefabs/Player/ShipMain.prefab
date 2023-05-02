@@ -154,7 +154,7 @@ Transform:
   m_GameObject: {fileID: 1501380134031200996}
   m_LocalRotation: {x: -0, y: -0.1254057, z: -0.99210554, w: 0}
   m_LocalPosition: {x: 0, y: 0.817, z: -0.017}
-  m_LocalScale: {x: 0.87139904, y: 0.64329803, z: 0.27122054}
+  m_LocalScale: {x: 0.8052947, y: 0.64329803, z: 0.27122054}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3421500242409074447}
@@ -612,8 +612,9 @@ MonoBehaviour:
   - {fileID: 7650958686268419038}
   inactiveTime: 10
   crossHairMovement: 30
+  mouseSensitivity: 9
   rotationSpeed: 1.5
-  cameraSmooth: 6
+  cameraSmooth: 5
   cameraPosition: {fileID: 3421500242648797224}
   mainCamera: {fileID: 7746035291320629583}
   spaceshipRoot: {fileID: 3421500242409074447}
@@ -1001,7 +1002,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4881680149117831190}
   m_LocalRotation: {x: -0.049813718, y: 0.00000003463751, z: 0.0000000017275679, w: 0.99875855}
-  m_LocalPosition: {x: 0, y: -3.33, z: -22.66}
+  m_LocalPosition: {x: 0, y: -0.03, z: -0.26}
   m_LocalScale: {x: 1.4, y: 1.4, z: 1.4}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1452,7 +1453,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9192313576856000696}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 319d2fe34a804e245819465c9505ea59, type: 3}
   m_Name: 
