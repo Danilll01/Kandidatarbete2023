@@ -73,13 +73,13 @@ float getTerrain(float3 pos, RWStructuredBuffer<TerrainLayer> terrainLayers, int
     }
 
     float ground = length(pos) < (.7 + noiseValue) ? ((.7 + noiseValue) - length(pos)) * 255 : 0;
-    
+    /*
     float caveFrequency = 13;
     float caveDensity = 55;
     
     // Create the caves
     float caveNoise = (simplex.Evaluate(pos * caveFrequency) + 1) * .5;
-    ground *= (1 - 1 / (caveDensity * caveNoise + 1)) * (1 + 1 / caveDensity); //function to control cave density
+    ground *= (1 - 1 / (caveDensity * caveNoise + 1)) * (1 + 1 / caveDensity); //function to control cave density*/
     
     return ground;
 }
