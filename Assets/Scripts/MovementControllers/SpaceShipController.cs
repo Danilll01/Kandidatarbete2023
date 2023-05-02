@@ -158,6 +158,7 @@ public class SpaceShipController : MonoBehaviour
 
         Vector3 newMovementVector = new(strafe, lift, thrust);
 
+        // Slows down if near planet
         if (Universe.player.attractor != null)
         {
             newMovementVector *= planetSlowdownFactor;
@@ -165,6 +166,7 @@ public class SpaceShipController : MonoBehaviour
         
         oldMovementVector = Vector3.Lerp(oldMovementVector, newMovementVector, Time.deltaTime * movementDampening);
 
+        // Adds extra speed if you boost
         if (Math.Abs(Input.GetAxisRaw("Sprint") - 1) > 0.001)
         {
             speed = Mathf.Lerp(speed, normalSpeed, Time.fixedDeltaTime);
@@ -193,23 +195,14 @@ public class SpaceShipController : MonoBehaviour
         // The mouse local look rotation
         lookRotation = lookRotation * localRotation;
         
+        // Rotates the invisible ship transform
         RotateMainShip();
         
+        // Rotates the visual ship model
         RotateVisualShipModel();
 
         //Update crosshair texture
-        if (crosshairTexture)
-        {
-            if (!Input.GetButton("ShipFreeLook"))
-            {
-                crosshairTexture.anchoredPosition = new Vector2(rotationY + defaultShipRotation.y, -(rotationX + defaultShipRotation.x - 20)) * crossHairMovement;
-            }
-            else
-            {
-                crosshairTexture.gameObject.SetActive(false);
-            }
-            
-        }
+        UpdateCrossHair();
         
         // Turn upright after being inactive
         PlayerInactiveCheck(currentRotationVector, newMovementVector);
@@ -217,6 +210,7 @@ public class SpaceShipController : MonoBehaviour
         // Add hover forces
         CalculateSpringForces();
     }
+    
 
     // Rotates the main ship body
     private void RotateMainShip()
@@ -268,6 +262,24 @@ public class SpaceShipController : MonoBehaviour
         rotationZ = Mathf.Lerp(rotationZ, Input.GetAxis("Spaceship Roll") * 2f, Time.deltaTime * cameraSmooth);
     }
 
+    // Updates ship cross-hair
+    private void UpdateCrossHair()
+    {
+        if (crosshairTexture)
+        {
+            if (!Input.GetButton("ShipFreeLook"))
+            {
+                crosshairTexture.anchoredPosition =
+                    new Vector2(rotationY + defaultShipRotation.y, -(rotationX + defaultShipRotation.x - 20)) *
+                    crossHairMovement;
+            }
+            else
+            {
+                crosshairTexture.gameObject.SetActive(false);
+            }
+        }
+    }
+    
     // Turns the ship upright and pulls it toward the planet when player is inactive
     private void PlayerInactiveCheck(Vector3 currentRotationVector, Vector3 newMovementVector)
     {

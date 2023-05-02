@@ -4,9 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Assets/SkyBox/NightSkybox.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Assets/SkyBox/NightSkybox.mat" afterDir="false" />
+    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Removed old spaceship script and scene object">
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipController.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -157,12 +156,6 @@
       <workItem from="1682861907126" duration="33741000" />
       <workItem from="1682952065891" duration="20322000" />
       <workItem from="1683036367666" duration="5009000" />
-    </task>
-    <task id="LOCAL−00053" summary="Investigation">
-      <created>1682126097797</created>
-      <option name="number" value="LOCAL−00053" />
-      <option name="presentableId" value="LOCAL−00053" />
-      <updated>1682126097797</updated>
     </task>
     <task id="LOCAL−00054" summary="Pointer change">
       <created>1682126116103</created>
@@ -452,7 +445,13 @@
       <option name="presentableId" value="LOCAL−00101" />
       <updated>1683041015593</updated>
     </task>
-    <option name="localTasksCounter" value="102" />
+    <task id="LOCAL−00102" summary="Removed old spaceship script and scene object">
+      <created>1683057797444</created>
+      <option name="number" value="LOCAL−00102" />
+      <option name="presentableId" value="LOCAL−00102" />
+      <updated>1683057797444</updated>
+    </task>
+    <option name="localTasksCounter" value="103" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -474,7 +473,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="Added force that pulls the player down when inactive" />
     <MESSAGE value="Changed max landing angle to 40 degrees" />
     <MESSAGE value="Fixed planet idle pull on other planets" />
     <MESSAGE value="Player crosshair is now disabled when not in spaceship" />
@@ -499,6 +497,7 @@
     <MESSAGE value="Made ship panel be a little smaller and not as wide" />
     <MESSAGE value="Changed loading screen text to also have dots..." />
     <MESSAGE value="Added mouse sensitivity option for spaceship and increased it" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added mouse sensitivity option for spaceship and increased it" />
+    <MESSAGE value="Removed old spaceship script and scene object" />
+    <option name="LAST_COMMIT_MESSAGE" value="Removed old spaceship script and scene object" />
   </component>
 </project>
