@@ -4,13 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Camera view does now start in player ship when spawned in">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Assets/Astronaut/Stylized Astronaut/Character/RobotController.controller" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Assets/Astronaut/Stylized Astronaut/Character/RobotController.controller" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Assets/SkyBox/NightSkybox.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Assets/SkyBox/NightSkybox.mat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/MovementControllers/PillPlayerController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/MovementControllers/PillPlayerController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Shaders/Water/CameraWater.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Shaders/Water/CameraWater.mat" afterDir="false" />
-    </list>
+    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Added player sit animation when the player is in the ship" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -163,12 +157,6 @@
       <workItem from="1682861907126" duration="33741000" />
       <workItem from="1682952065891" duration="20322000" />
       <workItem from="1683036367666" duration="5009000" />
-    </task>
-    <task id="LOCAL−00055" summary="More investigation">
-      <created>1682126191119</created>
-      <option name="number" value="LOCAL−00055" />
-      <option name="presentableId" value="LOCAL−00055" />
-      <updated>1682126191119</updated>
     </task>
     <task id="LOCAL−00056" summary="Pointer change again">
       <created>1682126202179</created>
@@ -458,7 +446,13 @@
       <option name="presentableId" value="LOCAL−00103" />
       <updated>1683064727734</updated>
     </task>
-    <option name="localTasksCounter" value="104" />
+    <task id="LOCAL−00104" summary="Added player sit animation when the player is in the ship">
+      <created>1683068525215</created>
+      <option name="number" value="LOCAL−00104" />
+      <option name="presentableId" value="LOCAL−00104" />
+      <updated>1683068525215</updated>
+    </task>
+    <option name="localTasksCounter" value="105" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -480,7 +474,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="Fixed planet idle pull on other planets" />
     <MESSAGE value="Player crosshair is now disabled when not in spaceship" />
     <MESSAGE value="Ship crosshair is now shown behind pause menu" />
     <MESSAGE value="Made loading screen loading text better" />
@@ -505,6 +498,7 @@
     <MESSAGE value="Added mouse sensitivity option for spaceship and increased it" />
     <MESSAGE value="Removed old spaceship script and scene object" />
     <MESSAGE value="Camera view does now start in player ship when spawned in" />
-    <option name="LAST_COMMIT_MESSAGE" value="Camera view does now start in player ship when spawned in" />
+    <MESSAGE value="Added player sit animation when the player is in the ship" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added player sit animation when the player is in the ship" />
   </component>
 </project>
