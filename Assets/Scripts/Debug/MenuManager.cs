@@ -31,7 +31,7 @@ public class MenuManager : MonoBehaviour
     void Update()
     {
         #if DEBUG || UNITY_EDITOR
-        if (Input.GetKeyDown(KeyCode.Tab))
+        if (Input.GetKeyDown(KeyCode.Backspace))
         {
             bool isActive = debugContainer.activeSelf;
             debugContainer.SetActive(!isActive);

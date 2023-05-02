@@ -4,9 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/MarchingCubes/Planet.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/MarchingCubes/Planet.cs" afterDir="false" />
+    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Removed old spaceship script and scene object">
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipController.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -17,9 +16,9 @@
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
         <entry key="$PROJECT_DIR$" value="#4.9-Fix-astronaut-player-model" />
+        <entry key="$PROJECT_DIR$/Assets/BoughtAssets" value="master" />
       </map>
     </option>
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
     <option name="ROOT_SYNC" value="DONT_SYNC" />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
@@ -30,13 +29,17 @@
   <component name="GithubPullRequestsUISettings">
     <option name="selectedUrlAndAccountId">
       <UrlAndAccount>
-        <option name="accountId" value="48cd26b7-ed89-4472-9fc5-073701dd702a" />
+        <option name="accountId" value="39438f29-2a3c-4d03-9145-1d2d35be2a20" />
         <option name="url" value="https://github.com/Danilll01/Kandidatarbete2023.git" />
       </UrlAndAccount>
     </option>
   </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Atmosphere/AtmosphereHandler.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipCameraMover.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipController.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://D:/Unity/Projects/Kandidatarbete2023/Assets/Scripts/MovementControllers/SpaceShipController.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipTransition.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Shaders/Atmosphere/AtmosphericScattering.shader" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="MarkdownSettingsMigration">
@@ -55,12 +58,10 @@
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;Uppgift-id-1.6-Rotations&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settings.ide.settings.spelling&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;ReSpellerSettingsId&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
   &quot;keyToStringList&quot;: {
@@ -127,18 +128,6 @@
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
-    <task id="LOCAL−00001" summary="Removed unused model and cleaned up code">
-      <created>1679287215684</created>
-      <option name="number" value="LOCAL−00001" />
-      <option name="presentableId" value="LOCAL−00001" />
-      <updated>1679287215684</updated>
-    </task>
-    <task id="LOCAL−00002" summary="Fixed typo">
-      <created>1679287226597</created>
-      <option name="number" value="LOCAL−00002" />
-      <option name="presentableId" value="LOCAL−00002" />
-      <updated>1679287226597</updated>
-    </task>
     <task active="true" id="Default" summary="Default task">
       <changelist id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Fixed typo" />
       <created>1679325034818</created>
@@ -155,222 +144,314 @@
       <workItem from="1680116721177" duration="10746000" />
       <workItem from="1680265180898" duration="5422000" />
       <workItem from="1681663590681" duration="10897000" />
-      <workItem from="1681762425236" duration="117000" />
-      <workItem from="1681762555350" duration="114000" />
-      <workItem from="1681762859246" duration="89000" />
-      <workItem from="1681763118630" duration="169000" />
-      <workItem from="1681763303535" duration="230000" />
-      <workItem from="1681763561366" duration="64000" />
-      <workItem from="1681763673199" duration="193000" />
-      <workItem from="1681763878523" duration="32000" />
-      <workItem from="1681763920902" duration="104000" />
-      <workItem from="1681764037837" duration="1948000" />
+      <workItem from="1681700172082" duration="663000" />
+      <workItem from="1681740646976" duration="1537000" />
+      <workItem from="1682004115726" duration="10682000" />
+      <workItem from="1682086929011" duration="4323000" />
+      <workItem from="1682460846051" duration="12716000" />
+      <workItem from="1682638268486" duration="4517000" />
+      <workItem from="1682696553423" duration="246000" />
+      <workItem from="1682697009257" duration="2425000" />
+      <workItem from="1682716360996" duration="7517000" />
+      <workItem from="1682861907126" duration="33741000" />
+      <workItem from="1682952065891" duration="20322000" />
+      <workItem from="1683036367666" duration="5009000" />
     </task>
-    <task id="LOCAL−00003" summary="Changed file">
-      <created>1679327563589</created>
-      <option name="number" value="LOCAL−00003" />
-      <option name="presentableId" value="LOCAL−00003" />
-      <updated>1679327563589</updated>
+    <task id="LOCAL−00054" summary="Pointer change">
+      <created>1682126116103</created>
+      <option name="number" value="LOCAL−00054" />
+      <option name="presentableId" value="LOCAL−00054" />
+      <updated>1682126116103</updated>
     </task>
-    <task id="LOCAL−00004" summary="Changed directional light color to be based on temperature">
-      <created>1679448209679</created>
-      <option name="number" value="LOCAL−00004" />
-      <option name="presentableId" value="LOCAL−00004" />
-      <updated>1679448209679</updated>
+    <task id="LOCAL−00055" summary="More investigation">
+      <created>1682126191119</created>
+      <option name="number" value="LOCAL−00055" />
+      <option name="presentableId" value="LOCAL−00055" />
+      <updated>1682126191119</updated>
     </task>
-    <task id="LOCAL−00005" summary="Added atmospheres to planets">
-      <created>1679451895994</created>
-      <option name="number" value="LOCAL−00005" />
-      <option name="presentableId" value="LOCAL−00005" />
-      <updated>1679451895994</updated>
+    <task id="LOCAL−00056" summary="Pointer change again">
+      <created>1682126202179</created>
+      <option name="number" value="LOCAL−00056" />
+      <option name="presentableId" value="LOCAL−00056" />
+      <updated>1682126202179</updated>
     </task>
-    <task id="LOCAL−00006" summary="Atmpsphere light now faces right direction">
-      <created>1679452532570</created>
-      <option name="number" value="LOCAL−00006" />
-      <option name="presentableId" value="LOCAL−00006" />
-      <updated>1679452532570</updated>
+    <task id="LOCAL−00057" summary="Ship now rotates upright after 10 seconds">
+      <created>1682465317955</created>
+      <option name="number" value="LOCAL−00057" />
+      <option name="presentableId" value="LOCAL−00057" />
+      <updated>1682465317955</updated>
     </task>
-    <task id="LOCAL−00007" summary="You can now temporarily increase atmosphere saturation">
-      <created>1679529725777</created>
-      <option name="number" value="LOCAL−00007" />
-      <option name="presentableId" value="LOCAL−00007" />
-      <updated>1679529725777</updated>
+    <task id="LOCAL−00058" summary="Clamped ship visual model rotation when turning">
+      <created>1682466358537</created>
+      <option name="number" value="LOCAL−00058" />
+      <option name="presentableId" value="LOCAL−00058" />
+      <updated>1682466358537</updated>
     </task>
-    <task id="LOCAL−00008" summary="Added back blending light intensity. Changed values to make atmpsphere look better">
-      <created>1679886408947</created>
-      <option name="number" value="LOCAL−00008" />
-      <option name="presentableId" value="LOCAL−00008" />
-      <updated>1679886408948</updated>
+    <task id="LOCAL−00059" summary="Fixed nice ship visual view bobbing and a cross-hair to see where you go">
+      <created>1682473958065</created>
+      <option name="number" value="LOCAL−00059" />
+      <option name="presentableId" value="LOCAL−00059" />
+      <updated>1682473958065</updated>
     </task>
-    <task id="LOCAL−00009" summary="Ambient light now lerps to space value">
-      <created>1679971671703</created>
-      <option name="number" value="LOCAL−00009" />
-      <option name="presentableId" value="LOCAL−00009" />
-      <updated>1679971671703</updated>
+    <task id="LOCAL−00060" summary="Added planet slowdown factor">
+      <created>1682544746062</created>
+      <option name="number" value="LOCAL−00060" />
+      <option name="presentableId" value="LOCAL−00060" />
+      <updated>1682544746062</updated>
     </task>
-    <task id="LOCAL−00010" summary="Fixed some comments">
-      <created>1680031048046</created>
-      <option name="number" value="LOCAL−00010" />
-      <option name="presentableId" value="LOCAL−00010" />
-      <updated>1680031048046</updated>
+    <task id="LOCAL−00061" summary="Hovering in progress">
+      <created>1682554414382</created>
+      <option name="number" value="LOCAL−00061" />
+      <option name="presentableId" value="LOCAL−00061" />
+      <updated>1682554414382</updated>
     </task>
-    <task id="LOCAL−00011" summary="Added random atmosphere color values">
-      <created>1680035072429</created>
-      <option name="number" value="LOCAL−00011" />
-      <option name="presentableId" value="LOCAL−00011" />
-      <updated>1680035072429</updated>
+    <task id="LOCAL−00062" summary="Moved water color handling to water handler script on each planet">
+      <created>1682640815206</created>
+      <option name="number" value="LOCAL−00062" />
+      <option name="presentableId" value="LOCAL−00062" />
+      <updated>1682640815206</updated>
     </task>
-    <task id="LOCAL−00012" summary="Planet atmosphere color is now randomized">
-      <created>1680035806398</created>
-      <option name="number" value="LOCAL−00012" />
-      <option name="presentableId" value="LOCAL−00012" />
-      <updated>1680035806398</updated>
+    <task id="LOCAL−00063" summary="Added SpaceShipCameraMover script">
+      <created>1682696394166</created>
+      <option name="number" value="LOCAL−00063" />
+      <option name="presentableId" value="LOCAL−00063" />
+      <updated>1682696394166</updated>
     </task>
-    <task id="LOCAL−00013" summary="Have moved ambient light calculation to corresponding planet atmosphere">
-      <created>1680037748440</created>
-      <option name="number" value="LOCAL−00013" />
-      <option name="presentableId" value="LOCAL−00013" />
-      <updated>1680037748440</updated>
+    <task id="LOCAL−00064" summary="Added camera positions for spaceship">
+      <created>1682717370166</created>
+      <option name="number" value="LOCAL−00064" />
+      <option name="presentableId" value="LOCAL−00064" />
+      <updated>1682717370166</updated>
     </task>
-    <task id="LOCAL−00014" summary="Fixed atmosphere update calling to mirror the players actual current planet">
-      <created>1680041024317</created>
-      <option name="number" value="LOCAL−00014" />
-      <option name="presentableId" value="LOCAL−00014" />
-      <updated>1680041024317</updated>
+    <task id="LOCAL−00065" summary="Added cinamachine free spin camera">
+      <created>1682720355229</created>
+      <option name="number" value="LOCAL−00065" />
+      <option name="presentableId" value="LOCAL−00065" />
+      <updated>1682720355229</updated>
     </task>
-    <task id="LOCAL−00015" summary="Better shadow resolution near player">
-      <created>1680041526117</created>
-      <option name="number" value="LOCAL−00015" />
-      <option name="presentableId" value="LOCAL−00015" />
-      <updated>1680041526117</updated>
+    <task id="LOCAL−00066" summary="Camera now spins around in a satisfying way">
+      <created>1682725936431</created>
+      <option name="number" value="LOCAL−00066" />
+      <option name="presentableId" value="LOCAL−00066" />
+      <updated>1682725936431</updated>
     </task>
-    <task id="LOCAL−00016" summary="Ambient light is now customized for each atmosphere">
-      <created>1680048932693</created>
-      <option name="number" value="LOCAL−00016" />
-      <option name="presentableId" value="LOCAL−00016" />
-      <updated>1680048932693</updated>
+    <task id="LOCAL−00067" summary="Fixed camera collisions when looking in free cam">
+      <created>1682727015160</created>
+      <option name="number" value="LOCAL−00067" />
+      <option name="presentableId" value="LOCAL−00067" />
+      <updated>1682727015160</updated>
     </task>
-    <task id="LOCAL−00017" summary="Planet strength is now randomized and can be of if there is no water">
-      <created>1680121415788</created>
-      <option name="number" value="LOCAL−00017" />
-      <option name="presentableId" value="LOCAL−00017" />
-      <updated>1680121415789</updated>
+    <task id="LOCAL−00068" summary="Free cam is now always centered at the back from the start when you use it">
+      <created>1682734583831</created>
+      <option name="number" value="LOCAL−00068" />
+      <option name="presentableId" value="LOCAL−00068" />
+      <updated>1682734583831</updated>
     </task>
-    <task id="LOCAL−00018" summary="Atmosphere height/thickness is now randomized">
-      <created>1680122939013</created>
-      <option name="number" value="LOCAL−00018" />
-      <option name="presentableId" value="LOCAL−00018" />
-      <updated>1680122939013</updated>
+    <task id="LOCAL−00069" summary="Added Comments">
+      <created>1682773476964</created>
+      <option name="number" value="LOCAL−00069" />
+      <option name="presentableId" value="LOCAL−00069" />
+      <updated>1682773476964</updated>
     </task>
-    <task id="LOCAL−00019" summary="Ambient light now blends with no atmosphere gradient when the atmosphere is weaker">
-      <created>1680128863663</created>
-      <option name="number" value="LOCAL−00019" />
-      <option name="presentableId" value="LOCAL−00019" />
-      <updated>1680128863663</updated>
+    <task id="LOCAL−00070" summary="Fixed landing bug when entering and leaving planet">
+      <created>1682819195675</created>
+      <option name="number" value="LOCAL−00070" />
+      <option name="presentableId" value="LOCAL−00070" />
+      <updated>1682819195676</updated>
     </task>
-    <task id="LOCAL−00020" summary="Changed spacing">
-      <created>1680129444127</created>
-      <option name="number" value="LOCAL−00020" />
-      <option name="presentableId" value="LOCAL−00020" />
-      <updated>1680129444127</updated>
+    <task id="LOCAL−00071" summary="Added RaySpring class">
+      <created>1682864353283</created>
+      <option name="number" value="LOCAL−00071" />
+      <option name="presentableId" value="LOCAL−00071" />
+      <updated>1682864353283</updated>
     </task>
-    <task id="LOCAL−00021" summary="Fixed blinking lights">
-      <created>1680212574667</created>
-      <option name="number" value="LOCAL−00021" />
-      <option name="presentableId" value="LOCAL−00021" />
-      <updated>1680212574667</updated>
+    <task id="LOCAL−00072" summary="Force springs now works on spaceship">
+      <created>1682880820059</created>
+      <option name="number" value="LOCAL−00072" />
+      <option name="presentableId" value="LOCAL−00072" />
+      <updated>1682880820059</updated>
     </task>
-    <task id="LOCAL−00022" summary="Increased FOV">
-      <created>1680212982534</created>
-      <option name="number" value="LOCAL−00022" />
-      <option name="presentableId" value="LOCAL−00022" />
-      <updated>1680212982534</updated>
+    <task id="LOCAL−00073" summary="Added spring prefab">
+      <created>1682880835345</created>
+      <option name="number" value="LOCAL−00073" />
+      <option name="presentableId" value="LOCAL−00073" />
+      <updated>1682880835345</updated>
     </task>
-    <task id="LOCAL−00023" summary="Changed player position in ship to better suit the new FOV">
-      <created>1680213412454</created>
-      <option name="number" value="LOCAL−00023" />
-      <option name="presentableId" value="LOCAL−00023" />
-      <updated>1680213412454</updated>
+    <task id="LOCAL−00074" summary="Added comment">
+      <created>1682881225052</created>
+      <option name="number" value="LOCAL−00074" />
+      <option name="presentableId" value="LOCAL−00074" />
+      <updated>1682881225052</updated>
     </task>
-    <task id="LOCAL−00024" summary="Made ship glass a little more transparent">
-      <created>1680213569157</created>
-      <option name="number" value="LOCAL−00024" />
-      <option name="presentableId" value="LOCAL−00024" />
-      <updated>1680213569157</updated>
+    <task id="LOCAL−00075" summary="Now does not cast rays every frame">
+      <created>1682888804205</created>
+      <option name="number" value="LOCAL−00075" />
+      <option name="presentableId" value="LOCAL−00075" />
+      <updated>1682888804205</updated>
     </task>
-    <task id="LOCAL−00025" summary="Turned on camera dithering to make color banding much less noticeable">
-      <created>1680213838376</created>
-      <option name="number" value="LOCAL−00025" />
-      <option name="presentableId" value="LOCAL−00025" />
-      <updated>1680213838376</updated>
+    <task id="LOCAL−00076" summary="Tuned hover springs">
+      <created>1682891040209</created>
+      <option name="number" value="LOCAL−00076" />
+      <option name="presentableId" value="LOCAL−00076" />
+      <updated>1682891040209</updated>
     </task>
-    <task id="LOCAL−00026" summary="Added tonemapping for much better colors (Will not be as washed out as before)">
-      <created>1680215737793</created>
-      <option name="number" value="LOCAL−00026" />
-      <option name="presentableId" value="LOCAL−00026" />
-      <updated>1680215737793</updated>
+    <task id="LOCAL−00077" summary="Added force that pulls the player down when inactive">
+      <created>1682892862310</created>
+      <option name="number" value="LOCAL−00077" />
+      <option name="presentableId" value="LOCAL−00077" />
+      <updated>1682892862310</updated>
     </task>
-    <task id="LOCAL−00027" summary="Longer camera cut of distance to not make sun disappear + better shadow quality">
-      <created>1680217837140</created>
-      <option name="number" value="LOCAL−00027" />
-      <option name="presentableId" value="LOCAL−00027" />
-      <updated>1680217837140</updated>
+    <task id="LOCAL−00078" summary="Changed max landing angle to 40 degrees">
+      <created>1682892880936</created>
+      <option name="number" value="LOCAL−00078" />
+      <option name="presentableId" value="LOCAL−00078" />
+      <updated>1682892880936</updated>
     </task>
-    <task id="LOCAL−00028" summary="Water now get rendered at the right time when under water">
-      <created>1680220284901</created>
-      <option name="number" value="LOCAL−00028" />
-      <option name="presentableId" value="LOCAL−00028" />
-      <updated>1680220284901</updated>
+    <task id="LOCAL−00079" summary="Fixed planet idle pull on other planets">
+      <created>1682894850006</created>
+      <option name="number" value="LOCAL−00079" />
+      <option name="presentableId" value="LOCAL−00079" />
+      <updated>1682894850006</updated>
     </task>
-    <task id="LOCAL−00029" summary="Water material is now done a little better">
-      <created>1680221001694</created>
-      <option name="number" value="LOCAL−00029" />
-      <option name="presentableId" value="LOCAL−00029" />
-      <updated>1680221001694</updated>
+    <task id="LOCAL−00080" summary="Player crosshair is now disabled when not in spaceship">
+      <created>1682895820861</created>
+      <option name="number" value="LOCAL−00080" />
+      <option name="presentableId" value="LOCAL−00080" />
+      <updated>1682895820861</updated>
     </task>
-    <task id="LOCAL−00030" summary="Water now shades correctly by the atmosphere inside and outside">
-      <created>1680222157899</created>
-      <option name="number" value="LOCAL−00030" />
-      <option name="presentableId" value="LOCAL−00030" />
-      <updated>1680222157899</updated>
+    <task id="LOCAL−00081" summary="Ship crosshair is now shown behind pause menu">
+      <created>1682896625849</created>
+      <option name="number" value="LOCAL−00081" />
+      <option name="presentableId" value="LOCAL−00081" />
+      <updated>1682896625849</updated>
     </task>
-    <task id="LOCAL−00031" summary="Sun has nice new moving material based on temperature">
-      <created>1680226249878</created>
-      <option name="number" value="LOCAL−00031" />
-      <option name="presentableId" value="LOCAL−00031" />
-      <updated>1680226249878</updated>
+    <task id="LOCAL−00082" summary="Made loading screen loading text better">
+      <created>1682897468943</created>
+      <option name="number" value="LOCAL−00082" />
+      <option name="presentableId" value="LOCAL−00082" />
+      <updated>1682897468943</updated>
     </task>
-    <task id="LOCAL−00032" summary="Sun temperature is now randomized between 3000 and 8000 degrees kelvin">
-      <created>1680227109330</created>
-      <option name="number" value="LOCAL−00032" />
-      <option name="presentableId" value="LOCAL−00032" />
-      <updated>1680227109330</updated>
+    <task id="LOCAL−00083" summary="Made loading screen faster and more visually pleasing">
+      <created>1682903335378</created>
+      <option name="number" value="LOCAL−00083" />
+      <option name="presentableId" value="LOCAL−00083" />
+      <updated>1682903335378</updated>
     </task>
-    <task id="LOCAL−00033" summary="Directional light matches sun temperature and color">
-      <created>1680227470916</created>
-      <option name="number" value="LOCAL−00033" />
-      <option name="presentableId" value="LOCAL−00033" />
-      <updated>1680227470916</updated>
+    <task id="LOCAL−00084" summary="Updated ship crosshair">
+      <created>1682904667302</created>
+      <option name="number" value="LOCAL−00084" />
+      <option name="presentableId" value="LOCAL−00084" />
+      <updated>1682904667302</updated>
     </task>
-    <task id="LOCAL−00034" summary="Added back water shadow as the back side of the planet otherwise would have sunlight through the ground">
-      <created>1680231070165</created>
-      <option name="number" value="LOCAL−00034" />
-      <option name="presentableId" value="LOCAL−00034" />
-      <updated>1680231070165</updated>
+    <task id="LOCAL−00085" summary="Added landing rotation offset to compensate for the visual model">
+      <created>1682906930849</created>
+      <option name="number" value="LOCAL−00085" />
+      <option name="presentableId" value="LOCAL−00085" />
+      <updated>1682906930849</updated>
     </task>
-    <task id="LOCAL−00035" summary="Fixed green sun bug">
-      <created>1680267288470</created>
-      <option name="number" value="LOCAL−00035" />
-      <option name="presentableId" value="LOCAL−00035" />
-      <updated>1680267288470</updated>
+    <task id="LOCAL−00086" summary="Removed visual mesh from hover springs">
+      <created>1682907331464</created>
+      <option name="number" value="LOCAL−00086" />
+      <option name="presentableId" value="LOCAL−00086" />
+      <updated>1682907331464</updated>
     </task>
-    <task id="LOCAL−00036" summary="Better spawn planet">
-      <created>1680269111791</created>
-      <option name="number" value="LOCAL−00036" />
-      <option name="presentableId" value="LOCAL−00036" />
-      <updated>1680269111791</updated>
+    <task id="LOCAL−00087" summary="Changed landing error sound">
+      <created>1682908018476</created>
+      <option name="number" value="LOCAL−00087" />
+      <option name="presentableId" value="LOCAL−00087" />
+      <updated>1682908018476</updated>
     </task>
-    <option name="localTasksCounter" value="37" />
+    <task id="LOCAL−00088" summary="Unhooked mouse input from framerate for the space ship">
+      <created>1682909992620</created>
+      <option name="number" value="LOCAL−00088" />
+      <option name="presentableId" value="LOCAL−00088" />
+      <updated>1682909992620</updated>
+    </task>
+    <task id="LOCAL−00089" summary="Added player boarded check">
+      <created>1682955971607</created>
+      <option name="number" value="LOCAL−00089" />
+      <option name="presentableId" value="LOCAL−00089" />
+      <updated>1682955971607</updated>
+    </task>
+    <task id="LOCAL−00090" summary="Solar system is not super messed up anymore">
+      <created>1682959660785</created>
+      <option name="number" value="LOCAL−00090" />
+      <option name="presentableId" value="LOCAL−00090" />
+      <updated>1682959660785</updated>
+    </task>
+    <task id="LOCAL−00091" summary="Fixed ship rotation and pause screen">
+      <created>1682960416102</created>
+      <option name="number" value="LOCAL−00091" />
+      <option name="presentableId" value="LOCAL−00091" />
+      <updated>1682960416103</updated>
+    </task>
+    <task id="LOCAL−00092" summary="Fixed ship rotation when leaving a planet">
+      <created>1682961994384</created>
+      <option name="number" value="LOCAL−00092" />
+      <option name="presentableId" value="LOCAL−00092" />
+      <updated>1682961994384</updated>
+    </task>
+    <task id="LOCAL−00093" summary="Changed moon and planet orbiting speed when on planet / moon">
+      <created>1682963824987</created>
+      <option name="number" value="LOCAL−00093" />
+      <option name="presentableId" value="LOCAL−00093" />
+      <updated>1682963824987</updated>
+    </task>
+    <task id="LOCAL−00094" summary="Fixed skybox rotation">
+      <created>1682967832537</created>
+      <option name="number" value="LOCAL−00094" />
+      <option name="presentableId" value="LOCAL−00094" />
+      <updated>1682967832537</updated>
+    </task>
+    <task id="LOCAL−00095" summary="Added new crosshair options">
+      <created>1682979287162</created>
+      <option name="number" value="LOCAL−00095" />
+      <option name="presentableId" value="LOCAL−00095" />
+      <updated>1682979287162</updated>
+    </task>
+    <task id="LOCAL−00096" summary="You can now toggle between different ship movement strategies">
+      <created>1682981902274</created>
+      <option name="number" value="LOCAL−00096" />
+      <option name="presentableId" value="LOCAL−00096" />
+      <updated>1682981902274</updated>
+    </task>
+    <task id="LOCAL−00097" summary="Turning inactive ship upright now works for both movement options">
+      <created>1682982322272</created>
+      <option name="number" value="LOCAL−00097" />
+      <option name="presentableId" value="LOCAL−00097" />
+      <updated>1682982322272</updated>
+    </task>
+    <task id="LOCAL−00098" summary="Hopefully fixed glitched where the two travel mode indicators mismatched">
+      <created>1683036691959</created>
+      <option name="number" value="LOCAL−00098" />
+      <option name="presentableId" value="LOCAL−00098" />
+      <updated>1683036691959</updated>
+    </task>
+    <task id="LOCAL−00099" summary="Made ship panel be a little smaller and not as wide">
+      <created>1683037275592</created>
+      <option name="number" value="LOCAL−00099" />
+      <option name="presentableId" value="LOCAL−00099" />
+      <updated>1683037275592</updated>
+    </task>
+    <task id="LOCAL−00100" summary="Changed loading screen text to also have dots...">
+      <created>1683037507835</created>
+      <option name="number" value="LOCAL−00100" />
+      <option name="presentableId" value="LOCAL−00100" />
+      <updated>1683037507835</updated>
+    </task>
+    <task id="LOCAL−00101" summary="Added mouse sensitivity option for spaceship and increased it">
+      <created>1683041015593</created>
+      <option name="number" value="LOCAL−00101" />
+      <option name="presentableId" value="LOCAL−00101" />
+      <updated>1683041015593</updated>
+    </task>
+    <task id="LOCAL−00102" summary="Removed old spaceship script and scene object">
+      <created>1683057797444</created>
+      <option name="number" value="LOCAL−00102" />
+      <option name="presentableId" value="LOCAL−00102" />
+      <updated>1683057797444</updated>
+    </task>
+    <option name="localTasksCounter" value="103" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -392,31 +473,31 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="Have moved ambient light calculation to corresponding planet atmosphere" />
-    <MESSAGE value="Fixed atmosphere update calling to mirror the players actual current planet" />
-    <MESSAGE value="Better shadow resolution near player" />
-    <MESSAGE value="Ambient light is now customized for each atmosphere" />
-    <MESSAGE value="Planet strength is now randomized and can be of if there is no water" />
-    <MESSAGE value="Atmosphere height/thickness is now randomized" />
-    <MESSAGE value="Ambient light now blends with no atmosphere gradient when the atmosphere is weaker" />
-    <MESSAGE value="Changed spacing" />
-    <MESSAGE value="Fixed blinking lights" />
-    <MESSAGE value="Increased FOV" />
-    <MESSAGE value="Changed player position in ship to better suit the new FOV" />
-    <MESSAGE value="Made ship glass a little more transparent" />
-    <MESSAGE value="Turned on camera dithering to make color banding much less noticeable" />
-    <MESSAGE value="Added tonemapping for much better colors (Will not be as washed out as before)" />
-    <MESSAGE value="Longer camera cut of distance to not make sun disappear + better shadow quality" />
-    <MESSAGE value="Water now get rendered at the right time when under water" />
-    <MESSAGE value="Water material is now done a little better" />
-    <MESSAGE value="Water now shades correctly by the atmosphere inside and outside" />
-    <MESSAGE value="Sun has nice new moving material based on temperature" />
-    <MESSAGE value="Sun temperature is now randomized between 3000 and 8000 degrees kelvin" />
-    <MESSAGE value="Directional light matches sun temperature and color" />
-    <MESSAGE value="Added back water shadow as the back side of the planet otherwise would have sunlight through the ground" />
-    <MESSAGE value="Fixed green sun bug" />
-    <MESSAGE value="Better spawn planet" />
-    <MESSAGE value="Saved main scene and done some tests" />
-    <option name="LAST_COMMIT_MESSAGE" value="Saved main scene and done some tests" />
+    <MESSAGE value="Changed max landing angle to 40 degrees" />
+    <MESSAGE value="Fixed planet idle pull on other planets" />
+    <MESSAGE value="Player crosshair is now disabled when not in spaceship" />
+    <MESSAGE value="Ship crosshair is now shown behind pause menu" />
+    <MESSAGE value="Made loading screen loading text better" />
+    <MESSAGE value="Made loading screen faster and more visually pleasing" />
+    <MESSAGE value="Updated ship crosshair" />
+    <MESSAGE value="Added landing rotation offset to compensate for the visual model" />
+    <MESSAGE value="Removed visual mesh from hover springs" />
+    <MESSAGE value="Changed landing error sound" />
+    <MESSAGE value="Unhooked mouse input from framerate for the space ship" />
+    <MESSAGE value="Added player boarded check" />
+    <MESSAGE value="Solar system is not super messed up anymore" />
+    <MESSAGE value="Fixed ship rotation and pause screen" />
+    <MESSAGE value="Fixed ship rotation when leaving a planet" />
+    <MESSAGE value="Changed moon and planet orbiting speed when on planet / moon" />
+    <MESSAGE value="Fixed skybox rotation" />
+    <MESSAGE value="Added new crosshair options" />
+    <MESSAGE value="You can now toggle between different ship movement strategies" />
+    <MESSAGE value="Turning inactive ship upright now works for both movement options" />
+    <MESSAGE value="Hopefully fixed glitched where the two travel mode indicators mismatched" />
+    <MESSAGE value="Made ship panel be a little smaller and not as wide" />
+    <MESSAGE value="Changed loading screen text to also have dots..." />
+    <MESSAGE value="Added mouse sensitivity option for spaceship and increased it" />
+    <MESSAGE value="Removed old spaceship script and scene object" />
+    <option name="LAST_COMMIT_MESSAGE" value="Removed old spaceship script and scene object" />
   </component>
 </project>

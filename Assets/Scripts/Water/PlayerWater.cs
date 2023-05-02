@@ -36,7 +36,7 @@ public class PlayerWater : MonoBehaviour
     /// </summary>
     private void SetColors()
     {
-        water.SetColor(C1, planet.GetSeaColor());
+        water.SetColor(C1, planet.GetSeaColor);
     }
 
     /// <summary>
