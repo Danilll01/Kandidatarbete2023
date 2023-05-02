@@ -44,6 +44,7 @@ public class SpaceShipController : MonoBehaviour
     [SerializeField] private Sprite[] travelTypeSprites;
     [SerializeField] private Texture2D[] travelTypeTextures;
     [SerializeField] private SpaceShipTransition shipTransitionScript;
+    [SerializeField] private HandleAudio audio;
 
     // Ship movement
     private float speed;
@@ -66,7 +67,7 @@ public class SpaceShipController : MonoBehaviour
     private bool orbitPlanetMovement = true;
     private readonly Collider[] activateHoverSpring = new Collider[1];
     
-    [SerializeField] private HandleAudio audio;
+    
 
     /// <summary>
     /// Initializes ship controller script
@@ -179,8 +180,6 @@ public class SpaceShipController : MonoBehaviour
             speed = Mathf.Lerp(speed, maxSpeed, Time.fixedDeltaTime);
         }
 
-        
-
         //Set moveDirection to the vertical axis (up and down keys) * speed
         Vector3 moveDirection = oldMovementVector * speed;
 
@@ -190,16 +189,8 @@ public class SpaceShipController : MonoBehaviour
         //Set the velocity, so you can move
         physicsBody.velocity = new Vector3(moveDirection.x, moveDirection.y, moveDirection.z);
         
-        // Play thrust sound effect if player is accelerating
-        bool transitioning = shipTransitionScript.UnderTransition();
-        if (newMovementVector.magnitude > 0f && !transitioning)
-        {
-            audio.PlaySoundEffect(HandleAudio.SoundEffects.Thrust, true, false, 0.5f);
-        }
-        else if(!transitioning)
-        {
-            audio.TurnOffCurrentSoundEffect(0.2f);
-        }
+        // Plays thruster audio if needed
+        PlayThrustAudio(newMovementVector);
 
         //Camera follow
         mainCamera.transform.position = Vector3.Lerp(mainCamera.transform.position, cameraPosition.position, Time.deltaTime * cameraSmooth);
@@ -226,7 +217,21 @@ public class SpaceShipController : MonoBehaviour
         // Add hover forces
         CalculateSpringForces();
     }
-    
+
+    // Plays thruster audio if needed 
+    private void PlayThrustAudio(Vector3 newMovementVector)
+    {
+        // Play thrust sound effect if player is accelerating
+        if (newMovementVector.magnitude > 0f)
+        {
+            audio.PlaySoundEffect(HandleAudio.SoundEffects.Thrust, true, false, 0.5f);
+        }
+        else
+        {
+            audio.TurnOffCurrentSoundEffect(0.2f);
+        }
+    }
+
 
     // Rotates the main ship body
     private void RotateMainShip()
