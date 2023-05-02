@@ -446,12 +446,29 @@ MonoBehaviour:
   timeBetweenIdleSounds: 15
   stepsTimer: 0
   timeBetweenSteps: 0.4
+  genes:
+    alternaviteColor: 0
+    speed: 0
+    statDecrease: 0
+    size: 0
+    detectionRadius: 0
+  alternativeTexture: {fileID: 2800000, guid: 77710ed0b8501c24081d8c307eb7061b, type: 3}
+  alternativeTextureProb: 0.1
+  speedMutationProb: 0.8
+  speedMultiplierRange: 0.1
+  sizeMutationProb: 0.4
+  sizeMultiplierRange: 0.05
+  statDecreaseMutationProb: 0.3
+  statDecreaseMultiplierRange: 0.05
+  detectionRadiusMutationProb: 0.3
+  detectionRadiusMultiplierRange: 0.05
   currentState: 0
   DEBUG: 0
   isSleeping: 0
   animate: 1
   destination: {x: 0, y: 0, z: 0}
   isDying: 0
+  gettingEatenBy: {fileID: 0}
 --- !u!65 &6449783939063798092
 BoxCollider:
   m_ObjectHideFlags: 0
