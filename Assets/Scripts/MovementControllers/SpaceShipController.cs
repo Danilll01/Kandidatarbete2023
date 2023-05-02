@@ -65,6 +65,8 @@ public class SpaceShipController : MonoBehaviour
     private float inactiveTimer = 0;
     private bool orbitPlanetMovement = true;
     private readonly Collider[] activateHoverSpring = new Collider[1];
+    
+    [SerializeField] private HandleAudio audio;
 
     /// <summary>
     /// Initializes ship controller script
@@ -77,6 +79,7 @@ public class SpaceShipController : MonoBehaviour
         defaultShipRotation = spaceshipRoot.localEulerAngles;
         rotationY = defaultShipRotation.z;
         inactiveTimer = inactiveTime;
+        audio.Initialize();
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
@@ -176,6 +179,8 @@ public class SpaceShipController : MonoBehaviour
             speed = Mathf.Lerp(speed, maxSpeed, Time.fixedDeltaTime);
         }
 
+        
+
         //Set moveDirection to the vertical axis (up and down keys) * speed
         Vector3 moveDirection = oldMovementVector * speed;
 
@@ -184,6 +189,17 @@ public class SpaceShipController : MonoBehaviour
         
         //Set the velocity, so you can move
         physicsBody.velocity = new Vector3(moveDirection.x, moveDirection.y, moveDirection.z);
+        
+        // Play thrust sound effect if player is accelerating
+        bool transitioning = shipTransitionScript.UnderTransition();
+        if (newMovementVector.magnitude > 0f && !transitioning)
+        {
+            audio.PlaySoundEffect(HandleAudio.SoundEffects.Thrust, true, false, 0.5f);
+        }
+        else if(!transitioning)
+        {
+            audio.TurnOffCurrentSoundEffect(0.2f);
+        }
 
         //Camera follow
         mainCamera.transform.position = Vector3.Lerp(mainCamera.transform.position, cameraPosition.position, Time.deltaTime * cameraSmooth);
