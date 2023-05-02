@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="">
+    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Hopefully fixed glitched where the two travel mode indicators mismatched">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -35,22 +35,11 @@
     </option>
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="mock://D:/Unity/Projects/Kandidatarbete2023/Assets/Scenes/Main.unity" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://D:/Unity/Projects/Kandidatarbete2023/Assets/Scenes/Main.unity" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Atmosphere/AtmosphereHandler.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="mock://D:/Unity/Projects/Kandidatarbete2023/Assets/Scripts/Debug/MenuManager.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://D:/Unity/Projects/Kandidatarbete2023/Assets/Scripts/MarchingCubes/Planet.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://D:/Unity/Projects/Kandidatarbete2023/Assets/Scripts/MarchingCubes/Planet.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://D:/Unity/Projects/Kandidatarbete2023/Assets/Scripts/MarchingCubes/Planet.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipCameraMover.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipController.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="mock://D:/Unity/Projects/Kandidatarbete2023/Assets/Scripts/MovementControllers/SpaceShipController.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipTransition.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="mock://D:/Unity/Projects/Kandidatarbete2023/Assets/Scripts/Solar System/SolarSystemTransform.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://D:/Unity/Projects/Kandidatarbete2023/Assets/Scripts/Solar System/SolarSystemTransform.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://D:/Unity/Projects/Kandidatarbete2023/Assets/Scripts/Solar System/SolarSystemTransform.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://D:/Unity/Projects/Kandidatarbete2023/Assets/Scripts/Solar System/SpawnPlanets.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://D:/Unity/Projects/Kandidatarbete2023/Assets/Scripts/Solar System/SpawnPlanets.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Shaders/Atmosphere/AtmosphericScattering.shader" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="MarkdownSettingsMigration">
@@ -166,12 +155,7 @@
       <workItem from="1682716360996" duration="7517000" />
       <workItem from="1682861907126" duration="33741000" />
       <workItem from="1682952065891" duration="20322000" />
-    </task>
-    <task id="LOCAL−00049" summary="Removed player initialize parameter">
-      <created>1682035434543</created>
-      <option name="number" value="LOCAL−00049" />
-      <option name="presentableId" value="LOCAL−00049" />
-      <updated>1682035434543</updated>
+      <workItem from="1683036367666" duration="807000" />
     </task>
     <task id="LOCAL−00050" summary="Cleaned up code">
       <created>1682035985386</created>
@@ -461,7 +445,13 @@
       <option name="presentableId" value="LOCAL−00097" />
       <updated>1682982322272</updated>
     </task>
-    <option name="localTasksCounter" value="98" />
+    <task id="LOCAL−00098" summary="Hopefully fixed glitched where the two travel mode indicators mismatched">
+      <created>1683036691959</created>
+      <option name="number" value="LOCAL−00098" />
+      <option name="presentableId" value="LOCAL−00098" />
+      <updated>1683036691959</updated>
+    </task>
+    <option name="localTasksCounter" value="99" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -483,7 +473,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="Added spring prefab" />
     <MESSAGE value="Added comment" />
     <MESSAGE value="Now does not cast rays every frame" />
     <MESSAGE value="Tuned hover springs" />
@@ -508,6 +497,7 @@
     <MESSAGE value="Added new crosshair options" />
     <MESSAGE value="You can now toggle between different ship movement strategies" />
     <MESSAGE value="Turning inactive ship upright now works for both movement options" />
-    <option name="LAST_COMMIT_MESSAGE" value="Turning inactive ship upright now works for both movement options" />
+    <MESSAGE value="Hopefully fixed glitched where the two travel mode indicators mismatched" />
+    <option name="LAST_COMMIT_MESSAGE" value="Hopefully fixed glitched where the two travel mode indicators mismatched" />
   </component>
 </project>
