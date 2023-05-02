@@ -187,12 +187,8 @@ public class ShipController : MonoBehaviour
             {
                 divideFactor = Mathf.Lerp(2f, 1.2f, body.velocity.magnitude / (shipMovespeed * 5));
             }
-            DisplayDebug.AddOrSetDebugVariable("Slowdown factor:", divideFactor.ToString());
+
             body.velocity /= (divideFactor - 1) * Time.deltaTime + 1;
-        }
-        else
-        {
-            DisplayDebug.AddOrSetDebugVariable("Slowdown factor:", "N/A");
         }
     }
 
