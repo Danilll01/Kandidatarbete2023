@@ -4,8 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="You can now toggle between different ship movement strategies">
+    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Turning inactive ship upright now works for both movement options">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Assets/SkyBox/NightSkybox.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Assets/SkyBox/NightSkybox.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Player/ShipMain.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Player/ShipMain.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Individual/Joel.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Individual/Joel.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Main.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Main.unity" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectSettings/URPProjectSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/URPProjectSettings.asset" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -165,13 +171,7 @@
       <workItem from="1682697009257" duration="2425000" />
       <workItem from="1682716360996" duration="7517000" />
       <workItem from="1682861907126" duration="33741000" />
-      <workItem from="1682952065891" duration="16799000" />
-    </task>
-    <task id="LOCAL−00048" summary="Planet chunk loading is now fixed">
-      <created>1682034879347</created>
-      <option name="number" value="LOCAL−00048" />
-      <option name="presentableId" value="LOCAL−00048" />
-      <updated>1682034879347</updated>
+      <workItem from="1682952065891" duration="20322000" />
     </task>
     <task id="LOCAL−00049" summary="Removed player initialize parameter">
       <created>1682035434543</created>
@@ -461,7 +461,13 @@
       <option name="presentableId" value="LOCAL−00096" />
       <updated>1682981902274</updated>
     </task>
-    <option name="localTasksCounter" value="97" />
+    <task id="LOCAL−00097" summary="Turning inactive ship upright now works for both movement options">
+      <created>1682982322272</created>
+      <option name="number" value="LOCAL−00097" />
+      <option name="presentableId" value="LOCAL−00097" />
+      <updated>1682982322272</updated>
+    </task>
+    <option name="localTasksCounter" value="98" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -483,7 +489,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="Force springs now works on spaceship" />
     <MESSAGE value="Added spring prefab" />
     <MESSAGE value="Added comment" />
     <MESSAGE value="Now does not cast rays every frame" />
@@ -508,6 +513,7 @@
     <MESSAGE value="Fixed skybox rotation" />
     <MESSAGE value="Added new crosshair options" />
     <MESSAGE value="You can now toggle between different ship movement strategies" />
-    <option name="LAST_COMMIT_MESSAGE" value="You can now toggle between different ship movement strategies" />
+    <MESSAGE value="Turning inactive ship upright now works for both movement options" />
+    <option name="LAST_COMMIT_MESSAGE" value="Turning inactive ship upright now works for both movement options" />
   </component>
 </project>

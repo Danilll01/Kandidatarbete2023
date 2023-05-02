@@ -5,6 +5,8 @@ using Pathfinding.Util;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Serialization;
+using UnityEngine.UI;
+using Cursor = UnityEngine.Cursor;
 
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(SpaceShipTransition))]
@@ -36,6 +38,10 @@ public class SpaceShipController : MonoBehaviour
     [SerializeField] private Camera mainCamera;
     [SerializeField] private Transform spaceshipRoot;
     [SerializeField] private RectTransform crosshairTexture;
+    [SerializeField] private Image travelModeGUIImage;
+    [SerializeField] private Material travelModePanel;
+    [SerializeField] private Sprite[] travelTypeSprites;
+    [SerializeField] private Texture2D[] travelTypeTextures;
     [SerializeField] private SpaceShipTransition shipTransitionScript;
 
     // Ship movement
@@ -101,10 +107,14 @@ public class SpaceShipController : MonoBehaviour
             if (orbitPlanetMovement)
             {
                 lookRotation = standardShip.transform.rotation * lookRotation;
+                travelModeGUIImage.sprite = travelTypeSprites[1];
+                travelModePanel.mainTexture = travelTypeTextures[1];
             }
             else
             {
                 lookRotation = Quaternion.Inverse(standardShip.transform.rotation) * transform.rotation;
+                travelModeGUIImage.sprite = travelTypeSprites[0];
+                travelModePanel.mainTexture = travelTypeTextures[0];
             }
             orbitPlanetMovement = !orbitPlanetMovement;
             
@@ -119,6 +129,7 @@ public class SpaceShipController : MonoBehaviour
         {
             physicsBody.isKinematic = true;
             crosshairTexture.gameObject.SetActive(false);
+            travelModeGUIImage.enabled = false;
             
             // Setup for Ship transition handover
             isOutsidePlanet = true;
@@ -131,6 +142,7 @@ public class SpaceShipController : MonoBehaviour
         
         physicsBody.isKinematic = false;
         crosshairTexture.gameObject.SetActive(true);
+        travelModeGUIImage.enabled = true;
         
         float thrust = Input.GetAxis("Spaceship Thrust");
         float strafe = Input.GetAxis("Spaceship Strafe");
