@@ -311,12 +311,15 @@ public class Creature : MonoBehaviour
     private Genes MixGenes(Genes otherGenes)
     {
         Genes newGenes = genes;
+
+        // If breeding creatures have the same color the creature spawned has a higher chance of having that color. 
         if (alternativeTextureActive == otherGenes.alternaviteColor)
         {
-            newGenes.alternaviteColor = Random.value < 0.8f;
+            // Only set the color to true if alternative texture also is true. 
+            newGenes.alternaviteColor = alternativeTextureActive && Random.value < 0.8f;
         } else
         {
-            newGenes.alternaviteColor = Random.value < 0.5f;
+            newGenes.alternaviteColor = alternativeTextureActive && Random.value < 0.5f;
         }
         
         newGenes.speed = genes.speed * GetMutationMultiplier(speedMutationProb, speedMultiplierRange);
@@ -771,8 +774,10 @@ public class Creature : MonoBehaviour
 
     private float GetMutationMultiplier(float mutationProb, float mutationRange)
     {
+        // Only apply mutation if the value if below mutation threshold
         if (Random.value < mutationProb)
         {
+            // Randomize a value around 1 with an offset of "mutationRange" to either side
             return Random.Range(1 - mutationRange, 1 + mutationRange);
         } else
         {
