@@ -109,7 +109,7 @@ public class ShipController : MonoBehaviour
                     transitionToPos = landingTarget.position;
                     transitionToRot = landingTarget.rotation;
                     transitioning = true;
-                    audio.PlaySoundEffect(HandleAudio.SoundEffects.Landing, false, true, 0.1f);
+                    audio.PlaySoundEffect(HandleAudio.SoundEffects.Landing, false, true, 0.1f, 0.2f);
                     //Transition method handles moving the player out of the ship
                 }
             }
@@ -199,11 +199,11 @@ public class ShipController : MonoBehaviour
             DisplayDebug.AddOrSetDebugVariable("Slowdown factor:", "N/A");
         }
         
-        if (inputVector.magnitude > 0f)
+        if (inputVector.magnitude > 0f && !transitioning)
         {
             audio.PlaySoundEffect(HandleAudio.SoundEffects.Thrust, true, false, 0.5f);
         }
-        else
+        else if(!transitioning)
         {
             audio.TurnOffCurrentSoundEffect(0.2f);
         }
@@ -302,7 +302,7 @@ public class ShipController : MonoBehaviour
         if (!initialization)
         {
             StartCoroutine(audio.UpdateMusicClipIndex(HandleAudio.BackgroundClips.Space));
-            audio.PlaySoundEffect(HandleAudio.SoundEffects.TakeOff, false, true, 0.1f);
+            audio.PlaySoundEffect(HandleAudio.SoundEffects.TakeOff, false, true, 0.1f, 0.2f);
         }
         player.transform.position = transform.position + (transform.rotation * mountedPos.localPosition);
         player.transform.rotation = transform.rotation;

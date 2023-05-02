@@ -6,14 +6,16 @@ public class HandleAudio : MonoBehaviour
 {
     [SerializeField] private AudioClip[] backgroundMusicAudioClips;
     [SerializeField] private AudioClip[] soundEffectsAudioClips;
-    [SerializeField] private float backgroundMusicVolume = 0.04f;
-    [SerializeField] private float soundEffectsVolume = 0.01f;
+    [SerializeField] private const float backgroundMusicVolume = 0.04f;
+    [SerializeField] private const float soundEffectsVolume = 0.1f;
     [SerializeField] private AudioSource musicAudioSource;
     [SerializeField] private AudioSource soundEffectsAudioSource;
     private float duration = 2f;
     private const float FADED_OUT_VOLUME = 0.01f;
     private bool stoppedSoundEffects;
     private bool gameIsPaused;
+    private Coroutine fadeInCoroutine;
+    private Coroutine fadeOutCoroutine;
 
     /// <summary>
     /// Initialize the audio components
@@ -65,41 +67,41 @@ public class HandleAudio : MonoBehaviour
     /// </summary>
     /// <param name="soundEffect"></param>
     /// <param name="loop"></param>
-    public void PlaySoundEffect(SoundEffects soundEffect, bool loop, bool instantly, float fadeInDuration = 1f)
+    public void PlaySoundEffect(SoundEffects soundEffect, bool loop, bool instantly, float fadeInDuration = 1f, float volume = soundEffectsVolume)
     {
         AudioClip newClip = soundEffectsAudioClips[(int)soundEffect];
-        soundEffectsAudioSource.volume = soundEffectsVolume;
+        soundEffectsAudioSource.volume = volume;
         if (newClip != soundEffectsAudioSource.clip)
         {
-            StopCoroutine(FadeOutSoundEffect(0.5f));
+            StopCurrentCoroutines();
             soundEffectsAudioSource.clip = soundEffectsAudioClips[(int)soundEffect];
             soundEffectsAudioSource.loop = loop;
             if (instantly)
             {
-                soundEffectsAudioSource.volume = soundEffectsVolume;
+                soundEffectsAudioSource.volume = volume;
                 soundEffectsAudioSource.Play();
             }
             else
             {
                 soundEffectsAudioSource.volume = 0;
                 soundEffectsAudioSource.Play();
-                StartCoroutine(FadeInSoundEffect(fadeInDuration));
+                fadeInCoroutine = StartCoroutine(FadeInSoundEffect(fadeInDuration, volume));
             }
             
         }
         else if (stoppedSoundEffects)
         {
-            StopCoroutine(FadeOutSoundEffect(0.5f));
+            StopCurrentCoroutines();
             if (instantly)
             {
-                soundEffectsAudioSource.volume = soundEffectsVolume;
+                soundEffectsAudioSource.volume = volume;
                 soundEffectsAudioSource.Play();
             }
             else
             {
                 soundEffectsAudioSource.volume = 0;
                 soundEffectsAudioSource.Play();
-                StartCoroutine(FadeInSoundEffect(fadeInDuration));
+                fadeInCoroutine = StartCoroutine(FadeInSoundEffect(fadeInDuration, volume));
             }
             stoppedSoundEffects = false;
         }
@@ -112,10 +114,20 @@ public class HandleAudio : MonoBehaviour
     {
         if (!stoppedSoundEffects)
         {
-            StopCoroutine(FadeInSoundEffect(1f));
-            StartCoroutine(FadeOutSoundEffect(fadeOutDuration));
+            StopCurrentCoroutines();
+
+            fadeOutCoroutine = StartCoroutine(FadeOutSoundEffect(fadeOutDuration));
         }
         stoppedSoundEffects = true;
+    }
+
+    private void StopCurrentCoroutines()
+    {
+        if (fadeInCoroutine != null && fadeOutCoroutine != null)
+        {
+            StopCoroutine(fadeOutCoroutine);
+            StopCoroutine(fadeInCoroutine);
+        }
     }
 
     private IEnumerator FadeOutSoundEffect(float fadeDuration)
@@ -129,11 +141,11 @@ public class HandleAudio : MonoBehaviour
         }
     }
     
-    private IEnumerator FadeInSoundEffect(float fadeInDuration)
+    private IEnumerator FadeInSoundEffect(float fadeInDuration, float volume)
     {
         for (var timePassed = 0f; timePassed < fadeInDuration; timePassed += Time.deltaTime)
         {
-            soundEffectsAudioSource.volume = Mathf.Lerp(FADED_OUT_VOLUME, soundEffectsVolume, timePassed / fadeInDuration);
+            soundEffectsAudioSource.volume = Mathf.Lerp(FADED_OUT_VOLUME, volume, timePassed / fadeInDuration);
 
             yield return null;
         }
@@ -154,7 +166,7 @@ public class HandleAudio : MonoBehaviour
     /// </summary>
     /// <param name="backgroundClip"></param>
     /// <returns></returns>
-    public IEnumerator UpdateMusicClipIndex(BackgroundClips backgroundClip)
+    public IEnumerator UpdateMusicClipIndex(BackgroundClips backgroundClip, float volume = backgroundMusicVolume)
     {
 
         var originalVolume = musicAudioSource.volume;
@@ -184,11 +196,11 @@ public class HandleAudio : MonoBehaviour
 
         for (var timePassed = 0f; timePassed < duration; timePassed += Time.deltaTime)
         {
-            musicAudioSource.volume = Mathf.Lerp(FADED_OUT_VOLUME, originalVolume, timePassed / duration);
+            musicAudioSource.volume = Mathf.Lerp(FADED_OUT_VOLUME, volume, timePassed / duration);
 
             yield return null;
         }
         
-        musicAudioSource.volume = backgroundMusicVolume;
+        musicAudioSource.volume = volume;
     }
 }
