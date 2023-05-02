@@ -109,7 +109,7 @@ public class ShipController : MonoBehaviour
                     transitionToPos = landingTarget.position;
                     transitionToRot = landingTarget.rotation;
                     transitioning = true;
-                    audio.PlaySoundEffect(HandleAudio.SoundEffects.Landing, false, true);
+                    audio.PlaySoundEffect(HandleAudio.SoundEffects.Landing, false, true, 0.1f);
                     //Transition method handles moving the player out of the ship
                 }
             }
@@ -201,11 +201,11 @@ public class ShipController : MonoBehaviour
         
         if (inputVector.magnitude > 0f)
         {
-            audio.PlaySoundEffect(HandleAudio.SoundEffects.Thrust, true, false);
+            audio.PlaySoundEffect(HandleAudio.SoundEffects.Thrust, true, false, 0.5f);
         }
         else
         {
-            audio.TurnOffCurrentSoundEffect();
+            audio.TurnOffCurrentSoundEffect(0.2f);
         }
     }
 
@@ -289,7 +289,7 @@ public class ShipController : MonoBehaviour
 
     private void DisembarkFromShip()
     {
-        audio.TurnOffCurrentSoundEffect();
+        audio.TurnOffCurrentSoundEffect(0.1f);
         StartCoroutine(audio.UpdateMusicClipIndex(HandleAudio.BackgroundClips.Planet));
         transform.SetParent(player.Planet.gameObject.transform);
         player.transform.position = transform.position + (transform.rotation * dismountedPos);
@@ -302,7 +302,7 @@ public class ShipController : MonoBehaviour
         if (!initialization)
         {
             StartCoroutine(audio.UpdateMusicClipIndex(HandleAudio.BackgroundClips.Space));
-            audio.PlaySoundEffect(HandleAudio.SoundEffects.TakeOff, false, true);
+            audio.PlaySoundEffect(HandleAudio.SoundEffects.TakeOff, false, true, 0.1f);
         }
         player.transform.position = transform.position + (transform.rotation * mountedPos.localPosition);
         player.transform.rotation = transform.rotation;
