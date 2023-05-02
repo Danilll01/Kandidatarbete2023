@@ -17,11 +17,6 @@ public class LoadManager : MonoBehaviour
         StartCoroutine(LoadYourAsyncScene());
     }
 
-    private void Update()
-    {
-        loadingText.transform.Rotate(Vector3.forward, Time.deltaTime*4);
-    }
-
     IEnumerator LoadYourAsyncScene()
     {
         
