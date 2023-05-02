@@ -28,6 +28,7 @@ public class SpaceShipController : MonoBehaviour
     [Header("Ship setting stuff")] 
     [SerializeField] private float inactiveTime = 10f;
     [SerializeField] private float crossHairMovement = 30f;
+    [SerializeField] private float mouseSensitivity = 9f;
     
     [Header("Camera stuff")]
     [SerializeField] private float rotationSpeed = 2.0f;
@@ -102,10 +103,9 @@ public class SpaceShipController : MonoBehaviour
         float currentMouseYMovement = Input.GetButton("ShipFreeLook") ? 0 : Input.GetAxis("Vertical Look");
         currentRotationVector = new Vector3(currentMouseXMovement, currentMouseYMovement, rotationZTmp);
         
-        mouseXSmooth = Mathf.Lerp(mouseXSmooth, currentMouseXMovement * rotationSpeed,  0.01f * cameraSmooth);
-        mouseYSmooth = Mathf.Lerp(mouseYSmooth, currentMouseYMovement * rotationSpeed, 0.01f * cameraSmooth);
+        mouseXSmooth = Mathf.Lerp(mouseXSmooth, currentMouseXMovement * rotationSpeed,  0.02f * mouseSensitivity);
+        mouseYSmooth = Mathf.Lerp(mouseYSmooth, currentMouseYMovement * rotationSpeed, 0.02f * mouseSensitivity);
 
-        
         // Change movement type between orbit follow and straight
         if (Input.GetButtonDown("ChangeShipMovementType"))
         {
@@ -146,10 +146,12 @@ public class SpaceShipController : MonoBehaviour
             return;
         }
         
+        // Setup for when ship is active
         physicsBody.isKinematic = false;
         crosshairTexture.gameObject.SetActive(true);
         travelModeGUIImage.enabled = true;
         
+        // Movement
         float thrust = Input.GetAxis("Spaceship Thrust");
         float strafe = Input.GetAxis("Spaceship Strafe");
         float lift = Input.GetAxis("Spaceship Lift");

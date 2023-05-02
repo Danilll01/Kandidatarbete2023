@@ -4,8 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Hopefully fixed glitched where the two travel mode indicators mismatched">
+    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Changed loading screen text to also have dots...">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipController.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -155,19 +156,7 @@
       <workItem from="1682716360996" duration="7517000" />
       <workItem from="1682861907126" duration="33741000" />
       <workItem from="1682952065891" duration="20322000" />
-      <workItem from="1683036367666" duration="807000" />
-    </task>
-    <task id="LOCAL−00050" summary="Cleaned up code">
-      <created>1682035985386</created>
-      <option name="number" value="LOCAL−00050" />
-      <option name="presentableId" value="LOCAL−00050" />
-      <updated>1682035985387</updated>
-    </task>
-    <task id="LOCAL−00051" summary="Rotations now finally working perfectly as wanted. No camera jumps">
-      <created>1682125352374</created>
-      <option name="number" value="LOCAL−00051" />
-      <option name="presentableId" value="LOCAL−00051" />
-      <updated>1682125352374</updated>
+      <workItem from="1683036367666" duration="3818000" />
     </task>
     <task id="LOCAL−00052" summary="Added game icon">
       <created>1682125845984</created>
@@ -451,7 +440,19 @@
       <option name="presentableId" value="LOCAL−00098" />
       <updated>1683036691959</updated>
     </task>
-    <option name="localTasksCounter" value="99" />
+    <task id="LOCAL−00099" summary="Made ship panel be a little smaller and not as wide">
+      <created>1683037275592</created>
+      <option name="number" value="LOCAL−00099" />
+      <option name="presentableId" value="LOCAL−00099" />
+      <updated>1683037275592</updated>
+    </task>
+    <task id="LOCAL−00100" summary="Changed loading screen text to also have dots...">
+      <created>1683037507835</created>
+      <option name="number" value="LOCAL−00100" />
+      <option name="presentableId" value="LOCAL−00100" />
+      <updated>1683037507835</updated>
+    </task>
+    <option name="localTasksCounter" value="101" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -473,8 +474,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="Added comment" />
-    <MESSAGE value="Now does not cast rays every frame" />
     <MESSAGE value="Tuned hover springs" />
     <MESSAGE value="Added force that pulls the player down when inactive" />
     <MESSAGE value="Changed max landing angle to 40 degrees" />
@@ -498,6 +497,8 @@
     <MESSAGE value="You can now toggle between different ship movement strategies" />
     <MESSAGE value="Turning inactive ship upright now works for both movement options" />
     <MESSAGE value="Hopefully fixed glitched where the two travel mode indicators mismatched" />
-    <option name="LAST_COMMIT_MESSAGE" value="Hopefully fixed glitched where the two travel mode indicators mismatched" />
+    <MESSAGE value="Made ship panel be a little smaller and not as wide" />
+    <MESSAGE value="Changed loading screen text to also have dots..." />
+    <option name="LAST_COMMIT_MESSAGE" value="Changed loading screen text to also have dots..." />
   </component>
 </project>
