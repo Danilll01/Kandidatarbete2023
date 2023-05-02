@@ -84,10 +84,14 @@ public class SpaceShipController : MonoBehaviour
         Universe.spaceShip = transform;
         standardShip = new GameObject { hideFlags = HideFlags.HideInHierarchy };
        
+        // Setting up optimization mask
         collisionCheckMask = LayerMask.GetMask("Planet");
         collisionCheckMask |= ( 1 << LayerMask.NameToLayer("Foliage"));
         collisionCheckMask |= ( 1 << LayerMask.NameToLayer("Food"));
-
+        
+        // Sets up GUI
+        travelModeGUIImage.sprite = travelTypeSprites[0];
+        travelModePanel.mainTexture = travelTypeTextures[0];
     }
 
     // Handle mouse input in normal update to handle framerate issues otherwise
@@ -101,6 +105,8 @@ public class SpaceShipController : MonoBehaviour
         mouseXSmooth = Mathf.Lerp(mouseXSmooth, currentMouseXMovement * rotationSpeed,  0.01f * cameraSmooth);
         mouseYSmooth = Mathf.Lerp(mouseYSmooth, currentMouseYMovement * rotationSpeed, 0.01f * cameraSmooth);
 
+        
+        // Change movement type between orbit follow and straight
         if (Input.GetButtonDown("ChangeShipMovementType"))
         {
             
