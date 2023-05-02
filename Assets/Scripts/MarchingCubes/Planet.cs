@@ -17,8 +17,6 @@ public class Planet : MonoBehaviour
     [HideInInspector] public string bodyName = "TBT";
     [HideInInspector] public float mass;
     [HideInInspector] public List<Planet> moons;
-    
-    public List<Vector3> waterPoints;
 
     [HideInInspector] public Transform player;
     [HideInInspector] public MarchingCubes marchingCubes;
@@ -34,11 +32,35 @@ public class Planet : MonoBehaviour
     public CreatureHandler creatureHandler;
 
     [Header("Terrain")] [SerializeField, Range(0, 1)]
+    
     private float waterLevel = 0.92f;
 
+    private static readonly Color[] seaColors = new Color[] {
+        new Color (219f/255, 144f/255, 101f/255),
+        new Color (125f/255, 219f/255, 102f/255),
+        new Color (102/255,  219f/255, 195f/255),
+        new Color (102f/255, 183f/255, 219f/255),
+        new Color (102f/255, 219f/255, 144f/255),
+        new Color (102f/255, 105f/255, 219f/255),
+        new Color (207f/255, 102f/255, 219f/255),
+        new Color (219f/255, 102f/255, 142f/255),
+        new Color (219f/255, 102f/255, 102f/255),
+        new Color (251f/255, 70f/255, 47f/255),
+        new Color (46f/255,  250f/255, 198f/255),
+        new Color (47f/255,  233f/255, 250f/255),
+        new Color (47f/255,  186f/255, 250f/255),
+        new Color (47f/255,  137f/255, 250f/255),
+        new Color (163f/255, 47f/255, 250f/255),
+        new Color (0f/255,   44f/255, 147f/255),
+        new Color (0f/255,   147f/255, 135f/255),
+        new Color (0f/255,   147f/255, 136f/255),
+        new Color (146f/255, 255f/255, 247f/255)
+    };
+    private Color seaColor;
+
     [SerializeField] private List<TerrainLayer> terrainLayers;
-    [SerializeField] private BiomeSettings biomeSettings;
     public Caves.CaveSettings caveSettings;
+    public BiomeSettings biomeSettings;
 
     private float threshold;
 
@@ -52,12 +74,15 @@ public class Planet : MonoBehaviour
 
     public bool rotateMoons;
 
-    private Vector3[] moonsRelativeDistances;
+    public Vector3[] moonsRelativeDistances;
     [HideInInspector] public float positionRelativeToSunDistance;
 
     private bool setUpSystemRotationComponents;
     private Transform parentOrbitMover;
     public bool solarSystemRotationActive;
+    public bool playerIsOnMoon;
+    public int activeMoonIndex;
+    private Quaternion[] moonRotationToKeep;
 
     private bool reset;
 
@@ -75,21 +100,40 @@ public class Planet : MonoBehaviour
         this.player = player;
 
         MinMaxTerrainLevel terrainLevel = new MinMaxTerrainLevel();
+        
+        seaColor = seaColors[rand.Next(seaColors.Length)];
+
 
         rotationAxis = rand.OnUnitSphere() * radius;
         rotationSpeed = rand.Next(3, 6);
-        orbitSpeed = 360 / (3f * Mathf.PI * Mathf.Sqrt(Mathf.Pow(transform.position.magnitude, 3)) * 0.000006673f);
+        moonRotationToKeep = new Quaternion[moons.Count];
+        for (int i = 0; i < moons.Count; i++)
+        {
+            moonRotationToKeep[i] = moons[i].transform.parent.rotation;
+        }
+
+        if (bodyName.Contains("Moon"))
+        {
+            Vector3 localPos = (transform.parent.parent.position - transform.position);
+            orbitSpeed =  360 / (3f * Mathf.PI * Mathf.Sqrt(Mathf.Pow(localPos.magnitude, 3)) * 0.00006673f) * 2.5f;
+        }
+        else
+        {
+            orbitSpeed = 360 / (3f * Mathf.PI * Mathf.Sqrt(Mathf.Pow(transform.position.magnitude, 3)) * 0.000006673f);
+        }
 
         willGeneratePlanetLife = rand.Value() < chanceToSpawnPlanetLife;
 
         // Initialize the meshgenerator
         if (marchingCubes == null)
         {
-            threshold = 23 + (float)rand.Value() * 4;
-            marchingCubes = new MarchingCubes(rand.Value() * 123.123f, 1, meshGenerator, threshold, radius,
-                terrainLayers, biomeSettings);
+            threshold = 23 + (float) rand.Value() * 4;
+            float biomeSeed = rand.Value();
+            biomeSettings.seed = biomeSeed;
+            
+            marchingCubes = new MarchingCubes(biomeSeed, 1, meshGenerator, threshold, radius, terrainLayers, biomeSettings);
         }
-
+        
         // Init water
         if (willGeneratePlanetLife)
         {
@@ -100,17 +144,14 @@ public class Planet : MonoBehaviour
             waterDiameter = 0;
         }
 
-        if (!bodyName.Contains("Moon"))
+        if (foliageHandler != null)
         {
-            if (foliageHandler != null)
-            {
-                foliageHandler.Initialize(this);
-            }
+            foliageHandler.Initialize(this);
+        }
 
-            if (creatureHandler != null)
-            {
-                creatureHandler.Initialize(this);
-            }
+        if (creatureHandler != null)
+        {
+            creatureHandler.Initialize(this, rand.Next());
         }
 
         terrainLevel.SetMin(Mathf.Abs((waterDiameter + 1) / 2));
@@ -121,7 +162,7 @@ public class Planet : MonoBehaviour
         {
             if (waterHandler != null && bodyName != "Sun")
             {
-                waterHandler.Initialize(this, waterDiameter, GetGroundColor());
+                waterHandler.Initialize(this, waterDiameter, GetSeaColor());
             }
         }
 
@@ -151,8 +192,18 @@ public class Planet : MonoBehaviour
         if (setUpSystemRotationComponents) return;
         axisToRotateAround = rotationAxisOfActivePlanet;
         speedToRotateAroundWith = speed;
-
+        
         ResetMoonsParentRotation();
+        
+        if (playerIsOnMoon)
+        {
+            player.transform.parent.parent.SetParent(null, true);
+        }
+
+        for (int i = 0; i < moons.Count; i++)
+        {
+            moonRotationToKeep[i] = moons[i].transform.parent.rotation;
+        }
     }
 
     /// <summary>
@@ -160,12 +211,13 @@ public class Planet : MonoBehaviour
     /// </summary>
     public void Run()
     {
-        if (player.parent != transform)
+        if (player.parent != transform && !playerIsOnMoon)
         {
             RotateAroundAxis();
+            
             if (solarSystemRotationActive)
             {
-                parentOrbitMover.transform.RotateAround(Universe.sunPosition.position, Vector3.up,
+                parentOrbitMover.transform.RotateAround(Universe.sunPosition.position, Universe.sunPosition.TransformDirection(Vector3.up),
                     orbitSpeed * Time.deltaTime * 2.5f);
             }
             else
@@ -177,6 +229,21 @@ public class Planet : MonoBehaviour
             KeepPlanetAtSameDistanceToSun();
             RotateAndOrbitMoons(false);
         }
+        else if (playerIsOnMoon)
+        {
+            RotateAroundAxis();
+            if (solarSystemRotationActive)
+            {
+                parentOrbitMover.transform.RotateAround(Vector3.zero, Universe.sunPosition.TransformDirection(Vector3.up),
+                    speedToRotateAroundWith * Time.deltaTime * 2.5f);
+            }
+            else
+            {
+                parentOrbitMover.transform.RotateAround(Vector3.zero, Vector3.up,
+                    speedToRotateAroundWith * Time.deltaTime);
+            }
+            RotateAndOrbitMoonsAndParentPlanet();
+        }
         else if (rotateMoons)
         {
             RotateAndOrbitMoons(true);
@@ -186,6 +253,45 @@ public class Planet : MonoBehaviour
     private void RotateAroundAxis()
     {
         transform.Rotate(rotationAxis, rotationSpeed * Time.deltaTime, Space.World);
+    }
+    
+    private void RotateAndOrbitMoonsAndParentPlanet()
+    {
+        Transform sunTransform = Universe.sunPosition;
+
+        if (solarSystemRotationActive)
+        {
+            // Rotate the active planets moons manually since it is not affected by solar system rotation
+            
+            parentOrbitMover.RotateAround(Vector3.zero, -axisToRotateAround, speedToRotateAroundWith * Time.deltaTime);
+            Vector3 direction = transform.parent.position - Vector3.zero;
+            parentOrbitMover.position = Vector3.zero + (direction.normalized * moonsRelativeDistances[activeMoonIndex].magnitude);
+            parentOrbitMover.position = ClosestPointOnPlane(Vector3.zero, sunTransform.TransformDirection(Vector3.up), parentOrbitMover.position);
+
+            moonsParent.transform.RotateAround(parentOrbitMover.position, -axisToRotateAround, speedToRotateAroundWith* Time.deltaTime);
+            moonsParent.transform.localPosition = Vector3.zero;
+            moonsParent.transform.rotation = sunTransform.rotation;
+
+            for (int i = 0; i < moons.Count; i++)
+            {
+                Planet moon = moons[i];
+                if (activeMoonIndex != i)
+                {
+                    MakeMoonOrbitAndRotate(moon, i);
+                    Transform parent = moon.transform.parent;
+                    parent.position = ClosestPointOnPlane(moonsParent.transform.position, moonsParent.transform.TransformDirection(Vector3.up), parent.transform.position);
+                    parent.rotation = moonRotationToKeep[i];
+                }
+            }
+        }
+        else
+        {
+            for (int i = 0; i < moons.Count; i++)
+            {
+                Planet moon = moons[i];
+                MakeMoonOrbitAndRotate(moon, i);
+            }
+        }
     }
 
     private void RotateAndOrbitMoons(bool moonsParentIsActivePlanet)
@@ -197,22 +303,20 @@ public class Planet : MonoBehaviour
             // Rotate the active planets moons manually since it is not affected by solar system rotation
             if (moonsParentIsActivePlanet)
             {
-                moonsParent.transform.RotateAround(Vector3.zero, -axisToRotateAround,
-                    speedToRotateAroundWith * Time.deltaTime);
+                moonsParent.transform.RotateAround(Vector3.zero, -axisToRotateAround, speedToRotateAroundWith * Time.deltaTime);
             }
 
             moonsParent.transform.localPosition = Vector3.zero;
-            moonsParent.transform.up = sunTransform.up;
+            moonsParent.transform.rotation = sunTransform.rotation;
 
             for (int i = 0; i < moons.Count; i++)
             {
                 Planet moon = moons[i];
                 MakeMoonOrbitAndRotate(moon, i);
 
-                Transform parent = moon.transform.parent.transform;
-                parent.position = ClosestPointOnPlane(moonsParent.transform.position,
-                    moonsParent.transform.TransformDirection(Vector3.up), parent.transform.position);
-                parent.up = moonsParent.transform.up;
+                Transform parent = moon.transform.parent;
+                parent.position = ClosestPointOnPlane(moonsParent.transform.position, moonsParent.transform.TransformDirection(Vector3.up), parent.transform.position);
+                parent.rotation = moonRotationToKeep[i];
             }
         }
         else
@@ -231,11 +335,10 @@ public class Planet : MonoBehaviour
 
         Transform parentTransform = moon.transform.parent.transform;
         Transform moonsParentTransform = moonsParent.transform;
-        parentTransform.RotateAround(moonsParentTransform.position, Vector3.up, moon.orbitSpeed * Time.deltaTime);
+        parentTransform.RotateAround(moonsParentTransform.position, Universe.sunPosition.TransformDirection(Vector3.up), moon.orbitSpeed * Time.deltaTime * 2.5f);
 
         Vector3 direction = parentTransform.position - moonsParentTransform.position;
-        parentTransform.position =
-            moonsParentTransform.position + (direction.normalized * moonsRelativeDistances[i].magnitude);
+        parentTransform.position = moonsParentTransform.position + (direction.normalized * moonsRelativeDistances[i].magnitude);
     }
 
     /// <summary>
@@ -247,9 +350,19 @@ public class Planet : MonoBehaviour
         gameObject.name = bodyName;
     }
 
-    public Color GetGroundColor()
+    public Color GetSeaColor()
     {
-        return chunksHandler.terrainColor.bottomColor;
+        return seaColor;
+    }
+
+    public BiomeSettings Biome
+    {
+        get { return biomeSettings; }
+    }
+
+    public float DistanceToSun
+    {
+        get { return Vector3.Distance(transform.position, Universe.sunPosition.position); }
     }
 
     /// <summary>
@@ -272,7 +385,7 @@ public class Planet : MonoBehaviour
         if (bodyName.Contains("Planet"))
         {
             ResetMoonsParentRotation();
-
+            KeepPlanetAtSameDistanceToSun();
             solarSystemRotationActive = false;
         }
     }
@@ -283,8 +396,9 @@ public class Planet : MonoBehaviour
         {
             moon.transform.parent.SetParent(null, true);
         }
-
+        
         moonsParent.transform.rotation = Universe.sunPosition.rotation;
+
 
         foreach (Planet moon in moons)
         {
@@ -324,15 +438,29 @@ public class Planet : MonoBehaviour
             return;
         }
 
-        Transform sunTransform = Universe.sunPosition;
-        float radius = (parentOrbitMover.position - sunTransform.position).magnitude;
-        Universe.DrawGizmosCircle(sunTransform.position, sunTransform.up, radius, 32);
-
-        foreach (Planet moon in moons)
+        if (bodyName.Contains("Planet"))
         {
-            Transform moonsParentTransform = moonsParent.transform;
-            float moonRadius = (moon.transform.position - moonsParentTransform.position).magnitude;
-            Universe.DrawGizmosCircle(moonsParentTransform.position, moonsParentTransform.up, moonRadius, 32);
+            Transform sunTransform = Universe.sunPosition;
+            if (playerIsOnMoon)
+            {
+                float radius = (parentOrbitMover.position - moons[activeMoonIndex].transform.position).magnitude;
+                Universe.DrawGizmosCircle(moons[activeMoonIndex].transform.position, sunTransform.up, radius, 32);
+            }
+            else
+            {
+                float radius = (parentOrbitMover.position - sunTransform.position).magnitude;
+                Universe.DrawGizmosCircle(sunTransform.position, sunTransform.up, radius, 32);
+            }
+            
+            foreach (Planet moon in moons)
+            {
+                Transform moonsParentTransform = moonsParent.transform;
+                float moonRadius = (moon.transform.position - moonsParentTransform.position).magnitude;
+                Universe.DrawGizmosCircle(moonsParentTransform.position, moonsParentTransform.up, moonRadius, 32);
+            }
         }
+        
+
+        
     }
 }

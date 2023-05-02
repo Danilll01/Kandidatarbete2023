@@ -7,6 +7,7 @@ public class PlayerWater : MonoBehaviour
 {
     
     [SerializeField] private Material water;
+    [SerializeField] private GameObject PostProssesing;
     [HideInInspector] public Planet planet = null;
     [HideInInspector] public bool underWater;
     private static readonly int C1 = Shader.PropertyToID("_C1");
@@ -35,7 +36,7 @@ public class PlayerWater : MonoBehaviour
     /// </summary>
     private void SetColors()
     {
-        water.SetColor(C1, planet.GetGroundColor());
+        water.SetColor(C1, planet.GetSeaColor());
     }
 
     /// <summary>
@@ -49,11 +50,13 @@ public class PlayerWater : MonoBehaviour
             if (underWater)
             {
                 water.SetFloat(UnderWater, 1);
+                PostProssesing.SetActive(true);
                 this.underWater = true;
             }
             else
             {
                 water.SetFloat(UnderWater, 0);
+                PostProssesing.SetActive(false);
                 this.underWater = false;
             }
             this.underWater = underWater;
