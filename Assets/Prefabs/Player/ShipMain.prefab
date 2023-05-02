@@ -154,7 +154,7 @@ Transform:
   m_GameObject: {fileID: 1501380134031200996}
   m_LocalRotation: {x: -0, y: -0.1254057, z: -0.99210554, w: 0}
   m_LocalPosition: {x: 0, y: 0.817, z: -0.017}
-  m_LocalScale: {x: 0.87139904, y: 0.64329803, z: 0.27122054}
+  m_LocalScale: {x: 0.8052947, y: 0.64329803, z: 0.27122054}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3421500242409074447}
@@ -612,8 +612,9 @@ MonoBehaviour:
   - {fileID: 7650958686268419038}
   inactiveTime: 10
   crossHairMovement: 30
+  mouseSensitivity: 9
   rotationSpeed: 1.5
-  cameraSmooth: 6
+  cameraSmooth: 5
   cameraPosition: {fileID: 3421500242648797224}
   mainCamera: {fileID: 7746035291320629583}
   spaceshipRoot: {fileID: 3421500242409074447}
@@ -627,6 +628,7 @@ MonoBehaviour:
   - {fileID: 2800000, guid: 96d9d259038b0d245bd1181cff11566d, type: 3}
   - {fileID: 2800000, guid: 363f7ef7b0b47e54bbb0f68b16182283, type: 3}
   shipTransitionScript: {fileID: 3966985094543174574}
+  audio: {fileID: 0}
 --- !u!114 &3966985094543174574
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -644,6 +646,7 @@ MonoBehaviour:
   maxLandingAngle: 40
   landingTime: 1
   errorSound: {fileID: 8300000, guid: a2bf0acc56c0dcc438c691b727d48ba8, type: 3}
+  audio: {fileID: 0}
 --- !u!114 &6720220075474735342
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -731,7 +734,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.1
   m_Pitch: 1
   Loop: 0
   Mute: 0
