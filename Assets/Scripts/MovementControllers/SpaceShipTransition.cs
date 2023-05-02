@@ -99,8 +99,8 @@ public class SpaceShipTransition : MonoBehaviour
                 transitionToPos = landingTarget.position;
                 transitionToRot = landingTarget.rotation;
                 transitioning = true;
-                audio.PlaySoundEffect(HandleAudio.SoundEffects.Landing, false, true, 0.1f, 0.2f);
                 shouldDisembark = true;
+                audio.PlaySoundEffect(HandleAudio.SoundEffects.Landing, false, true, 0.1f, 0.2f);
                 
                 //Transition method handles moving the player out of the ship
             }

@@ -4,7 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Removed old spaceship script and scene object" />
+    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Changed Vars to explicit type">
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipTransition.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipTransition.cs" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -154,18 +156,6 @@
       <workItem from="1682861907126" duration="33741000" />
       <workItem from="1682952065891" duration="20322000" />
       <workItem from="1683036367666" duration="5009000" />
-    </task>
-    <task id="LOCAL−00054" summary="Pointer change">
-      <created>1682126116103</created>
-      <option name="number" value="LOCAL−00054" />
-      <option name="presentableId" value="LOCAL−00054" />
-      <updated>1682126116103</updated>
-    </task>
-    <task id="LOCAL−00055" summary="More investigation">
-      <created>1682126191119</created>
-      <option name="number" value="LOCAL−00055" />
-      <option name="presentableId" value="LOCAL−00055" />
-      <updated>1682126191119</updated>
     </task>
     <task id="LOCAL−00056" summary="Pointer change again">
       <created>1682126202179</created>
@@ -449,7 +439,19 @@
       <option name="presentableId" value="LOCAL−00102" />
       <updated>1683057797444</updated>
     </task>
-    <option name="localTasksCounter" value="103" />
+    <task id="LOCAL−00103" summary="Cleaned up code in main space-ship script">
+      <created>1683070441367</created>
+      <option name="number" value="LOCAL−00103" />
+      <option name="presentableId" value="LOCAL−00103" />
+      <updated>1683070441367</updated>
+    </task>
+    <task id="LOCAL−00104" summary="Changed Vars to explicit type">
+      <created>1683070605640</created>
+      <option name="number" value="LOCAL−00104" />
+      <option name="presentableId" value="LOCAL−00104" />
+      <updated>1683070605640</updated>
+    </task>
+    <option name="localTasksCounter" value="105" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -471,8 +473,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="Changed max landing angle to 40 degrees" />
-    <MESSAGE value="Fixed planet idle pull on other planets" />
     <MESSAGE value="Player crosshair is now disabled when not in spaceship" />
     <MESSAGE value="Ship crosshair is now shown behind pause menu" />
     <MESSAGE value="Made loading screen loading text better" />
@@ -496,6 +496,8 @@
     <MESSAGE value="Changed loading screen text to also have dots..." />
     <MESSAGE value="Added mouse sensitivity option for spaceship and increased it" />
     <MESSAGE value="Removed old spaceship script and scene object" />
-    <option name="LAST_COMMIT_MESSAGE" value="Removed old spaceship script and scene object" />
+    <MESSAGE value="Cleaned up code in main space-ship script" />
+    <MESSAGE value="Changed Vars to explicit type" />
+    <option name="LAST_COMMIT_MESSAGE" value="Changed Vars to explicit type" />
   </component>
 </project>
