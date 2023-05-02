@@ -7,7 +7,7 @@ public static class Universe
 {
     public const float gravitationalConstant = 2f;
     public static int nrOfPlanets = 3;
-    public static int seed = 1234567;
+    public static int seed = 123;
     public static RandomX random;
 
     //Guaranteed set after Awake()
@@ -20,8 +20,10 @@ public static class Universe
     public static void InitializeRandomWithSeed()
     {
         random = new RandomX(seed);
+        #if DEBUG || UNITY_EDITOR
         DisplayDebug.AddOrSetDebugVariable("Seed", seed);
         DisplayDebug.AddOrSetDebugVariable("Number of planets", nrOfPlanets);
+        #endif
     }
 
     public static void DrawGizmosCircle(Vector3 pos, Vector3 normal, float radius, int numSegments)

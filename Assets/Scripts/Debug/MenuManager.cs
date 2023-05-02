@@ -19,25 +19,31 @@ public class MenuManager : MonoBehaviour
 
     void Awake()
     {
+        #if DEBUG || UNITY_EDITOR
         DisplayDebug.Initalize(debugContainer);
         debugContainer.SetActive(false);
+        #endif
+        
         pausContainer.SetActive(false);
         seedText.text = "Seed: " + Universe.seed;
     }
 
     void Update()
     {
+        #if DEBUG || UNITY_EDITOR
         if (Input.GetKeyDown(KeyCode.Tab))
         {
             bool isActive = debugContainer.activeSelf;
             debugContainer.SetActive(!isActive);
         }
+        #endif
 
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             PausGame();
         }
 
+        #if DEBUG || UNITY_EDITOR
         if (debugContainer.activeSelf)
         {
             timelapse = Time.unscaledDeltaTime;
@@ -50,6 +56,7 @@ public class MenuManager : MonoBehaviour
 
             timer = timer <= 0 ? refresh : timer -= timelapse;
         }
+        #endif
     }
 
     private void PausGame()

@@ -1168,6 +1168,7 @@ MonoBehaviour:
   statDecreaseMultiplierRange: 0.09
   detectionRadiusMutationProb: 0.5
   detectionRadiusMultiplierRange: 0.05
+  hasDrinkAnimation: 1
   currentState: 0
   DEBUG: 0
   isSleeping: 0
