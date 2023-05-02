@@ -16,8 +16,6 @@ public class Planet : MonoBehaviour
     [HideInInspector] public string bodyName = "TBT";
     [HideInInspector] public float mass;
     [HideInInspector] public List<Planet> moons;
-    
-    public List<Vector3> waterPoints;
 
     private Transform player;
     [HideInInspector] public MarchingCubes marchingCubes;

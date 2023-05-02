@@ -1152,12 +1152,14 @@ MonoBehaviour:
   timeBetweenIdleSounds: 15
   stepsTimer: 0
   timeBetweenSteps: 0.33333334
+  hasDrinkAnimation: 1
   currentState: 0
   DEBUG: 0
   isSleeping: 0
   animate: 1
   destination: {x: 0, y: 0, z: 0}
   isDying: 0
+  gettingEatenBy: {fileID: 0}
 --- !u!65 &5967490473235420340
 BoxCollider:
   m_ObjectHideFlags: 0

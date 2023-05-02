@@ -130,8 +130,7 @@ public class Foliage : MonoBehaviour
     {
         // Generates arrays with viable spawning positions
         plantSpots = new Vector3[positionArrayLength + foliageHandler.MISS_COMPLIMENT];
-        Vector3 pos = foliageHandler.PlanetRadius * chunkPosition.normalized;
-
+        Vector3 pos = foliageHandler.transform.rotation * (foliageHandler.PlanetRadius * chunkPosition.normalized);
         // I would say, let Manfred change this if needed (This generates all spawn spots)
         // Check the debug function above if interested in how it works
         for (int i = 0; i < positionArrayLength + foliageHandler.MISS_COMPLIMENT; i++)

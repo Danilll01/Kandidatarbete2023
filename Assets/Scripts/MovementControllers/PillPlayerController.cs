@@ -106,6 +106,7 @@ public class PillPlayerController : MonoBehaviour
             }
         }
         
+        #if DEBUG || UNITY_EDITOR
         if (attractor != null)
         {
             DisplayDebug.AddOrSetDebugVariable("Current planet", attractor.bodyName);
@@ -127,6 +128,7 @@ public class PillPlayerController : MonoBehaviour
             DisplayDebug.AddOrSetDebugVariable("Biome: Temperature", "N/A");
             DisplayDebug.AddOrSetDebugVariable("Biome: Trees", "N/A");
         }
+        #endif
     }
 
     private void FixedUpdate()

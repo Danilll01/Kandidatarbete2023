@@ -115,6 +115,7 @@ public class MarchingCubes
         mesh.vertices = meshVertices;
         mesh.triangles = meshTriangles;
         mesh.RecalculateBounds();
+        mesh.RecalculateNormals();
 
         return meshVertices.Length;
     }
