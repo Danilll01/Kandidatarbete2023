@@ -19,6 +19,7 @@ public class StartManager : MonoBehaviour
     [SerializeField] private AudioSource musicAudioSource;
     [SerializeField] private Slider volumeSlider;
     [SerializeField] private TextMeshProUGUI volumeText;
+    [SerializeField] private AudioClip[] buttonHoverSounds;
     
     [Header("Fade-out")]
     [SerializeField] private Image fadeOutImage;
@@ -37,7 +38,7 @@ public class StartManager : MonoBehaviour
     /// <summary>
     /// Update the text for the planet slider corresponding to value of slider
     /// </summary>
-    /// <param name="slider"></param>
+    /// <param name="slider">The slider that holds what value</param>
     public void UpdatePlanetInputValue(Slider slider)
     {
         if (slider.value == 0)
@@ -55,6 +56,7 @@ public class StartManager : MonoBehaviour
     /// </summary>
     public void StartGame()
     {
+        musicAudioSource.PlayOneShot(buttonHoverSounds[Random.Range(0, buttonHoverSounds.Length)]);
         int tryParseSeed = 0;
         int tryParsePlanets = 0;
 
@@ -103,12 +105,24 @@ public class StartManager : MonoBehaviour
         SceneManager.LoadScene("Load Menu");
     }
 
+    /// <summary>
+    /// Updates the volume in game
+    /// </summary>
+    /// <param name="slider">The slider value from the slider</param>
     public void UpdateVolume(Slider slider)
     {
         PlayerPrefs.SetFloat("volume", slider.value);
         AudioListener.volume = slider.value;
         float newVolume = Mathf.Round(slider.value * 100);
         volumeText.text = newVolume + "%";
+    }
+
+    /// <summary>
+    /// Plays a random button hover sound
+    /// </summary>
+    public void PlayButtonHoverSound()
+    {
+        musicAudioSource.PlayOneShot(buttonHoverSounds[Random.Range(0, buttonHoverSounds.Length)]);
     }
     
     /// <summary>

@@ -36,6 +36,10 @@ public class MenuManager : MonoBehaviour
         volumeSlider.value = AudioListener.volume;
     }
 
+    /// <summary>
+    /// Updates the audio volume
+    /// </summary>
+    /// <param name="slider">The slider that changes the volume</param>
     public void UpdateVolume(Slider slider)
     {
         PlayerPrefs.SetFloat("volume", slider.value);

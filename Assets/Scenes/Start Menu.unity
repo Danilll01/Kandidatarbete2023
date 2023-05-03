@@ -683,6 +683,7 @@ GameObject:
   - component: {fileID: 366256181}
   - component: {fileID: 366256180}
   - component: {fileID: 366256179}
+  - component: {fileID: 366256182}
   m_Layer: 5
   m_Name: Exit Button
   m_TagString: Untagged
@@ -805,6 +806,35 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 366256177}
   m_CullTransparentMesh: 1
+--- !u!114 &366256182
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 366256177}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates:
+  - eventID: 0
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1783668271}
+          m_TargetAssemblyTypeName: StartManager, Assembly-CSharp
+          m_MethodName: PlayButtonHoverSound
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1 &561949754
 GameObject:
   m_ObjectHideFlags: 0
@@ -1289,8 +1319,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 660.6016, y: -11}
-  m_SizeDelta: {x: 1563.9841, y: 240.0578}
+  m_AnchoredPosition: {x: 626.04, y: 0.0000038147}
+  m_SizeDelta: {x: 1252.1, y: 251.06}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &820018816
 MonoBehaviour:
@@ -1345,7 +1375,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 0
+  m_fontStyle: 1
   m_HorizontalAlignment: 1
   m_VerticalAlignment: 512
   m_textAlignment: 65535
@@ -1375,7 +1405,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 198.6741, y: 0, z: -97.84973, w: 0}
+  m_margin: {x: 74.166626, y: 30.00178, z: -97.84973, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -2018,6 +2048,7 @@ GameObject:
   - component: {fileID: 1327926402}
   - component: {fileID: 1327926401}
   - component: {fileID: 1327926400}
+  - component: {fileID: 1327926403}
   m_Layer: 5
   m_Name: Start Button
   m_TagString: Untagged
@@ -2140,6 +2171,35 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1327926398}
   m_CullTransparentMesh: 1
+--- !u!114 &1327926403
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1327926398}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates:
+  - eventID: 0
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1783668271}
+          m_TargetAssemblyTypeName: StartManager, Assembly-CSharp
+          m_MethodName: PlayButtonHoverSound
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1 &1390719550
 GameObject:
   m_ObjectHideFlags: 0
@@ -2917,6 +2977,11 @@ MonoBehaviour:
   musicAudioSource: {fileID: 1783668273}
   volumeSlider: {fileID: 670532047}
   volumeText: {fileID: 751794521}
+  buttonHoverSounds:
+  - {fileID: 8300000, guid: 38397721335972f4ebb92aff5d28d85f, type: 3}
+  - {fileID: 8300000, guid: 0afcf886da3b0ce44b879df1ab6c6ab4, type: 3}
+  - {fileID: 8300000, guid: 574ebaae75021e449a260e37a1046a19, type: 3}
+  - {fileID: 8300000, guid: 0c6603a77449e04448195ed8d6fbcce3, type: 3}
   fadeOutImage: {fileID: 1390719552}
   fadeOutTimer: 0.3
 --- !u!4 &1783668272
