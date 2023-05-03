@@ -25,7 +25,6 @@ public class StartManager : MonoBehaviour
     [SerializeField] private Image fadeOutImage;
     [SerializeField] private float fadeOutTimer = 0.4f;
 
-
     private void Awake()
     {
         AudioListener.volume = PlayerPrefs.HasKey("volume") ? PlayerPrefs.GetFloat("volume") : 0.5f;
@@ -49,6 +48,8 @@ public class StartManager : MonoBehaviour
         {
             nrOfPlanetsText.text = slider.value.ToString();
         }
+
+        PlayButtonHoverSound();
     }
 
     /// <summary>
@@ -56,7 +57,6 @@ public class StartManager : MonoBehaviour
     /// </summary>
     public void StartGame()
     {
-        musicAudioSource.PlayOneShot(buttonHoverSounds[Random.Range(0, buttonHoverSounds.Length)]);
         int tryParseSeed = 0;
         int tryParsePlanets = 0;
 

@@ -4,9 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Added sound slider on the main menu">
+    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Added hover sounds on start en exit button in start menu">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Debug/MenuManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Debug/MenuManager.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Menus/StartManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Menus/StartManager.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -39,6 +38,7 @@
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Atmosphere/AtmosphereHandler.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="mock://D:/Unity/Projects/Kandidatarbete2023/Assets/Scripts/Audio/HandleAudio.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://D:/Unity/Projects/Kandidatarbete2023/Assets/Scripts/Debug/MenuManager.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipCameraMover.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipController.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipTransition.cs" root0="FORCE_HIGHLIGHTING" />
@@ -158,13 +158,7 @@
       <workItem from="1682861907126" duration="33741000" />
       <workItem from="1682952065891" duration="20322000" />
       <workItem from="1683036367666" duration="5009000" />
-      <workItem from="1683143710028" duration="7849000" />
-    </task>
-    <task id="LOCAL−00062" summary="Moved water color handling to water handler script on each planet">
-      <created>1682640815206</created>
-      <option name="number" value="LOCAL−00062" />
-      <option name="presentableId" value="LOCAL−00062" />
-      <updated>1682640815206</updated>
+      <workItem from="1683143710028" duration="10758000" />
     </task>
     <task id="LOCAL−00063" summary="Added SpaceShipCameraMover script">
       <created>1682696394166</created>
@@ -454,7 +448,13 @@
       <option name="presentableId" value="LOCAL−00110" />
       <updated>1683151027637</updated>
     </task>
-    <option name="localTasksCounter" value="111" />
+    <task id="LOCAL−00111" summary="Added hover sounds on start en exit button in start menu">
+      <created>1683154462712</created>
+      <option name="number" value="LOCAL−00111" />
+      <option name="presentableId" value="LOCAL−00111" />
+      <updated>1683154462712</updated>
+    </task>
+    <option name="localTasksCounter" value="112" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -476,7 +476,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="Removed visual mesh from hover springs" />
     <MESSAGE value="Changed landing error sound" />
     <MESSAGE value="Unhooked mouse input from framerate for the space ship" />
     <MESSAGE value="Added player boarded check" />
@@ -501,6 +500,7 @@
     <MESSAGE value="Made &quot;can't land&quot; sound higher" />
     <MESSAGE value="Audio setting is now saved between game sessions" />
     <MESSAGE value="Added sound slider on the main menu" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added sound slider on the main menu" />
+    <MESSAGE value="Added hover sounds on start en exit button in start menu" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added hover sounds on start en exit button in start menu" />
   </component>
 </project>
