@@ -4,7 +4,18 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Toggle sound now works always" />
+    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Added jump sound">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Assets/SkyBox/NightSkybox.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Assets/SkyBox/NightSkybox.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Images/SpaceShipGUI/Materials/ShipMovementOrbit.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Images/SpaceShipGUI/Materials/ShipMovementOrbit.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Audio/SoundManager.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Audio/SoundManager.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Main.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Main.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Audio/HandleAudio.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Audio/HandleAudio.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/MovementControllers/PillPlayerController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/MovementControllers/PillPlayerController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Shaders/Water/CameraWater.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Shaders/Water/CameraWater.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Sounds/Music and Sound Effects/jump.mp3" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Sounds/Music and Sound Effects/jump.mp3.meta" beforeDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -40,6 +51,7 @@
     <setting file="mock://D:/Unity/Projects/Kandidatarbete2023/Assets/Scripts/Debug/MenuManager.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://D:/Unity/Projects/Kandidatarbete2023/Assets/Scripts/Menus/LoadManager.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://D:/Unity/Projects/Kandidatarbete2023/Assets/Scripts/Menus/StartManager.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://D:/Unity/Projects/Kandidatarbete2023/Assets/Scripts/MovementControllers/PillPlayerController.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipCameraMover.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipController.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipTransition.cs" root0="FORCE_HIGHLIGHTING" />
@@ -160,12 +172,6 @@
       <workItem from="1682861907126" duration="33741000" />
       <workItem from="1682952065891" duration="20322000" />
       <workItem from="1683036367666" duration="5009000" />
-    </task>
-    <task id="LOCAL−00061" summary="Hovering in progress">
-      <created>1682554414382</created>
-      <option name="number" value="LOCAL−00061" />
-      <option name="presentableId" value="LOCAL−00061" />
-      <updated>1682554414382</updated>
     </task>
     <task id="LOCAL−00062" summary="Moved water color handling to water handler script on each planet">
       <created>1682640815206</created>
@@ -455,7 +461,13 @@
       <option name="presentableId" value="LOCAL−00109" />
       <updated>1683077909025</updated>
     </task>
-    <option name="localTasksCounter" value="110" />
+    <task id="LOCAL−00110" summary="Added jump sound">
+      <created>1683078589081</created>
+      <option name="number" value="LOCAL−00110" />
+      <option name="presentableId" value="LOCAL−00110" />
+      <updated>1683078589081</updated>
+    </task>
+    <option name="localTasksCounter" value="111" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -477,7 +489,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="Added landing rotation offset to compensate for the visual model" />
     <MESSAGE value="Removed visual mesh from hover springs" />
     <MESSAGE value="Changed landing error sound" />
     <MESSAGE value="Unhooked mouse input from framerate for the space ship" />
@@ -502,6 +513,7 @@
     <MESSAGE value="Saved scene" />
     <MESSAGE value="Added toggle sound for switching spaceship travel modes" />
     <MESSAGE value="Toggle sound now works always" />
-    <option name="LAST_COMMIT_MESSAGE" value="Toggle sound now works always" />
+    <MESSAGE value="Added jump sound" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added jump sound" />
   </component>
 </project>

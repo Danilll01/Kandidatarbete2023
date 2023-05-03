@@ -62,16 +62,26 @@ public class HandleAudio : MonoBehaviour
         Thrust,
         TakeOff,
         Landing,
-        Toggle
+        Toggle,
+        Jump
     }
 
     /// <summary>
     /// Plays the specified sound effect directly (over sound already playing) with the standard sound effect volume
     /// </summary>
     /// <param name="soundEffect">Which sound effect to play</param>
-    public void PlaySimpleSoundEffect(SoundEffects soundEffect)
+    /// <param name="overwrite">If the effect should play over other effects or not</param>
+    public void PlaySimpleSoundEffect(SoundEffects soundEffect, bool overwrite = true)
     {
-        simpleEffectAudioSource.PlayOneShot(soundEffectsAudioClips[(int)soundEffect], 1);
+        if (overwrite)
+        {
+            simpleEffectAudioSource.PlayOneShot(soundEffectsAudioClips[(int)soundEffect]);
+        }
+        else if (!simpleEffectAudioSource.isPlaying)
+        {
+            simpleEffectAudioSource.clip = soundEffectsAudioClips[(int)soundEffect];
+            simpleEffectAudioSource.Play();
+        }
     }
     
     /// <summary>

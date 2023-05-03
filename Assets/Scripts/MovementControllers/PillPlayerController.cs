@@ -14,6 +14,7 @@ public class PillPlayerController : MonoBehaviour
     [SerializeField] private SkinnedMeshRenderer playerModelHead;
     private Rigidbody body;
     [HideInInspector] public bool paused;
+    [SerializeField] private HandleAudio audio;
 
     [Header("Movement")]
     public float movementSpeed;
@@ -225,6 +226,7 @@ public class PillPlayerController : MonoBehaviour
         if (jump)
         {
             movementVector.y = jumpForce;
+            audio.PlaySimpleSoundEffect(HandleAudio.SoundEffects.Jump, false);
         }
 
         //Input received
