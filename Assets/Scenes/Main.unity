@@ -1709,16 +1709,34 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4265903889893730569, guid: 0144d9268bb44a447bff4bc281dbebc2,
+        type: 3}
+      propertyPath: OutputAudioMixerGroup
+      value: 
+      objectReference: {fileID: 9144740291448052357, guid: f86743633e212dd4996969a88a6344a0,
+        type: 2}
     - target: {fileID: 4265903889893730570, guid: 0144d9268bb44a447bff4bc281dbebc2,
         type: 3}
       propertyPath: m_Name
       value: SoundManager
       objectReference: {fileID: 0}
+    - target: {fileID: 4265903889893730574, guid: 0144d9268bb44a447bff4bc281dbebc2,
+        type: 3}
+      propertyPath: OutputAudioMixerGroup
+      value: 
+      objectReference: {fileID: 2439754094503620386, guid: f86743633e212dd4996969a88a6344a0,
+        type: 2}
     - target: {fileID: 4265903889893730575, guid: 0144d9268bb44a447bff4bc281dbebc2,
         type: 3}
       propertyPath: soundEffectsAudioClips.Array.data[4]
       value: 
       objectReference: {fileID: 8300000, guid: 93e7fac3002ff974b924d6263cf8c4cb, type: 3}
+    - target: {fileID: 4782277837015240334, guid: 0144d9268bb44a447bff4bc281dbebc2,
+        type: 3}
+      propertyPath: OutputAudioMixerGroup
+      value: 
+      objectReference: {fileID: -5771466134471381637, guid: f86743633e212dd4996969a88a6344a0,
+        type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0144d9268bb44a447bff4bc281dbebc2, type: 3}
 --- !u!114 &1122585598 stripped

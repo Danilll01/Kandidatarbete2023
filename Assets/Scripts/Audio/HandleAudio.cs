@@ -6,8 +6,8 @@ public class HandleAudio : MonoBehaviour
 {
     [SerializeField] private AudioClip[] backgroundMusicAudioClips;
     [SerializeField] private AudioClip[] soundEffectsAudioClips;
-    [SerializeField] private const float backgroundMusicVolume = 0.04f;
-    [SerializeField] private const float soundEffectsVolume = 0.1f;
+    [SerializeField] private const float backgroundMusicVolume = 0.2f;
+    [SerializeField] private const float soundEffectsVolume = 0.6f;
     [SerializeField] private AudioSource musicAudioSource;
     [SerializeField] private AudioSource soundEffectsAudioSource;
     [SerializeField] private AudioSource simpleEffectAudioSource;
