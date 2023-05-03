@@ -221,8 +221,8 @@ public class PillPlayerController : MonoBehaviour
         }
         if (jump)
         {
-            movementVector.y = jumpForce;
             audio.PlaySimpleSoundEffect(HandleAudio.SoundEffects.Jump, false);
+            movementVector.y = jumpForce;
         }
 
         //Input received

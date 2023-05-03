@@ -11,8 +11,8 @@ public class HandleAudio : MonoBehaviour
     [SerializeField] private AudioSource musicAudioSource;
     [SerializeField] private AudioSource soundEffectsAudioSource;
     [SerializeField] private AudioSource simpleEffectAudioSource;
-    private float duration = 2f;
-    private const float FADED_OUT_VOLUME = 0.01f;
+    private float duration = 2.5f;
+    private const float FADED_OUT_VOLUME = 0f;
     private bool stoppedSoundEffects;
     private bool gameIsPaused;
     private Coroutine fadeInCoroutine;
@@ -204,9 +204,6 @@ public class HandleAudio : MonoBehaviour
             yield return null;
         }
 
-        // To be sure to end with clean values
-        musicAudioSource.volume = FADED_OUT_VOLUME;
-
         // If there is only one instance of `AudioManager` in your scene this is more efficient
         // in general you should fetch that AudioManager reference only ONCE and re-use it
         musicAudioSource.clip = backgroundMusicAudioClips[(int)backgroundClip];
@@ -223,7 +220,5 @@ public class HandleAudio : MonoBehaviour
 
             yield return null;
         }
-        
-        musicAudioSource.volume = volume;
     }
 }
