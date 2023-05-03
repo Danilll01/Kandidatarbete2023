@@ -6,13 +6,13 @@ public class Resource : MonoBehaviour
 {
     [SerializeField] private float respawnTime = 30f;
 
-    private MeshRenderer meshRenderer;
+    private Vector3 originalScale;
     private new Collider collider;
 
     // Start is called before the first frame update
     void Start()
     {
-        meshRenderer = GetComponent<MeshRenderer>();
+        originalScale = transform.localScale;
         collider = GetComponent<Collider>();
     }
 
@@ -21,9 +21,8 @@ public class Resource : MonoBehaviour
     /// </summary>
     public void ConsumeResource()
     {
-        if (meshRenderer == null || collider == null) return;
+        if (collider == null) return;
         
-        meshRenderer.enabled = false;
         collider.enabled = false;
         StopAllCoroutines();
         StartCoroutine(Timer());
@@ -31,10 +30,14 @@ public class Resource : MonoBehaviour
 
     private IEnumerator Timer()
     {
-        // Start a timer that goes from respawn time to 0
-        yield return new WaitForSeconds(respawnTime);
+        // Lerp the scale of the plant to make it "grow"
+        for (float timePassed = 0f; timePassed < respawnTime; timePassed += Time.deltaTime)
+        {
+            transform.localScale = Vector3.Lerp(Vector3.zero, originalScale, timePassed / respawnTime);
 
-        meshRenderer.enabled = true;
+            yield return null;
+        }
+        
         collider.enabled = true;
     }
 }
