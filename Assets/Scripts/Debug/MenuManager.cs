@@ -28,7 +28,7 @@ public class MenuManager : MonoBehaviour
         #endif
         
         pausContainer.SetActive(false);
-        seedText.text = "Seed: " + Universe.seed;
+        seedText.text = "SEED " + Universe.seed;
         AudioListener.volume = 0.5f;
         volumeText.text = "50%";
         volumeSlider.maxValue = 1;
