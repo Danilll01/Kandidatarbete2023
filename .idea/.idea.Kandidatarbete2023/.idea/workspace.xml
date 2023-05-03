@@ -4,9 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Made &quot;can't land&quot; sound higher">
+    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Audio setting is now saved between game sessions">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Assets/SkyBox/NightSkybox.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Assets/SkyBox/NightSkybox.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Start Menu.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Start Menu.unity" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Debug/MenuManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Debug/MenuManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Menus/StartManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Menus/StartManager.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -157,13 +160,7 @@
       <workItem from="1682861907126" duration="33741000" />
       <workItem from="1682952065891" duration="20322000" />
       <workItem from="1683036367666" duration="5009000" />
-      <workItem from="1683143710028" duration="5086000" />
-    </task>
-    <task id="LOCAL−00060" summary="Added planet slowdown factor">
-      <created>1682544746062</created>
-      <option name="number" value="LOCAL−00060" />
-      <option name="presentableId" value="LOCAL−00060" />
-      <updated>1682544746062</updated>
+      <workItem from="1683143710028" duration="6308000" />
     </task>
     <task id="LOCAL−00061" summary="Hovering in progress">
       <created>1682554414382</created>
@@ -453,7 +450,13 @@
       <option name="presentableId" value="LOCAL−00108" />
       <updated>1683148601101</updated>
     </task>
-    <option name="localTasksCounter" value="109" />
+    <task id="LOCAL−00109" summary="Audio setting is now saved between game sessions">
+      <created>1683149078614</created>
+      <option name="number" value="LOCAL−00109" />
+      <option name="presentableId" value="LOCAL−00109" />
+      <updated>1683149078614</updated>
+    </task>
+    <option name="localTasksCounter" value="110" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -475,7 +478,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="Updated ship crosshair" />
     <MESSAGE value="Added landing rotation offset to compensate for the visual model" />
     <MESSAGE value="Removed visual mesh from hover springs" />
     <MESSAGE value="Changed landing error sound" />
@@ -500,6 +502,7 @@
     <MESSAGE value="Made jump sound a little louder" />
     <MESSAGE value="Made spaceship thruster a little less loud" />
     <MESSAGE value="Made &quot;can't land&quot; sound higher" />
-    <option name="LAST_COMMIT_MESSAGE" value="Made &quot;can't land&quot; sound higher" />
+    <MESSAGE value="Audio setting is now saved between game sessions" />
+    <option name="LAST_COMMIT_MESSAGE" value="Audio setting is now saved between game sessions" />
   </component>
 </project>
