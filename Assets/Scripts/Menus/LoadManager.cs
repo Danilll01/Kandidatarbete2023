@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -7,6 +8,7 @@ using UnityEngine.UI;
 public class LoadManager : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI loadingText;
+    [SerializeField] private GameObject generatingPlanetText;
     [SerializeField] private Slider loadingSlider;
 
     void Start()
@@ -17,29 +19,25 @@ public class LoadManager : MonoBehaviour
 
     IEnumerator LoadYourAsyncScene()
     {
-        float progress = 0f;
-
+        
         // The Application loads the Scene in the background as the current Scene runs.
         AsyncOperation asyncLoad = SceneManager.LoadSceneAsync("Main");
 
-        //Don't let the Scene activate until you allow it to
-        asyncLoad.allowSceneActivation = false;
-
-        while (progress <= 1f)
+        while (!asyncLoad.isDone)
         {
 
-            loadingSlider.value = progress;
-            loadingText.text = Mathf.Round(progress * 100f) + "%";
-            progress += .01f;
+            float loadProgress = Mathf.Clamp01(asyncLoad.progress / 0.9f);
+            loadingSlider.value = loadProgress;
+            float roundedProgress = Mathf.Round(loadProgress * 100f);
+            loadingText.text = "Pre Loading... " + roundedProgress + "%";
 
-            yield return new WaitForSeconds(.02f);
+            if (roundedProgress >= 99.8f)
+            {
+                generatingPlanetText.SetActive(true);
+            }
+            
+            yield return null; 
         }
 
-        while (!asyncLoad.isDone && progress >= 1f)
-        {
-            asyncLoad.allowSceneActivation = true; //here the scene is definitely loaded.
-            yield return null;
-
-        }
     }
 }
