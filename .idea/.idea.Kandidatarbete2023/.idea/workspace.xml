@@ -4,12 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Saved scene">
+    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Added toggle sound for switching spaceship travel modes">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Assets/SkyBox/NightSkybox.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Assets/SkyBox/NightSkybox.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Images/SpaceShipGUI/Materials/ShipMovementOrbit.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Images/SpaceShipGUI/Materials/ShipMovementOrbit.mat" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Audio/SoundManager.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Audio/SoundManager.prefab" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scenes/Main.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Main.unity" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Audio/HandleAudio.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Audio/HandleAudio.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Shaders/Water/CameraWater.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Shaders/Water/CameraWater.mat" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -41,6 +44,7 @@
   <component name="HighlightingSettingsPerFile">
     <setting file="mock://D:/Unity/Projects/Kandidatarbete2023/Assets/Prefabs/Player/ShipMain.prefab" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Atmosphere/AtmosphereHandler.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://D:/Unity/Projects/Kandidatarbete2023/Assets/Scripts/Audio/HandleAudio.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://D:/Unity/Projects/Kandidatarbete2023/Assets/Scripts/Debug/MenuManager.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://D:/Unity/Projects/Kandidatarbete2023/Assets/Scripts/Debug/MenuManager.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://D:/Unity/Projects/Kandidatarbete2023/Assets/Scripts/Menus/LoadManager.cs" root0="SKIP_HIGHLIGHTING" />
@@ -165,12 +169,6 @@
       <workItem from="1682861907126" duration="33741000" />
       <workItem from="1682952065891" duration="20322000" />
       <workItem from="1683036367666" duration="5009000" />
-    </task>
-    <task id="LOCAL−00059" summary="Fixed nice ship visual view bobbing and a cross-hair to see where you go">
-      <created>1682473958065</created>
-      <option name="number" value="LOCAL−00059" />
-      <option name="presentableId" value="LOCAL−00059" />
-      <updated>1682473958065</updated>
     </task>
     <task id="LOCAL−00060" summary="Added planet slowdown factor">
       <created>1682544746062</created>
@@ -460,7 +458,13 @@
       <option name="presentableId" value="LOCAL−00107" />
       <updated>1683074722670</updated>
     </task>
-    <option name="localTasksCounter" value="108" />
+    <task id="LOCAL−00108" summary="Added toggle sound for switching spaceship travel modes">
+      <created>1683075666878</created>
+      <option name="number" value="LOCAL−00108" />
+      <option name="presentableId" value="LOCAL−00108" />
+      <updated>1683075666878</updated>
+    </task>
+    <option name="localTasksCounter" value="109" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -482,7 +486,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="Made loading screen faster and more visually pleasing" />
     <MESSAGE value="Updated ship crosshair" />
     <MESSAGE value="Added landing rotation offset to compensate for the visual model" />
     <MESSAGE value="Removed visual mesh from hover springs" />
@@ -507,6 +510,7 @@
     <MESSAGE value="Added a fade out timer for the main menu music" />
     <MESSAGE value="Added a fadeout to black for when the sound fades out" />
     <MESSAGE value="Saved scene" />
-    <option name="LAST_COMMIT_MESSAGE" value="Saved scene" />
+    <MESSAGE value="Added toggle sound for switching spaceship travel modes" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added toggle sound for switching spaceship travel modes" />
   </component>
 </project>

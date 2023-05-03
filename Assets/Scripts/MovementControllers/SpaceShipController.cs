@@ -111,9 +111,8 @@ public class SpaceShipController : MonoBehaviour
         mouseYSmooth = Mathf.Lerp(mouseYSmooth, currentMouseYMovement * rotationSpeed, 0.02f * mouseSensitivity);
 
         // Change movement type between orbit follow and straight
-        if (Input.GetButtonDown("ChangeShipMovementType"))
+        if (Input.GetButtonDown("ChangeShipMovementType") && Universe.player.boarded)
         {
-            
             if (orbitPlanetMovement)
             {
                 lookRotation = standardShip.transform.rotation * lookRotation;

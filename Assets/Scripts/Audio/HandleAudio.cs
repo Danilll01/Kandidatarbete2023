@@ -10,6 +10,7 @@ public class HandleAudio : MonoBehaviour
     [SerializeField] private const float soundEffectsVolume = 0.1f;
     [SerializeField] private AudioSource musicAudioSource;
     [SerializeField] private AudioSource soundEffectsAudioSource;
+    [SerializeField] private AudioSource simpleEffectAudioSource;
     private float duration = 2f;
     private const float FADED_OUT_VOLUME = 0.01f;
     private bool stoppedSoundEffects;
@@ -25,6 +26,7 @@ public class HandleAudio : MonoBehaviour
         musicAudioSource.clip = backgroundMusicAudioClips[0];
         musicAudioSource.volume = backgroundMusicVolume;
         soundEffectsAudioSource.volume = soundEffectsVolume;
+        simpleEffectAudioSource.volume = soundEffectsVolume;
         musicAudioSource.Play();
         StartCoroutine(InitializeBackgroundMusic());
     }
@@ -69,10 +71,7 @@ public class HandleAudio : MonoBehaviour
     /// <param name="soundEffect">Which sound effect to play</param>
     public void PlaySimpleSoundEffect(SoundEffects soundEffect)
     {
-        float volumeBefore = soundEffectsAudioSource.volume;
-        soundEffectsAudioSource.volume = soundEffectsVolume;
-        soundEffectsAudioSource.PlayOneShot(soundEffectsAudioClips[(int)soundEffect]);
-        soundEffectsAudioSource.volume = volumeBefore;
+        simpleEffectAudioSource.PlayOneShot(soundEffectsAudioClips[(int)soundEffect], 1);
     }
     
     /// <summary>
