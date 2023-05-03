@@ -1,15 +1,20 @@
+using System;
 using UnityEngine;
 using ExtendedRandom;
+using UnityEngine.Rendering;
 using UnityEngine.Serialization;
 
 [RequireComponent(typeof(Rigidbody))]
 public class PillPlayerController : MonoBehaviour
 {
+    [Header("Setup")]
     public Planet attractor = null;
     public Camera firstPersonCamera;
     [SerializeField] private PlayerWater playerWater;
+    [SerializeField] private SkinnedMeshRenderer playerModelHead;
     private Rigidbody body;
     [HideInInspector] public bool paused;
+    [SerializeField] private HandleAudio audio;
 
     [Header("Movement")]
     public float movementSpeed;
@@ -25,45 +30,36 @@ public class PillPlayerController : MonoBehaviour
     private bool isSprinting = false;
 
     [Header("Ship")]
-    private ShipController ship;
+    [SerializeField] private SpaceShipController ship;
     [HideInInspector] public bool boarded = false;
 
     // Animations
     private Animator animator;
     private static readonly int Speed = Animator.StringToHash("Speed");
     private static readonly int Direction = Animator.StringToHash("Direction");
+    private static readonly int Swim = Animator.StringToHash("Swim");
+    private static readonly int Jump = Animator.StringToHash("Jump");
+    private static readonly int Sit = Animator.StringToHash("Sit");
     private Transform animationRig;
     
     [Header("Camera")]
     [SerializeField] [Range(0.2f, 5f)] private float mouseSensitivity = 1f;
     [SerializeField] private float lookLimitAngle = 80f;
     private float pitch = 0f;
-    private static readonly int Swim = Animator.StringToHash("Swim");
-    private static readonly int Jump = Animator.StringToHash("Jump");
-
-    private void Awake()
-    {
-        Universe.player = this;
-        animator = transform.GetChild(0).GetComponent<Animator>();
-        animationRig = transform.GetChild(0);
-    }
 
     // Start is called before the first frame update
     public void Initialize(Planet planetToSpawnOn, int seed)
     {
         Universe.player = this;
+        animator = transform.GetChild(0).GetComponent<Animator>();
+        animationRig = transform.GetChild(0);
 
-        if (attractor == null)
+        if (ship == null)
         {
-            attractor = planetToSpawnOn;
-            if (attractor == null)
-            {
-                Debug.LogError("Player spawned without a planet");
-            }
+            ship = GameObject.Find("ShipMain").GetComponent<SpaceShipController>();
         }
 
         body = GetComponent<Rigidbody>();
-        ship = GameObject.Find("Spaceship").GetComponent<ShipController>();
         Spawn(planetToSpawnOn, seed);
         //Lock the mouse inside of the game
         Cursor.lockState = CursorLockMode.Locked;
@@ -72,6 +68,23 @@ public class PillPlayerController : MonoBehaviour
         paused = false;
 
         playerWater.Initialize(attractor);
+    }
+    
+    private void Spawn(Planet planet, int seed)
+    {
+        RandomX rand = new RandomX(seed);
+        Vector3 spawnLocationAbovePlanet = planet.transform.position + (rand.OnUnitSphere() * planet.radius * 1.15f);
+        transform.position = spawnLocationAbovePlanet;
+        transform.LookAt(planet.transform);
+        ship.Initialize();
+
+        if (attractor != null) return;
+        
+        attractor = planet;
+        if (attractor == null)
+        {
+            Debug.LogError("Player spawned without a planet");
+        }
     }
 
     // Update is called once per frame
@@ -91,6 +104,7 @@ public class PillPlayerController : MonoBehaviour
             }
         }
         
+        #if DEBUG || UNITY_EDITOR
         if (attractor != null)
         {
             DisplayDebug.AddOrSetDebugVariable("Current planet", attractor.bodyName);
@@ -112,6 +126,7 @@ public class PillPlayerController : MonoBehaviour
             DisplayDebug.AddOrSetDebugVariable("Biome: Temperature", "N/A");
             DisplayDebug.AddOrSetDebugVariable("Biome: Trees", "N/A");
         }
+        #endif
     }
 
     private void FixedUpdate()
@@ -206,6 +221,7 @@ public class PillPlayerController : MonoBehaviour
         }
         if (jump)
         {
+            audio.PlaySimpleSoundEffect(HandleAudio.SoundEffects.Jump, false);
             movementVector.y = jumpForce;
         }
 
@@ -273,34 +289,23 @@ public class PillPlayerController : MonoBehaviour
         Gravity.Attract(transform.position, body, attractor.transform.position, attractor.mass);
     }
 
-    private void Spawn(Planet planet, int seed)
-    {
-        RandomX rand = new RandomX(seed);
-        Vector3 spawnLocationAbovePlanet = planet.transform.position + (rand.OnUnitSphere() * planet.radius * 1.15f);
-        transform.position = spawnLocationAbovePlanet;
-        transform.LookAt(planet.transform);
-        ship.Initialize(body, firstPersonCamera);
-    }
-
-    public Planet Planet
-    {
-        get { return attractor; }
-        set { attractor = value; }
-    }
-
     /// <summary>
-    /// The altitude of the player from the currently attracting planet.
+    /// Changes player settings to enable/disable spaceShip controlls
     /// </summary>
-    public float Altitude
+    public void ShipPlayerTransition()
     {
-        get { return (attractor.transform.position - transform.position).magnitude; }
+        body.isKinematic = !boarded;
+        firstPersonCamera.enabled = boarded;
+        GetComponent<Collider>().enabled = boarded;
+        playerModelHead.shadowCastingMode = boarded ? ShadowCastingMode.ShadowsOnly : ShadowCastingMode.On;
+        animator.SetBool(Sit, !boarded);
+        boarded = !boarded;
     }
-
-
+    
     /// <summary>
     /// The Vector3 of the normal ground the player is standing on. Returns Vector3.Zero if not on ground.
     /// </summary>
-    public Vector3 GroundNormal
+    private Vector3 GroundNormal
     {
         get
         {
@@ -316,9 +321,8 @@ public class PillPlayerController : MonoBehaviour
     }
 
 
-    public bool Grounded
+    private bool Grounded
     {
-   
         get 
         { 
             if (attractor == null)
@@ -330,11 +334,6 @@ public class PillPlayerController : MonoBehaviour
             animator.SetBool(Jump, !isGrounded); // Sets animation
             return isGrounded;      
         }
-    }
-
-    public Vector3 Up
-    {
-        get { return (transform.position - attractor.transform.position).normalized; }
     }
 
     private bool Swimming

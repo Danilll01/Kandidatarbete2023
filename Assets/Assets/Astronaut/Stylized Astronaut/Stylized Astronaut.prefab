@@ -52,6 +52,7 @@ MonoBehaviour:
   attractor: {fileID: 0}
   firstPersonCamera: {fileID: 188247274776214973}
   playerWater: {fileID: 2262749037422820934}
+  playerModelHead: {fileID: 721602161691498964}
   paused: 0
   movementSpeed: 20
   sprintFactor: 2
@@ -61,9 +62,10 @@ MonoBehaviour:
   swimForce: 20
   maxSwimSpeed: 15
   maxSpeed: 40
+  ship: {fileID: 0}
   boarded: 0
   mouseSensitivity: 1
-  lookLimitAngle: 70
+  lookLimitAngle: 60
 --- !u!114 &2262749037422820934
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -77,6 +79,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   water: {fileID: 2100000, guid: 980d82d2001113c4f8f2220385312c2b, type: 2}
+  PostProssesing: {fileID: 0}
   planet: {fileID: 0}
   underWater: 0
 --- !u!54 &2343465825876684966
@@ -167,8 +170,8 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.1
-  far clip plane: 100000
-  field of view: 60
+  far clip plane: 250000
+  field of view: 90
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
@@ -221,7 +224,7 @@ MonoBehaviour:
   m_Antialiasing: 0
   m_AntialiasingQuality: 2
   m_StopNaN: 0
-  m_Dithering: 0
+  m_Dithering: 1
   m_ClearDepth: 1
   m_AllowXRRendering: 1
   m_RequiresDepthTexture: 0
@@ -309,10 +312,75 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: -5651131560553982378, guid: d1bd49909b97c674ba4b13a816424db4,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -5651131560553982378, guid: d1bd49909b97c674ba4b13a816424db4,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -5651131560553982378, guid: d1bd49909b97c674ba4b13a816424db4,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -5651131560553982378, guid: d1bd49909b97c674ba4b13a816424db4,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -5651131560553982378, guid: d1bd49909b97c674ba4b13a816424db4,
+        type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -5239842220104342340, guid: d1bd49909b97c674ba4b13a816424db4,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -5239842220104342340, guid: d1bd49909b97c674ba4b13a816424db4,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -5239842220104342340, guid: d1bd49909b97c674ba4b13a816424db4,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -5239842220104342340, guid: d1bd49909b97c674ba4b13a816424db4,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -5239842220104342340, guid: d1bd49909b97c674ba4b13a816424db4,
+        type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -5033274924035982962, guid: d1bd49909b97c674ba4b13a816424db4,
+        type: 3}
+      propertyPath: m_CastShadows
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: d1bd49909b97c674ba4b13a816424db4,
         type: 3}
       propertyPath: m_Name
       value: Astronaut2.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: d1bd49909b97c674ba4b13a816424db4,
+        type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 1259930043575887931, guid: d1bd49909b97c674ba4b13a816424db4,
+        type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 5866666021909216657, guid: d1bd49909b97c674ba4b13a816424db4,
         type: 3}
@@ -323,6 +391,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_ApplyRootMotion
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7985974569186381559, guid: d1bd49909b97c674ba4b13a816424db4,
+        type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 8879528566716807029, guid: d1bd49909b97c674ba4b13a816424db4,
         type: 3}
@@ -361,6 +434,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d1bd49909b97c674ba4b13a816424db4, type: 3}
+--- !u!137 &721602161691498964 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -5033274924035982962, guid: d1bd49909b97c674ba4b13a816424db4,
+    type: 3}
+  m_PrefabInstance: {fileID: 3469339927961051226}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &4012473299736971185 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: d1bd49909b97c674ba4b13a816424db4,

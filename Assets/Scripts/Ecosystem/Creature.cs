@@ -50,7 +50,7 @@ public class Creature : MonoBehaviour
     [SerializeField] private float reproductionCooldown = 100f;
     [SerializeField] private float reproductionTimer = 0f;
     [SerializeField] private float reproductionCost = 30f;
-    [SerializeField] private float reproductionChance = 0.5f;
+    [SerializeField, Range(0f, 1f)] private float reproductionChance = 0.5f;
     [SerializeField] private int maxChildren = 2;
     [SerializeField] private int childrenCount = 0;
     
@@ -70,6 +70,26 @@ public class Creature : MonoBehaviour
     [SerializeField] private float timeBetweenSteps = 1f/3f;
     private float idleSoundTimer;
 
+    // Genes: speed, size, stat decrease, detection radius
+    [Header("Genes")]
+    [SerializeField] private Genes genes;
+    [SerializeField] private Texture alternativeTexture = null;
+    [SerializeField, Range(0f, 1f)] private float alternativeTextureProb = 0.1f;
+
+    [SerializeField, Range(0f, 1f)] private float speedMutationProb = 0.8f;
+    [SerializeField, Range(0f, 1f)] private float speedMultiplierRange = 0.1f;
+
+    [SerializeField, Range(0f, 1f)] private float sizeMutationProb = 0.4f;
+    [SerializeField, Range(0f, 1f)] private float sizeMultiplierRange = 0.05f;
+
+    [SerializeField, Range(0f, 1f)] private float statDecreaseMutationProb = 0.4f;
+    [SerializeField, Range(0f, 1f)] private float statDecreaseMultiplierRange = 0.09f;
+
+    [SerializeField, Range(0f, 1f)] private float detectionRadiusMutationProb = 0.5f;
+    [SerializeField, Range(0f, 1f)] private float detectionRadiusMultiplierRange = 0.05f;
+
+    private bool alternativeTextureActive = false;
+    private bool genesInitialized = false;
     [Header("Misc")]
     [SerializeField] private bool hasDrinkAnimation = false;
 
@@ -131,9 +151,18 @@ public class Creature : MonoBehaviour
         {
             hunger = Random.Range(30, maxHunger);
             thirst = Random.Range(30, maxThirst);
+
+            if (alternativeTexture != null && Random.value < alternativeTextureProb)
+            {
+                renderer.material.SetTexture("_BaseMap", alternativeTexture);
+                alternativeTextureActive = true;
+            }
         }
 
         animatorParameters.SetFloat("Speed", speed);
+        CreateGenes();
+
+        animator.SetFloat("Speed", speed);
         animator.keepAnimatorStateOnDisable = true;
         animatorParameters.SetBool("isWalking", true);
 
@@ -252,6 +281,66 @@ public class Creature : MonoBehaviour
         }
     }
 
+    private void CreateGenes()
+    {
+        if (genesInitialized) return;
+        genes = new Genes();
+        genes.alternaviteColor = alternativeTextureActive;
+        genes.speed = speed;
+        genes.statDecrease = Mathf.Max(thirstDecrease, hungerDecrease);
+        genes.size = transform.localScale.x;
+        genes.detectionRadius = detectionRadius;
+    }
+
+    public void ApplyGenes(Genes genes)
+    {
+        this.genes = genes;
+        
+        // Only apply alternative texture if i exists
+        if (alternativeTexture != null && genes.alternaviteColor)
+        {
+            renderer.material.SetTexture("_BaseMap", alternativeTexture);
+        }
+        speed = genes.speed;
+
+        thirstDecrease = genes.statDecrease;
+        hungerDecrease = genes.statDecrease;
+
+        // Only use size property on non children
+        if (!isChild)
+        {
+            transform.localScale = Vector3.one * genes.size;
+        }
+
+        detectionRadius = genes.detectionRadius;
+        genesInitialized = true;
+    }
+
+    private Genes MixGenes(Genes otherGenes)
+    {
+        Genes newGenes = genes;
+
+        // If breeding creatures have the same color the creature spawned has a higher chance of having that color. 
+        if (alternativeTextureActive == otherGenes.alternaviteColor)
+        {
+            // Only set the color to true if alternative texture also is true. 
+            newGenes.alternaviteColor = alternativeTextureActive && Random.value < 0.8f;
+        } else
+        {
+            newGenes.alternaviteColor = alternativeTextureActive && Random.value < 0.5f;
+        }
+        
+        newGenes.speed = genes.speed * GetMutationMultiplier(speedMutationProb, speedMultiplierRange);
+
+        newGenes.statDecrease = genes.statDecrease * GetMutationMultiplier(statDecreaseMutationProb, statDecreaseMultiplierRange);
+
+        newGenes.size = genes.size * GetMutationMultiplier(sizeMutationProb, sizeMultiplierRange);
+
+        newGenes.detectionRadius = genes.detectionRadius * GetMutationMultiplier(detectionRadiusMutationProb, detectionRadiusMultiplierRange);
+
+        return newGenes;
+    }
+
     private void RandomWalking()
     {
         if (atDestination)
@@ -268,7 +357,7 @@ public class Creature : MonoBehaviour
 
     private void LookingForResource(ResourceType resource)
     {
-        GameObject nearestResource;
+        GameObject nearestResource = null;
         if (getResourceTicks <= 0)
         {
             // Unsubsribe to the last resource to enable other creatures to eat it
@@ -301,7 +390,7 @@ public class Creature : MonoBehaviour
         }
 
         // If there is no resource, walk around randomly
-        if (nearestResource == null ^ resourcePos == Vector3.zero)
+        if (nearestResource != null || resourcePos != Vector3.zero)
         {
             // If the resource is within consume radius, consume it
             if (IsCloseToObject(resourcePos) || (resource == ResourceType.Water && Vector3.Distance(transform.position, planet.transform.position) + 0.05 < planet.waterDiameter / 2))
@@ -401,6 +490,7 @@ public class Creature : MonoBehaviour
             
             GameObject newObject = Instantiate(childPrefab, childPos, transform.rotation, transform.parent);
             newObject.name = newObject.name.Replace("(Clone)", "").Trim();
+            newObject.GetComponent<Creature>().ApplyGenes(MixGenes(breedingPartner.genes));
 
             childrenCount++;
             hunger -= reproductionCost;
@@ -652,6 +742,7 @@ public class Creature : MonoBehaviour
                 isChild = false;
                 GameObject newObject = Instantiate(parentPrefab, transform.position, transform.rotation, transform.parent);
                 newObject.name = newObject.name.Replace("(Clone)", "").Trim();
+                newObject.GetComponent<Creature>().ApplyGenes(genes);
                 Destroy(gameObject);
             }
         }
@@ -705,6 +796,20 @@ public class Creature : MonoBehaviour
         Instantiate(breedingParticle, transform.position, transform.rotation, transform.parent);
 
         Destroy(gameObject);
+    }
+
+    private float GetMutationMultiplier(float mutationProb, float mutationRange)
+    {
+        // Only apply mutation if the value if below mutation threshold
+        if (Random.value < mutationProb)
+        {
+            // Randomize a value around 1 with an offset of "mutationRange" to either side
+            return Random.Range(1 - mutationRange, 1 + mutationRange);
+        } else
+        {
+            return 1;
+        }
+        
     }
 
     private AudioClip GetRandomClip(AudioClip[] clips)

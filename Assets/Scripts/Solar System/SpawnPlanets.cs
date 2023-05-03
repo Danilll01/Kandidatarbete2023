@@ -38,6 +38,7 @@ public class SpawnPlanets : MonoBehaviour
             Universe.InitializeRandomWithSeed();
         }
         random = Universe.random;
+        Universe.player = player;
         GetValues();
         CreatePlanets();
         player.Initialize(bodies[spawnPlanetIndex], random.Next());
@@ -64,12 +65,12 @@ public class SpawnPlanets : MonoBehaviour
         sun.transform.localPosition = new Vector3(0, 0, 0);
         sun.gameObject.name = "Sun";
 
-        Sun SunPlanetBody = sun.GetComponent<Sun>();
-        SunPlanetBody.diameter = radiusMaxValue * 2;
-        SunPlanetBody.SetUpPlanetValues();
-        SunPlanetBody.Initialize(random.Next());
+        Sun sunPlanetBody = sun.GetComponent<Sun>();
+        sunPlanetBody.diameter = radiusMaxValue * 2;
+        sunPlanetBody.SetUpPlanetValues();
+        sunPlanetBody.Initialize(random.Next());
 
-        sun.transform.GetChild(0).localScale = new Vector3(SunPlanetBody.diameter, SunPlanetBody.diameter, SunPlanetBody.diameter);
+        sun.transform.GetChild(0).localScale = new Vector3(sunPlanetBody.diameter, sunPlanetBody.diameter, sunPlanetBody.diameter);
 
         Universe.sunPosition = sun.transform;
         
@@ -105,7 +106,7 @@ public class SpawnPlanets : MonoBehaviour
             InstantiateMoons(planetBody, nrOfMoonsForPlanet);
             planetOrbitObject.transform.localPosition = CalculatePositionForPlanet(planetBody, i);
             planetBody.positionRelativeToSunDistance = planetOrbitObject.transform.localPosition.magnitude;
-            planetBody.Initialize(player.transform, random.Next(), i == spawnPlanetIndex);
+            planetBody.Initialize(random.Next(), i == spawnPlanetIndex);
             bodies.Add(planetBody);
 
         }
@@ -205,7 +206,7 @@ public class SpawnPlanets : MonoBehaviour
             moonBody.bodyName = "Moon " + i;
             moonBody.radius = random.Next((int)(parentPlanet.radius / 5), (int)((parentPlanet.radius / 2) + 1));
             moonBody.SetUpPlanetValues();
-            moonBody.Initialize(player.transform, random.Next(), false); //False here beacause we don't spawn on moons
+            moonBody.Initialize(random.Next(), false); //False here because we don't spawn on moons
             parentPlanet.moons.Add(moonBody);
         }
         parentPlanet.moonsParent = moonsParent;
@@ -215,7 +216,7 @@ public class SpawnPlanets : MonoBehaviour
     // Gives back a random position on the edge of a circle given the radius of the circle
     private Vector3 RandomPointOnCircleEdge(float radius)
     {
-        var vector2 = random.OnUnitCircle() * radius;
+        Vector2 vector2 = random.OnUnitCircle() * radius;
         return new Vector3(vector2.x, 0, vector2.y);
     }
 }
