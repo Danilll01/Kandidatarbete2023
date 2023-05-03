@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using TMPro;
 
@@ -14,6 +15,8 @@ public class MenuManager : MonoBehaviour
     [SerializeField] private GameObject debugContainer;
     [SerializeField] private GameObject pausContainer;
     [SerializeField] private TextMeshProUGUI seedText;
+    [SerializeField] private Slider volumeSlider;
+    [SerializeField] private TextMeshProUGUI volumeText;
     [SerializeField] private PillPlayerController playerController;
 
 
@@ -26,6 +29,19 @@ public class MenuManager : MonoBehaviour
         
         pausContainer.SetActive(false);
         seedText.text = "Seed: " + Universe.seed;
+        AudioListener.volume = 0.5f;
+        volumeText.text = "50%";
+        volumeSlider.maxValue = 1;
+        volumeSlider.minValue = 0;
+        volumeSlider.value = AudioListener.volume;
+    }
+
+    public void UpdateVolume(Slider slider)
+    {
+
+        AudioListener.volume = slider.value;
+        float newVolume = Mathf.Round(slider.value * 100);
+        volumeText.text = newVolume + "%";
     }
 
     void Update()

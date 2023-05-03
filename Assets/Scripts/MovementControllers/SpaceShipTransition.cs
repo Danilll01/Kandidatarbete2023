@@ -172,7 +172,7 @@ public class SpaceShipTransition : MonoBehaviour
     private void DisembarkFromShip()
     {
         audio.TurnOffCurrentSoundEffect(0.1f);
-        StartCoroutine(audio.UpdateMusicClipIndex(HandleAudio.BackgroundClips.Planet));
+        StartCoroutine(audio.UpdateMusicClipIndex(HandleAudio.BackgroundClips.Planet, 0.15f));
         
         Transform shipTransform = transform;
         Transform playerTransform = player.transform;

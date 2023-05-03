@@ -15,6 +15,7 @@ public class StartManager : MonoBehaviour
     [SerializeField] private Image fadeOutImage;
     [SerializeField] private float fadeOutTimer = 0.4f;
 
+
     /// <summary>
     /// Update the text for the planet slider corresponding to value of slider
     /// </summary>

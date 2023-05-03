@@ -72,7 +72,7 @@ public class HandleAudio : MonoBehaviour
     /// </summary>
     /// <param name="soundEffect">Which sound effect to play</param>
     /// <param name="overwrite">If the effect should play over other effects or not</param>
-    public void PlaySimpleSoundEffect(SoundEffects soundEffect, bool overwrite = true)
+    public void PlaySimpleSoundEffect(SoundEffects soundEffect, bool overwrite = true, float volume = soundEffectsVolume)
     {
         if (overwrite)
         {
