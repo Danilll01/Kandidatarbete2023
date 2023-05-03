@@ -39,6 +39,7 @@ public class PillPlayerController : MonoBehaviour
     private static readonly int Direction = Animator.StringToHash("Direction");
     private static readonly int Swim = Animator.StringToHash("Swim");
     private static readonly int Jump = Animator.StringToHash("Jump");
+    private static readonly int Sit = Animator.StringToHash("Sit");
     private Transform animationRig;
     
     [Header("Camera")]
@@ -46,17 +47,12 @@ public class PillPlayerController : MonoBehaviour
     [SerializeField] private float lookLimitAngle = 80f;
     private float pitch = 0f;
 
-    private void Awake()
-    {
-        Universe.player = this;
-        animator = transform.GetChild(0).GetComponent<Animator>();
-        animationRig = transform.GetChild(0);
-    }
-
     // Start is called before the first frame update
     public void Initialize(Planet planetToSpawnOn, int seed)
     {
         Universe.player = this;
+        animator = transform.GetChild(0).GetComponent<Animator>();
+        animationRig = transform.GetChild(0);
 
         if (ship == null)
         {
@@ -302,6 +298,7 @@ public class PillPlayerController : MonoBehaviour
         firstPersonCamera.enabled = boarded;
         GetComponent<Collider>().enabled = boarded;
         playerModelHead.shadowCastingMode = boarded ? ShadowCastingMode.ShadowsOnly : ShadowCastingMode.On;
+        animator.SetBool(Sit, !boarded);
         boarded = !boarded;
     }
     
