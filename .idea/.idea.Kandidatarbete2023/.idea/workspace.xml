@@ -4,10 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Added wind noise when player moves on ground">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Audio/HandleAudio.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Audio/HandleAudio.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/MovementControllers/PillPlayerController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/MovementControllers/PillPlayerController.cs" afterDir="false" />
+    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Made jump sound a little louder">
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipController.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -38,6 +36,7 @@
   </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Atmosphere/AtmosphereHandler.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://D:/Unity/Projects/Kandidatarbete2023/Assets/Scripts/Audio/HandleAudio.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipCameraMover.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipController.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipTransition.cs" root0="FORCE_HIGHLIGHTING" />
@@ -157,13 +156,7 @@
       <workItem from="1682861907126" duration="33741000" />
       <workItem from="1682952065891" duration="20322000" />
       <workItem from="1683036367666" duration="5009000" />
-      <workItem from="1683143710028" duration="3187000" />
-    </task>
-    <task id="LOCAL−00057" summary="Ship now rotates upright after 10 seconds">
-      <created>1682465317955</created>
-      <option name="number" value="LOCAL−00057" />
-      <option name="presentableId" value="LOCAL−00057" />
-      <updated>1682465317955</updated>
+      <workItem from="1683143710028" duration="3836000" />
     </task>
     <task id="LOCAL−00058" summary="Clamped ship visual model rotation when turning">
       <created>1682466358537</created>
@@ -453,7 +446,13 @@
       <option name="presentableId" value="LOCAL−00105" />
       <updated>1683146118817</updated>
     </task>
-    <option name="localTasksCounter" value="106" />
+    <task id="LOCAL−00106" summary="Made jump sound a little louder">
+      <created>1683147674924</created>
+      <option name="number" value="LOCAL−00106" />
+      <option name="presentableId" value="LOCAL−00106" />
+      <updated>1683147674924</updated>
+    </task>
+    <option name="localTasksCounter" value="107" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -475,7 +474,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="Ship crosshair is now shown behind pause menu" />
     <MESSAGE value="Made loading screen loading text better" />
     <MESSAGE value="Made loading screen faster and more visually pleasing" />
     <MESSAGE value="Updated ship crosshair" />
@@ -500,6 +498,7 @@
     <MESSAGE value="Camera view does now start in player ship when spawned in" />
     <MESSAGE value="Added player sit animation when the player is in the ship" />
     <MESSAGE value="Added wind noise when player moves on ground" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added wind noise when player moves on ground" />
+    <MESSAGE value="Made jump sound a little louder" />
+    <option name="LAST_COMMIT_MESSAGE" value="Made jump sound a little louder" />
   </component>
 </project>
