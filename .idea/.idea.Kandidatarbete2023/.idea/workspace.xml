@@ -4,7 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Made spaceship thruster a little less loud" />
+    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Made &quot;can't land&quot; sound higher">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Debug/MenuManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Debug/MenuManager.cs" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -154,13 +157,7 @@
       <workItem from="1682861907126" duration="33741000" />
       <workItem from="1682952065891" duration="20322000" />
       <workItem from="1683036367666" duration="5009000" />
-      <workItem from="1683143710028" duration="4430000" />
-    </task>
-    <task id="LOCAL−00059" summary="Fixed nice ship visual view bobbing and a cross-hair to see where you go">
-      <created>1682473958065</created>
-      <option name="number" value="LOCAL−00059" />
-      <option name="presentableId" value="LOCAL−00059" />
-      <updated>1682473958065</updated>
+      <workItem from="1683143710028" duration="5086000" />
     </task>
     <task id="LOCAL−00060" summary="Added planet slowdown factor">
       <created>1682544746062</created>
@@ -450,7 +447,13 @@
       <option name="presentableId" value="LOCAL−00107" />
       <updated>1683148280239</updated>
     </task>
-    <option name="localTasksCounter" value="108" />
+    <task id="LOCAL−00108" summary="Made &quot;can't land&quot; sound higher">
+      <created>1683148601101</created>
+      <option name="number" value="LOCAL−00108" />
+      <option name="presentableId" value="LOCAL−00108" />
+      <updated>1683148601101</updated>
+    </task>
+    <option name="localTasksCounter" value="109" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -472,7 +475,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="Made loading screen faster and more visually pleasing" />
     <MESSAGE value="Updated ship crosshair" />
     <MESSAGE value="Added landing rotation offset to compensate for the visual model" />
     <MESSAGE value="Removed visual mesh from hover springs" />
@@ -497,6 +499,7 @@
     <MESSAGE value="Added wind noise when player moves on ground" />
     <MESSAGE value="Made jump sound a little louder" />
     <MESSAGE value="Made spaceship thruster a little less loud" />
-    <option name="LAST_COMMIT_MESSAGE" value="Made spaceship thruster a little less loud" />
+    <MESSAGE value="Made &quot;can't land&quot; sound higher" />
+    <option name="LAST_COMMIT_MESSAGE" value="Made &quot;can't land&quot; sound higher" />
   </component>
 </project>

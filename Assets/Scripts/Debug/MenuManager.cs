@@ -29,7 +29,7 @@ public class MenuManager : MonoBehaviour
         
         pausContainer.SetActive(false);
         seedText.text = "SEED " + Universe.seed;
-        AudioListener.volume = 0.5f;
+        AudioListener.volume = PlayerPrefs.HasKey("volume") ? PlayerPrefs.GetFloat("volume") : 0.5f;
         volumeText.text = "50%";
         volumeSlider.maxValue = 1;
         volumeSlider.minValue = 0;
@@ -38,7 +38,7 @@ public class MenuManager : MonoBehaviour
 
     public void UpdateVolume(Slider slider)
     {
-
+        PlayerPrefs.SetFloat("volume", slider.value);
         AudioListener.volume = slider.value;
         float newVolume = Mathf.Round(slider.value * 100);
         volumeText.text = newVolume + "%";
