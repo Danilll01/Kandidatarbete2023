@@ -12,6 +12,7 @@ public static class Universe
 
     //Guaranteed set after Awake()
     public static PillPlayerController player = null;
+    public static Transform spaceShip = null;
     public static Transform sunPosition = null;
 
     /// <summary>
