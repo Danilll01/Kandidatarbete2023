@@ -1,6 +1,7 @@
 using UnityEngine;
 using ExtendedRandom;
 using Noise;
+using System.Collections.Generic;
 
 public class Foliage : MonoBehaviour
 {
@@ -19,6 +20,8 @@ public class Foliage : MonoBehaviour
 
     // FoliageHandler, the controller of the operation
     private FoliageHandler foliageHandler;
+
+    private Planet planet;
 
     // This should probably be the Manfred random
     private RandomX random;
@@ -63,10 +66,12 @@ public class Foliage : MonoBehaviour
     /// </summary>
     /// <param name="meshVerticesLength"></param>
     /// <param name="position"></param>
-    public void Initialize(int meshVerticesLength, Vector3 position, int seed)
+    public void Initialize(int meshVerticesLength, Vector3 position, int seed, Planet planet)
     {
+        this.planet = planet;
+
         // Epic foliageHandler getter :O
-        foliageHandler = transform.parent.parent.parent.GetComponent<Planet>().foliageHandler;
+        foliageHandler = planet.foliageHandler;
         if (foliageHandler == null && foliageHandler.isInstantiated) return;
         
         // Seedar en random f�r denna chunken // H�r vill vi ha bra random :)
@@ -246,8 +251,20 @@ public class Foliage : MonoBehaviour
     // Flat terrain
     private void BelowAngle(RaycastHit hit, Vector3 rayOrigin, float heightAboveSea)
     {
+        //Remove packs based on local biome
+        BiomeValue localBiome = Biomes.EvaluteBiomeMap(planet.Biome, hit.point, planet.DistanceToSun);
+        int[] acceptableIndexes = new int[foliageHandler.foliageCollections.Length];
 
-        
+        for (int i = 0; i < foliageHandler.foliageCollections.Length; i++)
+        {
+            if (localBiome.IsInsideRange(foliageHandler.foliageCollections[i].biomeRange))
+            {
+                // Add indicies
+            }
+        }
+
+
+        /*
         // 1 in 10 to spawn a forgable
         if (random.Next(10) == 0)
             SpawnForgables(hit, rayOrigin);
@@ -256,6 +273,7 @@ public class Foliage : MonoBehaviour
             SpawnTrees(hit, rayOrigin);
         else
             SpawnBushes(hit, rayOrigin);
+        */
     }
 
     // Tree spawning function
@@ -299,11 +317,11 @@ public class Foliage : MonoBehaviour
         GameObject treeObject = foliageHandler.GetForstetTree(treeType);
 
         // Spawns 5 trees around a found forest spot! Bigger number = denser forest
-        for (int i = 0; i < 5; i++)
+        for (int i = 0; i < 10; i++)
         {
-            float x = (float)random.Value() * 2 - 1;
-            float y = (float)random.Value() * 2 - 1;
-            float z = (float)random.Value() * 2 - 1;
+            float x = (float)random.Value() * 3 - 1;
+            float y = (float)random.Value() * 3 - 1;
+            float z = (float)random.Value() * 3 - 1;
             Vector3 localpos = Quaternion.Euler(x, y, z) * rayOrigin;
 
             // Assumes we are spawning trees on a planet located in origin!

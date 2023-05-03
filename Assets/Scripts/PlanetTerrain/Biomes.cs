@@ -109,14 +109,14 @@ public struct BiomeValue
 public class BiomeRange
 {
     public bool mountainRelevant = false;
-    public float mountainMin = 0;
-    public float mountainMax = 1;
+    [Range(0f, 1f)] public float mountainMin = 0;
+    [Range(0f, 1f)] public float mountainMax = 1;
     public bool temperatureDependent = false;
-    public float temperatureMin = 0;
-    public float temperatureMax = 1;
+    [Range(0f, 1f)] public float temperatureMin = 0;
+    [Range(0f, 1f)] public float temperatureMax = 1;
     public bool treesDependent = false;
-    public float treesMin = 0;
-    public float treesMax = 1;
+    [Range(0f, 1f)] public float treesMin = 0;
+    [Range(0f, 1f)] public float treesMax = 1;
 }
 
 /// <summary>

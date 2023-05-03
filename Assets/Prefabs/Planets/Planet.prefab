@@ -53,16 +53,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   meshGenerator: {fileID: 7200000, guid: 2b54143d75bd2344bb987facb6cb4950, type: 3}
-  waterMaterial: {fileID: 0}
   waterDiameter: 0
-  diameter: 0
   radius: 0
   surfaceGravity: 10
   bodyName: TBT
   mass: 429245
   moons: []
-  waterPoints: []
-  player: {fileID: 0}
   resolution: 4
   willGeneratePlanetLife: 0
   chanceToSpawnPlanetLife: 0.8
@@ -96,8 +92,11 @@ MonoBehaviour:
   rotationSpeed: 0
   moonsParent: {fileID: 0}
   rotateMoons: 0
+  moonsRelativeDistances: []
   positionRelativeToSunDistance: 0
   solarSystemRotationActive: 0
+  playerIsOnMoon: 0
+  activeMoonIndex: 0
 --- !u!114 &3175307376905995560
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -730,6 +729,26 @@ MonoBehaviour:
   - {fileID: 1127315056602366, guid: 3a9df2c30188f10438112114dc22bae1, type: 3}
   - {fileID: 1240686429475702, guid: da33a1bfeaaabaa4597896ca7003b785, type: 3}
   densityMultiplier: 0.00002
+  foliageCollections:
+  - name: Normal trees
+    gameObjects:
+    - {fileID: 185286, guid: 8ed1fa325ca228645ad26dd6eff14768, type: 3}
+    - {fileID: 182382, guid: 76be61eeff2e7164cb99e1cf8cf0c22b, type: 3}
+    - {fileID: 166966, guid: 78c29697749a6d44e964f9a0cf83d77a, type: 3}
+    - {fileID: 152404, guid: 5037d6ea184d2f640bf78dcf9894a269, type: 3}
+    - {fileID: 115020, guid: a0c53a09e4a37b5409b1248ebce2c376, type: 3}
+    - {fileID: 166856, guid: 99a48108c5a1932488c06e519f6097f4, type: 3}
+    - {fileID: 184622, guid: c7bcf19bbfa57ed4ea9147dff66d5542, type: 3}
+    biomeRange:
+      mountainRelevant: 0
+      mountainMin: 0
+      mountainMax: 0
+      temperatureDependent: 0
+      temperatureMin: 0
+      temperatureMax: 0
+      treesDependent: 1
+      treesMin: 0.162
+      treesMax: 1
   isInstantiated: 0
   treeNr: 0
   bushNr: 0

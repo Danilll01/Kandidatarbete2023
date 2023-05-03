@@ -34,6 +34,8 @@ public class FoliageHandler : MonoBehaviour
 
     [SerializeField] private float densityMultiplier = 0.000002f;
 
+    [SerializeField] public FoliageCollection[] foliageCollections;
+
     public bool isInstantiated = false;
     private Planet planet;
     private float waterRadius;
@@ -156,6 +158,7 @@ public class FoliageHandler : MonoBehaviour
     // Noise function for forests
     private int ForestNoiseFunction(Vector3 pos, int index)
     {
+
         // Layering noise :)
         return (int)Mathf.Round(
             (Simplex.Evaluate((pos + forestTypes[index]) * NOISE_ONE) + 1) * 
