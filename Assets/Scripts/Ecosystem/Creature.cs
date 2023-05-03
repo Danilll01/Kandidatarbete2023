@@ -264,7 +264,7 @@ public class Creature : MonoBehaviour
 
     private void LookingForResource(ResourceType resource)
     {
-        GameObject nearestResource;
+        GameObject nearestResource = null;
         if (getResourceTicks <= 0)
         {
             // Unsubsribe to the last resource to enable other creatures to eat it
@@ -297,7 +297,7 @@ public class Creature : MonoBehaviour
         }
 
         // If there is no resource, walk around randomly
-        if (nearestResource == null ^ resourcePos == Vector3.zero)
+        if (nearestResource != null || resourcePos != Vector3.zero)
         {
             // If the resource is within consume radius, consume it
             if (IsCloseToObject(resourcePos) || (resource == ResourceType.Water && Vector3.Distance(transform.position, planet.transform.position) + 0.05 < planet.waterDiameter / 2))
