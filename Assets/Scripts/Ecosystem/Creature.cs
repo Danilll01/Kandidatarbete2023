@@ -583,7 +583,7 @@ public class Creature : MonoBehaviour
     private void InteractWithResourceAction(GameObject resource, bool disable, ResourceType type)
     {
         currentState = CreatureState.PerformingAction;
-        string animationType = type == ResourceType.Water && animatorParameters.HasBool("isDrinking") ? "isDrinking" : "isEating";
+        string animationType = type == ResourceType.Water && animatorParameters.HasBool("isDrinking") ? "isDrinking" : "isAttacking";
         animator.SetBool(animationType, true);
         
         StartCoroutine(InteractWithResource(resource, disable, type));
@@ -619,7 +619,7 @@ public class Creature : MonoBehaviour
         }
 
         // Set the state to idle
-        string animationType = type == ResourceType.Water && animatorParameters.HasBool("isDrinking") ? "isDrinking" : "isEating";
+        string animationType = type == ResourceType.Water && animatorParameters.HasBool("isDrinking") ? "isDrinking" : "isAttacking";
         animator.SetBool(animationType, false);
         animator.SetBool("isWalking", true);
 
