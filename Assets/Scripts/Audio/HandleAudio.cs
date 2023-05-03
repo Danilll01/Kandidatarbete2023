@@ -6,7 +6,7 @@ public class HandleAudio : MonoBehaviour
 {
     [SerializeField] private AudioClip[] backgroundMusicAudioClips;
     [SerializeField] private AudioClip[] soundEffectsAudioClips;
-    [SerializeField] private const float backgroundMusicVolume = 0.2f;
+    [SerializeField] private const float backgroundMusicVolume = 0.15f;
     [SerializeField] private const float soundEffectsVolume = 0.6f;
     [SerializeField] private AudioSource musicAudioSource;
     [SerializeField] private AudioSource soundEffectsAudioSource;
@@ -64,7 +64,8 @@ public class HandleAudio : MonoBehaviour
         Landing,
         Toggle,
         Jump,
-        WaterSplash
+        WaterSplash,
+        Wind
     }
 
     /// <summary>

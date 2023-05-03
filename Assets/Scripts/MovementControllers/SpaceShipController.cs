@@ -225,7 +225,7 @@ public class SpaceShipController : MonoBehaviour
         // Play thrust sound effect if player is accelerating
         if (newMovementVector.magnitude > 0f)
         {
-            audio.PlaySoundEffect(HandleAudio.SoundEffects.Thrust, true, false);
+            audio.PlaySoundEffect(HandleAudio.SoundEffects.Thrust, true, false, volume:0.4f);
         }
         else
         {
