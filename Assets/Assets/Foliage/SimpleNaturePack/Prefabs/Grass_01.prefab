@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 8903058273635754357}
   - component: {fileID: 8903058273636721589}
   - component: {fileID: 5436547628613026519}
+  - component: {fileID: 9102380944281334644}
   m_Layer: 6
   m_Name: Grass_01
   m_TagString: Foliage
@@ -28,7 +29,7 @@ Transform:
   m_GameObject: {fileID: 8903058273634794869}
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -98,14 +99,21 @@ LODGroup:
   m_AnimateCrossFading: 0
   m_LastLODIsBillboard: 0
   m_LODs:
-  - screenRelativeHeight: 0.01
+  - screenRelativeHeight: 0.042737287
     fadeTransitionWidth: 0
     renderers:
     - renderer: {fileID: 8903058273636721589}
-  - screenRelativeHeight: 0.01
-    fadeTransitionWidth: 0
-    renderers: []
-  - screenRelativeHeight: 0.01
-    fadeTransitionWidth: 0
-    renderers: []
   m_Enabled: 1
+--- !u!114 &9102380944281334644
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8903058273634794869}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f13f42112a552354988a63573e49f5d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prefabPrototype: {fileID: 11400000, guid: 1331c4d1336519244be15b7f8f84121f, type: 2}

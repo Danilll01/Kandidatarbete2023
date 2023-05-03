@@ -13,6 +13,7 @@ public static class Universe
     //Guaranteed set after Awake()
     public static PillPlayerController player = null;
     public static Transform sunPosition = null;
+    public static GPUInstancer.GPUInstancerPrefabManager GPUI;
 
     /// <summary>
     /// Initializes the System.Random with the given seed
