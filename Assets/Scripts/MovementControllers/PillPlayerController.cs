@@ -7,6 +7,7 @@ using UnityEngine.Serialization;
 [RequireComponent(typeof(Rigidbody))]
 public class PillPlayerController : MonoBehaviour
 {
+    [Header("Setup")]
     public Planet attractor = null;
     public Camera firstPersonCamera;
     [SerializeField] private PlayerWater playerWater;
