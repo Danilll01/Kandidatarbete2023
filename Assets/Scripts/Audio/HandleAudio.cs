@@ -63,7 +63,8 @@ public class HandleAudio : MonoBehaviour
         TakeOff,
         Landing,
         Toggle,
-        Jump
+        Jump,
+        WaterSplash
     }
 
     /// <summary>
