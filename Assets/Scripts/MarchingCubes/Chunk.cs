@@ -105,7 +105,7 @@ public class Chunk : MonoBehaviour
         previousPlayerPos = playerPos;
 
         float playerDistance = Vector3.Magnitude(playerPos - position);
-        if (playerDistance < highRes.upperRadius * chunkSize)
+        if (playerDistance < highRes.upperRadius)
         {
             meshCollider.enabled = true;
             foliageGameObject.SetActive(true);
@@ -138,7 +138,7 @@ public class Chunk : MonoBehaviour
                     
                     
         } 
-        else if (mediumRes.lowerRadius * chunkSize < playerDistance && playerDistance < mediumRes.upperRadius * chunkSize)
+        else if (mediumRes.lowerRadius < playerDistance && playerDistance < mediumRes.upperRadius)
         {
             foliageGameObject.SetActive(false);
             creatureGameObject.SetActive(false);
@@ -146,7 +146,7 @@ public class Chunk : MonoBehaviour
             UpdateMesh(mediumRes.resolution);
                 
         }
-        else if (lowRes.lowerRadius * chunkSize < playerDistance)
+        else if (lowRes.lowerRadius < playerDistance)
         {
             foliageGameObject.SetActive(false);
             creatureGameObject.SetActive(false);
