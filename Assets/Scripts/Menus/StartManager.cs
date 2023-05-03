@@ -4,11 +4,13 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using TMPro;
+using UnityEngine.Serialization;
 
 public class StartManager : MonoBehaviour
 {
     [SerializeField] private TMP_InputField seedInput;
     [SerializeField] private TextMeshProUGUI nrOfPlanetsText;
+    [SerializeField] private AudioSource musicAudioSource;
 
     /// <summary>
     /// Update the text for the planet slider corresponding to value of slider
@@ -61,6 +63,19 @@ public class StartManager : MonoBehaviour
 
         // Set the seed and load the game
         Universe.InitializeRandomWithSeed();
+        StartCoroutine(FadeOutMusic(0.5f));
+    }
+    
+    private IEnumerator FadeOutMusic(float fadeDuration)
+    {
+        float currentVolume = musicAudioSource.volume;
+        for (float timePassed = 0f; timePassed < fadeDuration; timePassed += Time.deltaTime)
+        {
+            musicAudioSource.volume = Mathf.Lerp(currentVolume, 0.01f, timePassed / fadeDuration);
+
+            yield return null;
+        }
+        
         SceneManager.LoadScene("Load Menu");
     }
 
