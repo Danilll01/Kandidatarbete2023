@@ -4,9 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Made jump sound a little louder">
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipController.cs" afterDir="false" />
-    </list>
+    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Made spaceship thruster a little less loud" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -156,13 +154,7 @@
       <workItem from="1682861907126" duration="33741000" />
       <workItem from="1682952065891" duration="20322000" />
       <workItem from="1683036367666" duration="5009000" />
-      <workItem from="1683143710028" duration="3836000" />
-    </task>
-    <task id="LOCAL−00058" summary="Clamped ship visual model rotation when turning">
-      <created>1682466358537</created>
-      <option name="number" value="LOCAL−00058" />
-      <option name="presentableId" value="LOCAL−00058" />
-      <updated>1682466358537</updated>
+      <workItem from="1683143710028" duration="4430000" />
     </task>
     <task id="LOCAL−00059" summary="Fixed nice ship visual view bobbing and a cross-hair to see where you go">
       <created>1682473958065</created>
@@ -452,7 +444,13 @@
       <option name="presentableId" value="LOCAL−00106" />
       <updated>1683147674924</updated>
     </task>
-    <option name="localTasksCounter" value="107" />
+    <task id="LOCAL−00107" summary="Made spaceship thruster a little less loud">
+      <created>1683148280239</created>
+      <option name="number" value="LOCAL−00107" />
+      <option name="presentableId" value="LOCAL−00107" />
+      <updated>1683148280239</updated>
+    </task>
+    <option name="localTasksCounter" value="108" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -474,7 +472,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="Made loading screen loading text better" />
     <MESSAGE value="Made loading screen faster and more visually pleasing" />
     <MESSAGE value="Updated ship crosshair" />
     <MESSAGE value="Added landing rotation offset to compensate for the visual model" />
@@ -499,6 +496,7 @@
     <MESSAGE value="Added player sit animation when the player is in the ship" />
     <MESSAGE value="Added wind noise when player moves on ground" />
     <MESSAGE value="Made jump sound a little louder" />
-    <option name="LAST_COMMIT_MESSAGE" value="Made jump sound a little louder" />
+    <MESSAGE value="Made spaceship thruster a little less loud" />
+    <option name="LAST_COMMIT_MESSAGE" value="Made spaceship thruster a little less loud" />
   </component>
 </project>
