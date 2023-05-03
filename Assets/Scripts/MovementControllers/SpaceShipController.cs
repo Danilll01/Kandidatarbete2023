@@ -119,12 +119,14 @@ public class SpaceShipController : MonoBehaviour
                 lookRotation = standardShip.transform.rotation * lookRotation;
                 travelModeGUIImage.sprite = travelTypeSprites[1];
                 travelModePanel.mainTexture = travelTypeTextures[1];
+                audio.PlaySimpleSoundEffect(HandleAudio.SoundEffects.Toggle);
             }
             else
             {
                 lookRotation = Quaternion.Inverse(standardShip.transform.rotation) * transform.rotation;
                 travelModeGUIImage.sprite = travelTypeSprites[0];
                 travelModePanel.mainTexture = travelTypeTextures[0];
+                audio.PlaySimpleSoundEffect(HandleAudio.SoundEffects.Toggle);
             }
             orbitPlanetMovement = !orbitPlanetMovement;
             

@@ -9,9 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4265903889893730568}
+  - component: {fileID: 4265903889893730575}
   - component: {fileID: 4265903889893730569}
   - component: {fileID: 4265903889893730574}
-  - component: {fileID: 4265903889893730575}
   m_Layer: 0
   m_Name: SoundManager
   m_TagString: Untagged
@@ -34,6 +34,27 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4265903889893730575
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4265903889893730570}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8791bf7256a44f140bff959460b02457, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  backgroundMusicAudioClips:
+  - {fileID: 8300000, guid: 1c9c03d682ce76c49a39ffcc716d138e, type: 3}
+  - {fileID: 8300000, guid: 2aca8041ee3d7734bba4e0cfcd708a78, type: 3}
+  soundEffectsAudioClips:
+  - {fileID: 8300000, guid: 80371af793a315a4f99bcd47a0e954ac, type: 3}
+  - {fileID: 8300000, guid: 89b5f8a75bcb5f247881ecadd54a0241, type: 3}
+  - {fileID: 8300000, guid: 59985b339a847e746b279054754fdfea, type: 3}
+  musicAudioSource: {fileID: 4265903889893730569}
+  soundEffectsAudioSource: {fileID: 4265903889893730574}
 --- !u!82 &4265903889893730569
 AudioSource:
   m_ObjectHideFlags: 0
@@ -226,24 +247,3 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &4265903889893730575
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4265903889893730570}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8791bf7256a44f140bff959460b02457, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  backgroundMusicAudioClips:
-  - {fileID: 8300000, guid: 1c9c03d682ce76c49a39ffcc716d138e, type: 3}
-  - {fileID: 8300000, guid: 2aca8041ee3d7734bba4e0cfcd708a78, type: 3}
-  soundEffectsAudioClips:
-  - {fileID: 8300000, guid: 80371af793a315a4f99bcd47a0e954ac, type: 3}
-  - {fileID: 8300000, guid: 89b5f8a75bcb5f247881ecadd54a0241, type: 3}
-  - {fileID: 8300000, guid: 59985b339a847e746b279054754fdfea, type: 3}
-  musicAudioSource: {fileID: 4265903889893730569}
-  soundEffectsAudioSource: {fileID: 4265903889893730574}

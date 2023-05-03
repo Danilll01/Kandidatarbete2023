@@ -59,9 +59,22 @@ public class HandleAudio : MonoBehaviour
     {
         Thrust,
         TakeOff,
-        Landing
+        Landing,
+        Toggle
     }
 
+    /// <summary>
+    /// Plays the specified sound effect directly (over sound already playing) with the standard sound effect volume
+    /// </summary>
+    /// <param name="soundEffect">Which sound effect to play</param>
+    public void PlaySimpleSoundEffect(SoundEffects soundEffect)
+    {
+        float volumeBefore = soundEffectsAudioSource.volume;
+        soundEffectsAudioSource.volume = soundEffectsVolume;
+        soundEffectsAudioSource.PlayOneShot(soundEffectsAudioClips[(int)soundEffect]);
+        soundEffectsAudioSource.volume = volumeBefore;
+    }
+    
     /// <summary>
     /// Play a given sound effect
     /// </summary>
