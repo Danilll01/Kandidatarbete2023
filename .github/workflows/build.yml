@@ -7,8 +7,8 @@ on:
   
 
 env:
-  MAJOR_RELEASE_NR: 11
-  MINOR_OFFSET: 95
+  MAJOR_RELEASE_NR: 12
+  MINOR_OFFSET: 105
 
 jobs:
   release-project:
