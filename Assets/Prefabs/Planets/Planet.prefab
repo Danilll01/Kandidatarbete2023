@@ -53,16 +53,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   meshGenerator: {fileID: 7200000, guid: 2b54143d75bd2344bb987facb6cb4950, type: 3}
-  waterMaterial: {fileID: 0}
   waterDiameter: 0
-  diameter: 0
   radius: 0
   surfaceGravity: 10
   bodyName: TBT
   mass: 429245
   moons: []
-  waterPoints: []
-  player: {fileID: 0}
   resolution: 4
   willGeneratePlanetLife: 0
   chanceToSpawnPlanetLife: 0.8
@@ -84,20 +80,23 @@ MonoBehaviour:
     numLayers: 7
   biomeSettings:
     seed: 1
-    temperatureDecay: 0
+    temperatureDecay: 0.0027
     farTemperature: 0
     mountainFrequency: 1.2
     temperatureFrequency: 1
-    temperatureRoughness: 0.52
-    mountainTemperatureAffect: 0.527
+    temperatureRoughness: 0.196
+    mountainTemperatureAffect: 0.229
     treeFrequency: 1
   orbitSpeed: 0
   rotationAxis: {x: 0, y: 0, z: 0}
   rotationSpeed: 0
   moonsParent: {fileID: 0}
   rotateMoons: 0
+  moonsRelativeDistances: []
   positionRelativeToSunDistance: 0
   solarSystemRotationActive: 0
+  playerIsOnMoon: 0
+  activeMoonIndex: 0
 --- !u!114 &3175307376905995560
 MonoBehaviour:
   m_ObjectHideFlags: 0
