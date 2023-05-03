@@ -4,11 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Changed Vars to explicit type">
-      <change beforePath="$PROJECT_DIR$/Assets/Assets/SkyBox/NightSkybox.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Assets/SkyBox/NightSkybox.mat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Start Menu.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Start Menu.unity" afterDir="false" />
+    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Added a fade out timer for the main menu music">
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Menus/StartManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Menus/StartManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Shaders/Water/CameraWater.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Shaders/Water/CameraWater.mat" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -159,12 +156,6 @@
       <workItem from="1682861907126" duration="33741000" />
       <workItem from="1682952065891" duration="20322000" />
       <workItem from="1683036367666" duration="5009000" />
-    </task>
-    <task id="LOCAL−00056" summary="Pointer change again">
-      <created>1682126202179</created>
-      <option name="number" value="LOCAL−00056" />
-      <option name="presentableId" value="LOCAL−00056" />
-      <updated>1682126202179</updated>
     </task>
     <task id="LOCAL−00057" summary="Ship now rotates upright after 10 seconds">
       <created>1682465317955</created>
@@ -454,7 +445,13 @@
       <option name="presentableId" value="LOCAL−00104" />
       <updated>1683070605640</updated>
     </task>
-    <option name="localTasksCounter" value="105" />
+    <task id="LOCAL−00105" summary="Added a fade out timer for the main menu music">
+      <created>1683072948723</created>
+      <option name="number" value="LOCAL−00105" />
+      <option name="presentableId" value="LOCAL−00105" />
+      <updated>1683072948723</updated>
+    </task>
+    <option name="localTasksCounter" value="106" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -476,7 +473,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="Player crosshair is now disabled when not in spaceship" />
     <MESSAGE value="Ship crosshair is now shown behind pause menu" />
     <MESSAGE value="Made loading screen loading text better" />
     <MESSAGE value="Made loading screen faster and more visually pleasing" />
@@ -501,6 +497,7 @@
     <MESSAGE value="Removed old spaceship script and scene object" />
     <MESSAGE value="Cleaned up code in main space-ship script" />
     <MESSAGE value="Changed Vars to explicit type" />
-    <option name="LAST_COMMIT_MESSAGE" value="Changed Vars to explicit type" />
+    <MESSAGE value="Added a fade out timer for the main menu music" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added a fade out timer for the main menu music" />
   </component>
 </project>
