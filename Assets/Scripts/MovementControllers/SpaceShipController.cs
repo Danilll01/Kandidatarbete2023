@@ -44,6 +44,7 @@ public class SpaceShipController : MonoBehaviour
     [SerializeField] private Sprite[] travelTypeSprites;
     [SerializeField] private Texture2D[] travelTypeTextures;
     [SerializeField] private SpaceShipTransition shipTransitionScript;
+    [SerializeField] private HandleAudio audio;
 
     // Ship movement
     private float speed;
@@ -65,6 +66,8 @@ public class SpaceShipController : MonoBehaviour
     private float inactiveTimer = 0;
     private bool orbitPlanetMovement = true;
     private readonly Collider[] activateHoverSpring = new Collider[1];
+    
+    
 
     /// <summary>
     /// Initializes ship controller script
@@ -77,6 +80,7 @@ public class SpaceShipController : MonoBehaviour
         defaultShipRotation = spaceshipRoot.localEulerAngles;
         rotationY = defaultShipRotation.z;
         inactiveTimer = inactiveTime;
+        audio.Initialize();
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
@@ -107,20 +111,21 @@ public class SpaceShipController : MonoBehaviour
         mouseYSmooth = Mathf.Lerp(mouseYSmooth, currentMouseYMovement * rotationSpeed, 0.02f * mouseSensitivity);
 
         // Change movement type between orbit follow and straight
-        if (Input.GetButtonDown("ChangeShipMovementType"))
+        if (Input.GetButtonDown("ChangeShipMovementType") && Universe.player.boarded)
         {
-            
             if (orbitPlanetMovement)
             {
                 lookRotation = standardShip.transform.rotation * lookRotation;
                 travelModeGUIImage.sprite = travelTypeSprites[1];
                 travelModePanel.mainTexture = travelTypeTextures[1];
+                audio.PlaySimpleSoundEffect(HandleAudio.SoundEffects.Toggle);
             }
             else
             {
                 lookRotation = Quaternion.Inverse(standardShip.transform.rotation) * transform.rotation;
                 travelModeGUIImage.sprite = travelTypeSprites[0];
                 travelModePanel.mainTexture = travelTypeTextures[0];
+                audio.PlaySimpleSoundEffect(HandleAudio.SoundEffects.Toggle);
             }
             orbitPlanetMovement = !orbitPlanetMovement;
             
@@ -184,6 +189,9 @@ public class SpaceShipController : MonoBehaviour
         
         //Set the velocity, so you can move
         physicsBody.velocity = new Vector3(moveDirection.x, moveDirection.y, moveDirection.z);
+        
+        // Plays thruster audio if needed
+        PlayThrustAudio(newMovementVector);
 
         //Camera follow
         mainCamera.transform.position = Vector3.Lerp(mainCamera.transform.position, cameraPosition.position, Time.deltaTime * cameraSmooth);
@@ -210,7 +218,21 @@ public class SpaceShipController : MonoBehaviour
         // Add hover forces
         CalculateSpringForces();
     }
-    
+
+    // Plays thruster audio if needed 
+    private void PlayThrustAudio(Vector3 newMovementVector)
+    {
+        // Play thrust sound effect if player is accelerating
+        if (newMovementVector.magnitude > 0f)
+        {
+            audio.PlaySoundEffect(HandleAudio.SoundEffects.Thrust, true, false, 0.5f);
+        }
+        else
+        {
+            audio.TurnOffCurrentSoundEffect(0.2f);
+        }
+    }
+
 
     // Rotates the main ship body
     private void RotateMainShip()

@@ -628,6 +628,7 @@ MonoBehaviour:
   - {fileID: 2800000, guid: 96d9d259038b0d245bd1181cff11566d, type: 3}
   - {fileID: 2800000, guid: 363f7ef7b0b47e54bbb0f68b16182283, type: 3}
   shipTransitionScript: {fileID: 3966985094543174574}
+  audio: {fileID: 0}
 --- !u!114 &3966985094543174574
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -645,6 +646,7 @@ MonoBehaviour:
   maxLandingAngle: 40
   landingTime: 1
   errorSound: {fileID: 8300000, guid: a2bf0acc56c0dcc438c691b727d48ba8, type: 3}
+  audio: {fileID: 0}
 --- !u!114 &6720220075474735342
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -732,7 +734,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.1
   m_Pitch: 1
   Loop: 0
   Mute: 0

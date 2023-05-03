@@ -33,6 +33,7 @@ public class SpaceShipTransition : MonoBehaviour
     [Header("Audio stuff")]
     private AudioSource audioPlayer;
     [SerializeField] private AudioClip errorSound;
+    [SerializeField] private HandleAudio audio;
     
     /// <summary>
     /// Initializes ship transition script
@@ -44,7 +45,7 @@ public class SpaceShipTransition : MonoBehaviour
 
         transform.position = player.transform.position;
         transform.rotation = player.transform.rotation;
-        EmbarkInShip();
+        EmbarkInShip(true);
         transitionToPos = transform.position;
         transitionToRot = transform.rotation;
         transitionProgress = float.MaxValue;
@@ -99,6 +100,7 @@ public class SpaceShipTransition : MonoBehaviour
                 transitionToRot = landingTarget.rotation;
                 transitioning = true;
                 shouldDisembark = true;
+                audio.PlaySoundEffect(HandleAudio.SoundEffects.Landing, false, true, 0.1f, 0.2f);
                 
                 //Transition method handles moving the player out of the ship
             }
@@ -116,7 +118,7 @@ public class SpaceShipTransition : MonoBehaviour
             
             //Embark
             //Move player into ship
-            EmbarkInShip();
+            EmbarkInShip(false);
             
             transitioning = true;
         }
@@ -142,8 +144,14 @@ public class SpaceShipTransition : MonoBehaviour
         }
     }
     
-    private void EmbarkInShip()
+    private void EmbarkInShip(bool initialization)
     {
+        if (!initialization)
+        {
+            StartCoroutine(audio.UpdateMusicClipIndex(HandleAudio.BackgroundClips.Space));
+            audio.PlaySoundEffect(HandleAudio.SoundEffects.TakeOff, false, true, 0.1f, 0.2f);
+        }
+        
         Transform playerTransform = player.transform;
         
         playerTransform.SetParent(mountedPos);
@@ -163,6 +171,9 @@ public class SpaceShipTransition : MonoBehaviour
 
     private void DisembarkFromShip()
     {
+        audio.TurnOffCurrentSoundEffect(0.1f);
+        StartCoroutine(audio.UpdateMusicClipIndex(HandleAudio.BackgroundClips.Planet));
+        
         Transform shipTransform = transform;
         Transform playerTransform = player.transform;
         

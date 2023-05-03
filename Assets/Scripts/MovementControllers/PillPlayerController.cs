@@ -7,12 +7,14 @@ using UnityEngine.Serialization;
 [RequireComponent(typeof(Rigidbody))]
 public class PillPlayerController : MonoBehaviour
 {
+    [Header("Setup")]
     public Planet attractor = null;
     public Camera firstPersonCamera;
     [SerializeField] private PlayerWater playerWater;
     [SerializeField] private SkinnedMeshRenderer playerModelHead;
     private Rigidbody body;
     [HideInInspector] public bool paused;
+    [SerializeField] private HandleAudio audio;
 
     [Header("Movement")]
     public float movementSpeed;
@@ -219,6 +221,7 @@ public class PillPlayerController : MonoBehaviour
         }
         if (jump)
         {
+            audio.PlaySimpleSoundEffect(HandleAudio.SoundEffects.Jump, false);
             movementVector.y = jumpForce;
         }
 
