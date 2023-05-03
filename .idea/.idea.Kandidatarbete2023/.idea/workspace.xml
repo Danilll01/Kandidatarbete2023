@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Added player sit animation when the player is in the ship" />
+    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Player model head is now visible when in spaceship" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -33,11 +33,7 @@
     </option>
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="mock://D:/Unity/Projects/Kandidatarbete2023/Assets/Prefabs/Player/ShipMain.prefab" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Atmosphere/AtmosphereHandler.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="mock://D:/Unity/Projects/Kandidatarbete2023/Assets/Scripts/Debug/MenuManager.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://D:/Unity/Projects/Kandidatarbete2023/Assets/Scripts/Debug/MenuManager.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://D:/Unity/Projects/Kandidatarbete2023/Assets/Scripts/Menus/LoadManager.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipCameraMover.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipController.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipTransition.cs" root0="FORCE_HIGHLIGHTING" />
