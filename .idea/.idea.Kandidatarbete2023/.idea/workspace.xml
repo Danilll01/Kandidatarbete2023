@@ -4,11 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Player model head is now visible when in spaceship">
+    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Added wind noise when player moves on ground">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Audio/HandleAudio.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Audio/HandleAudio.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/MovementControllers/PillPlayerController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/MovementControllers/PillPlayerController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipController.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -158,13 +157,7 @@
       <workItem from="1682861907126" duration="33741000" />
       <workItem from="1682952065891" duration="20322000" />
       <workItem from="1683036367666" duration="5009000" />
-      <workItem from="1683143710028" duration="1847000" />
-    </task>
-    <task id="LOCAL−00056" summary="Pointer change again">
-      <created>1682126202179</created>
-      <option name="number" value="LOCAL−00056" />
-      <option name="presentableId" value="LOCAL−00056" />
-      <updated>1682126202179</updated>
+      <workItem from="1683143710028" duration="3187000" />
     </task>
     <task id="LOCAL−00057" summary="Ship now rotates upright after 10 seconds">
       <created>1682465317955</created>
@@ -454,7 +447,13 @@
       <option name="presentableId" value="LOCAL−00104" />
       <updated>1683068525215</updated>
     </task>
-    <option name="localTasksCounter" value="105" />
+    <task id="LOCAL−00105" summary="Added wind noise when player moves on ground">
+      <created>1683146118817</created>
+      <option name="number" value="LOCAL−00105" />
+      <option name="presentableId" value="LOCAL−00105" />
+      <updated>1683146118817</updated>
+    </task>
+    <option name="localTasksCounter" value="106" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -476,7 +475,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="Player crosshair is now disabled when not in spaceship" />
     <MESSAGE value="Ship crosshair is now shown behind pause menu" />
     <MESSAGE value="Made loading screen loading text better" />
     <MESSAGE value="Made loading screen faster and more visually pleasing" />
@@ -501,6 +499,7 @@
     <MESSAGE value="Removed old spaceship script and scene object" />
     <MESSAGE value="Camera view does now start in player ship when spawned in" />
     <MESSAGE value="Added player sit animation when the player is in the ship" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added player sit animation when the player is in the ship" />
+    <MESSAGE value="Added wind noise when player moves on ground" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added wind noise when player moves on ground" />
   </component>
 </project>
