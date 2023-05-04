@@ -850,6 +850,11 @@ PrefabInstance:
       objectReference: {fileID: 1122585598}
     - target: {fileID: 3421500242679807733, guid: 479edb22e1790754688e5f093ada7ddf,
         type: 3}
+      propertyPath: speedGauge
+      value: 
+      objectReference: {fileID: 712955575}
+    - target: {fileID: 3421500242679807733, guid: 479edb22e1790754688e5f093ada7ddf,
+        type: 3}
       propertyPath: crosshairTexture
       value: 
       objectReference: {fileID: 1922088171}
@@ -1461,7 +1466,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_margin: {x: 0, y: 0, z: -325.662, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
