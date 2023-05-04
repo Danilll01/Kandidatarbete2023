@@ -21,6 +21,7 @@ public class StartManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI volumeText;
     [SerializeField] private AudioClip[] buttonHoverSounds;
     [SerializeField] private AudioClip[] sliderClickSounds;
+    [SerializeField] private AudioClip[] writingClickSounds;
     
     [Header("Fade-out")]
     [SerializeField] private Image fadeOutImage;
@@ -124,6 +125,14 @@ public class StartManager : MonoBehaviour
     public void PlayButtonHoverSound()
     {
         musicAudioSource.PlayOneShot(buttonHoverSounds[Random.Range(0, buttonHoverSounds.Length)]);
+    }
+    
+    /// <summary>
+    /// Plays a random writing sound
+    /// </summary>
+    public void PlayWritingSound()
+    {
+        musicAudioSource.PlayOneShot(writingClickSounds[Random.Range(0, writingClickSounds.Length)]);
     }
     
     /// <summary>
