@@ -4,10 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Changed Canvas scaler">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Menus/StartManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Menus/StartManager.cs" afterDir="false" />
-    </list>
+    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Added circular main transition" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -162,13 +159,7 @@
       <workItem from="1682861907126" duration="33741000" />
       <workItem from="1682952065891" duration="20322000" />
       <workItem from="1683036367666" duration="5009000" />
-      <workItem from="1683143710028" duration="15462000" />
-    </task>
-    <task id="LOCAL−00069" summary="Added Comments">
-      <created>1682773476964</created>
-      <option name="number" value="LOCAL−00069" />
-      <option name="presentableId" value="LOCAL−00069" />
-      <updated>1682773476964</updated>
+      <workItem from="1683143710028" duration="16077000" />
     </task>
     <task id="LOCAL−00070" summary="Fixed landing bug when entering and leaving planet">
       <created>1682819195675</created>
@@ -458,7 +449,13 @@
       <option name="presentableId" value="LOCAL−00117" />
       <updated>1683161647935</updated>
     </task>
-    <option name="localTasksCounter" value="118" />
+    <task id="LOCAL−00118" summary="Added circular main transition">
+      <created>1683164445799</created>
+      <option name="number" value="LOCAL−00118" />
+      <option name="presentableId" value="LOCAL−00118" />
+      <updated>1683164445799</updated>
+    </task>
+    <option name="localTasksCounter" value="119" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -480,7 +477,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="Changed moon and planet orbiting speed when on planet / moon" />
     <MESSAGE value="Fixed skybox rotation" />
     <MESSAGE value="Added new crosshair options" />
     <MESSAGE value="You can now toggle between different ship movement strategies" />
@@ -505,6 +501,7 @@
     <MESSAGE value="Saved main scene" />
     <MESSAGE value="The pause menu now also has nice button hover sounds" />
     <MESSAGE value="Changed Canvas scaler" />
-    <option name="LAST_COMMIT_MESSAGE" value="Changed Canvas scaler" />
+    <MESSAGE value="Added circular main transition" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added circular main transition" />
   </component>
 </project>
