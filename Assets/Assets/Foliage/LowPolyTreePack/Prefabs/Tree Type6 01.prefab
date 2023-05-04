@@ -103,7 +103,7 @@ LODGroup:
     fadeTransitionWidth: 0
     renderers:
     - renderer: {fileID: 2348728}
-  m_Enabled: 1
+  m_Enabled: 0
 --- !u!136 &1989705387328023302
 CapsuleCollider:
   m_ObjectHideFlags: 0

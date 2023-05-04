@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Added circular main transition" />
+    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Added dithering on cameras that did not have it" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -159,13 +159,7 @@
       <workItem from="1682861907126" duration="33741000" />
       <workItem from="1682952065891" duration="20322000" />
       <workItem from="1683036367666" duration="5009000" />
-      <workItem from="1683143710028" duration="16077000" />
-    </task>
-    <task id="LOCAL−00070" summary="Fixed landing bug when entering and leaving planet">
-      <created>1682819195675</created>
-      <option name="number" value="LOCAL−00070" />
-      <option name="presentableId" value="LOCAL−00070" />
-      <updated>1682819195676</updated>
+      <workItem from="1683143710028" duration="16803000" />
     </task>
     <task id="LOCAL−00071" summary="Added RaySpring class">
       <created>1682864353283</created>
@@ -455,7 +449,13 @@
       <option name="presentableId" value="LOCAL−00118" />
       <updated>1683164445799</updated>
     </task>
-    <option name="localTasksCounter" value="119" />
+    <task id="LOCAL−00119" summary="Added dithering on cameras that did not have it">
+      <created>1683164526580</created>
+      <option name="number" value="LOCAL−00119" />
+      <option name="presentableId" value="LOCAL−00119" />
+      <updated>1683164526580</updated>
+    </task>
+    <option name="localTasksCounter" value="120" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -477,7 +477,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="Fixed skybox rotation" />
     <MESSAGE value="Added new crosshair options" />
     <MESSAGE value="You can now toggle between different ship movement strategies" />
     <MESSAGE value="Turning inactive ship upright now works for both movement options" />
@@ -502,6 +501,7 @@
     <MESSAGE value="The pause menu now also has nice button hover sounds" />
     <MESSAGE value="Changed Canvas scaler" />
     <MESSAGE value="Added circular main transition" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added circular main transition" />
+    <MESSAGE value="Added dithering on cameras that did not have it" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added dithering on cameras that did not have it" />
   </component>
 </project>
