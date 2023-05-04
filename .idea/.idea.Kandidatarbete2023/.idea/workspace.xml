@@ -4,8 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="The pause menu now also has nice button hover sounds">
+    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Changed Canvas scaler">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Menus/StartManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Menus/StartManager.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -35,6 +36,8 @@
     </option>
   </component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="mock://D:/Unity/Projects/Kandidatarbete2023/Assets/Scenes/Load Menu.unity" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://D:/Unity/Projects/Kandidatarbete2023/Assets/Scenes/Main.unity" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Atmosphere/AtmosphereHandler.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="mock://D:/Unity/Projects/Kandidatarbete2023/Assets/Scripts/Audio/HandleAudio.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://D:/Unity/Projects/Kandidatarbete2023/Assets/Scripts/Debug/MenuManager.cs" root0="SKIP_HIGHLIGHTING" />
@@ -159,13 +162,7 @@
       <workItem from="1682861907126" duration="33741000" />
       <workItem from="1682952065891" duration="20322000" />
       <workItem from="1683036367666" duration="5009000" />
-      <workItem from="1683143710028" duration="14585000" />
-    </task>
-    <task id="LOCAL−00068" summary="Free cam is now always centered at the back from the start when you use it">
-      <created>1682734583831</created>
-      <option name="number" value="LOCAL−00068" />
-      <option name="presentableId" value="LOCAL−00068" />
-      <updated>1682734583831</updated>
+      <workItem from="1683143710028" duration="15462000" />
     </task>
     <task id="LOCAL−00069" summary="Added Comments">
       <created>1682773476964</created>
@@ -455,7 +452,13 @@
       <option name="presentableId" value="LOCAL−00116" />
       <updated>1683160596698</updated>
     </task>
-    <option name="localTasksCounter" value="117" />
+    <task id="LOCAL−00117" summary="Changed Canvas scaler">
+      <created>1683161647935</created>
+      <option name="number" value="LOCAL−00117" />
+      <option name="presentableId" value="LOCAL−00117" />
+      <updated>1683161647935</updated>
+    </task>
+    <option name="localTasksCounter" value="118" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -477,7 +480,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="Fixed ship rotation when leaving a planet" />
     <MESSAGE value="Changed moon and planet orbiting speed when on planet / moon" />
     <MESSAGE value="Fixed skybox rotation" />
     <MESSAGE value="Added new crosshair options" />
@@ -502,6 +504,7 @@
     <MESSAGE value="There now plays a writing sound when you enter the seed on the main menu" />
     <MESSAGE value="Saved main scene" />
     <MESSAGE value="The pause menu now also has nice button hover sounds" />
-    <option name="LAST_COMMIT_MESSAGE" value="The pause menu now also has nice button hover sounds" />
+    <MESSAGE value="Changed Canvas scaler" />
+    <option name="LAST_COMMIT_MESSAGE" value="Changed Canvas scaler" />
   </component>
 </project>

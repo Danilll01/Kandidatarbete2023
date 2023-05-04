@@ -24,7 +24,7 @@ public class StartManager : MonoBehaviour
     [SerializeField] private AudioClip[] writingClickSounds;
     
     [Header("Fade-out")]
-    [SerializeField] private Image fadeOutImage;
+    [SerializeField] private RectTransform fadeOutImage;
     [SerializeField] private float fadeOutTimer = 0.4f;
 
     private void Awake()
@@ -98,8 +98,7 @@ public class StartManager : MonoBehaviour
         for (float timePassed = 0f; timePassed < fadeDuration; timePassed += Time.deltaTime)
         {
             musicAudioSource.volume = Mathf.Lerp(currentVolume, 0.01f, timePassed / fadeDuration);
-            float newAlpha = Mathf.Lerp(0f, 255f, timePassed / fadeDuration);
-            fadeOutImage.color = new Color(fadeOutImage.color.r, fadeOutImage.color.g, fadeOutImage.color.b, newAlpha / 255f);
+            fadeOutImage.localScale = Vector3.Lerp(Vector3.zero, Vector3.one, timePassed / fadeDuration);
             
             yield return null;
         }
