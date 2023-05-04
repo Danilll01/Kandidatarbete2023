@@ -20,6 +20,7 @@ public class StartManager : MonoBehaviour
     [SerializeField] private Slider volumeSlider;
     [SerializeField] private TextMeshProUGUI volumeText;
     [SerializeField] private AudioClip[] buttonHoverSounds;
+    [SerializeField] private AudioClip[] sliderClickSounds;
     
     [Header("Fade-out")]
     [SerializeField] private Image fadeOutImage;
@@ -49,7 +50,7 @@ public class StartManager : MonoBehaviour
             nrOfPlanetsText.text = slider.value.ToString();
         }
 
-        PlayButtonHoverSound();
+        musicAudioSource.PlayOneShot(sliderClickSounds[Random.Range(0, sliderClickSounds.Length)]);
     }
 
     /// <summary>
