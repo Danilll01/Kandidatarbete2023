@@ -1,11 +1,13 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class HandleAudio : MonoBehaviour
 {
     [SerializeField] private AudioClip[] backgroundMusicAudioClips;
     [SerializeField] private AudioClip[] soundEffectsAudioClips;
+    [SerializeField] private AudioClip[] buttonHoverSounds;
     [SerializeField] private const float backgroundMusicVolume = 0.2f;
     [SerializeField] private const float soundEffectsVolume = 0.6f;
     [SerializeField] private AudioSource musicAudioSource;
@@ -68,6 +70,14 @@ public class HandleAudio : MonoBehaviour
         Wind
     }
 
+    /// <summary>
+    /// Plays a random button hover sound
+    /// </summary>
+    public void PlayButtonHoverSound()
+    {
+        musicAudioSource.PlayOneShot(buttonHoverSounds[Random.Range(0, buttonHoverSounds.Length)]);
+    }
+    
     /// <summary>
     /// Plays the specified sound effect directly (over sound already playing) with the standard sound effect volume
     /// </summary>
