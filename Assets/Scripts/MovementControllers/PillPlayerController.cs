@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using ExtendedRandom;
+using TMPro;
 using UnityEngine.Rendering;
 using UnityEngine.Serialization;
 
@@ -15,6 +16,7 @@ public class PillPlayerController : MonoBehaviour
     private Rigidbody body;
     [HideInInspector] public bool paused;
     [SerializeField] private HandleAudio audio;
+    [SerializeField] private TextMeshProUGUI temperatureHUD;
 
     [Header("Movement")]
     public float movementSpeed;
@@ -101,6 +103,11 @@ public class PillPlayerController : MonoBehaviour
             {
                 if (!ReferenceEquals(attractor, playerWater.planet)) playerWater.UpdatePlanet(attractor);
                 playerWater.UpdateWater(transform.position);
+                HandleTemperatureGUI();
+            }
+            else
+            {
+                temperatureHUD.SetText("Temperature: ---");
             }
         }
         
@@ -162,8 +169,15 @@ public class PillPlayerController : MonoBehaviour
             isSprinting = false;
             animationRig.localPosition += new Vector3(0,0,0.015f);
         }
-        
     }
+
+    private void HandleTemperatureGUI()
+    {
+        float temperature = Biomes.EvaluteBiomeMapTemperature(attractor.biomeSettings, transform.localPosition, Vector3.Distance(attractor.transform.position, Universe.sunPosition.position));
+        temperature = Mathf.InverseLerp(-273, 1000, temperature);
+        temperatureHUD.SetText("Temperature: " + temperature + "°C");
+    }
+    
     private void HandleMovement()
     {
         //Keep old Y velocity. Rotates to world space, grabs y velocity and rotates back to planet orientation
