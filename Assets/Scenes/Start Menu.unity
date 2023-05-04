@@ -258,7 +258,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1783668271}
         m_TargetAssemblyTypeName: StartManager, Assembly-CSharp
-        m_MethodName: PlayButtonHoverSound
+        m_MethodName: PlayWritingSound
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3006,6 +3006,18 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 0afcf886da3b0ce44b879df1ab6c6ab4, type: 3}
   - {fileID: 8300000, guid: 574ebaae75021e449a260e37a1046a19, type: 3}
   - {fileID: 8300000, guid: 0c6603a77449e04448195ed8d6fbcce3, type: 3}
+  sliderClickSounds:
+  - {fileID: 8300000, guid: 9f29ab2a4f7dee949a60b838b2e7f9a2, type: 3}
+  - {fileID: 8300000, guid: a230f82c6bb55f34088df9a9cec6673b, type: 3}
+  - {fileID: 8300000, guid: 7daba7e5f7acdbd4783f41eaa44302e2, type: 3}
+  - {fileID: 8300000, guid: d8cf09f9371d14c4b96a244adf3dcd84, type: 3}
+  - {fileID: 8300000, guid: db507de02f960a44ca18b0d9bd2e4e47, type: 3}
+  - {fileID: 8300000, guid: 39159096baed7b94aa0f032fa1d76b09, type: 3}
+  writingClickSounds:
+  - {fileID: 8300000, guid: 3021cba3c682b14468e02c1e69a1e286, type: 3}
+  - {fileID: 8300000, guid: fe539345cb921ce47bde6d9a479ab187, type: 3}
+  - {fileID: 8300000, guid: a1c3fa61e72d01d46a0670e740e7c9a4, type: 3}
+  - {fileID: 8300000, guid: 5a23a876c9987c44381a2fbdcfac9b30, type: 3}
   fadeOutImage: {fileID: 1390719552}
   fadeOutTimer: 0.3
 --- !u!4 &1783668272
