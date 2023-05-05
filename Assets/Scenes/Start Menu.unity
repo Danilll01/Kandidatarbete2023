@@ -3007,12 +3007,12 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 574ebaae75021e449a260e37a1046a19, type: 3}
   - {fileID: 8300000, guid: 0c6603a77449e04448195ed8d6fbcce3, type: 3}
   sliderClickSounds:
-  - {fileID: 8300000, guid: 9f29ab2a4f7dee949a60b838b2e7f9a2, type: 3}
-  - {fileID: 8300000, guid: a230f82c6bb55f34088df9a9cec6673b, type: 3}
-  - {fileID: 8300000, guid: 7daba7e5f7acdbd4783f41eaa44302e2, type: 3}
-  - {fileID: 8300000, guid: d8cf09f9371d14c4b96a244adf3dcd84, type: 3}
-  - {fileID: 8300000, guid: db507de02f960a44ca18b0d9bd2e4e47, type: 3}
-  - {fileID: 8300000, guid: 39159096baed7b94aa0f032fa1d76b09, type: 3}
+  - {fileID: 8300000, guid: db110be1cb7092546929e6bc18f3df81, type: 3}
+  - {fileID: 8300000, guid: c38b5dd92032dbb43aa1402f7d82ea16, type: 3}
+  - {fileID: 8300000, guid: 09a2ee1de5e5fb04ca03f56072137a98, type: 3}
+  - {fileID: 8300000, guid: b9808a33934bf7143a73faa65d12bdf2, type: 3}
+  - {fileID: 8300000, guid: b6eba2c660225da41989e65980a004b3, type: 3}
+  - {fileID: 8300000, guid: ebb6171c9ad2b0d46a1e763b7c0ee67e, type: 3}
   writingClickSounds:
   - {fileID: 8300000, guid: 3021cba3c682b14468e02c1e69a1e286, type: 3}
   - {fileID: 8300000, guid: fe539345cb921ce47bde6d9a479ab187, type: 3}
