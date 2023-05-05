@@ -4,6 +4,7 @@ using UnityEngine;
 public class SolarSystemTransform : MonoBehaviour
 {
     [SerializeField] private SpawnPlanets spawnPlanets;
+    private TintFoliageTextures tintFoliageTexturesHandler;
     private Planet activePlanet;
     private Planet oldActivePlanet;
     private GameObject sun;
@@ -35,6 +36,7 @@ public class SolarSystemTransform : MonoBehaviour
         planetsParent = gameObject;
 
         player = Universe.player;
+        tintFoliageTexturesHandler = GetComponent<TintFoliageTextures>();
     }
 
     private void InitializeValues()
@@ -48,6 +50,7 @@ public class SolarSystemTransform : MonoBehaviour
                 Planet planet = spawnPlanets.bodies[i];
                 relativePlanetSunDistances[i] = planet.transform.parent.position;
             }
+            tintFoliageTexturesHandler.Initialize();
         }
 
         player.attractor = activePlanet;
@@ -185,6 +188,8 @@ public class SolarSystemTransform : MonoBehaviour
             MovePlanets();
             activePlanet.rotateMoons = true;
             oldActivePlanet = activePlanet;
+            tintFoliageTexturesHandler.planetGroundColor = activePlanet.groundColor;
+            tintFoliageTexturesHandler.TintTextures();
         }
     }
 

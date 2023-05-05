@@ -570,6 +570,26 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spawnPlanets: {fileID: 882231452}
+--- !u!114 &210303242
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 210303240}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 052880f739778804a85bdc1c1f77ee1a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  textureAndRows:
+  - texture: {fileID: 2800000, guid: 28a51d508c86a8948b59df81d5188b17, type: 3}
+    rowIndexesToTaint: 0400000005000000
+    totalNumberOfPixelsPerRow: 32
+  - texture: {fileID: 2800000, guid: 8ba8b94b5ab0c214fa2810a7df98a1a9, type: 3}
+    rowIndexesToTaint: 010000000200000003000000
+    totalNumberOfPixelsPerRow: 4
+  planetGroundColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!114 &301720325 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3421500242679807733, guid: 479edb22e1790754688e5f093ada7ddf,
