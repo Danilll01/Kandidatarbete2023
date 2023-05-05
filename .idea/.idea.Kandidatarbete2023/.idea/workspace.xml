@@ -4,10 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Added dithering on cameras that did not have it">
+    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Removed clipping sound from running, flying in ship and transitioning">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Audio/HandleAudio.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Audio/HandleAudio.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipTransition.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipTransition.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -39,6 +37,7 @@
   <component name="HighlightingSettingsPerFile">
     <setting file="mock://D:/Unity/Projects/Kandidatarbete2023/Assets/Scenes/Main.unity" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Atmosphere/AtmosphereHandler.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://D:/Unity/Projects/Kandidatarbete2023/Assets/Scripts/Audio/HandleAudio.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://D:/Unity/Projects/Kandidatarbete2023/Assets/Scripts/Audio/HandleAudio.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipCameraMover.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipController.cs" root0="FORCE_HIGHLIGHTING" />
@@ -160,12 +159,6 @@
       <workItem from="1682952065891" duration="20322000" />
       <workItem from="1683036367666" duration="5009000" />
       <workItem from="1683143710028" duration="16803000" />
-    </task>
-    <task id="LOCAL−00071" summary="Added RaySpring class">
-      <created>1682864353283</created>
-      <option name="number" value="LOCAL−00071" />
-      <option name="presentableId" value="LOCAL−00071" />
-      <updated>1682864353283</updated>
     </task>
     <task id="LOCAL−00072" summary="Force springs now works on spaceship">
       <created>1682880820059</created>
@@ -455,7 +448,13 @@
       <option name="presentableId" value="LOCAL−00119" />
       <updated>1683164526580</updated>
     </task>
-    <option name="localTasksCounter" value="120" />
+    <task id="LOCAL−00120" summary="Removed clipping sound from running, flying in ship and transitioning">
+      <created>1683294513481</created>
+      <option name="number" value="LOCAL−00120" />
+      <option name="presentableId" value="LOCAL−00120" />
+      <updated>1683294513481</updated>
+    </task>
+    <option name="localTasksCounter" value="121" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -477,7 +476,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="Added new crosshair options" />
     <MESSAGE value="You can now toggle between different ship movement strategies" />
     <MESSAGE value="Turning inactive ship upright now works for both movement options" />
     <MESSAGE value="Hopefully fixed glitched where the two travel mode indicators mismatched" />
@@ -502,6 +500,7 @@
     <MESSAGE value="Changed Canvas scaler" />
     <MESSAGE value="Added circular main transition" />
     <MESSAGE value="Added dithering on cameras that did not have it" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added dithering on cameras that did not have it" />
+    <MESSAGE value="Removed clipping sound from running, flying in ship and transitioning" />
+    <option name="LAST_COMMIT_MESSAGE" value="Removed clipping sound from running, flying in ship and transitioning" />
   </component>
 </project>

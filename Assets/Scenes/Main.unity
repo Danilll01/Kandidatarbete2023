@@ -2196,6 +2196,11 @@ PrefabInstance:
       propertyPath: buttonHoverSounds.Array.data[3]
       value: 
       objectReference: {fileID: 8300000, guid: 0c6603a77449e04448195ed8d6fbcce3, type: 3}
+    - target: {fileID: 4265903889893730575, guid: 0144d9268bb44a447bff4bc281dbebc2,
+        type: 3}
+      propertyPath: soundEffectsAudioClips.Array.data[6]
+      value: 
+      objectReference: {fileID: 8300000, guid: abfa729838c972c4cb10dd4ed4581300, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0144d9268bb44a447bff4bc281dbebc2, type: 3}
 --- !u!114 &1122585598 stripped
