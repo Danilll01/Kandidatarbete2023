@@ -255,14 +255,33 @@ public class Foliage : MonoBehaviour
         BiomeValue localBiome = Biomes.EvaluteBiomeMap(planet.Biome, hit.point, planet.DistanceToSun);
         int[] acceptableIndexes = new int[foliageHandler.foliageCollections.Length];
 
+        int j = 0;
+
         for (int i = 0; i < foliageHandler.foliageCollections.Length; i++)
         {
             if (localBiome.IsInsideRange(foliageHandler.foliageCollections[i].biomeRange))
             {
                 // Add indicies
+                acceptableIndexes[j] = i;
+                j++;
+            } else
+            {
+                //print("Not in T:" + localBiome.trees + "  T coll:" + foliageHandler.foliageCollections[i].biomeRange.treesMin);
             }
         }
 
+        int chosenIndex = acceptableIndexes[random.Next(j)];
+
+        Quaternion rotation = Quaternion.LookRotation(rayOrigin) * Quaternion.Euler(90, 0, 0);
+        rotation *= Quaternion.Euler(0, random.Next(0, 360), 0);
+        if (j > 0)
+        {
+            FoliageCollection chosenCollection = foliageHandler.foliageCollections[chosenIndex];
+
+            GameObject foliageObj = chosenCollection.gameObjects[random.Next(chosenCollection.gameObjects.Length)];
+            Instantiate(foliageObj, hit.point - hit.point.normalized * 0.2f, rotation, transform);
+        }
+            
 
         /*
         // 1 in 10 to spawn a forgable

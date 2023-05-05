@@ -747,7 +747,26 @@ MonoBehaviour:
       temperatureMin: 0
       temperatureMax: 0
       treesDependent: 1
-      treesMin: 0.162
+      treesMin: 0.706
+      treesMax: 1
+  - name: Warm trees
+    gameObjects:
+    - {fileID: 1493958779012120596, guid: b9de24523a11d714db3851b5f0f9d527, type: 3}
+    - {fileID: 7405846476849542632, guid: c6308cb7062fac34e8e50600086b12a1, type: 3}
+    - {fileID: 5202732821079448320, guid: cebfacc247a640945a2c30b442202fca, type: 3}
+    - {fileID: 160606, guid: 5c3cbac9d5eae3844a928d36e6dbd1a6, type: 3}
+    - {fileID: 174854, guid: 3fd9507fb16d56044bcf520c1d14427c, type: 3}
+    - {fileID: 118422, guid: 107cc8771223daf48be99527559937ff, type: 3}
+    - {fileID: 136866, guid: 2327ed4809c34cf4c97a5316db3d4796, type: 3}
+    biomeRange:
+      mountainRelevant: 0
+      mountainMin: 0
+      mountainMax: 0
+      temperatureDependent: 1
+      temperatureMin: 0.265
+      temperatureMax: 1
+      treesDependent: 0
+      treesMin: 0.706
       treesMax: 1
   isInstantiated: 0
   treeNr: 0
