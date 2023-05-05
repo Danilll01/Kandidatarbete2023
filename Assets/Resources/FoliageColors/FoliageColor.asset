@@ -9,9 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 0}
+  m_Script: {fileID: 11500000, guid: a32c17e8181c0ea4d8b4166d697c321e, type: 3}
   m_Name: FoliageColor
-  m_EditorClassIdentifier: Assembly-CSharp::FoliageColor
+  m_EditorClassIdentifier: 
   textureAndRows:
   - texture: {fileID: 2800000, guid: 28a51d508c86a8948b59df81d5188b17, type: 3}
     material: {fileID: 2100000, guid: 93caadf4359ae8143aad35b3145d31af, type: 2}

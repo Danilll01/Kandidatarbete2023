@@ -9,7 +9,7 @@ using UnityEditor;
 
 public class TintFoliageTextures : MonoBehaviour
 {
-
+    public Material[] textureMaterials;
     private TextureAndRows[] textureAndRows;
     private Texture2D[] copiedTextures;
 
@@ -37,7 +37,7 @@ public class TintFoliageTextures : MonoBehaviour
             newTexture.SetPixels(texture.GetPixels());
             newTexture.Apply();
             copiedTextures[i] = newTexture;
-            textureAndRows[i].material.mainTexture = newTexture;
+            textureMaterials[i].mainTexture = newTexture;
             originalColors.Add(newTexture.GetPixels());
         }
     }
@@ -94,21 +94,5 @@ public class TintFoliageTextures : MonoBehaviour
             }
         }
     }
-}
-
-[CreateAssetMenu(fileName = "FoliageColor", menuName = "ScriptableObjects/CreateAssetForFoliageColor", order = 1)]
-public class FoliageColor : ScriptableObject
-{
-    public TextureAndRows[] textureAndRows;
-}
-
-
-[System.Serializable]
-public struct TextureAndRows
-{
-    public Texture2D texture;
-    public Material material;
-    public int[] rowIndexesToTaint;
-    public int totalNumberOfPixelsPerRow;
 }
 
