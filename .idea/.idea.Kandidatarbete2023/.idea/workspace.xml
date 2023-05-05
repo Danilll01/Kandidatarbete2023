@@ -4,7 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Applied these changes" />
+    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Lowered the seed input sound even more">
+      <change beforePath="$PROJECT_DIR$/Assets/Sounds/Music and Sound Effects/HoverSounds/Write1.wav" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Sounds/Music and Sound Effects/HoverSounds/Write1.wav" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Sounds/Music and Sound Effects/HoverSounds/Write2.wav" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Sounds/Music and Sound Effects/HoverSounds/Write2.wav" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Sounds/Music and Sound Effects/HoverSounds/Write3.wav" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Sounds/Music and Sound Effects/HoverSounds/Write3.wav" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Sounds/Music and Sound Effects/HoverSounds/Write4.wav" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Sounds/Music and Sound Effects/HoverSounds/Write4.wav" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -157,12 +162,6 @@
       <workItem from="1682952065891" duration="20322000" />
       <workItem from="1683036367666" duration="5009000" />
       <workItem from="1683143710028" duration="16803000" />
-    </task>
-    <task id="LOCAL−00076" summary="Tuned hover springs">
-      <created>1682891040209</created>
-      <option name="number" value="LOCAL−00076" />
-      <option name="presentableId" value="LOCAL−00076" />
-      <updated>1682891040209</updated>
     </task>
     <task id="LOCAL−00077" summary="Added force that pulls the player down when inactive">
       <created>1682892862310</created>
@@ -452,7 +451,13 @@
       <option name="presentableId" value="LOCAL−00124" />
       <updated>1683327435681</updated>
     </task>
-    <option name="localTasksCounter" value="125" />
+    <task id="LOCAL−00125" summary="Lowered the seed input sound even more">
+      <created>1683328756639</created>
+      <option name="number" value="LOCAL−00125" />
+      <option name="presentableId" value="LOCAL−00125" />
+      <updated>1683328756639</updated>
+    </task>
+    <option name="localTasksCounter" value="126" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -474,7 +479,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="Changed loading screen text to also have dots..." />
     <MESSAGE value="Added mouse sensitivity option for spaceship and increased it" />
     <MESSAGE value="Removed old spaceship script and scene object" />
     <MESSAGE value="Camera view does now start in player ship when spawned in" />
@@ -499,6 +503,7 @@
     <MESSAGE value="Changed the wind noise to the one I think sounded best" />
     <MESSAGE value="Added new files for both the slider and lowered the sound for the seed input" />
     <MESSAGE value="Applied these changes" />
-    <option name="LAST_COMMIT_MESSAGE" value="Applied these changes" />
+    <MESSAGE value="Lowered the seed input sound even more" />
+    <option name="LAST_COMMIT_MESSAGE" value="Lowered the seed input sound even more" />
   </component>
 </project>
