@@ -4,9 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Changed the wind noise to the one I think sounded best">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/workspace.xml" afterDir="false" />
-    </list>
+    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Applied these changes" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -159,18 +157,6 @@
       <workItem from="1682952065891" duration="20322000" />
       <workItem from="1683036367666" duration="5009000" />
       <workItem from="1683143710028" duration="16803000" />
-    </task>
-    <task id="LOCAL−00074" summary="Added comment">
-      <created>1682881225052</created>
-      <option name="number" value="LOCAL−00074" />
-      <option name="presentableId" value="LOCAL−00074" />
-      <updated>1682881225052</updated>
-    </task>
-    <task id="LOCAL−00075" summary="Now does not cast rays every frame">
-      <created>1682888804205</created>
-      <option name="number" value="LOCAL−00075" />
-      <option name="presentableId" value="LOCAL−00075" />
-      <updated>1682888804205</updated>
     </task>
     <task id="LOCAL−00076" summary="Tuned hover springs">
       <created>1682891040209</created>
@@ -454,7 +440,19 @@
       <option name="presentableId" value="LOCAL−00122" />
       <updated>1683324397461</updated>
     </task>
-    <option name="localTasksCounter" value="123" />
+    <task id="LOCAL−00123" summary="Added new files for both the slider and lowered the sound for the seed input">
+      <created>1683327427530</created>
+      <option name="number" value="LOCAL−00123" />
+      <option name="presentableId" value="LOCAL−00123" />
+      <updated>1683327427530</updated>
+    </task>
+    <task id="LOCAL−00124" summary="Applied these changes">
+      <created>1683327435681</created>
+      <option name="number" value="LOCAL−00124" />
+      <option name="presentableId" value="LOCAL−00124" />
+      <updated>1683327435681</updated>
+    </task>
+    <option name="localTasksCounter" value="125" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -476,8 +474,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="Hopefully fixed glitched where the two travel mode indicators mismatched" />
-    <MESSAGE value="Made ship panel be a little smaller and not as wide" />
     <MESSAGE value="Changed loading screen text to also have dots..." />
     <MESSAGE value="Added mouse sensitivity option for spaceship and increased it" />
     <MESSAGE value="Removed old spaceship script and scene object" />
@@ -501,6 +497,8 @@
     <MESSAGE value="Removed clipping sound from running, flying in ship and transitioning" />
     <MESSAGE value="Added many different possible wind sounds" />
     <MESSAGE value="Changed the wind noise to the one I think sounded best" />
-    <option name="LAST_COMMIT_MESSAGE" value="Changed the wind noise to the one I think sounded best" />
+    <MESSAGE value="Added new files for both the slider and lowered the sound for the seed input" />
+    <MESSAGE value="Applied these changes" />
+    <option name="LAST_COMMIT_MESSAGE" value="Applied these changes" />
   </component>
 </project>
