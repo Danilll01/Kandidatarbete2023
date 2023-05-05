@@ -740,9 +740,9 @@ MonoBehaviour:
     - {fileID: 166856, guid: 99a48108c5a1932488c06e519f6097f4, type: 3}
     - {fileID: 184622, guid: c7bcf19bbfa57ed4ea9147dff66d5542, type: 3}
     biomeRange:
-      mountainRelevant: 0
+      mountainRelevant: 1
       mountainMin: 0
-      mountainMax: 0
+      mountainMax: 0.457
       temperatureDependent: 0
       temperatureMin: 0
       temperatureMax: 0

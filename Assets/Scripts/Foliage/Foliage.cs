@@ -279,7 +279,8 @@ public class Foliage : MonoBehaviour
             FoliageCollection chosenCollection = foliageHandler.foliageCollections[chosenIndex];
 
             GameObject foliageObj = chosenCollection.gameObjects[random.Next(chosenCollection.gameObjects.Length)];
-            Instantiate(foliageObj, hit.point - hit.point.normalized * 0.2f, rotation, transform);
+            //Instantiate(foliageObj, hit.point - hit.point.normalized * 0.2f, rotation, transform);
+            SpawnTreesInForest(foliageObj, rayOrigin);
         }
             
 
@@ -303,7 +304,7 @@ public class Foliage : MonoBehaviour
 
         if (treeType != 0)
         {
-            SpawnTreesInForest(treeType, rayOrigin);
+            //SpawnTreesInForest(treeType, rayOrigin);
         }
         else
         {
@@ -326,21 +327,21 @@ public class Foliage : MonoBehaviour
     }
 
     // Forest spawning function
-    private void SpawnTreesInForest(int treeType, Vector3 rayOrigin)
+    private void SpawnTreesInForest(GameObject treeObject, Vector3 rayOrigin)
     {
         
         // Not sure if it is faster to only do this once or to just use a getter each loop
         float radius = foliageHandler.PlanetRadius;
         float waterRadius = foliageHandler.WaterRadius;
 
-        GameObject treeObject = foliageHandler.GetForstetTree(treeType);
+        //GameObject treeObject = foliageHandler.GetForstetTree(treeType);
 
         // Spawns 5 trees around a found forest spot! Bigger number = denser forest
         for (int i = 0; i < 10; i++)
         {
-            float x = (float)random.Value() * 3 - 1;
-            float y = (float)random.Value() * 3 - 1;
-            float z = (float)random.Value() * 3 - 1;
+            float x = (float)random.Value() * 2 - 1;
+            float y = (float)random.Value() * 2 - 1;
+            float z = (float)random.Value() * 2 - 1;
             Vector3 localpos = Quaternion.Euler(x, y, z) * rayOrigin;
 
             // Assumes we are spawning trees on a planet located in origin!
