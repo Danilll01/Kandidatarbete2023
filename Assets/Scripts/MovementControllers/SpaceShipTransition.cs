@@ -100,7 +100,8 @@ public class SpaceShipTransition : MonoBehaviour
                 transitionToRot = landingTarget.rotation;
                 transitioning = true;
                 shouldDisembark = true;
-                audio.PlaySoundEffect(HandleAudio.SoundEffects.Landing, false, true, 0.1f);
+                audio.TurnOffCurrentSoundEffect(0.1f);
+                audio.PlaySimpleSoundEffect(HandleAudio.SoundEffects.Landing);//SoundEffect(HandleAudio.SoundEffects.Landing, false, true, 0.1f);
                 
                 //Transition method handles moving the player out of the ship
             }
@@ -149,7 +150,8 @@ public class SpaceShipTransition : MonoBehaviour
         if (!initialization)
         {
             StartCoroutine(audio.UpdateMusicClipIndex(HandleAudio.BackgroundClips.Space));
-            audio.PlaySoundEffect(HandleAudio.SoundEffects.TakeOff, false, true, 0.1f);
+            audio.TurnOffCurrentSoundEffect(0.1f);
+            audio.PlaySimpleSoundEffect(HandleAudio.SoundEffects.TakeOff);//, false, true, 0.1f);
         }
         
         Transform playerTransform = player.transform;

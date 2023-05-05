@@ -95,18 +95,22 @@ public class HandleAudio : MonoBehaviour
             simpleEffectAudioSource.Play();
         }
     }
-    
+
     /// <summary>
     /// Play a given sound effect
     /// </summary>
-    /// <param name="soundEffect"></param>
-    /// <param name="loop"></param>
-    public void PlaySoundEffect(SoundEffects soundEffect, bool loop, bool instantly, float fadeInDuration = 1f, float volume = soundEffectsVolume)
+    /// <param name="soundEffect">Which sound effect to use</param>
+    /// <param name="loop">If the sound effect should loop or not</param>
+    /// <param name="instantly">If the sound should be played directly. (Not recommended as is can cause sound clipping)</param>
+    /// <param name="fadeInDuration">For how long the fade-in should be</param>
+    /// <param name="volume">The wanted volume of the sound effect</param>
+    public void PlaySoundEffect(SoundEffects soundEffect, bool loop, bool instantly = false, float fadeInDuration = 1f, float volume = soundEffectsVolume)
     {
         AudioClip newClip = soundEffectsAudioClips[(int)soundEffect];
-        soundEffectsAudioSource.volume = volume;
+        //soundEffectsAudioSource.volume = volume;
         if (newClip != soundEffectsAudioSource.clip)
         {
+            soundEffectsAudioSource.Stop();
             StopCurrentCoroutines();
             soundEffectsAudioSource.clip = soundEffectsAudioClips[(int)soundEffect];
             soundEffectsAudioSource.loop = loop;
@@ -133,8 +137,12 @@ public class HandleAudio : MonoBehaviour
             }
             else
             {
-                soundEffectsAudioSource.volume = 0;
-                soundEffectsAudioSource.Play();
+                //soundEffectsAudioSource.volume = 0;
+                if (soundEffectsAudioSource.volume <= FADED_OUT_VOLUME)
+                {
+                    soundEffectsAudioSource.Play();
+                }
+                
                 fadeInCoroutine = StartCoroutine(FadeInSoundEffect(fadeInDuration, volume));
             }
             stoppedSoundEffects = false;
@@ -173,16 +181,23 @@ public class HandleAudio : MonoBehaviour
 
             yield return null;
         }
+
+        // This ensures the right settings when fading is complete
+        soundEffectsAudioSource.volume = FADED_OUT_VOLUME;
     }
     
     private IEnumerator FadeInSoundEffect(float fadeInDuration, float volume)
     {
+        float currentVolume = soundEffectsAudioSource.volume;
         for (float timePassed = 0f; timePassed < fadeInDuration; timePassed += Time.deltaTime)
         {
-            soundEffectsAudioSource.volume = Mathf.Lerp(FADED_OUT_VOLUME, volume, timePassed / fadeInDuration);
+            soundEffectsAudioSource.volume = Mathf.Lerp(currentVolume, volume, timePassed / fadeInDuration);
 
             yield return null;
         }
+        
+        // This ensures the right settings when fading is complete
+        soundEffectsAudioSource.volume = volume;
     }
 
     private IEnumerator InitializeBackgroundMusic()
