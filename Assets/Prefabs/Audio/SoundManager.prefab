@@ -57,7 +57,12 @@ MonoBehaviour:
   - {fileID: 8300000, guid: a7110009150416f4f84a73bd3e48308a, type: 3}
   - {fileID: 8300000, guid: 0e8d64827260d6c46b4f36c840322b1d, type: 3}
   - {fileID: 8300000, guid: a8330ddfd8d72c44c826c5ecbf5d9ea3, type: 3}
-  - {fileID: 8300000, guid: e65e00bb4734b29449a7d319f304fb5b, type: 3}
+  - {fileID: 8300000, guid: abfa729838c972c4cb10dd4ed4581300, type: 3}
+  buttonHoverSounds:
+  - {fileID: 8300000, guid: 38397721335972f4ebb92aff5d28d85f, type: 3}
+  - {fileID: 8300000, guid: 0afcf886da3b0ce44b879df1ab6c6ab4, type: 3}
+  - {fileID: 8300000, guid: 574ebaae75021e449a260e37a1046a19, type: 3}
+  - {fileID: 8300000, guid: 0c6603a77449e04448195ed8d6fbcce3, type: 3}
   musicAudioSource: {fileID: 4265903889893730569}
   soundEffectsAudioSource: {fileID: 4265903889893730574}
   simpleEffectAudioSource: {fileID: 4782277837015240334}

@@ -4,11 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Lowered the seed input sound even more">
-      <change beforePath="$PROJECT_DIR$/Assets/Sounds/Music and Sound Effects/HoverSounds/Write1.wav" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Sounds/Music and Sound Effects/HoverSounds/Write1.wav" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Sounds/Music and Sound Effects/HoverSounds/Write2.wav" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Sounds/Music and Sound Effects/HoverSounds/Write2.wav" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Sounds/Music and Sound Effects/HoverSounds/Write3.wav" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Sounds/Music and Sound Effects/HoverSounds/Write3.wav" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Sounds/Music and Sound Effects/HoverSounds/Write4.wav" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Sounds/Music and Sound Effects/HoverSounds/Write4.wav" afterDir="false" />
+    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Made seed sound a little higher again">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Audio/SoundManager.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Audio/SoundManager.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Main.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Main.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Audio/HandleAudio.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Audio/HandleAudio.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipTransition.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipTransition.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -162,12 +163,6 @@
       <workItem from="1682952065891" duration="20322000" />
       <workItem from="1683036367666" duration="5009000" />
       <workItem from="1683143710028" duration="16803000" />
-    </task>
-    <task id="LOCAL−00077" summary="Added force that pulls the player down when inactive">
-      <created>1682892862310</created>
-      <option name="number" value="LOCAL−00077" />
-      <option name="presentableId" value="LOCAL−00077" />
-      <updated>1682892862310</updated>
     </task>
     <task id="LOCAL−00078" summary="Changed max landing angle to 40 degrees">
       <created>1682892880936</created>
@@ -457,7 +452,13 @@
       <option name="presentableId" value="LOCAL−00125" />
       <updated>1683328756639</updated>
     </task>
-    <option name="localTasksCounter" value="126" />
+    <task id="LOCAL−00126" summary="Made seed sound a little higher again">
+      <created>1683329139779</created>
+      <option name="number" value="LOCAL−00126" />
+      <option name="presentableId" value="LOCAL−00126" />
+      <updated>1683329139779</updated>
+    </task>
+    <option name="localTasksCounter" value="127" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -479,7 +480,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="Added mouse sensitivity option for spaceship and increased it" />
     <MESSAGE value="Removed old spaceship script and scene object" />
     <MESSAGE value="Camera view does now start in player ship when spawned in" />
     <MESSAGE value="Added player sit animation when the player is in the ship" />
@@ -504,6 +504,7 @@
     <MESSAGE value="Added new files for both the slider and lowered the sound for the seed input" />
     <MESSAGE value="Applied these changes" />
     <MESSAGE value="Lowered the seed input sound even more" />
-    <option name="LAST_COMMIT_MESSAGE" value="Lowered the seed input sound even more" />
+    <MESSAGE value="Made seed sound a little higher again" />
+    <option name="LAST_COMMIT_MESSAGE" value="Made seed sound a little higher again" />
   </component>
 </project>

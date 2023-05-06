@@ -149,7 +149,7 @@ public class SpaceShipTransition : MonoBehaviour
     {
         if (!initialization)
         {
-            StartCoroutine(audio.UpdateMusicClipIndex(HandleAudio.BackgroundClips.Space));
+            audio.UpdateMusicSoundClip(HandleAudio.BackgroundClips.Space);
             audio.TurnOffCurrentSoundEffect(0.1f);
             audio.PlaySimpleSoundEffect(HandleAudio.SoundEffects.TakeOff);//, false, true, 0.1f);
         }
@@ -174,7 +174,7 @@ public class SpaceShipTransition : MonoBehaviour
     private void DisembarkFromShip()
     {
         audio.TurnOffCurrentSoundEffect(0.1f);
-        StartCoroutine(audio.UpdateMusicClipIndex(HandleAudio.BackgroundClips.Planet, 0.15f));
+        audio.UpdateMusicSoundClip(HandleAudio.BackgroundClips.Planet, 0.15f);
         
         Transform shipTransform = transform;
         Transform playerTransform = player.transform;

@@ -19,6 +19,7 @@ public class HandleAudio : MonoBehaviour
     private bool gameIsPaused;
     private Coroutine fadeInCoroutine;
     private Coroutine fadeOutCoroutine;
+    private Coroutine changeMusicClipCoroutine;
 
     /// <summary>
     /// Initialize the audio components
@@ -172,6 +173,21 @@ public class HandleAudio : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Change the background music to the given music clip
+    /// </summary>
+    /// <param name="backgroundClip">Which music clip to play</param>
+    /// <param name="volume">What volume to play sound at</param>
+    public void UpdateMusicSoundClip(BackgroundClips backgroundClip, float volume = backgroundMusicVolume)
+    {
+        if (changeMusicClipCoroutine != null)
+        {
+            StopCoroutine(changeMusicClipCoroutine);
+        }
+        
+        changeMusicClipCoroutine = StartCoroutine(UpdateMusicClipIndex(backgroundClip, volume));
+    }
+    
     private IEnumerator FadeOutSoundEffect(float fadeDuration)
     {
         float currentVolume = soundEffectsAudioSource.volume;
@@ -209,13 +225,8 @@ public class HandleAudio : MonoBehaviour
             yield return null;
         }
     }
-
-    /// <summary>
-    /// Change the background music to the given music clip
-    /// </summary>
-    /// <param name="backgroundClip"></param>
-    /// <returns></returns>
-    public IEnumerator UpdateMusicClipIndex(BackgroundClips backgroundClip, float volume = backgroundMusicVolume)
+    
+    private IEnumerator UpdateMusicClipIndex(BackgroundClips backgroundClip, float volume = backgroundMusicVolume)
     {
 
         float originalVolume = musicAudioSource.volume;
@@ -233,7 +244,6 @@ public class HandleAudio : MonoBehaviour
         // If there is only one instance of `AudioManager` in your scene this is more efficient
         // in general you should fetch that AudioManager reference only ONCE and re-use it
         musicAudioSource.clip = backgroundMusicAudioClips[(int)backgroundClip];
-        //audioSource.clip = GameObject.FindWithTag("AudioManager").GetComponent<AudioManager>().clips[clip];
 
         yield return new WaitForSeconds(0.1f);
 
@@ -246,5 +256,7 @@ public class HandleAudio : MonoBehaviour
 
             yield return null;
         }
+
+        musicAudioSource.volume = volume;
     }
 }
