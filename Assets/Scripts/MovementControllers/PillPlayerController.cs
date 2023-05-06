@@ -298,7 +298,7 @@ public class PillPlayerController : MonoBehaviour
         // Play thrust sound effect if player is accelerating
         if (body.velocity.magnitude > 1f)
         {
-            audio.PlaySoundEffect(HandleAudio.SoundEffects.Wind, true, false, 2f, 0.4f);
+            audio.PlaySoundEffect(HandleAudio.SoundEffects.Wind, true, false, 2f, 0.6f);
         }
         else
         {
