@@ -1,33 +1,38 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using System.Collections.Generic;
 
-
-#if UNITY_EDITOR
-using UnityEditor;
-#endif
 
 public class TintFoliageTextures : MonoBehaviour
 {
-    public Material[] textureMaterials;
+    [SerializeField] private Material[] textureMaterials;
     private TextureAndRows[] textureAndRows;
     private Texture2D[] copiedTextures;
 
     private int totalNumberOfPixelsPerRow;
     private int textureHeight;
-    private List<(int, int)> rows; // start and end height coordinate
+    private List<(int start, int end)> pixelRows; // start and end height coordinate
 
     private List<Color[]> originalColors;
 
     public Color planetGroundColor;
 
+    /// <summary>
+    /// Initialize the assets and variables for tinting foliage textures
+    /// </summary>
     public void Initialize()
     {
         originalColors = new List<Color[]>();
-        rows = new List<(int, int)>();
+        pixelRows = new List<(int, int)>();
 
+        // Load in the scriptable object containing the different assets and information we want
         string path = "FoliageColors/FoliageColor";
         textureAndRows = Resources.Load<FoliageColor>(path).textureAndRows;
+        
+        CopyTextures();
+    }
+
+    private void CopyTextures()
+    {
         copiedTextures = new Texture2D[textureAndRows.Length];
 
         for (int i = 0; i < textureAndRows.Length; i++)
@@ -42,13 +47,16 @@ public class TintFoliageTextures : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Tint the textures on certain rows
+    /// </summary>
     public void TintTextures()
     {
         for (int t = 0; t < textureAndRows.Length; t++)
         {
             TextureAndRows textureAndrow = textureAndRows[t];
             Texture2D texture = copiedTextures[t];
-            rows.Clear();
+            pixelRows.Clear();
             textureHeight = texture.height;
             totalNumberOfPixelsPerRow = textureAndrow.totalNumberOfPixelsPerRow;
             int[] rowIndexes = textureAndrow.rowIndexesToTaint;
@@ -57,25 +65,28 @@ public class TintFoliageTextures : MonoBehaviour
             for (int h = 0; h < rowIndexes.Length; h++)
             {
                 int index = rowIndexes[h];
-                (int, int) startAndEnd = rows[index];
-
-                for (int j = startAndEnd.Item1; j > startAndEnd.Item2 - 1; j--)
-                {
-                    for (int i = 0; i < textureHeight; i++)
-                    {
-                        int indexInOriginalColors = ((j - 1) * textureHeight) + i;
-                        if (j == 0)
-                        {
-                            indexInOriginalColors = i;
-                        }
-                        Color newColor = (originalColors[t][indexInOriginalColors] + planetGroundColor) * 0.5f;
-                        texture.SetPixel(i, j, newColor);
-                    }
-
-                }
+                (int, int) startAndEndPixelRows = pixelRows[index];
+                TintColorOnRows(t, texture, startAndEndPixelRows);
             }
 
             texture.Apply();
+        }
+    }
+
+    private void TintColorOnRows(int t, Texture2D texture, (int startRow, int endRow) startAndEndPixelRows)
+    {
+        for (int j = startAndEndPixelRows.startRow; j > startAndEndPixelRows.endRow - 1; j--)
+        {
+            for (int i = 0; i < textureHeight; i++)
+            {
+                int indexInOriginalColors = ((j - 1) * textureHeight) + i;
+                if (j == 0)
+                {
+                    indexInOriginalColors = i;
+                }
+                Color newColor = (originalColors[t][indexInOriginalColors] + planetGroundColor) * 0.5f;
+                texture.SetPixel(i, j, newColor);
+            }
         }
     }
 
@@ -88,7 +99,7 @@ public class TintFoliageTextures : MonoBehaviour
         {
             if (j > end && j <= start)
             {
-                rows.Add((start, end));
+                pixelRows.Add((start, end));
                 start = end;
                 end -= totalNumberOfPixelsPerRow;
             }
