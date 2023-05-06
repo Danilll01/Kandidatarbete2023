@@ -36,8 +36,7 @@ public class SolarSystemTransform : MonoBehaviour
         planetsParent = gameObject;
 
         player = Universe.player;
-        string path = "FoliageColors/TintFoliageTextures";
-        Resources.Load<TintFoliageTextures>(path);
+
         tintFoliageTexturesHandler = GetComponent<TintFoliageTextures>();
     }
 
