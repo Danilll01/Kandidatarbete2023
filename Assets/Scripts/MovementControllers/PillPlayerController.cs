@@ -101,9 +101,9 @@ public class PillPlayerController : MonoBehaviour
             }
             if (attractor != null)
             {
+                HandleTemperatureGUI();
                 if (!ReferenceEquals(attractor, playerWater.planet)) playerWater.UpdatePlanet(attractor);
                 playerWater.UpdateWater(transform.position);
-                HandleTemperatureGUI();
             }
             else
             {
@@ -171,11 +171,12 @@ public class PillPlayerController : MonoBehaviour
         }
     }
 
+    // Updates the temperature gauge on screen
     private void HandleTemperatureGUI()
     {
-        float temperature = Biomes.EvaluteBiomeMapTemperature(attractor.biomeSettings, transform.localPosition, Vector3.Distance(attractor.transform.position, Universe.sunPosition.position));
-        temperature = Mathf.InverseLerp(-273, 1000, temperature);
-        temperatureHUD.SetText("Temperature: " + temperature + "°C");
+        float temperature = Biomes.EvaluteBiomeMapTemperature(attractor.biomeSettings, attractor.transform.InverseTransformPoint(transform.position) , Vector3.Distance(attractor.transform.position, Universe.sunPosition.position));
+        temperature = Mathf.Lerp(-273, 1000, temperature);
+        temperatureHUD.SetText("Temperature: " + Mathf.Round(temperature) + "°C");
     }
     
     private void HandleMovement()

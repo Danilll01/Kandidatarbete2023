@@ -198,7 +198,7 @@ public class SpaceShipController : MonoBehaviour
         PlayThrustAudio(newMovementVector);
         
         // Updates speed GUI
-        speedGauge.SetText("Speed: " + moveDirection.magnitude + "km/h");
+        speedGauge.SetText("Speed: " + Mathf.Round(moveDirection.magnitude) + "km/h");
 
         //Camera follow
         mainCamera.transform.position = Vector3.Lerp(mainCamera.transform.position, cameraPosition.position, Time.deltaTime * cameraSmooth);
