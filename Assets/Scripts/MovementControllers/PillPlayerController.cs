@@ -292,10 +292,10 @@ public class PillPlayerController : MonoBehaviour
         Gravity.Attract(transform.position, body, attractor.transform.position, attractor.mass);
     }
     
-    // Plays thruster audio if needed 
+    // Plays wind audio if needed 
     private void PlayWindAudio()
     {
-        // Play thrust sound effect if player is accelerating
+        // Play wind sound effect if player is accelerating
         if (body.velocity.magnitude > 1f)
         {
             audio.PlaySoundEffect(HandleAudio.SoundEffects.Wind, true, false, 2f, 0.6f);
