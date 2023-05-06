@@ -586,6 +586,8 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 93caadf4359ae8143aad35b3145d31af, type: 2}
   - {fileID: 2100000, guid: 616fdec72f5a406419d57c9d13239742, type: 2}
   planetGroundColor: {r: 0, g: 0, b: 0, a: 0}
+  biomeColors: []
+  biomeMaterials: []
 --- !u!114 &301720325 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3421500242679807733, guid: 479edb22e1790754688e5f093ada7ddf,
@@ -693,12 +695,12 @@ PrefabInstance:
     - target: {fileID: 7349901440431997346, guid: 479edb22e1790754688e5f093ada7ddf,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.000000017318756
+      value: -0.000000017318756
       objectReference: {fileID: 0}
     - target: {fileID: 7349901440431997346, guid: 479edb22e1790754688e5f093ada7ddf,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: 8.6378366e-10
+      value: -8.6378366e-10
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 479edb22e1790754688e5f093ada7ddf, type: 3}

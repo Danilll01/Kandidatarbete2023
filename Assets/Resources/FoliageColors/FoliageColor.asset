@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: FoliageColor
   m_EditorClassIdentifier: 
   textureAndRows:
-  - texture: {fileID: 2800000, guid: 28a51d508c86a8948b59df81d5188b17, type: 3}
-    material: {fileID: 2100000, guid: 93caadf4359ae8143aad35b3145d31af, type: 2}
+  - foliagePackName: Pack1
+    texture: {fileID: 2800000, guid: 28a51d508c86a8948b59df81d5188b17, type: 3}
     rowIndexesToTaint: 0400000005000000
     totalNumberOfPixelsPerRow: 32
-  - texture: {fileID: 2800000, guid: 8ba8b94b5ab0c214fa2810a7df98a1a9, type: 3}
-    material: {fileID: 2100000, guid: 616fdec72f5a406419d57c9d13239742, type: 2}
+  - foliagePackName: Pack2
+    texture: {fileID: 2800000, guid: 8ba8b94b5ab0c214fa2810a7df98a1a9, type: 3}
     rowIndexesToTaint: 010000000200000003000000
     totalNumberOfPixelsPerRow: 4

@@ -15,6 +15,11 @@ public class TintFoliageTextures : MonoBehaviour
     private List<Color[]> originalColors;
 
     public Color planetGroundColor;
+    public Color[] biomeColors;
+    [SerializeField] private Material[] biomeMaterials;
+    [SerializeField] private BiomeFoliageData[] biomeFoliageDatas;
+
+    private bool Initialized;
 
     /// <summary>
     /// Initialize the assets and variables for tinting foliage textures
@@ -27,12 +32,61 @@ public class TintFoliageTextures : MonoBehaviour
         // Load in the scriptable object containing the different assets and information we want
         string path = "FoliageColors/FoliageColor";
         textureAndRows = Resources.Load<FoliageColor>(path).textureAndRows;
+
+        biomeMaterials = new Material[biomeColors.Length * 2];
+        biomeFoliageDatas = new BiomeFoliageData[biomeColors.Length * 2];
+
+        int index = 0;
+        for (int i = 0; i < 2; i++)
+        {
+            // We don't need to create new materials for every biome since we already have a material
+            for (int j = 0; j < biomeColors.Length; j++)
+            {
+                Material newMaterial = CreateNewMaterial(index);
+                Texture2D texture = CopyTextures(newMaterial, i);
+
+                if (j != biomeColors.Length - 1)
+                {
+                    biomeFoliageDatas[index].biomeMaterial = newMaterial;
+                    biomeFoliageDatas[index].texture = texture;
+                }
+
+                biomeFoliageDatas[index].biomeName = "Biome " + j + ", pack " + (i + 1);
+                biomeFoliageDatas[index].biomeColor = biomeColors[j];
+                index++;
+            }
+
+            Texture2D copiedTexture = CopyTextures(textureMaterials[i], i);
+            biomeMaterials[index - 1] = textureMaterials[i];
+            biomeFoliageDatas[index - 1].biomeMaterial = textureMaterials[i];
+            biomeFoliageDatas[index - 1].texture = copiedTexture;
+        }
+
         
-        CopyTextures();
     }
 
-    private void CopyTextures()
+    private Material CreateNewMaterial(int i)
     {
+        Material newMaterial = new Material(textureMaterials[0].shader); // Both materials use the same shader (index does not matter)
+        newMaterial.name = "Biome " + i;
+        biomeMaterials[i] = newMaterial;
+        return newMaterial;
+
+    }
+
+    private Texture2D CopyTextures(Material material, int packageIndex)
+    {
+        Texture2D textureToCopy = textureAndRows[packageIndex].texture;
+        Texture2D newTexture = new Texture2D(textureToCopy.width, textureToCopy.height);
+        newTexture.SetPixels(textureToCopy.GetPixels());
+        newTexture.Apply();
+        material.mainTexture = newTexture;
+        return newTexture;
+        
+
+        //originalColors.Add(newTexture.GetPixels());
+
+        /*
         copiedTextures = new Texture2D[textureAndRows.Length];
 
         for (int i = 0; i < textureAndRows.Length; i++)
@@ -45,6 +99,7 @@ public class TintFoliageTextures : MonoBehaviour
             textureMaterials[i].mainTexture = newTexture;
             originalColors.Add(newTexture.GetPixels());
         }
+        */
     }
 
     /// <summary>
@@ -52,6 +107,11 @@ public class TintFoliageTextures : MonoBehaviour
     /// </summary>
     public void TintTextures()
     {
+        if (!Initialized)
+        {
+            Initialize();
+        }
+
         for (int t = 0; t < textureAndRows.Length; t++)
         {
             TextureAndRows textureAndrow = textureAndRows[t];
@@ -104,6 +164,15 @@ public class TintFoliageTextures : MonoBehaviour
                 end -= totalNumberOfPixelsPerRow;
             }
         }
+    }
+
+    [System.Serializable]
+    public struct BiomeFoliageData
+    {
+        public string biomeName;
+        public Material biomeMaterial;
+        public Texture2D texture;
+        public Color biomeColor;
     }
 }
 

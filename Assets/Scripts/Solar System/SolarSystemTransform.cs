@@ -51,7 +51,6 @@ public class SolarSystemTransform : MonoBehaviour
                 Planet planet = spawnPlanets.bodies[i];
                 relativePlanetSunDistances[i] = planet.transform.parent.position;
             }
-            tintFoliageTexturesHandler.Initialize();
         }
 
         player.attractor = activePlanet;
@@ -190,6 +189,7 @@ public class SolarSystemTransform : MonoBehaviour
             activePlanet.rotateMoons = true;
             oldActivePlanet = activePlanet;
             tintFoliageTexturesHandler.planetGroundColor = activePlanet.groundColor;
+            tintFoliageTexturesHandler.biomeColors = activePlanet.biomeColors;
             tintFoliageTexturesHandler.TintTextures();
         }
     }

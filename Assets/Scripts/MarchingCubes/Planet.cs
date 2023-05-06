@@ -36,6 +36,7 @@ public class Planet : MonoBehaviour
     [SerializeField] private List<TerrainLayer> terrainLayers;
     public BiomeSettings biomeSettings;
     public Color groundColor;
+    public Color[] biomeColors;
 
     private float threshold;
 
@@ -131,6 +132,7 @@ public class Planet : MonoBehaviour
 
         chunksHandler.Initialize(this, terrainLevel, spawn, rand.Next());
         groundColor = chunksHandler.terrainColor.groundColor;
+        biomeColors = chunksHandler.terrainColor.pickedColorPalette;
 
         if (willGeneratePlanetLife) 
         {
