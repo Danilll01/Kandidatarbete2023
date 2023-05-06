@@ -33,7 +33,7 @@ public class SpaceShipTransition : MonoBehaviour
     [Header("Audio stuff")]
     private AudioSource audioPlayer;
     [SerializeField] private AudioClip errorSound;
-    [SerializeField] private HandleAudio audio;
+    [SerializeField] private new HandleAudio audio;
     
     /// <summary>
     /// Initializes ship transition script

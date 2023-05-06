@@ -15,7 +15,7 @@ public class PillPlayerController : MonoBehaviour
     [SerializeField] private SkinnedMeshRenderer playerModelHead;
     private Rigidbody body;
     [HideInInspector] public bool paused;
-    [SerializeField] private HandleAudio audio;
+    [SerializeField] private new HandleAudio audio;
     [SerializeField] private TextMeshProUGUI temperatureHUD;
 
     [Header("Movement")]
