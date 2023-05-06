@@ -107,7 +107,7 @@ public class PillPlayerController : MonoBehaviour
             }
             else
             {
-                temperatureHUD.SetText("Temperature: ---");
+                temperatureHUD.SetText("---");
             }
         }
         
@@ -176,7 +176,7 @@ public class PillPlayerController : MonoBehaviour
     {
         float temperature = Biomes.EvaluteBiomeMapTemperature(attractor.biomeSettings, attractor.transform.InverseTransformPoint(transform.position) , Vector3.Distance(attractor.transform.position, Universe.sunPosition.position));
         temperature = Mathf.Lerp(-273, 1000, temperature);
-        temperatureHUD.SetText("Temperature: " + Mathf.Round(temperature) + "°C");
+        temperatureHUD.SetText(Mathf.Round(temperature) + "°C");
     }
     
     private void HandleMovement()

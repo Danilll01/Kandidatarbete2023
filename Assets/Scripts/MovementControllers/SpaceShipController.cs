@@ -143,7 +143,7 @@ public class SpaceShipController : MonoBehaviour
             physicsBody.isKinematic = true;
             crosshairTexture.gameObject.SetActive(false);
             travelModeGUIImage.enabled = false;
-            speedGauge.enabled = false;
+            speedGauge.gameObject.SetActive(false);
             
             // Setup for Ship transition handover
             isOutsidePlanet = true;
@@ -158,8 +158,8 @@ public class SpaceShipController : MonoBehaviour
         physicsBody.isKinematic = false;
         crosshairTexture.gameObject.SetActive(true);
         travelModeGUIImage.enabled = true;
-        speedGauge.enabled = true;
-        
+        speedGauge.gameObject.SetActive(true);
+
         // Movement
         float thrust = Input.GetAxis("Spaceship Thrust");
         float strafe = Input.GetAxis("Spaceship Strafe");
@@ -198,7 +198,7 @@ public class SpaceShipController : MonoBehaviour
         PlayThrustAudio(newMovementVector);
         
         // Updates speed GUI
-        speedGauge.SetText("Speed: " + Mathf.Round(moveDirection.magnitude) + "km/h");
+        speedGauge.SetText(Mathf.Round(moveDirection.magnitude) + "km/h");
 
         //Camera follow
         mainCamera.transform.position = Vector3.Lerp(mainCamera.transform.position, cameraPosition.position, Time.deltaTime * cameraSmooth);
