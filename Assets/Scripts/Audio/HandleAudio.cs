@@ -41,7 +41,7 @@ public class HandleAudio : MonoBehaviour
             soundEffectsAudioSource.mute = true;
             gameIsPaused = true;
         }
-        else if (Time.timeScale == 1 && gameIsPaused)
+        else if (Math.Abs(Time.timeScale - 1) < 0.0001 && gameIsPaused)
         {
             soundEffectsAudioSource.mute = false;
             gameIsPaused = false;
@@ -108,7 +108,6 @@ public class HandleAudio : MonoBehaviour
     public void PlaySoundEffect(SoundEffects soundEffect, bool loop, bool instantly = false, float fadeInDuration = 1f, float volume = soundEffectsVolume)
     {
         AudioClip newClip = soundEffectsAudioClips[(int)soundEffect];
-        //soundEffectsAudioSource.volume = volume;
         if (newClip != soundEffectsAudioSource.clip)
         {
             soundEffectsAudioSource.Stop();
@@ -138,7 +137,6 @@ public class HandleAudio : MonoBehaviour
             }
             else
             {
-                //soundEffectsAudioSource.volume = 0;
                 if (soundEffectsAudioSource.volume <= FADED_OUT_VOLUME)
                 {
                     soundEffectsAudioSource.Play();

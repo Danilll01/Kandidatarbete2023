@@ -4,12 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Made seed sound a little higher again">
+    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Made background music fading a lot better">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Audio/SoundManager.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Audio/SoundManager.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Main.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Main.unity" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Audio/HandleAudio.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Audio/HandleAudio.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipTransition.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipTransition.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -41,6 +38,7 @@
   <component name="HighlightingSettingsPerFile">
     <setting file="mock://D:/Unity/Projects/Kandidatarbete2023/Assets/Scenes/Main.unity" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Atmosphere/AtmosphereHandler.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://D:/Unity/Projects/Kandidatarbete2023/Assets/Scripts/Audio/HandleAudio.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://D:/Unity/Projects/Kandidatarbete2023/Assets/Scripts/Audio/HandleAudio.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://D:/Unity/Projects/Kandidatarbete2023/Assets/Scripts/Audio/HandleAudio.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipCameraMover.cs" root0="FORCE_HIGHLIGHTING" />
@@ -163,12 +161,6 @@
       <workItem from="1682952065891" duration="20322000" />
       <workItem from="1683036367666" duration="5009000" />
       <workItem from="1683143710028" duration="16803000" />
-    </task>
-    <task id="LOCAL−00078" summary="Changed max landing angle to 40 degrees">
-      <created>1682892880936</created>
-      <option name="number" value="LOCAL−00078" />
-      <option name="presentableId" value="LOCAL−00078" />
-      <updated>1682892880936</updated>
     </task>
     <task id="LOCAL−00079" summary="Fixed planet idle pull on other planets">
       <created>1682894850006</created>
@@ -458,7 +450,13 @@
       <option name="presentableId" value="LOCAL−00126" />
       <updated>1683329139779</updated>
     </task>
-    <option name="localTasksCounter" value="127" />
+    <task id="LOCAL−00127" summary="Made background music fading a lot better">
+      <created>1683332628595</created>
+      <option name="number" value="LOCAL−00127" />
+      <option name="presentableId" value="LOCAL−00127" />
+      <updated>1683332628595</updated>
+    </task>
+    <option name="localTasksCounter" value="128" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -480,7 +478,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="Removed old spaceship script and scene object" />
     <MESSAGE value="Camera view does now start in player ship when spawned in" />
     <MESSAGE value="Added player sit animation when the player is in the ship" />
     <MESSAGE value="Added wind noise when player moves on ground" />
@@ -505,6 +502,7 @@
     <MESSAGE value="Applied these changes" />
     <MESSAGE value="Lowered the seed input sound even more" />
     <MESSAGE value="Made seed sound a little higher again" />
-    <option name="LAST_COMMIT_MESSAGE" value="Made seed sound a little higher again" />
+    <MESSAGE value="Made background music fading a lot better" />
+    <option name="LAST_COMMIT_MESSAGE" value="Made background music fading a lot better" />
   </component>
 </project>
