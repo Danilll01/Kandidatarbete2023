@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Added speed gauge icon and implemented it" />
+    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Fixed code displaying text" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -157,12 +157,6 @@
       <workItem from="1682861907126" duration="33741000" />
       <workItem from="1682952065891" duration="20322000" />
       <workItem from="1683036367666" duration="5009000" />
-    </task>
-    <task id="LOCAL−00061" summary="Hovering in progress">
-      <created>1682554414382</created>
-      <option name="number" value="LOCAL−00061" />
-      <option name="presentableId" value="LOCAL−00061" />
-      <updated>1682554414382</updated>
     </task>
     <task id="LOCAL−00062" summary="Moved water color handling to water handler script on each planet">
       <created>1682640815206</created>
@@ -452,7 +446,13 @@
       <option name="presentableId" value="LOCAL−00109" />
       <updated>1683338793447</updated>
     </task>
-    <option name="localTasksCounter" value="110" />
+    <task id="LOCAL−00110" summary="Fixed code displaying text">
+      <created>1683339438598</created>
+      <option name="number" value="LOCAL−00110" />
+      <option name="presentableId" value="LOCAL−00110" />
+      <updated>1683339438598</updated>
+    </task>
+    <option name="localTasksCounter" value="111" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -474,7 +474,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="Added landing rotation offset to compensate for the visual model" />
     <MESSAGE value="Removed visual mesh from hover springs" />
     <MESSAGE value="Changed landing error sound" />
     <MESSAGE value="Unhooked mouse input from framerate for the space ship" />
@@ -499,6 +498,7 @@
     <MESSAGE value="Rounded speed and temperature value. Also made temperature update while in ship" />
     <MESSAGE value="Added and implemented temperature icon" />
     <MESSAGE value="Added speed gauge icon and implemented it" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added speed gauge icon and implemented it" />
+    <MESSAGE value="Fixed code displaying text" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fixed code displaying text" />
   </component>
 </project>
