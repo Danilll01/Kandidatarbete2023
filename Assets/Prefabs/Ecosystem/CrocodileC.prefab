@@ -4225,7 +4225,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc2db926f95bed34580350e7d08b7a3a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 2
+  speed: 1
   detectionRadius: 80
   consumeRadius: 2
   meshObj: {fileID: 1491100081207864}
@@ -4273,7 +4273,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: c00992d5ec1205d498ca08cbd105f76f, type: 3}
   timeBetweenIdleSounds: 12
   stepsTimer: 0
-  timeBetweenSteps: 0.33333334
+  timeBetweenSteps: 0.4
   genes:
     alternaviteColor: 0
     speed: 0

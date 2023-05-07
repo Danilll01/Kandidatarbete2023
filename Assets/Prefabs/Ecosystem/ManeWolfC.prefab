@@ -302,7 +302,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: c00992d5ec1205d498ca08cbd105f76f, type: 3}
   timeBetweenIdleSounds: 15
   stepsTimer: 0
-  timeBetweenSteps: 0.33333334
+  timeBetweenSteps: 0.4
   genes:
     alternaviteColor: 0
     speed: 0
