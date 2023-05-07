@@ -112,6 +112,11 @@ public class TintFoliageTextures : MonoBehaviour
         if (!Initialized)
         {
             Initialize();
+            Initialized = true;
+        }
+        else
+        {
+            GetNewBiomeColors();
         }
 
         for (int i = 0; i < biomeFoliageDatas.Length; i++)
@@ -158,6 +163,19 @@ public class TintFoliageTextures : MonoBehaviour
             texture.Apply();
         }
         */
+    }
+
+    private void GetNewBiomeColors()
+    {
+        int index = 0;
+        for (int i = 0; i < 2; i++)
+        {
+            for (int j = 0; j < biomeColors.Length; j++)
+            {
+                biomeFoliageDatas[index].biomeColor = biomeColors[j];
+                index++;
+            }
+        }
     }
 
     private void TintColorOnRows(int t, Texture2D texture, (int startRow, int endRow) startAndEndPixelRows, Color biomeColor)
