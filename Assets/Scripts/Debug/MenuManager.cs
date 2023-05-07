@@ -36,8 +36,15 @@ public class MenuManager : MonoBehaviour
         volumeSlider.maxValue = 1;
         volumeSlider.minValue = 0;
         volumeSlider.value = AudioListener.volume;
-        musicAudioSource = GameObject.Find("Music").GetComponent<AudioSource>();
-        StartCoroutine(FadeOutMusic(2f));
+
+        // Check in case we started from the main menu
+        GameObject musicObject = GameObject.Find("Music");
+        if (musicObject != null)
+        {
+            musicAudioSource = musicObject.GetComponent<AudioSource>();
+            StartCoroutine(FadeOutMusic(2f));
+        }
+        
 
     }
 
