@@ -732,11 +732,6 @@ MonoBehaviour:
   foliageCollections:
   - name: Normal trees
     gameObjects:
-    - {fileID: 185286, guid: 8ed1fa325ca228645ad26dd6eff14768, type: 3}
-    - {fileID: 182382, guid: 76be61eeff2e7164cb99e1cf8cf0c22b, type: 3}
-    - {fileID: 166966, guid: 78c29697749a6d44e964f9a0cf83d77a, type: 3}
-    - {fileID: 152404, guid: 5037d6ea184d2f640bf78dcf9894a269, type: 3}
-    - {fileID: 115020, guid: a0c53a09e4a37b5409b1248ebce2c376, type: 3}
     - {fileID: 166856, guid: 99a48108c5a1932488c06e519f6097f4, type: 3}
     - {fileID: 184622, guid: c7bcf19bbfa57ed4ea9147dff66d5542, type: 3}
     - {fileID: 108507113624723981, guid: eebb56c82efbd8d4bb0eb6bd925a0e9d, type: 3}
@@ -748,6 +743,15 @@ MonoBehaviour:
     - {fileID: 4385080170328260021, guid: ff62b58c5a9ea164fa8ddf8038e10cd1, type: 3}
     - {fileID: 5440707293445505367, guid: 494f6d43e170e9145bc7865d243ee00b, type: 3}
     - {fileID: 8903058273634794869, guid: 153ba3bda7509f84da22da6146a36326, type: 3}
+    - {fileID: 188972, guid: 7641c7e8354e2c44cab6432d9d2c6d1b, type: 3}
+    - {fileID: 182406, guid: a1d34f7914a1d8148a0ce7262f7ba394, type: 3}
+    - {fileID: 115084, guid: 7c5aafe3fe2c6ef4a9150f7f44653760, type: 3}
+    - {fileID: 127550, guid: 87a6cef862ce2cb4a88c5ca5d5af5d2b, type: 3}
+    - {fileID: 168064, guid: fb8ae0828a555f74996970b8d0495f15, type: 3}
+    - {fileID: 116970, guid: 38ade0ba7c293f14a9b1b610879e9390, type: 3}
+    - {fileID: 159322, guid: b1b1573cfe717c04caad3e631288f7e9, type: 3}
+    - {fileID: 136328, guid: 613b4cc8c589ad8458e792ae21891bef, type: 3}
+    - {fileID: 180214, guid: aec50823ac9be1b45b5778c3b6c0f51a, type: 3}
     biomeRange:
       mountainRelevant: 1
       mountainMin: 0
@@ -847,6 +851,27 @@ MonoBehaviour:
       treesMin: 0.706
       treesMax: 1
     emptyObjects: 3
+  - name: 'Tropic '
+    gameObjects:
+    - {fileID: 195476, guid: ec7286e0017272441a3dec9205cb8daf, type: 3}
+    - {fileID: 176282, guid: ac00d368a6864c04791bc85c5567bd51, type: 3}
+    - {fileID: 114672, guid: 98653de49a7044442972e6997c40db16, type: 3}
+    - {fileID: 127928, guid: eed418c5a3c80d448b4cdbe594ebe3c5, type: 3}
+    - {fileID: 174854, guid: 3fd9507fb16d56044bcf520c1d14427c, type: 3}
+    - {fileID: 118422, guid: 107cc8771223daf48be99527559937ff, type: 3}
+    - {fileID: 136866, guid: 2327ed4809c34cf4c97a5316db3d4796, type: 3}
+    - {fileID: 176278, guid: 3c74caa0496b18d4ba0a1009ebb4c992, type: 3}
+    biomeRange:
+      mountainRelevant: 0
+      mountainMin: 0.438
+      mountainMax: 1
+      temperatureDependent: 1
+      temperatureMin: 0.34
+      temperatureMax: 1
+      treesDependent: 0
+      treesMin: 0.706
+      treesMax: 1
+    emptyObjects: 5
   isInstantiated: 0
   treeNr: 0
   bushNr: 0
