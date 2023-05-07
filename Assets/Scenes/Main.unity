@@ -916,12 +916,12 @@ PrefabInstance:
     - target: {fileID: 7349901440431997346, guid: 479edb22e1790754688e5f093ada7ddf,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.000000017318756
+      value: -0.000000017318756
       objectReference: {fileID: 0}
     - target: {fileID: 7349901440431997346, guid: 479edb22e1790754688e5f093ada7ddf,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: 8.6378366e-10
+      value: -8.6378366e-10
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 479edb22e1790754688e5f093ada7ddf, type: 3}
@@ -2171,11 +2171,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: SoundManager
       objectReference: {fileID: 0}
-    - target: {fileID: 4265903889893730575, guid: 0144d9268bb44a447bff4bc281dbebc2,
-        type: 3}
-      propertyPath: soundEffectsAudioClips.Array.data[6]
-      value: 
-      objectReference: {fileID: 8300000, guid: 907397d78418f344a8ebe4f4a481908d, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0144d9268bb44a447bff4bc281dbebc2, type: 3}
 --- !u!114 &1122585598 stripped

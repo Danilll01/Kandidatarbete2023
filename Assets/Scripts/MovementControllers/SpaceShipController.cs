@@ -44,7 +44,7 @@ public class SpaceShipController : MonoBehaviour
     [SerializeField] private Sprite[] travelTypeSprites;
     [SerializeField] private Texture2D[] travelTypeTextures;
     [SerializeField] private SpaceShipTransition shipTransitionScript;
-    [SerializeField] private HandleAudio audio;
+    [SerializeField] private new HandleAudio audio;
 
     // Ship movement
     private float speed;

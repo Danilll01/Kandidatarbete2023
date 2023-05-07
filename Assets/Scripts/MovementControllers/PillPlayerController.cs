@@ -298,7 +298,7 @@ public class PillPlayerController : MonoBehaviour
         // Play wind sound effect
         if (body.velocity.magnitude > 1f)
         {
-            audio.PlaySoundEffect(HandleAudio.SoundEffects.Wind, true, false, 2f, 0.5f);
+            audio.PlaySoundEffect(HandleAudio.SoundEffects.Wind, true, false, 2f, 0.3f);
         }
         else
         {
