@@ -31,6 +31,8 @@ public class Foliage : MonoBehaviour
     private Vector3 chunkPosition;
     private int positionArrayLength;
 
+    private float planetMaxHeight;
+
     [HideInInspector] public bool initialized = false;
 
     // Updates the debug screen
@@ -69,6 +71,8 @@ public class Foliage : MonoBehaviour
     public void Initialize(int meshVerticesLength, Vector3 position, int seed, Planet planet)
     {
         this.planet = planet;
+
+        planetMaxHeight = planet.terrainLevel.GetMax();
 
         // Epic foliageHandler getter :O
         foliageHandler = planet.foliageHandler;
@@ -221,7 +225,15 @@ public class Foliage : MonoBehaviour
         }
         else
         {
-            BelowAngle(hit, rayOrigin, heightAboveSea);
+            if (heightAboveSea < planetMaxHeight * 0.9 && !planet.name.Contains("Moon"))
+            {
+                BelowAngle(hit, rayOrigin, heightAboveSea);
+            } else
+            {
+                if (random.Value() < 0.5f)
+                    SpawnStones(hit, rayOrigin);
+            }
+            
         }
     }
 
@@ -269,8 +281,7 @@ public class Foliage : MonoBehaviour
 
         int chosenIndex = acceptableIndexes[random.Next(j)];
 
-        Quaternion rotation = Quaternion.LookRotation(rayOrigin) * Quaternion.Euler(90, 0, 0);
-        rotation *= Quaternion.Euler(0, random.Next(0, 360), 0);
+        // Only run if we found apropriate collections to spawn
         if (j > 0)
         {
             FoliageCollection chosenCollection = foliageHandler.foliageCollections[chosenIndex];
@@ -280,7 +291,11 @@ public class Foliage : MonoBehaviour
             if (random.Value() > chosenCollection.emptyObjects / totalNrObjects)
             {
                 GameObject foliageObj = chosenCollection.gameObjects[random.Next(chosenCollection.gameObjects.Length)];
+
+                //Quaternion rotation = Quaternion.LookRotation(rayOrigin) * Quaternion.Euler(90, 0, 0);
+                //rotation *= Quaternion.Euler(0, random.Next(0, 360), 0);
                 //Instantiate(foliageObj, hit.point - hit.point.normalized * 0.2f, rotation, transform);
+
                 SpawnTreesInForest(foliageObj, rayOrigin);
             }
 
@@ -339,8 +354,10 @@ public class Foliage : MonoBehaviour
 
         //GameObject treeObject = foliageHandler.GetForstetTree(treeType);
 
+        //Debug.DrawLine(rayOrigin, planet.transform.position, Color.red, 15f);
+
         // Spawns 5 trees around a found forest spot! Bigger number = denser forest
-        for (int i = 0; i < 5; i++)
+        for (int i = 0; i < 10; i++)
         {
             float x = (float)random.Value() * 2 - 1;
             float y = (float)random.Value() * 2 - 1;
@@ -356,7 +373,7 @@ public class Foliage : MonoBehaviour
                 rotation *= Quaternion.Euler(0, random.Next(0, 360), 0);
                 Instantiate(treeObject, hit.point - (hit.point.normalized * 0.2f), rotation, transform);
                 if (foliageHandler.debug) Debug.DrawLine(localpos, hit.point, Color.yellow, 10f);
-                treeNr++;
+                //treeNr++;
             }
         }
     }
