@@ -76,7 +76,7 @@ public class HandleAudio : MonoBehaviour
     /// </summary>
     public void PlayButtonHoverSound()
     {
-        musicAudioSource.PlayOneShot(buttonHoverSounds[Random.Range(0, buttonHoverSounds.Length)]);
+        simpleEffectAudioSource.PlayOneShot(buttonHoverSounds[Random.Range(0, buttonHoverSounds.Length)]);
     }
     
     /// <summary>
