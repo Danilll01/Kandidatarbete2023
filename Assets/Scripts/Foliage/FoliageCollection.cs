@@ -7,4 +7,5 @@ public struct FoliageCollection
     public string name;
     public GameObject[] gameObjects;
     public BiomeRange biomeRange;
+    public int emptyObjects;
 }

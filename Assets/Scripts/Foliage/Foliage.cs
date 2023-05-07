@@ -217,7 +217,7 @@ public class Foliage : MonoBehaviour
         // Checks how steep the terrain is
         if(Mathf.Abs(Vector3.Angle(rayOrigin - planetPosition, hit.normal)) > maxAngle)
         {
-            AboveAngle(hit, rayOrigin, heightAboveSea);
+            //AboveAngle(hit, rayOrigin, heightAboveSea);
         }
         else
         {
@@ -264,9 +264,6 @@ public class Foliage : MonoBehaviour
                 // Add indicies
                 acceptableIndexes[j] = i;
                 j++;
-            } else
-            {
-                //print("Not in T:" + localBiome.trees + "  T coll:" + foliageHandler.foliageCollections[i].biomeRange.treesMin);
             }
         }
 
@@ -278,9 +275,15 @@ public class Foliage : MonoBehaviour
         {
             FoliageCollection chosenCollection = foliageHandler.foliageCollections[chosenIndex];
 
-            GameObject foliageObj = chosenCollection.gameObjects[random.Next(chosenCollection.gameObjects.Length)];
-            //Instantiate(foliageObj, hit.point - hit.point.normalized * 0.2f, rotation, transform);
-            SpawnTreesInForest(foliageObj, rayOrigin);
+            int totalNrObjects = chosenCollection.gameObjects.Length + chosenCollection.emptyObjects;
+
+            if (random.Value() > chosenCollection.emptyObjects / totalNrObjects)
+            {
+                GameObject foliageObj = chosenCollection.gameObjects[random.Next(chosenCollection.gameObjects.Length)];
+                //Instantiate(foliageObj, hit.point - hit.point.normalized * 0.2f, rotation, transform);
+                SpawnTreesInForest(foliageObj, rayOrigin);
+            }
+
         }
             
 
@@ -337,7 +340,7 @@ public class Foliage : MonoBehaviour
         //GameObject treeObject = foliageHandler.GetForstetTree(treeType);
 
         // Spawns 5 trees around a found forest spot! Bigger number = denser forest
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < 5; i++)
         {
             float x = (float)random.Value() * 2 - 1;
             float y = (float)random.Value() * 2 - 1;
