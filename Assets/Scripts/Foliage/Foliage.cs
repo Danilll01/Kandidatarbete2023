@@ -291,14 +291,17 @@ public class Foliage : MonoBehaviour
 
             MeshRenderer treeRenderer = spawnedTree.GetComponent<MeshRenderer>();
 
-            if (treeRenderer.material.Equals(foliageHandler.biomeFoliageDatas[4]))
+            int index;
+            if (!spawnedTree.name.Contains("Type"))
             {
-                treeRenderer.material = foliageHandler.biomeFoliageDatas[random.Next(0, 5)].biomeMaterial;
+                index = random.Next(0, 5);
             }
             else
             {
-                treeRenderer.material = foliageHandler.biomeFoliageDatas[random.Next(5, 10)].biomeMaterial;
+                index = random.Next(5, 10);
             }
+
+            treeRenderer.material = foliageHandler.biomeFoliageDatas[index].biomeMaterial;
 
         }
     }
@@ -331,14 +334,18 @@ public class Foliage : MonoBehaviour
                 GameObject spawnedTree = Instantiate(treeObject, hit.point - (hit.point.normalized * 0.2f), rotation, transform);
                 MeshRenderer treeRenderer = spawnedTree.GetComponent<MeshRenderer>();
 
-                if (treeRenderer.material.Equals(foliageHandler.biomeFoliageDatas[4]))
+                int index;
+                if (!spawnedTree.name.Contains("Type"))
                 {
-                    treeRenderer.material = foliageHandler.biomeFoliageDatas[random.Next(0, 5)].biomeMaterial;
+                    index = random.Next(0, 5);
+                    
                 }
                 else
                 {
-                    treeRenderer.material = foliageHandler.biomeFoliageDatas[random.Next(5, 10)].biomeMaterial;
+                    index = random.Next(5, 10);
                 }
+
+                treeRenderer.material = foliageHandler.biomeFoliageDatas[index].biomeMaterial;
                 if (foliageHandler.debug) Debug.DrawLine(localpos, hit.point, Color.yellow, 10f);
                 treeNr++;
             }
