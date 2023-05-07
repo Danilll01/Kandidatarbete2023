@@ -4,7 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Added new wind sounds and changed it in scene" />
+    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Changed paus button hover sound source so that the sound is higher">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Solar System/SpawnPlanets.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Solar System/SpawnPlanets.cs" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -158,19 +161,7 @@
       <workItem from="1682952065891" duration="20322000" />
       <workItem from="1683036367666" duration="5009000" />
       <workItem from="1683143710028" duration="16803000" />
-      <workItem from="1683456363724" duration="2133000" />
-    </task>
-    <task id="LOCAL−00080" summary="Player crosshair is now disabled when not in spaceship">
-      <created>1682895820861</created>
-      <option name="number" value="LOCAL−00080" />
-      <option name="presentableId" value="LOCAL−00080" />
-      <updated>1682895820861</updated>
-    </task>
-    <task id="LOCAL−00081" summary="Ship crosshair is now shown behind pause menu">
-      <created>1682896625849</created>
-      <option name="number" value="LOCAL−00081" />
-      <option name="presentableId" value="LOCAL−00081" />
-      <updated>1682896625849</updated>
+      <workItem from="1683456363724" duration="4782000" />
     </task>
     <task id="LOCAL−00082" summary="Made loading screen loading text better">
       <created>1682897468943</created>
@@ -454,7 +445,19 @@
       <option name="presentableId" value="LOCAL−00128" />
       <updated>1683462272694</updated>
     </task>
-    <option name="localTasksCounter" value="129" />
+    <task id="LOCAL−00129" summary="Changed starting menu sound to be a little higher">
+      <created>1683462614204</created>
+      <option name="number" value="LOCAL−00129" />
+      <option name="presentableId" value="LOCAL−00129" />
+      <updated>1683462614204</updated>
+    </task>
+    <task id="LOCAL−00130" summary="Changed paus button hover sound source so that the sound is higher">
+      <created>1683462811558</created>
+      <option name="number" value="LOCAL−00130" />
+      <option name="presentableId" value="LOCAL−00130" />
+      <updated>1683462811558</updated>
+    </task>
+    <option name="localTasksCounter" value="131" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -476,8 +479,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="Added player sit animation when the player is in the ship" />
-    <MESSAGE value="Added wind noise when player moves on ground" />
     <MESSAGE value="Made jump sound a little louder" />
     <MESSAGE value="Made spaceship thruster a little less loud" />
     <MESSAGE value="Made &quot;can't land&quot; sound higher" />
@@ -501,6 +502,8 @@
     <MESSAGE value="Made seed sound a little higher again" />
     <MESSAGE value="Made background music fading a lot better" />
     <MESSAGE value="Added new wind sounds and changed it in scene" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added new wind sounds and changed it in scene" />
+    <MESSAGE value="Changed starting menu sound to be a little higher" />
+    <MESSAGE value="Changed paus button hover sound source so that the sound is higher" />
+    <option name="LAST_COMMIT_MESSAGE" value="Changed paus button hover sound source so that the sound is higher" />
   </component>
 </project>
