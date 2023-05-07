@@ -44,7 +44,7 @@ public class SpaceShipController : MonoBehaviour
     [SerializeField] private Sprite[] travelTypeSprites;
     [SerializeField] private Texture2D[] travelTypeTextures;
     [SerializeField] private SpaceShipTransition shipTransitionScript;
-    [SerializeField] private HandleAudio audio;
+    [SerializeField] private new HandleAudio audio;
 
     // Ship movement
     private float speed;
@@ -225,7 +225,7 @@ public class SpaceShipController : MonoBehaviour
         // Play thrust sound effect if player is accelerating
         if (newMovementVector.magnitude > 0f)
         {
-            audio.PlaySoundEffect(HandleAudio.SoundEffects.Thrust, true, false, 0.5f);
+            audio.PlaySoundEffect(HandleAudio.SoundEffects.Thrust, true, false, volume:0.3f);
         }
         else
         {

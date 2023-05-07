@@ -108,4 +108,4 @@ LODGroup:
   - screenRelativeHeight: 0.01
     fadeTransitionWidth: 0
     renderers: []
-  m_Enabled: 1
+  m_Enabled: 0
