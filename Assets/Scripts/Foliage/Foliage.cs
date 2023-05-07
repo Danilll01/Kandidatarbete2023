@@ -289,17 +289,17 @@ public class Foliage : MonoBehaviour
             }
             treeNr++;
 
-            Material treeMaterial = spawnedTree.GetComponent<MeshRenderer>().material;
-            
-            if (treeMaterial.Equals(foliageHandler.biomeFoliageDatas[4]))
+            MeshRenderer treeRenderer = spawnedTree.GetComponent<MeshRenderer>();
+
+            if (treeRenderer.material.Equals(foliageHandler.biomeFoliageDatas[4]))
             {
-                spawnedTree.GetComponent<MeshRenderer>().material = foliageHandler.biomeFoliageDatas[random.Next(0,5)].biomeMaterial;
+                treeRenderer.material = foliageHandler.biomeFoliageDatas[random.Next(0, 5)].biomeMaterial;
             }
             else
             {
-                spawnedTree.GetComponent<MeshRenderer>().material = foliageHandler.biomeFoliageDatas[random.Next(5,10)].biomeMaterial;
+                treeRenderer.material = foliageHandler.biomeFoliageDatas[random.Next(5, 10)].biomeMaterial;
             }
-            
+
         }
     }
 
@@ -329,15 +329,15 @@ public class Foliage : MonoBehaviour
                 Quaternion rotation = Quaternion.LookRotation(rayOrigin) * Quaternion.Euler(90, 0, 0);
                 rotation *= Quaternion.Euler(0, random.Next(0, 360), 0);
                 GameObject spawnedTree = Instantiate(treeObject, hit.point - (hit.point.normalized * 0.2f), rotation, transform);
-                Material treeMaterial = spawnedTree.GetComponent<MeshRenderer>().material;
+                MeshRenderer treeRenderer = spawnedTree.GetComponent<MeshRenderer>();
 
-                if (treeMaterial.Equals(foliageHandler.biomeFoliageDatas[4]))
+                if (treeRenderer.material.Equals(foliageHandler.biomeFoliageDatas[4]))
                 {
-                    spawnedTree.GetComponent<MeshRenderer>().material = foliageHandler.biomeFoliageDatas[random.Next(0, 5)].biomeMaterial;
+                    treeRenderer.material = foliageHandler.biomeFoliageDatas[random.Next(0, 5)].biomeMaterial;
                 }
                 else
                 {
-                    spawnedTree.GetComponent<MeshRenderer>().material = foliageHandler.biomeFoliageDatas[random.Next(5, 10)].biomeMaterial;
+                    treeRenderer.material = foliageHandler.biomeFoliageDatas[random.Next(5, 10)].biomeMaterial;
                 }
                 if (foliageHandler.debug) Debug.DrawLine(localpos, hit.point, Color.yellow, 10f);
                 treeNr++;
