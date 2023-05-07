@@ -334,7 +334,6 @@ public class Planet : MonoBehaviour
         float density = rand.Value(2.4f, 3f);
         float volume = (4f / 3f) * (float)Math.PI * radius * radius * radius;
         
-        // mass = surfaceGravity * 4 * radius * radius / Universe.gravitationalConstant;
         mass = density * volume;
         gameObject.name = bodyName;
     }
