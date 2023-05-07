@@ -389,7 +389,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc2db926f95bed34580350e7d08b7a3a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 1
+  speed: 1.2
   detectionRadius: 35
   consumeRadius: 0.05
   meshObj: {fileID: 1456181903764010}
