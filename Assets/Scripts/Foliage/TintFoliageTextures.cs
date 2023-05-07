@@ -12,7 +12,7 @@ public class TintFoliageTextures : MonoBehaviour
     private int textureHeight;
     private List<(int start, int end)> pixelRows; // start and end height coordinate
 
-    private List<Color[]> originalColors;
+    public List<Color[]> originalColors;
 
     public Color planetGroundColor;
     public Color[] biomeColors;
@@ -39,6 +39,7 @@ public class TintFoliageTextures : MonoBehaviour
         int index = 0;
         for (int i = 0; i < 2; i++)
         {
+            originalColors.Add(textureAndRows[i].texture.GetPixels());
             // We don't need to create new materials for every biome since we already have a material
             for (int j = 0; j < biomeColors.Length; j++)
             {
@@ -51,6 +52,8 @@ public class TintFoliageTextures : MonoBehaviour
                     biomeFoliageDatas[index].texture = texture;
                 }
 
+                biomeFoliageDatas[index].biomeIndex = j;
+                biomeFoliageDatas[index].packageIndex = i + 1;
                 biomeFoliageDatas[index].biomeName = "Biome " + j + ", pack " + (i + 1);
                 biomeFoliageDatas[index].biomeColor = biomeColors[j];
                 index++;
@@ -84,7 +87,6 @@ public class TintFoliageTextures : MonoBehaviour
         return newTexture;
         
 
-        //originalColors.Add(newTexture.GetPixels());
 
         /*
         copiedTextures = new Texture2D[textureAndRows.Length];
@@ -112,6 +114,30 @@ public class TintFoliageTextures : MonoBehaviour
             Initialize();
         }
 
+        for (int i = 0; i < biomeFoliageDatas.Length; i++)
+        {
+            BiomeFoliageData biomeFoliageData = biomeFoliageDatas[i];
+            bool packageOne = biomeFoliageData.packageIndex == 1;
+            TextureAndRows textureAndRow = packageOne ? textureAndRows[0] : textureAndRows[1];
+
+            Texture2D texture = biomeFoliageData.texture;
+            pixelRows.Clear();
+            textureHeight = texture.height;
+            totalNumberOfPixelsPerRow = textureAndRow.totalNumberOfPixelsPerRow;
+            int[] rowIndexes = textureAndRow.rowIndexesToTaint;
+            GetRows();
+
+            for (int h = 0; h < rowIndexes.Length; h++)
+            {
+                int index = rowIndexes[h];
+                (int, int) startAndEndPixelRows = pixelRows[index];
+                TintColorOnRows(biomeFoliageData.packageIndex - 1, texture, startAndEndPixelRows, biomeFoliageData.biomeColor);
+            }
+
+            texture.Apply();
+        }
+
+        /*
         for (int t = 0; t < textureAndRows.Length; t++)
         {
             TextureAndRows textureAndrow = textureAndRows[t];
@@ -131,9 +157,10 @@ public class TintFoliageTextures : MonoBehaviour
 
             texture.Apply();
         }
+        */
     }
 
-    private void TintColorOnRows(int t, Texture2D texture, (int startRow, int endRow) startAndEndPixelRows)
+    private void TintColorOnRows(int t, Texture2D texture, (int startRow, int endRow) startAndEndPixelRows, Color biomeColor)
     {
         for (int j = startAndEndPixelRows.startRow; j > startAndEndPixelRows.endRow - 1; j--)
         {
@@ -144,7 +171,7 @@ public class TintFoliageTextures : MonoBehaviour
                 {
                     indexInOriginalColors = i;
                 }
-                Color newColor = (originalColors[t][indexInOriginalColors] + planetGroundColor) * 0.5f;
+                Color newColor = (originalColors[t][indexInOriginalColors] + biomeColor) * 0.5f;
                 texture.SetPixel(i, j, newColor);
             }
         }
@@ -169,7 +196,9 @@ public class TintFoliageTextures : MonoBehaviour
     [System.Serializable]
     public struct BiomeFoliageData
     {
-        public string biomeName;
+        [HideInInspector] public string biomeName;
+        public int biomeIndex;
+        public int packageIndex;
         public Material biomeMaterial;
         public Texture2D texture;
         public Color biomeColor;
