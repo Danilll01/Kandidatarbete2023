@@ -671,7 +671,7 @@ public class Creature : MonoBehaviour
     {
         currentState = CreatureState.PerformingAction;
         string animationType = type == ResourceType.Water && animatorParameters.HasBool("isDrinking") ? "isDrinking" : "isAttacking";
-        animator.SetBool(animationType, true);
+        animatorParameters.SetBool(animationType, true);
         
         StartCoroutine(InteractWithResource(resource, disable, type));
     }
@@ -707,8 +707,8 @@ public class Creature : MonoBehaviour
 
         // Set the state to idle
         string animationType = type == ResourceType.Water && animatorParameters.HasBool("isDrinking") ? "isDrinking" : "isAttacking";
-        animator.SetBool(animationType, false);
-        animator.SetBool("isWalking", true);
+        animatorParameters.SetBool(animationType, false);
+        animatorParameters.SetBool("isWalking", true);
 
         yield return new WaitForSeconds(1);
 
@@ -872,6 +872,11 @@ public class Creature : MonoBehaviour
                 {
                     return true;
                 }
+                //HACK. Replace if more divergences are found
+                else if (parameterName == "isWalking" &&  parameters[i].name == "isJumping")
+                {
+                    return true;
+                }
             }
             return false;
         }
@@ -885,6 +890,13 @@ public class Creature : MonoBehaviour
                 {
                     animator.SetBool(name, value);
                     Debug.Log("SET: " + name);
+                }
+                //HACK. Replace if more divergences are found
+                else if (parameters[i].type == AnimatorControllerParameterType.Bool &&
+                    parameters[i].name == "isJumping" && name == "isWalking")
+                {
+                    animator.SetBool("isJumping", value);
+                    Debug.Log("SETALT: " + name + " TO " + value);
                 }
             }
         }
