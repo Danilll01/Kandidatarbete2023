@@ -72,11 +72,13 @@ public class FoliageHandler : MonoBehaviour
     // Updates the debug menu
     public void UpdateDebug()
     {
+        #if DEBUG || UNITY_EDITOR
         DisplayDebug.AddOrSetDebugVariable("Trees", treeNr);
         DisplayDebug.AddOrSetDebugVariable("Bushes", bushNr);
         DisplayDebug.AddOrSetDebugVariable("Water plants", waterPlantNr);
         DisplayDebug.AddOrSetDebugVariable("Stones", stoneNr);
         DisplayDebug.AddOrSetDebugVariable("Foragables", foragableNr);
+        #endif
     }
 
     // Inits arrays

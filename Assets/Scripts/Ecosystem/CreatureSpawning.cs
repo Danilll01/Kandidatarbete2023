@@ -54,7 +54,7 @@ public class CreatureSpawning : MonoBehaviour
     {
         // Generates arrays with viable spawning positions
         creatureSpots = new Vector3[positionArrayLength];
-        Vector3 pos = creatureHandler.PlanetRadius * chunkPosition.normalized;
+        Vector3 pos = creatureHandler.transform.rotation  * (chunkPosition.normalized * creatureHandler.PlanetRadius);
 
         // I would say, let Manfred change this if needed (This generates all spawn spots)
         // Check the debug function above if interested in how it works

@@ -12,6 +12,7 @@ public class PlayerWater : MonoBehaviour
     [HideInInspector] public bool underWater;
     private static readonly int C1 = Shader.PropertyToID("_C1");
     private static readonly int UnderWater = Shader.PropertyToID("_UnderWater");
+    [SerializeField] private HandleAudio audio;
 
     public void Initialize(Planet planet)
     {
@@ -36,7 +37,7 @@ public class PlayerWater : MonoBehaviour
     /// </summary>
     private void SetColors()
     {
-        water.SetColor(C1, planet.GetSeaColor());
+        water.SetColor(C1, planet.GetSeaColor);
     }
 
     /// <summary>
@@ -49,6 +50,7 @@ public class PlayerWater : MonoBehaviour
         {
             if (underWater)
             {
+                audio.PlaySimpleSoundEffect(HandleAudio.SoundEffects.WaterSplash, true);
                 water.SetFloat(UnderWater, 1);
                 PostProssesing.SetActive(true);
                 this.underWater = true;

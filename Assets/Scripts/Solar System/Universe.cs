@@ -12,6 +12,7 @@ public static class Universe
 
     //Guaranteed set after Awake()
     public static PillPlayerController player = null;
+    public static Transform spaceShip = null;
     public static Transform sunPosition = null;
 
     /// <summary>
@@ -20,8 +21,10 @@ public static class Universe
     public static void InitializeRandomWithSeed()
     {
         random = new RandomX(seed);
+        #if DEBUG || UNITY_EDITOR
         DisplayDebug.AddOrSetDebugVariable("Seed", seed);
         DisplayDebug.AddOrSetDebugVariable("Number of planets", nrOfPlanets);
+        #endif
     }
 
     public static void DrawGizmosCircle(Vector3 pos, Vector3 normal, float radius, int numSegments)
