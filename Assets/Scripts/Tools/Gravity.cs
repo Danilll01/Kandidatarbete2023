@@ -29,11 +29,17 @@ public class Gravity
     /// </summary>
     public static void Attract(Vector3 entityPos, Rigidbody entityRigidbody, Vector3 attractingBodyPos, float attractingBodyMass)
     {
-        float r2 = Vector3.Distance(entityPos, attractingBodyPos);
-        r2 *= r2;
+        float r2 = Vector3.SqrMagnitude(entityPos - attractingBodyPos);
 
         Vector3 attractionDirection = (attractingBodyPos - entityPos).normalized;
+        float gravity = Mathf.Max(13, (Universe.gravitationalConstant * attractingBodyMass) / r2);
+        
+        Debug.Log("GravKonst: " + Universe.gravitationalConstant);
+        Debug.Log("Radius: " + r2);
+        Debug.Log("BodyMass: " + attractingBodyMass);
+        Debug.Log("Gravity: " + gravity);
+        Debug.Log("GravityVel: " + attractionDirection * (gravity * Time.deltaTime));
 
-        entityRigidbody.velocity += attractionDirection * ((attractingBodyMass * Time.deltaTime) / r2);
+        entityRigidbody.velocity += attractionDirection * (gravity * Time.deltaTime);
     }
 }

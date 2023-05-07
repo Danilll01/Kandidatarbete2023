@@ -10,7 +10,7 @@ public class Sun : MonoBehaviour
     public float radius;
     public float surfaceGravity;
     public string bodyName = "Sun";
-    public float mass;
+    private float mass;
     public float temperature;
     private static readonly int Temperature = Shader.PropertyToID("_temperature");
 

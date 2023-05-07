@@ -60,6 +60,7 @@ public class Planet : MonoBehaviour
 
     private bool reset;
 
+    private RandomX rand;
 
     /// <summary>
     /// Initializes the planet
@@ -69,7 +70,7 @@ public class Planet : MonoBehaviour
     /// <param name="spawn">True if the player will spawn on the planet</param>
     public void Initialize(int randomSeed, bool spawn)
     {
-        RandomX rand = new RandomX(randomSeed);
+        rand = new RandomX(randomSeed);
 
         player = Universe.player.transform;
 
@@ -330,7 +331,11 @@ public class Planet : MonoBehaviour
     /// </summary>
     public void SetUpPlanetValues()
     {
-        mass = surfaceGravity * 4 * radius * radius / Universe.gravitationalConstant;
+        float density = rand.Value(2.4f, 3f);
+        float volume = (4f / 3f) * (float)Math.PI * radius * radius * radius;
+        
+        // mass = surfaceGravity * 4 * radius * radius / Universe.gravitationalConstant;
+        mass = density * volume;
         gameObject.name = bodyName;
     }
 
