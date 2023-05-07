@@ -30,6 +30,8 @@ public class Foliage : MonoBehaviour
 
     [HideInInspector] public bool initialized = false;
 
+    [SerializeField] private Planet planet;
+
     // Updates the debug screen
     private void OnDisable()
     {
@@ -270,21 +272,34 @@ public class Foliage : MonoBehaviour
         }
         else
         {
+            GameObject spawnedTree;
             if (random.Next(10) == 0)
             {
                 // 1 in 10 to spawn a fallen tree
                 Quaternion rotation = Quaternion.LookRotation(hit.normal) * Quaternion.Euler(90, 0, 0);
                 rotation *= Quaternion.Euler(0, random.Next(0, 360), 0);
-                Instantiate(foliageHandler.fallenTree, hit.point + hit.point.normalized * 0.18f, rotation, transform);
+                spawnedTree = Instantiate(foliageHandler.fallenTree, hit.point + hit.point.normalized * 0.18f, rotation, transform);
             }
             else
             {
                 // Spawns a random tree
                 Quaternion rotation = Quaternion.LookRotation(rayOrigin) * Quaternion.Euler(90, 0, 0);
                 rotation *= Quaternion.Euler(0, random.Next(0, 360), 0);
-                Instantiate(foliageHandler.GetTreeType(), hit.point - hit.point.normalized * 0.2f, rotation, transform);
+                spawnedTree = Instantiate(foliageHandler.GetTreeType(), hit.point - hit.point.normalized * 0.2f, rotation, transform);
             }
             treeNr++;
+
+            Material treeMaterial = spawnedTree.GetComponent<MeshRenderer>().material;
+            
+            if (treeMaterial.Equals(foliageHandler.biomeFoliageDatas[4]))
+            {
+                spawnedTree.GetComponent<MeshRenderer>().material = foliageHandler.biomeFoliageDatas[random.Next(0,5)].biomeMaterial;
+            }
+            else
+            {
+                spawnedTree.GetComponent<MeshRenderer>().material = foliageHandler.biomeFoliageDatas[random.Next(5,10)].biomeMaterial;
+            }
+            
         }
     }
 
@@ -313,7 +328,17 @@ public class Foliage : MonoBehaviour
             {
                 Quaternion rotation = Quaternion.LookRotation(rayOrigin) * Quaternion.Euler(90, 0, 0);
                 rotation *= Quaternion.Euler(0, random.Next(0, 360), 0);
-                Instantiate(treeObject, hit.point - (hit.point.normalized * 0.2f), rotation, transform);
+                GameObject spawnedTree = Instantiate(treeObject, hit.point - (hit.point.normalized * 0.2f), rotation, transform);
+                Material treeMaterial = spawnedTree.GetComponent<MeshRenderer>().material;
+
+                if (treeMaterial.Equals(foliageHandler.biomeFoliageDatas[4]))
+                {
+                    spawnedTree.GetComponent<MeshRenderer>().material = foliageHandler.biomeFoliageDatas[random.Next(0, 5)].biomeMaterial;
+                }
+                else
+                {
+                    spawnedTree.GetComponent<MeshRenderer>().material = foliageHandler.biomeFoliageDatas[random.Next(5, 10)].biomeMaterial;
+                }
                 if (foliageHandler.debug) Debug.DrawLine(localpos, hit.point, Color.yellow, 10f);
                 treeNr++;
             }

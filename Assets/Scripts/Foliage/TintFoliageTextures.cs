@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public class TintFoliageTextures : MonoBehaviour
 {
-    [SerializeField] private Material[] textureMaterials;
+    public Material[] textureMaterials;
     private TextureAndRows[] textureAndRows;
     private Texture2D[] copiedTextures;
 
@@ -17,7 +17,7 @@ public class TintFoliageTextures : MonoBehaviour
     public Color planetGroundColor;
     public Color[] biomeColors;
     [SerializeField] private Material[] biomeMaterials;
-    [SerializeField] private BiomeFoliageData[] biomeFoliageDatas;
+    public BiomeFoliageData[] biomeFoliageDatas;
 
     private bool Initialized;
 

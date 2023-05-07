@@ -53,6 +53,8 @@ public class FoliageHandler : MonoBehaviour
     public int stoneNr = 0;
     [HideInInspector]
     public int foragableNr = 0;
+    [HideInInspector]
+    public TintFoliageTextures.BiomeFoliageData[] biomeFoliageDatas;
 
     /// <summary>
     /// Initializes the foliageHandler
