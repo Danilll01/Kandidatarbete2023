@@ -94,10 +94,8 @@ public class StartManager : MonoBehaviour
     
     private IEnumerator FadeOutMusic(float fadeDuration)
     {
-        float currentVolume = musicAudioSource.volume;
         for (float timePassed = 0f; timePassed < fadeDuration; timePassed += Time.deltaTime)
         {
-            musicAudioSource.volume = Mathf.Lerp(currentVolume, 0.01f, timePassed / fadeDuration);
             fadeOutImage.localScale = Vector3.Lerp(Vector3.zero, Vector3.one, timePassed / fadeDuration);
             
             yield return null;

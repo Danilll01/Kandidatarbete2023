@@ -19,6 +19,8 @@ public class MenuManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI volumeText;
     [SerializeField] private PillPlayerController playerController;
 
+    private AudioSource musicAudioSource;
+
 
     void Awake()
     {
@@ -34,6 +36,9 @@ public class MenuManager : MonoBehaviour
         volumeSlider.maxValue = 1;
         volumeSlider.minValue = 0;
         volumeSlider.value = AudioListener.volume;
+        musicAudioSource = GameObject.Find("Music").GetComponent<AudioSource>();
+        StartCoroutine(FadeOutMusic(2f));
+
     }
 
     /// <summary>
@@ -114,6 +119,17 @@ public class MenuManager : MonoBehaviour
     public void ResumeGame()
     {
         PausGame();
+    }
+
+    private IEnumerator FadeOutMusic(float fadeDuration)
+    {
+        float currentVolume = musicAudioSource.volume;
+        for (float timePassed = 0f; timePassed < fadeDuration; timePassed += Time.deltaTime)
+        {
+            musicAudioSource.volume = Mathf.Lerp(currentVolume, 0.01f, timePassed / fadeDuration);
+
+            yield return null;
+        }
     }
 
 }
