@@ -69,6 +69,8 @@ public class Planet : MonoBehaviour
     /// <param name="spawn">True if the player will spawn on the planet</param>
     public void Initialize(int randomSeed, bool spawn)
     {
+        biomeSettings.distance = positionRelativeToSunDistance;
+
         RandomX rand = new RandomX(randomSeed);
 
         player = Universe.player.transform;
