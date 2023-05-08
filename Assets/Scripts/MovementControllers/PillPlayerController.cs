@@ -214,6 +214,9 @@ public class PillPlayerController : MonoBehaviour
         // Decides if the model should be moved back because of sprinting
         MoveModelWhileSprint(speed);
         
+        // Play the wind audio
+        PlayWindAudio();
+        
         //Swiming
         if (Swimming)
         {
@@ -302,6 +305,20 @@ public class PillPlayerController : MonoBehaviour
         if (boarded) return;
         Gravity.KeepUpright(transform, attractor.transform);
         Gravity.Attract(transform.position, body, attractor.transform.position, attractor.mass);
+    }
+    
+    // Plays wind audio if needed 
+    private void PlayWindAudio()
+    {
+        // Play wind sound effect
+        if (body.velocity.magnitude > 1f)
+        {
+            audio.PlaySoundEffect(HandleAudio.SoundEffects.Wind, true, false, 2f, 0.3f);
+        }
+        else
+        {
+            audio.TurnOffCurrentSoundEffect(0.4f);
+        }
     }
 
     /// <summary>
