@@ -81,8 +81,8 @@ MonoBehaviour:
   biomeSettings:
     seed: 1
     distance: 0
-    temperatureDecay: 0.0027
-    farTemperature: 0
+    temperatureDecay: 0.002
+    farTemperature: -0.5
     mountainFrequency: 1.2
     temperatureFrequency: 1.28
     temperatureRoughness: 0.367
