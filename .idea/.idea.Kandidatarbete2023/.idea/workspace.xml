@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Added new wind sounds and changed it in scene" />
+    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Removed unused stuff and cleaned up code" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -33,14 +33,14 @@
     </option>
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="mock://D:/Unity/Projects/Kandidatarbete2023/Assets/Scenes/Main.unity" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Atmosphere/AtmosphereHandler.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="mock://D:/Unity/Projects/Kandidatarbete2023/Assets/Scripts/Audio/HandleAudio.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://D:/Unity/Projects/Kandidatarbete2023/Assets/Scripts/Audio/HandleAudio.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://D:/Unity/Projects/Kandidatarbete2023/Assets/Scripts/Audio/HandleAudio.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://D:/Unity/Projects/Kandidatarbete2023/Assets/Scripts/MarchingCubes/Planet.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://D:/Unity/Projects/Kandidatarbete2023/Assets/Scripts/MarchingCubes/Planet.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipCameraMover.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipController.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipTransition.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://D:/Unity/Projects/Kandidatarbete2023/Assets/Scripts/Solar System/SpawnPlanets.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://D:/Unity/Projects/Kandidatarbete2023/Assets/Scripts/Solar System/SpawnPlanets.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Shaders/Atmosphere/AtmosphericScattering.shader" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="MarkdownSettingsMigration">
@@ -158,37 +158,8 @@
       <workItem from="1682952065891" duration="20322000" />
       <workItem from="1683036367666" duration="5009000" />
       <workItem from="1683143710028" duration="16803000" />
-      <workItem from="1683456363724" duration="2133000" />
-    </task>
-    <task id="LOCAL−00080" summary="Player crosshair is now disabled when not in spaceship">
-      <created>1682895820861</created>
-      <option name="number" value="LOCAL−00080" />
-      <option name="presentableId" value="LOCAL−00080" />
-      <updated>1682895820861</updated>
-    </task>
-    <task id="LOCAL−00081" summary="Ship crosshair is now shown behind pause menu">
-      <created>1682896625849</created>
-      <option name="number" value="LOCAL−00081" />
-      <option name="presentableId" value="LOCAL−00081" />
-      <updated>1682896625849</updated>
-    </task>
-    <task id="LOCAL−00082" summary="Made loading screen loading text better">
-      <created>1682897468943</created>
-      <option name="number" value="LOCAL−00082" />
-      <option name="presentableId" value="LOCAL−00082" />
-      <updated>1682897468943</updated>
-    </task>
-    <task id="LOCAL−00083" summary="Made loading screen faster and more visually pleasing">
-      <created>1682903335378</created>
-      <option name="number" value="LOCAL−00083" />
-      <option name="presentableId" value="LOCAL−00083" />
-      <updated>1682903335378</updated>
-    </task>
-    <task id="LOCAL−00084" summary="Updated ship crosshair">
-      <created>1682904667302</created>
-      <option name="number" value="LOCAL−00084" />
-      <option name="presentableId" value="LOCAL−00084" />
-      <updated>1682904667302</updated>
+      <workItem from="1683456363724" duration="11563000" />
+      <workItem from="1683578106804" duration="394000" />
     </task>
     <task id="LOCAL−00085" summary="Added landing rotation offset to compensate for the visual model">
       <created>1682906930849</created>
@@ -454,7 +425,37 @@
       <option name="presentableId" value="LOCAL−00128" />
       <updated>1683462272694</updated>
     </task>
-    <option name="localTasksCounter" value="129" />
+    <task id="LOCAL−00129" summary="Changed starting menu sound to be a little higher">
+      <created>1683462614204</created>
+      <option name="number" value="LOCAL−00129" />
+      <option name="presentableId" value="LOCAL−00129" />
+      <updated>1683462614204</updated>
+    </task>
+    <task id="LOCAL−00130" summary="Changed paus button hover sound source so that the sound is higher">
+      <created>1683462811558</created>
+      <option name="number" value="LOCAL−00130" />
+      <option name="presentableId" value="LOCAL−00130" />
+      <updated>1683462811558</updated>
+    </task>
+    <task id="LOCAL−00131" summary="Changed call order to later work better">
+      <created>1683496494303</created>
+      <option name="number" value="LOCAL−00131" />
+      <option name="presentableId" value="LOCAL−00131" />
+      <updated>1683496494303</updated>
+    </task>
+    <task id="LOCAL−00132" summary="Added size based gravity that is balanced">
+      <created>1683503142351</created>
+      <option name="number" value="LOCAL−00132" />
+      <option name="presentableId" value="LOCAL−00132" />
+      <updated>1683503142351</updated>
+    </task>
+    <task id="LOCAL−00133" summary="Removed unused stuff and cleaned up code">
+      <created>1683503670522</created>
+      <option name="number" value="LOCAL−00133" />
+      <option name="presentableId" value="LOCAL−00133" />
+      <updated>1683503670522</updated>
+    </task>
+    <option name="localTasksCounter" value="134" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -476,11 +477,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="Added player sit animation when the player is in the ship" />
-    <MESSAGE value="Added wind noise when player moves on ground" />
-    <MESSAGE value="Made jump sound a little louder" />
-    <MESSAGE value="Made spaceship thruster a little less loud" />
-    <MESSAGE value="Made &quot;can't land&quot; sound higher" />
     <MESSAGE value="Audio setting is now saved between game sessions" />
     <MESSAGE value="Added sound slider on the main menu" />
     <MESSAGE value="Added hover sounds on start en exit button in start menu" />
@@ -501,6 +497,11 @@
     <MESSAGE value="Made seed sound a little higher again" />
     <MESSAGE value="Made background music fading a lot better" />
     <MESSAGE value="Added new wind sounds and changed it in scene" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added new wind sounds and changed it in scene" />
+    <MESSAGE value="Changed starting menu sound to be a little higher" />
+    <MESSAGE value="Changed paus button hover sound source so that the sound is higher" />
+    <MESSAGE value="Changed call order to later work better" />
+    <MESSAGE value="Added size based gravity that is balanced" />
+    <MESSAGE value="Removed unused stuff and cleaned up code" />
+    <option name="LAST_COMMIT_MESSAGE" value="Removed unused stuff and cleaned up code" />
   </component>
 </project>

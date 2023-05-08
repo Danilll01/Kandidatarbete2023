@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using ExtendedRandom;
 using SimpleKeplerOrbits;
 using UnityEngine;
-using UnityEngine.Serialization;
+
 
 [RequireComponent(typeof(TerrainColor))]
 public class Planet : MonoBehaviour
@@ -12,7 +12,6 @@ public class Planet : MonoBehaviour
     [HideInInspector] public float waterDiameter;
     
     [HideInInspector] public float radius;
-    [HideInInspector] public float surfaceGravity;
     [HideInInspector] public string bodyName = "TBT";
     [HideInInspector] public float mass;
     [HideInInspector] public List<Planet> moons;
@@ -60,6 +59,7 @@ public class Planet : MonoBehaviour
 
     private bool reset;
 
+    private RandomX rand;
 
     /// <summary>
     /// Initializes the planet
@@ -71,7 +71,7 @@ public class Planet : MonoBehaviour
     {
         biomeSettings.distance = positionRelativeToSunDistance;
 
-        RandomX rand = new RandomX(randomSeed);
+        rand = new RandomX(randomSeed);
 
         player = Universe.player.transform;
 
@@ -332,7 +332,10 @@ public class Planet : MonoBehaviour
     /// </summary>
     public void SetUpPlanetValues()
     {
-        mass = surfaceGravity * 4 * radius * radius / Universe.gravitationalConstant;
+        float density = rand.Value(2.4f, 3f);
+        float volume = (4f / 3f) * (float)Math.PI * radius * radius * radius;
+        
+        mass = density * volume;
         gameObject.name = bodyName;
     }
 
