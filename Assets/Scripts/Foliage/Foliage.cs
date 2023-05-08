@@ -375,7 +375,7 @@ public class Foliage : MonoBehaviour
                 GameObject spawnedObject = Instantiate(treeObject, hit.point - (hit.point.normalized * 0.2f), rotation, transform);
 
                 spawnedObject.name += name;
-
+                spawnedObject.transform.localScale *= random.Value(0.8f, 1.3f);
 
                 if (foliageHandler.debug) Debug.DrawLine(localpos, hit.point, Color.yellow, 10f);
                 treeNr++;
