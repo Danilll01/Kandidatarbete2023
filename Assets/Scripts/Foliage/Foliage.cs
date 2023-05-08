@@ -225,6 +225,7 @@ public class Foliage : MonoBehaviour
         }
         else
         {
+            print("Sea: " + heightAboveSea + "   Max: " + planetMaxHeight);
             if (heightAboveSea < planetMaxHeight * 0.9 && !planet.name.Contains("Moon"))
             {
                 BelowAngle(hit, rayOrigin, heightAboveSea);
@@ -355,7 +356,7 @@ public class Foliage : MonoBehaviour
         //Debug.DrawLine(rayOrigin, planet.transform.position, Color.red, 15f);
 
         // Spawns 5 trees around a found forest spot! Bigger number = denser forest
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < 100; i++)
         {
             float x = (float)random.Value() * 2 - 1;
             float y = (float)random.Value() * 2 - 1;

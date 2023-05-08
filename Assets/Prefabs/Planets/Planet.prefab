@@ -728,7 +728,7 @@ MonoBehaviour:
   - {fileID: 5440707293445505367, guid: 494f6d43e170e9145bc7865d243ee00b, type: 3}
   - {fileID: 1127315056602366, guid: 3a9df2c30188f10438112114dc22bae1, type: 3}
   - {fileID: 1240686429475702, guid: da33a1bfeaaabaa4597896ca7003b785, type: 3}
-  densityMultiplier: 0.00002
+  densityMultiplier: 0.000001
   foliageCollections:
   - name: Normal trees
     gameObjects:
