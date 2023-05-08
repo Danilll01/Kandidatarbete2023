@@ -286,9 +286,7 @@ public class Foliage : MonoBehaviour
         {
             FoliageCollection chosenCollection = foliageHandler.foliageCollections[chosenIndex];
 
-            int totalNrObjects = chosenCollection.gameObjects.Length + chosenCollection.emptyObjects;
-
-            if (random.Value() > chosenCollection.emptyObjects / totalNrObjects)
+            if (chosenCollection.probabilityToSkip < random.Value())
             {
                 GameObject foliageObj = chosenCollection.gameObjects[random.Next(chosenCollection.gameObjects.Length)];
 
@@ -296,7 +294,7 @@ public class Foliage : MonoBehaviour
                 //rotation *= Quaternion.Euler(0, random.Next(0, 360), 0);
                 //Instantiate(foliageObj, hit.point - hit.point.normalized * 0.2f, rotation, transform);
 
-                SpawnTreesInForest(foliageObj, rayOrigin);
+                SpawnTreesInForest(foliageObj, rayOrigin, chosenCollection.name);
             }
 
         }
@@ -345,7 +343,7 @@ public class Foliage : MonoBehaviour
     }
 
     // Forest spawning function
-    private void SpawnTreesInForest(GameObject treeObject, Vector3 rayOrigin)
+    private void SpawnTreesInForest(GameObject treeObject, Vector3 rayOrigin, string name)
     {
         
         // Not sure if it is faster to only do this once or to just use a getter each loop
@@ -371,9 +369,13 @@ public class Foliage : MonoBehaviour
             {
                 Quaternion rotation = Quaternion.LookRotation(rayOrigin) * Quaternion.Euler(90, 0, 0);
                 rotation *= Quaternion.Euler(0, random.Next(0, 360), 0);
-                Instantiate(treeObject, hit.point - (hit.point.normalized * 0.2f), rotation, transform);
+                GameObject spawnedObject = Instantiate(treeObject, hit.point - (hit.point.normalized * 0.2f), rotation, transform);
+
+                spawnedObject.name += name;
+
+
                 if (foliageHandler.debug) Debug.DrawLine(localpos, hit.point, Color.yellow, 10f);
-                //treeNr++;
+                treeNr++;
             }
         }
     }

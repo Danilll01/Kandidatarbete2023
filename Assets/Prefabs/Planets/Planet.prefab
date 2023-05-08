@@ -762,7 +762,7 @@ MonoBehaviour:
       treesDependent: 1
       treesMin: 0.706
       treesMax: 1
-    emptyObjects: 0
+    probabilityToSkip: 0
   - name: Normal trees with flowers
     gameObjects:
     - {fileID: 185286, guid: 8ed1fa325ca228645ad26dd6eff14768, type: 3}
@@ -786,7 +786,7 @@ MonoBehaviour:
       treesDependent: 1
       treesMin: 0.281
       treesMax: 1
-    emptyObjects: 0
+    probabilityToSkip: 0
   - name: Warm trees
     gameObjects:
     - {fileID: 1493958779012120596, guid: b9de24523a11d714db3851b5f0f9d527, type: 3}
@@ -808,7 +808,7 @@ MonoBehaviour:
       treesDependent: 0
       treesMin: 0.706
       treesMax: 1
-    emptyObjects: 4
+    probabilityToSkip: 0
   - name: Mountain trees
     gameObjects:
     - {fileID: 149218, guid: fc05c8bfad7df5a4abe568aca7403b9e, type: 3}
@@ -822,17 +822,19 @@ MonoBehaviour:
     - {fileID: 4680757731160225450, guid: 0fde05fa0f3321942a21896ff4f0856f, type: 3}
     - {fileID: 8783306491908617939, guid: f02116c209ecd9e488fc4d2cd8996133, type: 3}
     - {fileID: 1576488453971893466, guid: a778b631c6253a04899cb31bad047c81, type: 3}
+    - {fileID: 166856, guid: 99a48108c5a1932488c06e519f6097f4, type: 3}
+    - {fileID: 184622, guid: c7bcf19bbfa57ed4ea9147dff66d5542, type: 3}
     biomeRange:
       mountainRelevant: 1
       mountainMin: 0.438
-      mountainMax: 1
+      mountainMax: 0.9
       temperatureDependent: 0
       temperatureMin: 0
       temperatureMax: 1
       treesDependent: 0
       treesMin: 0.706
       treesMax: 1
-    emptyObjects: 0
+    probabilityToSkip: 0.415
   - name: 'Cold '
     gameObjects:
     - {fileID: 7405846476849542632, guid: c6308cb7062fac34e8e50600086b12a1, type: 3}
@@ -850,7 +852,7 @@ MonoBehaviour:
       treesDependent: 0
       treesMin: 0.706
       treesMax: 1
-    emptyObjects: 3
+    probabilityToSkip: 0.6
   - name: 'Tropic '
     gameObjects:
     - {fileID: 195476, guid: ec7286e0017272441a3dec9205cb8daf, type: 3}
@@ -871,7 +873,7 @@ MonoBehaviour:
       treesDependent: 0
       treesMin: 0.706
       treesMax: 1
-    emptyObjects: 5
+    probabilityToSkip: 0.262
   isInstantiated: 0
   treeNr: 0
   bushNr: 0

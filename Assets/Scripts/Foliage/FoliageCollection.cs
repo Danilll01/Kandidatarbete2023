@@ -7,5 +7,5 @@ public struct FoliageCollection
     public string name;
     public GameObject[] gameObjects;
     public BiomeRange biomeRange;
-    public int emptyObjects;
+    [Range(0f, 1f)] public float probabilityToSkip;
 }
