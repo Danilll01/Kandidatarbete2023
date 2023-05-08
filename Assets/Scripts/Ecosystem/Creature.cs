@@ -889,14 +889,12 @@ public class Creature : MonoBehaviour
                     parameters[i].name == name)
                 {
                     animator.SetBool(name, value);
-                    Debug.Log("SET: " + name);
                 }
                 //HACK. Replace if more divergences are found
                 else if (parameters[i].type == AnimatorControllerParameterType.Bool &&
                     parameters[i].name == "isJumping" && name == "isWalking")
                 {
                     animator.SetBool("isJumping", value);
-                    Debug.Log("SETALT: " + name + " TO " + value);
                 }
             }
         }
