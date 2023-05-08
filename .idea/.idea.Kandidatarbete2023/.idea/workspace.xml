@@ -34,12 +34,13 @@
   </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Atmosphere/AtmosphereHandler.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://D:/Unity/Projects/Kandidatarbete2023/Assets/Scripts/MarchingCubes/Planet.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://D:/Unity/Projects/Kandidatarbete2023/Assets/Scripts/MarchingCubes/Planet.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipCameraMover.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipController.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipTransition.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="mock://D:/Unity/Projects/Kandidatarbete2023/Assets/Scripts/Solar System/SpawnPlanets.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://D:/Unity/Projects/Kandidatarbete2023/Assets/Scripts/Tools/Gravity.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://D:/Unity/Projects/Kandidatarbete2023/Assets/Scripts/Tools/Gravity.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://D:/Unity/Projects/Kandidatarbete2023/Assets/Scripts/Solar System/SpawnPlanets.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Shaders/Atmosphere/AtmosphericScattering.shader" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="MarkdownSettingsMigration">
@@ -158,6 +159,7 @@
       <workItem from="1683036367666" duration="5009000" />
       <workItem from="1683143710028" duration="16803000" />
       <workItem from="1683456363724" duration="11563000" />
+      <workItem from="1683578106804" duration="394000" />
     </task>
     <task id="LOCAL−00085" summary="Added landing rotation offset to compensate for the visual model">
       <created>1682906930849</created>
