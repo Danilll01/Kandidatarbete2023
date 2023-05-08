@@ -32,6 +32,7 @@ public class Foliage : MonoBehaviour
     private int positionArrayLength;
 
     private float planetMaxHeight;
+    private float objectsInForest;
 
     [HideInInspector] public bool initialized = false;
 
@@ -83,6 +84,8 @@ public class Foliage : MonoBehaviour
 
         // Determines how much foliage there should be on this chunk
         positionArrayLength = (int)(meshVerticesLength * foliageHandler.Density);
+        print("Rad: " + planet.radius);
+        objectsInForest = Mathf.Clamp((int) (0.035f * planet.radius - 5f), 5, 1000);
 
         // Where to start shooting rays from
         chunkPosition = position;
@@ -225,8 +228,7 @@ public class Foliage : MonoBehaviour
         }
         else
         {
-            print("Sea: " + heightAboveSea + "   Max: " + planetMaxHeight);
-            if (heightAboveSea < planetMaxHeight * 0.9 && !planet.name.Contains("Moon"))
+            if (heightAboveSea < planetMaxHeight * 0.8 && !planet.name.Contains("Moon"))
             {
                 BelowAngle(hit, rayOrigin, heightAboveSea);
             } else
@@ -356,7 +358,7 @@ public class Foliage : MonoBehaviour
         //Debug.DrawLine(rayOrigin, planet.transform.position, Color.red, 15f);
 
         // Spawns 5 trees around a found forest spot! Bigger number = denser forest
-        for (int i = 0; i < 100; i++)
+        for (int i = 0; i < objectsInForest; i++)
         {
             float x = (float)random.Value() * 2 - 1;
             float y = (float)random.Value() * 2 - 1;
