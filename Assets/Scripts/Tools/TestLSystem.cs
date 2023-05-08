@@ -8,13 +8,19 @@ public class TestLSystem : MonoBehaviour
     [SerializeField] private int resolution;
     [SerializeField] private int chunkResolution;
     [SerializeField] private Caves.CaveSettings caveSettings;
+    [SerializeField] private bool run = false;
+    [SerializeField] private bool update;
 
     private Caves caves;
     private void OnValidate()
     {
-        caves = new Caves(resolution, chunkResolution, caveSettings);
-        Texture3D caveTexture = caves.GetCaves();
-        AssetDatabase.CreateAsset(caveTexture, "Assets/Test.asset");
+        if(run)
+        {
+            caves = new Caves(resolution, chunkResolution, caveSettings);
+            Texture3D test = caves.GetCaves();
+            AssetDatabase.CreateAsset(test, "Assets/Test.asset");
+            Debug.Log("Caves generated!");
+        }
     }
 
     private void Update()
