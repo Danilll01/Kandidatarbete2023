@@ -205,6 +205,7 @@ public class SpawnPlanets : MonoBehaviour
             Planet moonBody = moon.GetComponent<Planet>();
             moonBody.bodyName = "Moon " + i;
             moonBody.radius = random.Next((int)(parentPlanet.radius / 5), (int)((parentPlanet.radius / 2) + 1));
+            moonBody.positionRelativeToSunDistance = parentPlanet.positionRelativeToSunDistance;
             moonBody.Initialize(random.Next(), false); //False here because we don't spawn on moons
             moonBody.SetUpPlanetValues();
             parentPlanet.moons.Add(moonBody);
