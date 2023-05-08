@@ -1,23 +1,25 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 public class TestLSystem : MonoBehaviour
 {
-    [SerializeField] private LSystem.Sequence startSequence;
-    [SerializeField] private List<LSystem.Rule> rules;
-    [SerializeField] private int iterations;
-    [SerializeField] private LSystem.MovementSettings movementSettings;
+    [SerializeField] private int resolution;
+    [SerializeField] private int chunkResolution;
+    [SerializeField] private Caves.CaveSettings caveSettings;
 
-    private LSystem lSystem;
-
-    private void Start()
+    private Caves caves;
+    private void OnValidate()
     {
-        lSystem = new LSystem(startSequence, rules, iterations, movementSettings);
+        caves = new Caves(resolution, chunkResolution, caveSettings);
+        Texture3D caveTexture = caves.GetCaves();
+        AssetDatabase.CreateAsset(caveTexture, "Assets/Test.asset");
     }
 
     private void Update()
     {
+        /*
         for(int i = 0; i < 10; i++)
         {
             lSystem.Step(out Vector3 position, out bool isFinished);
@@ -26,7 +28,7 @@ public class TestLSystem : MonoBehaviour
                 GameObject sphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
                 sphere.transform.position = position;
             }
-        }
+        }*/
     }
 
     /*

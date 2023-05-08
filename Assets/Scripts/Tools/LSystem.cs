@@ -66,6 +66,18 @@ public class LSystem
         public float pitchAngle;
     }
 
+    /// <summary>
+    /// Settings for the LSystem
+    /// </summary>
+    [Serializable]
+    public struct Settings
+    {
+        public Sequence startSequence;
+        public List<Rule> rules;
+        public int iterations;
+        public MovementSettings movementSettings;
+    }
+
     private struct Position
     {
         public Vector3 position;
@@ -92,18 +104,16 @@ public class LSystem
     /// <summary>
     /// Initalizes and generates the L-System
     /// </summary>
-    /// <param name="startSequence">Sequence to generate from</param>
-    /// <param name="rules">Rules for how movements should be replaced each iterations</param>
-    /// <param name="iterations">How many iterations to run when generating L-System</param>
-    public LSystem(Sequence startSequence, List<Rule> rules, int iterations, MovementSettings movementSettings)
+    /// <param name="settings">Settings to be used for the LSystem</param>
+    public LSystem(Settings settings)
     {
-        sequence = startSequence;
-        this.rules = rules;
-        this.iterations = iterations;
+        sequence = settings.startSequence;
+        rules = settings.rules;
+        iterations = settings.iterations;
 
         Generate();
 
-        this.movementSettings = movementSettings;
+        movementSettings = settings.movementSettings;
 
         currentPos = new Position(Vector3.zero, Vector3.up, Vector3.forward);
         branchPos = new Stack<Position>();

@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static LSystem;
+using UnityEngine.Rendering.VirtualTexturing;
 
 public class Caves
 {
@@ -14,8 +16,7 @@ public class Caves
     [Serializable]
     public struct CaveSettings
     {
-        public int scale;
-        public List<LSystem.Rule> rules;
+        public Settings settings;
     }
 
     /// <summary>
@@ -34,6 +35,8 @@ public class Caves
         {
             wrapMode = TextureWrapMode.Clamp
         };
+
+        GenerateCaves(ref caves);
     }
 
     /// <summary>
@@ -42,12 +45,29 @@ public class Caves
     /// <returns><paramref name="caves">caves</paramref></returns>
     public Texture3D GetCaves() { return caves; }
 
-    /// <summary>
-    /// Generates the <see cref="Texture3D"/> for the caves
-    /// </summary>
-    /// <returns>Returns the <see cref="Texture3D"/> for the caves</returns>
-    public Texture3D GenerateCaves()
+    private void GenerateCaves(ref Texture3D caves)
     {
-        return caves;
+        LSystem lSystem = new LSystem(caveSettings.settings);
+
+        while(true)
+        {
+            lSystem.Step(out Vector3 position, out bool isFinished);
+
+            if (0.0f > position.x || position.x > 1.0f)
+                continue;
+            if (0.0f > position.y || position.y > 1.0f)
+                continue;
+            if (0.0f > position.z || position.z > 1.0f)
+                continue;
+
+            caves.SetPixel(
+                x: (int)(caves.width * position.x),
+                y: (int)(caves.height * position.y),
+                z: (int)(caves.depth * position.z),
+                color: new Color(255, 255, 255, 0)); // Black pixel denotes cave spot, alpha is the value used for terraingeneration
+
+            if (isFinished) break;
+        }
+        
     }
 }
