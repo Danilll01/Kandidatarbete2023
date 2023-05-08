@@ -798,6 +798,7 @@ MonoBehaviour:
     - {fileID: 136866, guid: 2327ed4809c34cf4c97a5316db3d4796, type: 3}
     - {fileID: 4263922822445002727, guid: 3cdafb3c2f54d434894928d72d282874, type: 3}
     - {fileID: 6239969156481229051, guid: b71b0f8d2f881c743a85228f3030d1cb, type: 3}
+    - {fileID: 38335279662140195, guid: 34d3f526198dae440bb2ce6005d86055, type: 3}
     biomeRange:
       mountainRelevant: 0
       mountainMin: 0
@@ -824,6 +825,10 @@ MonoBehaviour:
     - {fileID: 1576488453971893466, guid: a778b631c6253a04899cb31bad047c81, type: 3}
     - {fileID: 166856, guid: 99a48108c5a1932488c06e519f6097f4, type: 3}
     - {fileID: 184622, guid: c7bcf19bbfa57ed4ea9147dff66d5542, type: 3}
+    - {fileID: 4385080170328260021, guid: ff62b58c5a9ea164fa8ddf8038e10cd1, type: 3}
+    - {fileID: 5440707293445505367, guid: 494f6d43e170e9145bc7865d243ee00b, type: 3}
+    - {fileID: 4263922822445002727, guid: 3cdafb3c2f54d434894928d72d282874, type: 3}
+    - {fileID: 38335279662140195, guid: 34d3f526198dae440bb2ce6005d86055, type: 3}
     biomeRange:
       mountainRelevant: 1
       mountainMin: 0.438
@@ -842,6 +847,7 @@ MonoBehaviour:
     - {fileID: 4680757731160225450, guid: 0fde05fa0f3321942a21896ff4f0856f, type: 3}
     - {fileID: 8783306491908617939, guid: f02116c209ecd9e488fc4d2cd8996133, type: 3}
     - {fileID: 1576488453971893466, guid: a778b631c6253a04899cb31bad047c81, type: 3}
+    - {fileID: 4263922822445002727, guid: 3cdafb3c2f54d434894928d72d282874, type: 3}
     biomeRange:
       mountainRelevant: 0
       mountainMin: 0.438
@@ -863,6 +869,8 @@ MonoBehaviour:
     - {fileID: 118422, guid: 107cc8771223daf48be99527559937ff, type: 3}
     - {fileID: 136866, guid: 2327ed4809c34cf4c97a5316db3d4796, type: 3}
     - {fileID: 176278, guid: 3c74caa0496b18d4ba0a1009ebb4c992, type: 3}
+    - {fileID: 38335279662140195, guid: 34d3f526198dae440bb2ce6005d86055, type: 3}
+    - {fileID: 38335279662140195, guid: 34d3f526198dae440bb2ce6005d86055, type: 3}
     biomeRange:
       mountainRelevant: 0
       mountainMin: 0.438
