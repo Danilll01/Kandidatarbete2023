@@ -186,8 +186,11 @@ public static class Biomes
     /// Evaluates the value of the temperaturemap at <paramref name="position"/> with <paramref name="biomeSettings"/> 
     /// with the <paramref name="distance"/> to the sun.
     /// </summary>
-    public static float EvaluteBiomeMapTemperature(BiomeSettings biomeSettings, Vector3 position, float distance)
+    public static float EvaluteBiomeMapTemperature(BiomeSettings biomeSettings, Vector3 position)
     {
+        // Distance towards sun
+        float distance = biomeSettings.distance;
+        
         // Normalize position
         position = Vector3.Normalize(position);
 
