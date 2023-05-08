@@ -873,7 +873,7 @@ MonoBehaviour:
       treesDependent: 0
       treesMin: 0.706
       treesMax: 1
-    probabilityToSkip: 0.262
+    probabilityToSkip: 0.625
   isInstantiated: 0
   treeNr: 0
   bushNr: 0
