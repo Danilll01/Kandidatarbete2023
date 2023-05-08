@@ -635,14 +635,14 @@ MonoBehaviour:
   highChunkRes: 4
   highRes:
     lowerRadius: 0
-    upperRadius: 1.3
+    upperRadius: 450
     resolution: 10
   mediumRes:
-    lowerRadius: 1.5
-    upperRadius: 2
+    lowerRadius: 500
+    upperRadius: 700
     resolution: 5
   lowRes:
-    lowerRadius: 2.3
+    lowerRadius: 800
     upperRadius: 6.871948e+10
     resolution: 1
   maxChunkChecksPerFrame: 50

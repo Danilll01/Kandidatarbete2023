@@ -1,13 +1,15 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class HandleAudio : MonoBehaviour
 {
     [SerializeField] private AudioClip[] backgroundMusicAudioClips;
     [SerializeField] private AudioClip[] soundEffectsAudioClips;
-    [SerializeField] private const float backgroundMusicVolume = 0.04f;
-    [SerializeField] private const float soundEffectsVolume = 0.1f;
+    [SerializeField] private AudioClip[] buttonHoverSounds;
+    [SerializeField] private const float backgroundMusicVolume = 0.2f;
+    [SerializeField] private const float soundEffectsVolume = 0.6f;
     [SerializeField] private AudioSource musicAudioSource;
     [SerializeField] private AudioSource soundEffectsAudioSource;
     [SerializeField] private AudioSource simpleEffectAudioSource;
@@ -17,6 +19,7 @@ public class HandleAudio : MonoBehaviour
     private bool gameIsPaused;
     private Coroutine fadeInCoroutine;
     private Coroutine fadeOutCoroutine;
+    private Coroutine changeMusicClipCoroutine;
 
     /// <summary>
     /// Initialize the audio components
@@ -38,7 +41,7 @@ public class HandleAudio : MonoBehaviour
             soundEffectsAudioSource.mute = true;
             gameIsPaused = true;
         }
-        else if (Time.timeScale == 1 && gameIsPaused)
+        else if (Math.Abs(Time.timeScale - 1) < 0.0001 && gameIsPaused)
         {
             soundEffectsAudioSource.mute = false;
             gameIsPaused = false;
@@ -64,9 +67,18 @@ public class HandleAudio : MonoBehaviour
         Landing,
         Toggle,
         Jump,
-        WaterSplash
+        WaterSplash,
+        Wind
     }
 
+    /// <summary>
+    /// Plays a random button hover sound
+    /// </summary>
+    public void PlayButtonHoverSound()
+    {
+        simpleEffectAudioSource.PlayOneShot(buttonHoverSounds[Random.Range(0, buttonHoverSounds.Length)]);
+    }
+    
     /// <summary>
     /// Plays the specified sound effect directly (over sound already playing) with the standard sound effect volume
     /// </summary>
@@ -84,18 +96,21 @@ public class HandleAudio : MonoBehaviour
             simpleEffectAudioSource.Play();
         }
     }
-    
+
     /// <summary>
     /// Play a given sound effect
     /// </summary>
-    /// <param name="soundEffect"></param>
-    /// <param name="loop"></param>
-    public void PlaySoundEffect(SoundEffects soundEffect, bool loop, bool instantly, float fadeInDuration = 1f, float volume = soundEffectsVolume)
+    /// <param name="soundEffect">Which sound effect to use</param>
+    /// <param name="loop">If the sound effect should loop or not</param>
+    /// <param name="instantly">If the sound should be played directly. (Not recommended as is can cause sound clipping)</param>
+    /// <param name="fadeInDuration">For how long the fade-in should be</param>
+    /// <param name="volume">The wanted volume of the sound effect</param>
+    public void PlaySoundEffect(SoundEffects soundEffect, bool loop, bool instantly = false, float fadeInDuration = 1f, float volume = soundEffectsVolume)
     {
         AudioClip newClip = soundEffectsAudioClips[(int)soundEffect];
-        soundEffectsAudioSource.volume = volume;
         if (newClip != soundEffectsAudioSource.clip)
         {
+            soundEffectsAudioSource.Stop();
             StopCurrentCoroutines();
             soundEffectsAudioSource.clip = soundEffectsAudioClips[(int)soundEffect];
             soundEffectsAudioSource.loop = loop;
@@ -122,8 +137,11 @@ public class HandleAudio : MonoBehaviour
             }
             else
             {
-                soundEffectsAudioSource.volume = 0;
-                soundEffectsAudioSource.Play();
+                if (soundEffectsAudioSource.volume <= FADED_OUT_VOLUME)
+                {
+                    soundEffectsAudioSource.Play();
+                }
+                
                 fadeInCoroutine = StartCoroutine(FadeInSoundEffect(fadeInDuration, volume));
             }
             stoppedSoundEffects = false;
@@ -153,6 +171,21 @@ public class HandleAudio : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Change the background music to the given music clip
+    /// </summary>
+    /// <param name="backgroundClip">Which music clip to play</param>
+    /// <param name="volume">What volume to play sound at</param>
+    public void UpdateMusicSoundClip(BackgroundClips backgroundClip, float volume = backgroundMusicVolume)
+    {
+        if (changeMusicClipCoroutine != null)
+        {
+            StopCoroutine(changeMusicClipCoroutine);
+        }
+        
+        changeMusicClipCoroutine = StartCoroutine(UpdateMusicClipIndex(backgroundClip, volume));
+    }
+    
     private IEnumerator FadeOutSoundEffect(float fadeDuration)
     {
         float currentVolume = soundEffectsAudioSource.volume;
@@ -162,16 +195,23 @@ public class HandleAudio : MonoBehaviour
 
             yield return null;
         }
+
+        // This ensures the right settings when fading is complete
+        soundEffectsAudioSource.volume = FADED_OUT_VOLUME;
     }
     
     private IEnumerator FadeInSoundEffect(float fadeInDuration, float volume)
     {
+        float currentVolume = soundEffectsAudioSource.volume;
         for (float timePassed = 0f; timePassed < fadeInDuration; timePassed += Time.deltaTime)
         {
-            soundEffectsAudioSource.volume = Mathf.Lerp(FADED_OUT_VOLUME, volume, timePassed / fadeInDuration);
+            soundEffectsAudioSource.volume = Mathf.Lerp(currentVolume, volume, timePassed / fadeInDuration);
 
             yield return null;
         }
+        
+        // This ensures the right settings when fading is complete
+        soundEffectsAudioSource.volume = volume;
     }
 
     private IEnumerator InitializeBackgroundMusic()
@@ -183,13 +223,8 @@ public class HandleAudio : MonoBehaviour
             yield return null;
         }
     }
-
-    /// <summary>
-    /// Change the background music to the given music clip
-    /// </summary>
-    /// <param name="backgroundClip"></param>
-    /// <returns></returns>
-    public IEnumerator UpdateMusicClipIndex(BackgroundClips backgroundClip, float volume = backgroundMusicVolume)
+    
+    private IEnumerator UpdateMusicClipIndex(BackgroundClips backgroundClip, float volume = backgroundMusicVolume)
     {
 
         float originalVolume = musicAudioSource.volume;
@@ -207,7 +242,6 @@ public class HandleAudio : MonoBehaviour
         // If there is only one instance of `AudioManager` in your scene this is more efficient
         // in general you should fetch that AudioManager reference only ONCE and re-use it
         musicAudioSource.clip = backgroundMusicAudioClips[(int)backgroundClip];
-        //audioSource.clip = GameObject.FindWithTag("AudioManager").GetComponent<AudioManager>().clips[clip];
 
         yield return new WaitForSeconds(0.1f);
 
@@ -220,5 +254,7 @@ public class HandleAudio : MonoBehaviour
 
             yield return null;
         }
+
+        musicAudioSource.volume = volume;
     }
 }

@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Added player sit animation when the player is in the ship" />
+    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Added new wind sounds and changed it in scene" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -33,11 +33,11 @@
     </option>
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="mock://D:/Unity/Projects/Kandidatarbete2023/Assets/Prefabs/Player/ShipMain.prefab" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://D:/Unity/Projects/Kandidatarbete2023/Assets/Scenes/Main.unity" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Atmosphere/AtmosphereHandler.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="mock://D:/Unity/Projects/Kandidatarbete2023/Assets/Scripts/Debug/MenuManager.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://D:/Unity/Projects/Kandidatarbete2023/Assets/Scripts/Debug/MenuManager.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://D:/Unity/Projects/Kandidatarbete2023/Assets/Scripts/Menus/LoadManager.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://D:/Unity/Projects/Kandidatarbete2023/Assets/Scripts/Audio/HandleAudio.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://D:/Unity/Projects/Kandidatarbete2023/Assets/Scripts/Audio/HandleAudio.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://D:/Unity/Projects/Kandidatarbete2023/Assets/Scripts/Audio/HandleAudio.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipCameraMover.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipController.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipTransition.cs" root0="FORCE_HIGHLIGHTING" />
@@ -157,150 +157,8 @@
       <workItem from="1682861907126" duration="33741000" />
       <workItem from="1682952065891" duration="20322000" />
       <workItem from="1683036367666" duration="5009000" />
-    </task>
-    <task id="LOCAL−00056" summary="Pointer change again">
-      <created>1682126202179</created>
-      <option name="number" value="LOCAL−00056" />
-      <option name="presentableId" value="LOCAL−00056" />
-      <updated>1682126202179</updated>
-    </task>
-    <task id="LOCAL−00057" summary="Ship now rotates upright after 10 seconds">
-      <created>1682465317955</created>
-      <option name="number" value="LOCAL−00057" />
-      <option name="presentableId" value="LOCAL−00057" />
-      <updated>1682465317955</updated>
-    </task>
-    <task id="LOCAL−00058" summary="Clamped ship visual model rotation when turning">
-      <created>1682466358537</created>
-      <option name="number" value="LOCAL−00058" />
-      <option name="presentableId" value="LOCAL−00058" />
-      <updated>1682466358537</updated>
-    </task>
-    <task id="LOCAL−00059" summary="Fixed nice ship visual view bobbing and a cross-hair to see where you go">
-      <created>1682473958065</created>
-      <option name="number" value="LOCAL−00059" />
-      <option name="presentableId" value="LOCAL−00059" />
-      <updated>1682473958065</updated>
-    </task>
-    <task id="LOCAL−00060" summary="Added planet slowdown factor">
-      <created>1682544746062</created>
-      <option name="number" value="LOCAL−00060" />
-      <option name="presentableId" value="LOCAL−00060" />
-      <updated>1682544746062</updated>
-    </task>
-    <task id="LOCAL−00061" summary="Hovering in progress">
-      <created>1682554414382</created>
-      <option name="number" value="LOCAL−00061" />
-      <option name="presentableId" value="LOCAL−00061" />
-      <updated>1682554414382</updated>
-    </task>
-    <task id="LOCAL−00062" summary="Moved water color handling to water handler script on each planet">
-      <created>1682640815206</created>
-      <option name="number" value="LOCAL−00062" />
-      <option name="presentableId" value="LOCAL−00062" />
-      <updated>1682640815206</updated>
-    </task>
-    <task id="LOCAL−00063" summary="Added SpaceShipCameraMover script">
-      <created>1682696394166</created>
-      <option name="number" value="LOCAL−00063" />
-      <option name="presentableId" value="LOCAL−00063" />
-      <updated>1682696394166</updated>
-    </task>
-    <task id="LOCAL−00064" summary="Added camera positions for spaceship">
-      <created>1682717370166</created>
-      <option name="number" value="LOCAL−00064" />
-      <option name="presentableId" value="LOCAL−00064" />
-      <updated>1682717370166</updated>
-    </task>
-    <task id="LOCAL−00065" summary="Added cinamachine free spin camera">
-      <created>1682720355229</created>
-      <option name="number" value="LOCAL−00065" />
-      <option name="presentableId" value="LOCAL−00065" />
-      <updated>1682720355229</updated>
-    </task>
-    <task id="LOCAL−00066" summary="Camera now spins around in a satisfying way">
-      <created>1682725936431</created>
-      <option name="number" value="LOCAL−00066" />
-      <option name="presentableId" value="LOCAL−00066" />
-      <updated>1682725936431</updated>
-    </task>
-    <task id="LOCAL−00067" summary="Fixed camera collisions when looking in free cam">
-      <created>1682727015160</created>
-      <option name="number" value="LOCAL−00067" />
-      <option name="presentableId" value="LOCAL−00067" />
-      <updated>1682727015160</updated>
-    </task>
-    <task id="LOCAL−00068" summary="Free cam is now always centered at the back from the start when you use it">
-      <created>1682734583831</created>
-      <option name="number" value="LOCAL−00068" />
-      <option name="presentableId" value="LOCAL−00068" />
-      <updated>1682734583831</updated>
-    </task>
-    <task id="LOCAL−00069" summary="Added Comments">
-      <created>1682773476964</created>
-      <option name="number" value="LOCAL−00069" />
-      <option name="presentableId" value="LOCAL−00069" />
-      <updated>1682773476964</updated>
-    </task>
-    <task id="LOCAL−00070" summary="Fixed landing bug when entering and leaving planet">
-      <created>1682819195675</created>
-      <option name="number" value="LOCAL−00070" />
-      <option name="presentableId" value="LOCAL−00070" />
-      <updated>1682819195676</updated>
-    </task>
-    <task id="LOCAL−00071" summary="Added RaySpring class">
-      <created>1682864353283</created>
-      <option name="number" value="LOCAL−00071" />
-      <option name="presentableId" value="LOCAL−00071" />
-      <updated>1682864353283</updated>
-    </task>
-    <task id="LOCAL−00072" summary="Force springs now works on spaceship">
-      <created>1682880820059</created>
-      <option name="number" value="LOCAL−00072" />
-      <option name="presentableId" value="LOCAL−00072" />
-      <updated>1682880820059</updated>
-    </task>
-    <task id="LOCAL−00073" summary="Added spring prefab">
-      <created>1682880835345</created>
-      <option name="number" value="LOCAL−00073" />
-      <option name="presentableId" value="LOCAL−00073" />
-      <updated>1682880835345</updated>
-    </task>
-    <task id="LOCAL−00074" summary="Added comment">
-      <created>1682881225052</created>
-      <option name="number" value="LOCAL−00074" />
-      <option name="presentableId" value="LOCAL−00074" />
-      <updated>1682881225052</updated>
-    </task>
-    <task id="LOCAL−00075" summary="Now does not cast rays every frame">
-      <created>1682888804205</created>
-      <option name="number" value="LOCAL−00075" />
-      <option name="presentableId" value="LOCAL−00075" />
-      <updated>1682888804205</updated>
-    </task>
-    <task id="LOCAL−00076" summary="Tuned hover springs">
-      <created>1682891040209</created>
-      <option name="number" value="LOCAL−00076" />
-      <option name="presentableId" value="LOCAL−00076" />
-      <updated>1682891040209</updated>
-    </task>
-    <task id="LOCAL−00077" summary="Added force that pulls the player down when inactive">
-      <created>1682892862310</created>
-      <option name="number" value="LOCAL−00077" />
-      <option name="presentableId" value="LOCAL−00077" />
-      <updated>1682892862310</updated>
-    </task>
-    <task id="LOCAL−00078" summary="Changed max landing angle to 40 degrees">
-      <created>1682892880936</created>
-      <option name="number" value="LOCAL−00078" />
-      <option name="presentableId" value="LOCAL−00078" />
-      <updated>1682892880936</updated>
-    </task>
-    <task id="LOCAL−00079" summary="Fixed planet idle pull on other planets">
-      <created>1682894850006</created>
-      <option name="number" value="LOCAL−00079" />
-      <option name="presentableId" value="LOCAL−00079" />
-      <updated>1682894850006</updated>
+      <workItem from="1683143710028" duration="16803000" />
+      <workItem from="1683456363724" duration="2133000" />
     </task>
     <task id="LOCAL−00080" summary="Player crosshair is now disabled when not in spaceship">
       <created>1682895820861</created>
@@ -452,7 +310,151 @@
       <option name="presentableId" value="LOCAL−00104" />
       <updated>1683068525215</updated>
     </task>
-    <option name="localTasksCounter" value="105" />
+    <task id="LOCAL−00105" summary="Added wind noise when player moves on ground">
+      <created>1683146118817</created>
+      <option name="number" value="LOCAL−00105" />
+      <option name="presentableId" value="LOCAL−00105" />
+      <updated>1683146118817</updated>
+    </task>
+    <task id="LOCAL−00106" summary="Made jump sound a little louder">
+      <created>1683147674924</created>
+      <option name="number" value="LOCAL−00106" />
+      <option name="presentableId" value="LOCAL−00106" />
+      <updated>1683147674924</updated>
+    </task>
+    <task id="LOCAL−00107" summary="Made spaceship thruster a little less loud">
+      <created>1683148280239</created>
+      <option name="number" value="LOCAL−00107" />
+      <option name="presentableId" value="LOCAL−00107" />
+      <updated>1683148280239</updated>
+    </task>
+    <task id="LOCAL−00108" summary="Made &quot;can't land&quot; sound higher">
+      <created>1683148601101</created>
+      <option name="number" value="LOCAL−00108" />
+      <option name="presentableId" value="LOCAL−00108" />
+      <updated>1683148601101</updated>
+    </task>
+    <task id="LOCAL−00109" summary="Audio setting is now saved between game sessions">
+      <created>1683149078614</created>
+      <option name="number" value="LOCAL−00109" />
+      <option name="presentableId" value="LOCAL−00109" />
+      <updated>1683149078614</updated>
+    </task>
+    <task id="LOCAL−00110" summary="Added sound slider on the main menu">
+      <created>1683151027637</created>
+      <option name="number" value="LOCAL−00110" />
+      <option name="presentableId" value="LOCAL−00110" />
+      <updated>1683151027637</updated>
+    </task>
+    <task id="LOCAL−00111" summary="Added hover sounds on start en exit button in start menu">
+      <created>1683154462712</created>
+      <option name="number" value="LOCAL−00111" />
+      <option name="presentableId" value="LOCAL−00111" />
+      <updated>1683154462712</updated>
+    </task>
+    <task id="LOCAL−00112" summary="Added sound for seed input and planet slider">
+      <created>1683156603270</created>
+      <option name="number" value="LOCAL−00112" />
+      <option name="presentableId" value="LOCAL−00112" />
+      <updated>1683156603270</updated>
+    </task>
+    <task id="LOCAL−00113" summary="Added slider sound for selecting how many planets are generated">
+      <created>1683158661517</created>
+      <option name="number" value="LOCAL−00113" />
+      <option name="presentableId" value="LOCAL−00113" />
+      <updated>1683158661517</updated>
+    </task>
+    <task id="LOCAL−00114" summary="There now plays a writing sound when you enter the seed on the main menu">
+      <created>1683159881348</created>
+      <option name="number" value="LOCAL−00114" />
+      <option name="presentableId" value="LOCAL−00114" />
+      <updated>1683159881348</updated>
+    </task>
+    <task id="LOCAL−00115" summary="Saved main scene">
+      <created>1683159923659</created>
+      <option name="number" value="LOCAL−00115" />
+      <option name="presentableId" value="LOCAL−00115" />
+      <updated>1683159923659</updated>
+    </task>
+    <task id="LOCAL−00116" summary="The pause menu now also has nice button hover sounds">
+      <created>1683160596698</created>
+      <option name="number" value="LOCAL−00116" />
+      <option name="presentableId" value="LOCAL−00116" />
+      <updated>1683160596698</updated>
+    </task>
+    <task id="LOCAL−00117" summary="Changed Canvas scaler">
+      <created>1683161647935</created>
+      <option name="number" value="LOCAL−00117" />
+      <option name="presentableId" value="LOCAL−00117" />
+      <updated>1683161647935</updated>
+    </task>
+    <task id="LOCAL−00118" summary="Added circular main transition">
+      <created>1683164445799</created>
+      <option name="number" value="LOCAL−00118" />
+      <option name="presentableId" value="LOCAL−00118" />
+      <updated>1683164445799</updated>
+    </task>
+    <task id="LOCAL−00119" summary="Added dithering on cameras that did not have it">
+      <created>1683164526580</created>
+      <option name="number" value="LOCAL−00119" />
+      <option name="presentableId" value="LOCAL−00119" />
+      <updated>1683164526580</updated>
+    </task>
+    <task id="LOCAL−00120" summary="Removed clipping sound from running, flying in ship and transitioning">
+      <created>1683294513481</created>
+      <option name="number" value="LOCAL−00120" />
+      <option name="presentableId" value="LOCAL−00120" />
+      <updated>1683294513481</updated>
+    </task>
+    <task id="LOCAL−00121" summary="Added many different possible wind sounds">
+      <created>1683324367067</created>
+      <option name="number" value="LOCAL−00121" />
+      <option name="presentableId" value="LOCAL−00121" />
+      <updated>1683324367067</updated>
+    </task>
+    <task id="LOCAL−00122" summary="Changed the wind noise to the one I think sounded best">
+      <created>1683324397461</created>
+      <option name="number" value="LOCAL−00122" />
+      <option name="presentableId" value="LOCAL−00122" />
+      <updated>1683324397461</updated>
+    </task>
+    <task id="LOCAL−00123" summary="Added new files for both the slider and lowered the sound for the seed input">
+      <created>1683327427530</created>
+      <option name="number" value="LOCAL−00123" />
+      <option name="presentableId" value="LOCAL−00123" />
+      <updated>1683327427530</updated>
+    </task>
+    <task id="LOCAL−00124" summary="Applied these changes">
+      <created>1683327435681</created>
+      <option name="number" value="LOCAL−00124" />
+      <option name="presentableId" value="LOCAL−00124" />
+      <updated>1683327435681</updated>
+    </task>
+    <task id="LOCAL−00125" summary="Lowered the seed input sound even more">
+      <created>1683328756639</created>
+      <option name="number" value="LOCAL−00125" />
+      <option name="presentableId" value="LOCAL−00125" />
+      <updated>1683328756639</updated>
+    </task>
+    <task id="LOCAL−00126" summary="Made seed sound a little higher again">
+      <created>1683329139779</created>
+      <option name="number" value="LOCAL−00126" />
+      <option name="presentableId" value="LOCAL−00126" />
+      <updated>1683329139779</updated>
+    </task>
+    <task id="LOCAL−00127" summary="Made background music fading a lot better">
+      <created>1683332628595</created>
+      <option name="number" value="LOCAL−00127" />
+      <option name="presentableId" value="LOCAL−00127" />
+      <updated>1683332628595</updated>
+    </task>
+    <task id="LOCAL−00128" summary="Added new wind sounds and changed it in scene">
+      <created>1683462272693</created>
+      <option name="number" value="LOCAL−00128" />
+      <option name="presentableId" value="LOCAL−00128" />
+      <updated>1683462272694</updated>
+    </task>
+    <option name="localTasksCounter" value="129" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -474,31 +476,31 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="Player crosshair is now disabled when not in spaceship" />
-    <MESSAGE value="Ship crosshair is now shown behind pause menu" />
-    <MESSAGE value="Made loading screen loading text better" />
-    <MESSAGE value="Made loading screen faster and more visually pleasing" />
-    <MESSAGE value="Updated ship crosshair" />
-    <MESSAGE value="Added landing rotation offset to compensate for the visual model" />
-    <MESSAGE value="Removed visual mesh from hover springs" />
-    <MESSAGE value="Changed landing error sound" />
-    <MESSAGE value="Unhooked mouse input from framerate for the space ship" />
-    <MESSAGE value="Added player boarded check" />
-    <MESSAGE value="Solar system is not super messed up anymore" />
-    <MESSAGE value="Fixed ship rotation and pause screen" />
-    <MESSAGE value="Fixed ship rotation when leaving a planet" />
-    <MESSAGE value="Changed moon and planet orbiting speed when on planet / moon" />
-    <MESSAGE value="Fixed skybox rotation" />
-    <MESSAGE value="Added new crosshair options" />
-    <MESSAGE value="You can now toggle between different ship movement strategies" />
-    <MESSAGE value="Turning inactive ship upright now works for both movement options" />
-    <MESSAGE value="Hopefully fixed glitched where the two travel mode indicators mismatched" />
-    <MESSAGE value="Made ship panel be a little smaller and not as wide" />
-    <MESSAGE value="Changed loading screen text to also have dots..." />
-    <MESSAGE value="Added mouse sensitivity option for spaceship and increased it" />
-    <MESSAGE value="Removed old spaceship script and scene object" />
-    <MESSAGE value="Camera view does now start in player ship when spawned in" />
     <MESSAGE value="Added player sit animation when the player is in the ship" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added player sit animation when the player is in the ship" />
+    <MESSAGE value="Added wind noise when player moves on ground" />
+    <MESSAGE value="Made jump sound a little louder" />
+    <MESSAGE value="Made spaceship thruster a little less loud" />
+    <MESSAGE value="Made &quot;can't land&quot; sound higher" />
+    <MESSAGE value="Audio setting is now saved between game sessions" />
+    <MESSAGE value="Added sound slider on the main menu" />
+    <MESSAGE value="Added hover sounds on start en exit button in start menu" />
+    <MESSAGE value="Added sound for seed input and planet slider" />
+    <MESSAGE value="Added slider sound for selecting how many planets are generated" />
+    <MESSAGE value="There now plays a writing sound when you enter the seed on the main menu" />
+    <MESSAGE value="Saved main scene" />
+    <MESSAGE value="The pause menu now also has nice button hover sounds" />
+    <MESSAGE value="Changed Canvas scaler" />
+    <MESSAGE value="Added circular main transition" />
+    <MESSAGE value="Added dithering on cameras that did not have it" />
+    <MESSAGE value="Removed clipping sound from running, flying in ship and transitioning" />
+    <MESSAGE value="Added many different possible wind sounds" />
+    <MESSAGE value="Changed the wind noise to the one I think sounded best" />
+    <MESSAGE value="Added new files for both the slider and lowered the sound for the seed input" />
+    <MESSAGE value="Applied these changes" />
+    <MESSAGE value="Lowered the seed input sound even more" />
+    <MESSAGE value="Made seed sound a little higher again" />
+    <MESSAGE value="Made background music fading a lot better" />
+    <MESSAGE value="Added new wind sounds and changed it in scene" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added new wind sounds and changed it in scene" />
   </component>
 </project>

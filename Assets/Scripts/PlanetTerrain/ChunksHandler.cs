@@ -35,9 +35,9 @@ public class ChunksHandler : MonoBehaviour
     [SerializeField] public int highChunkRes = 4;
 
     // The resolution of the chunk
-    [SerializeField] public ResolutionSetting highRes = new ResolutionSetting( 0f, 1.3f, 3);
-    [SerializeField] public ResolutionSetting mediumRes = new ResolutionSetting(1.5f, 2.0f, 2);
-    [SerializeField] public ResolutionSetting lowRes = new ResolutionSetting(2.3f, 0xFFFFFFFFf, 1);
+    [SerializeField] public ResolutionSetting highRes;
+    [SerializeField] public ResolutionSetting mediumRes;
+    [SerializeField] public ResolutionSetting lowRes;
 
     // Used for chunk culling
     private int index = 0;
