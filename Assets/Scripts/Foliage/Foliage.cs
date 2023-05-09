@@ -18,9 +18,9 @@ public class Foliage : MonoBehaviour
     // Spawning spots
     private Vector3[] plantSpots = null;
 
-    private Queue<FoliageSpawnData> objectsToSpawn = new Queue<FoliageSpawnData>();
+    private PriorityQueue<FoliageSpawnData> objectsToSpawn = new PriorityQueue<FoliageSpawnData>();
     private FoliageSpawnData objectToSpawn;
-    private int objectsPerBatchedSpawn = 20;
+    private int objectsPerBatchedSpawn = 80;
 
     // FoliageHandler, the controller of the operation
     private FoliageHandler foliageHandler;
@@ -88,8 +88,8 @@ public class Foliage : MonoBehaviour
 
         // Determines how much foliage there should be on this chunk
         positionArrayLength = (int)(meshVerticesLength * foliageHandler.Density);
-        print("Rad: " + planet.radius);
-        objectsInForest = Mathf.Clamp((int) (0.035f * planet.radius - 5f), 5, 1000);
+
+        objectsInForest = Mathf.Clamp((int) (0.03f * planet.radius - 5f), 5, 1000);
 
         // Where to start shooting rays from
         chunkPosition = position;
@@ -301,7 +301,7 @@ public class Foliage : MonoBehaviour
                 //rotation *= Quaternion.Euler(0, random.Next(0, 360), 0);
                 //Instantiate(foliageObj, hit.point - hit.point.normalized * 0.2f, rotation, transform);
 
-                SpawnTreesInForest(foliageObj, rayOrigin, chosenCollection.name);
+                SpawnTreesInForest(foliageObj, rayOrigin, hit.point, chosenCollection.name, chosenCollection.probabilityToSkip);
             }
 
         }
@@ -363,7 +363,7 @@ public class Foliage : MonoBehaviour
 
                 spawnedObject = Instantiate(objectToSpawn.prefab, objectToSpawn.position, objectToSpawn.rotation, transform);
 
-                spawnedObject.name += name;
+                spawnedObject.name += objectToSpawn.biome;
                 spawnedObject.transform.localScale *= random.Value(0.8f, 1.3f);
 
                 treeNr++;
@@ -372,7 +372,7 @@ public class Foliage : MonoBehaviour
     }
 
     // Forest spawning function
-    private void SpawnTreesInForest(GameObject treeObject, Vector3 rayOrigin, string name)
+    private void SpawnTreesInForest(GameObject treeObject, Vector3 rayOrigin, Vector3 position, string name, float probToSkip)
     {
         
         // Not sure if it is faster to only do this once or to just use a getter each loop
@@ -385,9 +385,13 @@ public class Foliage : MonoBehaviour
 
         int nrObjectsToSpawn = random.Next((int)(objectsInForest * 0.8f), objectsInForest);
 
+        float distToPlayer = Vector3.Distance(position, Universe.player.transform.position);
+
         // Spawns 5 trees around a found forest spot! Bigger number = denser forest
         for (int i = 0; i < nrObjectsToSpawn; i++)
         {
+            if (probToSkip > random.Value()) continue;
+
             float x = (float)random.Value() * 2 - 1;
             float y = (float)random.Value() * 2 - 1;
             float z = (float)random.Value() * 2 - 1;
@@ -401,7 +405,7 @@ public class Foliage : MonoBehaviour
                 Quaternion rotation = Quaternion.LookRotation(rayOrigin) * Quaternion.Euler(90, 0, 0);
                 rotation *= Quaternion.Euler(0, random.Next(0, 360), 0);
 
-                objectsToSpawn.Enqueue(new FoliageSpawnData(hit.point - (hit.point.normalized * 0.2f), rotation, treeObject));
+                objectsToSpawn.Enqueue(new FoliageSpawnData(hit.point - (hit.point.normalized * 0.2f), rotation, treeObject, name), distToPlayer);
                 
                 if (foliageHandler.debug) Debug.DrawLine(localpos, hit.point, Color.yellow, 10f);
             }

@@ -812,7 +812,7 @@ MonoBehaviour:
       treesDependent: 0
       treesMin: 0.706
       treesMax: 1
-    probabilityToSkip: 0
+    probabilityToSkip: 0.38
   - name: Mountain trees
     gameObjects:
     - {fileID: 149218, guid: fc05c8bfad7df5a4abe568aca7403b9e, type: 3}
@@ -877,6 +877,9 @@ MonoBehaviour:
     - {fileID: 176278, guid: 3c74caa0496b18d4ba0a1009ebb4c992, type: 3}
     - {fileID: 38335279662140195, guid: 34d3f526198dae440bb2ce6005d86055, type: 3}
     - {fileID: 38335279662140195, guid: 34d3f526198dae440bb2ce6005d86055, type: 3}
+    - {fileID: 38335279662140195, guid: 34d3f526198dae440bb2ce6005d86055, type: 3}
+    - {fileID: 38335279662140195, guid: 34d3f526198dae440bb2ce6005d86055, type: 3}
+    - {fileID: 1576488453971893466, guid: a778b631c6253a04899cb31bad047c81, type: 3}
     biomeRange:
       mountainRelevant: 0
       mountainMin: 0.438
@@ -887,7 +890,7 @@ MonoBehaviour:
       treesDependent: 0
       treesMin: 0.706
       treesMax: 1
-    probabilityToSkip: 0.851
+    probabilityToSkip: 0.9
   isInstantiated: 0
   treeNr: 0
   bushNr: 0
