@@ -250,9 +250,8 @@ public class Foliage : MonoBehaviour
     {
         if (depth < 3)
         {
-            Quaternion rotation = Quaternion.LookRotation(rayOrigin) * Quaternion.Euler(90, 0, 0);
-            rotation *= Quaternion.Euler(0, random.Next(0, 360), 0);
-            GameObject waterObject = Instantiate(foliageHandler.GetWaterPlantType(), hit.point, rotation, transform);
+            GameObject waterObject = InstantiateObject(foliageHandler.GetWaterPlantType(), hit, rayOrigin);
+            
             waterObject.transform.localScale = new Vector3(2, depth + 6, 2);
             waterPlantNr++;
         }
@@ -365,22 +364,23 @@ public class Foliage : MonoBehaviour
     // Bush spawning function
     private void SpawnBushes(RaycastHit hit, Vector3 rayOrigin)
     {
-        Quaternion rotation = Quaternion.LookRotation(hit.normal) * Quaternion.Euler(90, 0, 0);
-        rotation *= Quaternion.Euler(0, random.Next(0, 360), 0);
-        Instantiate(foliageHandler.GetBushType(), hit.point, rotation, transform);
+        InstantiateObject(foliageHandler.GetBushType(), hit, hit.normal);
         bushNr++;
     }
 
     // Stone spawning fucntion
     private void SpawnStones(RaycastHit hit, Vector3 rayOrigin)
     {
-        Quaternion rotation = Quaternion.LookRotation(hit.normal) * Quaternion.Euler(90, 0, 0);
-        rotation *= Quaternion.Euler(0, random.Next(0, 360), 0);
-        Instantiate(foliageHandler.GetStoneType(), hit.point, rotation, transform);
+        InstantiateObject(foliageHandler.GetStoneType(), hit, hit.normal);
         stoneNr++;
     }
 
-
+    private GameObject InstantiateObject(GameObject prefab, RaycastHit hit, Vector3 up)
+    {
+        Quaternion rotation = Quaternion.LookRotation(up) * Quaternion.Euler(90, 0, 0);
+        rotation *= Quaternion.Euler(0, random.Next(0, 360), 0);
+        return Instantiate(prefab, hit.point, rotation, transform);
+    }
 
     
 }
