@@ -18,6 +18,10 @@ public class Foliage : MonoBehaviour
     // Spawning spots
     private Vector3[] plantSpots = null;
 
+    private Queue<FoliageSpawnData> objectsToSpawn = new Queue<FoliageSpawnData>();
+    private FoliageSpawnData objectToSpawn;
+    private int objectsPerBatchedSpawn = 20;
+
     // FoliageHandler, the controller of the operation
     private FoliageHandler foliageHandler;
 
@@ -345,6 +349,28 @@ public class Foliage : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Spawns "objectsPerBatchedSpawn" number of objects each call
+    /// </summary>
+    public void BatchedSpawning()
+    {
+        GameObject spawnedObject;
+        for (int i = 0; i < objectsPerBatchedSpawn; i++)
+        {
+            if (objectsToSpawn.Count > 0)
+            {
+                objectToSpawn = objectsToSpawn.Dequeue();
+
+                spawnedObject = Instantiate(objectToSpawn.prefab, objectToSpawn.position, objectToSpawn.rotation, transform);
+
+                spawnedObject.name += name;
+                spawnedObject.transform.localScale *= random.Value(0.8f, 1.3f);
+
+                treeNr++;
+            }
+        }
+    }
+
     // Forest spawning function
     private void SpawnTreesInForest(GameObject treeObject, Vector3 rayOrigin, string name)
     {
@@ -372,13 +398,10 @@ public class Foliage : MonoBehaviour
             {
                 Quaternion rotation = Quaternion.LookRotation(rayOrigin) * Quaternion.Euler(90, 0, 0);
                 rotation *= Quaternion.Euler(0, random.Next(0, 360), 0);
-                GameObject spawnedObject = Instantiate(treeObject, hit.point - (hit.point.normalized * 0.2f), rotation, transform);
 
-                spawnedObject.name += name;
-                spawnedObject.transform.localScale *= random.Value(0.8f, 1.3f);
-
+                objectsToSpawn.Enqueue(new FoliageSpawnData(hit.point - (hit.point.normalized * 0.2f), rotation, treeObject));
+                
                 if (foliageHandler.debug) Debug.DrawLine(localpos, hit.point, Color.yellow, 10f);
-                treeNr++;
             }
         }
     }
