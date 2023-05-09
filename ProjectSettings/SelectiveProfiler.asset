@@ -46,3 +46,7 @@ MonoBehaviour:
     Assembly: Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
     Type: Chunk
     Method: Void Update()
+  - Enabled: 1
+    Assembly: Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    Type: Chunk
+    Method: Int32 UpdateMesh(Int32)
