@@ -9,11 +9,7 @@ public class Foliage : MonoBehaviour
     private int maxAngle = 35;
 
     // Stats for debug
-    private int treeNr = 0;
-    private int bushNr = 0;
-    private int waterPlantNr = 0;
-    private int stoneNr = 0;
-    private int foragableNr = 0;
+    private int objectsNr = 0;
 
     // Spawning spots
     private Vector3[] plantSpots = null;
@@ -45,11 +41,7 @@ public class Foliage : MonoBehaviour
     {
         if(foliageHandler != null)
         {
-            foliageHandler.treeNr -= treeNr;
-            foliageHandler.bushNr -= bushNr;
-            foliageHandler.waterPlantNr -= waterPlantNr;
-            foliageHandler.stoneNr -= stoneNr;
-            foliageHandler.foragableNr -= foragableNr;
+            foliageHandler.objectsNr -= objectsNr;
             foliageHandler.UpdateDebug();
         }
     }
@@ -59,11 +51,7 @@ public class Foliage : MonoBehaviour
     {
         if (foliageHandler != null)
         {
-            foliageHandler.treeNr += treeNr;
-            foliageHandler.bushNr += bushNr;
-            foliageHandler.waterPlantNr += waterPlantNr;
-            foliageHandler.stoneNr += stoneNr;
-            foliageHandler.foragableNr += foragableNr;
+            foliageHandler.objectsNr += objectsNr;
             foliageHandler.UpdateDebug();
         }
     }
@@ -253,7 +241,7 @@ public class Foliage : MonoBehaviour
             GameObject waterObject = InstantiateObject(foliageHandler.GetWaterPlantType(), hit, rayOrigin);
             
             waterObject.transform.localScale = new Vector3(2, depth + 6, 2);
-            waterPlantNr++;
+            objectsNr++;
         }
     }
 
@@ -320,7 +308,7 @@ public class Foliage : MonoBehaviour
                 spawnedObject.name += objectToSpawn.biome;
                 spawnedObject.transform.localScale *= random.Value(0.7f, 1.4f);
 
-                treeNr++;
+                objectsNr++;
             }
         }
     }
@@ -354,7 +342,7 @@ public class Foliage : MonoBehaviour
                 rotation *= Quaternion.Euler(0, random.Next(0, 360), 0);
 
                 // Add spawn position to priority queue
-                objectsToSpawn.Enqueue(new FoliageSpawnData(hit.point - (hit.point.normalized * 0.2f), rotation, treeObject, name), distToPlayer);
+                objectsToSpawn.Enqueue(new FoliageSpawnData(hit.point - (hit.point.normalized * 0.1f), rotation, treeObject, name), distToPlayer);
                 
                 if (foliageHandler.debug) Debug.DrawLine(localpos, hit.point, Color.yellow, 10f);
             }
@@ -365,14 +353,14 @@ public class Foliage : MonoBehaviour
     private void SpawnBushes(RaycastHit hit, Vector3 rayOrigin)
     {
         InstantiateObject(foliageHandler.GetBushType(), hit, hit.normal);
-        bushNr++;
+        objectsNr++;
     }
 
     // Stone spawning fucntion
     private void SpawnStones(RaycastHit hit, Vector3 rayOrigin)
     {
         InstantiateObject(foliageHandler.GetStoneType(), hit, hit.normal);
-        stoneNr++;
+        objectsNr++;
     }
 
     private GameObject InstantiateObject(GameObject prefab, RaycastHit hit, Vector3 up)

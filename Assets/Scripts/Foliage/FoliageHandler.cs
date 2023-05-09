@@ -46,15 +46,7 @@ public class FoliageHandler : MonoBehaviour
 
     // Stats for this planet
     [HideInInspector]
-    public int treeNr = 0;
-    [HideInInspector]
-    public int bushNr = 0;
-    [HideInInspector]
-    public int waterPlantNr = 0;
-    [HideInInspector]
-    public int stoneNr = 0;
-    [HideInInspector]
-    public int foragableNr = 0;
+    public int objectsNr = 0;
 
     /// <summary>
     /// Initializes the foliageHandler
@@ -75,11 +67,7 @@ public class FoliageHandler : MonoBehaviour
     public void UpdateDebug()
     {
         #if DEBUG || UNITY_EDITOR
-        DisplayDebug.AddOrSetDebugVariable("Trees", treeNr);
-        DisplayDebug.AddOrSetDebugVariable("Bushes", bushNr);
-        DisplayDebug.AddOrSetDebugVariable("Water plants", waterPlantNr);
-        DisplayDebug.AddOrSetDebugVariable("Stones", stoneNr);
-        DisplayDebug.AddOrSetDebugVariable("Foragables", foragableNr);
+        DisplayDebug.AddOrSetDebugVariable("Foliage objects", objectsNr);
         #endif
     }
 
