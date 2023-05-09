@@ -89,6 +89,7 @@ public class Foliage : MonoBehaviour
         // Determines how much foliage there should be on this chunk
         positionArrayLength = (int)(meshVerticesLength * foliageHandler.Density);
 
+        // Used to change forest density on planets depending on its radius
         objectsInForest = Mathf.Clamp((int) (0.03f * planet.radius - 5f), 5, 1000);
 
         // Where to start shooting rays from
@@ -228,7 +229,7 @@ public class Foliage : MonoBehaviour
         // Checks how steep the terrain is
         if(Mathf.Abs(Vector3.Angle(rayOrigin - planetPosition, hit.normal)) > maxAngle)
         {
-            //AboveAngle(hit, rayOrigin, heightAboveSea);
+            AboveAngle(hit, rayOrigin, heightAboveSea);
         }
         else
         {
@@ -297,55 +298,9 @@ public class Foliage : MonoBehaviour
             {
                 GameObject foliageObj = chosenCollection.gameObjects[random.Next(chosenCollection.gameObjects.Length)];
 
-                //Quaternion rotation = Quaternion.LookRotation(rayOrigin) * Quaternion.Euler(90, 0, 0);
-                //rotation *= Quaternion.Euler(0, random.Next(0, 360), 0);
-                //Instantiate(foliageObj, hit.point - hit.point.normalized * 0.2f, rotation, transform);
-
                 SpawnTreesInForest(foliageObj, rayOrigin, hit.point, chosenCollection.name, chosenCollection.probabilityToSkip);
             }
 
-        }
-            
-
-        /*
-        // 1 in 10 to spawn a forgable
-        if (random.Next(10) == 0)
-            SpawnForgables(hit, rayOrigin);
-        // ~ 1 in 5 is a tree (18%)
-        else if (random.Next(5) == 0)
-            SpawnTrees(hit, rayOrigin);
-        else
-            SpawnBushes(hit, rayOrigin);
-        */
-    }
-
-    // Tree spawning function
-    private void SpawnTrees(RaycastHit hit, Vector3 rayOrigin)
-    {
-        
-        int treeType = foliageHandler.CheckForestSpawn(hit.point);
-
-        if (treeType != 0)
-        {
-            //SpawnTreesInForest(treeType, rayOrigin);
-        }
-        else
-        {
-            if (random.Next(10) == 0)
-            {
-                // 1 in 10 to spawn a fallen tree
-                Quaternion rotation = Quaternion.LookRotation(hit.normal) * Quaternion.Euler(90, 0, 0);
-                rotation *= Quaternion.Euler(0, random.Next(0, 360), 0);
-                Instantiate(foliageHandler.fallenTree, hit.point + hit.point.normalized * 0.18f, rotation, transform);
-            }
-            else
-            {
-                // Spawns a random tree
-                Quaternion rotation = Quaternion.LookRotation(rayOrigin) * Quaternion.Euler(90, 0, 0);
-                rotation *= Quaternion.Euler(0, random.Next(0, 360), 0);
-                Instantiate(foliageHandler.GetTreeType(), hit.point - hit.point.normalized * 0.2f, rotation, transform);
-            }
-            treeNr++;
         }
     }
 
@@ -364,7 +319,7 @@ public class Foliage : MonoBehaviour
                 spawnedObject = Instantiate(objectToSpawn.prefab, objectToSpawn.position, objectToSpawn.rotation, transform);
 
                 spawnedObject.name += objectToSpawn.biome;
-                spawnedObject.transform.localScale *= random.Value(0.8f, 1.3f);
+                spawnedObject.transform.localScale *= random.Value(0.7f, 1.4f);
 
                 treeNr++;
             }
@@ -375,16 +330,10 @@ public class Foliage : MonoBehaviour
     private void SpawnTreesInForest(GameObject treeObject, Vector3 rayOrigin, Vector3 position, string name, float probToSkip)
     {
         
-        // Not sure if it is faster to only do this once or to just use a getter each loop
-        float radius = foliageHandler.PlanetRadius;
-        float waterRadius = foliageHandler.WaterRadius;
-
-        //GameObject treeObject = foliageHandler.GetForstetTree(treeType);
-
-        //Debug.DrawLine(rayOrigin, planet.transform.position, Color.red, 15f);
-
+        // Used to introduce some variation in forest sizes.
         int nrObjectsToSpawn = random.Next((int)(objectsInForest * 0.8f), objectsInForest);
 
+        // Use distance to player in priority queue to prioritize spawning objects closer to the player first
         float distToPlayer = Vector3.Distance(position, Universe.player.transform.position);
 
         // Spawns 5 trees around a found forest spot! Bigger number = denser forest
@@ -400,11 +349,12 @@ public class Foliage : MonoBehaviour
             // Assumes we are spawning trees on a planet located in origin!
             // If shit is bugged might have to change this ray
             Physics.Raycast(localpos, -localpos, out RaycastHit hit);
-            if(hit.transform == transform.parent && hit.distance < radius - waterRadius)
+            if(hit.transform == transform.parent && hit.distance < foliageHandler.PlanetRadius - foliageHandler.WaterRadius)
             {
                 Quaternion rotation = Quaternion.LookRotation(rayOrigin) * Quaternion.Euler(90, 0, 0);
                 rotation *= Quaternion.Euler(0, random.Next(0, 360), 0);
 
+                // Add spawn position to priority queue
                 objectsToSpawn.Enqueue(new FoliageSpawnData(hit.point - (hit.point.normalized * 0.2f), rotation, treeObject, name), distToPlayer);
                 
                 if (foliageHandler.debug) Debug.DrawLine(localpos, hit.point, Color.yellow, 10f);
@@ -430,15 +380,7 @@ public class Foliage : MonoBehaviour
         stoneNr++;
     }
 
-    // Forgables spawning function
-    private void SpawnForgables(RaycastHit hit, Vector3 rayOrigin)
-    {
-        Quaternion rotation = Quaternion.LookRotation(hit.normal) * Quaternion.Euler(90, 0, 0);
-        rotation *= Quaternion.Euler(0, random.Next(0, 360), 0);
-        Instantiate(foliageHandler.GetForagableType(), hit.point, rotation, transform);
-        foragableNr++;
-        
-    }
+
 
     
 }
