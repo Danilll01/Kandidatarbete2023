@@ -36,7 +36,7 @@ public class Foliage : MonoBehaviour
     private int positionArrayLength;
 
     private float planetMaxHeight;
-    private float objectsInForest;
+    private int objectsInForest;
 
     [HideInInspector] public bool initialized = false;
 
@@ -383,8 +383,10 @@ public class Foliage : MonoBehaviour
 
         //Debug.DrawLine(rayOrigin, planet.transform.position, Color.red, 15f);
 
+        int nrObjectsToSpawn = random.Next((int)(objectsInForest * 0.8f), objectsInForest);
+
         // Spawns 5 trees around a found forest spot! Bigger number = denser forest
-        for (int i = 0; i < objectsInForest; i++)
+        for (int i = 0; i < nrObjectsToSpawn; i++)
         {
             float x = (float)random.Value() * 2 - 1;
             float y = (float)random.Value() * 2 - 1;
