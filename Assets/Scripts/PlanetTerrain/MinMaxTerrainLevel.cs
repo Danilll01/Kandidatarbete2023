@@ -13,7 +13,7 @@ public class MinMaxTerrainLevel
     /// </summary>
     /// <param name="distance"></param>
     public void UpdateMinMax(Vector3 vertex) {
-        float distance = math.length(vertex);
+        float distance = Vector3.Magnitude(vertex);
 
         // This is not doing anything right now
         if (distance < minHight && distance > 1) {

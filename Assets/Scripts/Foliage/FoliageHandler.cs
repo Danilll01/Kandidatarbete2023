@@ -34,6 +34,8 @@ public class FoliageHandler : MonoBehaviour
 
     [SerializeField] private float densityMultiplier = 0.000002f;
 
+    [SerializeField] public FoliageCollection[] foliageCollections;
+
     public bool isInstantiated = false;
     private Planet planet;
     private float waterRadius;
@@ -44,15 +46,7 @@ public class FoliageHandler : MonoBehaviour
 
     // Stats for this planet
     [HideInInspector]
-    public int treeNr = 0;
-    [HideInInspector]
-    public int bushNr = 0;
-    [HideInInspector]
-    public int waterPlantNr = 0;
-    [HideInInspector]
-    public int stoneNr = 0;
-    [HideInInspector]
-    public int foragableNr = 0;
+    public int objectsNr = 0;
 
     /// <summary>
     /// Initializes the foliageHandler
@@ -72,11 +66,9 @@ public class FoliageHandler : MonoBehaviour
     // Updates the debug menu
     public void UpdateDebug()
     {
-        DisplayDebug.AddOrSetDebugVariable("Trees", treeNr);
-        DisplayDebug.AddOrSetDebugVariable("Bushes", bushNr);
-        DisplayDebug.AddOrSetDebugVariable("Water plants", waterPlantNr);
-        DisplayDebug.AddOrSetDebugVariable("Stones", stoneNr);
-        DisplayDebug.AddOrSetDebugVariable("Foragables", foragableNr);
+        #if DEBUG || UNITY_EDITOR
+        DisplayDebug.AddOrSetDebugVariable("Foliage objects", objectsNr);
+        #endif
     }
 
     // Inits arrays
@@ -154,6 +146,7 @@ public class FoliageHandler : MonoBehaviour
     // Noise function for forests
     private int ForestNoiseFunction(Vector3 pos, int index)
     {
+
         // Layering noise :)
         return (int)Mathf.Round(
             (Simplex.Evaluate((pos + forestTypes[index]) * NOISE_ONE) + 1) * 

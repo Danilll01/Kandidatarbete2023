@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using Unity.Burst.CompilerServices;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -49,7 +50,7 @@ public class Creature : MonoBehaviour
     [SerializeField] private float reproductionCooldown = 100f;
     [SerializeField] private float reproductionTimer = 0f;
     [SerializeField] private float reproductionCost = 30f;
-    [SerializeField] private float reproductionChance = 0.5f;
+    [SerializeField, Range(0f, 1f)] private float reproductionChance = 0.5f;
     [SerializeField] private int maxChildren = 2;
     [SerializeField] private int childrenCount = 0;
     
@@ -69,6 +70,26 @@ public class Creature : MonoBehaviour
     [SerializeField] private float timeBetweenSteps = 1f/3f;
     private float idleSoundTimer;
 
+    // Genes: speed, size, stat decrease, detection radius
+    [Header("Genes")]
+    [SerializeField] private Genes genes;
+    [SerializeField] private Texture alternativeTexture = null;
+    [SerializeField, Range(0f, 1f)] private float alternativeTextureProb = 0.1f;
+
+    [SerializeField, Range(0f, 1f)] private float speedMutationProb = 0.8f;
+    [SerializeField, Range(0f, 1f)] private float speedMultiplierRange = 0.1f;
+
+    [SerializeField, Range(0f, 1f)] private float sizeMutationProb = 0.4f;
+    [SerializeField, Range(0f, 1f)] private float sizeMultiplierRange = 0.05f;
+
+    [SerializeField, Range(0f, 1f)] private float statDecreaseMutationProb = 0.4f;
+    [SerializeField, Range(0f, 1f)] private float statDecreaseMultiplierRange = 0.09f;
+
+    [SerializeField, Range(0f, 1f)] private float detectionRadiusMutationProb = 0.5f;
+    [SerializeField, Range(0f, 1f)] private float detectionRadiusMultiplierRange = 0.05f;
+
+    private bool alternativeTextureActive = false;
+    private bool genesInitialized = false;
     [Header("Misc")]
     [SerializeField] private bool hasDrinkAnimation = false;
 
@@ -89,6 +110,7 @@ public class Creature : MonoBehaviour
     private LODGroup lodGroup;
     private new Renderer renderer;
     private Animator animator;
+    private AnimatorParameterAdapter animatorParameters;
     private AudioSource audioSource;
 
     private Creature breedingPartner;
@@ -116,6 +138,7 @@ public class Creature : MonoBehaviour
         lodGroup = meshObj.GetComponent<LODGroup>();
         renderer = lodGroup.transform.GetComponent<Renderer>();
         animator = GetComponent<Animator>();
+        animatorParameters = new AnimatorParameterAdapter(animator);
         audioSource = GetComponent<AudioSource>();
         audioSource.volume = volume;
         audioSource.spatialBlend = 1.0f;
@@ -128,10 +151,19 @@ public class Creature : MonoBehaviour
         {
             hunger = Random.Range(30, maxHunger);
             thirst = Random.Range(30, maxThirst);
+
+            if (alternativeTexture != null && Random.value < alternativeTextureProb)
+            {
+                renderer.material.SetTexture("_BaseMap", alternativeTexture);
+                alternativeTextureActive = true;
+            }
         }
 
-        animator.SetFloat("Speed", speed);
+        animatorParameters.SetFloat("Speed", speed);
+        CreateGenes();
+
         animator.keepAnimatorStateOnDisable = true;
+        animatorParameters.SetBool("isWalking", true);
 
         if (isChild) canReproduce = false;
 
@@ -248,6 +280,66 @@ public class Creature : MonoBehaviour
         }
     }
 
+    private void CreateGenes()
+    {
+        if (genesInitialized) return;
+        genes = new Genes();
+        genes.alternaviteColor = alternativeTextureActive;
+        genes.speed = speed;
+        genes.statDecrease = Mathf.Max(thirstDecrease, hungerDecrease);
+        genes.size = transform.localScale.x;
+        genes.detectionRadius = detectionRadius;
+    }
+
+    public void ApplyGenes(Genes genes)
+    {
+        this.genes = genes;
+        
+        // Only apply alternative texture if i exists
+        if (alternativeTexture != null && genes.alternaviteColor)
+        {
+            renderer.material.SetTexture("_BaseMap", alternativeTexture);
+        }
+        speed = genes.speed;
+
+        thirstDecrease = genes.statDecrease;
+        hungerDecrease = genes.statDecrease;
+
+        // Only use size property on non children
+        if (!isChild)
+        {
+            transform.localScale = Vector3.one * genes.size;
+        }
+
+        detectionRadius = genes.detectionRadius;
+        genesInitialized = true;
+    }
+
+    private Genes MixGenes(Genes otherGenes)
+    {
+        Genes newGenes = genes;
+
+        // If breeding creatures have the same color the creature spawned has a higher chance of having that color. 
+        if (alternativeTextureActive == otherGenes.alternaviteColor)
+        {
+            // Only set the color to true if alternative texture also is true. 
+            newGenes.alternaviteColor = alternativeTextureActive && Random.value < 0.8f;
+        } else
+        {
+            newGenes.alternaviteColor = alternativeTextureActive && Random.value < 0.5f;
+        }
+        
+        newGenes.speed = genes.speed * GetMutationMultiplier(speedMutationProb, speedMultiplierRange);
+
+        newGenes.statDecrease = genes.statDecrease * GetMutationMultiplier(statDecreaseMutationProb, statDecreaseMultiplierRange);
+
+        newGenes.size = genes.size * GetMutationMultiplier(sizeMutationProb, sizeMultiplierRange);
+
+        newGenes.detectionRadius = genes.detectionRadius * GetMutationMultiplier(detectionRadiusMutationProb, detectionRadiusMultiplierRange);
+
+        return newGenes;
+    }
+
     private void RandomWalking()
     {
         if (atDestination)
@@ -264,7 +356,7 @@ public class Creature : MonoBehaviour
 
     private void LookingForResource(ResourceType resource)
     {
-        GameObject nearestResource;
+        GameObject nearestResource = null;
         if (getResourceTicks <= 0)
         {
             // Unsubsribe to the last resource to enable other creatures to eat it
@@ -297,7 +389,7 @@ public class Creature : MonoBehaviour
         }
 
         // If there is no resource, walk around randomly
-        if (nearestResource == null ^ resourcePos == Vector3.zero)
+        if (nearestResource != null || resourcePos != Vector3.zero)
         {
             // If the resource is within consume radius, consume it
             if (IsCloseToObject(resourcePos) || (resource == ResourceType.Water && Vector3.Distance(transform.position, planet.transform.position) + 0.05 < planet.waterDiameter / 2))
@@ -397,6 +489,7 @@ public class Creature : MonoBehaviour
             
             GameObject newObject = Instantiate(childPrefab, childPos, transform.rotation, transform.parent);
             newObject.name = newObject.name.Replace("(Clone)", "").Trim();
+            newObject.GetComponent<Creature>().ApplyGenes(MixGenes(breedingPartner.genes));
 
             childrenCount++;
             hunger -= reproductionCost;
@@ -579,7 +672,7 @@ public class Creature : MonoBehaviour
     private void InteractWithResourceAction(GameObject resource, bool disable, ResourceType type)
     {
         currentState = CreatureState.PerformingAction;
-        string animationType = hasDrinkAnimation && type == ResourceType.Water ? "Drink": "Eat";
+        string animationType = type == ResourceType.Water && animatorParameters.HasBool("isDrinking") ? "isDrinking" : "isAttacking";
         animator.SetBool(animationType, true);
         
         StartCoroutine(InteractWithResource(resource, disable, type));
@@ -589,7 +682,7 @@ public class Creature : MonoBehaviour
     {
         // Wait until walk animation is done
         yield return new WaitForSeconds(0.1f);
-        animator.SetBool("Walk", false);
+        animatorParameters.SetBool("isWalking", false);
         
         // Animation clip length
         float clipLength = animator.GetCurrentAnimatorStateInfo(0).length;
@@ -615,9 +708,9 @@ public class Creature : MonoBehaviour
         }
 
         // Set the state to idle
-        string animationType = hasDrinkAnimation && type == ResourceType.Water ? "Drink" : "Eat";
+        string animationType = type == ResourceType.Water && animatorParameters.HasBool("isDrinking") ? "isDrinking" : "isAttacking";
         animator.SetBool(animationType, false);
-        animator.SetBool("Walk", true);
+        animator.SetBool("isWalking", true);
 
         yield return new WaitForSeconds(1);
 
@@ -648,6 +741,7 @@ public class Creature : MonoBehaviour
                 isChild = false;
                 GameObject newObject = Instantiate(parentPrefab, transform.position, transform.rotation, transform.parent);
                 newObject.name = newObject.name.Replace("(Clone)", "").Trim();
+                newObject.GetComponent<Creature>().ApplyGenes(genes);
                 Destroy(gameObject);
             }
         }
@@ -703,6 +797,20 @@ public class Creature : MonoBehaviour
         Destroy(gameObject);
     }
 
+    private float GetMutationMultiplier(float mutationProb, float mutationRange)
+    {
+        // Only apply mutation if the value if below mutation threshold
+        if (Random.value < mutationProb)
+        {
+            // Randomize a value around 1 with an offset of "mutationRange" to either side
+            return Random.Range(1 - mutationRange, 1 + mutationRange);
+        } else
+        {
+            return 1;
+        }
+        
+    }
+
     private AudioClip GetRandomClip(AudioClip[] clips)
     {
         if (clips.Length == 0) return null;
@@ -745,5 +853,54 @@ public class Creature : MonoBehaviour
     public CreatureType GetCreatureDiet
     {
         get { return creatureDiet; }
+    }
+
+    private class AnimatorParameterAdapter
+    {
+        readonly Animator animator;
+        readonly AnimatorControllerParameter[] parameters;
+
+        public AnimatorParameterAdapter(Animator animator)
+        {
+            this.animator = animator;
+            parameters = animator.parameters;
+        }
+
+        public bool HasBool(string parameterName)
+        {
+            for (int i = 0; i < parameters.Length; i++)
+            {
+                if (parameters[i].name == parameterName)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public void SetBool(string name, bool value)
+        {
+            for (int i = 0; i < parameters.Length; i++)
+            {
+                if (parameters[i].type == AnimatorControllerParameterType.Bool && 
+                    parameters[i].name == name)
+                {
+                    animator.SetBool(name, value);
+                    Debug.Log("SET: " + name);
+                }
+            }
+        }
+
+        public void SetFloat(string name, float value)
+        {
+            for (int i = 0; i < parameters.Length; i++)
+            {
+                if (parameters[i].type == AnimatorControllerParameterType.Float &&
+                    parameters[i].name == name)
+                {
+                    animator.SetFloat(name, value);
+                }
+            }
+        }
     }
 }

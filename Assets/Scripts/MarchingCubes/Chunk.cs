@@ -30,7 +30,7 @@ public class Chunk : MonoBehaviour
     private MeshCollider meshCollider;
     private Mesh mesh;
     public MarchingCubes marchingCubes;
-    private Transform player;
+    private PillPlayerController player;
     private Planet planet;
     private MinMaxTerrainLevel terrainLevel;
     [HideInInspector] public float chunkSize;
@@ -51,12 +51,15 @@ public class Chunk : MonoBehaviour
     }
 
     /// <summary>
-    /// Initalizes a given chunk
+    /// Initializes a given chunk
     /// </summary>
-    /// <param name="resolution"></param>
+    /// <param name="planet"></param>
     /// <param name="player"></param>
     /// <param name="terrainLevel"></param>
-    public int Initialize(Planet planet, Transform player, MinMaxTerrainLevel terrainLevel, ChunksHandler chunkHandler, int seed)
+    /// <param name="chunkHandler"></param>
+    /// <param name="seed"></param>
+    /// <returns></returns>
+    public int Initialize(Planet planet, MinMaxTerrainLevel terrainLevel, ChunksHandler chunkHandler, int seed)
     {
         this.planet = planet;
         highRes = chunkHandler.highRes;
@@ -64,7 +67,7 @@ public class Chunk : MonoBehaviour
         lowRes = chunkHandler.lowRes;
         random = new RandomX(seed);
 
-        this.player = player;
+        this.player = Universe.player;
         this.terrainLevel = terrainLevel;
         chunkSize = (2 * chunkHandler.planetRadius) / (1 << marchingCubes.chunkResolution);
 
@@ -90,63 +93,65 @@ public class Chunk : MonoBehaviour
 
     private void Update()
     {
-        if(initialized && !lowChunkResChunks)
-        {
-            // Check every 5 meter so that we don't check all the time
-            if (Vector3.Magnitude(player.localPosition - previousPlayerPos) < 5)
-                return;
+        if (!initialized || lowChunkResChunks) return;
+        
+        Vector3 playerPos = player.boarded ? Universe.spaceShip.localPosition : player.transform.localPosition;
             
-            previousPlayerPos = player.localPosition;
+        // Check every 5 meter so that we don't check all the time
+        if (Vector3.Magnitude(playerPos - previousPlayerPos) < 2)
+            return;
+            
+        previousPlayerPos = playerPos;
 
-            float playerDistance = Vector3.Magnitude(player.localPosition - position);
-            if (playerDistance < highRes.upperRadius * chunkSize)
+        float playerDistance = Vector3.Magnitude(playerPos - position);
+        if (playerDistance < highRes.upperRadius)
+        {
+            meshCollider.enabled = true;
+            foliageGameObject.SetActive(true);
+            creatureGameObject.SetActive(true);
+
+            if (planet.willGeneratePlanetLife)
             {
-                meshCollider.enabled = true;
-                foliageGameObject.SetActive(true);
-                creatureGameObject.SetActive(true);
+                int numVerts = UpdateMesh(highRes.resolution);
 
-                if (planet.willGeneratePlanetLife)
+                if (!foliage.initialized)
                 {
-                    int numVerts = UpdateMesh(highRes.resolution);
-
-                    if (!foliage.initialized)
-                    {
-                        if (numVerts > 500)
-                            foliage.Initialize(numVerts, position, random.Next());
-                    }
-
-                    if (!creatures.initialized)
-                    {
-                        if (numVerts > 500)
-                            creatures.Initialize(numVerts, position, random.Next());
-                    }
-                    if (!creatures.finishedSpawning)
-                    {
-                        creatures.BatchedSpawning();
-                    }
-
-                } else
-                {
-                    UpdateMesh(highRes.resolution);
+                    if (numVerts > 500)
+                        foliage.Initialize(numVerts, position, random.Next(), planet);
                 }
-                    
-                    
-            } 
-            else if (mediumRes.lowerRadius * chunkSize < playerDistance && playerDistance < mediumRes.upperRadius * chunkSize)
+
+                if (!creatures.initialized)
+                {
+                    if (numVerts > 500)
+                        creatures.Initialize(numVerts, position, random.Next());
+                }
+                if (!creatures.finishedSpawning)
+                {
+                    creatures.BatchedSpawning();
+                }
+                foliage.BatchedSpawning();
+
+            } else
             {
-                foliageGameObject.SetActive(false);
-                creatureGameObject.SetActive(false);
-                meshCollider.enabled = false;
-                UpdateMesh(mediumRes.resolution);
+                UpdateMesh(highRes.resolution);
+            }
+                    
+                    
+        } 
+        else if (mediumRes.lowerRadius < playerDistance && playerDistance < mediumRes.upperRadius)
+        {
+            foliageGameObject.SetActive(false);
+            creatureGameObject.SetActive(false);
+            meshCollider.enabled = false;
+            UpdateMesh(mediumRes.resolution);
                 
-            }
-            else if (lowRes.lowerRadius * chunkSize < playerDistance)
-            {
-                foliageGameObject.SetActive(false);
-                creatureGameObject.SetActive(false);
-                meshCollider.enabled = false;
-                UpdateMesh(lowRes.resolution);
-            }
+        }
+        else if (lowRes.lowerRadius < playerDistance)
+        {
+            foliageGameObject.SetActive(false);
+            creatureGameObject.SetActive(false);
+            meshCollider.enabled = false;
+            UpdateMesh(lowRes.resolution);
         }
     }
 

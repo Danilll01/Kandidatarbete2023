@@ -9,6 +9,7 @@ using System;
 public struct BiomeSettings
 {
     public float seed;
+    public float distance;
     public float temperatureDecay;
     public float farTemperature;
     public float mountainFrequency;
@@ -21,7 +22,7 @@ public struct BiomeSettings
     /// <i>Note: parameters <paramref name="temperatureRoughness"/> and <paramref name="mountainTemperatureAffect"/> must
     /// be in range [0, 1]</i>
     /// </summary>
-    public BiomeSettings(float seed, float temperatureDecay, float farTemperature, float mountainFrequency, float temperatureFrequency, float temperatureRoughness, float mountainTemperatureAffect, float treeFrequency)
+    public BiomeSettings(float seed, float distance, float temperatureDecay, float farTemperature, float mountainFrequency, float temperatureFrequency, float temperatureRoughness, float mountainTemperatureAffect, float treeFrequency)
     {
         // Check that variables are in range
         Details.AssertInRange(temperatureRoughness, 0, 1, nameof(temperatureRoughness));
@@ -29,6 +30,7 @@ public struct BiomeSettings
         Details.AssertInRange(farTemperature, 0, 1, nameof(farTemperature));
 
         this.seed = seed;
+        this.distance = distance;
         this.temperatureDecay = temperatureDecay;
         this.farTemperature = farTemperature;
         this.mountainFrequency = mountainFrequency;
@@ -109,14 +111,14 @@ public struct BiomeValue
 public class BiomeRange
 {
     public bool mountainRelevant = false;
-    public float mountainMin = 0;
-    public float mountainMax = 1;
+    [Range(0f, 1f)] public float mountainMin = 0;
+    [Range(0f, 1f)] public float mountainMax = 1;
     public bool temperatureDependent = false;
-    public float temperatureMin = 0;
-    public float temperatureMax = 1;
+    [Range(0f, 1f)] public float temperatureMin = 0;
+    [Range(0f, 1f)] public float temperatureMax = 1;
     public bool treesDependent = false;
-    public float treesMin = 0;
-    public float treesMax = 1;
+    [Range(0f, 1f)] public float treesMin = 0;
+    [Range(0f, 1f)] public float treesMax = 1;
 }
 
 /// <summary>

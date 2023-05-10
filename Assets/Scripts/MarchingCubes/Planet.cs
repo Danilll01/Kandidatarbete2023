@@ -3,60 +3,35 @@ using System.Collections.Generic;
 using ExtendedRandom;
 using SimpleKeplerOrbits;
 using UnityEngine;
-using UnityEngine.Serialization;
+
 
 [RequireComponent(typeof(TerrainColor))]
 public class Planet : MonoBehaviour
 {
     [SerializeField] private ComputeShader meshGenerator;
-    [SerializeField] private Material waterMaterial; // Can this be removed?
     [HideInInspector] public float waterDiameter;
-
+    
     [HideInInspector] public float radius;
-    [HideInInspector] public float surfaceGravity;
     [HideInInspector] public string bodyName = "TBT";
     [HideInInspector] public float mass;
     [HideInInspector] public List<Planet> moons;
+    [HideInInspector] public MinMaxTerrainLevel terrainLevel;
 
-    [HideInInspector] public Transform player;
+    private Transform player;
     [HideInInspector] public MarchingCubes marchingCubes;
 
     [SerializeField, Range(1, 14)] public int resolution = 5;
 
     public bool willGeneratePlanetLife = false;
     [SerializeField, Range(0f, 1f)] private float chanceToSpawnPlanetLife = 0.8f;
-    public ChunksHandler chunksHandler;
-    public WaterHandler waterHandler;
+    [SerializeField] private ChunksHandler chunksHandler;
+    [SerializeField] private WaterHandler waterHandler;
     public AtmosphereHandler atmosphereHandler;
     public FoliageHandler foliageHandler;
     public CreatureHandler creatureHandler;
 
     [Header("Terrain")] [SerializeField, Range(0, 1)]
-    
     private float waterLevel = 0.92f;
-
-    private static readonly Color[] seaColors = new Color[] {
-        new Color (219f/255, 144f/255, 101f/255),
-        new Color (125f/255, 219f/255, 102f/255),
-        new Color (102/255,  219f/255, 195f/255),
-        new Color (102f/255, 183f/255, 219f/255),
-        new Color (102f/255, 219f/255, 144f/255),
-        new Color (102f/255, 105f/255, 219f/255),
-        new Color (207f/255, 102f/255, 219f/255),
-        new Color (219f/255, 102f/255, 142f/255),
-        new Color (219f/255, 102f/255, 102f/255),
-        new Color (251f/255, 70f/255, 47f/255),
-        new Color (46f/255,  250f/255, 198f/255),
-        new Color (47f/255,  233f/255, 250f/255),
-        new Color (47f/255,  186f/255, 250f/255),
-        new Color (47f/255,  137f/255, 250f/255),
-        new Color (163f/255, 47f/255, 250f/255),
-        new Color (0f/255,   44f/255, 147f/255),
-        new Color (0f/255,   147f/255, 135f/255),
-        new Color (0f/255,   147f/255, 136f/255),
-        new Color (146f/255, 255f/255, 247f/255)
-    };
-    private Color seaColor;
 
     [SerializeField] private List<TerrainLayer> terrainLayers;
     public Caves.CaveSettings caveSettings;
@@ -86,6 +61,7 @@ public class Planet : MonoBehaviour
 
     private bool reset;
 
+    private RandomX rand;
 
     /// <summary>
     /// Initializes the planet
@@ -93,16 +69,16 @@ public class Planet : MonoBehaviour
     /// <param name="player">The player</param>
     /// <param name="randomSeed">Seed to be used</param>
     /// <param name="spawn">True if the player will spawn on the planet</param>
-    public void Initialize(Transform player, int randomSeed, bool spawn)
+    public void Initialize(int randomSeed, bool spawn)
     {
-        RandomX rand = new RandomX(randomSeed);
+        biomeSettings.distance = positionRelativeToSunDistance;
 
-        this.player = player;
+        rand = new RandomX(randomSeed);
 
-        MinMaxTerrainLevel terrainLevel = new MinMaxTerrainLevel();
+        player = Universe.player.transform;
+
+        terrainLevel = new MinMaxTerrainLevel();
         
-        seaColor = seaColors[rand.Next(seaColors.Length)];
-
 
         rotationAxis = rand.OnUnitSphere() * radius;
         rotationSpeed = rand.Next(3, 6);
@@ -127,13 +103,13 @@ public class Planet : MonoBehaviour
         // Initialize the meshgenerator
         if (marchingCubes == null)
         {
-            threshold = 23 + (float) rand.Value() * 4;
+            threshold = 23 + rand.Value() * 4;
             float biomeSeed = rand.Value();
             biomeSettings.seed = biomeSeed;
             
             marchingCubes = new MarchingCubes(biomeSeed, 1, meshGenerator, threshold, radius, terrainLayers, biomeSettings);
         }
-        
+
         // Init water
         if (willGeneratePlanetLife)
         {
@@ -143,6 +119,10 @@ public class Planet : MonoBehaviour
         {
             waterDiameter = 0;
         }
+
+        terrainLevel.SetMin(Mathf.Abs((waterDiameter + 1) / 2));
+
+        chunksHandler.Initialize(this, terrainLevel, spawn, rand.Next());
 
         if (foliageHandler != null)
         {
@@ -154,15 +134,13 @@ public class Planet : MonoBehaviour
             creatureHandler.Initialize(this, rand.Next());
         }
 
-        terrainLevel.SetMin(Mathf.Abs((waterDiameter + 1) / 2));
-
-        chunksHandler.Initialize(this, terrainLevel, spawn, rand.Next());
+        
 
         if (willGeneratePlanetLife) 
         {
             if (waterHandler != null && bodyName != "Sun")
             {
-                waterHandler.Initialize(this, waterDiameter, GetSeaColor());
+                waterHandler.Initialize(this, waterDiameter, rand.Next());
             }
         }
 
@@ -197,7 +175,16 @@ public class Planet : MonoBehaviour
         
         if (playerIsOnMoon)
         {
-            player.transform.parent.parent.SetParent(null, true);
+            
+            if (!Universe.player.boarded)
+            {
+                player.parent.parent.SetParent(null, true);
+            }
+            else
+            {
+                Universe.spaceShip.parent.parent.SetParent(null, true);
+            }
+            
         }
 
         for (int i = 0; i < moons.Count; i++)
@@ -211,14 +198,17 @@ public class Planet : MonoBehaviour
     /// </summary>
     public void Run()
     {
-        if (player.parent != transform && !playerIsOnMoon)
+        
+        Transform currentPlayerMover = Universe.player.boarded ? Universe.spaceShip.parent : player.parent;
+        
+        if (currentPlayerMover != transform && !playerIsOnMoon)
         {
             RotateAroundAxis();
             
             if (solarSystemRotationActive)
             {
                 parentOrbitMover.transform.RotateAround(Universe.sunPosition.position, Universe.sunPosition.TransformDirection(Vector3.up),
-                    orbitSpeed * Time.deltaTime * 2.5f);
+                    orbitSpeed * Time.deltaTime * 1f);
             }
             else
             {
@@ -235,7 +225,7 @@ public class Planet : MonoBehaviour
             if (solarSystemRotationActive)
             {
                 parentOrbitMover.transform.RotateAround(Vector3.zero, Universe.sunPosition.TransformDirection(Vector3.up),
-                    speedToRotateAroundWith * Time.deltaTime * 2.5f);
+                    speedToRotateAroundWith * Time.deltaTime * 1f);
             }
             else
             {
@@ -346,24 +336,18 @@ public class Planet : MonoBehaviour
     /// </summary>
     public void SetUpPlanetValues()
     {
-        mass = surfaceGravity * 4 * radius * radius / Universe.gravitationalConstant;
+        float density = rand.Value(2.4f, 3f);
+        float volume = (4f / 3f) * (float)Math.PI * radius * radius * radius;
+        
+        mass = density * volume;
         gameObject.name = bodyName;
     }
 
-    public Color GetSeaColor()
-    {
-        return seaColor;
-    }
+    public BiomeSettings Biome => biomeSettings;
 
-    public BiomeSettings Biome
-    {
-        get { return biomeSettings; }
-    }
+    public Color GetSeaColor => waterHandler.GetWaterColor;
 
-    public float DistanceToSun
-    {
-        get { return Vector3.Distance(transform.position, Universe.sunPosition.position); }
-    }
+    public float DistanceToSun => Vector3.Distance(transform.position, Universe.sunPosition.position);
 
     /// <summary>
     /// Set up the components for solar system orbit
@@ -396,9 +380,8 @@ public class Planet : MonoBehaviour
         {
             moon.transform.parent.SetParent(null, true);
         }
-        
-        moonsParent.transform.rotation = Universe.sunPosition.rotation;
 
+        moonsParent.transform.rotation = Universe.sunPosition.rotation;
 
         foreach (Planet moon in moons)
         {
@@ -409,7 +392,7 @@ public class Planet : MonoBehaviour
     /// <summary>
     /// Adjusts the planets position to keep the same distance to the sun
     /// </summary>
-    public void KeepPlanetAtSameDistanceToSun()
+    private void KeepPlanetAtSameDistanceToSun()
     {
         Vector3 sunPosition = Universe.sunPosition.position;
         Transform sunTransform = Universe.sunPosition.transform;
@@ -426,7 +409,7 @@ public class Planet : MonoBehaviour
         return point + DistanceFromPlane(planeOffset, planeNormal, point) * planeNormal;
     }
 
-    private float DistanceFromPlane(Vector3 planeOffset, Vector3 planeNormal, Vector3 point)
+    private static float DistanceFromPlane(Vector3 planeOffset, Vector3 planeNormal, Vector3 point)
     {
         return Vector3.Dot(planeOffset - point, planeNormal);
     }
@@ -459,8 +442,5 @@ public class Planet : MonoBehaviour
                 Universe.DrawGizmosCircle(moonsParentTransform.position, moonsParentTransform.up, moonRadius, 32);
             }
         }
-        
-
-        
     }
 }

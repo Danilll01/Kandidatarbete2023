@@ -10,7 +10,7 @@ using UnityEngine;
 public class ChunksHandler : MonoBehaviour
 {
     private Planet planet;
-    private Transform player;
+    private PillPlayerController player;
     private Vector3 playerLastPosition;
     private int foliageInitialized = 10;
     private int chunkResolution; //This is 2^chunkResolution
@@ -35,9 +35,9 @@ public class ChunksHandler : MonoBehaviour
     [SerializeField] public int highChunkRes = 4;
 
     // The resolution of the chunk
-    [SerializeField] public ResolutionSetting highRes = new ResolutionSetting( 0f, 1.3f, 3);
-    [SerializeField] public ResolutionSetting mediumRes = new ResolutionSetting(1.5f, 2.0f, 2);
-    [SerializeField] public ResolutionSetting lowRes = new ResolutionSetting(2.3f, 0xFFFFFFFFf, 1);
+    [SerializeField] public ResolutionSetting highRes;
+    [SerializeField] public ResolutionSetting mediumRes;
+    [SerializeField] public ResolutionSetting lowRes;
 
     // Used for chunk culling
     private int index = 0;
@@ -75,7 +75,7 @@ public class ChunksHandler : MonoBehaviour
         rand = new RandomX(seed);
 
         this.planet = planet;
-        player = planet.player;
+        player = Universe.player;
         marchingCubes = planet.marchingCubes;
         planetRadius = planet.radius;
         this.terrainLevel = terrainLevel;
@@ -108,10 +108,11 @@ public class ChunksHandler : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (playerOnPlanet != ReferenceEquals(transform, player.transform.parent))
+        Transform currentPlayerMoverParent = player.boarded ? Universe.spaceShip.parent : player.transform.parent;
+        if (playerOnPlanet != ReferenceEquals(transform, currentPlayerMoverParent))
         {
             updateChunks = true;
-            playerOnPlanet = ReferenceEquals(transform, player.transform.parent);
+            playerOnPlanet = ReferenceEquals(transform, currentPlayerMoverParent);
         }
 
         if (foliageInitialized != 0)
@@ -151,10 +152,15 @@ public class ChunksHandler : MonoBehaviour
 
         Destroy(chunksParent);
 
-        chunksParent = new GameObject();
-        chunksParent.name = (res == ChunkResolution.High) ? "chunksHighRes" : "chunksLowRes";
-        chunksParent.transform.parent = transform;
-        chunksParent.transform.localPosition = Vector3.zero;
+        chunksParent = new GameObject
+        {
+            name = (res == ChunkResolution.High) ? "chunksHighRes" : "chunksLowRes",
+            transform =
+            {
+                parent = transform,
+                localPosition = Vector3.zero
+            }
+        };
 
         marchingCubes.chunkResolution = chunkResolution;
 
@@ -163,8 +169,7 @@ public class ChunksHandler : MonoBehaviour
         int noChunks = (1 << chunkResolution) * (1 << chunkResolution) * (1 << chunkResolution);
         for (int i = 0; i < noChunks; i++)
         {
-            Chunk chunk = Instantiate(chunkPrefab);
-            chunk.transform.parent = chunksParent.transform;
+            Chunk chunk = Instantiate(chunkPrefab, chunksParent.transform, true);
             chunk.transform.localPosition = Vector3.zero;
             chunk.name = "chunk" + i;
             chunk.Setup(i, marchingCubes);
@@ -183,7 +188,7 @@ public class ChunksHandler : MonoBehaviour
         for (int i = chunksList.Count - 1; i != -1; i--)
         {
             // Remove chunks without vertices
-            if (chunksList[i].Initialize(planet, player, terrainLevel, this, rand.Next()) == 0)
+            if (chunksList[i].Initialize(planet, terrainLevel, this, rand.Next()) == 0)
             {
                 Destroy(chunksList[i].gameObject);
                 chunksList.RemoveAt(i);
@@ -192,10 +197,11 @@ public class ChunksHandler : MonoBehaviour
     }
     private void UpdateChunksVisibility()
     {
-        Vector3 playerPos = player.localPosition;
 
+        Vector3 playerPos = player.boarded ? Universe.spaceShip.localPosition : player.transform.localPosition;
+        
         // Only update chunks if player has moved a certain distance
-        if (Vector3.Magnitude(playerPos - playerLastPosition) < 3)
+        if (Vector3.Magnitude(playerPos - playerLastPosition) < 1.8f)
             return;
             
         playerLastPosition = playerPos;
@@ -220,8 +226,8 @@ public class ChunksHandler : MonoBehaviour
                 if (foliageInitialized == 0)
                 {
                     chunksHighRes[index].foliage.SpawnFoliageOnChunk();
-                    CreatureSpawning cretureSpawning = chunksHighRes[index].creatures;
-                    if (cretureSpawning.initialized) cretureSpawning.GeneratePackSpawns();
+                    CreatureSpawning creatureSpawning = chunksHighRes[index].creatures;
+                    if (creatureSpawning.initialized) creatureSpawning.GeneratePackSpawns();
                 }
                     
             }
