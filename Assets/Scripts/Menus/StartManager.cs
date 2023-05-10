@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,19 +7,39 @@ using UnityEngine.SceneManagement;
 using TMPro;
 using UnityEngine.Serialization;
 using Image = UnityEngine.UI.Image;
+using Random = UnityEngine.Random;
 
 public class StartManager : MonoBehaviour
 {
+    [Header("Game Options")]
     [SerializeField] private TMP_InputField seedInput;
     [SerializeField] private TextMeshProUGUI nrOfPlanetsText;
+    
+    [Header("Audio")]
     [SerializeField] private AudioSource musicAudioSource;
-    [SerializeField] private Image fadeOutImage;
+    [SerializeField] private Slider volumeSlider;
+    [SerializeField] private TextMeshProUGUI volumeText;
+    [SerializeField] private AudioClip[] buttonHoverSounds;
+    [SerializeField] private AudioClip[] sliderClickSounds;
+    [SerializeField] private AudioClip[] writingClickSounds;
+    
+    [Header("Fade-out")]
+    [SerializeField] private RectTransform fadeOutImage;
     [SerializeField] private float fadeOutTimer = 0.4f;
+
+    private void Awake()
+    {
+        AudioListener.volume = PlayerPrefs.HasKey("volume") ? PlayerPrefs.GetFloat("volume") : 0.5f;
+        volumeText.text = Mathf.Round(AudioListener.volume * 100) + "%";
+        volumeSlider.maxValue = 1;
+        volumeSlider.minValue = 0;
+        volumeSlider.value = AudioListener.volume;
+    }
 
     /// <summary>
     /// Update the text for the planet slider corresponding to value of slider
     /// </summary>
-    /// <param name="slider"></param>
+    /// <param name="slider">The slider that holds what value</param>
     public void UpdatePlanetInputValue(Slider slider)
     {
         if (slider.value == 0)
@@ -29,6 +50,8 @@ public class StartManager : MonoBehaviour
         {
             nrOfPlanetsText.text = slider.value.ToString();
         }
+
+        musicAudioSource.PlayOneShot(sliderClickSounds[Random.Range(0, sliderClickSounds.Length)]);
     }
 
     /// <summary>
@@ -71,12 +94,9 @@ public class StartManager : MonoBehaviour
     
     private IEnumerator FadeOutMusic(float fadeDuration)
     {
-        float currentVolume = musicAudioSource.volume;
         for (float timePassed = 0f; timePassed < fadeDuration; timePassed += Time.deltaTime)
         {
-            musicAudioSource.volume = Mathf.Lerp(currentVolume, 0.01f, timePassed / fadeDuration);
-            float newAlpha = Mathf.Lerp(0f, 255f, timePassed / fadeDuration);
-            fadeOutImage.color = new Color(fadeOutImage.color.r, fadeOutImage.color.g, fadeOutImage.color.b, newAlpha / 255f);
+            fadeOutImage.localScale = Vector3.Lerp(Vector3.zero, Vector3.one, timePassed / fadeDuration);
             
             yield return null;
         }
@@ -84,6 +104,34 @@ public class StartManager : MonoBehaviour
         SceneManager.LoadScene("Load Menu");
     }
 
+    /// <summary>
+    /// Updates the volume in game
+    /// </summary>
+    /// <param name="slider">The slider value from the slider</param>
+    public void UpdateVolume(Slider slider)
+    {
+        PlayerPrefs.SetFloat("volume", slider.value);
+        AudioListener.volume = slider.value;
+        float newVolume = Mathf.Round(slider.value * 100);
+        volumeText.text = newVolume + "%";
+    }
+
+    /// <summary>
+    /// Plays a random button hover sound
+    /// </summary>
+    public void PlayButtonHoverSound()
+    {
+        musicAudioSource.PlayOneShot(buttonHoverSounds[Random.Range(0, buttonHoverSounds.Length)]);
+    }
+    
+    /// <summary>
+    /// Plays a random writing sound
+    /// </summary>
+    public void PlayWritingSound()
+    {
+        musicAudioSource.PlayOneShot(writingClickSounds[Random.Range(0, writingClickSounds.Length)]);
+    }
+    
     /// <summary>
     /// Exits the game
     /// </summary>

@@ -92,7 +92,7 @@ public class CreatureSpawning : MonoBehaviour
             // Shots a ray towards the center of the planet 
             Vector3 rayOrigin = spot + planetPos;
             Ray ray = new Ray(rayOrigin, planetPos - rayOrigin);
-            Physics.Raycast(ray, out RaycastHit hit);
+            Physics.Raycast(ray, out RaycastHit hit, float.MaxValue, 1 << LayerMask.NameToLayer("Planet"));
 
             if (creatureHandler.debug)
             {
@@ -173,7 +173,7 @@ public class CreatureSpawning : MonoBehaviour
             RaycastHit hit;
 
             // Registered a hit
-            if (Physics.Raycast(ray, out hit, creatureHandler.PlanetRadius))
+            if (Physics.Raycast(ray, out hit, creatureHandler.PlanetRadius, 1 << LayerMask.NameToLayer("Planet")))
             {
                 // Check if the hit colliding with a creature
                 if (hit.transform.CompareTag("Creature"))
@@ -268,17 +268,14 @@ public class CreatureSpawning : MonoBehaviour
             total += pack.ratio;
         }
 
-        float randomNum = random.Next(0, total);
+        float randomNum = random.Next(0, total + 1);
 
         float accumulatedSum = 0;
 
         for (int i = 0; i < acceptablePacks.Count; i++)
         {
-            if (randomNum > accumulatedSum)
-            {
-                accumulatedSum += acceptablePacks[i].ratio;
-            }
-            else
+            accumulatedSum += acceptablePacks[i].ratio;
+            if (randomNum <= accumulatedSum)
             {
                 packToSpawn = acceptablePacks[i];
                 return true;

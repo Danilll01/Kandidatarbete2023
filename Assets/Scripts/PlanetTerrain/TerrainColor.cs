@@ -101,7 +101,7 @@ public class TerrainColor : MonoBehaviour {
     private void UpdateBiomeSetting()
     {
         material.SetFloat("_Seed", biomeSettings.seed);
-        material.SetFloat("_Distance", 0);
+        material.SetFloat("_Distance", biomeSettings.distance);
         material.SetFloat("_MountainFrequency", biomeSettings.mountainFrequency);
         material.SetFloat("_TempFrequency", biomeSettings.temperatureFrequency);
         material.SetFloat("_TemperatureDecay", biomeSettings.temperatureDecay);

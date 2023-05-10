@@ -7,10 +7,7 @@ using UnityEngine;
 public class Sun : MonoBehaviour
 {
     public float diameter;
-    public float radius;
-    public float surfaceGravity;
     public string bodyName = "Sun";
-    public float mass;
     public float temperature;
     private static readonly int Temperature = Shader.PropertyToID("_temperature");
 
@@ -27,7 +24,6 @@ public class Sun : MonoBehaviour
 
         temperature = rand.Value(3000, 8000);
         transform.GetChild(0).GetComponent<MeshRenderer>().material.SetFloat(Temperature, temperature);
-        radius = diameter / 2;
     }
 
     /// <summary>
@@ -35,7 +31,6 @@ public class Sun : MonoBehaviour
     /// </summary>
     public void SetUpPlanetValues()
     {
-        mass = surfaceGravity * diameter * diameter / Universe.gravitationalConstant;
         gameObject.name = bodyName;
     }
 }
