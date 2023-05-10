@@ -153,19 +153,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   resolution: 0
-  chunkResolution: 0
-  caveSettings:
-    settings:
-      startSequence:
-        sequence: 
-      rules: []
-      iterations: 0
-      movementSettings:
-        stepSize: 0
-        yawAngle: 0
-        pitchAngle: 0
-  run: 0
-  update: 0
+  chunkResolution: 4
+  settings:
+    startSequence:
+      sequence: 050000000300000000000000
+    rules:
+    - identity: 0
+      replacement:
+        sequence: 0000000000000000
+    iterations: 5
+    movementSettings:
+      stepSize: 0.5
+      yawAngle: 45
+      pitchAngle: 45
 --- !u!4 &434859983
 Transform:
   m_ObjectHideFlags: 0

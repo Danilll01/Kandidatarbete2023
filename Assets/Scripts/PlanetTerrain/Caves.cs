@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using static LSystem;
 using UnityEngine.Rendering.VirtualTexturing;
+using JetBrains.Annotations;
 
 public class Caves
 {
@@ -32,6 +33,9 @@ public class Caves
         noChunks = 1 << chunkResolution;
 
         caves = new List<Vector3>[noChunks * noChunks * noChunks];
+
+        for(int i = 0; i < caves.Length; i++)
+            caves[i] = new List<Vector3>();
 
         GenerateCaves(ref caves);
     }

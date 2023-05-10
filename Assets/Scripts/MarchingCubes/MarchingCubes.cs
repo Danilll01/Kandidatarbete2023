@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using Unity.Mathematics;
+using Unity.VisualScripting;
 using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -48,7 +49,7 @@ public class MarchingCubes
     /// <summary>
     /// Generate the mesh from the given parameters in the constructor
     /// </summary>
-    public int generateMesh(MinMaxTerrainLevel hightFillerTerrainLevel, int index, int resolution, Mesh mesh)
+    public int generateMesh(MinMaxTerrainLevel hightFillerTerrainLevel, int index, int resolution, Mesh mesh, bool generateCaves)
     {
         resolution *= 1 << chunkResolution;
 
@@ -81,7 +82,25 @@ public class MarchingCubes
         meshGenerator.SetInt("numTerrainLayers", terrainLayers.Count);
         meshGenerator.SetBuffer(kernelIndex, "terrainLayers", layersBuffer);
         meshGenerator.SetBuffer(kernelIndex, "biomeSettings", biomesBuffer);
-        meshGenerator.SetTexture(kernelIndex, "caves", caves.GetCaves());
+
+        ComputeBuffer cavesBuffer = null;
+        if (generateCaves)
+        {
+            Vector3[] cavePoints = caves.GetCaves(index).ToArray();
+            if (cavePoints.Length != 0)
+            {
+                cavesBuffer = new ComputeBuffer(cavePoints.Length, sizeof(float) * 3);
+                cavesBuffer.SetData(cavePoints);
+                meshGenerator.SetBuffer(kernelIndex, "cavePoints", cavesBuffer);
+                meshGenerator.SetInt("numCavePoints", cavePoints.Length);
+            }
+            else
+                generateCaves = false;
+        }
+
+        if(!generateCaves)
+            meshGenerator.SetInt("numCavePoints", 0);
+
         meshGenerator.Dispatch(kernelIndex, resolution >> chunkResolution, resolution >> chunkResolution, resolution >> chunkResolution);
 
         // Retrieve triangles
@@ -95,8 +114,10 @@ public class MarchingCubes
         trianglesBuffer.Release();
         layersBuffer.Release();
         biomesBuffer.Release();
+        if (generateCaves) 
+            cavesBuffer.Release();
 
-        // Process our data from the compute shader
+            // Process our data from the compute shader
         int[] meshTriangles = new int[length * 3];
         Vector3[] meshVertices = new Vector3[length * 3];
 

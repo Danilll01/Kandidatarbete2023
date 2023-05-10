@@ -31,7 +31,7 @@ struct BiomeSettings
 
 float evalutateBiomeMapMountains(BiomeSettings biomeSettings, float3 pos);
 
-float getTerrain(float3 pos, RWStructuredBuffer<TerrainLayer> terrainLayers, int numTerrainLayers, float seed, BiomeSettings biomeSettings)
+float getTerrain(float3 pos, RWStructuredBuffer<TerrainLayer> terrainLayers, int numTerrainLayers, float seed, BiomeSettings biomeSettings, int numCavePoints, RWStructuredBuffer<float3> cavePoints)
 {
     float3 pointOnSphere = pos / length(pos);
    
@@ -81,7 +81,15 @@ float getTerrain(float3 pos, RWStructuredBuffer<TerrainLayer> terrainLayers, int
     float caveNoise = (simplex.Evaluate(pos * caveFrequency) + 1) * .5;
     ground *= (1 - 1 / (caveDensity * caveNoise + 1)) * (1 + 1 / caveDensity); //function to control cave density*/
     
-    return ground;
+    float closestDistance = 1;
+    for (int j = 0; j < numCavePoints; j++)
+    {
+        float distance = length(cavePoints[j] - pos);
+        if (distance < closestDistance)
+            closestDistance = distance;
+    }
+    
+    return ground * closestDistance;
 }
 
 // Note, TemperatureRoughness and MountainTemperatureAffect must be in the range 0-1

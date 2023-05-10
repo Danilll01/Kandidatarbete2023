@@ -20,7 +20,9 @@ AppendStructuredBuffer<Triangle> triangles;
 int numTerrainLayers;
 RWStructuredBuffer<TerrainLayer> terrainLayers;
 RWStructuredBuffer<BiomeSettings> biomeSettings;
-RWTexture3D<float4> caves;
+
+int numCavePoints;
+RWStructuredBuffer<float3> cavePoints;
 
 float seed;
 uint resolution;
@@ -32,7 +34,6 @@ int chunkResolution;
 [numthreads(8, 8, 8)]
 void GenerateMesh(uint3 id : SV_DispatchThreadID)
 {
-    
     // Since we are going through the voxels, not the points, we stop before we reach the endpoint
     if (id.x >= resolution - 1 || id.y >= resolution - 1 || id.z >= resolution - 1)
     {
@@ -130,7 +131,7 @@ float4 getTexturePoint(uint3 pos, int3 chunkId, float maxPos)
     
     float3 relPos = (.5 - normPos) * 2; // relPos goes between [-1, 1]
     
-    float terrainValue = getTerrain(relPos, terrainLayers, numTerrainLayers, seed, biomeSettings[0]);
+    float terrainValue = getTerrain(relPos, terrainLayers, numTerrainLayers, seed, biomeSettings[0], numCavePoints, cavePoints);
     
     return float4(relPos * radius, terrainValue);
 }

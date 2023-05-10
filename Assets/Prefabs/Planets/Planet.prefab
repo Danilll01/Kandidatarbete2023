@@ -55,7 +55,6 @@ MonoBehaviour:
   meshGenerator: {fileID: 7200000, guid: 2b54143d75bd2344bb987facb6cb4950, type: 3}
   waterDiameter: 0
   radius: 0
-  surfaceGravity: 10
   bodyName: TBT
   mass: 429245
   moons: []
@@ -78,6 +77,19 @@ MonoBehaviour:
     flatSmoothness: 0.1
     centre: {x: 0, y: 0, z: 0}
     numLayers: 7
+  caveSettings:
+    settings:
+      startSequence:
+        sequence: 050000000300000000000000
+      rules:
+      - identity: 0
+        replacement:
+          sequence: 0000000000000000
+      iterations: 5
+      movementSettings:
+        stepSize: 0.05
+        yawAngle: 45
+        pitchAngle: 45
   biomeSettings:
     seed: 1
     distance: 0
@@ -88,9 +100,6 @@ MonoBehaviour:
     temperatureRoughness: 0.367
     mountainTemperatureAffect: 0.229
     treeFrequency: 1
-  caveSettings:
-    scale: 0
-    rules: []
   orbitSpeed: 0
   rotationAxis: {x: 0, y: 0, z: 0}
   rotationSpeed: 0

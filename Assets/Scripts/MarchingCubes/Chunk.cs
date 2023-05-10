@@ -190,7 +190,7 @@ public class Chunk : MonoBehaviour
 
         mesh = new Mesh();
 
-        int numVerts = marchingCubes.generateMesh(terrainLevel, index, currentRes, mesh);
+        int numVerts = marchingCubes.generateMesh(terrainLevel, index, currentRes, mesh, !lowChunkResChunks);
 
         Destroy(meshFilter.sharedMesh);
 
