@@ -886,7 +886,7 @@ public class Creature : MonoBehaviour
                     parameters[i].name == name)
                 {
                     animator.SetBool(name, value);
-                    Debug.Log("SET: " + name);
+                    //Debug.Log("SET: " + name);
                 }
             }
         }

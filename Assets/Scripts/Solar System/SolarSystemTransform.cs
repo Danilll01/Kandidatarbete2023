@@ -26,6 +26,8 @@ public class SolarSystemTransform : MonoBehaviour
     private bool releasedPlayer;
 
 
+
+
     void Start()
     {
         if (spawnPlanets.bodies != null)
@@ -188,7 +190,6 @@ public class SolarSystemTransform : MonoBehaviour
             MovePlanets();
             activePlanet.rotateMoons = true;
             oldActivePlanet = activePlanet;
-            tintFoliageTexturesHandler.planetGroundColor = activePlanet.groundColor;
             tintFoliageTexturesHandler.biomeColors = activePlanet.biomeColors;
             tintFoliageTexturesHandler.TintTextures();
             activePlanet.foliageHandler.biomeFoliageDatas = tintFoliageTexturesHandler.biomeFoliageDatas;
