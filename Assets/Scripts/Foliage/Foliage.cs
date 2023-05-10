@@ -305,7 +305,7 @@ public class Foliage : MonoBehaviour
 
                 spawnedObject = Instantiate(objectToSpawn.prefab, objectToSpawn.position, objectToSpawn.rotation, transform);
 
-                spawnedObject.name += objectToSpawn.biome;
+                //spawnedObject.name += objectToSpawn.biome;
                 spawnedObject.transform.localScale *= random.Value(0.7f, 1.4f);
 
                 objectsNr++;
