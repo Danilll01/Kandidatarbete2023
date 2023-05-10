@@ -80,12 +80,13 @@ MonoBehaviour:
     numLayers: 7
   biomeSettings:
     seed: 1
-    temperatureDecay: 0
+    distance: 0
+    temperatureDecay: 0.0027
     farTemperature: 0
     mountainFrequency: 1.2
-    temperatureFrequency: 1
-    temperatureRoughness: 0.52
-    mountainTemperatureAffect: 0.527
+    temperatureFrequency: 1.28
+    temperatureRoughness: 0.367
+    mountainTemperatureAffect: 0.229
     treeFrequency: 1
   orbitSpeed: 0
   rotationAxis: {x: 0, y: 0, z: 0}

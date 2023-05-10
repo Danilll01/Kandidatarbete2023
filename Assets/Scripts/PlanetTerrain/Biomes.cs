@@ -9,6 +9,7 @@ using System;
 public struct BiomeSettings
 {
     public float seed;
+    public float distance;
     public float temperatureDecay;
     public float farTemperature;
     public float mountainFrequency;
@@ -21,7 +22,7 @@ public struct BiomeSettings
     /// <i>Note: parameters <paramref name="temperatureRoughness"/> and <paramref name="mountainTemperatureAffect"/> must
     /// be in range [0, 1]</i>
     /// </summary>
-    public BiomeSettings(float seed, float temperatureDecay, float farTemperature, float mountainFrequency, float temperatureFrequency, float temperatureRoughness, float mountainTemperatureAffect, float treeFrequency)
+    public BiomeSettings(float seed, float distance, float temperatureDecay, float farTemperature, float mountainFrequency, float temperatureFrequency, float temperatureRoughness, float mountainTemperatureAffect, float treeFrequency)
     {
         // Check that variables are in range
         Details.AssertInRange(temperatureRoughness, 0, 1, nameof(temperatureRoughness));
@@ -29,6 +30,7 @@ public struct BiomeSettings
         Details.AssertInRange(farTemperature, 0, 1, nameof(farTemperature));
 
         this.seed = seed;
+        this.distance = distance;
         this.temperatureDecay = temperatureDecay;
         this.farTemperature = farTemperature;
         this.mountainFrequency = mountainFrequency;
