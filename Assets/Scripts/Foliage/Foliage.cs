@@ -280,12 +280,25 @@ public class Foliage : MonoBehaviour
         if (j > 0)
         {
             FoliageCollection chosenCollection = foliageHandler.foliageCollections[chosenIndex];
+            
 
             if (chosenCollection.probabilityToSkip < random.Value())
             {
                 GameObject foliageObj = chosenCollection.gameObjects[random.Next(chosenCollection.gameObjects.Length)];
 
-                SpawnTreesInForest(foliageObj, rayOrigin, hit.point, chosenCollection.name, chosenCollection.probabilityToSkip);
+                int index;
+                if (chosenCollection.name.Contains("Mountain"))
+                {
+                    index = foliageObj.name.Contains("Type") ? 5 : 0;
+                }
+                else
+                {
+                    index = foliageObj.name.Contains("Type") ? random.Next(6, 10) : random.Next(1, 5);
+                }
+
+                Material materialForFoliageObject = foliageHandler.biomeFoliageDatas[index].biomeMaterial;
+
+                SpawnTreesInForest(foliageObj, rayOrigin, hit.point, chosenCollection.name, chosenCollection.probabilityToSkip, materialForFoliageObject);
             }
 
         }
@@ -305,7 +318,7 @@ public class Foliage : MonoBehaviour
 
                 spawnedObject = Instantiate(objectToSpawn.prefab, objectToSpawn.position, objectToSpawn.rotation, transform);
 
-                //spawnedObject.name += objectToSpawn.biome;
+                spawnedObject.GetComponent<MeshRenderer>().material = objectToSpawn.material;
                 spawnedObject.transform.localScale *= random.Value(0.7f, 1.4f);
 
                 objectsNr++;
@@ -314,7 +327,7 @@ public class Foliage : MonoBehaviour
     }
 
     // Forest spawning function
-    private void SpawnTreesInForest(GameObject treeObject, Vector3 rayOrigin, Vector3 position, string name, float probToSkip)
+    private void SpawnTreesInForest(GameObject treeObject, Vector3 rayOrigin, Vector3 position, string name, float probToSkip, Material materialForObject)
     {
         
         // Used to introduce some variation in forest sizes.
@@ -342,7 +355,7 @@ public class Foliage : MonoBehaviour
                 rotation *= Quaternion.Euler(0, random.Next(0, 360), 0);
 
                 // Add spawn position to priority queue
-                objectsToSpawn.Enqueue(new FoliageSpawnData(hit.point - (hit.point.normalized * 0.1f), rotation, treeObject, name), distToPlayer);
+                objectsToSpawn.Enqueue(new FoliageSpawnData(hit.point - (hit.point.normalized * 0.1f), rotation, treeObject, materialForObject, name), distToPlayer);
                 
                 if (foliageHandler.debug) Debug.DrawLine(localpos, hit.point, Color.yellow, 10f);
             }

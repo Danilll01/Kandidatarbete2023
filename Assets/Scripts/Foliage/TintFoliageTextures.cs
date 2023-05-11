@@ -15,6 +15,7 @@ public class TintFoliageTextures : MonoBehaviour
     public List<Color[]> originalColors;
 
     public Color planetGroundColor;
+    public Color planetMountainColor;
     public Color[] biomeColors;
     [SerializeField] private Material[] biomeMaterials;
     public BiomeFoliageData[] biomeFoliageDatas;
@@ -40,6 +41,7 @@ public class TintFoliageTextures : MonoBehaviour
         for (int i = 0; i < 2; i++)
         {
             originalColors.Add(textureAndRows[i].texture.GetPixels());
+            
             // We don't need to create new materials for every biome since we already have a material
             for (int j = 0; j < biomeColors.Length; j++)
             {
@@ -54,7 +56,7 @@ public class TintFoliageTextures : MonoBehaviour
 
                 biomeFoliageDatas[index].biomeIndex = j;
                 biomeFoliageDatas[index].packageIndex = i + 1;
-                biomeFoliageDatas[index].biomeName = "Biome " + j + ", pack " + (i + 1);
+                biomeFoliageDatas[index].biomeName = j == 0 ? "GroundColor" : "Biome " + j + ", pack " + (i + 1);
                 biomeFoliageDatas[index].biomeColor = biomeColors[j];
                 index++;
             }
@@ -63,6 +65,7 @@ public class TintFoliageTextures : MonoBehaviour
             biomeMaterials[index - 1] = textureMaterials[i];
             biomeFoliageDatas[index - 1].biomeMaterial = textureMaterials[i];
             biomeFoliageDatas[index - 1].texture = copiedTexture;
+            
         }
 
         

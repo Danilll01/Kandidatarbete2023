@@ -14,7 +14,7 @@ struct BiomeColor
 public class TerrainColor : MonoBehaviour {
 
     [SerializeField] private Gradient gradient = new Gradient();
-    [HideInInspector] public Color[] pickedColorPalette;
+    public Color[] pickedColorPalette;
     [SerializeField] private float tempMin = 200;
     [SerializeField] private float tempMax = 300;
     [SerializeField][Range(0, 180)] private float angleCutOf = 90;
@@ -23,6 +23,8 @@ public class TerrainColor : MonoBehaviour {
 
     [HideInInspector] public Color bottomColor;
     [HideInInspector] public Color groundColor;
+    [HideInInspector] public Color[] biomeColors;
+
     private Material material;
     private Texture2D texture;
     private const int textureRes = 50;
@@ -70,6 +72,8 @@ public class TerrainColor : MonoBehaviour {
 
         material = new Material(shader);
 
+        biomeColors = new Color[5];
+
         if (terrainLevel != null) {
             tempMin = terrainLevel.GetMin();
             tempMax = terrainLevel.GetMax();
@@ -109,11 +113,11 @@ public class TerrainColor : MonoBehaviour {
         material.SetFloat("_Roughness", biomeSettings.temperatureRoughness);
         material.SetFloat("_MountainAffect", biomeSettings.mountainTemperatureAffect);
         material.SetFloat("_TreeFrequency", biomeSettings.treeFrequency);
-        
-        material.SetTexture("_MountainGradient", GetTextureFromGradients(mountainGradients, true));
-        material.SetTexture("_TreeGradient", GetTextureFromGradients(plainsGradients));
-        material.SetTexture("_PolarCapGradient", GetTextureFromGradients(polarCapGradients));
-        material.SetTexture("_EquatorGradient", GetTextureFromGradients(equatorGradients));
+
+        material.SetTexture("_MountainGradient", GetTextureFromGradients(mountainGradients, 1, true));
+        material.SetTexture("_TreeGradient", GetTextureFromGradients(plainsGradients, 2, true));
+        material.SetTexture("_PolarCapGradient", GetTextureFromGradients(polarCapGradients, 3, true));
+        material.SetTexture("_EquatorGradient", GetTextureFromGradients(equatorGradients, 4, true));
 
     }
 
@@ -151,18 +155,20 @@ public class TerrainColor : MonoBehaviour {
 
         // Use this for water
         bottomColor = colors[0];
-
         
         groundColor = takePaletteRand[2];
+        biomeColors[0] = groundColor;
     }
 
-    private Texture GetTextureFromGradients(BiomeColor[] gradients, bool addGroundColor = false)
+    private Texture GetTextureFromGradients(BiomeColor[] gradients, int biomeIndex, bool addGroundColor = false)
     {
         Gradient gradient = gradients[random.Next(0, gradients.Length - 1)].gradient;
 
+        GradientColorKey[] oldColorKeyArr = gradient.colorKeys;
+        biomeColors[biomeIndex] = oldColorKeyArr[0].color;
+
         if (addGroundColor)
         {
-            GradientColorKey[] oldColorKeyArr = gradient.colorKeys;
             oldColorKeyArr[0] = new GradientColorKey(groundColor, oldColorKeyArr[0].time);
             gradient.SetKeys(oldColorKeyArr, gradient.alphaKeys);
         }
