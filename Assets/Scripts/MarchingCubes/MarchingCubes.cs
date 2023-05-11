@@ -86,16 +86,11 @@ public class MarchingCubes
         ComputeBuffer cavesBuffer = null;
         if (generateCaves)
         {
-            Vector3[] cavePoints = caves.GetCaves(index).ToArray();
-            if (cavePoints.Length != 0)
-            {
-                cavesBuffer = new ComputeBuffer(cavePoints.Length, sizeof(float) * 3);
-                cavesBuffer.SetData(cavePoints);
-                meshGenerator.SetBuffer(kernelIndex, "cavePoints", cavesBuffer);
-                meshGenerator.SetInt("numCavePoints", cavePoints.Length);
-            }
-            else
-                generateCaves = false;
+            Caves.CavePoint[,,] cavePoints = caves.GetCaves();
+            cavesBuffer = new ComputeBuffer(cavePoints.Length, sizeof(float) * 4);
+            cavesBuffer.SetData(cavePoints);
+            meshGenerator.SetBuffer(kernelIndex, "cavePoints", cavesBuffer);
+            meshGenerator.SetInt("numCavePoints", cavePoints.Length);
         }
 
         if(!generateCaves)

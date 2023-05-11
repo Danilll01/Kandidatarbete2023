@@ -80,7 +80,7 @@ public class ChunksHandler : MonoBehaviour
         planetRadius = planet.radius;
         this.terrainLevel = terrainLevel;
 
-        caves = new Caves(planet.resolution, highChunkRes, planet.caveSettings);
+        caves = new Caves(highChunkRes, planet.caveSettings);
         marchingCubes.caves = caves;
 
         playerOnPlanet = spawn;

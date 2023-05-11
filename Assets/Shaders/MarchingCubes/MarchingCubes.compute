@@ -19,10 +19,11 @@ AppendStructuredBuffer<Triangle> triangles;
 
 int numTerrainLayers;
 RWStructuredBuffer<TerrainLayer> terrainLayers;
-RWStructuredBuffer<BiomeSettings> biomeSettings;
 
 int numCavePoints;
-RWStructuredBuffer<float3> cavePoints;
+RWStructuredBuffer<CavePoint> cavePoints;
+
+RWStructuredBuffer<BiomeSettings> biomeSettings;
 
 float seed;
 uint resolution;

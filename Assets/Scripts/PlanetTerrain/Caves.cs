@@ -9,8 +9,9 @@ using JetBrains.Annotations;
 public class Caves
 {
     private CaveSettings caveSettings;
-    private List<Vector3>[] caves; //Each list represents the caves for the corresponding chunk
-    private int noChunks;
+    //private List<Vector3>[] caves; //Each list represents the caves for the corresponding chunk
+    //private int noChunks;
+    private CavePoint[,,] cavePoints;
 
     /// <summary>
     /// Settings for the caves
@@ -19,6 +20,34 @@ public class Caves
     public struct CaveSettings
     {
         public Settings settings;
+        public int resolution;
+    }
+
+    /// <summary>
+    /// Struct for holding a cavepoint
+    /// </summary>
+    public struct CavePoint
+    {
+        public bool set;
+        public Vector3 position; 
+        
+        /// <summary>
+        /// Initalize cavepoint
+        /// </summary>
+        public CavePoint(bool set, Vector3 position)
+        {
+            this.set = set;
+            this.position = position;
+        }
+
+        /// <summary>
+        /// Update values of point
+        /// </summary>
+        public void Set(bool set, Vector3 position)
+        {
+            this.set = set;
+            this.position = position;
+        }
     }
 
     /// <summary>
@@ -27,26 +56,31 @@ public class Caves
     /// <param name="resolution"><see cref="Planet.resolution"/></param>
     /// <param name="chunkResolution"><see cref="ChunksHandler.chunkResolution"/></param>
     /// <param name="caveSettings">Settings for the caves</param>
-    public Caves(int resolution, int chunkResolution, CaveSettings caveSettings)
+    public Caves(int chunkResolution, CaveSettings caveSettings)
     {
         this.caveSettings = caveSettings;
-        noChunks = 1 << chunkResolution;
+        //noChunks = 1 << chunkResolution;
 
-        caves = new List<Vector3>[noChunks * noChunks * noChunks];
+        //caves = new List<Vector3>[noChunks * noChunks * noChunks];
+        //for (int i = 0; i < caves.Length; i++)
+        //    caves[i] = new List<Vector3>();
 
-        for(int i = 0; i < caves.Length; i++)
-            caves[i] = new List<Vector3>();
+        cavePoints = new CavePoint[caveSettings.resolution, caveSettings.resolution, caveSettings.resolution];
+        for(int i = 0; i < caveSettings.resolution; i++)
+            for(int j = 0; j < caveSettings.resolution; j++)
+                for(int k = 0; k < caveSettings.resolution; k++) 
+                    cavePoints[i, j, k] = new CavePoint(false, Vector3.zero);
 
-        GenerateCaves(ref caves);
+        GenerateCaves();
     }
 
     /// <summary>
     /// Returns the cave points for the specified chunk
     /// </summary>
     /// <returns><paramref name="caves">caves</paramref></returns>
-    public List<Vector3> GetCaves(int chunkIndex) { return caves[chunkIndex]; }
+    public CavePoint[,,] GetCaves() { return cavePoints; }
 
-    private void GenerateCaves(ref List<Vector3>[] caves)
+    private void GenerateCaves()
     {
         LSystem lSystem = new LSystem(caveSettings.settings);
 
@@ -64,15 +98,17 @@ public class Caves
                 continue;
 
             // Add point to correct caves list
-            caves[GetChunkIndex(position)].Add(position);
+            //caves[GetChunkIndex(position)].Add(position);
+            cavePoints[(int)(position.x * caveSettings.resolution), (int)(position.x * caveSettings.resolution), (int)(position.x * caveSettings.resolution)].Set(true, position);
 
             if (isFinished) break;
         }  
     }
 
+    /*
     // Check which chunk contains given point, note: point is in range [0, 1]
     private int GetChunkIndex(Vector3 point)
     {
         return (int) point.x * (noChunks - 1) + (int) point.y * (noChunks - 1) * noChunks + (int) point.z * (noChunks - 1) * noChunks * noChunks;
-    }
+    }*/
 }

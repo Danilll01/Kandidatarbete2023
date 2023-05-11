@@ -1,6 +1,8 @@
+using JetBrains.Annotations;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -76,9 +78,10 @@ public class LSystem
         public List<Rule> rules;
         public int iterations;
         public MovementSettings movementSettings;
+        public Position startPosition;
     }
 
-    private struct Position
+    public struct Position
     {
         public Vector3 position;
         public Vector3 direction;

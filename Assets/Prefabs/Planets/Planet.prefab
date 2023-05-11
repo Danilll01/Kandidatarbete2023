@@ -80,16 +80,14 @@ MonoBehaviour:
   caveSettings:
     settings:
       startSequence:
-        sequence: 050000000300000000000000
-      rules:
-      - identity: 0
-        replacement:
-          sequence: 0000000000000000
-      iterations: 5
+        sequence: 01000000
+      rules: []
+      iterations: 0
       movementSettings:
-        stepSize: 0.05
-        yawAngle: 45
-        pitchAngle: 45
+        stepSize: 0
+        yawAngle: 0
+        pitchAngle: 0
+    resolution: 4
   biomeSettings:
     seed: 1
     distance: 0

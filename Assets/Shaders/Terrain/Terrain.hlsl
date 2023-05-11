@@ -16,6 +16,12 @@ struct TerrainLayer
     int numLayers;
 };
 
+struct CavePoint
+{
+    bool set;
+    float3 position;
+};
+
 // Note, TemperatureRoughness and MountainTemperatureAffect must be in the range 0-1
 struct BiomeSettings
 {
@@ -31,7 +37,7 @@ struct BiomeSettings
 
 float evalutateBiomeMapMountains(BiomeSettings biomeSettings, float3 pos);
 
-float getTerrain(float3 pos, RWStructuredBuffer<TerrainLayer> terrainLayers, int numTerrainLayers, float seed, BiomeSettings biomeSettings, int numCavePoints, RWStructuredBuffer<float3> cavePoints)
+float getTerrain(float3 pos, RWStructuredBuffer<TerrainLayer> terrainLayers, int numTerrainLayers, float seed, BiomeSettings biomeSettings, int numCavePoints, RWStructuredBuffer<CavePoint> cavePoints)
 {
     float3 pointOnSphere = pos / length(pos);
    
@@ -73,23 +79,18 @@ float getTerrain(float3 pos, RWStructuredBuffer<TerrainLayer> terrainLayers, int
     }
 
     float ground = length(pos) < (.7 + noiseValue) ? ((.7 + noiseValue) - length(pos)) * 255 : 0;
+
     /*
-    float caveFrequency = 13;
-    float caveDensity = 55;
-    
-    // Create the caves
-    float caveNoise = (simplex.Evaluate(pos * caveFrequency) + 1) * .5;
-    ground *= (1 - 1 / (caveDensity * caveNoise + 1)) * (1 + 1 / caveDensity); //function to control cave density*/
-    
     float closestDistance = 1;
     for (int j = 0; j < numCavePoints; j++)
     {
-        float distance = length(cavePoints[j] - pos);
+        if (!cavePoints[j])
+        float distance = length(cavePoints[j].position - pos);
         if (distance < closestDistance)
             closestDistance = distance;
-    }
+    }*/
     
-    return ground * closestDistance;
+    return ground;
 }
 
 // Note, TemperatureRoughness and MountainTemperatureAffect must be in the range 0-1
