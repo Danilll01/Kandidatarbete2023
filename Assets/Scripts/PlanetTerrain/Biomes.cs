@@ -231,6 +231,46 @@ public static class Biomes
             y: position.y * biomeSettings.treeFrequency,
             z: (position.z + biomeSettings.seed) * biomeSettings.treeFrequency) + 1) * .5f;
     }
+
+    /// <summary>
+    /// Evaluates a representation of the temperaturemap at <paramref name="position"/> with <paramref name="biomeSettings"/> in celcius
+    /// with the <paramref name="distance"/> to the sun.
+    /// </summary>
+    public static string GetTemperatureAt(BiomeSettings biomeSettings, Vector3 position, float distance)
+    {
+        float tmp = EvaluteBiomeMapTemperature(biomeSettings, position, distance);
+
+        return GetTemperature(tmp);
+    }
+
+    /// <summary>
+    /// Evaluates a representation of the temperaturemap with the value <paramref name="tmp"/>.
+    /// </summary>
+    public static string GetTemperature(float tmp)
+    {
+        (float temperature, float celcius)[] tempGuides = { (0.03f, -50f), (0.1f, 5f), (0.2f, 15f), (0.3f, 25f), (0.5f, 40f), (0.6f, 60f), (0.7f, 100f) };
+
+        if (tempGuides[0].temperature > tmp)
+        {
+            return "ERROR LOW �C";
+        }
+
+        for (int i = 0; i < tempGuides.Length - 1; i++)
+        {
+            if (tempGuides[i + 1].temperature >= tmp)
+            {
+                (float temperature, float celcius) tmp1 = tempGuides[i];
+                (float temperature, float celcius) tmp2 = tempGuides[i + 1];
+                float progressToNext = (tmp - tmp1.temperature) / (tmp2.temperature - tmp1.temperature);
+                
+
+                float tmpC = (1 - progressToNext) * tmp1.celcius + progressToNext * tmp2.celcius;
+                tmpC = (float)Math.Round(tmpC * 100) / 100;
+                return tmpC.ToString() + " �C";
+            }
+        }
+        return "ERROR HIGH �C";
+    }
 }
 
 /// <summary>
