@@ -110,7 +110,6 @@ public class PillPlayerController : MonoBehaviour
             DisplayDebug.AddOrSetDebugVariable("Current planet", attractor.bodyName);
             DisplayDebug.AddOrSetDebugVariable("Planet radius", attractor.radius.ToString());
             DisplayDebug.AddOrSetDebugVariable("Planet mass", attractor.mass.ToString());
-            DisplayDebug.AddOrSetDebugVariable("Planet surface gravity", attractor.surfaceGravity.ToString());
             BiomeValue currentBiome = Biomes.EvaluteBiomeMap(attractor.Biome, transform.position, attractor.DistanceToSun);
             DisplayDebug.AddOrSetDebugVariable("Biome: Mountain", currentBiome.mountains.ToString());
             DisplayDebug.AddOrSetDebugVariable("Biome: Temperature", currentBiome.temperature.ToString());
@@ -198,6 +197,9 @@ public class PillPlayerController : MonoBehaviour
 
         // Decides if the model should be moved back because of sprinting
         MoveModelWhileSprint(speed);
+        
+        // Play the wind audio
+        PlayWindAudio();
         
         //Swiming
         if (Swimming)
@@ -287,6 +289,20 @@ public class PillPlayerController : MonoBehaviour
         if (boarded) return;
         Gravity.KeepUpright(transform, attractor.transform);
         Gravity.Attract(transform.position, body, attractor.transform.position, attractor.mass);
+    }
+    
+    // Plays wind audio if needed 
+    private void PlayWindAudio()
+    {
+        // Play wind sound effect
+        if (body.velocity.magnitude > 1f)
+        {
+            audio.PlaySoundEffect(HandleAudio.SoundEffects.Wind, true, false, 2f, 0.3f);
+        }
+        else
+        {
+            audio.TurnOffCurrentSoundEffect(0.4f);
+        }
     }
 
     /// <summary>

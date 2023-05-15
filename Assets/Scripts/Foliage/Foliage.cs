@@ -1,6 +1,7 @@
 using UnityEngine;
 using ExtendedRandom;
 using Noise;
+using System.Collections.Generic;
 
 public class Foliage : MonoBehaviour
 {
@@ -8,17 +9,19 @@ public class Foliage : MonoBehaviour
     private int maxAngle = 35;
 
     // Stats for debug
-    private int treeNr = 0;
-    private int bushNr = 0;
-    private int waterPlantNr = 0;
-    private int stoneNr = 0;
-    private int foragableNr = 0;
+    private int objectsNr = 0;
 
     // Spawning spots
     private Vector3[] plantSpots = null;
 
+    private PriorityQueue<FoliageSpawnData> objectsToSpawn = new PriorityQueue<FoliageSpawnData>();
+    private FoliageSpawnData objectToSpawn;
+    private int objectsPerBatchedSpawn = 80;
+
     // FoliageHandler, the controller of the operation
     private FoliageHandler foliageHandler;
+
+    private Planet planet;
 
     // This should probably be the Manfred random
     private RandomX random;
@@ -28,6 +31,9 @@ public class Foliage : MonoBehaviour
     private Vector3 chunkPosition;
     private int positionArrayLength;
 
+    private float planetMaxHeight;
+    private int objectsInForest;
+
     [HideInInspector] public bool initialized = false;
 
     // Updates the debug screen
@@ -35,11 +41,7 @@ public class Foliage : MonoBehaviour
     {
         if(foliageHandler != null)
         {
-            foliageHandler.treeNr -= treeNr;
-            foliageHandler.bushNr -= bushNr;
-            foliageHandler.waterPlantNr -= waterPlantNr;
-            foliageHandler.stoneNr -= stoneNr;
-            foliageHandler.foragableNr -= foragableNr;
+            foliageHandler.objectsNr -= objectsNr;
             foliageHandler.UpdateDebug();
         }
     }
@@ -49,11 +51,7 @@ public class Foliage : MonoBehaviour
     {
         if (foliageHandler != null)
         {
-            foliageHandler.treeNr += treeNr;
-            foliageHandler.bushNr += bushNr;
-            foliageHandler.waterPlantNr += waterPlantNr;
-            foliageHandler.stoneNr += stoneNr;
-            foliageHandler.foragableNr += foragableNr;
+            foliageHandler.objectsNr += objectsNr;
             foliageHandler.UpdateDebug();
         }
     }
@@ -63,10 +61,14 @@ public class Foliage : MonoBehaviour
     /// </summary>
     /// <param name="meshVerticesLength"></param>
     /// <param name="position"></param>
-    public void Initialize(int meshVerticesLength, Vector3 position, int seed)
+    public void Initialize(int meshVerticesLength, Vector3 position, int seed, Planet planet)
     {
+        this.planet = planet;
+
+        planetMaxHeight = planet.terrainLevel.GetMax();
+
         // Epic foliageHandler getter :O
-        foliageHandler = transform.parent.parent.parent.GetComponent<Planet>().foliageHandler;
+        foliageHandler = planet.foliageHandler;
         if (foliageHandler == null && foliageHandler.isInstantiated) return;
         
         // Seedar en random f�r denna chunken // H�r vill vi ha bra random :)
@@ -74,6 +76,9 @@ public class Foliage : MonoBehaviour
 
         // Determines how much foliage there should be on this chunk
         positionArrayLength = (int)(meshVerticesLength * foliageHandler.Density);
+
+        // Used to change forest density on planets depending on its radius
+        objectsInForest = Mathf.Clamp((int) (0.03f * planet.radius - 5f), 5, 1000);
 
         // Where to start shooting rays from
         chunkPosition = position;
@@ -216,7 +221,15 @@ public class Foliage : MonoBehaviour
         }
         else
         {
-            BelowAngle(hit, rayOrigin, heightAboveSea);
+            if (heightAboveSea < planetMaxHeight * 0.8 && !planet.name.Contains("Moon"))
+            {
+                BelowAngle(hit, rayOrigin, heightAboveSea);
+            } else
+            {
+                if (random.Value() < 0.5f)
+                    SpawnStones(hit, rayOrigin);
+            }
+            
         }
     }
 
@@ -225,11 +238,10 @@ public class Foliage : MonoBehaviour
     {
         if (depth < 3)
         {
-            Quaternion rotation = Quaternion.LookRotation(rayOrigin) * Quaternion.Euler(90, 0, 0);
-            rotation *= Quaternion.Euler(0, random.Next(0, 360), 0);
-            GameObject waterObject = Instantiate(foliageHandler.GetWaterPlantType(), hit.point, rotation, transform);
+            GameObject waterObject = InstantiateObject(foliageHandler.GetWaterPlantType(), hit, rayOrigin);
+            
             waterObject.transform.localScale = new Vector3(2, depth + 6, 2);
-            waterPlantNr++;
+            objectsNr++;
         }
     }
 
@@ -246,61 +258,76 @@ public class Foliage : MonoBehaviour
     // Flat terrain
     private void BelowAngle(RaycastHit hit, Vector3 rayOrigin, float heightAboveSea)
     {
+        //Remove packs based on local biome
+        BiomeValue localBiome = Biomes.EvaluteBiomeMap(planet.Biome, hit.point, planet.DistanceToSun);
+        int[] acceptableIndexes = new int[foliageHandler.foliageCollections.Length];
 
-        
-        // 1 in 10 to spawn a forgable
-        if (random.Next(10) == 0)
-            SpawnForgables(hit, rayOrigin);
-        // ~ 1 in 5 is a tree (18%)
-        else if (random.Next(5) == 0)
-            SpawnTrees(hit, rayOrigin);
-        else
-            SpawnBushes(hit, rayOrigin);
+        int j = 0;
+
+        for (int i = 0; i < foliageHandler.foliageCollections.Length; i++)
+        {
+            if (localBiome.IsInsideRange(foliageHandler.foliageCollections[i].biomeRange))
+            {
+                // Add indicies
+                acceptableIndexes[j] = i;
+                j++;
+            }
+        }
+
+        int chosenIndex = acceptableIndexes[random.Next(j)];
+
+        // Only run if we found apropriate collections to spawn
+        if (j > 0)
+        {
+            FoliageCollection chosenCollection = foliageHandler.foliageCollections[chosenIndex];
+
+            if (chosenCollection.probabilityToSkip < random.Value())
+            {
+                GameObject foliageObj = chosenCollection.gameObjects[random.Next(chosenCollection.gameObjects.Length)];
+
+                SpawnTreesInForest(foliageObj, rayOrigin, hit.point, chosenCollection.name, chosenCollection.probabilityToSkip);
+            }
+
+        }
     }
 
-    // Tree spawning function
-    private void SpawnTrees(RaycastHit hit, Vector3 rayOrigin)
+    /// <summary>
+    /// Spawns "objectsPerBatchedSpawn" number of objects each call
+    /// </summary>
+    public void BatchedSpawning()
     {
-        
-        int treeType = foliageHandler.CheckForestSpawn(hit.point);
+        GameObject spawnedObject;
+        for (int i = 0; i < objectsPerBatchedSpawn; i++)
+        {
+            if (objectsToSpawn.Count > 0)
+            {
+                objectToSpawn = objectsToSpawn.Dequeue();
 
-        if (treeType != 0)
-        {
-            SpawnTreesInForest(treeType, rayOrigin);
-        }
-        else
-        {
-            if (random.Next(10) == 0)
-            {
-                // 1 in 10 to spawn a fallen tree
-                Quaternion rotation = Quaternion.LookRotation(hit.normal) * Quaternion.Euler(90, 0, 0);
-                rotation *= Quaternion.Euler(0, random.Next(0, 360), 0);
-                Instantiate(foliageHandler.fallenTree, hit.point + hit.point.normalized * 0.18f, rotation, transform);
+                spawnedObject = Instantiate(objectToSpawn.prefab, objectToSpawn.position, objectToSpawn.rotation, transform);
+
+                //spawnedObject.name += objectToSpawn.biome;
+                spawnedObject.transform.localScale *= random.Value(0.7f, 1.4f);
+
+                objectsNr++;
             }
-            else
-            {
-                // Spawns a random tree
-                Quaternion rotation = Quaternion.LookRotation(rayOrigin) * Quaternion.Euler(90, 0, 0);
-                rotation *= Quaternion.Euler(0, random.Next(0, 360), 0);
-                Instantiate(foliageHandler.GetTreeType(), hit.point - hit.point.normalized * 0.2f, rotation, transform);
-            }
-            treeNr++;
         }
     }
 
     // Forest spawning function
-    private void SpawnTreesInForest(int treeType, Vector3 rayOrigin)
+    private void SpawnTreesInForest(GameObject treeObject, Vector3 rayOrigin, Vector3 position, string name, float probToSkip)
     {
         
-        // Not sure if it is faster to only do this once or to just use a getter each loop
-        float radius = foliageHandler.PlanetRadius;
-        float waterRadius = foliageHandler.WaterRadius;
+        // Used to introduce some variation in forest sizes.
+        int nrObjectsToSpawn = random.Next((int)(objectsInForest * 0.8f), objectsInForest);
 
-        GameObject treeObject = foliageHandler.GetForstetTree(treeType);
+        // Use distance to player in priority queue to prioritize spawning objects closer to the player first
+        float distToPlayer = Vector3.Distance(position, Universe.player.transform.position);
 
         // Spawns 5 trees around a found forest spot! Bigger number = denser forest
-        for (int i = 0; i < 5; i++)
+        for (int i = 0; i < nrObjectsToSpawn; i++)
         {
+            if (probToSkip > random.Value()) continue;
+
             float x = (float)random.Value() * 2 - 1;
             float y = (float)random.Value() * 2 - 1;
             float z = (float)random.Value() * 2 - 1;
@@ -309,13 +336,15 @@ public class Foliage : MonoBehaviour
             // Assumes we are spawning trees on a planet located in origin!
             // If shit is bugged might have to change this ray
             Physics.Raycast(localpos, -localpos, out RaycastHit hit);
-            if(hit.transform == transform.parent && hit.distance < radius - waterRadius)
+            if(hit.transform == transform.parent && hit.distance < foliageHandler.PlanetRadius - foliageHandler.WaterRadius)
             {
                 Quaternion rotation = Quaternion.LookRotation(rayOrigin) * Quaternion.Euler(90, 0, 0);
                 rotation *= Quaternion.Euler(0, random.Next(0, 360), 0);
-                Instantiate(treeObject, hit.point - (hit.point.normalized * 0.2f), rotation, transform);
+
+                // Add spawn position to priority queue
+                objectsToSpawn.Enqueue(new FoliageSpawnData(hit.point - (hit.point.normalized * 0.1f), rotation, treeObject, name), distToPlayer);
+                
                 if (foliageHandler.debug) Debug.DrawLine(localpos, hit.point, Color.yellow, 10f);
-                treeNr++;
             }
         }
     }
@@ -323,29 +352,22 @@ public class Foliage : MonoBehaviour
     // Bush spawning function
     private void SpawnBushes(RaycastHit hit, Vector3 rayOrigin)
     {
-        Quaternion rotation = Quaternion.LookRotation(hit.normal) * Quaternion.Euler(90, 0, 0);
-        rotation *= Quaternion.Euler(0, random.Next(0, 360), 0);
-        Instantiate(foliageHandler.GetBushType(), hit.point, rotation, transform);
-        bushNr++;
+        InstantiateObject(foliageHandler.GetBushType(), hit, hit.normal);
+        objectsNr++;
     }
 
     // Stone spawning fucntion
     private void SpawnStones(RaycastHit hit, Vector3 rayOrigin)
     {
-        Quaternion rotation = Quaternion.LookRotation(hit.normal) * Quaternion.Euler(90, 0, 0);
-        rotation *= Quaternion.Euler(0, random.Next(0, 360), 0);
-        Instantiate(foliageHandler.GetStoneType(), hit.point, rotation, transform);
-        stoneNr++;
+        InstantiateObject(foliageHandler.GetStoneType(), hit, hit.normal);
+        objectsNr++;
     }
 
-    // Forgables spawning function
-    private void SpawnForgables(RaycastHit hit, Vector3 rayOrigin)
+    private GameObject InstantiateObject(GameObject prefab, RaycastHit hit, Vector3 up)
     {
-        Quaternion rotation = Quaternion.LookRotation(hit.normal) * Quaternion.Euler(90, 0, 0);
+        Quaternion rotation = Quaternion.LookRotation(up) * Quaternion.Euler(90, 0, 0);
         rotation *= Quaternion.Euler(0, random.Next(0, 360), 0);
-        Instantiate(foliageHandler.GetForagableType(), hit.point, rotation, transform);
-        foragableNr++;
-        
+        return Instantiate(prefab, hit.point, rotation, transform);
     }
 
     

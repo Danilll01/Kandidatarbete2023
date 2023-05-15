@@ -160,6 +160,8 @@ public class Creature : MonoBehaviour
         }
 
         animatorParameters.SetFloat("Speed", speed);
+        CreateGenes();
+
         animator.keepAnimatorStateOnDisable = true;
         animatorParameters.SetBool("isWalking", true);
 

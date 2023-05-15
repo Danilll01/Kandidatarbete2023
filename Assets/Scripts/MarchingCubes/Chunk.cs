@@ -98,7 +98,7 @@ public class Chunk : MonoBehaviour
         Vector3 playerPos = player.boarded ? Universe.spaceShip.localPosition : player.transform.localPosition;
             
         // Check every 5 meter so that we don't check all the time
-        if (Vector3.Magnitude(playerPos - previousPlayerPos) < 5)
+        if (Vector3.Magnitude(playerPos - previousPlayerPos) < 2)
             return;
             
         previousPlayerPos = playerPos;
@@ -117,7 +117,7 @@ public class Chunk : MonoBehaviour
                 if (!foliage.initialized)
                 {
                     if (numVerts > 500)
-                        foliage.Initialize(numVerts, position, random.Next());
+                        foliage.Initialize(numVerts, position, random.Next(), planet);
                 }
 
                 if (!creatures.initialized)
@@ -129,6 +129,7 @@ public class Chunk : MonoBehaviour
                 {
                     creatures.BatchedSpawning();
                 }
+                foliage.BatchedSpawning();
 
             } else
             {
