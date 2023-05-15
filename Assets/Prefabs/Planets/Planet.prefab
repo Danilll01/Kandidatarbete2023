@@ -761,8 +761,8 @@ MonoBehaviour:
       mountainMin: 0
       mountainMax: 0.457
       temperatureDependent: 1
-      temperatureMin: 0.048
-      temperatureMax: 0.723
+      temperatureMin: 0.111
+      temperatureMax: 0.357
       treesDependent: 1
       treesMin: 0.632
       treesMax: 1
@@ -785,8 +785,8 @@ MonoBehaviour:
       mountainMin: 0
       mountainMax: 0.195
       temperatureDependent: 1
-      temperatureMin: 0.332
-      temperatureMax: 1
+      temperatureMin: 0.235
+      temperatureMax: 0.424
       treesDependent: 1
       treesMin: 0.281
       treesMax: 1
@@ -808,8 +808,8 @@ MonoBehaviour:
       mountainMin: 0
       mountainMax: 0
       temperatureDependent: 1
-      temperatureMin: 0.265
-      temperatureMax: 1
+      temperatureMin: 0.392
+      temperatureMax: 0.605
       treesDependent: 0
       treesMin: 0.706
       treesMax: 1
@@ -840,9 +840,9 @@ MonoBehaviour:
       mountainRelevant: 1
       mountainMin: 0.438
       mountainMax: 0.9
-      temperatureDependent: 0
-      temperatureMin: 0
-      temperatureMax: 1
+      temperatureDependent: 1
+      temperatureMin: 0.215
+      temperatureMax: 0.312
       treesDependent: 0
       treesMin: 0.706
       treesMax: 1
@@ -860,7 +860,7 @@ MonoBehaviour:
       mountainMin: 0.438
       mountainMax: 1
       temperatureDependent: 1
-      temperatureMin: 0
+      temperatureMin: 0.073
       temperatureMax: 0.208
       treesDependent: 0
       treesMin: 0.706
@@ -886,8 +886,8 @@ MonoBehaviour:
       mountainMin: 0.438
       mountainMax: 1
       temperatureDependent: 1
-      temperatureMin: 0.34
-      temperatureMax: 1
+      temperatureMin: 0.356
+      temperatureMax: 0.566
       treesDependent: 0
       treesMin: 0.706
       treesMax: 1
@@ -909,8 +909,8 @@ MonoBehaviour:
       mountainMin: 0.438
       mountainMax: 1
       temperatureDependent: 1
-      temperatureMin: 0.021
-      temperatureMax: 0.317
+      temperatureMin: 0.099
+      temperatureMax: 0.375
       treesDependent: 1
       treesMin: 0.22
       treesMax: 0.723
