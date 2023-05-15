@@ -941,8 +941,8 @@ MonoBehaviour:
       mountainMin: 0
       mountainMax: 1
       temperatureDependent: 1
-      temperatureMin: 0.3
-      temperatureMax: 1
+      temperatureMin: 0.193
+      temperatureMax: 0.498
       treesDependent: 1
       treesMin: 0.3
       treesMax: 1
@@ -957,8 +957,8 @@ MonoBehaviour:
       mountainMin: 0
       mountainMax: 1
       temperatureDependent: 1
-      temperatureMin: 0.2
-      temperatureMax: 1
+      temperatureMin: 0.112
+      temperatureMax: 0.449
       treesDependent: 0
       treesMin: 0
       treesMax: 1
@@ -974,8 +974,8 @@ MonoBehaviour:
       mountainMin: 0
       mountainMax: 1
       temperatureDependent: 1
-      temperatureMin: 0.2
-      temperatureMax: 1
+      temperatureMin: 0.107
+      temperatureMax: 0.459
       treesDependent: 0
       treesMin: 0
       treesMax: 1
@@ -991,7 +991,7 @@ MonoBehaviour:
       mountainMax: 0.6
       temperatureDependent: 1
       temperatureMin: 0.3
-      temperatureMax: 1
+      temperatureMax: 0.576
       treesDependent: 0
       treesMin: 0
       treesMax: 1
@@ -1006,8 +1006,8 @@ MonoBehaviour:
       mountainMin: 0
       mountainMax: 0.8
       temperatureDependent: 1
-      temperatureMin: 0.2
-      temperatureMax: 0.8
+      temperatureMin: 0.102
+      temperatureMax: 0.317
       treesDependent: 0
       treesMin: 0
       treesMax: 1
@@ -1022,8 +1022,8 @@ MonoBehaviour:
       mountainMin: 0
       mountainMax: 0.4
       temperatureDependent: 1
-      temperatureMin: 0.5
-      temperatureMax: 0.9
+      temperatureMin: 0.363
+      temperatureMax: 0.505
       treesDependent: 1
       treesMin: 0.3
       treesMax: 1
@@ -1038,8 +1038,8 @@ MonoBehaviour:
       mountainMin: 0
       mountainMax: 1
       temperatureDependent: 1
-      temperatureMin: 0.3
-      temperatureMax: 0.8
+      temperatureMin: 0.164
+      temperatureMax: 0.561
       treesDependent: 1
       treesMin: 0.3
       treesMax: 1
@@ -1054,8 +1054,8 @@ MonoBehaviour:
       mountainMin: 0.5
       mountainMax: 1
       temperatureDependent: 1
-      temperatureMin: 0.3
-      temperatureMax: 0.6
+      temperatureMin: 0.212
+      temperatureMax: 0.468
       treesDependent: 1
       treesMin: 0
       treesMax: 0.5
@@ -1070,11 +1070,11 @@ MonoBehaviour:
       mountainMin: 0
       mountainMax: 0.8
       temperatureDependent: 1
-      temperatureMin: 0.3
-      temperatureMax: 0.8
+      temperatureMin: 0.168
+      temperatureMax: 0.361
       treesDependent: 1
-      treesMin: 0.1
-      treesMax: 0.6
+      treesMin: 0
+      treesMax: 0.444
   keepPackRatio: 0.8
   densityMultiplier: 0.0000012
   isInstantiated: 0
