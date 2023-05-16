@@ -758,12 +758,12 @@ MonoBehaviour:
     biomeRange:
       mountainRelevant: 1
       mountainMin: 0
-      mountainMax: 0.457
+      mountainMax: 0.602
       temperatureDependent: 1
       temperatureMin: -10
       temperatureMax: 25
       treesDependent: 1
-      treesMin: 0.632
+      treesMin: 0.261
       treesMax: 1
     probabilityToSkip: 0
   - name: Normal trees with flowers
@@ -805,7 +805,7 @@ MonoBehaviour:
     biomeRange:
       mountainRelevant: 1
       mountainMin: 0
-      mountainMax: 0.378
+      mountainMax: 0.57
       temperatureDependent: 1
       temperatureMin: 25
       temperatureMax: 40
