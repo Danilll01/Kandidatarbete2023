@@ -233,7 +233,7 @@ public static class Biomes
     }
 
     /// <summary>
-    /// Evaluates a representation of the temperaturemap at <paramref name="position"/> with <paramref name="biomeSettings"/> in celcius
+    /// Creates a representation of the temperature at <paramref name="position"/> with <paramref name="biomeSettings"/> in celcius
     /// with the <paramref name="distance"/> to the sun.
     /// </summary>
     public static string GetTemperatureAt(BiomeSettings biomeSettings, Vector3 position, float distance)
@@ -244,7 +244,7 @@ public static class Biomes
     }
 
     /// <summary>
-    /// Evaluates a representation of the temperaturemap with the value <paramref name="tmp"/>.
+    /// Creates a representation of the <paramref name="tmp"/> between 0 and 1 in celcius.
     /// </summary>
     public static string GetTemperature(float tmp)
     {
