@@ -10,6 +10,7 @@ public class VideoManager : MonoBehaviour
     private bool uiDisabled = false;
 
     [SerializeField] private GameObject playerShip;
+    [SerializeField] private GameObject playerModel;
 
 
 
@@ -42,6 +43,10 @@ public class VideoManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
             playerShip.SetActive(!playerShip.activeSelf);
+        }  
+        if (Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            playerModel.SetActive(!playerModel.activeSelf);
         }  
     }
 }
