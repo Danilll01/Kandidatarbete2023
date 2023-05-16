@@ -1873,12 +1873,12 @@ LODGroup:
   m_GameObject: {fileID: 1491100081207864}
   serializedVersion: 2
   m_LocalReferencePoint: {x: 0.09710801, y: 0.17848545, z: 0.40061498}
-  m_Size: 5.2598233
+  m_Size: 5.259822
   m_FadeMode: 0
   m_AnimateCrossFading: 0
   m_LastLODIsBillboard: 0
   m_LODs:
-  - screenRelativeHeight: 0.02
+  - screenRelativeHeight: 0.01
     fadeTransitionWidth: 0
     renderers:
     - renderer: {fileID: 137208411578474250}
