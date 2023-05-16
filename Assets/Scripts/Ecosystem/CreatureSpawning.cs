@@ -256,7 +256,7 @@ public class CreatureSpawning : MonoBehaviour
         List<CreaturePack> acceptablePacks = new List<CreaturePack>();
         for (int i = 0; i < creatureHandler.packs.Length; i++)
         {
-            if (localBiome.IsInsideRange(creatureHandler.packs[i].range))
+            if (localBiome.IsInsideRangeCelcius(creatureHandler.packs[i].range))
             {
                 //THIS MAY BE PERFORMANCE REDUCING DUE TO CREATUREPACK BEING STRUCT WHICH MEAN ALOT OF COPYING IS NEEDED DUE TO NO REFERENCES
                 acceptablePacks.Add(creatureHandler.packs[i]);

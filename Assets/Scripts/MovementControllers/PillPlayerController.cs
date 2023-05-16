@@ -112,7 +112,7 @@ public class PillPlayerController : MonoBehaviour
             DisplayDebug.AddOrSetDebugVariable("Planet mass", attractor.mass.ToString());
             BiomeValue currentBiome = Biomes.EvaluteBiomeMap(attractor.Biome, transform.position, attractor.DistanceToSun);
             DisplayDebug.AddOrSetDebugVariable("Biome: Mountain", currentBiome.mountains.ToString());
-            DisplayDebug.AddOrSetDebugVariable("Biome: Temperature", currentBiome.temperature.ToString());
+            DisplayDebug.AddOrSetDebugVariable("Biome: Temperature", currentBiome.temperature + " " + Biomes.GetTemperature(currentBiome.temperature));
             DisplayDebug.AddOrSetDebugVariable("Biome: Trees", currentBiome.trees.ToString());
         }
         else

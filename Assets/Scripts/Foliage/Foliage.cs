@@ -266,7 +266,7 @@ public class Foliage : MonoBehaviour
 
         for (int i = 0; i < foliageHandler.foliageCollections.Length; i++)
         {
-            if (localBiome.IsInsideRange(foliageHandler.foliageCollections[i].biomeRange))
+            if (localBiome.IsInsideRangeCelcius(foliageHandler.foliageCollections[i].biomeRange))
             {
                 // Add indicies
                 acceptableIndexes[j] = i;
