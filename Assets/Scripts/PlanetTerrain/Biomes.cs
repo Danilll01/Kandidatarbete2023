@@ -90,7 +90,6 @@ public struct BiomeValue
     {
         // Check that variable are in range
         Details.AssertInRange(mountains, 0, 1, nameof(mountains));
-        Details.AssertInRange(temperature, 0, 1, nameof(temperature));
         Details.AssertInRange(trees, 0, 1, nameof(trees));
 
         this.mountains = mountains;
@@ -98,11 +97,30 @@ public struct BiomeValue
         this.trees = trees;
     }
 
+    /// <summary>
+    /// Checks if biome value is inside of range.
+    /// </summary>
+    /// <param name="range">Range with values in the range [0,1]</param>
     public bool IsInsideRange(BiomeRange range)
     {
         return
             (!range.mountainRelevant || (range.mountainMin <= mountains && mountains <= range.mountainMax)) &&
             (!range.temperatureDependent || (range.temperatureMin <= temperature && temperature <= range.temperatureMax)) &&
+            (!range.treesDependent || (range.treesMin <= trees && trees <= range.treesMax));
+    }
+
+    /// <summary>
+    /// Checks if biome value is inside of range.
+    /// </summary>
+    /// <param name="range">Range in celcius</param>
+    public bool IsInsideRangeCelcius(BiomeRange range)
+    {
+        float temperatureMinC = Biomes.GetTemperatureCelcius(range.temperatureMin);
+        float temperatureMaxC = Biomes.GetTemperatureCelcius(range.temperatureMax);
+
+        return
+            (!range.mountainRelevant || (range.mountainMin <= mountains && mountains <= range.mountainMax)) &&
+            (!range.temperatureDependent || (temperatureMinC <= temperature && temperature <= temperatureMaxC)) &&
             (!range.treesDependent || (range.treesMin <= trees && trees <= range.treesMax));
     }
 }
@@ -114,8 +132,8 @@ public class BiomeRange
     [Range(0f, 1f)] public float mountainMin = 0;
     [Range(0f, 1f)] public float mountainMax = 1;
     public bool temperatureDependent = false;
-    [Range(0f, 1f)] public float temperatureMin = 0;
-    [Range(0f, 1f)] public float temperatureMax = 1;
+    public float temperatureMin = 0;
+    public float temperatureMax = 1;
     public bool treesDependent = false;
     [Range(0f, 1f)] public float treesMin = 0;
     [Range(0f, 1f)] public float treesMax = 1;

@@ -55,7 +55,6 @@ MonoBehaviour:
   meshGenerator: {fileID: 7200000, guid: 2b54143d75bd2344bb987facb6cb4950, type: 3}
   waterDiameter: 0
   radius: 0
-  surfaceGravity: 10
   bodyName: TBT
   mass: 429245
   moons: []
@@ -941,8 +940,8 @@ MonoBehaviour:
       mountainMin: 0
       mountainMax: 1
       temperatureDependent: 1
-      temperatureMin: 0.193
-      temperatureMax: 0.498
+      temperatureMin: 5
+      temperatureMax: 30
       treesDependent: 1
       treesMin: 0.3
       treesMax: 1
@@ -957,8 +956,8 @@ MonoBehaviour:
       mountainMin: 0
       mountainMax: 1
       temperatureDependent: 1
-      temperatureMin: 0.112
-      temperatureMax: 0.449
+      temperatureMin: -5
+      temperatureMax: 25
       treesDependent: 0
       treesMin: 0
       treesMax: 1
@@ -974,8 +973,8 @@ MonoBehaviour:
       mountainMin: 0
       mountainMax: 1
       temperatureDependent: 1
-      temperatureMin: 0.107
-      temperatureMax: 0.459
+      temperatureMin: -5
+      temperatureMax: 20
       treesDependent: 0
       treesMin: 0
       treesMax: 1
@@ -990,8 +989,8 @@ MonoBehaviour:
       mountainMin: 0
       mountainMax: 0.6
       temperatureDependent: 1
-      temperatureMin: 0.3
-      temperatureMax: 0.576
+      temperatureMin: 20
+      temperatureMax: 35
       treesDependent: 0
       treesMin: 0
       treesMax: 1
@@ -1006,8 +1005,8 @@ MonoBehaviour:
       mountainMin: 0
       mountainMax: 0.8
       temperatureDependent: 1
-      temperatureMin: 0.102
-      temperatureMax: 0.317
+      temperatureMin: -5
+      temperatureMax: 20
       treesDependent: 0
       treesMin: 0
       treesMax: 1
@@ -1022,8 +1021,8 @@ MonoBehaviour:
       mountainMin: 0
       mountainMax: 0.4
       temperatureDependent: 1
-      temperatureMin: 0.363
-      temperatureMax: 0.505
+      temperatureMin: 15
+      temperatureMax: 30
       treesDependent: 1
       treesMin: 0.3
       treesMax: 1
@@ -1038,8 +1037,8 @@ MonoBehaviour:
       mountainMin: 0
       mountainMax: 1
       temperatureDependent: 1
-      temperatureMin: 0.164
-      temperatureMax: 0.561
+      temperatureMin: -10
+      temperatureMax: 25
       treesDependent: 1
       treesMin: 0.3
       treesMax: 1
@@ -1054,8 +1053,8 @@ MonoBehaviour:
       mountainMin: 0.5
       mountainMax: 1
       temperatureDependent: 1
-      temperatureMin: 0.212
-      temperatureMax: 0.468
+      temperatureMin: 5
+      temperatureMax: 30
       treesDependent: 1
       treesMin: 0
       treesMax: 0.5
@@ -1070,8 +1069,8 @@ MonoBehaviour:
       mountainMin: 0
       mountainMax: 0.8
       temperatureDependent: 1
-      temperatureMin: 0.168
-      temperatureMax: 0.361
+      temperatureMin: 5
+      temperatureMax: 25
       treesDependent: 1
       treesMin: 0
       treesMax: 0.444
