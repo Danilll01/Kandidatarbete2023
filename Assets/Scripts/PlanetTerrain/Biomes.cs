@@ -244,15 +244,16 @@ public static class Biomes
     }
 
     /// <summary>
-    /// Creates a representation of the <paramref name="tmp"/> between 0 and 1 in celcius.
+    /// Converts from the scale of 0 to 1 to celcius. Returns float.MinValue and float.MaxValue if below or above the defined range
     /// </summary>
-    public static string GetTemperature(float tmp)
+    public static float GetTemperatureCelcius(float tmp)
     {
+        //Defined points of temperature and their celcius equivalent. Points between are linearly interpolated.
         (float temperature, float celcius)[] tempGuides = { (0.03f, -50f), (0.1f, 5f), (0.2f, 15f), (0.3f, 25f), (0.5f, 40f), (0.6f, 60f), (0.7f, 100f) };
 
         if (tempGuides[0].temperature > tmp)
         {
-            return "ERROR LOW ï¿½C";
+            return float.MinValue;
         }
 
         for (int i = 0; i < tempGuides.Length - 1; i++)
@@ -262,21 +263,37 @@ public static class Biomes
                 (float temperature, float celcius) tmp1 = tempGuides[i];
                 (float temperature, float celcius) tmp2 = tempGuides[i + 1];
                 float progressToNext = (tmp - tmp1.temperature) / (tmp2.temperature - tmp1.temperature);
-                
 
-                float tmpC = (1 - progressToNext) * tmp1.celcius + progressToNext * tmp2.celcius;
-                tmpC = (float)Math.Round(tmpC * 100) / 100;
-                return tmpC.ToString() + " ï¿½C";
+                return (1 - progressToNext) * tmp1.celcius + progressToNext * tmp2.celcius;
             }
         }
-        return "ERROR HIGH ï¿½C";
+        return float.MaxValue;
+    }
+
+    /// <summary>
+    /// Creates a representation of the <paramref name="tmp"/> between 0 and 1 in celcius.
+    /// </summary>
+    public static string GetTemperature(float tmp)
+    {
+        tmp = GetTemperatureCelcius(tmp);
+
+        switch (tmp)
+        {
+            case float.MinValue:
+                return "ERROR LOW °C";
+            case float.MaxValue:
+                return "ERROR HIGH °C";
+            default:
+                tmp = (float)Math.Round(tmp * 100) / 100;
+                return tmp.ToString() + " °C";
+        }
     }
 }
 
 /// <summary>
 /// Details class only used as helper class, not to be used outside Biomes.cs
 /// </summary>
-public static class Details 
+public static class Details
 {
     /// <summary>
     /// Checks if <paramref name="parameter"/> is in range [<paramref name="a"/>, <paramref name="b"/>], 
