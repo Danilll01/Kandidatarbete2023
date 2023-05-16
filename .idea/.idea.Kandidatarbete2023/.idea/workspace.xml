@@ -4,10 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Added more color gradiants">
+    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Fixed code errors">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/MovementControllers/PillPlayerController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/MovementControllers/PillPlayerController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/PlanetTerrain/Biomes.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/PlanetTerrain/Biomes.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -38,15 +36,10 @@
   </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Atmosphere/AtmosphereHandler.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="mock://D:/Unity/Projects/Kandidatarbete2023/Assets/Scripts/MarchingCubes/Planet.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://D:/Unity/Projects/Kandidatarbete2023/Assets/Scripts/MarchingCubes/Planet.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://D:/Unity/Projects/Kandidatarbete2023/Assets/Scripts/MovementControllers/PillPlayerController.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipCameraMover.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipController.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipTransition.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="mock://D:/Unity/Projects/Kandidatarbete2023/Assets/Scripts/PlanetTerrain/Biomes.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://D:/Unity/Projects/Kandidatarbete2023/Assets/Scripts/Solar System/SpawnPlanets.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://D:/Unity/Projects/Kandidatarbete2023/Assets/Scripts/Solar System/SpawnPlanets.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Shaders/Atmosphere/AtmosphericScattering.shader" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="MarkdownSettingsMigration">
@@ -163,13 +156,7 @@
       <workItem from="1682861907126" duration="33741000" />
       <workItem from="1682952065891" duration="20322000" />
       <workItem from="1683036367666" duration="5009000" />
-      <workItem from="1684277304856" duration="1009000" />
-    </task>
-    <task id="LOCAL−00064" summary="Added camera positions for spaceship">
-      <created>1682717370166</created>
-      <option name="number" value="LOCAL−00064" />
-      <option name="presentableId" value="LOCAL−00064" />
-      <updated>1682717370166</updated>
+      <workItem from="1684277304856" duration="1902000" />
     </task>
     <task id="LOCAL−00065" summary="Added cinamachine free spin camera">
       <created>1682720355229</created>
@@ -459,7 +446,13 @@
       <option name="presentableId" value="LOCAL−00112" />
       <updated>1683586666400</updated>
     </task>
-    <option name="localTasksCounter" value="113" />
+    <task id="LOCAL−00113" summary="Fixed code errors">
+      <created>1684278398553</created>
+      <option name="number" value="LOCAL−00113" />
+      <option name="presentableId" value="LOCAL−00113" />
+      <updated>1684278398554</updated>
+    </task>
+    <option name="localTasksCounter" value="114" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -481,7 +474,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="Unhooked mouse input from framerate for the space ship" />
     <MESSAGE value="Added player boarded check" />
     <MESSAGE value="Solar system is not super messed up anymore" />
     <MESSAGE value="Fixed ship rotation and pause screen" />
@@ -506,6 +498,7 @@
     <MESSAGE value="Fixed code displaying text" />
     <MESSAGE value="Temperature now shows correctly in GUI" />
     <MESSAGE value="Added more color gradiants" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added more color gradiants" />
+    <MESSAGE value="Fixed code errors" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fixed code errors" />
   </component>
 </project>
