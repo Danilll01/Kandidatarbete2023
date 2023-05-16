@@ -196,7 +196,7 @@ public class ChunksHandler : MonoBehaviour
         Vector3 playerPos = player.boarded ? Universe.spaceShip.localPosition : player.transform.localPosition;
         
         // Only update chunks if player has moved a certain distance
-        if (Vector3.Magnitude(playerPos - playerLastPosition) < 3)
+        if (Vector3.Magnitude(playerPos - playerLastPosition) < 1.8f)
             return;
             
         playerLastPosition = playerPos;

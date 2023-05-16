@@ -191,7 +191,7 @@ GameObject:
   - component: {fileID: 7009522980770883506}
   - component: {fileID: 5319189935782859708}
   m_Layer: 10
-  m_Name: Fox Cub
+  m_Name: ManeWolfC
   m_TagString: Creature
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -267,7 +267,7 @@ MonoBehaviour:
   childPrefab: {fileID: 1077125651660242}
   parentPrefab: {fileID: 1655403738057260, guid: dcc3bfa5cf419b64e86c7effdae2b6f2,
     type: 3}
-  canReproduce: 1
+  canReproduce: 0
   wantToReproduce: 0
   reproductionThreshold: 80
   reproductionCooldown: 100
@@ -302,7 +302,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: c00992d5ec1205d498ca08cbd105f76f, type: 3}
   timeBetweenIdleSounds: 15
   stepsTimer: 0
-  timeBetweenSteps: 0.33333334
+  timeBetweenSteps: 0.4
   genes:
     alternaviteColor: 0
     speed: 0
@@ -348,7 +348,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1077125651660242}
   serializedVersion: 2
-  m_Mass: 15
+  m_Mass: 3
   m_Drag: 1
   m_AngularDrag: 0.05
   m_UseGravity: 0
@@ -1412,9 +1412,10 @@ LODGroup:
   m_AnimateCrossFading: 0
   m_LastLODIsBillboard: 0
   m_LODs:
-  - screenRelativeHeight: 0.023414062
+  - screenRelativeHeight: 0.01
     fadeTransitionWidth: 0
-    renderers: []
+    renderers:
+    - renderer: {fileID: 137034380385231092}
   m_Enabled: 1
 --- !u!1 &1730691477232022
 GameObject:

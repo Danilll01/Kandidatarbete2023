@@ -369,9 +369,10 @@ LODGroup:
   m_AnimateCrossFading: 0
   m_LastLODIsBillboard: 0
   m_LODs:
-  - screenRelativeHeight: 0.04662523
+  - screenRelativeHeight: 0.01
     fadeTransitionWidth: 0
-    renderers: []
+    renderers:
+    - renderer: {fileID: 137113936749643618}
   m_Enabled: 1
 --- !u!1 &1555205357679088
 GameObject:
@@ -546,7 +547,7 @@ GameObject:
   - component: {fileID: 7690074285048803708}
   - component: {fileID: 7671078620276918950}
   m_Layer: 10
-  m_Name: Chicken
+  m_Name: HenC
   m_TagString: Creature
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -604,7 +605,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc2db926f95bed34580350e7d08b7a3a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 1
+  speed: 0.5
   detectionRadius: 30
   consumeRadius: 0.03
   meshObj: {fileID: 1487214972516236}
@@ -625,7 +626,7 @@ MonoBehaviour:
   childPrefab: {fileID: 1767663768970106}
   parentPrefab: {fileID: 1311290861401530, guid: 5904fbfe921140647a4ebddf4adda389,
     type: 3}
-  canReproduce: 1
+  canReproduce: 0
   wantToReproduce: 0
   reproductionThreshold: 80
   reproductionCooldown: 10

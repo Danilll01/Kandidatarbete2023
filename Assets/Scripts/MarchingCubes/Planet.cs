@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using ExtendedRandom;
 using SimpleKeplerOrbits;
 using UnityEngine;
-using UnityEngine.Serialization;
+
 
 [RequireComponent(typeof(TerrainColor))]
 public class Planet : MonoBehaviour
@@ -12,10 +12,10 @@ public class Planet : MonoBehaviour
     [HideInInspector] public float waterDiameter;
     
     [HideInInspector] public float radius;
-    [HideInInspector] public float surfaceGravity;
     [HideInInspector] public string bodyName = "TBT";
     [HideInInspector] public float mass;
     [HideInInspector] public List<Planet> moons;
+    [HideInInspector] public MinMaxTerrainLevel terrainLevel;
 
     private Transform player;
     [HideInInspector] public MarchingCubes marchingCubes;
@@ -60,6 +60,7 @@ public class Planet : MonoBehaviour
 
     private bool reset;
 
+    private RandomX rand;
 
     /// <summary>
     /// Initializes the planet
@@ -71,11 +72,11 @@ public class Planet : MonoBehaviour
     {
         biomeSettings.distance = positionRelativeToSunDistance;
 
-        RandomX rand = new RandomX(randomSeed);
+        rand = new RandomX(randomSeed);
 
         player = Universe.player.transform;
 
-        MinMaxTerrainLevel terrainLevel = new MinMaxTerrainLevel();
+        terrainLevel = new MinMaxTerrainLevel();
         
 
         rotationAxis = rand.OnUnitSphere() * radius;
@@ -118,6 +119,10 @@ public class Planet : MonoBehaviour
             waterDiameter = 0;
         }
 
+        terrainLevel.SetMin(Mathf.Abs((waterDiameter + 1) / 2));
+
+        chunksHandler.Initialize(this, terrainLevel, spawn, rand.Next());
+
         if (foliageHandler != null)
         {
             foliageHandler.Initialize(this);
@@ -128,9 +133,7 @@ public class Planet : MonoBehaviour
             creatureHandler.Initialize(this, rand.Next());
         }
 
-        terrainLevel.SetMin(Mathf.Abs((waterDiameter + 1) / 2));
-
-        chunksHandler.Initialize(this, terrainLevel, spawn, rand.Next());
+        
 
         if (willGeneratePlanetLife) 
         {
@@ -332,7 +335,10 @@ public class Planet : MonoBehaviour
     /// </summary>
     public void SetUpPlanetValues()
     {
-        mass = surfaceGravity * 4 * radius * radius / Universe.gravitationalConstant;
+        float density = rand.Value(2.4f, 3f);
+        float volume = (4f / 3f) * (float)Math.PI * radius * radius * radius;
+        
+        mass = density * volume;
         gameObject.name = bodyName;
     }
 
