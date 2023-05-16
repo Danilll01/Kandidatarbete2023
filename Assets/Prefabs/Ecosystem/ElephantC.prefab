@@ -105,7 +105,11 @@ MonoBehaviour:
   breedingParticle: {fileID: 6813416509558619124, guid: 3b7f2c753d435d647a80f1f047a113e3,
     type: 3}
   volume: 0.4
-  idleSounds: []
+  idleSounds:
+  - {fileID: 8300000, guid: 577532471b3374967adb1ff2620e2761, type: 3}
+  - {fileID: 8300000, guid: b35c1c3bd50044296bca679047b59c69, type: 3}
+  - {fileID: 8300000, guid: 7a306e42ceac44633878fcd02509d204, type: 3}
+  - {fileID: 8300000, guid: 842983cedf18245fbb682c015a71cedf, type: 3}
   deathSounds: []
   stepSounds:
   - {fileID: 8300000, guid: d865cf5819771a44ea9284b8433544eb, type: 3}

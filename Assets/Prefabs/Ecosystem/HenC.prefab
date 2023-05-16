@@ -625,7 +625,7 @@ MonoBehaviour:
   childPrefab: {fileID: 1767663768970106}
   parentPrefab: {fileID: 1311290861401530, guid: 5904fbfe921140647a4ebddf4adda389,
     type: 3}
-  canReproduce: 1
+  canReproduce: 0
   wantToReproduce: 0
   reproductionThreshold: 80
   reproductionCooldown: 10
