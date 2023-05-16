@@ -255,6 +255,7 @@ public static class Biomes
     public static float GetTemperatureCelcius(float tmp)
     {
         //Defined points of temperature and their celcius equivalent. Points between are linearly interpolated.
+        //Anything above or below these points are considered too high/low and will return error values
         (float temperature, float celcius)[] tempGuides = { (0.03f, -50f), (0.1f, 5f), (0.2f, 15f), (0.3f, 25f), (0.5f, 40f), (0.6f, 60f), (0.7f, 100f) };
 
         if (tempGuides[0].temperature > tmp)
