@@ -163,6 +163,8 @@ public class Creature : MonoBehaviour
         CreateGenes();
 
         animator.keepAnimatorStateOnDisable = true;
+        //DONE TO IGNORE EVENTS FROM BOUGHT ASSETS, ACTUALLY JUST THE DAMN HORSE, HACK
+        animator.fireEvents = false;
         animatorParameters.SetBool("isWalking", true);
 
         if (isChild) canReproduce = false;
