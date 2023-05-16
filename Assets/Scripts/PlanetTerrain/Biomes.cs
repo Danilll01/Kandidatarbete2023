@@ -233,17 +233,6 @@ public static class Biomes
     }
 
     /// <summary>
-    /// Creates a representation of the temperature at <paramref name="position"/> with <paramref name="biomeSettings"/> in celcius
-    /// with the <paramref name="distance"/> to the sun.
-    /// </summary>
-    public static string GetTemperatureAt(BiomeSettings biomeSettings, Vector3 position, float distance)
-    {
-        float tmp = EvaluteBiomeMapTemperature(biomeSettings, position, distance);
-
-        return GetTemperature(tmp);
-    }
-
-    /// <summary>
     /// Converts from the scale of 0 to 1 to celcius. Returns float.MinValue and float.MaxValue if below or above the defined range
     /// </summary>
     public static float GetTemperatureCelcius(float tmp)
@@ -287,6 +276,17 @@ public static class Biomes
                 tmp = (float)Math.Round(tmp * 100) / 100;
                 return tmp.ToString() + " °C";
         }
+    }
+
+    /// <summary>
+    /// Creates a representation of the temperature at <paramref name="position"/> with <paramref name="biomeSettings"/> in celcius
+    /// with the <paramref name="distance"/> to the sun.
+    /// </summary>
+    public static string GetTemperatureAt(BiomeSettings biomeSettings, Vector3 position, float distance)
+    {
+        float tmp = EvaluteBiomeMapTemperature(biomeSettings, position, distance);
+
+        return GetTemperature(tmp);
     }
 }
 
