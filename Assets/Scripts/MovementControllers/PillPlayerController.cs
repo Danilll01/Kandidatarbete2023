@@ -176,6 +176,9 @@ public class PillPlayerController : MonoBehaviour
         float temperature = Biomes.EvaluteBiomeMapTemperature(attractor.biomeSettings, attractor.transform.InverseTransformPoint(transform.position));
         temperature = Mathf.Lerp(-273, 1000, temperature);
         temperatureHUD.SetText(Mathf.Round(temperature) + "°C");
+        
+        // Potential temperature converter to celsius
+        //temperatureHUD.SetText(Biomes.GetTemperatureAt(attractor.biomeSettings, attractor.transform.InverseTransformPoint(transform.position)));
     }
     
     private void HandleMovement()

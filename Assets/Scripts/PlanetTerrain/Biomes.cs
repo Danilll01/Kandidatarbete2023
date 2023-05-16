@@ -290,12 +290,12 @@ public static class Biomes
         switch (tmp)
         {
             case float.MinValue:
-                return "ERROR LOW °C";
+                return "ERROR LOW Â°C";
             case float.MaxValue:
-                return "ERROR HIGH °C";
+                return "ERROR HIGH Â°C";
             default:
                 tmp = (float)Math.Round(tmp * 100) / 100;
-                return tmp.ToString() + " °C";
+                return tmp + " Â°C";
         }
     }
 
@@ -303,9 +303,9 @@ public static class Biomes
     /// Creates a representation of the temperature at <paramref name="position"/> with <paramref name="biomeSettings"/> in celcius
     /// with the <paramref name="distance"/> to the sun.
     /// </summary>
-    public static string GetTemperatureAt(BiomeSettings biomeSettings, Vector3 position, float distance)
+    public static string GetTemperatureAt(BiomeSettings biomeSettings, Vector3 position)
     {
-        float tmp = EvaluteBiomeMapTemperature(biomeSettings, position, distance);
+        float tmp = EvaluteBiomeMapTemperature(biomeSettings, position);
 
         return GetTemperature(tmp);
     }
