@@ -115,12 +115,11 @@ public struct BiomeValue
     /// <param name="range">Range in celcius</param>
     public bool IsInsideRangeCelcius(BiomeRange range)
     {
-        float temperatureMinC = Biomes.GetTemperatureCelcius(range.temperatureMin);
-        float temperatureMaxC = Biomes.GetTemperatureCelcius(range.temperatureMax);
+        float temperatureC = Biomes.GetTemperatureCelcius(temperature);
 
         return
             (!range.mountainRelevant || (range.mountainMin <= mountains && mountains <= range.mountainMax)) &&
-            (!range.temperatureDependent || (temperatureMinC <= temperature && temperature <= temperatureMaxC)) &&
+            (!range.temperatureDependent || (range.temperatureMin <= temperatureC && temperatureC <= range.temperatureMax)) &&
             (!range.treesDependent || (range.treesMin <= trees && trees <= range.treesMax));
     }
 }
