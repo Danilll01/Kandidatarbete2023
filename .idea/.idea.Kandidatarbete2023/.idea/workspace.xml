@@ -4,11 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="You can now turn freecam movement off when in freecam to controll player">
+    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Changed the wind noise to the one I think sounded best">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Assets/SkyBox/NightSkybox.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Assets/SkyBox/NightSkybox.mat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Main.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Main.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Tools/VideoManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Tools/VideoManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/MarchingCubes/Planet.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/MarchingCubes/Planet.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -38,15 +36,12 @@
     </option>
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="mock://D:/Unity/Projects/Kandidatarbete2023/Assets/FreeFlyCamera/Scripts/FreeFlyCamera.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Atmosphere/AtmosphereHandler.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipCameraMover.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipController.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipTransition.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="mock://D:/Unity/Projects/Kandidatarbete2023/Assets/Scripts/PlanetTerrain/Biomes.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://D:/Unity/Projects/Kandidatarbete2023/Assets/Scripts/Tools/VideoManager.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Tools/VideoManager.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Shaders/Atmosphere/AtmosphericScattering.shader" root0="FORCE_HIGHLIGHTING" />
-    <setting file="mock://D:/Unity/Projects/Kandidatarbete2023/Assets/TextMesh Pro/Resources/Fonts &amp; Materials/LiberationSans SDF - Fallback.asset" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
