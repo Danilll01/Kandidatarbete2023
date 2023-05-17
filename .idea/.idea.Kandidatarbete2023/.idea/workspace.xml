@@ -4,7 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Some change">
+    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Player model can now be remmoved">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Assets/SkyBox/NightSkybox.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Assets/SkyBox/NightSkybox.mat" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Tools/VideoManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Tools/VideoManager.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -40,6 +42,7 @@
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipController.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipTransition.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="mock://D:/Unity/Projects/Kandidatarbete2023/Assets/Scripts/PlanetTerrain/Biomes.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://D:/Unity/Projects/Kandidatarbete2023/Assets/Scripts/Tools/VideoManager.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Shaders/Atmosphere/AtmosphericScattering.shader" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="MarkdownSettingsMigration">
@@ -156,13 +159,7 @@
       <workItem from="1682861907126" duration="33741000" />
       <workItem from="1682952065891" duration="20322000" />
       <workItem from="1683036367666" duration="5009000" />
-      <workItem from="1684277304856" duration="2730000" />
-    </task>
-    <task id="LOCAL−00068" summary="Free cam is now always centered at the back from the start when you use it">
-      <created>1682734583831</created>
-      <option name="number" value="LOCAL−00068" />
-      <option name="presentableId" value="LOCAL−00068" />
-      <updated>1682734583831</updated>
+      <workItem from="1684277304856" duration="4001000" />
     </task>
     <task id="LOCAL−00069" summary="Added Comments">
       <created>1682773476964</created>
@@ -452,7 +449,13 @@
       <option name="presentableId" value="LOCAL−00116" />
       <updated>1684279963735</updated>
     </task>
-    <option name="localTasksCounter" value="117" />
+    <task id="LOCAL−00117" summary="Player model can now be remmoved">
+      <created>1684280297651</created>
+      <option name="number" value="LOCAL−00117" />
+      <option name="presentableId" value="LOCAL−00117" />
+      <updated>1684280297652</updated>
+    </task>
+    <option name="localTasksCounter" value="118" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -474,7 +477,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="Fixed ship rotation when leaving a planet" />
     <MESSAGE value="Changed moon and planet orbiting speed when on planet / moon" />
     <MESSAGE value="Fixed skybox rotation" />
     <MESSAGE value="Added new crosshair options" />
@@ -499,6 +501,7 @@
     <MESSAGE value="Turning on and off GUI now works" />
     <MESSAGE value="Can now turn of spaceship model" />
     <MESSAGE value="Some change" />
-    <option name="LAST_COMMIT_MESSAGE" value="Some change" />
+    <MESSAGE value="Player model can now be remmoved" />
+    <option name="LAST_COMMIT_MESSAGE" value="Player model can now be remmoved" />
   </component>
 </project>

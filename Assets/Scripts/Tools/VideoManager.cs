@@ -6,13 +6,16 @@ using UnityEngine;
 public class VideoManager : MonoBehaviour
 {
 
+    [SerializeField] private GameObject helpScreen;
     [SerializeField] private GameObject[] userInterface;
     private bool uiDisabled = false;
 
     [SerializeField] private GameObject playerShip;
     [SerializeField] private GameObject playerModel;
-
-
+    
+    [SerializeField] private GameObject freeFlyCamera;
+    [SerializeField] private Camera[] normalCams;
+    private Camera tmpCam;
 
     private void LateUpdate()
     {
@@ -48,5 +51,9 @@ public class VideoManager : MonoBehaviour
         {
             playerModel.SetActive(!playerModel.activeSelf);
         }  
+        if (Input.GetKeyDown(KeyCode.H))
+        {
+            helpScreen.SetActive(!helpScreen.activeSelf);
+        } 
     }
 }
