@@ -16,7 +16,6 @@ public class PillPlayerController : MonoBehaviour
     private Rigidbody body;
     [HideInInspector] public bool paused;
     [SerializeField] private new HandleAudio audio;
-    [SerializeField] private TextMeshProUGUI temperatureHUD;
 
     [Header("Movement")]
     public float movementSpeed;
@@ -106,10 +105,6 @@ public class PillPlayerController : MonoBehaviour
                 if (!ReferenceEquals(attractor, playerWater.planet)) playerWater.UpdatePlanet(attractor);
                 playerWater.UpdateWater(transform.position);
             }
-            else
-            {
-                temperatureHUD.SetText("---");
-            }
         }
         
         #if DEBUG || UNITY_EDITOR
@@ -176,7 +171,6 @@ public class PillPlayerController : MonoBehaviour
     {
         float temperature = Biomes.EvaluteBiomeMapTemperature(attractor.biomeSettings, attractor.transform.InverseTransformPoint(transform.position));
         temperature = Mathf.Lerp(-273, 1000, temperature);
-        temperatureHUD.SetText(Mathf.Round(temperature) + "°C");
         
         // Potential temperature converter to celsius
         //temperatureHUD.SetText(Biomes.GetTemperatureAt(attractor.biomeSettings, attractor.transform.InverseTransformPoint(transform.position)));

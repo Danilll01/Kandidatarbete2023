@@ -38,7 +38,6 @@ public class VideoManager : MonoBehaviour
         else
         {
             userInterface[2].SetActive(true);
-            userInterface[3].SetActive(true);
         }
         
     }
