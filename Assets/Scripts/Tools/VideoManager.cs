@@ -139,5 +139,9 @@ public class VideoManager : MonoBehaviour
                 planet.multiplier = 1f;
             }
         }
+        if (Input.GetKeyDown(KeyCode.M))
+        {
+            normalCams[0].enabled = !normalCams[0].enabled;
+        }
     }
 }
