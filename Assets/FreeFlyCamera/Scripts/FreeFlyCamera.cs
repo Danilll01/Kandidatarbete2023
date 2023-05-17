@@ -155,9 +155,12 @@ public class FreeFlyCamera : MonoBehaviour
         // Translation
         if (_enableTranslation)
         {
-            transform.Translate(Vector3.forward * Input.mouseScrollDelta.y * Time.deltaTime * _translationSpeed);
+            transform.Translate(Vector3.forward * (Input.mouseScrollDelta.y * Time.deltaTime * _translationSpeed));
         }
 
+        _movementSpeed += (Input.mouseScrollDelta.y * Time.deltaTime * _translationSpeed);
+        _boostedSpeed += (Input.mouseScrollDelta.y * Time.deltaTime * _translationSpeed);
+            
         // Movement
         if (_enableMovement)
         {

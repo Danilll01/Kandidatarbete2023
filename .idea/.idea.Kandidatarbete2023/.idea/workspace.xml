@@ -4,12 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Somehting">
+    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Fixed free camera">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Assets/SkyBox/NightSkybox.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Assets/SkyBox/NightSkybox.mat" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/FreeFlyCamera/Scripts/FreeFlyCamera.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/FreeFlyCamera/Scripts/FreeFlyCamera.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Main.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Main.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Tools/VideoManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Tools/VideoManager.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -162,13 +159,7 @@
       <workItem from="1682861907126" duration="33741000" />
       <workItem from="1682952065891" duration="20322000" />
       <workItem from="1683036367666" duration="5009000" />
-      <workItem from="1684277304856" duration="5205000" />
-    </task>
-    <task id="LOCAL−00071" summary="Added RaySpring class">
-      <created>1682864353283</created>
-      <option name="number" value="LOCAL−00071" />
-      <option name="presentableId" value="LOCAL−00071" />
-      <updated>1682864353283</updated>
+      <workItem from="1684277304856" duration="5835000" />
     </task>
     <task id="LOCAL−00072" summary="Force springs now works on spaceship">
       <created>1682880820059</created>
@@ -458,7 +449,13 @@
       <option name="presentableId" value="LOCAL−00119" />
       <updated>1684281771883</updated>
     </task>
-    <option name="localTasksCounter" value="120" />
+    <task id="LOCAL−00120" summary="Fixed free camera">
+      <created>1684283025213</created>
+      <option name="number" value="LOCAL−00120" />
+      <option name="presentableId" value="LOCAL−00120" />
+      <updated>1684283025213</updated>
+    </task>
+    <option name="localTasksCounter" value="121" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -480,7 +477,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="Added new crosshair options" />
     <MESSAGE value="You can now toggle between different ship movement strategies" />
     <MESSAGE value="Turning inactive ship upright now works for both movement options" />
     <MESSAGE value="Hopefully fixed glitched where the two travel mode indicators mismatched" />
@@ -505,6 +501,7 @@
     <MESSAGE value="Player model can now be remmoved" />
     <MESSAGE value="Added help menu and freecam preperation" />
     <MESSAGE value="Somehting" />
-    <option name="LAST_COMMIT_MESSAGE" value="Somehting" />
+    <MESSAGE value="Fixed free camera" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fixed free camera" />
   </component>
 </project>
