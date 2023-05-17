@@ -80,6 +80,10 @@ public class VideoManager : MonoBehaviour
         {
             helpScreen.SetActive(!helpScreen.activeSelf);
         } 
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            Planet.ISROTATING = !Planet.ISROTATING;
+        } 
         if (Input.GetKeyDown(KeyCode.Return))
         {
             if (freeFlyCamera.activeSelf)

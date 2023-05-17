@@ -62,10 +62,12 @@ public class Planet : MonoBehaviour
 
     private RandomX rand;
 
+
+    public static bool ISROTATING = true;
+
     /// <summary>
     /// Initializes the planet
     /// </summary>
-    /// <param name="player">The player</param>
     /// <param name="randomSeed">Seed to be used</param>
     /// <param name="spawn">True if the player will spawn on the planet</param>
     public void Initialize(int randomSeed, bool spawn)
@@ -204,15 +206,16 @@ public class Planet : MonoBehaviour
         {
             RotateAroundAxis();
             
-            if (solarSystemRotationActive)
+            if (solarSystemRotationActive && ISROTATING)
             {
-                parentOrbitMover.transform.RotateAround(Universe.sunPosition.position, Universe.sunPosition.TransformDirection(Vector3.up),
-                    orbitSpeed * Time.deltaTime * 1f);
+                parentOrbitMover.transform.RotateAround(Universe.sunPosition.position, Universe.sunPosition.TransformDirection(Vector3.up), orbitSpeed * Time.deltaTime * 1f);
             }
             else
             {
-                parentOrbitMover.transform.RotateAround(Universe.sunPosition.position, Vector3.up,
-                    orbitSpeed * Time.deltaTime);
+                if (ISROTATING)
+                {
+                    parentOrbitMover.transform.RotateAround(Universe.sunPosition.position, Vector3.up, orbitSpeed * Time.deltaTime);
+                }
             }
 
             KeepPlanetAtSameDistanceToSun();
@@ -241,7 +244,10 @@ public class Planet : MonoBehaviour
 
     private void RotateAroundAxis()
     {
-        transform.Rotate(rotationAxis, rotationSpeed * Time.deltaTime, Space.World);
+        if (ISROTATING)
+        {
+            transform.Rotate(rotationAxis, rotationSpeed * Time.deltaTime, Space.World);
+        }
     }
     
     private void RotateAndOrbitMoonsAndParentPlanet()
