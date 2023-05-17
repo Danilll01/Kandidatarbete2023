@@ -4,13 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Freecamm speed can now be changed with scroll wheel">
+    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="You can now turn freecam movement off when in freecam to controll player">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Assets/SkyBox/NightSkybox.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Assets/SkyBox/NightSkybox.mat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/FreeFlyCamera/Scripts/FreeFlyCamera.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/FreeFlyCamera/Scripts/FreeFlyCamera.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scenes/Main.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Main.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/MovementControllers/PillPlayerController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/MovementControllers/PillPlayerController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipController.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Tools/VideoManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Tools/VideoManager.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -41,6 +38,7 @@
     </option>
   </component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="mock://D:/Unity/Projects/Kandidatarbete2023/Assets/FreeFlyCamera/Scripts/FreeFlyCamera.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Atmosphere/AtmosphereHandler.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipCameraMover.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipController.cs" root0="FORCE_HIGHLIGHTING" />
@@ -164,13 +162,7 @@
       <workItem from="1682861907126" duration="33741000" />
       <workItem from="1682952065891" duration="20322000" />
       <workItem from="1683036367666" duration="5009000" />
-      <workItem from="1684277304856" duration="7546000" />
-    </task>
-    <task id="LOCAL−00073" summary="Added spring prefab">
-      <created>1682880835345</created>
-      <option name="number" value="LOCAL−00073" />
-      <option name="presentableId" value="LOCAL−00073" />
-      <updated>1682880835345</updated>
+      <workItem from="1684277304856" duration="8863000" />
     </task>
     <task id="LOCAL−00074" summary="Added comment">
       <created>1682881225052</created>
@@ -460,7 +452,13 @@
       <option name="presentableId" value="LOCAL−00121" />
       <updated>1684283655377</updated>
     </task>
-    <option name="localTasksCounter" value="122" />
+    <task id="LOCAL−00122" summary="You can now turn freecam movement off when in freecam to controll player">
+      <created>1684285302378</created>
+      <option name="number" value="LOCAL−00122" />
+      <option name="presentableId" value="LOCAL−00122" />
+      <updated>1684285302378</updated>
+    </task>
+    <option name="localTasksCounter" value="123" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -482,7 +480,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="Turning inactive ship upright now works for both movement options" />
     <MESSAGE value="Hopefully fixed glitched where the two travel mode indicators mismatched" />
     <MESSAGE value="Made ship panel be a little smaller and not as wide" />
     <MESSAGE value="Changed loading screen text to also have dots..." />
@@ -507,6 +504,7 @@
     <MESSAGE value="Somehting" />
     <MESSAGE value="Fixed free camera" />
     <MESSAGE value="Freecamm speed can now be changed with scroll wheel" />
-    <option name="LAST_COMMIT_MESSAGE" value="Freecamm speed can now be changed with scroll wheel" />
+    <MESSAGE value="You can now turn freecam movement off when in freecam to controll player" />
+    <option name="LAST_COMMIT_MESSAGE" value="You can now turn freecam movement off when in freecam to controll player" />
   </component>
 </project>

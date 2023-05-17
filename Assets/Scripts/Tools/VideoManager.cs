@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class VideoManager : MonoBehaviour
 {
@@ -12,6 +13,7 @@ public class VideoManager : MonoBehaviour
 
     [SerializeField] private GameObject playerShip;
     [SerializeField] private GameObject playerModel;
+    [SerializeField] private SkinnedMeshRenderer playerHeadModel;
     
     [SerializeField] private GameObject freeFlyCamera;
     [SerializeField] private Camera[] normalCams;
@@ -20,6 +22,8 @@ public class VideoManager : MonoBehaviour
     [SerializeField] private FreeFlyCamera flyScript;
     [SerializeField] private PillPlayerController pillScript;
     [SerializeField] private SpaceShipController shipScript;
+    
+    [SerializeField] private AudioSource[] audioSources;
 
     private void LateUpdate()
     {
@@ -55,6 +59,22 @@ public class VideoManager : MonoBehaviour
         {
             playerModel.SetActive(!playerModel.activeSelf);
         }  
+        if (Input.GetKeyDown(KeyCode.Alpha4))
+        {
+            playerHeadModel.shadowCastingMode = playerHeadModel.shadowCastingMode == ShadowCastingMode.ShadowsOnly ?  ShadowCastingMode.On : ShadowCastingMode.ShadowsOnly;
+        } 
+        if (Input.GetKeyDown(KeyCode.Alpha0))
+        {
+            audioSources[0].enabled = !audioSources[0].enabled;
+        } 
+        if (Input.GetKeyDown(KeyCode.Alpha9))
+        {
+            audioSources[1].enabled = !audioSources[1].enabled;
+        } 
+        if (Input.GetKeyDown(KeyCode.Alpha8))
+        {
+            audioSources[2].enabled = !audioSources[2].enabled;
+        } 
         if (Input.GetKeyDown(KeyCode.H))
         {
             helpScreen.SetActive(!helpScreen.activeSelf);
