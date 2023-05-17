@@ -8,7 +8,8 @@ public class SolarSystemTransform : MonoBehaviour
     private Planet oldActivePlanet;
     private GameObject sun;
     private GameObject planetsParent;
-    private bool rotateSolarSystem;
+    public bool rotateSolarSystem;
+    public bool stopSolarSytemMovement;
     private bool setUpSolarSystemRotation;
     private Vector3[] relativePlanetSunDistances;
     private Vector3 rotationAxis;
@@ -73,6 +74,7 @@ public class SolarSystemTransform : MonoBehaviour
             UpdateClosestPlanet();
             HandleUpdatedActivePlanet();
 
+           
             if (releasePlayer)
             {
                 CheckWhenToReleasePlayer();
@@ -81,15 +83,18 @@ public class SolarSystemTransform : MonoBehaviour
             {
                 FloatingPointTeleportationCheck();
 
-                if (rotateSolarSystem)
+                if (!stopSolarSytemMovement)
                 {
-                    RotateSolarSystem();
-                }
-                else if (relativePlanetSunDistances != null)
-                {
-                    foreach (Planet planetBody in spawnPlanets.bodies)
+                    if (rotateSolarSystem)
                     {
-                        planetBody.Run();
+                        RotateSolarSystem();
+                    }
+                    else if (relativePlanetSunDistances != null)
+                    {
+                        foreach (Planet planetBody in spawnPlanets.bodies)
+                        {
+                            planetBody.Run();
+                        }
                     }
                 }
             }

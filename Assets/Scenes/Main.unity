@@ -772,6 +772,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spawnPlanets: {fileID: 882231452}
+  rotateSolarSystem: 0
+  stopSolarSytemMovement: 0
 --- !u!1 &258262717 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3421500242409074446, guid: 479edb22e1790754688e5f093ada7ddf,
@@ -1175,12 +1177,12 @@ PrefabInstance:
     - target: {fileID: 7349901440431997346, guid: 479edb22e1790754688e5f093ada7ddf,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.000000017318756
+      value: 0.000000017318756
       objectReference: {fileID: 0}
     - target: {fileID: 7349901440431997346, guid: 479edb22e1790754688e5f093ada7ddf,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -8.6378366e-10
+      value: 8.6378366e-10
       objectReference: {fileID: 0}
     - target: {fileID: 8603350818431989278, guid: 479edb22e1790754688e5f093ada7ddf,
         type: 3}
@@ -3951,6 +3953,7 @@ MonoBehaviour:
   flyScript: {fileID: 336575865}
   pillScript: {fileID: 1898646053}
   shipScript: {fileID: 301720325}
+  solarSystemScripts: {fileID: 210303241}
   audioSources:
   - {fileID: 1122585601}
   - {fileID: 1122585600}

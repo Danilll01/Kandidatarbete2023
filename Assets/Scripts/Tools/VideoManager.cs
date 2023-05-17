@@ -22,7 +22,8 @@ public class VideoManager : MonoBehaviour
     [SerializeField] private FreeFlyCamera flyScript;
     [SerializeField] private PillPlayerController pillScript;
     [SerializeField] private SpaceShipController shipScript;
-    
+    [SerializeField] private SolarSystemTransform solarSystemScripts;
+
     [SerializeField] private AudioSource[] audioSources;
 
     private void LateUpdate()
@@ -107,6 +108,11 @@ public class VideoManager : MonoBehaviour
                 shipScript.canMove = !shipScript.canMove;
             }
             
-        } 
+        }
+
+        if (Input.GetKeyDown(KeyCode.K))
+        {
+            solarSystemScripts.stopSolarSytemMovement = !solarSystemScripts.stopSolarSytemMovement;
+        }
     }
 }
