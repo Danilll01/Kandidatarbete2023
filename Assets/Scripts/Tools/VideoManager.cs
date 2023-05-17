@@ -55,5 +55,19 @@ public class VideoManager : MonoBehaviour
         {
             helpScreen.SetActive(!helpScreen.activeSelf);
         } 
+        if (Input.GetKeyDown(KeyCode.Return))
+        {
+            if (freeFlyCamera.activeSelf)
+            {
+                freeFlyCamera.SetActive(false);
+                tmpCam.enabled = true;
+            }
+            else
+            {
+                freeFlyCamera.SetActive(true);
+                tmpCam = normalCams[0].enabled ? normalCams[0] : normalCams[1];
+                freeFlyCamera.transform.position = tmpCam.transform.position;
+            }
+        } 
     }
 }

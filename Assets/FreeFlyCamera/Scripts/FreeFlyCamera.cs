@@ -188,7 +188,7 @@ public class FreeFlyCamera : MonoBehaviour
             // Calc acceleration
             CalculateCurrentIncrease(deltaPosition != Vector3.zero);
 
-            transform.position += deltaPosition * currentSpeed * _currentIncrease;
+            transform.position += deltaPosition * (currentSpeed * _currentIncrease);
         }
 
         // Rotation
@@ -196,16 +196,26 @@ public class FreeFlyCamera : MonoBehaviour
         {
             // Pitch
             transform.rotation *= Quaternion.AngleAxis(
-                -Input.GetAxis("Mouse Y") * _mouseSense,
+                Input.GetAxis("Vertical Look") * _mouseSense,
                 Vector3.right
+            );
+            
+            transform.rotation *= Quaternion.AngleAxis(
+                Input.GetAxis("Horizontal Look") * _mouseSense,
+                Vector3.up
             );
 
             // Paw
             transform.rotation = Quaternion.Euler(
                 transform.eulerAngles.x,
-                transform.eulerAngles.y + Input.GetAxis("Mouse X") * _mouseSense,
-                transform.eulerAngles.z
+                transform.eulerAngles.y,
+                transform.eulerAngles.z + Input.GetAxis("Spaceship Roll")
             );
+            
+            
+  
+            
+            
         }
 
         // Return to init position

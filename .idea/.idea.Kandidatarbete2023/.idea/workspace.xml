@@ -4,9 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Player model can now be remmoved">
+    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Somehting">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Assets/SkyBox/NightSkybox.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Assets/SkyBox/NightSkybox.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/FreeFlyCamera/Scripts/FreeFlyCamera.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/FreeFlyCamera/Scripts/FreeFlyCamera.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Main.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Main.unity" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Tools/VideoManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Tools/VideoManager.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -44,6 +46,7 @@
     <setting file="mock://D:/Unity/Projects/Kandidatarbete2023/Assets/Scripts/PlanetTerrain/Biomes.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://D:/Unity/Projects/Kandidatarbete2023/Assets/Scripts/Tools/VideoManager.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Shaders/Atmosphere/AtmosphericScattering.shader" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://D:/Unity/Projects/Kandidatarbete2023/Assets/TextMesh Pro/Resources/Fonts &amp; Materials/LiberationSans SDF - Fallback.asset" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -159,19 +162,7 @@
       <workItem from="1682861907126" duration="33741000" />
       <workItem from="1682952065891" duration="20322000" />
       <workItem from="1683036367666" duration="5009000" />
-      <workItem from="1684277304856" duration="4001000" />
-    </task>
-    <task id="LOCAL−00069" summary="Added Comments">
-      <created>1682773476964</created>
-      <option name="number" value="LOCAL−00069" />
-      <option name="presentableId" value="LOCAL−00069" />
-      <updated>1682773476964</updated>
-    </task>
-    <task id="LOCAL−00070" summary="Fixed landing bug when entering and leaving planet">
-      <created>1682819195675</created>
-      <option name="number" value="LOCAL−00070" />
-      <option name="presentableId" value="LOCAL−00070" />
-      <updated>1682819195676</updated>
+      <workItem from="1684277304856" duration="5205000" />
     </task>
     <task id="LOCAL−00071" summary="Added RaySpring class">
       <created>1682864353283</created>
@@ -455,7 +446,19 @@
       <option name="presentableId" value="LOCAL−00117" />
       <updated>1684280297652</updated>
     </task>
-    <option name="localTasksCounter" value="118" />
+    <task id="LOCAL−00118" summary="Added help menu and freecam preperation">
+      <created>1684281762713</created>
+      <option name="number" value="LOCAL−00118" />
+      <option name="presentableId" value="LOCAL−00118" />
+      <updated>1684281762713</updated>
+    </task>
+    <task id="LOCAL−00119" summary="Somehting">
+      <created>1684281771883</created>
+      <option name="number" value="LOCAL−00119" />
+      <option name="presentableId" value="LOCAL−00119" />
+      <updated>1684281771883</updated>
+    </task>
+    <option name="localTasksCounter" value="120" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -477,8 +480,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="Changed moon and planet orbiting speed when on planet / moon" />
-    <MESSAGE value="Fixed skybox rotation" />
     <MESSAGE value="Added new crosshair options" />
     <MESSAGE value="You can now toggle between different ship movement strategies" />
     <MESSAGE value="Turning inactive ship upright now works for both movement options" />
@@ -502,6 +503,8 @@
     <MESSAGE value="Can now turn of spaceship model" />
     <MESSAGE value="Some change" />
     <MESSAGE value="Player model can now be remmoved" />
-    <option name="LAST_COMMIT_MESSAGE" value="Player model can now be remmoved" />
+    <MESSAGE value="Added help menu and freecam preperation" />
+    <MESSAGE value="Somehting" />
+    <option name="LAST_COMMIT_MESSAGE" value="Somehting" />
   </component>
 </project>

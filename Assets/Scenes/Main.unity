@@ -824,16 +824,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _active: 1
   _enableRotation: 1
-  _mouseSense: 1.8
+  _mouseSense: 1.5
   _enableTranslation: 1
   _translationSpeed: 55
   _enableMovement: 1
   _movementSpeed: 10
   _boostedSpeed: 50
   _boostSpeed: 304
-  _moveUp: 101
-  _moveDown: 113
-  _enableSpeedAcceleration: 1
+  _moveUp: 32
+  _moveDown: 306
+  _enableSpeedAcceleration: 0
   _speedAccelerationFactor: 1.5
   _initPositonButton: 114
 --- !u!114 &336575866
@@ -1174,12 +1174,12 @@ PrefabInstance:
     - target: {fileID: 7349901440431997346, guid: 479edb22e1790754688e5f093ada7ddf,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.000000017318756
+      value: -0.000000017318756
       objectReference: {fileID: 0}
     - target: {fileID: 7349901440431997346, guid: 479edb22e1790754688e5f093ada7ddf,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: 8.6378366e-10
+      value: -8.6378366e-10
       objectReference: {fileID: 0}
     - target: {fileID: 8603350818431989278, guid: 479edb22e1790754688e5f093ada7ddf,
         type: 3}
