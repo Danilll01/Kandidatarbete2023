@@ -1177,12 +1177,12 @@ PrefabInstance:
     - target: {fileID: 7349901440431997346, guid: 479edb22e1790754688e5f093ada7ddf,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.000000017318756
+      value: -0.000000017318756
       objectReference: {fileID: 0}
     - target: {fileID: 7349901440431997346, guid: 479edb22e1790754688e5f093ada7ddf,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: 8.6378366e-10
+      value: -8.6378366e-10
       objectReference: {fileID: 0}
     - target: {fileID: 8603350818431989278, guid: 479edb22e1790754688e5f093ada7ddf,
         type: 3}
@@ -1797,10 +1797,11 @@ MonoBehaviour:
       m_Calls: []
   m_text: "Overall\n 1: Toggle GUI\n 2: Toggle ship visability\n 3: Toggle player
     visability\n 4: Toggle player head visability\n\n 8: Toggle OneShot audio\n 9:
-    Toggle SoundFX\n 0: Toggle Musik\n\nSolar system controls:\nK: Toggle solar system
-    orbits and rotations\nL: Increase orbit speed\nJ: Decrease orbit speed\nI: Reset
-    to default orbit speed\n\nFreeCam\n Movement = Ship movement\n Scroll wheel:
-    Speed control\n Right shift: Toggle free/player movement\n"
+    Toggle SoundFX\n 0: Toggle Musik\n\nM: Toggle First Person Camera\n\nSolar system
+    controls:\nK: Toggle solar system orbits and rotations\nL: Increase orbit speed\nJ:
+    Decrease orbit speed\nI: Reset to default orbit speed\n\nFreeCam\n Movement =
+    Ship movement\n Scroll wheel: Speed control\n Right shift: Toggle free/player
+    movement\n"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
