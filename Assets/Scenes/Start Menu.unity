@@ -1003,7 +1003,6 @@ MonoBehaviour:
   sceneNames:
   - Load Menu
   - Main
-  instanceName: MainMenuMusic
 --- !u!1 &561949754
 GameObject:
   m_ObjectHideFlags: 0
@@ -2949,8 +2948,8 @@ RectTransform:
   m_GameObject: {fileID: 1675671611}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 1.21, y: 1.21, z: 1.21}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 1425309688}
   m_RootOrder: 0
@@ -2982,7 +2981,7 @@ MonoBehaviour:
       m_Calls: []
   m_Sprite: {fileID: 21300000, guid: bdc2fdd31464ec543a70f12323bcfb5b, type: 3}
   m_Type: 0
-  m_PreserveAspect: 0
+  m_PreserveAspect: 1
   m_FillCenter: 1
   m_FillMethod: 4
   m_FillAmount: 1
