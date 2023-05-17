@@ -16,6 +16,10 @@ public class VideoManager : MonoBehaviour
     [SerializeField] private GameObject freeFlyCamera;
     [SerializeField] private Camera[] normalCams;
     private Camera tmpCam;
+    
+    [SerializeField] private FreeFlyCamera flyScript;
+    [SerializeField] private PillPlayerController pillScript;
+    [SerializeField] private SpaceShipController shipScript;
 
     private void LateUpdate()
     {
@@ -61,13 +65,28 @@ public class VideoManager : MonoBehaviour
             {
                 freeFlyCamera.SetActive(false);
                 tmpCam.enabled = true;
+                pillScript.canMove = true;
+                shipScript.canMove = true;
             }
             else
             {
                 freeFlyCamera.SetActive(true);
                 tmpCam = normalCams[0].enabled ? normalCams[0] : normalCams[1];
                 freeFlyCamera.transform.position = tmpCam.transform.position;
+                flyScript.canMove = true;
+                pillScript.canMove = false;
+                shipScript.canMove = false;
             }
+        } 
+        if (Input.GetKeyDown(KeyCode.RightShift))
+        {
+            if (freeFlyCamera.activeSelf)
+            {
+                flyScript.canMove = !flyScript.canMove;
+                pillScript.canMove = !pillScript.canMove;
+                shipScript.canMove = !shipScript.canMove;
+            }
+            
         } 
     }
 }

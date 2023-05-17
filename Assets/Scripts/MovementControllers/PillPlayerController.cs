@@ -30,6 +30,7 @@ public class PillPlayerController : MonoBehaviour
     public float maxSpeed;
     private bool jump = false; // Used for creating a rising trigger for jump
     private bool isSprinting = false;
+    public bool canMove = true;
 
     [Header("Ship")]
     [SerializeField] private SpaceShipController ship;
@@ -94,7 +95,7 @@ public class PillPlayerController : MonoBehaviour
     {       
         if (!paused)
         {
-            if (!boarded)
+            if (!boarded && canMove)
             {
                 HandleMovement();
                 HandleCamera();

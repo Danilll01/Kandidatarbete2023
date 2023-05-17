@@ -3,6 +3,7 @@
 //                        (c) 2019 Sergey Stafeyev                           //
 //===========================================================================//
 
+using UnityEditor;
 using UnityEngine;
 
 [RequireComponent(typeof(Camera))]
@@ -96,6 +97,7 @@ public class FreeFlyCamera : MonoBehaviour
     }
 #endif
 
+    public bool canMove = true;
 
     private void Start()
     {
@@ -191,11 +193,14 @@ public class FreeFlyCamera : MonoBehaviour
             // Calc acceleration
             CalculateCurrentIncrease(deltaPosition != Vector3.zero);
 
-            transform.position += deltaPosition * (currentSpeed * _currentIncrease);
+            if (canMove)
+            {
+                transform.position += deltaPosition * (currentSpeed * _currentIncrease);
+            }
         }
 
         // Rotation
-        if (_enableRotation)
+        if (_enableRotation && canMove)
         {
             // Pitch
             transform.rotation *= Quaternion.AngleAxis(

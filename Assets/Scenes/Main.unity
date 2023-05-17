@@ -825,8 +825,8 @@ MonoBehaviour:
   _active: 1
   _enableRotation: 1
   _mouseSense: 1.5
-  _enableTranslation: 1
-  _translationSpeed: 55
+  _enableTranslation: 0
+  _translationSpeed: 1000
   _enableMovement: 1
   _movementSpeed: 10
   _boostedSpeed: 50
@@ -836,6 +836,7 @@ MonoBehaviour:
   _enableSpeedAcceleration: 0
   _speedAccelerationFactor: 1.5
   _initPositonButton: 114
+  canMove: 1
 --- !u!114 &336575866
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1792,11 +1793,26 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: '1: Toggle GUI
+  m_text: 'Overall
+
+    1: Toggle GUI
 
     2: Toggle ship visability
 
-    3: Toggle player visability'
+    3: Toggle
+    player visability
+
+
+    FreeCam
+
+    Movement = Ship movement
+
+    Scroll wheel:
+    Speed control
+
+    Right shift: Toggle free/player movement
+
+'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1859,7 +1875,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: -21.337976, z: 0, w: -45.223858}
+  m_margin: {x: 0, y: -21.337976, z: -52.440453, w: -158.61143}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -3923,6 +3939,9 @@ MonoBehaviour:
   normalCams:
   - {fileID: 1796975799}
   - {fileID: 359418963}
+  flyScript: {fileID: 336575865}
+  pillScript: {fileID: 1898646053}
+  shipScript: {fileID: 301720325}
 --- !u!4 &2020912617
 Transform:
   m_ObjectHideFlags: 0

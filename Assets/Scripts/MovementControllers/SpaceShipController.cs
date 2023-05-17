@@ -70,6 +70,8 @@ public class SpaceShipController : MonoBehaviour
     private readonly Collider[] activateHoverSpring = new Collider[1];
     
     
+    public bool canMove = true;
+    
 
     /// <summary>
     /// Initializes ship controller script
@@ -104,6 +106,8 @@ public class SpaceShipController : MonoBehaviour
     // Handle mouse input in normal update to handle framerate issues otherwise
     private void Update()
     {
+        if (!canMove) { return; }
+        
         float rotationZTmp = Input.GetAxis("Spaceship Roll");
         float currentMouseXMovement = Input.GetButton("ShipFreeLook") ? 0 : Input.GetAxis("Horizontal Look");
         float currentMouseYMovement = Input.GetButton("ShipFreeLook") ? 0 : Input.GetAxis("Vertical Look");
@@ -137,6 +141,9 @@ public class SpaceShipController : MonoBehaviour
     // Handles movement of ship
     void FixedUpdate()
     {
+        
+        if (!canMove) { return; }
+        
         // If player is not boarded, we do not need to do ship movement
         if (!Universe.player.boarded || shipTransitionScript.UnderTransition())
         {
