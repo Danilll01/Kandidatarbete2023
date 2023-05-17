@@ -80,10 +80,7 @@ public class VideoManager : MonoBehaviour
         {
             helpScreen.SetActive(!helpScreen.activeSelf);
         } 
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-            Planet.ISROTATING = !Planet.ISROTATING;
-        } 
+        
         if (Input.GetKeyDown(KeyCode.Return))
         {
             if (freeFlyCamera.activeSelf)
@@ -117,6 +114,30 @@ public class VideoManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.K))
         {
             solarSystemScripts.stopSolarSytemMovement = !solarSystemScripts.stopSolarSytemMovement;
+        }
+        if (Input.GetKeyDown(KeyCode.J))
+        {
+            List<Planet> planets = solarSystemScripts.spawnPlanets.bodies;
+            foreach (var planet in planets)
+            {
+                planet.multiplier *= 0.8f;
+            }
+        }
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+            List<Planet> planets = solarSystemScripts.spawnPlanets.bodies;
+            foreach (var planet in planets)
+            {
+                planet.multiplier *= 1.2f;
+            }
+        }
+        if (Input.GetKeyDown(KeyCode.I))
+        {
+            List<Planet> planets = solarSystemScripts.spawnPlanets.bodies;
+            foreach (var planet in planets)
+            {
+                planet.multiplier = 1f;
+            }
         }
     }
 }
