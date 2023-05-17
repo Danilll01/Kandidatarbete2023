@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class SolarSystemTransform : MonoBehaviour
 {
-    [SerializeField] private SpawnPlanets spawnPlanets;
+    [SerializeField] public SpawnPlanets spawnPlanets;
     private Planet activePlanet;
     private Planet oldActivePlanet;
     private GameObject sun;
@@ -222,13 +222,13 @@ public class SolarSystemTransform : MonoBehaviour
 
         if (moonIsActivePlanet)
         {
-            sun.transform.RotateAround(activeMoonParentPlanet.transform.position, sun.transform.TransformDirection(Vector3.up), orbitSpeed * Time.deltaTime * 2f);
-            planetsParent.transform.RotateAround(activeMoonParentPlanet.transform.position, -rotationAxis, rotationSpeed * Time.deltaTime);
+            sun.transform.RotateAround(activeMoonParentPlanet.transform.position, sun.transform.TransformDirection(Vector3.up), orbitSpeed * activeMoonParentPlanet.multiplier * Time.deltaTime * 2f * activePlanet.multiplier);
+            planetsParent.transform.RotateAround(activeMoonParentPlanet.transform.position, -rotationAxis, rotationSpeed * Time.deltaTime * activeMoonParentPlanet.multiplier);
         }
         else
         {
-            sun.transform.RotateAround(Vector3.zero, sun.transform.TransformDirection(Vector3.up), orbitSpeed * Time.deltaTime * 2f);
-            planetsParent.transform.RotateAround(Vector3.zero, -rotationAxis, rotationSpeed * Time.deltaTime);
+            sun.transform.RotateAround(Vector3.zero, sun.transform.TransformDirection(Vector3.up), orbitSpeed * activePlanet.multiplier * Time.deltaTime * 2f);
+            planetsParent.transform.RotateAround(Vector3.zero, -rotationAxis, rotationSpeed * Time.deltaTime * activePlanet.multiplier);
         }
 
 
