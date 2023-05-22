@@ -290,12 +290,12 @@ public static class Biomes
         switch (tmp)
         {
             case float.MinValue:
-                return "ERROR LOW °C";
+                return "ERROR LOW Â°C";
             case float.MaxValue:
-                return "ERROR HIGH °C";
+                return "ERROR HIGH Â°C";
             default:
                 tmp = (float)Math.Round(tmp * 100) / 100;
-                return tmp.ToString() + " °C";
+                return tmp.ToString() + " Â°C";
         }
     }
 
