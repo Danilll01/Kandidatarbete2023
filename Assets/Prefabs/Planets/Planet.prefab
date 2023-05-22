@@ -83,9 +83,9 @@ MonoBehaviour:
     temperatureDecay: 0.002
     farTemperature: -0.5
     mountainFrequency: 1.2
-    temperatureFrequency: 1.28
-    temperatureRoughness: 0.367
-    mountainTemperatureAffect: 0.229
+    temperatureFrequency: 0.6
+    temperatureRoughness: 0.1
+    mountainTemperatureAffect: 0.15
     treeFrequency: 1
   orbitSpeed: 0
   rotationAxis: {x: 0, y: 0, z: 0}
