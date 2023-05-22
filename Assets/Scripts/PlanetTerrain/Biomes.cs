@@ -255,11 +255,13 @@ public static class Biomes
     /// <summary>
     /// Converts from the scale of 0 to 1 to celcius. Returns float.MinValue and float.MaxValue if below or above the defined range
     /// </summary>
+    /// <param name="tmp">The biomesetting value</param>
+    /// <returns>The temperature in celcius</returns>
     public static float GetTemperatureCelcius(float tmp)
     {
         //Defined points of temperature and their celcius equivalent. Points between are linearly interpolated.
         //Anything above or below these points are considered too high/low and will return error values
-        (float temperature, float celcius)[] tempGuides = { (0f, -273f), (0.03f, -20f), (0.15f, 5f), (0.5f, 30f), (0.7f, 60f) };
+        (float temperature, float celcius)[] tempGuides = { (0f, -273f), (0.03f, -20f), (0.15f, 5f), (0.5f, 30f), (0.7f, 60f), (1f, 500f)};
 
         if (tempGuides[0].temperature > tmp)
         {
@@ -294,15 +296,17 @@ public static class Biomes
             case float.MaxValue:
                 return "ERROR HIGH °C";
             default:
-                tmp = (float)Math.Round(tmp * 100) / 100;
-                return tmp.ToString() + " °C";
+                tmp = (float)Math.Round(tmp);
+                return tmp + " °C";
         }
     }
 
     /// <summary>
-    /// Creates a representation of the temperature at <paramref name="position"/> with <paramref name="biomeSettings"/> in celcius
-    /// with the <paramref name="distance"/> to the sun.
+    /// Gets the temperature at the local position given from the biomesettings
     /// </summary>
+    /// <param name="biomeSettings">The biome settings to use</param>
+    /// <param name="position">Local position of player around planet</param>
+    /// <returns></returns>
     public static string GetTemperatureAt(BiomeSettings biomeSettings, Vector3 position)
     {
         float tmp = EvaluteBiomeMapTemperature(biomeSettings, position);
