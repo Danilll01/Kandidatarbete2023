@@ -193,7 +193,34 @@ public class SolarSystemTransform : MonoBehaviour
             tintFoliageTexturesHandler.biomeColors = activePlanet.biomeColors;
             tintFoliageTexturesHandler.TintTextures();
             activePlanet.foliageHandler.biomeFoliageDatas = tintFoliageTexturesHandler.biomeFoliageDatas;
+            AssignNewBiomeMaterialsToCollections();
         }
+    }
+
+    private void AssignNewBiomeMaterialsToCollections()
+    {
+        FoliageCollection[] foliageCollections = activePlanet.foliageHandler.foliageCollections;
+
+        foliageCollections[0].biomeMaterials[0] = tintFoliageTexturesHandler.biomeMaterials[0];
+        foliageCollections[0].biomeMaterials[1] = tintFoliageTexturesHandler.biomeMaterials[5];
+
+        foliageCollections[1].biomeMaterials[0] = tintFoliageTexturesHandler.biomeMaterials[2];
+        foliageCollections[1].biomeMaterials[1] = tintFoliageTexturesHandler.biomeMaterials[7];
+
+        foliageCollections[2].biomeMaterials[0] = tintFoliageTexturesHandler.biomeMaterials[4];
+        foliageCollections[2].biomeMaterials[1] = tintFoliageTexturesHandler.biomeMaterials[9];
+
+        foliageCollections[3].biomeMaterials[0] = tintFoliageTexturesHandler.biomeMaterials[1];
+        foliageCollections[3].biomeMaterials[1] = tintFoliageTexturesHandler.biomeMaterials[6];
+
+        foliageCollections[4].biomeMaterials[0] = tintFoliageTexturesHandler.biomeMaterials[3];
+        foliageCollections[4].biomeMaterials[1] = tintFoliageTexturesHandler.biomeMaterials[8];
+
+        foliageCollections[5].biomeMaterials[0] = tintFoliageTexturesHandler.biomeMaterials[4];
+        foliageCollections[5].biomeMaterials[1] = tintFoliageTexturesHandler.biomeMaterials[9];
+
+        foliageCollections[6].biomeMaterials[0] = tintFoliageTexturesHandler.biomeMaterials[0];
+        foliageCollections[6].biomeMaterials[1] = tintFoliageTexturesHandler.biomeMaterials[5];
     }
 
     private void CheckWhenToReleasePlayer()

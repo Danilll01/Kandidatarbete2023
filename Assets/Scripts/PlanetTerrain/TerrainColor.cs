@@ -165,7 +165,7 @@ public class TerrainColor : MonoBehaviour {
         Gradient gradient = gradients[random.Next(0, gradients.Length - 1)].gradient;
 
         GradientColorKey[] oldColorKeyArr = gradient.colorKeys;
-        biomeColors[biomeIndex] = oldColorKeyArr[0].color;
+        biomeColors[biomeIndex] = oldColorKeyArr[1].color;
 
         if (addGroundColor)
         {

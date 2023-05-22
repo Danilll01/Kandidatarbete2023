@@ -286,7 +286,7 @@ public class Foliage : MonoBehaviour
             {
                 GameObject foliageObj = chosenCollection.gameObjects[random.Next(chosenCollection.gameObjects.Length)];
 
-                int index;
+                /*
                 if (chosenCollection.name.Contains("Mountain"))
                 {
                     index = foliageObj.name.Contains("Type") ? 5 : 0;
@@ -295,8 +295,11 @@ public class Foliage : MonoBehaviour
                 {
                     index = foliageObj.name.Contains("Type") ? random.Next(6, 10) : random.Next(1, 5);
                 }
+                */
 
-                Material materialForFoliageObject = foliageHandler.biomeFoliageDatas[index].biomeMaterial;
+                int index = foliageObj.name.Contains("Type") ? 1 : 0;
+
+                Material materialForFoliageObject = chosenCollection.biomeMaterials[index];//foliageHandler.biomeFoliageDatas[index].biomeMaterial;
 
                 SpawnTreesInForest(foliageObj, rayOrigin, hit.point, chosenCollection.name, chosenCollection.probabilityToSkip, materialForFoliageObject);
             }

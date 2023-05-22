@@ -17,8 +17,9 @@ public class TintFoliageTextures : MonoBehaviour
     public Color planetGroundColor;
     public Color planetMountainColor;
     public Color[] biomeColors;
-    [SerializeField] private Material[] biomeMaterials;
+    [SerializeField] public Material[] biomeMaterials;
     public BiomeFoliageData[] biomeFoliageDatas;
+    
 
     private bool Initialized;
 
@@ -67,8 +68,6 @@ public class TintFoliageTextures : MonoBehaviour
             biomeFoliageDatas[index - 1].texture = copiedTexture;
             
         }
-
-        
     }
 
     private Material CreateNewMaterial(int i)
