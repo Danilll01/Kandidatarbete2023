@@ -14,7 +14,6 @@ struct BiomeColor
 public class TerrainColor : MonoBehaviour {
 
     [SerializeField] private Gradient gradient = new Gradient();
-    public Color[] pickedColorPalette;
     [SerializeField] private float tempMin = 200;
     [SerializeField] private float tempMax = 300;
     [SerializeField][Range(0, 180)] private float angleCutOf = 90;
@@ -128,7 +127,6 @@ public class TerrainColor : MonoBehaviour {
 
         // Gets color palette and puts it into a gradient
         Color[] takePalette = crazyColorPaletts[random.Next(crazyColorPaletts.Length)];
-        pickedColorPalette = takePalette;
         float[] keyPos = new float[] { 0f, 0.015f, 0.144f, 0.618f, 1f };
         GradientColorKey[] gradientKeys = new GradientColorKey[takePalette.Length];
         Color[] takePaletteRand = takePalette.OrderBy(x => random.Next()).ToArray();
