@@ -6,19 +6,16 @@ public class TintFoliageTextures : MonoBehaviour
 {
     public Material[] textureMaterials;
     private TextureAndRows[] textureAndRows;
-    private Texture2D[] copiedTextures;
 
     private int totalNumberOfPixelsPerRow;
     private int textureHeight;
     private List<(int start, int end)> pixelRows; // start and end height coordinate
 
     public List<Color[]> originalColors;
-
-    public Color planetGroundColor;
-    public Color planetMountainColor;
+    
     public Color[] biomeColors;
-    [SerializeField] public Material[] biomeMaterials;
-    public BiomeFoliageData[] biomeFoliageDatas;
+    public Material[] biomeMaterials;
+    private BiomeFoliageData[] biomeFoliageDatas;
     
 
     private bool Initialized;
@@ -87,23 +84,6 @@ public class TintFoliageTextures : MonoBehaviour
         newTexture.Apply();
         material.mainTexture = newTexture;
         return newTexture;
-        
-
-
-        /*
-        copiedTextures = new Texture2D[textureAndRows.Length];
-
-        for (int i = 0; i < textureAndRows.Length; i++)
-        {
-            Texture2D texture = textureAndRows[i].texture;
-            Texture2D newTexture = new Texture2D(texture.width, texture.height);
-            newTexture.SetPixels(texture.GetPixels());
-            newTexture.Apply();
-            copiedTextures[i] = newTexture;
-            textureMaterials[i].mainTexture = newTexture;
-            originalColors.Add(newTexture.GetPixels());
-        }
-        */
     }
 
     /// <summary>
@@ -143,28 +123,6 @@ public class TintFoliageTextures : MonoBehaviour
 
             texture.Apply();
         }
-
-        /*
-        for (int t = 0; t < textureAndRows.Length; t++)
-        {
-            TextureAndRows textureAndrow = textureAndRows[t];
-            Texture2D texture = copiedTextures[t];
-            pixelRows.Clear();
-            textureHeight = texture.height;
-            totalNumberOfPixelsPerRow = textureAndrow.totalNumberOfPixelsPerRow;
-            int[] rowIndexes = textureAndrow.rowIndexesToTaint;
-            GetRows();
-
-            for (int h = 0; h < rowIndexes.Length; h++)
-            {
-                int index = rowIndexes[h];
-                (int, int) startAndEndPixelRows = pixelRows[index];
-                TintColorOnRows(t, texture, startAndEndPixelRows);
-            }
-
-            texture.Apply();
-        }
-        */
     }
 
     private void GetNewBiomeColors()

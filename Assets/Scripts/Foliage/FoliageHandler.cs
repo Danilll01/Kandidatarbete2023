@@ -48,8 +48,6 @@ public class FoliageHandler : MonoBehaviour
     [HideInInspector]
     public int objectsNr = 0;
 
-    public TintFoliageTextures.BiomeFoliageData[] biomeFoliageDatas;
-
     /// <summary>
     /// Initializes the foliageHandler
     /// </summary>

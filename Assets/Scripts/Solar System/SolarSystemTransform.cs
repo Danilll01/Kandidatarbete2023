@@ -192,7 +192,6 @@ public class SolarSystemTransform : MonoBehaviour
             oldActivePlanet = activePlanet;
             tintFoliageTexturesHandler.biomeColors = activePlanet.biomeColors;
             tintFoliageTexturesHandler.TintTextures();
-            activePlanet.foliageHandler.biomeFoliageDatas = tintFoliageTexturesHandler.biomeFoliageDatas;
             AssignNewBiomeMaterialsToCollections();
         }
     }
