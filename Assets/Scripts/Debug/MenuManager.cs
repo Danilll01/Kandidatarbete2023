@@ -137,6 +137,7 @@ public class MenuManager : MonoBehaviour
 
             yield return null;
         }
+        musicAudioSource.volume = 0f;
     }
 
 }
