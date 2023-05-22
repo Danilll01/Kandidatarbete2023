@@ -147,7 +147,7 @@ public static class Biomes
     /// Evaluates biomemap with given <paramref name="biomeSettings"/> at <paramref name="position"/> 
     /// with the <paramref name="distance"/> from the sun.
     /// </summary>
-    public static BiomeValue EvaluteBiomeMap(BiomeSettings biomeSettings, Vector3 position, float distance)
+    public static BiomeValue EvaluteBiomeMap(BiomeSettings biomeSettings, Vector3 position)
     {
         // Normalize position
         position = Vector3.Normalize(position);
@@ -178,7 +178,7 @@ public static class Biomes
         tempValue *= (1 - mountainNoise) * biomeSettings.mountainTemperatureAffect + 1 - biomeSettings.mountainTemperatureAffect;
 
         // Calculate multiplier for temperatue (due to distance from sun)
-        tempValue *= (1 - biomeSettings.farTemperature) / (biomeSettings.temperatureDecay * biomeSettings.temperatureDecay * distance + 1) + biomeSettings.farTemperature;
+        tempValue *= (1 - biomeSettings.farTemperature) / (biomeSettings.temperatureDecay * biomeSettings.temperatureDecay * biomeSettings.distance + 1) + biomeSettings.farTemperature;
 
         //Return the calculated values
         return new BiomeValue(mountainNoise, tempValue, treeNoise);
@@ -259,7 +259,7 @@ public static class Biomes
     {
         //Defined points of temperature and their celcius equivalent. Points between are linearly interpolated.
         //Anything above or below these points are considered too high/low and will return error values
-        (float temperature, float celcius)[] tempGuides = { (0.03f, -20f), (0.15f, 5f), (0.5f, 30f), (0.7f, 60f) };
+        (float temperature, float celcius)[] tempGuides = { (0f, -273f), (0.03f, -20f), (0.15f, 5f), (0.5f, 30f), (0.7f, 60f) };
 
         if (tempGuides[0].temperature > tmp)
         {
@@ -303,9 +303,9 @@ public static class Biomes
     /// Creates a representation of the temperature at <paramref name="position"/> with <paramref name="biomeSettings"/> in celcius
     /// with the <paramref name="distance"/> to the sun.
     /// </summary>
-    public static string GetTemperatureAt(BiomeSettings biomeSettings, Vector3 position, float distance)
+    public static string GetTemperatureAt(BiomeSettings biomeSettings, Vector3 position)
     {
-        float tmp = EvaluteBiomeMapTemperature(biomeSettings, position, distance);
+        float tmp = EvaluteBiomeMapTemperature(biomeSettings, position);
 
         return GetTemperature(tmp);
     }
