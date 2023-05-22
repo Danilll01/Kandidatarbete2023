@@ -173,9 +173,10 @@ public class PillPlayerController : MonoBehaviour
     // Updates the temperature gauge on screen
     private void HandleTemperatureGUI()
     {
-        float temperature = Biomes.EvaluteBiomeMapTemperature(attractor.biomeSettings, attractor.transform.InverseTransformPoint(transform.position));
-        temperature = Mathf.Lerp(-273, 1000, temperature);
-        temperatureHUD.SetText(Mathf.Round(temperature) + "°C");
+        //float temperature = Biomes.EvaluteBiomeMapTemperature(attractor.biomeSettings, attractor.transform.InverseTransformPoint(transform.position));
+        //temperature = Mathf.Lerp(-273, 1000, temperature);
+        //temperatureHUD.SetText(Mathf.Round(temperature) + "°C");
+        temperatureHUD.SetText(Biomes.GetTemperatureAt(attractor.biomeSettings, attractor.transform.InverseTransformPoint(transform.position)));
     }
     
     private void HandleMovement()

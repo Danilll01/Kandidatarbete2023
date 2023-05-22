@@ -294,13 +294,14 @@ public static class Biomes
             case float.MaxValue:
                 return "ERROR HIGH °C";
             default:
-                tmp = (float)Math.Round(tmp * 100) / 100;
+                tmp = (float)Math.Round(tmp);
                 return tmp.ToString() + " °C";
         }
     }
 
     /// <summary>
-    /// Creates a representation of the temperature at <paramref name="position"/> with <paramref name="biomeSettings"/> in celcius
+    /// Creates a representation of the temperature at
+    /// <paramref name="position"/> with <paramref name="biomeSettings"/> in celcius
     /// with the <paramref name="distance"/> to the sun.
     /// </summary>
     public static string GetTemperatureAt(BiomeSettings biomeSettings, Vector3 position)
