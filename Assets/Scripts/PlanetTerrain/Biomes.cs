@@ -168,10 +168,9 @@ public static class Biomes
             y: position.y * biomeSettings.treeFrequency,
             z: (position.z + biomeSettings.seed) * biomeSettings.treeFrequency) + 1) * .5f;
 
-        float distanceTemp = (1 - biomeSettings.farTemperature) / (biomeSettings.temperatureDecay * biomeSettings.temperatureDecay * biomeSettings.distance + 1) + biomeSettings.farTemperature;
-
         // Generate temperature map
-        float tempValue = distanceTemp - Mathf.Abs(position.y) * MathF.Sqrt(1 - distanceTemp);
+        // Calculate multiplier for temperatue (due to distance from sun)
+        float tempValue = (1 - biomeSettings.farTemperature) / (biomeSettings.temperatureDecay * biomeSettings.temperatureDecay * biomeSettings.distance + 1) + biomeSettings.farTemperature;
 
         // Rough up the temperature map
         tempValue *= 1 - biomeSettings.temperatureRoughness + biomeSettings.temperatureRoughness * tempNoise;
@@ -179,8 +178,8 @@ public static class Biomes
         // Change temperature with mountains
         tempValue *= (1 - mountainNoise) * biomeSettings.mountainTemperatureAffect + 1 - biomeSettings.mountainTemperatureAffect;
 
-        // Calculate multiplier for temperatue (due to distance from sun)
-        //tempValue *= (1 - biomeSettings.farTemperature) / (biomeSettings.temperatureDecay * biomeSettings.temperatureDecay * distance + 1) + biomeSettings.farTemperature;
+        // Variation due to latitude
+        tempValue=Mathf.Clamp((tempValue - Mathf.Abs(position.y) * 0.2f + 0.1f), 0, 1);
 
         //Return the calculated values
         return new BiomeValue(mountainNoise, tempValue, treeNoise);
@@ -224,10 +223,9 @@ public static class Biomes
             y: (position.y + biomeSettings.seed) * biomeSettings.temperatureFrequency,
             z: position.z * biomeSettings.temperatureFrequency) + 1) * .5f;
 
-        float distanceTemp = (1 - biomeSettings.farTemperature) / (biomeSettings.temperatureDecay * biomeSettings.temperatureDecay * distance + 1) + biomeSettings.farTemperature;
-
         // Generate temperature map
-        float tempValue = distanceTemp - Mathf.Abs(position.y) * MathF.Sqrt(1-distanceTemp);
+        // Calculate multiplier for temperatue (due to distance from sun)
+        float tempValue = (1 - biomeSettings.farTemperature) / (biomeSettings.temperatureDecay * biomeSettings.temperatureDecay * biomeSettings.distance + 1) + biomeSettings.farTemperature;
 
         // Rough up the temperature map
         tempValue *= 1 - biomeSettings.temperatureRoughness + biomeSettings.temperatureRoughness * tempNoise;
@@ -235,8 +233,8 @@ public static class Biomes
         // Change temperature with mountains
         tempValue *= (1 - mountainNoise) * biomeSettings.mountainTemperatureAffect + 1 - biomeSettings.mountainTemperatureAffect;
 
-        // Calculate multiplier for temperatue (due to distance from sun)
-        //tempValue *= (1 - biomeSettings.farTemperature) / (biomeSettings.temperatureDecay * biomeSettings.temperatureDecay * distance + 1) + biomeSettings.farTemperature;
+        // Variation due to latitude
+        tempValue = Mathf.Clamp((tempValue - Mathf.Abs(position.y) * 0.2f + 0.1f), 0, 1);
 
         return tempValue;
     }
