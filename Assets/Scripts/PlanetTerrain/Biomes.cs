@@ -90,7 +90,6 @@ public struct BiomeValue
     {
         // Check that variable are in range
         Details.AssertInRange(mountains, 0, 1, nameof(mountains));
-        Details.AssertInRange(temperature, 0, 1, nameof(temperature));
         Details.AssertInRange(trees, 0, 1, nameof(trees));
 
         this.mountains = mountains;
@@ -98,11 +97,29 @@ public struct BiomeValue
         this.trees = trees;
     }
 
+    /// <summary>
+    /// Checks if biome value is inside of range.
+    /// </summary>
+    /// <param name="range">Range with values in the range [0,1]</param>
     public bool IsInsideRange(BiomeRange range)
     {
         return
             (!range.mountainRelevant || (range.mountainMin <= mountains && mountains <= range.mountainMax)) &&
             (!range.temperatureDependent || (range.temperatureMin <= temperature && temperature <= range.temperatureMax)) &&
+            (!range.treesDependent || (range.treesMin <= trees && trees <= range.treesMax));
+    }
+
+    /// <summary>
+    /// Checks if biome value is inside of range.
+    /// </summary>
+    /// <param name="range">Range in celcius</param>
+    public bool IsInsideRangeCelcius(BiomeRange range)
+    {
+        float temperatureC = Biomes.GetTemperatureCelcius(temperature);
+
+        return
+            (!range.mountainRelevant || (range.mountainMin <= mountains && mountains <= range.mountainMax)) &&
+            (!range.temperatureDependent || (range.temperatureMin <= temperatureC && temperatureC <= range.temperatureMax)) &&
             (!range.treesDependent || (range.treesMin <= trees && trees <= range.treesMax));
     }
 }
@@ -114,8 +131,8 @@ public class BiomeRange
     [Range(0f, 1f)] public float mountainMin = 0;
     [Range(0f, 1f)] public float mountainMax = 1;
     public bool temperatureDependent = false;
-    [Range(0f, 1f)] public float temperatureMin = 0;
-    [Range(0f, 1f)] public float temperatureMax = 1;
+    public float temperatureMin = 0;
+    public float temperatureMax = 1;
     public bool treesDependent = false;
     [Range(0f, 1f)] public float treesMin = 0;
     [Range(0f, 1f)] public float treesMax = 1;
@@ -231,12 +248,70 @@ public static class Biomes
             y: position.y * biomeSettings.treeFrequency,
             z: (position.z + biomeSettings.seed) * biomeSettings.treeFrequency) + 1) * .5f;
     }
+
+    /// <summary>
+    /// Converts from the scale of 0 to 1 to celcius. Returns float.MinValue and float.MaxValue if below or above the defined range
+    /// </summary>
+    public static float GetTemperatureCelcius(float tmp)
+    {
+        //Defined points of temperature and their celcius equivalent. Points between are linearly interpolated.
+        //Anything above or below these points are considered too high/low and will return error values
+        (float temperature, float celcius)[] tempGuides = { (0.03f, -20f), (0.15f, 5f), (0.5f, 30f), (0.7f, 60f) };
+
+        if (tempGuides[0].temperature > tmp)
+        {
+            return float.MinValue;
+        }
+
+        for (int i = 0; i < tempGuides.Length - 1; i++)
+        {
+            if (tempGuides[i + 1].temperature >= tmp)
+            {
+                (float temperature, float celcius) tmp1 = tempGuides[i];
+                (float temperature, float celcius) tmp2 = tempGuides[i + 1];
+                float progressToNext = (tmp - tmp1.temperature) / (tmp2.temperature - tmp1.temperature);
+
+                return (1 - progressToNext) * tmp1.celcius + progressToNext * tmp2.celcius;
+            }
+        }
+        return float.MaxValue;
+    }
+
+    /// <summary>
+    /// Creates a representation of the <paramref name="tmp"/> between 0 and 1 in celcius.
+    /// </summary>
+    public static string GetTemperature(float tmp)
+    {
+        tmp = GetTemperatureCelcius(tmp);
+
+        switch (tmp)
+        {
+            case float.MinValue:
+                return "ERROR LOW °C";
+            case float.MaxValue:
+                return "ERROR HIGH °C";
+            default:
+                tmp = (float)Math.Round(tmp * 100) / 100;
+                return tmp.ToString() + " °C";
+        }
+    }
+
+    /// <summary>
+    /// Creates a representation of the temperature at <paramref name="position"/> with <paramref name="biomeSettings"/> in celcius
+    /// with the <paramref name="distance"/> to the sun.
+    /// </summary>
+    public static string GetTemperatureAt(BiomeSettings biomeSettings, Vector3 position, float distance)
+    {
+        float tmp = EvaluteBiomeMapTemperature(biomeSettings, position, distance);
+
+        return GetTemperature(tmp);
+    }
 }
 
 /// <summary>
 /// Details class only used as helper class, not to be used outside Biomes.cs
 /// </summary>
-public static class Details 
+public static class Details
 {
     /// <summary>
     /// Checks if <paramref name="parameter"/> is in range [<paramref name="a"/>, <paramref name="b"/>], 
