@@ -412,7 +412,7 @@ GameObject:
   - component: {fileID: 200761542}
   - component: {fileID: 200761541}
   m_Layer: 5
-  m_Name: Main menu music (1)
+  m_Name: Assets text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -435,8 +435,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 59.6, y: -135.8}
-  m_SizeDelta: {x: 966.5968, y: 242.0951}
+  m_AnchoredPosition: {x: 70, y: -143.4}
+  m_SizeDelta: {x: 1009.754, y: 172.4808}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &200761541
 MonoBehaviour:
@@ -458,8 +458,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\"Low Poly Animated Animals\" by polyperfect\n\u201C3 types of animated
-    foxes\u201D by polyperfect\n\"Stylized Astronaut\" by PULSAR BYTES"
+  m_text: "- \"Low Poly Animated Animals\" by polyperfect from Unity Asset store\n-
+    \u201C3 types of animated foxes\u201D by polyperfect from Unity Asset store\n-
+    \"Stylized Astronaut\" by PULSAR BYTES from Unity Asset store\n- \"Low-Poly Spaceship\"
+    by WJAnders from Sketchfab"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -486,8 +488,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
-  m_fontSizeBase: 36
+  m_fontSize: 30
+  m_fontSizeBase: 30
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -1415,7 +1417,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 330.7}
+  m_AnchoredPosition: {x: 0, y: 347}
   m_SizeDelta: {x: 700, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &497549497
@@ -1999,7 +2001,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 0.2000122, y: -387.3}
+  m_AnchoredPosition: {x: 33, y: -322.51}
   m_SizeDelta: {x: 183.0879, y: 50}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &734349732
@@ -2056,7 +2058,7 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 1
-  m_HorizontalAlignment: 2
+  m_HorizontalAlignment: 1
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
@@ -2930,7 +2932,7 @@ GameObject:
   - component: {fileID: 1083448891}
   - component: {fileID: 1083448890}
   m_Layer: 5
-  m_Name: Main menu music
+  m_Name: Music text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2953,8 +2955,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 59.6, y: -449.05}
-  m_SizeDelta: {x: 897.8887, y: 193.6483}
+  m_AnchoredPosition: {x: 70, y: -384.4}
+  m_SizeDelta: {x: 821.748, y: 255.4041}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1083448890
 MonoBehaviour:
@@ -2976,10 +2978,20 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Main menu music by William King from Pixabay
+  m_text: '- Main menu music by William King from Pixabay
 
-    Planetmusic by SergePavkinMusic
-    from Pixabay'
+    - Planet music by
+    SergePavkinMusic from Pixabay
+
+    - Space music by lvymusic from Pixabay
+
+    -
+    Travel mode toggle by 666HeroHero from Pixabay
+
+    - Thruster sound by DJT4NN3R
+    from Pixabay
+
+    - Water splash by blaukreuz from Pixabay'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -3006,8 +3018,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
-  m_fontSizeBase: 36
+  m_fontSize: 30
+  m_fontSizeBase: 30
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -4260,7 +4272,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -25.735657, y: 0}
-  m_SizeDelta: {x: 988.28, y: 772.7}
+  m_SizeDelta: {x: 1155.83, y: 810.2}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1688633421
 MonoBehaviour:
@@ -4755,7 +4767,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 0.2000122, y: -78.69998}
+  m_AnchoredPosition: {x: 33, y: -78.69998}
   m_SizeDelta: {x: 183.0879, y: 50}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &2029884962
@@ -4812,7 +4824,7 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 1
-  m_HorizontalAlignment: 2
+  m_HorizontalAlignment: 1
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
