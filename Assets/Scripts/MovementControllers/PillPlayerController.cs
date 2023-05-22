@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using ExtendedRandom;
+using TMPro;
 using UnityEngine.Rendering;
 using UnityEngine.Serialization;
 
@@ -14,7 +15,7 @@ public class PillPlayerController : MonoBehaviour
     [SerializeField] private SkinnedMeshRenderer playerModelHead;
     private Rigidbody body;
     [HideInInspector] public bool paused;
-    [SerializeField] private HandleAudio audio;
+    [SerializeField] private new HandleAudio audio;
 
     [Header("Movement")]
     public float movementSpeed;
@@ -28,6 +29,7 @@ public class PillPlayerController : MonoBehaviour
     public float maxSpeed;
     private bool jump = false; // Used for creating a rising trigger for jump
     private bool isSprinting = false;
+    public bool canMove = true;
 
     [Header("Ship")]
     [SerializeField] private SpaceShipController ship;
@@ -92,13 +94,14 @@ public class PillPlayerController : MonoBehaviour
     {       
         if (!paused)
         {
-            if (!boarded)
+            if (!boarded && canMove)
             {
                 HandleMovement();
                 HandleCamera();
             }
             if (attractor != null)
             {
+                HandleTemperatureGUI();
                 if (!ReferenceEquals(attractor, playerWater.planet)) playerWater.UpdatePlanet(attractor);
                 playerWater.UpdateWater(transform.position);
             }
@@ -161,8 +164,18 @@ public class PillPlayerController : MonoBehaviour
             isSprinting = false;
             animationRig.localPosition += new Vector3(0,0,0.015f);
         }
-        
     }
+
+    // Updates the temperature gauge on screen
+    private void HandleTemperatureGUI()
+    {
+        float temperature = Biomes.EvaluteBiomeMapTemperature(attractor.biomeSettings, attractor.transform.InverseTransformPoint(transform.position));
+        temperature = Mathf.Lerp(-273, 1000, temperature);
+        
+        // Potential temperature converter to celsius
+        //temperatureHUD.SetText(Biomes.GetTemperatureAt(attractor.biomeSettings, attractor.transform.InverseTransformPoint(transform.position)));
+    }
+    
     private void HandleMovement()
     {
         //Keep old Y velocity. Rotates to world space, grabs y velocity and rotates back to planet orientation

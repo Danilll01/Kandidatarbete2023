@@ -3,12 +3,13 @@ using UnityEngine;
 
 public class SolarSystemTransform : MonoBehaviour
 {
-    [SerializeField] private SpawnPlanets spawnPlanets;
+    [SerializeField] public SpawnPlanets spawnPlanets;
     private Planet activePlanet;
     private Planet oldActivePlanet;
     private GameObject sun;
     private GameObject planetsParent;
-    private bool rotateSolarSystem;
+    public bool rotateSolarSystem;
+    public bool stopSolarSytemMovement;
     private bool setUpSolarSystemRotation;
     private Vector3[] relativePlanetSunDistances;
     private Vector3 rotationAxis;
@@ -73,6 +74,7 @@ public class SolarSystemTransform : MonoBehaviour
             UpdateClosestPlanet();
             HandleUpdatedActivePlanet();
 
+           
             if (releasePlayer)
             {
                 CheckWhenToReleasePlayer();
@@ -81,15 +83,18 @@ public class SolarSystemTransform : MonoBehaviour
             {
                 FloatingPointTeleportationCheck();
 
-                if (rotateSolarSystem)
+                if (!stopSolarSytemMovement)
                 {
-                    RotateSolarSystem();
-                }
-                else if (relativePlanetSunDistances != null)
-                {
-                    foreach (Planet planetBody in spawnPlanets.bodies)
+                    if (rotateSolarSystem)
                     {
-                        planetBody.Run();
+                        RotateSolarSystem();
+                    }
+                    else if (relativePlanetSunDistances != null)
+                    {
+                        foreach (Planet planetBody in spawnPlanets.bodies)
+                        {
+                            planetBody.Run();
+                        }
                     }
                 }
             }
@@ -217,13 +222,13 @@ public class SolarSystemTransform : MonoBehaviour
 
         if (moonIsActivePlanet)
         {
-            sun.transform.RotateAround(activeMoonParentPlanet.transform.position, sun.transform.TransformDirection(Vector3.up), orbitSpeed * Time.deltaTime * 2f);
-            planetsParent.transform.RotateAround(activeMoonParentPlanet.transform.position, -rotationAxis, rotationSpeed * Time.deltaTime);
+            sun.transform.RotateAround(activeMoonParentPlanet.transform.position, sun.transform.TransformDirection(Vector3.up), orbitSpeed * activeMoonParentPlanet.multiplier * Time.deltaTime * 2f * activePlanet.multiplier);
+            planetsParent.transform.RotateAround(activeMoonParentPlanet.transform.position, -rotationAxis, rotationSpeed * Time.deltaTime * activeMoonParentPlanet.multiplier);
         }
         else
         {
-            sun.transform.RotateAround(Vector3.zero, sun.transform.TransformDirection(Vector3.up), orbitSpeed * Time.deltaTime * 2f);
-            planetsParent.transform.RotateAround(Vector3.zero, -rotationAxis, rotationSpeed * Time.deltaTime);
+            sun.transform.RotateAround(Vector3.zero, sun.transform.TransformDirection(Vector3.up), orbitSpeed * activePlanet.multiplier * Time.deltaTime * 2f);
+            planetsParent.transform.RotateAround(Vector3.zero, -rotationAxis, rotationSpeed * Time.deltaTime * activePlanet.multiplier);
         }
 
 
