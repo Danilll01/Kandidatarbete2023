@@ -126,6 +126,9 @@ public class Creature : MonoBehaviour
     private GameObject lastResourceFound;
     private Vector3 foundWaterAt = Vector3.zero;
 
+    public bool hasLineRenderer = false;
+    private float lineRendererTimer = 10f;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -180,6 +183,19 @@ public class Creature : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (hasLineRenderer)
+        {
+            if (lineRendererTimer > 0)
+            {
+                lineRendererTimer -= Time.deltaTime;
+            }
+            else
+            {
+                Destroy(GetComponent<LineRenderer>());
+                hasLineRenderer = false;
+            }
+        }
+        
         // If creature is not visible, dont perform physics update
         if (!renderer.isVisible)
         {

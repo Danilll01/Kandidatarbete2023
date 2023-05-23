@@ -210,6 +210,11 @@ public class CreatureSpawning : MonoBehaviour
                 newObject.transform.rotation = rotation2;
                 newObject.name = newObject.name.Replace("(Clone)", "").Trim();
 
+                LineRenderer lineRenderer = newObject.AddComponent<LineRenderer>();
+                lineRenderer.positionCount = 2;
+                lineRenderer.SetPositions(new []{randomOrigin, hit.point});
+                newObject.GetComponent<Creature>().hasLineRenderer = true;
+
                 if (creatureHandler.debug) Debug.DrawLine(randomOrigin, hit.point, Color.cyan, 10f);
 
                 positions[i] = hit.point;
