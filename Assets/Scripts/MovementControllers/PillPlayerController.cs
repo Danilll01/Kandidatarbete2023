@@ -4,6 +4,7 @@ using ExtendedRandom;
 using TMPro;
 using UnityEngine.Rendering;
 using UnityEngine.Serialization;
+using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(Rigidbody))]
 public class PillPlayerController : MonoBehaviour
@@ -129,6 +130,20 @@ public class PillPlayerController : MonoBehaviour
             DisplayDebug.AddOrSetDebugVariable("Biome: Trees", "N/A");
         }
         #endif
+
+        //PRESENTATION CODE
+        //Feed/water all animals
+        if (Input.GetKeyDown(KeyCode.J))
+        {
+            foreach (GameObject obj in SceneManager.GetActiveScene().GetRootGameObjects())
+            {
+                foreach (Creature creature in obj.GetComponentsInChildren<Creature>(false))
+                {
+                    creature.hunger = 100;
+                    creature.thirst = 100;
+                }
+            }
+        }
     }
 
     private void FixedUpdate()
