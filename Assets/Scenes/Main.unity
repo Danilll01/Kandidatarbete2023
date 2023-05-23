@@ -404,6 +404,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 755283109381456697, guid: 2abf19653d633114faedf3b60dc6c39f,
         type: 3}
+      propertyPath: fox
+      value: 
+      objectReference: {fileID: 1655403738057260, guid: dcc3bfa5cf419b64e86c7effdae2b6f2,
+        type: 3}
+    - target: {fileID: 755283109381456697, guid: 2abf19653d633114faedf3b60dc6c39f,
+        type: 3}
       propertyPath: ship
       value: 
       objectReference: {fileID: 301720325}
@@ -412,6 +418,12 @@ PrefabInstance:
       propertyPath: audio
       value: 
       objectReference: {fileID: 1122585598}
+    - target: {fileID: 755283109381456697, guid: 2abf19653d633114faedf3b60dc6c39f,
+        type: 3}
+      propertyPath: chicken
+      value: 
+      objectReference: {fileID: 1311290861401530, guid: 5904fbfe921140647a4ebddf4adda389,
+        type: 3}
     - target: {fileID: 755283109381456697, guid: 2abf19653d633114faedf3b60dc6c39f,
         type: 3}
       propertyPath: temperatureHUD
@@ -1177,12 +1189,12 @@ PrefabInstance:
     - target: {fileID: 7349901440431997346, guid: 479edb22e1790754688e5f093ada7ddf,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.000000017318756
+      value: 0.000000017318756
       objectReference: {fileID: 0}
     - target: {fileID: 7349901440431997346, guid: 479edb22e1790754688e5f093ada7ddf,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -8.6378366e-10
+      value: 8.6378366e-10
       objectReference: {fileID: 0}
     - target: {fileID: 8603350818431989278, guid: 479edb22e1790754688e5f093ada7ddf,
         type: 3}
