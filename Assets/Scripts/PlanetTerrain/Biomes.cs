@@ -263,7 +263,7 @@ public static class Biomes
     {
         //Defined points of temperature and their celcius equivalent. Points between are linearly interpolated.
         //Anything above or below these points are considered too high/low and will return error values
-        (float temperature, float celcius)[] tempGuides = { (0f, -273f), (0.2f, -20f), (0.15f, 5f), (0.5f, 30f), (0.7f, 60f), (1f, 500f)};
+        (float temperature, float celcius)[] tempGuides = { (0f, -273f), (0.1f, -50f), (0.4f, 0f), (0.6f, 40f), (0.85f, 300f), (1f, 500f)};
 
         if (tempGuides[0].temperature > tmp)
         {
