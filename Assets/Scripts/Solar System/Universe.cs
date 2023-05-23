@@ -11,6 +11,8 @@ public static class Universe
     public static int seed = 123;
     public static RandomX random;
 
+    public static bool createLineRenderers = false;
+
     //Guaranteed set after Awake()
     public static PillPlayerController player = null;
     public static Transform spaceShip = null;

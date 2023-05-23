@@ -168,6 +168,11 @@ public class PillPlayerController : MonoBehaviour
         {
             GameObject newAnimal = SpawnOnChunk(chicken);
         }
+
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            Universe.createLineRenderers = !Universe.createLineRenderers;
+        }
     }
 
     private GameObject SpawnOnChunk(GameObject objToSpawn)
