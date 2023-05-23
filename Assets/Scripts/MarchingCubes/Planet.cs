@@ -125,7 +125,7 @@ public class Planet : MonoBehaviour
 
         if (foliageHandler != null)
         {
-            foliageHandler.Initialize(this);
+            foliageHandler.Initialize(this, rand.Next());
         }
 
         if (creatureHandler != null)
