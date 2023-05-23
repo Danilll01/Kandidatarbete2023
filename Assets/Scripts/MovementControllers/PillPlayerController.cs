@@ -9,6 +9,10 @@ using UnityEngine.SceneManagement;
 [RequireComponent(typeof(Rigidbody))]
 public class PillPlayerController : MonoBehaviour
 {
+    [Header("Presentation")]
+    public GameObject chicken;
+    public GameObject fox;
+
     [Header("Setup")]
     public Planet attractor = null;
     public Camera firstPersonCamera;
@@ -133,7 +137,7 @@ public class PillPlayerController : MonoBehaviour
 
         //PRESENTATION CODE
         //Feed/water all animals
-        if (Input.GetKeyDown(KeyCode.J))
+        if (Input.GetKeyDown(KeyCode.R))
         {
             foreach (GameObject obj in SceneManager.GetActiveScene().GetRootGameObjects())
             {
@@ -144,6 +148,44 @@ public class PillPlayerController : MonoBehaviour
                 }
             }
         }
+        //Spawn hungry fox
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            GameObject newAnimal = SpawnOnChunk(fox);
+
+            newAnimal.GetComponent<Creature>().RandomizeStats = false;
+            newAnimal.GetComponent<Creature>().hunger = 20;
+        }
+        //Spawn thirsty fox
+        if (Input.GetKeyDown(KeyCode.Y))
+        {
+            GameObject newAnimal = SpawnOnChunk(fox);
+
+            newAnimal.GetComponent<Creature>().RandomizeStats = false;
+            newAnimal.GetComponent<Creature>().thirst = 20;
+        }
+        if (Input.GetKeyDown(KeyCode.U))
+        {
+            GameObject newAnimal = SpawnOnChunk(chicken);
+        }
+    }
+
+    private GameObject SpawnOnChunk(GameObject objToSpawn)
+    {
+        Ray ray = new(transform.position + transform.forward * 5 + transform.up * 5, attractor.transform.position - transform.position);
+        RaycastHit[] hits = Physics.RaycastAll(ray, attractor.radius, 1 << LayerMask.NameToLayer("Planet"));
+        foreach (RaycastHit hit in hits)
+        {
+            Chunk hitChunk = hit.collider.GetComponent<Chunk>();
+            if (hitChunk.IsLowRes())
+            {
+                continue;
+            }
+            GameObject newAnimal = Instantiate(objToSpawn, hit.point + transform.up, transform.rotation, hitChunk.creatureGameObject.transform);
+            newAnimal.GetComponent<Rigidbody>().velocity = Vector3.zero;
+            return newAnimal;
+        }
+        return null;
     }
 
     private void FixedUpdate()

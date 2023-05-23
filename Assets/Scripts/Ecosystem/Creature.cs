@@ -172,6 +172,11 @@ public class Creature : MonoBehaviour
         idleSoundTimer = timeBetweenIdleSounds + Random.Range(-2f,2f);
     }
 
+    public bool RandomizeStats
+    {
+        set { randomizeStats = value; }
+    }
+
     // Update is called once per frame
     void Update()
     {

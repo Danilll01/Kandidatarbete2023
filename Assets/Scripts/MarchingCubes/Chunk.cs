@@ -201,4 +201,9 @@ public class Chunk : MonoBehaviour
 
         return numVerts;
     }
+
+    public bool IsLowRes()
+    {
+        return lowChunkResChunks;
+    }
 }

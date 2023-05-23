@@ -49,10 +49,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a06957ffefbd4a24aa9146fc52b81dc0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  chicken: {fileID: 1311290861401530, guid: 5904fbfe921140647a4ebddf4adda389, type: 3}
+  fox: {fileID: 1655403738057260, guid: dcc3bfa5cf419b64e86c7effdae2b6f2, type: 3}
   attractor: {fileID: 0}
   firstPersonCamera: {fileID: 1972582656078905811}
   playerWater: {fileID: 475739841735623208}
+  playerModelHead: {fileID: 0}
   paused: 0
+  audio: {fileID: 0}
   movementSpeed: 20
   sprintFactor: 2
   airControlFactor: 1
@@ -61,6 +65,8 @@ MonoBehaviour:
   swimForce: 20
   maxSwimSpeed: 15
   maxSpeed: 40
+  canMove: 1
+  ship: {fileID: 0}
   boarded: 0
   mouseSensitivity: 1
   lookLimitAngle: 70
@@ -77,8 +83,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   water: {fileID: 2100000, guid: 980d82d2001113c4f8f2220385312c2b, type: 2}
+  PostProssesing: {fileID: 0}
   planet: {fileID: 0}
   underWater: 0
+  audio: {fileID: 0}
 --- !u!54 &4141452794294111432
 Rigidbody:
   m_ObjectHideFlags: 0
