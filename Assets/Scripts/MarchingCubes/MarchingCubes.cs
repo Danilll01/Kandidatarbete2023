@@ -120,6 +120,95 @@ public class MarchingCubes
         return meshVertices.Length;
     }
 
+    /// <summary>
+    /// Generate the mesh from the given parameters in the constructor
+    /// </summary>
+    public (AsyncGPUReadbackRequest, ChunkGPUCallbackData) GenerateMeshAsync(MinMaxTerrainLevel hightFillerTerrainLevel, int index, int resolution, Mesh mesh)
+    {
+        resolution *= 1 << chunkResolution;
+
+        // Calculate the total number of voxels and the max triangle count possible
+        int numVoxelsPerAxis = ((resolution << 3) >> chunkResolution) - 1;
+        int numVoxels = numVoxelsPerAxis * numVoxelsPerAxis * numVoxelsPerAxis;
+        int maxTriangleCount = numVoxels * 5;
+
+        // Set up buffers for the triangles
+        ComputeBuffer trianglesBuffer = new ComputeBuffer(maxTriangleCount, sizeof(int) * 3 * 3, ComputeBufferType.Append);
+        trianglesBuffer.SetCounterValue(0);
+
+        // Set up buffer for the terrain layers
+        ComputeBuffer layersBuffer = new ComputeBuffer(terrainLayers.Count, sizeof(float) * 10 + sizeof(int));
+        layersBuffer.SetData(terrainLayers.ToArray());
+
+        // Set up buffer for the Biome settings
+        ComputeBuffer biomesBuffer = new ComputeBuffer(1, sizeof(float) * 8);
+        biomesBuffer.SetData(biomeSettings.ToArray());
+
+        // Run generateMesh in compute shader
+        int kernelIndex = meshGenerator.FindKernel("GenerateMesh");
+        meshGenerator.SetFloat("seed", seed);
+        meshGenerator.SetInt("chunkIndex", index);
+        meshGenerator.SetInt("chunkResolution", chunkResolution);
+        meshGenerator.SetInt("resolution", resolution << 3);
+        meshGenerator.SetFloat("threshold", threshold);
+        meshGenerator.SetFloat("radius", radius);
+        meshGenerator.SetBuffer(kernelIndex, "triangles", trianglesBuffer);
+        meshGenerator.SetInt("numTerrainLayers", terrainLayers.Count);
+        meshGenerator.SetBuffer(kernelIndex, "terrainLayers", layersBuffer);
+        meshGenerator.SetBuffer(kernelIndex, "biomeSettings", biomesBuffer);
+        meshGenerator.Dispatch(kernelIndex, resolution >> chunkResolution, resolution >> chunkResolution, resolution >> chunkResolution);
+
+        ComputeBuffer[] buffers = { trianglesBuffer, layersBuffer, biomesBuffer };
+
+        ChunkGPUCallbackData callBackData = new ChunkGPUCallbackData(hightFillerTerrainLevel, mesh, buffers);
+
+        return (AsyncGPUReadback.Request(trianglesBuffer), callBackData);
+    }
+
+    public int GenerateMeshAsyncCallback(ChunkGPUCallbackData data)
+    {
+        ComputeBuffer trianglesBuffer = data.buffers[0];
+        ComputeBuffer layersBuffer = data.buffers[1];
+        ComputeBuffer biomesBuffer = data.buffers[2];
+
+        int length = getLengthBuffer(ref trianglesBuffer); // This is slow!!!
+
+        Triangle[] triangles = new Triangle[length];
+        trianglesBuffer.GetData(triangles, 0, 0, length);
+
+
+        // Release all buffers
+        trianglesBuffer.Release();
+        layersBuffer.Release();
+        biomesBuffer.Release();
+
+        // Process our data from the compute shader
+        int[] meshTriangles = new int[length * 3];
+        Vector3[] meshVertices = new Vector3[length * 3];
+
+
+        // Set values for the meshtriangles and meshvertices arrays
+        for (int i = 0; i < length; i++)
+        {
+            for (int j = 0; j < 3; j++)
+            {
+                meshTriangles[i * 3 + j] = i * 3 + j;
+                data.terrainLevel.UpdateMinMax(triangles[i][j]);  //This is slow, need to implement fix so that this is only called the first time the chunks are created
+                meshVertices[i * 3 + j] = triangles[i][j];
+            }
+        }
+
+        // Set values in mesh
+        data.mesh.indexFormat = IndexFormat.UInt32;
+        data.mesh.Clear();
+        data.mesh.vertices = meshVertices;
+        data.mesh.triangles = meshTriangles;
+        data.mesh.RecalculateBounds();
+        data.mesh.RecalculateNormals();
+
+        return meshVertices.Length;
+    }
+
     // Get the length buffer of type append
     private int getLengthBuffer(ref ComputeBuffer buffer)
     {
@@ -148,6 +237,20 @@ public class MarchingCubes
                     default: return vertexC;
                 }
             }
+        }
+    }
+
+    public struct ChunkGPUCallbackData
+    {
+        public MinMaxTerrainLevel terrainLevel;
+        public Mesh mesh;
+        public ComputeBuffer[] buffers; //triangle, layers, biomes
+
+        public ChunkGPUCallbackData(MinMaxTerrainLevel terrainLevel, Mesh mesh, ComputeBuffer[] buffers) : this()
+        {
+            this.terrainLevel = terrainLevel;
+            this.mesh = mesh;
+            this.buffers = buffers;
         }
     }
 }
