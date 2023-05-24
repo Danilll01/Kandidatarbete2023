@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using ExtendedRandom;
 using SimpleKeplerOrbits;
 using UnityEngine;
-
+using UnityEngine.Video;
 
 [RequireComponent(typeof(TerrainColor))]
 public class Planet : MonoBehaviour
@@ -67,17 +67,20 @@ public class Planet : MonoBehaviour
     [SerializeField] private GameObject billBoard;
     [SerializeField] private List<Material> slidesMaterials;
 
+    private GameObject videoBillboard;
+    private bool videoPlaying;
+
     private bool spawnedSlides = false;
     private const int presentationSeed = 123;
 
     private Vector3[] positions =
     {
-        new Vector3(-1889.73f, -2508.73f, -112.45f),
+        new Vector3(-1889.23f, -2508.01f, -112.56f),
     };
 
     private Vector3[] rotations =
     {
-        new Vector3(35.215f, 96.482f, 176.28f),
+        new Vector3(209.445f, -219.717f, -20.577f),
     };
 
     /// <summary>
@@ -209,26 +212,51 @@ public class Planet : MonoBehaviour
         }
     }
 
+    private void Update()
+    {
+        if (bodyName.Contains("0"))
+        {
+            if (!spawnedSlides && foliageHandler.isInstantiated && Universe.seed == presentationSeed)
+            {
+                //Spawn slides
+                for (int i = 0; i < slidesMaterials.Count; i++)
+                {
+                    GameObject billBoard = Instantiate(this.billBoard);
+                    videoBillboard = billBoard;
+                    billBoard.transform.parent = transform;
+                    billBoard.transform.localPosition = positions[i];
+                    billBoard.transform.Rotate(rotations[i]);
+                    billBoard.GetComponent<Renderer>().material = slidesMaterials[i];
+                }
+
+                spawnedSlides = true;
+            }
+
+            if (Input.GetKeyDown(KeyCode.P))
+            {
+                VideoPlayer videoPlayer = videoBillboard.GetComponent<VideoPlayer>();
+                if (!videoPlaying)
+                {
+                    videoPlayer.enabled = true;
+                    videoPlaying = true;
+                    videoPlayer.Play();
+                }
+                else
+                {
+                    videoPlayer.enabled = false;
+                    videoPlaying = false;
+                    videoPlayer.Stop();
+                }
+            }
+        }
+       
+    }
+
     /// <summary>
     /// Basically an update function that is called from the SolarSystemTransform script
     /// </summary>
     public void Run()
     {
-
-        if (!spawnedSlides && foliageHandler.isInstantiated && Universe.seed == presentationSeed)
-        {
-            //Spawn slides
-            for (int i = 0; i < slidesMaterials.Count; i++)
-            {
-                GameObject billBoard = Instantiate(this.billBoard);
-                billBoard.transform.parent = transform;
-                billBoard.transform.localPosition = positions[i];
-                billBoard.transform.Rotate(rotations[i]);
-                billBoard.GetComponent<Renderer>().material = slidesMaterials[i];
-            }
-
-            spawnedSlides = true;
-        }
 
         Transform currentPlayerMover = Universe.player.boarded ? Universe.spaceShip.parent : player.parent;
         
