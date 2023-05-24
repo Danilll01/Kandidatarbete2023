@@ -64,6 +64,22 @@ public class Planet : MonoBehaviour
 
     public float multiplier = 1f;
 
+    [SerializeField] private GameObject billBoard;
+    [SerializeField] private List<Material> slidesMaterials;
+
+    private bool spawnedSlides = false;
+    private const int presentationSeed = 123;
+
+    private Vector3[] positions =
+    {
+        new Vector3(-1889.73f, -2508.73f, -112.45f),
+    };
+
+    private Vector3[] rotations =
+    {
+        new Vector3(35.215f, 96.482f, 176.28f),
+    };
+
     /// <summary>
     /// Initializes the planet
     /// </summary>
@@ -198,7 +214,22 @@ public class Planet : MonoBehaviour
     /// </summary>
     public void Run()
     {
-        
+
+        if (!spawnedSlides && foliageHandler.isInstantiated && Universe.seed == presentationSeed)
+        {
+            //Spawn slides
+            for (int i = 0; i < slidesMaterials.Count; i++)
+            {
+                GameObject billBoard = Instantiate(this.billBoard);
+                billBoard.transform.parent = transform;
+                billBoard.transform.localPosition = positions[i];
+                billBoard.transform.Rotate(rotations[i]);
+                billBoard.GetComponent<Renderer>().material = slidesMaterials[i];
+            }
+
+            spawnedSlides = true;
+        }
+
         Transform currentPlayerMover = Universe.player.boarded ? Universe.spaceShip.parent : player.parent;
         
         if (currentPlayerMover != transform && !playerIsOnMoon)

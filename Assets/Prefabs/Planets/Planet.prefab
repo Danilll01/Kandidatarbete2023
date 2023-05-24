@@ -97,6 +97,11 @@ MonoBehaviour:
   solarSystemRotationActive: 0
   playerIsOnMoon: 0
   activeMoonIndex: 0
+  multiplier: 1
+  billBoard: {fileID: 5548395820777189946, guid: adec20e7c7dbc9a4c8d98f199396c4f6,
+    type: 3}
+  slidesMaterials:
+  - {fileID: 2100000, guid: 82c983773a51cce4fa1c80d50ec4015e, type: 2}
 --- !u!114 &3175307376905995560
 MonoBehaviour:
   m_ObjectHideFlags: 0
