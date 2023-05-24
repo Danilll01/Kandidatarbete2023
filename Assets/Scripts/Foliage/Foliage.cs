@@ -299,17 +299,19 @@ public class Foliage : MonoBehaviour
         GameObject spawnedObject;
         for (int i = 0; i < objectsPerBatchedSpawn; i++)
         {
-            if (objectsToSpawn.Count > 0)
+            if (objectsToSpawn.Count == 0)
             {
-                objectToSpawn = objectsToSpawn.Dequeue();
-
-                spawnedObject = Instantiate(objectToSpawn.prefab, objectToSpawn.position, objectToSpawn.rotation, transform);
-
-                //spawnedObject.name += objectToSpawn.biome;
-                spawnedObject.transform.localScale *= random.Value(0.7f, 1.4f);
-
-                objectsNr++;
+                break;
             }
+
+            objectToSpawn = objectsToSpawn.Dequeue();
+
+            spawnedObject = Instantiate(objectToSpawn.prefab, objectToSpawn.position, objectToSpawn.rotation, transform);
+
+            //spawnedObject.name += objectToSpawn.biome;
+            spawnedObject.transform.localScale *= random.Value(0.7f, 1.4f);
+
+            objectsNr++;
         }
     }
 
