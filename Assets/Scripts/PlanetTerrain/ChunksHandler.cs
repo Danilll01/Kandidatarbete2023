@@ -134,14 +134,18 @@ public class ChunksHandler : MonoBehaviour
         }
 
         // Only update the chunks if the player is close to the planet
-        if (playerOnPlanet)
-            UpdateChunksVisibility();
+        if (!playerOnPlanet)
+        {
+            return;
+        }
+        Debug.Log("Update");
+        UpdateChunksVisibility();
 
         // Update chunk geometry if needed
         var lowChunkJobs =     new List<(Chunk, (AsyncGPUReadbackRequest, MarchingCubes.ChunkGPUCallbackData))>();
         var mediumChunkJobs =  new List<(Chunk, (AsyncGPUReadbackRequest, MarchingCubes.ChunkGPUCallbackData))>();
         var highChunkJobs =    new List<(Chunk, (AsyncGPUReadbackRequest, MarchingCubes.ChunkGPUCallbackData))>();
-        Vector3 playerPos = Universe.player.transform.position;
+        Vector3 playerPos = player.boarded ? Universe.spaceShip.localPosition : player.transform.localPosition;
         foreach (Chunk chunk in chunksHighRes)
         {
             if (!chunk.initialized) continue;
