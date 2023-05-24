@@ -44,6 +44,12 @@ public class ChunksHandler : MonoBehaviour
     private int index = 0;
     [SerializeField] private int maxChunkChecksPerFrame = 50;
 
+    //Chunk work
+    bool chunkWorkActive = false;
+    List<(Chunk, (AsyncGPUReadbackRequest, MarchingCubes.ChunkGPUCallbackData))> lowChunkJobs = new List<(Chunk, (AsyncGPUReadbackRequest, MarchingCubes.ChunkGPUCallbackData))>();
+    List<(Chunk, (AsyncGPUReadbackRequest, MarchingCubes.ChunkGPUCallbackData))> mediumChunkJobs = new List<(Chunk, (AsyncGPUReadbackRequest, MarchingCubes.ChunkGPUCallbackData))>();
+    List<(Chunk, (AsyncGPUReadbackRequest, MarchingCubes.ChunkGPUCallbackData))> highChunkJobs = new List<(Chunk, (AsyncGPUReadbackRequest, MarchingCubes.ChunkGPUCallbackData))>();
+
     enum ChunkResolution
     {
         High,
@@ -255,10 +261,34 @@ public class ChunksHandler : MonoBehaviour
 
     private void UpdateChunksResolution()
     {
-        // Update chunk geometry if needed
-        var lowChunkJobs = new List<(Chunk, (AsyncGPUReadbackRequest, MarchingCubes.ChunkGPUCallbackData))>();
-        var mediumChunkJobs = new List<(Chunk, (AsyncGPUReadbackRequest, MarchingCubes.ChunkGPUCallbackData))>();
-        var highChunkJobs = new List<(Chunk, (AsyncGPUReadbackRequest, MarchingCubes.ChunkGPUCallbackData))>();
+        if (chunkWorkActive)
+        {
+            if (!ChunkWorkDone())
+            {
+                return;
+            }
+            foreach ((Chunk chunk, (AsyncGPUReadbackRequest request, MarchingCubes.ChunkGPUCallbackData data)) in highChunkJobs)
+            {
+                marchingCubes.GenerateMeshAsyncCallback(data);
+
+                chunk.UpdateMesh(data.mesh, highRes.resolution);
+            }
+            foreach ((Chunk chunk, (AsyncGPUReadbackRequest request, MarchingCubes.ChunkGPUCallbackData data)) in mediumChunkJobs)
+            {
+                marchingCubes.GenerateMeshAsyncCallback(data);
+
+                chunk.UpdateMesh(data.mesh, mediumRes.resolution);
+            }
+            foreach ((Chunk chunk, (AsyncGPUReadbackRequest request, MarchingCubes.ChunkGPUCallbackData data)) in lowChunkJobs)
+            {
+                marchingCubes.GenerateMeshAsyncCallback(data);
+
+                chunk.UpdateMesh(data.mesh, lowRes.resolution);
+            }
+        }
+        lowChunkJobs = new List<(Chunk, (AsyncGPUReadbackRequest, MarchingCubes.ChunkGPUCallbackData))>();
+        mediumChunkJobs = new List<(Chunk, (AsyncGPUReadbackRequest, MarchingCubes.ChunkGPUCallbackData))>();
+        highChunkJobs = new List<(Chunk, (AsyncGPUReadbackRequest, MarchingCubes.ChunkGPUCallbackData))>();
         Vector3 playerPos = player.boarded ? Universe.spaceShip.localPosition : player.transform.localPosition;
         foreach (Chunk chunk in chunksHighRes)
         {
@@ -305,40 +335,34 @@ public class ChunksHandler : MonoBehaviour
                 lowChunkJobs.Add(chunkJob);
             }
         }
+        chunkWorkActive = true;
+    }
+
+    private bool ChunkWorkDone()
+    {
         //Wait for GPU jobs to complete
-        foreach ((Chunk chunk, (AsyncGPUReadbackRequest request, MarchingCubes.ChunkGPUCallbackData data)) in highChunkJobs)
+        foreach ((_, (AsyncGPUReadbackRequest request, _)) in highChunkJobs)
         {
-            Debug.Log("High complete");
-            while (!request.done)
+            if (!request.done)
             {
-                request.Update();
+                return false;
             }
-            marchingCubes.GenerateMeshAsyncCallback(data);
-
-            chunk.UpdateMesh(data.mesh, highRes.resolution);
         }
-        foreach ((Chunk chunk, (AsyncGPUReadbackRequest request, MarchingCubes.ChunkGPUCallbackData data)) in mediumChunkJobs)
+        foreach ((_, (AsyncGPUReadbackRequest request, _)) in mediumChunkJobs)
         {
-            Debug.Log("Medium complete");
-            while (!request.done)
+            if (!request.done)
             {
-                request.Update();
+                return false;
             }
-            marchingCubes.GenerateMeshAsyncCallback(data);
-
-            chunk.UpdateMesh(data.mesh, mediumRes.resolution);
         }
-        foreach ((Chunk chunk, (AsyncGPUReadbackRequest request, MarchingCubes.ChunkGPUCallbackData data)) in lowChunkJobs)
+        foreach ((_, (AsyncGPUReadbackRequest request, _)) in lowChunkJobs)
         {
-            Debug.Log("Low complete");
-            while (!request.done)
+            if (!request.done)
             {
-                request.Update();
+                return false;
             }
-            marchingCubes.GenerateMeshAsyncCallback(data);
-
-            chunk.UpdateMesh(data.mesh, lowRes.resolution);
         }
+        return true;
     }
 
     private bool CheckIfPointBIsBelowPointA(Vector3 a, Vector3 b, Vector3 up)
