@@ -98,10 +98,17 @@ MonoBehaviour:
   playerIsOnMoon: 0
   activeMoonIndex: 0
   multiplier: 1
+  billboards:
+  - billBoardID: 0
+    activeMaterialIndex: 0
+    billboard: {fileID: 0}
+    slidesMaterials:
+    - {fileID: 2100000, guid: 82c983773a51cce4fa1c80d50ec4015e, type: 2}
+    - {fileID: 2100000, guid: 65fc9e288f6a2424c82667847b7fcd0b, type: 2}
+    - {fileID: 2100000, guid: 5c8a4edcf944efe45bdec97d92ee4b3f, type: 2}
   billBoard: {fileID: 5548395820777189946, guid: adec20e7c7dbc9a4c8d98f199396c4f6,
     type: 3}
-  slidesMaterials:
-  - {fileID: 2100000, guid: 82c983773a51cce4fa1c80d50ec4015e, type: 2}
+  billBoardWithVideoIndex: 0
 --- !u!114 &3175307376905995560
 MonoBehaviour:
   m_ObjectHideFlags: 0
