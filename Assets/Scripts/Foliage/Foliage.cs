@@ -2,6 +2,8 @@ using UnityEngine;
 using ExtendedRandom;
 using Noise;
 using System.Collections.Generic;
+using Unity.Collections;
+using Unity.Jobs;
 
 public class Foliage : MonoBehaviour
 {
@@ -165,13 +167,24 @@ public class Foliage : MonoBehaviour
         float radius = foliageHandler.PlanetRadius;
         float waterRadius = foliageHandler.WaterRadius;
 
-        // Loops though all spots for this chunk
-        foreach(Vector3 spot in plantSpots)
+        // Set up raycasts
+        int rayCount = plantSpots.Length;
+        var results = new NativeArray<RaycastHit>(rayCount, Allocator.TempJob);
+        var commands = new NativeArray<RaycastCommand>(rayCount, Allocator.TempJob);
+        for (int i = 0; i < rayCount; i++)
         {
-            // Shots a ray towards the center of the planet 
-            Vector3 rayOrigin = spot + planetPos;
-            Ray ray = new Ray(rayOrigin, planetPos - rayOrigin);
-            Physics.Raycast(ray, out RaycastHit hit);
+            Vector3 origin = plantSpots[i] + planetPos;
+            Vector3 direction = planetPos - origin;
+            commands[i] = new RaycastCommand(origin, direction);
+        }
+        // Send them off
+        JobHandle rayHandle = RaycastCommand.ScheduleBatch(commands, results, 1);
+        rayHandle.Complete();
+
+        for (int i = 0; i < rayCount; i++)
+        {
+            RaycastHit hit = results[i];
+            Vector3 rayOrigin = commands[i].from;
 
             if (foliageHandler.debug)
             {
@@ -200,7 +213,6 @@ public class Foliage : MonoBehaviour
                 if (foliageHandler.debug) Debug.Log("Foliage break");
                 break;
             }
-                
         }
         if(foliageHandler.debug) Debug.Log("Hits: " + hits + " %: " + hits / (float)positionArrayLength * 100f);
         
@@ -208,6 +220,10 @@ public class Foliage : MonoBehaviour
         plantSpots = null;
         // Update debug menu
         OnEnable();
+
+        // Dispose of batch arrays
+        results.Dispose();
+        commands.Dispose();
     }
 
     // On land
