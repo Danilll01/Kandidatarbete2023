@@ -65,7 +65,6 @@ public class Planet : MonoBehaviour
     /// <summary>
     /// Initializes the planet
     /// </summary>
-    /// <param name="player">The player</param>
     /// <param name="randomSeed">Seed to be used</param>
     /// <param name="spawn">True if the player will spawn on the planet</param>
     public void Initialize(int randomSeed, bool spawn)
@@ -112,7 +111,7 @@ public class Planet : MonoBehaviour
         // Init water
         if (willGeneratePlanetLife)
         {
-            waterDiameter = Mathf.Abs((threshold / 255 - 1) * 2 * radius * waterLevel);
+            waterDiameter = Mathf.Abs((threshold / 255 - 1) * 2 * radius * waterLevel) * rand.Value(0.99f, 1.01f);
         }
         else
         {
