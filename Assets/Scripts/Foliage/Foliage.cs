@@ -221,7 +221,7 @@ public class Foliage : MonoBehaviour
         }
         else
         {
-            if (heightAboveSea < planetMaxHeight * 0.8 && !planet.name.Contains("Moon"))
+            if (heightAboveSea < planetMaxHeight * 0.8 && planet.willGeneratePlanetLife)
             {
                 BelowAngle(hit, rayOrigin, heightAboveSea);
             } else
