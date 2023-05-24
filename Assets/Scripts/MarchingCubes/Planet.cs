@@ -64,9 +64,9 @@ public class Planet : MonoBehaviour
 
     public float multiplier = 1f;
 
+    [SerializeField] private BillboardStruct[] billboards;
     [SerializeField] private GameObject billBoard;
-    [SerializeField] private List<Material> slidesMaterials;
-
+    [SerializeField] private int billBoardWithVideoIndex;
     private GameObject videoBillboard;
     private bool videoPlaying;
 
@@ -219,14 +219,19 @@ public class Planet : MonoBehaviour
             if (!spawnedSlides && foliageHandler.isInstantiated && Universe.seed == presentationSeed)
             {
                 //Spawn slides
-                for (int i = 0; i < slidesMaterials.Count; i++)
+                for (int i = 0; i < billboards.Length; i++)
                 {
                     GameObject billBoard = Instantiate(this.billBoard);
-                    videoBillboard = billBoard;
+                    if (i == billBoardWithVideoIndex)
+                    {
+                        videoBillboard = billBoard;
+                    }
+                    billboards[i].billboard = billBoard;
+                    billboards[i].activeMaterialIndex = 0;
                     billBoard.transform.parent = transform;
                     billBoard.transform.localPosition = positions[i];
                     billBoard.transform.Rotate(rotations[i]);
-                    billBoard.GetComponent<Renderer>().material = slidesMaterials[i];
+                    billBoard.GetComponent<Renderer>().material = billboards[i].slidesMaterials[0];
                 }
 
                 spawnedSlides = true;
@@ -248,8 +253,48 @@ public class Planet : MonoBehaviour
                     videoPlayer.Stop();
                 }
             }
+
+            if (Input.GetKeyDown(KeyCode.B))
+            {
+                int activeBillboardIndex = GetClosestBillboard();
+
+                Material[] billboardMaterials = billboards[activeBillboardIndex].slidesMaterials;
+
+                billboards[activeBillboardIndex].activeMaterialIndex = billboards[activeBillboardIndex].activeMaterialIndex - 1;
+                billboards[activeBillboardIndex].billboard.GetComponent<MeshRenderer>().material = billboardMaterials[billboards[activeBillboardIndex].activeMaterialIndex];
+                Debug.Log("Back, index: " + billboards[activeBillboardIndex].activeMaterialIndex);
+
+            }
+
+            if (Input.GetKeyDown(KeyCode.N))
+            {
+                int activeBillboardIndex = GetClosestBillboard();
+
+                Material[] billboardMaterials = billboards[activeBillboardIndex].slidesMaterials;
+
+                billboards[activeBillboardIndex].activeMaterialIndex = billboards[activeBillboardIndex].activeMaterialIndex + 1;
+                billboards[activeBillboardIndex].billboard.GetComponent<MeshRenderer>().material = billboardMaterials[billboards[activeBillboardIndex].activeMaterialIndex];
+                Debug.Log("Front, index: " + billboards[activeBillboardIndex].activeMaterialIndex);
+            }
         }
-       
+    }
+
+    private int GetClosestBillboard()
+    {
+        int closestBillboardIndex = -1;
+        float closestDistance = float.MaxValue;
+
+        for (int i = 0; i < billboards.Length; i++)
+        {
+            float distance = (billboards[i].billboard.transform.position - player.position).magnitude;
+            if (distance < closestDistance)
+            {
+                closestDistance = distance;
+                closestBillboardIndex = i;
+            }
+        }
+
+        return closestBillboardIndex;
     }
 
     /// <summary>
@@ -501,4 +546,14 @@ public class Planet : MonoBehaviour
             }
         }
     }
+}
+
+
+[Serializable]
+public struct BillboardStruct
+{
+    public int billBoardID;
+    public int activeMaterialIndex;
+    [HideInInspector] public GameObject billboard;
+    public Material[] slidesMaterials;
 }
