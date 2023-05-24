@@ -106,15 +106,8 @@ public class Planet : MonoBehaviour
             marchingCubes = new MarchingCubes(biomeSeed, 1, meshGenerator, threshold, radius, terrainLayers, biomeSettings);
         }
 
-        // Init water
-        if (willGeneratePlanetLife)
-        {
-            waterDiameter = Mathf.Abs((threshold / 255 - 1) * 2 * radius * waterLevel) * rand.Value(0.99f, 1.01f);
-        }
-        else
-        {
-            waterDiameter = 0;
-        }
+        // Set water diameter
+        waterDiameter = Mathf.Abs((threshold / 255 - 1) * 2 * radius * waterLevel) * rand.Value(0.99f, 1.01f);
 
         terrainLevel.SetMin(Mathf.Abs((waterDiameter + 1) / 2));
 
@@ -339,6 +332,8 @@ public class Planet : MonoBehaviour
         gameObject.name = bodyName;
         
         biomeSettings.distance = Vector3.Distance(transform.position, Universe.sunPosition.position);
+
+        chunksHandler.SetupMaterial();
     }
 
     public BiomeSettings Biome => biomeSettings;
