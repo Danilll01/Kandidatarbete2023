@@ -69,8 +69,6 @@ public class Planet : MonoBehaviour
     /// <param name="spawn">True if the player will spawn on the planet</param>
     public void Initialize(int randomSeed, bool spawn)
     {
-        biomeSettings.distance = positionRelativeToSunDistance;
-
         rand = new RandomX(randomSeed);
 
         player = Universe.player.transform;
@@ -339,13 +337,13 @@ public class Planet : MonoBehaviour
         
         mass = density * volume;
         gameObject.name = bodyName;
+        
+        biomeSettings.distance = Vector3.Distance(transform.position, Universe.sunPosition.position);
     }
 
     public BiomeSettings Biome => biomeSettings;
 
     public Color GetSeaColor => waterHandler.GetWaterColor;
-
-    public float DistanceToSun => Vector3.Distance(transform.position, Universe.sunPosition.position);
 
     /// <summary>
     /// Set up the components for solar system orbit

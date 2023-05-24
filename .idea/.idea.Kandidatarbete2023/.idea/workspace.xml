@@ -4,10 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Changed the wind noise to the one I think sounded best">
+    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Atmospheres can now be generated on planets without water and life with a low chance">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Kandidatarbete2023/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Atmosphere/AtmosphereHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Atmosphere/AtmosphereHandler.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/MarchingCubes/Planet.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/MarchingCubes/Planet.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Solar System/SpawnPlanets.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Solar System/SpawnPlanets.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -38,6 +38,8 @@
   </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Atmosphere/AtmosphereHandler.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://D:/Unity/Projects/Kandidatarbete2023/Assets/Scripts/Atmosphere/AtmosphereHandler.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://D:/Unity/Projects/Kandidatarbete2023/Assets/Scripts/MarchingCubes/Planet.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipCameraMover.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipController.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/MovementControllers/SpaceShipTransition.cs" root0="FORCE_HIGHLIGHTING" />
@@ -157,19 +159,7 @@
       <workItem from="1682861907126" duration="33741000" />
       <workItem from="1682952065891" duration="20322000" />
       <workItem from="1683036367666" duration="5009000" />
-      <workItem from="1684884911158" duration="1751000" />
-    </task>
-    <task id="LOCAL−00064" summary="Added camera positions for spaceship">
-      <created>1682717370166</created>
-      <option name="number" value="LOCAL−00064" />
-      <option name="presentableId" value="LOCAL−00064" />
-      <updated>1682717370166</updated>
-    </task>
-    <task id="LOCAL−00065" summary="Added cinamachine free spin camera">
-      <created>1682720355229</created>
-      <option name="number" value="LOCAL−00065" />
-      <option name="presentableId" value="LOCAL−00065" />
-      <updated>1682720355229</updated>
+      <workItem from="1684884911158" duration="4614000" />
     </task>
     <task id="LOCAL−00066" summary="Camera now spins around in a satisfying way">
       <created>1682725936431</created>
@@ -453,7 +443,19 @@
       <option name="presentableId" value="LOCAL−00112" />
       <updated>1683586666400</updated>
     </task>
-    <option name="localTasksCounter" value="113" />
+    <task id="LOCAL−00113" summary="Added random water height on planets">
+      <created>1684886736654</created>
+      <option name="number" value="LOCAL−00113" />
+      <option name="presentableId" value="LOCAL−00113" />
+      <updated>1684886736655</updated>
+    </task>
+    <task id="LOCAL−00114" summary="Atmospheres can now be generated on planets without water and life with a low chance">
+      <created>1684886763026</created>
+      <option name="number" value="LOCAL−00114" />
+      <option name="presentableId" value="LOCAL−00114" />
+      <updated>1684886763026</updated>
+    </task>
+    <option name="localTasksCounter" value="115" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -475,8 +477,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="Unhooked mouse input from framerate for the space ship" />
-    <MESSAGE value="Added player boarded check" />
     <MESSAGE value="Solar system is not super messed up anymore" />
     <MESSAGE value="Fixed ship rotation and pause screen" />
     <MESSAGE value="Fixed ship rotation when leaving a planet" />
@@ -500,6 +500,8 @@
     <MESSAGE value="Fixed code displaying text" />
     <MESSAGE value="Temperature now shows correctly in GUI" />
     <MESSAGE value="Added more color gradiants" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added more color gradiants" />
+    <MESSAGE value="Added random water height on planets" />
+    <MESSAGE value="Atmospheres can now be generated on planets without water and life with a low chance" />
+    <option name="LAST_COMMIT_MESSAGE" value="Atmospheres can now be generated on planets without water and life with a low chance" />
   </component>
 </project>

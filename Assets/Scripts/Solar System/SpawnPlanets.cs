@@ -74,11 +74,11 @@ public class SpawnPlanets : MonoBehaviour
 
         Universe.sunPosition = sun.transform;
         
-        InstantiatePlanets(sun);
+        InstantiatePlanets();
     }
 
     // Instantiates the all the components on all the planets
-    private void InstantiatePlanets(GameObject sun)
+    private void InstantiatePlanets()
     {
         // Create all other planets and helpers
         for (int i = 0; i < numberOfPlanets; i++)
@@ -101,10 +101,11 @@ public class SpawnPlanets : MonoBehaviour
             
             planet.gameObject.name = "Planet " + i + " body";
 
-            int nrOfMoonsForPlanet = GetNrOfMoonsToGenerate();
-            InstantiateMoons(planetBody, nrOfMoonsForPlanet);
             planetOrbitObject.transform.localPosition = CalculatePositionForPlanet(planetBody, i);
-            planetBody.positionRelativeToSunDistance = planetOrbitObject.transform.localPosition.magnitude;
+            float sunDistance = planetOrbitObject.transform.localPosition.magnitude;
+            int nrOfMoonsForPlanet = GetNrOfMoonsToGenerate();
+            InstantiateMoons(planetBody, nrOfMoonsForPlanet, sunDistance);
+            planetBody.positionRelativeToSunDistance = sunDistance;
             planetBody.Initialize(random.Next(), i == spawnPlanetIndex);
             planetBody.SetUpPlanetValues();
             bodies.Add(planetBody);
@@ -175,7 +176,7 @@ public class SpawnPlanets : MonoBehaviour
     }
 
     // Instantiate moons for the given planet
-    private void InstantiateMoons(Planet parentPlanet, int numberOfMoons)
+    private void InstantiateMoons(Planet parentPlanet, int numberOfMoons, float sunDistance)
     {
         GameObject moonsParent = new GameObject("Moons parent")
         {
@@ -205,7 +206,7 @@ public class SpawnPlanets : MonoBehaviour
             Planet moonBody = moon.GetComponent<Planet>();
             moonBody.bodyName = "Moon " + i;
             moonBody.radius = random.Next((int)(parentPlanet.radius / 5), (int)((parentPlanet.radius / 2) + 1));
-            moonBody.positionRelativeToSunDistance = parentPlanet.positionRelativeToSunDistance;
+            moonBody.positionRelativeToSunDistance = sunDistance;
             moonBody.Initialize(random.Next(), false); //False here because we don't spawn on moons
             moonBody.SetUpPlanetValues();
             parentPlanet.moons.Add(moonBody);
