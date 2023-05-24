@@ -14,7 +14,7 @@ public class Foliage : MonoBehaviour
     // Spawning spots
     private Vector3[] plantSpots = null;
 
-    private PriorityQueue<FoliageSpawnData> objectsToSpawn = new PriorityQueue<FoliageSpawnData>();
+    private Queue<FoliageSpawnData> objectsToSpawn = new Queue<FoliageSpawnData>();
     private FoliageSpawnData objectToSpawn;
     private int objectsPerBatchedSpawn = 80;
 
@@ -344,7 +344,7 @@ public class Foliage : MonoBehaviour
                 rotation *= Quaternion.Euler(0, random.Next(0, 360), 0);
 
                 // Add spawn position to priority queue
-                objectsToSpawn.Enqueue(new FoliageSpawnData(hit.point - (hit.point.normalized * 0.1f), rotation, treeObject, name), distToPlayer);
+                objectsToSpawn.Enqueue(new FoliageSpawnData(hit.point - (hit.point.normalized * 0.1f), rotation, treeObject, name));
                 
                 if (foliageHandler.debug) Debug.DrawLine(localpos, hit.point, Color.yellow, 10f);
             }
