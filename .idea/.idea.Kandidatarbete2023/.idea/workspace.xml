@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Added more color gradients" />
+    <list default="true" id="a744f6db-b657-4283-b6d8-242b5f217e27" name="Changes" comment="Hmmmm" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -156,19 +156,7 @@
       <workItem from="1682861907126" duration="33741000" />
       <workItem from="1682952065891" duration="20322000" />
       <workItem from="1683036367666" duration="5009000" />
-      <workItem from="1684884911158" duration="5082000" />
-    </task>
-    <task id="LOCAL−00068" summary="Free cam is now always centered at the back from the start when you use it">
-      <created>1682734583831</created>
-      <option name="number" value="LOCAL−00068" />
-      <option name="presentableId" value="LOCAL−00068" />
-      <updated>1682734583831</updated>
-    </task>
-    <task id="LOCAL−00069" summary="Added Comments">
-      <created>1682773476964</created>
-      <option name="number" value="LOCAL−00069" />
-      <option name="presentableId" value="LOCAL−00069" />
-      <updated>1682773476964</updated>
+      <workItem from="1684884911158" duration="5749000" />
     </task>
     <task id="LOCAL−00070" summary="Fixed landing bug when entering and leaving planet">
       <created>1682819195675</created>
@@ -452,7 +440,19 @@
       <option name="presentableId" value="LOCAL−00116" />
       <updated>1684890017780</updated>
     </task>
-    <option name="localTasksCounter" value="117" />
+    <task id="LOCAL−00117" summary="Changed title slightly">
+      <created>1684891786481</created>
+      <option name="number" value="LOCAL−00117" />
+      <option name="presentableId" value="LOCAL−00117" />
+      <updated>1684891786481</updated>
+    </task>
+    <task id="LOCAL−00118" summary="Hmmmm">
+      <created>1684891795325</created>
+      <option name="number" value="LOCAL−00118" />
+      <option name="presentableId" value="LOCAL−00118" />
+      <updated>1684891795325</updated>
+    </task>
+    <option name="localTasksCounter" value="119" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -474,8 +474,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="Fixed ship rotation when leaving a planet" />
-    <MESSAGE value="Changed moon and planet orbiting speed when on planet / moon" />
     <MESSAGE value="Fixed skybox rotation" />
     <MESSAGE value="Added new crosshair options" />
     <MESSAGE value="You can now toggle between different ship movement strategies" />
@@ -499,6 +497,8 @@
     <MESSAGE value="Atmospheres can now be generated on planets without water and life with a low chance" />
     <MESSAGE value="Fixed moon temperature" />
     <MESSAGE value="Added more color gradients" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added more color gradients" />
+    <MESSAGE value="Changed title slightly" />
+    <MESSAGE value="Hmmmm" />
+    <option name="LAST_COMMIT_MESSAGE" value="Hmmmm" />
   </component>
 </project>
