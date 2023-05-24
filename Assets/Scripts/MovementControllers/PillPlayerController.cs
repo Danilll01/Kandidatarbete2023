@@ -173,7 +173,9 @@ public class PillPlayerController : MonoBehaviour
     // Updates the temperature gauge on screen
     private void HandleTemperatureGUI()
     {
-        temperatureHUD.SetText(Biomes.GetTemperatureAt(attractor.biomeSettings, attractor.transform.InverseTransformPoint(transform.position)));
+        temperatureHUD.SetText(
+            Biomes.GetTemperatureAt(
+                attractor.biomeSettings, transform.position));
     }
     
     private void HandleMovement()
