@@ -45,8 +45,8 @@ public class ChunksHandler : MonoBehaviour
     [SerializeField] private int maxChunkChecksPerFrame = 50;
 
     //Chunk work
-    bool chunkWorkActive = false;
-    List<(Chunk, int resolution, (AsyncGPUReadbackRequest, MarchingCubes.ChunkGPUCallbackData))> chunkJobs;
+    private bool chunkWorkActive = false;
+    private List<(Chunk, int resolution, (AsyncGPUReadbackRequest, MarchingCubes.ChunkGPUCallbackData))> chunkJobs;
 
     enum ChunkResolution
     {
