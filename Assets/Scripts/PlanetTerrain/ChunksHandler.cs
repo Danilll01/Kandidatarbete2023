@@ -144,13 +144,14 @@ public class ChunksHandler : MonoBehaviour
             return;
         }
 
+        UpdateChunksVisibility();
+
         // Only update chunks if player has moved a certain distance
         Vector3 playerPos = player.boarded ? Universe.spaceShip.localPosition : player.transform.localPosition;
         if (Vector3.Magnitude(playerPos - lastChunkUpdatePlayerPosition) < 1.8f)
             return;
         lastChunkUpdatePlayerPosition = playerPos;
 
-        UpdateChunksVisibility();
         UpdateChunksResolution();
 
         //Foliage & creatures
