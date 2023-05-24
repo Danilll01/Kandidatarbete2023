@@ -47,6 +47,7 @@ public class ChunksHandler : MonoBehaviour
     //Chunk work
     private bool chunkWorkActive = false;
     private List<(Chunk, int resolution, (AsyncGPUReadbackRequest, MarchingCubes.ChunkGPUCallbackData))> chunkJobs;
+    private Vector3 lastChunkUpdatePlayerPosition = Vector3.zero;
 
     enum ChunkResolution
     {
@@ -142,6 +143,13 @@ public class ChunksHandler : MonoBehaviour
         {
             return;
         }
+
+        // Only update chunks if player has moved a certain distance
+        Vector3 playerPos = player.boarded ? Universe.spaceShip.localPosition : player.transform.localPosition;
+        if (Vector3.Magnitude(playerPos - lastChunkUpdatePlayerPosition) < 1.8f)
+            return;
+        lastChunkUpdatePlayerPosition = playerPos;
+
         UpdateChunksVisibility();
         UpdateChunksResolution();
 
@@ -218,14 +226,7 @@ public class ChunksHandler : MonoBehaviour
     }
     private void UpdateChunksVisibility()
     {
-
         Vector3 playerPos = player.boarded ? Universe.spaceShip.localPosition : player.transform.localPosition;
-        
-        // Only update chunks if player has moved a certain distance
-        if (Vector3.Magnitude(playerPos - playerLastPosition) < 1.8f)
-            return;
-            
-        playerLastPosition = playerPos;
 
         Vector3 cutoffPoint;
         if (playerPos.magnitude > (planetRadius + 30f))
