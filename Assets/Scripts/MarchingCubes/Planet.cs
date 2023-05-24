@@ -143,7 +143,7 @@ public class Planet : MonoBehaviour
             atmosphereHandler.Initialize(radius, waterDiameter / 2, willGeneratePlanetLife, rand.Next());
         }
 
-        biomeColors = chunksHandler.terrainColor.biomeColors;
+        
     }
 
     // Get the initial distances from the moons to the planet
@@ -339,6 +339,8 @@ public class Planet : MonoBehaviour
         biomeSettings.distance = Vector3.Distance(transform.position, Universe.sunPosition.position);
 
         chunksHandler.SetupMaterial();
+
+        biomeColors = chunksHandler.terrainColor.biomeColors;
     }
 
     public BiomeSettings Biome => biomeSettings;
