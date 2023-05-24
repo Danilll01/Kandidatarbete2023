@@ -370,5 +370,8 @@ public class Foliage : MonoBehaviour
         return Instantiate(prefab, hit.point, rotation, transform);
     }
 
-    
+    public bool FinishedSpawning
+    {
+        get { return objectsToSpawn.Count == 0; }
+    }
 }

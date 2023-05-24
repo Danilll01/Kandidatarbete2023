@@ -9,7 +9,6 @@ public class CreatureSpawning : MonoBehaviour
     [SerializeField] private int packsPerBatchedSpawn = 5;
 
     public bool initialized = false;
-    public bool finishedSpawning = false;
 
     // Spawning spots
     private Vector3[] creatureSpots = null;
@@ -144,7 +143,6 @@ public class CreatureSpawning : MonoBehaviour
             {
                 if (totalIndex >= objectsToSpawn.Count || objectsToSpawn.Count == 0)
                 {
-                    finishedSpawning = true;
                     return;
                 }
                 SpawnPack newPack = objectsToSpawn.Dequeue();
@@ -292,5 +290,10 @@ public class CreatureSpawning : MonoBehaviour
             packToSpawn = new CreaturePack();
             return false;
         }
+    }
+
+    public bool FinishedSpawning
+    {
+        get { return objectsToSpawn.Count == 0; }
     }
 }
