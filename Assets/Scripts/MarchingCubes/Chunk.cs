@@ -91,7 +91,7 @@ public class Chunk : MonoBehaviour
         return numVerts;
     }
 
-    private void Update()
+    /*private void Update()
     {
         if (!initialized || lowChunkResChunks) return;
         
@@ -149,7 +149,7 @@ public class Chunk : MonoBehaviour
             meshCollider.enabled = false;
             UpdateMesh(lowRes.resolution);
         }
-    }
+    }*/
 
     /// <summary>
     /// Sets the material of the chunk
@@ -196,5 +196,51 @@ public class Chunk : MonoBehaviour
             meshCollider.sharedMesh = mesh;
 
         return numVerts;
+    }
+
+    public void UpdateMesh(Mesh mesh, int resolution)
+    {
+        currentRes = resolution;
+
+        Destroy(meshFilter.sharedMesh);
+
+        meshFilter.sharedMesh = mesh;
+
+        if (marchingCubes.chunkResolution != 1 && meshCollider.enabled)
+            meshCollider.sharedMesh = mesh;
+
+        int numVerts = mesh.vertexCount;
+        
+        if (resolution == highRes.resolution && planet.willGeneratePlanetLife)
+        {
+            if (!foliage.initialized)
+            {
+                Debug.Log("Initialize foliage");
+                if (numVerts > 500)
+                    foliage.Initialize(numVerts, position, random.Next(), planet);
+            }
+            if (!creatures.initialized)
+            {
+                if (numVerts > 500)
+                    creatures.Initialize(numVerts, position, random.Next());
+            }
+        }
+    }
+
+    public void SetActivated(bool state)
+    {
+        meshCollider.enabled = state;
+        foliageGameObject.SetActive(state);
+        creatureGameObject.SetActive(state);
+    }
+
+    public bool HasResolution(int resolution)
+    {
+        return currentRes == resolution;
+    }
+
+    public int Index
+    {
+        get { return index; }
     }
 }

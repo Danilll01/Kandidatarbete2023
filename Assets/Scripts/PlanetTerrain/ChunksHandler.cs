@@ -6,6 +6,7 @@ using System.Threading;
 using ExtendedRandom;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class ChunksHandler : MonoBehaviour
 {
@@ -135,6 +136,99 @@ public class ChunksHandler : MonoBehaviour
         // Only update the chunks if the player is close to the planet
         if (playerOnPlanet)
             UpdateChunksVisibility();
+
+        // Update chunk geometry if needed
+        var lowChunkJobs =     new List<(Chunk, (AsyncGPUReadbackRequest, MarchingCubes.ChunkGPUCallbackData))>();
+        var mediumChunkJobs =  new List<(Chunk, (AsyncGPUReadbackRequest, MarchingCubes.ChunkGPUCallbackData))>();
+        var highChunkJobs =    new List<(Chunk, (AsyncGPUReadbackRequest, MarchingCubes.ChunkGPUCallbackData))>();
+        Vector3 playerPos = Universe.player.transform.position;
+        foreach (Chunk chunk in chunksHighRes)
+        {
+            if (!chunk.initialized) continue;
+
+            //MBY only check sometimes or only so many, idk
+
+            float playerDistance = Vector3.Distance(playerPos, chunk.position);
+            if (playerDistance < highRes.upperRadius)
+            {
+                if (chunk.HasResolution(highRes.resolution))
+                {
+                    continue;
+                }
+                Debug.Log("High found");
+                chunk.SetActivated(true);
+                Mesh mesh = new Mesh();
+                var chunkJob = (chunk, marchingCubes.GenerateMeshAsync(terrainLevel, chunk.Index, highRes.resolution, mesh));
+                highChunkJobs.Add(chunkJob);
+            }
+            else if (mediumRes.lowerRadius < playerDistance && playerDistance < mediumRes.upperRadius)
+            {
+                if (chunk.HasResolution(mediumRes.resolution))
+                {
+                    continue;
+                }
+                Debug.Log("Medium found");
+                chunk.SetActivated(false);
+                Mesh mesh = new Mesh();
+                var chunkJob = (chunk, marchingCubes.GenerateMeshAsync(terrainLevel, chunk.Index, mediumRes.resolution, mesh));
+                mediumChunkJobs.Add(chunkJob);
+
+            }
+            else if (lowRes.lowerRadius < playerDistance)
+            {
+                if (chunk.HasResolution(lowRes.resolution))
+                {
+                    continue;
+                }
+                Debug.Log("Low found");
+                chunk.SetActivated(false);
+                Mesh mesh = new Mesh();
+                var chunkJob = (chunk, marchingCubes.GenerateMeshAsync(terrainLevel, chunk.Index, lowRes.resolution, mesh));
+                lowChunkJobs.Add(chunkJob);
+            }
+        }
+        //Wait for GPU jobs to complete
+        foreach ((Chunk chunk, (AsyncGPUReadbackRequest request, MarchingCubes.ChunkGPUCallbackData data)) in highChunkJobs)
+        {
+            Debug.Log("High complete");
+            request.WaitForCompletion();
+            marchingCubes.GenerateMeshAsyncCallback(data);
+
+            chunk.UpdateMesh(data.mesh, highRes.resolution);
+        }
+        foreach ((Chunk chunk, (AsyncGPUReadbackRequest request, MarchingCubes.ChunkGPUCallbackData data)) in mediumChunkJobs)
+        {
+            Debug.Log("Medium complete");
+            request.WaitForCompletion();
+            marchingCubes.GenerateMeshAsyncCallback(data);
+
+            chunk.UpdateMesh(data.mesh, mediumRes.resolution);
+        }
+        foreach ((Chunk chunk, (AsyncGPUReadbackRequest request, MarchingCubes.ChunkGPUCallbackData data)) in lowChunkJobs)
+        {
+            Debug.Log("Low complete");
+            request.WaitForCompletion();
+            marchingCubes.GenerateMeshAsyncCallback(data);
+
+            chunk.UpdateMesh(data.mesh, lowRes.resolution);
+        }
+
+        //Foliage & creatures
+        foreach (Chunk chunk in chunksHighRes)
+        {
+            if (!chunk.initialized)
+            {
+                continue;
+            }
+            if (chunk.creatures.initialized && !chunk.creatures.FinishedSpawning)
+            {
+                chunk.creatures.BatchedSpawning();
+            }
+            if (chunk.foliage.initialized && !chunk.foliage.FinishedSpawning)
+            {
+                chunk.foliage.BatchedSpawning();
+            }
+        }
     }
 
     private void SetupChunks(int chunkResolution, ref List<Chunk> chunksList, ref GameObject chunksParent, ChunkResolution res)
