@@ -147,7 +147,7 @@ public static class Biomes
     /// Evaluates biomemap with given <paramref name="biomeSettings"/> at <paramref name="position"/> 
     /// with the <paramref name="distance"/> from the sun.
     /// </summary>
-    public static BiomeValue EvaluteBiomeMap(BiomeSettings biomeSettings, Vector3 position, float distance)
+    public static BiomeValue EvaluteBiomeMap(BiomeSettings biomeSettings, Vector3 position)
     {
         // Normalize position
         position = Vector3.Normalize(position);
@@ -169,7 +169,8 @@ public static class Biomes
             z: (position.z + biomeSettings.seed) * biomeSettings.treeFrequency) + 1) * .5f;
 
         // Generate temperature map
-        float tempValue = 1 - Mathf.Abs(position.y);
+        // Calculate multiplier for temperatue (due to distance from sun)
+        float tempValue = (1 - biomeSettings.farTemperature) / (biomeSettings.temperatureDecay * biomeSettings.temperatureDecay * biomeSettings.distance + 1) + biomeSettings.farTemperature;
 
         // Rough up the temperature map
         tempValue *= 1 - biomeSettings.temperatureRoughness + biomeSettings.temperatureRoughness * tempNoise;
@@ -177,8 +178,8 @@ public static class Biomes
         // Change temperature with mountains
         tempValue *= (1 - mountainNoise) * biomeSettings.mountainTemperatureAffect + 1 - biomeSettings.mountainTemperatureAffect;
 
-        // Calculate multiplier for temperatue (due to distance from sun)
-        tempValue *= (1 - biomeSettings.farTemperature) / (biomeSettings.temperatureDecay * biomeSettings.temperatureDecay * distance + 1) + biomeSettings.farTemperature;
+        // Variation due to latitude
+        tempValue=Mathf.Clamp((tempValue - Mathf.Abs(position.y) * 0.2f + 0.1f), 0, 1);
 
         //Return the calculated values
         return new BiomeValue(mountainNoise, tempValue, treeNoise);
@@ -203,8 +204,11 @@ public static class Biomes
     /// Evaluates the value of the temperaturemap at <paramref name="position"/> with <paramref name="biomeSettings"/> 
     /// with the <paramref name="distance"/> to the sun.
     /// </summary>
-    public static float EvaluteBiomeMapTemperature(BiomeSettings biomeSettings, Vector3 position, float distance)
+    public static float EvaluteBiomeMapTemperature(BiomeSettings biomeSettings, Vector3 position)
     {
+        // Distance towards sun
+        float distance = biomeSettings.distance;
+        
         // Normalize position
         position = Vector3.Normalize(position);
 
@@ -220,7 +224,8 @@ public static class Biomes
             z: position.z * biomeSettings.temperatureFrequency) + 1) * .5f;
 
         // Generate temperature map
-        float tempValue = 1 - Mathf.Abs(position.y);
+        // Calculate multiplier for temperatue (due to distance from sun)
+        float tempValue = (1 - biomeSettings.farTemperature) / (biomeSettings.temperatureDecay * biomeSettings.temperatureDecay * biomeSettings.distance + 1) + biomeSettings.farTemperature;
 
         // Rough up the temperature map
         tempValue *= 1 - biomeSettings.temperatureRoughness + biomeSettings.temperatureRoughness * tempNoise;
@@ -228,8 +233,8 @@ public static class Biomes
         // Change temperature with mountains
         tempValue *= (1 - mountainNoise) * biomeSettings.mountainTemperatureAffect + 1 - biomeSettings.mountainTemperatureAffect;
 
-        // Calculate multiplier for temperatue (due to distance from sun)
-        tempValue *= (1 - biomeSettings.farTemperature) / (biomeSettings.temperatureDecay * biomeSettings.temperatureDecay * distance + 1) + biomeSettings.farTemperature;
+        // Variation due to latitude
+        tempValue = Mathf.Clamp((tempValue - Mathf.Abs(position.y) * 0.2f + 0.1f), 0, 1);
 
         return tempValue;
     }
@@ -252,11 +257,13 @@ public static class Biomes
     /// <summary>
     /// Converts from the scale of 0 to 1 to celcius. Returns float.MinValue and float.MaxValue if below or above the defined range
     /// </summary>
+    /// <param name="tmp">The biomesetting value</param>
+    /// <returns>The temperature in celcius</returns>
     public static float GetTemperatureCelcius(float tmp)
     {
         //Defined points of temperature and their celcius equivalent. Points between are linearly interpolated.
         //Anything above or below these points are considered too high/low and will return error values
-        (float temperature, float celcius)[] tempGuides = { (0.03f, -20f), (0.15f, 5f), (0.5f, 30f), (0.7f, 60f) };
+        (float temperature, float celcius)[] tempGuides = { (0f, -273f), (0.1f, -50f), (0.4f, 0f), (0.6f, 40f), (0.85f, 300f), (1f, 500f)};
 
         if (tempGuides[0].temperature > tmp)
         {
@@ -287,22 +294,24 @@ public static class Biomes
         switch (tmp)
         {
             case float.MinValue:
-                return "ERROR LOW °C";
+                return "ERROR LOW Â°C";
             case float.MaxValue:
-                return "ERROR HIGH °C";
+                return "ERROR HIGH Â°C";
             default:
-                tmp = (float)Math.Round(tmp * 100) / 100;
-                return tmp.ToString() + " °C";
+                tmp = (float)Math.Round(tmp);
+                return tmp + " Â°C";
         }
     }
 
     /// <summary>
-    /// Creates a representation of the temperature at <paramref name="position"/> with <paramref name="biomeSettings"/> in celcius
-    /// with the <paramref name="distance"/> to the sun.
+    /// Gets the temperature at the local position given from the biomesettings
     /// </summary>
-    public static string GetTemperatureAt(BiomeSettings biomeSettings, Vector3 position, float distance)
+    /// <param name="biomeSettings">The biome settings to use</param>
+    /// <param name="position">Local position of player around planet</param>
+    /// <returns></returns>
+    public static string GetTemperatureAt(BiomeSettings biomeSettings, Vector3 position)
     {
-        float tmp = EvaluteBiomeMapTemperature(biomeSettings, position, distance);
+        float tmp = EvaluteBiomeMapTemperature(biomeSettings, position);
 
         return GetTemperature(tmp);
     }

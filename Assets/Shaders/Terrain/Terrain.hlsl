@@ -87,10 +87,9 @@ void EvaluateBiomeMap_float(float3 UV, float Distance, float Seed, float Tempera
     float tempNoise = (simplex.Evaluate(float3(UV.x, UV.y + Seed, UV.z) * TemperatureFrequency) + 1) * .5f;
     float treeNoise = (simplex.Evaluate(float3(UV.x, UV.y, UV.z + Seed) * TreeFrequency) + 1) * .5f;
     
-    float distanceTemp = (1 - FarTemperature) / (TemperatureDecay * TemperatureDecay * Distance + 1) + FarTemperature;
-    
     // Generate temperature map
-    float tempValue = distanceTemp - abs(UV.y) * sqrt(1 - distanceTemp);
+    // Calculate multiplier for temperatue (due to distance from sun)
+    float tempValue = (1 - FarTemperature) / (TemperatureDecay * TemperatureDecay * Distance + 1) + FarTemperature;
     
     // Rough up the temperature map
     tempValue *= 1 - TemperatureRoughness + TemperatureRoughness * tempNoise;
@@ -98,8 +97,9 @@ void EvaluateBiomeMap_float(float3 UV, float Distance, float Seed, float Tempera
     // Change temperature with mountains
     tempValue *= (1 - mountainNoise) * MountainTemperatureAffect + 1 - MountainTemperatureAffect;
     
-    // Calculate multiplier for temperatue (due to distance from sun)
-    //tempValue *= (1 - FarTemperature) / (TemperatureDecay * TemperatureDecay * Distance + 1) + FarTemperature;
+    
+    // Variation due to latitude
+    tempValue = clamp((tempValue - abs(UV.y) * 0.2f + 0.1f), 0, 1);
     
     //Return the calculated values
     Out = float3(mountainNoise, tempValue, treeNoise);

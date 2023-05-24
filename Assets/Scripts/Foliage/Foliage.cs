@@ -221,7 +221,7 @@ public class Foliage : MonoBehaviour
         }
         else
         {
-            if (heightAboveSea < planetMaxHeight * 0.8 && !planet.name.Contains("Moon"))
+            if (heightAboveSea < planetMaxHeight * 0.8 && planet.willGeneratePlanetLife)
             {
                 BelowAngle(hit, rayOrigin, heightAboveSea);
             } else
@@ -263,7 +263,7 @@ public class Foliage : MonoBehaviour
     private void BelowAngle(RaycastHit hit, Vector3 rayOrigin, float heightAboveSea)
     {
         //Remove packs based on local biome
-        BiomeValue localBiome = Biomes.EvaluteBiomeMap(planet.Biome, hit.point, planet.DistanceToSun);
+        BiomeValue localBiome = Biomes.EvaluteBiomeMap(planet.Biome, hit.point);
         int[] acceptableIndexes = new int[foliageHandler.foliageCollections.Length];
 
         int j = 0;

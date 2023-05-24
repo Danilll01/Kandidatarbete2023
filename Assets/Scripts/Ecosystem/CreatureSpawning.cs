@@ -252,7 +252,7 @@ public class CreatureSpawning : MonoBehaviour
         int total = 0;
 
         //Remove packs based on local biome
-        BiomeValue localBiome = Biomes.EvaluteBiomeMap(planet.Biome, position, planet.DistanceToSun);
+        BiomeValue localBiome = Biomes.EvaluteBiomeMap(planet.Biome, position);
         List<CreaturePack> acceptablePacks = new List<CreaturePack>();
         for (int i = 0; i < creatureHandler.packs.Length; i++)
         {
