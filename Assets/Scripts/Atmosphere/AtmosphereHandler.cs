@@ -64,7 +64,7 @@ public class AtmosphereHandler : MonoBehaviour
         atmosphereMaterial.SetFloat(PlanetRadius, planetNormalRadius);
         atmosphereMaterial.SetFloat(AtmosphereRadius, planetRadius * 1.25f - 10);
 
-        if (atmosphereExists)
+        if (atmosphereExists || random.Value() < 0.2)
         {
             SelectAtmosphereColors();
             SelectMaxLightIntensity();

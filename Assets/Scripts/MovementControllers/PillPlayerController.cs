@@ -21,6 +21,7 @@ public class PillPlayerController : MonoBehaviour
     private Rigidbody body;
     [HideInInspector] public bool paused;
     [SerializeField] private new HandleAudio audio;
+    [SerializeField] private TextMeshProUGUI temperatureHUD;
 
     [Header("Movement")]
     public float movementSpeed;
@@ -110,6 +111,10 @@ public class PillPlayerController : MonoBehaviour
                 if (!ReferenceEquals(attractor, playerWater.planet)) playerWater.UpdatePlanet(attractor);
                 playerWater.UpdateWater(transform.position);
             }
+            else
+            {
+                temperatureHUD.SetText("---");
+            }
         }
         
         #if DEBUG || UNITY_EDITOR
@@ -118,7 +123,7 @@ public class PillPlayerController : MonoBehaviour
             DisplayDebug.AddOrSetDebugVariable("Current planet", attractor.bodyName);
             DisplayDebug.AddOrSetDebugVariable("Planet radius", attractor.radius.ToString());
             DisplayDebug.AddOrSetDebugVariable("Planet mass", attractor.mass.ToString());
-            BiomeValue currentBiome = Biomes.EvaluteBiomeMap(attractor.Biome, transform.position, attractor.DistanceToSun);
+            BiomeValue currentBiome = Biomes.EvaluteBiomeMap(attractor.Biome, transform.position);
             DisplayDebug.AddOrSetDebugVariable("Biome: Mountain", currentBiome.mountains.ToString());
             DisplayDebug.AddOrSetDebugVariable("Biome: Temperature", currentBiome.temperature + " " + Biomes.GetTemperature(currentBiome.temperature));
             DisplayDebug.AddOrSetDebugVariable("Biome: Trees", currentBiome.trees.ToString());
@@ -231,11 +236,9 @@ public class PillPlayerController : MonoBehaviour
     // Updates the temperature gauge on screen
     private void HandleTemperatureGUI()
     {
-        float temperature = Biomes.EvaluteBiomeMapTemperature(attractor.biomeSettings, attractor.transform.InverseTransformPoint(transform.position));
-        temperature = Mathf.Lerp(-273, 1000, temperature);
-        
-        // Potential temperature converter to celsius
-        //temperatureHUD.SetText(Biomes.GetTemperatureAt(attractor.biomeSettings, attractor.transform.InverseTransformPoint(transform.position)));
+        temperatureHUD.SetText(
+            Biomes.GetTemperatureAt(
+                attractor.biomeSettings, transform.position));
     }
     
     private void HandleMovement()

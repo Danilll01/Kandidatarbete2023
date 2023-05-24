@@ -80,12 +80,12 @@ MonoBehaviour:
   biomeSettings:
     seed: 1
     distance: 0
-    temperatureDecay: 0.002
+    temperatureDecay: 0.0026
     farTemperature: -0.5
     mountainFrequency: 1.2
-    temperatureFrequency: 1.28
-    temperatureRoughness: 0.367
-    mountainTemperatureAffect: 0.229
+    temperatureFrequency: 0.6
+    temperatureRoughness: 0.1
+    mountainTemperatureAffect: 0.15
     treeFrequency: 1
   orbitSpeed: 0
   rotationAxis: {x: 0, y: 0, z: 0}
@@ -529,6 +529,35 @@ MonoBehaviour:
       m_Mode: 0
       m_NumColorKeys: 6
       m_NumAlphaKeys: 2
+  - gradient:
+      serializedVersion: 2
+      key0: {r: 0.371262, g: 0.9716981, b: 0.6406439, a: 1}
+      key1: {r: 0.46538463, g: 0.9433962, b: 0.28034887, a: 1}
+      key2: {r: 1, g: 1, b: 1, a: 0}
+      key3: {r: 1, g: 1, b: 1, a: 0}
+      key4: {r: 1, g: 1, b: 1, a: 0}
+      key5: {r: 1, g: 1, b: 1, a: 0}
+      key6: {r: 0, g: 0, b: 0, a: 0}
+      key7: {r: 0, g: 0, b: 0, a: 0}
+      ctime0: 0
+      ctime1: 63415
+      ctime2: 63415
+      ctime3: 63415
+      ctime4: 63415
+      ctime5: 63415
+      ctime6: 0
+      ctime7: 0
+      atime0: 0
+      atime1: 58982
+      atime2: 0
+      atime3: 0
+      atime4: 0
+      atime5: 0
+      atime6: 0
+      atime7: 0
+      m_Mode: 0
+      m_NumColorKeys: 2
+      m_NumAlphaKeys: 2
   polarCapGradients:
   - gradient:
       serializedVersion: 2
@@ -736,35 +765,6 @@ MonoBehaviour:
   equatorGradients:
   - gradient:
       serializedVersion: 2
-      key0: {r: 1, g: 0.769744, b: 0.2688679, a: 1}
-      key1: {r: 1, g: 0.53494525, b: 0, a: 1}
-      key2: {r: 0, g: 0, b: 0, a: 0}
-      key3: {r: 0, g: 0, b: 0, a: 0}
-      key4: {r: 0, g: 0, b: 0, a: 0}
-      key5: {r: 0, g: 0, b: 0, a: 0}
-      key6: {r: 0, g: 0, b: 0, a: 0}
-      key7: {r: 0, g: 0, b: 0, a: 0}
-      ctime0: 0
-      ctime1: 65535
-      ctime2: 0
-      ctime3: 0
-      ctime4: 0
-      ctime5: 0
-      ctime6: 0
-      ctime7: 0
-      atime0: 0
-      atime1: 65535
-      atime2: 0
-      atime3: 0
-      atime4: 0
-      atime5: 0
-      atime6: 0
-      atime7: 0
-      m_Mode: 0
-      m_NumColorKeys: 2
-      m_NumAlphaKeys: 2
-  - gradient:
-      serializedVersion: 2
       key0: {r: 1, g: 0.58040833, b: 0, a: 1}
       key1: {r: 1, g: 0.2326675, b: 0, a: 1}
       key2: {r: 0, g: 0, b: 0, a: 0}
@@ -878,6 +878,93 @@ MonoBehaviour:
       atime7: 0
       m_Mode: 0
       m_NumColorKeys: 2
+      m_NumAlphaKeys: 2
+  - gradient:
+      serializedVersion: 2
+      key0: {r: 0.41509432, g: 0.41509432, b: 0.41509432, a: 1}
+      key1: {r: 0.532174, g: 0.7264151, b: 0.24328054, a: 1}
+      key2: {r: 0.7666738, g: 0.7924528, b: 0.3999644, a: 0}
+      key3: {r: 0.7735849, g: 0.7735849, b: 0.7735849, a: 0}
+      key4: {r: 0, g: 0, b: 0, a: 0}
+      key5: {r: 0, g: 0, b: 0, a: 0}
+      key6: {r: 0, g: 0, b: 0, a: 0}
+      key7: {r: 0, g: 0, b: 0, a: 0}
+      ctime0: 0
+      ctime1: 15420
+      ctime2: 42983
+      ctime3: 65535
+      ctime4: 0
+      ctime5: 0
+      ctime6: 0
+      ctime7: 0
+      atime0: 0
+      atime1: 65535
+      atime2: 0
+      atime3: 0
+      atime4: 0
+      atime5: 0
+      atime6: 0
+      atime7: 0
+      m_Mode: 0
+      m_NumColorKeys: 4
+      m_NumAlphaKeys: 2
+  - gradient:
+      serializedVersion: 2
+      key0: {r: 0.39226595, g: 0.398126, b: 0.4056604, a: 1}
+      key1: {r: 0.25482082, g: 0.38679248, b: 0.21711464, a: 1}
+      key2: {r: 0.41331434, g: 0.6792453, b: 0.49073726, a: 0}
+      key3: {r: 0.8862745, g: 0.5294118, b: 0.75047827, a: 0}
+      key4: {r: 0, g: 0, b: 0, a: 0}
+      key5: {r: 0, g: 0, b: 0, a: 0}
+      key6: {r: 0, g: 0, b: 0, a: 0}
+      key7: {r: 0, g: 0, b: 0, a: 0}
+      ctime0: 0
+      ctime1: 6554
+      ctime2: 26214
+      ctime3: 65535
+      ctime4: 0
+      ctime5: 0
+      ctime6: 0
+      ctime7: 0
+      atime0: 0
+      atime1: 65535
+      atime2: 0
+      atime3: 0
+      atime4: 0
+      atime5: 0
+      atime6: 0
+      atime7: 0
+      m_Mode: 0
+      m_NumColorKeys: 4
+      m_NumAlphaKeys: 2
+  - gradient:
+      serializedVersion: 2
+      key0: {r: 0.8207547, g: 0.6912435, b: 0.59233713, a: 1}
+      key1: {r: 0.7830189, g: 0.7430922, b: 0.61681205, a: 1}
+      key2: {r: 0.754717, g: 0.754717, b: 0.754717, a: 0}
+      key3: {r: 0.8862745, g: 0.5294118, b: 0.75047827, a: 0}
+      key4: {r: 0, g: 0, b: 0, a: 0}
+      key5: {r: 0, g: 0, b: 0, a: 0}
+      key6: {r: 0, g: 0, b: 0, a: 0}
+      key7: {r: 0, g: 0, b: 0, a: 0}
+      ctime0: 0
+      ctime1: 39514
+      ctime2: 65535
+      ctime3: 65535
+      ctime4: 0
+      ctime5: 0
+      ctime6: 0
+      ctime7: 0
+      atime0: 0
+      atime1: 65535
+      atime2: 0
+      atime3: 0
+      atime4: 0
+      atime5: 0
+      atime6: 0
+      atime7: 0
+      m_Mode: 0
+      m_NumColorKeys: 3
       m_NumAlphaKeys: 2
 --- !u!114 &6742904736247445569
 MonoBehaviour:
