@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using ExtendedRandom;
+using TMPro;
 using UnityEngine.Rendering;
 using UnityEngine.Serialization;
 
@@ -14,7 +15,8 @@ public class PillPlayerController : MonoBehaviour
     [SerializeField] private SkinnedMeshRenderer playerModelHead;
     private Rigidbody body;
     [HideInInspector] public bool paused;
-    [SerializeField] private HandleAudio audio;
+    [SerializeField] private new HandleAudio audio;
+    [SerializeField] private TextMeshProUGUI temperatureHUD;
 
     [Header("Movement")]
     public float movementSpeed;
@@ -99,8 +101,13 @@ public class PillPlayerController : MonoBehaviour
             }
             if (attractor != null)
             {
+                HandleTemperatureGUI();
                 if (!ReferenceEquals(attractor, playerWater.planet)) playerWater.UpdatePlanet(attractor);
                 playerWater.UpdateWater(transform.position);
+            }
+            else
+            {
+                temperatureHUD.SetText("---");
             }
         }
         
@@ -110,7 +117,7 @@ public class PillPlayerController : MonoBehaviour
             DisplayDebug.AddOrSetDebugVariable("Current planet", attractor.bodyName);
             DisplayDebug.AddOrSetDebugVariable("Planet radius", attractor.radius.ToString());
             DisplayDebug.AddOrSetDebugVariable("Planet mass", attractor.mass.ToString());
-            BiomeValue currentBiome = Biomes.EvaluteBiomeMap(attractor.Biome, transform.position, attractor.DistanceToSun);
+            BiomeValue currentBiome = Biomes.EvaluteBiomeMap(attractor.Biome, transform.position);
             DisplayDebug.AddOrSetDebugVariable("Biome: Mountain", currentBiome.mountains.ToString());
             DisplayDebug.AddOrSetDebugVariable("Biome: Temperature", currentBiome.temperature + " " + Biomes.GetTemperature(currentBiome.temperature));
             DisplayDebug.AddOrSetDebugVariable("Biome: Trees", currentBiome.trees.ToString());
@@ -161,8 +168,16 @@ public class PillPlayerController : MonoBehaviour
             isSprinting = false;
             animationRig.localPosition += new Vector3(0,0,0.015f);
         }
-        
     }
+
+    // Updates the temperature gauge on screen
+    private void HandleTemperatureGUI()
+    {
+        temperatureHUD.SetText(
+            Biomes.GetTemperatureAt(
+                attractor.biomeSettings, transform.position));
+    }
+    
     private void HandleMovement()
     {
         //Keep old Y velocity. Rotates to world space, grabs y velocity and rotates back to planet orientation

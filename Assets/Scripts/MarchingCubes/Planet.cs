@@ -65,13 +65,10 @@ public class Planet : MonoBehaviour
     /// <summary>
     /// Initializes the planet
     /// </summary>
-    /// <param name="player">The player</param>
     /// <param name="randomSeed">Seed to be used</param>
     /// <param name="spawn">True if the player will spawn on the planet</param>
     public void Initialize(int randomSeed, bool spawn)
     {
-        biomeSettings.distance = positionRelativeToSunDistance;
-
         rand = new RandomX(randomSeed);
 
         player = Universe.player.transform;
@@ -109,15 +106,8 @@ public class Planet : MonoBehaviour
             marchingCubes = new MarchingCubes(biomeSeed, 1, meshGenerator, threshold, radius, terrainLayers, biomeSettings);
         }
 
-        // Init water
-        if (willGeneratePlanetLife)
-        {
-            waterDiameter = Mathf.Abs((threshold / 255 - 1) * 2 * radius * waterLevel);
-        }
-        else
-        {
-            waterDiameter = 0;
-        }
+        // Set water diameter
+        waterDiameter = Mathf.Abs((threshold / 255 - 1) * 2 * radius * waterLevel) * rand.Value(0.99f, 1.01f);
 
         terrainLevel.SetMin(Mathf.Abs((waterDiameter + 1) / 2));
 
@@ -125,7 +115,7 @@ public class Planet : MonoBehaviour
 
         if (foliageHandler != null)
         {
-            foliageHandler.Initialize(this);
+            foliageHandler.Initialize(this, rand.Next());
         }
 
         if (creatureHandler != null)
@@ -340,13 +330,15 @@ public class Planet : MonoBehaviour
         
         mass = density * volume;
         gameObject.name = bodyName;
+        
+        biomeSettings.distance = Vector3.Distance(transform.position, Universe.sunPosition.position);
+
+        chunksHandler.SetupMaterial();
     }
 
     public BiomeSettings Biome => biomeSettings;
 
     public Color GetSeaColor => waterHandler.GetWaterColor;
-
-    public float DistanceToSun => Vector3.Distance(transform.position, Universe.sunPosition.position);
 
     /// <summary>
     /// Set up the components for solar system orbit
