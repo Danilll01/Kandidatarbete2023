@@ -46,9 +46,7 @@ public class ChunksHandler : MonoBehaviour
 
     //Chunk work
     bool chunkWorkActive = false;
-    List<(Chunk, (AsyncGPUReadbackRequest, MarchingCubes.ChunkGPUCallbackData))> lowChunkJobs = new List<(Chunk, (AsyncGPUReadbackRequest, MarchingCubes.ChunkGPUCallbackData))>();
-    List<(Chunk, (AsyncGPUReadbackRequest, MarchingCubes.ChunkGPUCallbackData))> mediumChunkJobs = new List<(Chunk, (AsyncGPUReadbackRequest, MarchingCubes.ChunkGPUCallbackData))>();
-    List<(Chunk, (AsyncGPUReadbackRequest, MarchingCubes.ChunkGPUCallbackData))> highChunkJobs = new List<(Chunk, (AsyncGPUReadbackRequest, MarchingCubes.ChunkGPUCallbackData))>();
+    List<(Chunk, int resolution, (AsyncGPUReadbackRequest, MarchingCubes.ChunkGPUCallbackData))> chunkJobs;
 
     enum ChunkResolution
     {
@@ -267,28 +265,14 @@ public class ChunksHandler : MonoBehaviour
             {
                 return;
             }
-            foreach ((Chunk chunk, (AsyncGPUReadbackRequest request, MarchingCubes.ChunkGPUCallbackData data)) in highChunkJobs)
+            foreach ((Chunk chunk, int resolution, (AsyncGPUReadbackRequest request, MarchingCubes.ChunkGPUCallbackData data)) in chunkJobs)
             {
                 marchingCubes.GenerateMeshAsyncCallback(data);
 
-                chunk.UpdateMesh(data.mesh, highRes.resolution);
-            }
-            foreach ((Chunk chunk, (AsyncGPUReadbackRequest request, MarchingCubes.ChunkGPUCallbackData data)) in mediumChunkJobs)
-            {
-                marchingCubes.GenerateMeshAsyncCallback(data);
-
-                chunk.UpdateMesh(data.mesh, mediumRes.resolution);
-            }
-            foreach ((Chunk chunk, (AsyncGPUReadbackRequest request, MarchingCubes.ChunkGPUCallbackData data)) in lowChunkJobs)
-            {
-                marchingCubes.GenerateMeshAsyncCallback(data);
-
-                chunk.UpdateMesh(data.mesh, lowRes.resolution);
+                chunk.UpdateMesh(data.mesh, resolution);
             }
         }
-        lowChunkJobs = new List<(Chunk, (AsyncGPUReadbackRequest, MarchingCubes.ChunkGPUCallbackData))>();
-        mediumChunkJobs = new List<(Chunk, (AsyncGPUReadbackRequest, MarchingCubes.ChunkGPUCallbackData))>();
-        highChunkJobs = new List<(Chunk, (AsyncGPUReadbackRequest, MarchingCubes.ChunkGPUCallbackData))>();
+        chunkJobs = new List<(Chunk, int resolution, (AsyncGPUReadbackRequest, MarchingCubes.ChunkGPUCallbackData))>();
         Vector3 playerPos = player.boarded ? Universe.spaceShip.localPosition : player.transform.localPosition;
         foreach (Chunk chunk in chunksHighRes)
         {
@@ -297,42 +281,30 @@ public class ChunksHandler : MonoBehaviour
             //MBY only check sometimes or only so many, idk, save 5%
 
             float playerDistance = Vector3.Distance(playerPos, chunk.position);
+            int resolution;
             if (playerDistance < highRes.upperRadius)
             {
-                if (chunk.HasResolution(highRes.resolution))
-                {
-                    continue;
-                }
-                Debug.Log("High found");
-                chunk.SetActivated(true);
-                Mesh mesh = new Mesh();
-                var chunkJob = (chunk, marchingCubes.GenerateMeshAsync(terrainLevel, chunk.Index, highRes.resolution, mesh));
-                highChunkJobs.Add(chunkJob);
+                resolution = highRes.resolution;
             }
             else if (mediumRes.lowerRadius < playerDistance && playerDistance < mediumRes.upperRadius)
             {
-                if (chunk.HasResolution(mediumRes.resolution))
-                {
-                    continue;
-                }
-                Debug.Log("Medium found");
-                chunk.SetActivated(false);
-                Mesh mesh = new Mesh();
-                var chunkJob = (chunk, marchingCubes.GenerateMeshAsync(terrainLevel, chunk.Index, mediumRes.resolution, mesh));
-                mediumChunkJobs.Add(chunkJob);
-
+                resolution = mediumRes.resolution;
             }
             else if (lowRes.lowerRadius < playerDistance)
             {
-                if (chunk.HasResolution(lowRes.resolution))
-                {
-                    continue;
-                }
-                Debug.Log("Low found");
-                chunk.SetActivated(false);
+                resolution = lowRes.resolution;
+            }
+            //No work to be done
+            else
+            {
+                continue;
+            }
+            if (!chunk.HasResolution(resolution))
+            {
+                chunk.SetActivated(true);
                 Mesh mesh = new Mesh();
-                var chunkJob = (chunk, marchingCubes.GenerateMeshAsync(terrainLevel, chunk.Index, lowRes.resolution, mesh));
-                lowChunkJobs.Add(chunkJob);
+                var chunkJob = (chunk, resolution, marchingCubes.GenerateMeshAsync(terrainLevel, chunk.Index, resolution, mesh));
+                chunkJobs.Add(chunkJob);
             }
         }
         chunkWorkActive = true;
@@ -341,21 +313,7 @@ public class ChunksHandler : MonoBehaviour
     private bool ChunkWorkDone()
     {
         //Wait for GPU jobs to complete
-        foreach ((_, (AsyncGPUReadbackRequest request, _)) in highChunkJobs)
-        {
-            if (!request.done)
-            {
-                return false;
-            }
-        }
-        foreach ((_, (AsyncGPUReadbackRequest request, _)) in mediumChunkJobs)
-        {
-            if (!request.done)
-            {
-                return false;
-            }
-        }
-        foreach ((_, (AsyncGPUReadbackRequest request, _)) in lowChunkJobs)
+        foreach ((_, _, (AsyncGPUReadbackRequest request, _)) in chunkJobs)
         {
             if (!request.done)
             {
