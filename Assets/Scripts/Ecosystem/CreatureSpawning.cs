@@ -6,7 +6,7 @@ using UnityEngine;
 public class CreatureSpawning : MonoBehaviour
 {
     [SerializeField] private float terrainSteepnesAngle = 30f;
-    [SerializeField] private int packsPerBatchedSpawn = 5;
+    [SerializeField] private int packsPerBatchedSpawn = 1;
 
     public bool initialized = false;
 
