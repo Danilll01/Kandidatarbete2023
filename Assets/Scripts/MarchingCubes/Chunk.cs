@@ -110,10 +110,10 @@ public class Chunk : MonoBehaviour
             foliageGameObject.SetActive(true);
             creatureGameObject.SetActive(true);
 
+            int numVerts = UpdateMesh(highRes.resolution);
+
             if (planet.willGeneratePlanetLife)
             {
-                int numVerts = UpdateMesh(highRes.resolution);
-
                 if (!foliage.initialized)
                 {
                     if (numVerts > 500)
@@ -130,10 +130,6 @@ public class Chunk : MonoBehaviour
                     creatures.BatchedSpawning();
                 }
                 foliage.BatchedSpawning();
-
-            } else
-            {
-                UpdateMesh(highRes.resolution);
             }
                     
                     
