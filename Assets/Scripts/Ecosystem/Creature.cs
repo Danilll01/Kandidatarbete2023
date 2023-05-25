@@ -30,7 +30,7 @@ public class Creature : MonoBehaviour
     [SerializeField] private float hungerThreshold = 80f;
     [SerializeField] private float thirstThreshold = 80f;
 
-    [SerializeField] private float hungerDecrease = 0.1f;
+    [SerializeField] public float hungerDecrease = 0.1f;
     [SerializeField] private float thirstDecrease = 0.1f;
     
     [SerializeField] private float hungerIncrease = 20f;
