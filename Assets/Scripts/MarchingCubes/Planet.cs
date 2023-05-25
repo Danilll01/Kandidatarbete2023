@@ -71,7 +71,7 @@ public class Planet : MonoBehaviour
     private GameObject videoBoard;
     private bool videoPlaying;
 
-    private bool spawnedSlides = true;
+    private bool spawnedSlides = false;
     private const int presentationSeed = 731597;
 
     private Vector3[] positions =
@@ -222,7 +222,7 @@ public class Planet : MonoBehaviour
 
     private void Update()
     {
-        if (bodyName.Contains("0"))
+        if (bodyName.Contains("2"))
         {
             if (!spawnedSlides && foliageHandler.isInstantiated && Universe.seed == presentationSeed)
             {
