@@ -100,16 +100,86 @@ MonoBehaviour:
   activeMoonIndex: 0
   multiplier: 1
   billboards:
-  - billBoardID: 0
-    activeMaterialIndex: 0
+  - billboardName: Intro
+    billBoardID: 0
+    activeTextureIndex: 0
     billboard: {fileID: 0}
     slidesImages:
-    - {fileID: 2800000, guid: a7cdb889e8de770488e23b08369e2c71, type: 3}
-    - {fileID: 2800000, guid: 81fc7e95c2d86ce429aa4d1e2d52cbbf, type: 3}
-    - {fileID: 2800000, guid: 117fca1d5f34d894bbee18f4e6ecb3c5, type: 3}
+    - {fileID: 2800000, guid: 81485138804c7d949aebfcd8a5fbb76a, type: 3}
+    videoBoard: 0
+    videoClips: []
+  - billboardName: Syfte
+    billBoardID: 1
+    activeTextureIndex: 0
+    billboard: {fileID: 0}
+    slidesImages:
+    - {fileID: 2800000, guid: 43b163e853e020043843ccb1431cd3e7, type: 3}
+    videoBoard: 0
+    videoClips: []
+  - billboardName: Beg + Bidrag
+    billBoardID: 2
+    activeTextureIndex: 0
+    billboard: {fileID: 0}
+    slidesImages:
+    - {fileID: 2800000, guid: 2038cd6e300a64c4495a1d394da1c84e, type: 3}
+    - {fileID: 2800000, guid: 33af000c974687943ab14b47319c3efe, type: 3}
+    videoBoard: 0
+    videoClips: []
+  - billboardName: PCG + MC + Noise
+    billBoardID: 3
+    activeTextureIndex: 0
+    billboard: {fileID: 0}
+    slidesImages:
+    - {fileID: 2800000, guid: 0d33ed7b22e426e4a899623be2fbb35a, type: 3}
+    - {fileID: 2800000, guid: 77ef1f775319a7e48a6cac5504ddce20, type: 3}
+    - {fileID: 2800000, guid: 15cee67927a5ff54090fb99724c6bf74, type: 3}
+    - {fileID: 2800000, guid: 272d7efef0e16e84d8d76a26e4d7a1fa, type: 3}
+    - {fileID: 2800000, guid: 11ed1fe313b03c04dbd3f9e515a7efa9, type: 3}
+    - {fileID: 2800000, guid: f1ee4473dee61f54a8361e62075dc3e7, type: 3}
+    - {fileID: 2800000, guid: 62537ef31bdc01744b43efe0e8392d78, type: 3}
+    - {fileID: 2800000, guid: 39a92f07294dee54f99ac9ed604d29bd, type: 3}
+    - {fileID: 2800000, guid: 5d2a278bc5c695446bf3e20c18db7899, type: 3}
+    - {fileID: 2800000, guid: e278b4e1e6f3d8340b21dfb5a5f8faae, type: 3}
+    - {fileID: 2800000, guid: 8273970e0aa318d44828a3084a570a15, type: 3}
+    videoBoard: 0
+    videoClips: []
+  - billboardName: Video
+    billBoardID: 4
+    activeTextureIndex: 0
+    billboard: {fileID: 0}
+    slidesImages:
+    - {fileID: 2800000, guid: 463931199f4f0514681569034ae372fb, type: 3}
+    videoBoard: 1
+    videoClips:
+    - {fileID: 32900000, guid: 3196a7f7e0fc9d84cb40da072f09878f, type: 3}
+    - {fileID: 32900000, guid: 81c1fa48ad6d79848afdf731cb079e5d, type: 3}
+  - billboardName: Diskussion
+    billBoardID: 5
+    activeTextureIndex: 0
+    billboard: {fileID: 0}
+    slidesImages:
+    - {fileID: 2800000, guid: b686f0f311df4764a86d8e51bd20e279, type: 3}
+    - {fileID: 2800000, guid: 4b9767bbbb116ab41b572fbee2b95f0a, type: 3}
+    videoBoard: 0
+    videoClips: []
+  - billboardName: Sammanfattning
+    billBoardID: 6
+    activeTextureIndex: 0
+    billboard: {fileID: 0}
+    slidesImages:
+    - {fileID: 2800000, guid: 74ffd113673f1e140a921f6906ac3c3a, type: 3}
+    videoBoard: 0
+    videoClips: []
+  - billboardName: Tack
+    billBoardID: 7
+    activeTextureIndex: 0
+    billboard: {fileID: 0}
+    slidesImages:
+    - {fileID: 2800000, guid: 11153baccbe45b343b64c35648cd3f22, type: 3}
+    videoBoard: 0
+    videoClips: []
   billBoard: {fileID: 5548395820777189946, guid: adec20e7c7dbc9a4c8d98f199396c4f6,
     type: 3}
-  billBoardWithVideoIndex: 0
 --- !u!114 &3175307376905995560
 MonoBehaviour:
   m_ObjectHideFlags: 0

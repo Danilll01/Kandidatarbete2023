@@ -67,11 +67,11 @@ public class Planet : MonoBehaviour
 
     [SerializeField] private BillboardStruct[] billboards;
     [SerializeField] private GameObject billBoard;
-    [SerializeField] private int billBoardWithVideoIndex;
-    private GameObject videoBillboard;
+    
+    private GameObject videoBoard;
     private bool videoPlaying;
 
-    private bool spawnedSlides = true;
+    private bool spawnedSlides = false;
     private const int presentationSeed = 731597;
 
     private Vector3[] positions =
@@ -222,7 +222,7 @@ public class Planet : MonoBehaviour
 
     private void Update()
     {
-        if (bodyName.Contains("0"))
+        if (bodyName.Contains("2"))
         {
             if (!spawnedSlides && foliageHandler.isInstantiated && Universe.seed == presentationSeed)
             {
@@ -230,12 +230,12 @@ public class Planet : MonoBehaviour
                 for (int i = 0; i < billboards.Length; i++)
                 {
                     GameObject billBoard = Instantiate(this.billBoard);
-                    if (i == billBoardWithVideoIndex)
-                    {
-                        videoBillboard = billBoard;
-                    }
                     billboards[i].billboard = billBoard;
-                    billboards[i].activeMaterialIndex = 0;
+                    billboards[i].activeTextureIndex = 0;
+                    if (billboards[i].videoBoard)
+                    {
+                        videoBoard = billboards[i].billboard;
+                    }
                     billBoard.transform.parent = transform;
                     billBoard.transform.localPosition = positions[i];
                     billBoard.transform.Rotate(rotations[i]);
@@ -247,7 +247,7 @@ public class Planet : MonoBehaviour
 
             if (Input.GetKeyDown(KeyCode.P))
             {
-                VideoPlayer videoPlayer = videoBillboard.GetComponent<VideoPlayer>();
+                VideoPlayer videoPlayer = videoBoard.GetComponent<VideoPlayer>();
                 if (!videoPlaying)
                 {
                     videoPlayer.enabled = true;
@@ -265,12 +265,21 @@ public class Planet : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.B))
             {
                 int activeBillboardIndex = GetClosestBillboard();
+                BillboardStruct billboardStruct = billboards[activeBillboardIndex];
 
-                Texture2D[] billboardImages = billboards[activeBillboardIndex].slidesImages;
+                if (billboardStruct.videoBoard)
+                {
+                    VideoClip[] billboardVideos = billboardStruct.videoClips;
+                    billboards[activeBillboardIndex].activeTextureIndex = billboards[activeBillboardIndex].activeTextureIndex - 1;
+                    billboards[activeBillboardIndex].billboard.GetComponent<VideoPlayer>().clip = billboardVideos[billboards[activeBillboardIndex].activeTextureIndex];
+                }
+                else
+                {
+                    Texture2D[] billboardImages = billboards[activeBillboardIndex].slidesImages;
 
-                billboards[activeBillboardIndex].activeMaterialIndex = billboards[activeBillboardIndex].activeMaterialIndex - 1;
-                billboards[activeBillboardIndex].billboard.GetComponent<MeshRenderer>().material.mainTexture = billboardImages[billboards[activeBillboardIndex].activeMaterialIndex];
-                Debug.Log("Back, index: " + billboards[activeBillboardIndex].activeMaterialIndex);
+                    billboards[activeBillboardIndex].activeTextureIndex = billboards[activeBillboardIndex].activeTextureIndex - 1;
+                    billboards[activeBillboardIndex].billboard.GetComponent<MeshRenderer>().material.mainTexture = billboardImages[billboards[activeBillboardIndex].activeTextureIndex];
+                }
 
             }
 
@@ -278,11 +287,21 @@ public class Planet : MonoBehaviour
             {
                 int activeBillboardIndex = GetClosestBillboard();
 
-                Texture2D[] billboardImages = billboards[activeBillboardIndex].slidesImages;
+                BillboardStruct billboardStruct = billboards[activeBillboardIndex];
 
-                billboards[activeBillboardIndex].activeMaterialIndex = billboards[activeBillboardIndex].activeMaterialIndex + 1;
-                billboards[activeBillboardIndex].billboard.GetComponent<MeshRenderer>().material.mainTexture = billboardImages[billboards[activeBillboardIndex].activeMaterialIndex];
-                Debug.Log("Front, index: " + billboards[activeBillboardIndex].activeMaterialIndex);
+                if (billboardStruct.videoBoard)
+                {
+                    VideoClip[] billboardVideos = billboardStruct.videoClips;
+                    billboards[activeBillboardIndex].activeTextureIndex = billboards[activeBillboardIndex].activeTextureIndex + 1;
+                    billboards[activeBillboardIndex].billboard.GetComponent<VideoPlayer>().clip = billboardVideos[billboards[activeBillboardIndex].activeTextureIndex];
+                }
+                else
+                {
+                    Texture2D[] billboardImages = billboards[activeBillboardIndex].slidesImages;
+
+                    billboards[activeBillboardIndex].activeTextureIndex = billboards[activeBillboardIndex].activeTextureIndex + 1;
+                    billboards[activeBillboardIndex].billboard.GetComponent<MeshRenderer>().material.mainTexture = billboardImages[billboards[activeBillboardIndex].activeTextureIndex];
+                }
             }
         }
     }
@@ -564,8 +583,11 @@ public class Planet : MonoBehaviour
 [Serializable]
 public struct BillboardStruct
 {
+    public string billboardName;
     public int billBoardID;
-    public int activeMaterialIndex;
+    public int activeTextureIndex;
     [HideInInspector] public GameObject billboard;
     public Texture2D[] slidesImages;
+    public bool videoBoard;
+    public VideoClip[] videoClips;
 }

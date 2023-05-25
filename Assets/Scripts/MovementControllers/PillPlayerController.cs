@@ -173,6 +173,16 @@ public class PillPlayerController : MonoBehaviour
         {
             GameObject newAnimal = SpawnOnChunk(chicken);
         }
+        
+        //Spawn dead fox
+        if (Input.GetKeyDown(KeyCode.O))
+        {
+            GameObject newAnimal = SpawnOnChunk(fox);
+
+            newAnimal.GetComponent<Creature>().RandomizeStats = false;
+            newAnimal.GetComponent<Creature>().hunger = 2;
+            newAnimal.GetComponent<Creature>().hungerDecrease = 0.8f;
+        }
 
         if (Input.GetKeyDown(KeyCode.Z))
         {
