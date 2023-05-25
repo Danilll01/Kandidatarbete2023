@@ -358,6 +358,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: PlayerAstronaut
       objectReference: {fileID: 0}
+    - target: {fileID: 1147752367711628, guid: 2abf19653d633114faedf3b60dc6c39f, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4268597916284530, guid: 2abf19653d633114faedf3b60dc6c39f, type: 3}
       propertyPath: m_RootOrder
       value: 8
@@ -429,6 +433,119 @@ PrefabInstance:
       propertyPath: temperatureHUD
       value: 
       objectReference: {fileID: 784677276}
+    - target: {fileID: 755283109381456697, guid: 2abf19653d633114faedf3b60dc6c39f,
+        type: 3}
+      propertyPath: allCreatures.Array.size
+      value: 18
+      objectReference: {fileID: 0}
+    - target: {fileID: 755283109381456697, guid: 2abf19653d633114faedf3b60dc6c39f,
+        type: 3}
+      propertyPath: allCreatures.Array.data[0]
+      value: 
+      objectReference: {fileID: 1514481875857408, guid: 959cc272e1707a94a82c590c3f170dfa,
+        type: 3}
+    - target: {fileID: 755283109381456697, guid: 2abf19653d633114faedf3b60dc6c39f,
+        type: 3}
+      propertyPath: allCreatures.Array.data[1]
+      value: 
+      objectReference: {fileID: 1514481875857408, guid: 0dc0836199e3cdf4c974a8755234e99b,
+        type: 3}
+    - target: {fileID: 755283109381456697, guid: 2abf19653d633114faedf3b60dc6c39f,
+        type: 3}
+      propertyPath: allCreatures.Array.data[2]
+      value: 
+      objectReference: {fileID: 4623556101495578335, guid: 35ac99dff6947ea49803b114e95b9605,
+        type: 3}
+    - target: {fileID: 755283109381456697, guid: 2abf19653d633114faedf3b60dc6c39f,
+        type: 3}
+      propertyPath: allCreatures.Array.data[3]
+      value: 
+      objectReference: {fileID: 4623556101495578335, guid: 98e625426b3c22841b1b06113d8e47b4,
+        type: 3}
+    - target: {fileID: 755283109381456697, guid: 2abf19653d633114faedf3b60dc6c39f,
+        type: 3}
+      propertyPath: allCreatures.Array.data[4]
+      value: 
+      objectReference: {fileID: 1962661241923896, guid: 7e9ff520eeb53414791ac3716871332b,
+        type: 3}
+    - target: {fileID: 755283109381456697, guid: 2abf19653d633114faedf3b60dc6c39f,
+        type: 3}
+      propertyPath: allCreatures.Array.data[5]
+      value: 
+      objectReference: {fileID: 1962661241923896, guid: 80e4057d7cf0da343bcab0fb71a63539,
+        type: 3}
+    - target: {fileID: 755283109381456697, guid: 2abf19653d633114faedf3b60dc6c39f,
+        type: 3}
+      propertyPath: allCreatures.Array.data[6]
+      value: 
+      objectReference: {fileID: 1294271778169428, guid: e98cab776b592874cad87582bd326a92,
+        type: 3}
+    - target: {fileID: 755283109381456697, guid: 2abf19653d633114faedf3b60dc6c39f,
+        type: 3}
+      propertyPath: allCreatures.Array.data[7]
+      value: 
+      objectReference: {fileID: 1294271778169428, guid: ab2a6f8a208a57b49ab939c59d3a10c3,
+        type: 3}
+    - target: {fileID: 755283109381456697, guid: 2abf19653d633114faedf3b60dc6c39f,
+        type: 3}
+      propertyPath: allCreatures.Array.data[8]
+      value: 
+      objectReference: {fileID: 391536099558741291, guid: bb514fd1f5a243c4baa73e46ee1a16f5,
+        type: 3}
+    - target: {fileID: 755283109381456697, guid: 2abf19653d633114faedf3b60dc6c39f,
+        type: 3}
+      propertyPath: allCreatures.Array.data[9]
+      value: 
+      objectReference: {fileID: 391536099558741291, guid: 0ff14902e64974f478f8dd21b7cee0e2,
+        type: 3}
+    - target: {fileID: 755283109381456697, guid: 2abf19653d633114faedf3b60dc6c39f,
+        type: 3}
+      propertyPath: allCreatures.Array.data[10]
+      value: 
+      objectReference: {fileID: 1311290861401530, guid: 5904fbfe921140647a4ebddf4adda389,
+        type: 3}
+    - target: {fileID: 755283109381456697, guid: 2abf19653d633114faedf3b60dc6c39f,
+        type: 3}
+      propertyPath: allCreatures.Array.data[11]
+      value: 
+      objectReference: {fileID: 1767663768970106, guid: ca9fda2f4d77c4d4f88d4ed8b939f69b,
+        type: 3}
+    - target: {fileID: 755283109381456697, guid: 2abf19653d633114faedf3b60dc6c39f,
+        type: 3}
+      propertyPath: allCreatures.Array.data[12]
+      value: 
+      objectReference: {fileID: 1847083141549040, guid: 296f5ad92623d3b449a3929b137e7251,
+        type: 3}
+    - target: {fileID: 755283109381456697, guid: 2abf19653d633114faedf3b60dc6c39f,
+        type: 3}
+      propertyPath: allCreatures.Array.data[13]
+      value: 
+      objectReference: {fileID: 1847083141549040, guid: 0700d9167e01ec74997b24a3c90dda4b,
+        type: 3}
+    - target: {fileID: 755283109381456697, guid: 2abf19653d633114faedf3b60dc6c39f,
+        type: 3}
+      propertyPath: allCreatures.Array.data[14]
+      value: 
+      objectReference: {fileID: 1655403738057260, guid: dcc3bfa5cf419b64e86c7effdae2b6f2,
+        type: 3}
+    - target: {fileID: 755283109381456697, guid: 2abf19653d633114faedf3b60dc6c39f,
+        type: 3}
+      propertyPath: allCreatures.Array.data[15]
+      value: 
+      objectReference: {fileID: 1077125651660242, guid: e8d93c1335d64374fbd2377caa9fb167,
+        type: 3}
+    - target: {fileID: 755283109381456697, guid: 2abf19653d633114faedf3b60dc6c39f,
+        type: 3}
+      propertyPath: allCreatures.Array.data[16]
+      value: 
+      objectReference: {fileID: 1262440479064932, guid: 8eb8b72dd2764644c97934993c6e3c46,
+        type: 3}
+    - target: {fileID: 755283109381456697, guid: 2abf19653d633114faedf3b60dc6c39f,
+        type: 3}
+      propertyPath: allCreatures.Array.data[17]
+      value: 
+      objectReference: {fileID: 1262440479064932, guid: f6d7f8dc1d1a1d44ebb08c0ca195a065,
+        type: 3}
     - target: {fileID: 2262749037422820934, guid: 2abf19653d633114faedf3b60dc6c39f,
         type: 3}
       propertyPath: audio
@@ -3199,8 +3316,8 @@ MonoBehaviour:
   m_text: "FreeCam\n Movement = Ship movement\n Scroll wheel: Speed control\n Right
     shift: Toggle free/player movement\n\nSpawning\n Z: Toggle spawning rays\n R:
     Feed/Water all animals\nT: Spawn hungry fox\n Y: Spawn thirsty fox\n U: Spawn
-    chicken\n\n\nPresentation\n P: Play/stop video on billboard\n N: Next slide on
-    closest billboard\n B: Previous slide on closest billboard\n"
+    chicken\n - :Spawn all animals \n\n\nPresentation\n P: Play/stop video on billboard\n
+    N: Next slide on closest billboard\n B: Previous slide on closest billboard\n"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: a29f40ca58b156848896b62f4429e495, type: 2}
   m_sharedMaterial: {fileID: -5554273155930248582, guid: a29f40ca58b156848896b62f4429e495,
@@ -3295,7 +3412,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1290127853
 RectTransform:
   m_ObjectHideFlags: 0

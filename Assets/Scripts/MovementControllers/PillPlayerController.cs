@@ -12,6 +12,7 @@ public class PillPlayerController : MonoBehaviour
     [Header("Presentation")]
     public GameObject chicken;
     public GameObject fox;
+    [SerializeField] private GameObject[] allCreatures;
 
     [Header("Setup")]
     public Planet attractor = null;
@@ -187,6 +188,14 @@ public class PillPlayerController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Z))
         {
             Universe.createLineRenderers = !Universe.createLineRenderers;
+        }
+
+        if (Input.GetKeyDown(KeyCode.Minus))
+        {
+            foreach (GameObject creature in allCreatures)
+            {
+                SpawnOnChunk(creature);
+            }
         }
     }
 
