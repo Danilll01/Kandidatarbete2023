@@ -51,7 +51,7 @@ public class SpawnPlanets : MonoBehaviour
         numberOfPlanets = Universe.nrOfPlanets;
 
         // Randomize player index
-        spawnPlanetIndex = randomizeSpawnPlanet ? random.Next(0,numberOfPlanets) : 0; 
+        spawnPlanetIndex = randomizeSpawnPlanet ? random.Next(0,numberOfPlanets) : 2; 
     }
 
     // Creates all the planets 
