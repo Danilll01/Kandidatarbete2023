@@ -435,7 +435,7 @@ PrefabInstance:
     - target: {fileID: 8224386914964519679, guid: 2abf19653d633114faedf3b60dc6c39f,
         type: 3}
       propertyPath: m_RequiresDepthTextureOption
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8224386914964519679, guid: 2abf19653d633114faedf3b60dc6c39f,
         type: 3}
@@ -772,6 +772,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spawnPlanets: {fileID: 882231452}
+--- !u!114 &210303242
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 210303240}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 052880f739778804a85bdc1c1f77ee1a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  textureMaterials:
+  - {fileID: 2100000, guid: 93caadf4359ae8143aad35b3145d31af, type: 2}
+  - {fileID: 2100000, guid: 616fdec72f5a406419d57c9d13239742, type: 2}
+  planetGroundColor: {r: 0, g: 0, b: 0, a: 0}
+  biomeColors: []
+  biomeMaterials: []
+  biomeFoliageDatas: []
 --- !u!114 &301720325 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3421500242679807733, guid: 479edb22e1790754688e5f093ada7ddf,
