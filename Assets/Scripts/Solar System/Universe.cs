@@ -7,8 +7,8 @@ using UnityEngine;
 public static class Universe
 {
     public const float gravitationalConstant = 0.00066743f; //2f;
-    public static int nrOfPlanets = 3;
-    public static int seed = 123;
+    public static int nrOfPlanets = 7;
+    public static int seed = 731597;
     public static RandomX random;
 
     public static bool createLineRenderers = false;
