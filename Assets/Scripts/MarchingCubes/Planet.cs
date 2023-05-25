@@ -224,7 +224,7 @@ public class Planet : MonoBehaviour
 
     private void Update()
     {
-        if (bodyName.Contains("2"))
+        if (bodyName.Contains("Planet 2"))
         {
             if (!spawnedSlides && foliageHandler.isInstantiated && Universe.seed == presentationSeed)
             {
@@ -269,11 +269,16 @@ public class Planet : MonoBehaviour
                 int activeBillboardIndex = GetClosestBillboard();
                 BillboardStruct billboardStruct = billboards[activeBillboardIndex];
 
+
                 if (billboardStruct.videoBoard)
                 {
                     VideoClip[] billboardVideos = billboardStruct.videoClips;
+
+                    VideoPlayer videoPlayer = videoBoard.GetComponent<VideoPlayer>();
+                    videoPlayer.Stop();
                     billboards[activeBillboardIndex].activeTextureIndex = billboards[activeBillboardIndex].activeTextureIndex - 1;
                     billboards[activeBillboardIndex].billboard.GetComponent<VideoPlayer>().clip = billboardVideos[billboards[activeBillboardIndex].activeTextureIndex];
+                    videoPlayer.Play();
                 }
                 else
                 {
@@ -291,11 +296,16 @@ public class Planet : MonoBehaviour
 
                 BillboardStruct billboardStruct = billboards[activeBillboardIndex];
 
+                
                 if (billboardStruct.videoBoard)
                 {
                     VideoClip[] billboardVideos = billboardStruct.videoClips;
+                    
+                    VideoPlayer videoPlayer = videoBoard.GetComponent<VideoPlayer>();
+                    videoPlayer.Stop();
                     billboards[activeBillboardIndex].activeTextureIndex = billboards[activeBillboardIndex].activeTextureIndex + 1;
                     billboards[activeBillboardIndex].billboard.GetComponent<VideoPlayer>().clip = billboardVideos[billboards[activeBillboardIndex].activeTextureIndex];
+                    videoPlayer.Play();
                 }
                 else
                 {
