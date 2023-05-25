@@ -157,11 +157,11 @@ RectTransform:
   - {fileID: 1673245926}
   - {fileID: 1989340951}
   m_Father: {fileID: 1425309688}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 215, y: 74}
+  m_AnchoredPosition: {x: 214.00006, y: 68.60004}
   m_SizeDelta: {x: 179.45, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &45092317
@@ -2481,7 +2481,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 0
+  m_fontStyle: 4
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
@@ -3071,7 +3071,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -27.000053, y: -4.000002}
+  m_AnchoredPosition: {x: -29.00003, y: -3.5999925}
   m_SizeDelta: {x: -20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1048108359
@@ -3110,7 +3110,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 652, y: -206}
+  m_AnchoredPosition: {x: 713.5, y: -137.6}
   m_SizeDelta: {x: 1334, y: 280}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1048108361
@@ -3409,8 +3409,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.25}
   m_AnchorMax: {x: 1, y: 0.75}
-  m_AnchoredPosition: {x: -32, y: -4}
-  m_SizeDelta: {x: -20, y: 0}
+  m_AnchoredPosition: {x: -34.62114, y: -3.6000004}
+  m_SizeDelta: {x: -19.0822, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1199930759
 GameObject:
@@ -3583,7 +3583,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 69.77969, y: 25.9922}
+  m_AnchoredPosition: {x: 83.2, y: 26.06}
   m_SizeDelta: {x: 440.7661, y: 31.9844}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1211811946
@@ -3606,7 +3606,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: ' NUMBER OF PLANETS: '
+  m_text: 'NUMBER OF PLANETS: '
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -3669,7 +3669,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 12.770096, y: 0, z: 21.425812, w: 0}
+  m_margin: {x: -0.08502197, y: 0, z: 0.20922899, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -3835,7 +3835,7 @@ RectTransform:
   m_Children:
   - {fileID: 795980047}
   m_Father: {fileID: 1425309688}
-  m_RootOrder: 3
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -4214,9 +4214,9 @@ RectTransform:
   - {fileID: 1675671612}
   - {fileID: 820018815}
   - {fileID: 1048108360}
-  - {fileID: 1327926399}
   - {fileID: 1833865895}
   - {fileID: 45092316}
+  - {fileID: 1327926399}
   - {fileID: 388602143}
   - {fileID: 366256178}
   - {fileID: 225018091}
@@ -4794,7 +4794,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.25}
   m_AnchorMax: {x: 1, y: 0.75}
-  m_AnchoredPosition: {x: -27.000023, y: -4.000002}
+  m_AnchoredPosition: {x: -29, y: -3.5999925}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1751771817
@@ -4974,11 +4974,11 @@ RectTransform:
   - {fileID: 1162607228}
   - {fileID: 1024703503}
   m_Father: {fileID: 1425309688}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 292.99994, y: 200}
+  m_AnchoredPosition: {x: 292, y: 194.6}
   m_SizeDelta: {x: 160, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1833865896
@@ -5301,7 +5301,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 12.128174, y: 0, z: 0.55350494, w: 0}
+  m_margin: {x: 10.284142, y: 0, z: 0.55350494, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
