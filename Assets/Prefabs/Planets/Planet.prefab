@@ -87,6 +87,7 @@ MonoBehaviour:
     temperatureRoughness: 0.1
     mountainTemperatureAffect: 0.15
     treeFrequency: 1
+  biomeColors: []
   orbitSpeed: 0
   rotationAxis: {x: 0, y: 0, z: 0}
   rotationSpeed: 0
@@ -102,10 +103,10 @@ MonoBehaviour:
   - billBoardID: 0
     activeMaterialIndex: 0
     billboard: {fileID: 0}
-    slidesMaterials:
-    - {fileID: 2100000, guid: 82c983773a51cce4fa1c80d50ec4015e, type: 2}
-    - {fileID: 2100000, guid: 65fc9e288f6a2424c82667847b7fcd0b, type: 2}
-    - {fileID: 2100000, guid: 5c8a4edcf944efe45bdec97d92ee4b3f, type: 2}
+    slidesImages:
+    - {fileID: 2800000, guid: a7cdb889e8de770488e23b08369e2c71, type: 3}
+    - {fileID: 2800000, guid: 81fc7e95c2d86ce429aa4d1e2d52cbbf, type: 3}
+    - {fileID: 2800000, guid: 117fca1d5f34d894bbee18f4e6ecb3c5, type: 3}
   billBoard: {fileID: 5548395820777189946, guid: adec20e7c7dbc9a4c8d98f199396c4f6,
     type: 3}
   billBoardWithVideoIndex: 0
@@ -157,6 +158,7 @@ MonoBehaviour:
   shader: {fileID: -6465566751694194690, guid: 582627e993e00c442b71e98ced60fb20, type: 3}
   bottomColor: {r: 0, g: 0, b: 0, a: 0}
   groundColor: {r: 0, g: 0, b: 0, a: 0}
+  biomeColors: []
   mountainGradients:
   - gradient:
       serializedVersion: 2
@@ -1125,6 +1127,7 @@ MonoBehaviour:
       treesDependent: 1
       treesMin: 0.261
       treesMax: 1
+    biomeMaterials: []
     probabilityToSkip: 0
   - name: Normal trees with flowers
     gameObjects:
@@ -1149,6 +1152,7 @@ MonoBehaviour:
       treesDependent: 1
       treesMin: 0.281
       treesMax: 1
+    biomeMaterials: []
     probabilityToSkip: 0
   - name: Warm trees
     gameObjects:
@@ -1172,6 +1176,7 @@ MonoBehaviour:
       treesDependent: 0
       treesMin: 0.706
       treesMax: 1
+    biomeMaterials: []
     probabilityToSkip: 0.38
   - name: Mountain trees
     gameObjects:
@@ -1205,6 +1210,7 @@ MonoBehaviour:
       treesDependent: 0
       treesMin: 0.706
       treesMax: 1
+    biomeMaterials: []
     probabilityToSkip: 0.415
   - name: 'Cold '
     gameObjects:
@@ -1224,6 +1230,7 @@ MonoBehaviour:
       treesDependent: 0
       treesMin: 0.706
       treesMax: 1
+    biomeMaterials: []
     probabilityToSkip: 0.6
   - name: 'Tropic '
     gameObjects:
@@ -1250,6 +1257,7 @@ MonoBehaviour:
       treesDependent: 0
       treesMin: 0.706
       treesMax: 1
+    biomeMaterials: []
     probabilityToSkip: 0.9
   - name: Bushes and flowers
     gameObjects:
@@ -1273,6 +1281,7 @@ MonoBehaviour:
       treesDependent: 1
       treesMin: 0.22
       treesMax: 0.723
+    biomeMaterials: []
     probabilityToSkip: 0.498
   isInstantiated: 0
   objectsNr: 0

@@ -239,7 +239,7 @@ public class Planet : MonoBehaviour
                     billBoard.transform.parent = transform;
                     billBoard.transform.localPosition = positions[i];
                     billBoard.transform.Rotate(rotations[i]);
-                    billBoard.GetComponent<Renderer>().material = billboards[i].slidesMaterials[0];
+                    billBoard.GetComponent<Renderer>().material.mainTexture = billboards[i].slidesImages[0];
                 }
 
                 spawnedSlides = true;
@@ -266,10 +266,10 @@ public class Planet : MonoBehaviour
             {
                 int activeBillboardIndex = GetClosestBillboard();
 
-                Material[] billboardMaterials = billboards[activeBillboardIndex].slidesMaterials;
+                Texture2D[] billboardImages = billboards[activeBillboardIndex].slidesImages;
 
                 billboards[activeBillboardIndex].activeMaterialIndex = billboards[activeBillboardIndex].activeMaterialIndex - 1;
-                billboards[activeBillboardIndex].billboard.GetComponent<MeshRenderer>().material = billboardMaterials[billboards[activeBillboardIndex].activeMaterialIndex];
+                billboards[activeBillboardIndex].billboard.GetComponent<MeshRenderer>().material.mainTexture = billboardImages[billboards[activeBillboardIndex].activeMaterialIndex];
                 Debug.Log("Back, index: " + billboards[activeBillboardIndex].activeMaterialIndex);
 
             }
@@ -278,10 +278,10 @@ public class Planet : MonoBehaviour
             {
                 int activeBillboardIndex = GetClosestBillboard();
 
-                Material[] billboardMaterials = billboards[activeBillboardIndex].slidesMaterials;
+                Texture2D[] billboardImages = billboards[activeBillboardIndex].slidesImages;
 
                 billboards[activeBillboardIndex].activeMaterialIndex = billboards[activeBillboardIndex].activeMaterialIndex + 1;
-                billboards[activeBillboardIndex].billboard.GetComponent<MeshRenderer>().material = billboardMaterials[billboards[activeBillboardIndex].activeMaterialIndex];
+                billboards[activeBillboardIndex].billboard.GetComponent<MeshRenderer>().material.mainTexture = billboardImages[billboards[activeBillboardIndex].activeMaterialIndex];
                 Debug.Log("Front, index: " + billboards[activeBillboardIndex].activeMaterialIndex);
             }
         }
@@ -567,5 +567,5 @@ public struct BillboardStruct
     public int billBoardID;
     public int activeMaterialIndex;
     [HideInInspector] public GameObject billboard;
-    public Material[] slidesMaterials;
+    public Texture2D[] slidesImages;
 }
