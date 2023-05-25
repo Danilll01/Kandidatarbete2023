@@ -61,6 +61,11 @@ public class FoliageHandler : MonoBehaviour
         density = planet.radius * densityMultiplier; // Magic numbers * "random"
         InitArrays();
         InitForestTypes();
+        
+        for (int i = 0; i < foliageCollections.Length; i++)
+        {
+            foliageCollections[i].biomeMaterials = new Material[2];
+        }
 
         isInstantiated = true;
     }

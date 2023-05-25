@@ -57,7 +57,7 @@ MonoBehaviour:
   m_AdditionalLightsCookieResolution: 4096
   m_AdditionalLightsCookieFormat: 1
   m_UseSRPBatcher: 0
-  m_SupportsDynamicBatching: 1
+  m_SupportsDynamicBatching: 0
   m_MixedLightingSupported: 1
   m_SupportsLightLayers: 0
   m_DebugLevel: 0

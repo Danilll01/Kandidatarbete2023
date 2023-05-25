@@ -35,6 +35,7 @@ public class Planet : MonoBehaviour
 
     [SerializeField] private List<TerrainLayer> terrainLayers;
     public BiomeSettings biomeSettings;
+    [HideInInspector] public Color[] biomeColors;
 
     private float threshold;
 
@@ -160,6 +161,8 @@ public class Planet : MonoBehaviour
             // Depending on system, it could be advantageous to give the strength of the atmosphere too, this will have to be sent in as a parameter then 
             atmosphereHandler.Initialize(radius, waterDiameter / 2, willGeneratePlanetLife, rand.Next());
         }
+
+        
     }
 
     // Get the initial distances from the moons to the planet
@@ -439,6 +442,8 @@ public class Planet : MonoBehaviour
         biomeSettings.distance = Vector3.Distance(transform.position, Universe.sunPosition.position);
 
         chunksHandler.SetupMaterial();
+
+        biomeColors = chunksHandler.terrainColor.biomeColors;
     }
 
     public BiomeSettings Biome => biomeSettings;
