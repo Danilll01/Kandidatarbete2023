@@ -69,7 +69,8 @@ public class StartManager : MonoBehaviour
         // If the seedInput is empty or if it can't be cast to int, randomize it
         if (string.IsNullOrEmpty(seedInput.text) || tryParseSeed == 0)
         {
-            seedInput.text = Random.Range(0, 1000000).ToString();
+            //seedInput.text = Random.Range(0, 1000000).ToString();
+            seedInput.text = 468015.ToString();
         }
 
         // If there was no planets input on the slider, randomize it
@@ -78,7 +79,8 @@ public class StartManager : MonoBehaviour
             int[] nrOfPlanetsArray = new int[] { 1, 2, 3, 3, 3, 4, 4, 4, 5, 5, 5 };
             int randomValue = Random.Range(0, nrOfPlanetsArray.Length);
             int nrOfPlanets = nrOfPlanetsArray[randomValue];
-            Universe.nrOfPlanets = nrOfPlanets;
+            //Universe.nrOfPlanets = nrOfPlanets;
+            Universe.nrOfPlanets = 7;
         }
         else
         {
