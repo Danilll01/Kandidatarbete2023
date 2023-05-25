@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class SolarSystemTransform : MonoBehaviour
 {
-    [SerializeField] private SpawnPlanets spawnPlanets;
+    public SpawnPlanets spawnPlanets;
     private TintFoliageTextures tintFoliageTexturesHandler;
     private Planet activePlanet;
     private Planet oldActivePlanet;
