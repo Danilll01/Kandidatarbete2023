@@ -335,7 +335,7 @@ Light:
   serializedVersion: 10
   m_Type: 0
   m_Shape: 0
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.6226415, g: 0.6226415, b: 0.6226415, a: 1}
   m_Intensity: 0.001
   m_Range: 5.06
   m_SpotAngle: 54.062733
@@ -420,7 +420,7 @@ GameObject:
   - component: {fileID: 3109807957115082693}
   - component: {fileID: 766160999406229661}
   m_Layer: 0
-  m_Name: BilboardWithVideo
+  m_Name: Billboard
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -593,7 +593,7 @@ Light:
   serializedVersion: 10
   m_Type: 0
   m_Shape: 0
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.6226415, g: 0.6226415, b: 0.6226415, a: 1}
   m_Intensity: 0.001
   m_Range: 5.06
   m_SpotAngle: 54.062733
@@ -805,7 +805,7 @@ Light:
   serializedVersion: 10
   m_Type: 0
   m_Shape: 0
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.6226415, g: 0.6226415, b: 0.6226415, a: 1}
   m_Intensity: 0.001
   m_Range: 5.06
   m_SpotAngle: 54.062733
@@ -1017,7 +1017,7 @@ Light:
   serializedVersion: 10
   m_Type: 0
   m_Shape: 0
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.6226415, g: 0.6226415, b: 0.6226415, a: 1}
   m_Intensity: 0.001
   m_Range: 5.06
   m_SpotAngle: 54.062733
@@ -1132,7 +1132,7 @@ Light:
   serializedVersion: 10
   m_Type: 0
   m_Shape: 0
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.6226415, g: 0.6226415, b: 0.6226415, a: 1}
   m_Intensity: 0.001
   m_Range: 5.06
   m_SpotAngle: 54.062733
