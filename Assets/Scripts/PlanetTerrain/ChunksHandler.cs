@@ -43,10 +43,7 @@ public class ChunksHandler : MonoBehaviour
     // Used for chunk culling
     private int index = 0;
     [SerializeField] private int maxChunkChecksPerFrame = 50;
-
-    //Chunk work
-    private bool chunkWorkActive = false;
-    private List<(Chunk, int resolution, (AsyncGPUReadbackRequest, MarchingCubes.ChunkGPUCallbackData))> chunkJobs;
+    private ChunkGenerator chunkGenerator;
     private Vector3 lastChunkUpdatePlayerPosition = Vector3.zero;
 
     enum ChunkResolution
@@ -104,6 +101,8 @@ public class ChunksHandler : MonoBehaviour
             chunksParentLowRes.SetActive(false);
             UpdateChunksVisibility();
         }
+
+        chunkGenerator = new ChunkGenerator(chunksHighRes, this, marchingCubes, terrainLevel);
     }
 
     // Update is called once per frame
@@ -261,72 +260,126 @@ public class ChunksHandler : MonoBehaviour
 
     private void UpdateChunksResolution()
     {
-        if (chunkWorkActive)
-        {
-            if (!ChunkWorkDone())
-            {
-                return;
-            }
-            foreach ((Chunk chunk, int resolution, (AsyncGPUReadbackRequest request, MarchingCubes.ChunkGPUCallbackData data)) in chunkJobs)
-            {
-                marchingCubes.GenerateMeshAsyncCallback(data);
-
-                chunk.UpdateMesh(data.mesh, resolution);
-            }
-        }
-        chunkJobs = new List<(Chunk, int resolution, (AsyncGPUReadbackRequest, MarchingCubes.ChunkGPUCallbackData))>();
-        Vector3 playerPos = player.boarded ? Universe.spaceShip.localPosition : player.transform.localPosition;
-        foreach (Chunk chunk in chunksHighRes)
-        {
-            if (!chunk.initialized) continue;
-
-            //MBY only check sometimes or only so many, idk, save 5%
-
-            float playerDistance = Vector3.Distance(playerPos, chunk.position);
-            int resolution;
-            if (playerDistance < highRes.upperRadius)
-            {
-                resolution = highRes.resolution;
-            }
-            else if (mediumRes.lowerRadius < playerDistance && playerDistance < mediumRes.upperRadius)
-            {
-                resolution = mediumRes.resolution;
-            }
-            else if (lowRes.lowerRadius < playerDistance)
-            {
-                resolution = lowRes.resolution;
-            }
-            //No work to be done
-            else
-            {
-                continue;
-            }
-            if (!chunk.HasResolution(resolution))
-            {
-                chunk.SetActivated(true);
-                Mesh mesh = new Mesh();
-                var chunkJob = (chunk, resolution, marchingCubes.GenerateMeshAsync(terrainLevel, chunk.Index, resolution, mesh));
-                chunkJobs.Add(chunkJob);
-            }
-        }
-        chunkWorkActive = true;
-    }
-
-    private bool ChunkWorkDone()
-    {
-        //Wait for GPU jobs to complete
-        foreach ((_, _, (AsyncGPUReadbackRequest request, _)) in chunkJobs)
-        {
-            if (!request.done)
-            {
-                return false;
-            }
-        }
-        return true;
+        chunkGenerator.Update();
     }
 
     private bool CheckIfPointBIsBelowPointA(Vector3 a, Vector3 b, Vector3 up)
     {
         return (Vector3.Dot(b - a, up) <= 0);
+    }
+}
+
+public class ChunkGenerator
+{
+
+    //Chunk work
+    private List<(Chunk chunk, int resolution, (AsyncGPUReadbackRequest request, MarchingCubes.ChunkGPUCallbackData data) GPUCall)> chunkJobs;
+    int chunkJobDoneIndex;
+    bool complete = false;
+    private PillPlayerController player;
+    private List<Chunk> chunks;
+
+    ChunksHandler handler;
+    MarchingCubes generator;
+    MinMaxTerrainLevel terrainLevel;
+
+    Thread worker;
+    bool workActive = false;
+    bool workComplete = false;
+
+    public ChunkGenerator(List<Chunk> chunks, ChunksHandler handler, MarchingCubes generator, MinMaxTerrainLevel terrainLevel)
+    {
+        this.chunks = chunks;
+        this.handler = handler;
+        this.generator = generator;
+        this.terrainLevel = terrainLevel;
+        player = Universe.player;
+
+        worker = new Thread(Work);
+        worker.IsBackground = true;
+        worker.Start();
+    }
+
+    public void Update()
+    {
+        //Update which chunks are completed by GPU
+        if (workActive && !workComplete)
+        {
+            while (chunkJobDoneIndex != chunkJobs.Count && chunkJobs[chunkJobDoneIndex].GPUCall.request.done)
+            {
+                chunkJobDoneIndex++;
+            }
+        }
+        //Start work on the GPU
+        if (workComplete)
+        {
+            foreach ((Chunk chunk, int resolution, (AsyncGPUReadbackRequest request, MarchingCubes.ChunkGPUCallbackData data)) in chunkJobs)
+            {
+                generator.GenerateMeshAsyncCallback(data);
+
+                chunk.UpdateMesh(data.mesh, resolution);
+            }
+            workComplete = false;
+        }
+        //Complete work from GPU
+        if (workActive == false)
+        {
+            chunkJobs = new List<(Chunk, int resolution, (AsyncGPUReadbackRequest, MarchingCubes.ChunkGPUCallbackData))>();
+            Vector3 playerPos = player.boarded ? Universe.spaceShip.localPosition : player.transform.localPosition;
+            foreach (Chunk chunk in chunks)
+            {
+                if (!chunk.initialized) continue;
+
+                //MBY only check sometimes or only so many, idk, save 5%
+
+                float playerDistance = Vector3.Distance(playerPos, chunk.position);
+                int resolution;
+                if (playerDistance < handler.highRes.upperRadius)
+                {
+                    resolution = handler.highRes.resolution;
+                }
+                else if (handler.mediumRes.lowerRadius < playerDistance && playerDistance < handler.mediumRes.upperRadius)
+                {
+                    resolution = handler.mediumRes.resolution;
+                }
+                else if (handler.lowRes.lowerRadius < playerDistance)
+                {
+                    resolution = handler.lowRes.resolution;
+                }
+                //No work to be done
+                else
+                {
+                    continue;
+                }
+                if (!chunk.HasResolution(resolution))
+                {
+                    chunk.SetActivated(true);
+                    Mesh mesh = new Mesh();
+                    var chunkJob = (chunk, resolution, generator.GenerateMeshAsync(terrainLevel, chunk.Index, resolution, mesh));
+                    chunkJobs.Add(chunkJob);
+                }
+            }
+            if (chunkJobs.Count != 0)
+            {
+                chunkJobDoneIndex = 0;
+                workActive = true;
+            }
+        }
+    }
+
+    private void Work()
+    {
+        while (true)
+        {
+            //Wait for work to become available
+            while (workActive == false) { };
+
+            //Wait for chunk generation to complete
+            while (chunkJobDoneIndex != chunkJobs.Count) { Thread.Sleep(1); };
+
+            //Inform that work is done
+            workComplete = true;
+            workActive = false;
+        }
     }
 }
