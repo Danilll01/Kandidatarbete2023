@@ -86,7 +86,7 @@ public class CreatureSpawning : MonoBehaviour
         Vector3 planetPos = creatureHandler.PlanetPosition;
         float radius = creatureHandler.PlanetRadius;
         float waterRadius = creatureHandler.WaterRadius;
-        Debug.Log(creatureSpots.Length);
+
         // Set up raycasts
         int rayCount = creatureSpots.Length;
         var results = new NativeArray<RaycastHit>(rayCount, Allocator.TempJob);
