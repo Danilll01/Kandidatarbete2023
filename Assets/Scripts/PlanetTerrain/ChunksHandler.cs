@@ -17,6 +17,7 @@ public class ChunksHandler : MonoBehaviour
     private MarchingCubes marchingCubes;
     private Material planetMaterial;
     [HideInInspector] public float planetRadius;
+    private MinMaxTerrainLevel terrainLevel;
     private RandomX rand;
 
     [SerializeField] private Chunk chunkPrefab;
@@ -71,6 +72,7 @@ public class ChunksHandler : MonoBehaviour
         rand = new RandomX(seed);
 
         this.planet = planet;
+        this.terrainLevel = terrainLevel;
         player = Universe.player;
         marchingCubes = planet.marchingCubes;
         planetRadius = planet.radius;
