@@ -21,17 +21,12 @@ public class Chunk : MonoBehaviour
 
     // Resolutions of chunk
     private int currentRes;
-    private ResolutionSetting highRes;
-    private ResolutionSetting mediumRes;
-    private ResolutionSetting lowRes;
+    private int highRes;
 
     private MeshFilter meshFilter;
     private MeshCollider meshCollider;
-    private Mesh mesh;
     public MarchingCubes marchingCubes;
-    private PillPlayerController player;
     private Planet planet;
-    private MinMaxTerrainLevel terrainLevel;
     [HideInInspector] public float chunkSize;
 
     private RandomX random;
@@ -56,16 +51,12 @@ public class Chunk : MonoBehaviour
     /// <param name="chunkHandler"></param>
     /// <param name="seed"></param>
     /// <returns></returns>
-    public int Initialize(Planet planet, MinMaxTerrainLevel terrainLevel, ChunksHandler chunkHandler, int seed)
+    public void Initialize(Planet planet, ChunksHandler chunkHandler, int seed)
     {
         this.planet = planet;
-        highRes = chunkHandler.highRes;
-        mediumRes = chunkHandler.mediumRes;
-        lowRes = chunkHandler.lowRes;
+        highRes = chunkHandler.highRes.resolution;
         random = new RandomX(seed);
 
-        this.player = Universe.player;
-        this.terrainLevel = terrainLevel;
         chunkSize = (2 * chunkHandler.planetRadius) / (1 << marchingCubes.chunkResolution);
 
         meshFilter = transform.GetComponent<MeshFilter>();
@@ -78,12 +69,7 @@ public class Chunk : MonoBehaviour
             meshCollider = transform.GetComponent<MeshCollider>();
         }
 
-        //Set lowest resolution as default
-        int numVerts = UpdateMesh(lowRes.resolution);
-
         initialized = true;
-
-        return numVerts;
     }
 
     /// <summary>
@@ -112,27 +98,6 @@ public class Chunk : MonoBehaviour
         position = -(chunkIndex - (Mathf.Pow(2, marchingCubes.chunkResolution) - 1) / 2 * Vector3.one) * (marchingCubes.radius * 2 / (1 << (marchingCubes.chunkResolution)));
     }
 
-    private int UpdateMesh(int resolution)
-    {
-        if (currentRes == resolution)
-            return 0;
-
-        currentRes = resolution;
-
-        mesh = new Mesh();
-
-        int numVerts = marchingCubes.generateMesh(terrainLevel, index, currentRes, mesh);
-
-        Destroy(meshFilter.sharedMesh);
-
-        meshFilter.sharedMesh = mesh;
-
-        if (marchingCubes.chunkResolution != 1 && meshCollider.enabled)
-            meshCollider.sharedMesh = mesh;
-
-        return numVerts;
-    }
-
     public void UpdateMesh(Mesh mesh, int resolution)
     {
         currentRes = resolution;
@@ -146,7 +111,7 @@ public class Chunk : MonoBehaviour
 
         int numVerts = mesh.vertexCount;
         
-        if (resolution == highRes.resolution && planet.willGeneratePlanetLife)
+        if (resolution == highRes && planet.willGeneratePlanetLife)
         {
             if (!foliage.initialized)
             {

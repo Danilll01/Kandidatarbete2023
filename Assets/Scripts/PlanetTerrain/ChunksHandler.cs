@@ -206,8 +206,13 @@ public class ChunksHandler : MonoBehaviour
     {
         for (int i = chunksList.Count - 1; i != -1; i--)
         {
+            chunksList[i].Initialize(planet, this, rand.Next());
+
+            Mesh newMesh = new Mesh();
+            int verticesCount = marchingCubes.generateMesh(terrainLevel, chunksList[i].Index, lowRes.resolution, newMesh);
+            chunksList[i].UpdateMesh(newMesh, lowRes.resolution);
             // Remove chunks without vertices
-            if (chunksList[i].Initialize(planet, terrainLevel, this, rand.Next()) == 0)
+            if (verticesCount == 0)
             {
                 Destroy(chunksList[i].gameObject);
                 chunksList.RemoveAt(i);
