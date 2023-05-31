@@ -258,6 +258,8 @@ public class ChunksHandler : MonoBehaviour
 
 public class ChunkGenerator
 {
+    const int chunksPerFrame = 3;
+
     //Chunk work
     private List<(Chunk, Mesh, int)> chunkJobs;
     private Queue<int> physicsBakeQueue = new Queue<int>();
@@ -304,7 +306,7 @@ public class ChunkGenerator
             {
                 if (!chunk.initialized) continue;
 
-                if (physicsBakeQueue.Count >= 3)
+                if (physicsBakeQueue.Count >= chunksPerFrame)
                 {
                     break;
                 }
