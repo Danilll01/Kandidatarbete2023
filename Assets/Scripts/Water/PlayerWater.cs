@@ -12,7 +12,7 @@ public class PlayerWater : MonoBehaviour
     [HideInInspector] public bool underWater;
     private static readonly int C1 = Shader.PropertyToID("_C1");
     private static readonly int UnderWater = Shader.PropertyToID("_UnderWater");
-    [SerializeField] private HandleAudio audio;
+    [SerializeField] private new HandleAudio audio;
 
     public void Initialize(Planet planet)
     {

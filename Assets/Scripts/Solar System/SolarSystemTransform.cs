@@ -4,6 +4,7 @@ using UnityEngine;
 public class SolarSystemTransform : MonoBehaviour
 {
     [SerializeField] private SpawnPlanets spawnPlanets;
+    private TintFoliageTextures tintFoliageTexturesHandler;
     private Planet activePlanet;
     private Planet oldActivePlanet;
     private GameObject sun;
@@ -25,6 +26,8 @@ public class SolarSystemTransform : MonoBehaviour
     private bool releasedPlayer;
 
 
+
+
     void Start()
     {
         if (spawnPlanets.bodies != null)
@@ -35,6 +38,8 @@ public class SolarSystemTransform : MonoBehaviour
         planetsParent = gameObject;
 
         player = Universe.player;
+
+        tintFoliageTexturesHandler = GetComponent<TintFoliageTextures>();
     }
 
     private void InitializeValues()
@@ -185,7 +190,36 @@ public class SolarSystemTransform : MonoBehaviour
             MovePlanets();
             activePlanet.rotateMoons = true;
             oldActivePlanet = activePlanet;
+            tintFoliageTexturesHandler.biomeColors = activePlanet.biomeColors;
+            tintFoliageTexturesHandler.TintTextures();
+            AssignNewBiomeMaterialsToCollections();
         }
+    }
+
+    private void AssignNewBiomeMaterialsToCollections()
+    {
+        FoliageCollection[] foliageCollections = activePlanet.foliageHandler.foliageCollections;
+
+        foliageCollections[0].biomeMaterials[0] = tintFoliageTexturesHandler.biomeMaterials[0];
+        foliageCollections[0].biomeMaterials[1] = tintFoliageTexturesHandler.biomeMaterials[5];
+
+        foliageCollections[1].biomeMaterials[0] = tintFoliageTexturesHandler.biomeMaterials[2];
+        foliageCollections[1].biomeMaterials[1] = tintFoliageTexturesHandler.biomeMaterials[7];
+
+        foliageCollections[2].biomeMaterials[0] = tintFoliageTexturesHandler.biomeMaterials[4];
+        foliageCollections[2].biomeMaterials[1] = tintFoliageTexturesHandler.biomeMaterials[9];
+
+        foliageCollections[3].biomeMaterials[0] = tintFoliageTexturesHandler.biomeMaterials[1];
+        foliageCollections[3].biomeMaterials[1] = tintFoliageTexturesHandler.biomeMaterials[6];
+
+        foliageCollections[4].biomeMaterials[0] = tintFoliageTexturesHandler.biomeMaterials[3];
+        foliageCollections[4].biomeMaterials[1] = tintFoliageTexturesHandler.biomeMaterials[8];
+
+        foliageCollections[5].biomeMaterials[0] = tintFoliageTexturesHandler.biomeMaterials[4];
+        foliageCollections[5].biomeMaterials[1] = tintFoliageTexturesHandler.biomeMaterials[9];
+
+        foliageCollections[6].biomeMaterials[0] = tintFoliageTexturesHandler.biomeMaterials[0];
+        foliageCollections[6].biomeMaterials[1] = tintFoliageTexturesHandler.biomeMaterials[5];
     }
 
     private void CheckWhenToReleasePlayer()

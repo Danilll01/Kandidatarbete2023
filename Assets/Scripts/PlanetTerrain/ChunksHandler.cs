@@ -83,11 +83,6 @@ public class ChunksHandler : MonoBehaviour
         SetupChunks(highChunkRes, ref chunksHighRes, ref chunksParentHighRes, ChunkResolution.High);
         CreateMeshes(terrainLevel, ref chunksHighRes);
 
-        planetMaterial = terrainColor.GetPlanetMaterial(terrainLevel, rand.Next(), planet.biomeSettings);
-
-        SetChunksMaterials(chunksLowRes);
-        SetChunksMaterials(chunksHighRes);
-
         if (!playerOnPlanet)
             chunksParentHighRes.SetActive(false);
         else
@@ -97,6 +92,14 @@ public class ChunksHandler : MonoBehaviour
         }
 
         chunkGenerator = new ChunkGenerator(chunksHighRes, this, marchingCubes);
+    }
+
+    public void SetupMaterial()
+    {
+        planetMaterial = terrainColor.GetPlanetMaterial(terrainLevel, rand.Next(), planet.biomeSettings);
+
+        SetChunksMaterials(chunksLowRes);
+        SetChunksMaterials(chunksHighRes);
     }
 
     // Update is called once per frame

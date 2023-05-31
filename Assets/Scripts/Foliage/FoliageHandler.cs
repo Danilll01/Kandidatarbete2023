@@ -1,5 +1,5 @@
 using UnityEngine;
-using Random = System.Random;
+using ExtendedRandom;
 using Noise;
 
 public class FoliageHandler : MonoBehaviour
@@ -41,7 +41,7 @@ public class FoliageHandler : MonoBehaviour
     private float waterRadius;
     private float density;
     // This random needs to be fixed
-    private Random random = new (Universe.seed);
+    private RandomX random;
     private Vector3[] forestTypes;
 
     // Stats for this planet
@@ -52,13 +52,20 @@ public class FoliageHandler : MonoBehaviour
     /// Initializes the foliageHandler
     /// </summary>
     /// <param name="planet"></param>
-    public void Initialize(Planet planet)
+    public void Initialize(Planet planet, int seed)
     {
         this.planet = planet;
+        random = new RandomX(seed);
+        
         waterRadius = Mathf.Abs(planet.waterDiameter / 2);
         density = planet.radius * densityMultiplier; // Magic numbers * "random"
         InitArrays();
         InitForestTypes();
+        
+        for (int i = 0; i < foliageCollections.Length; i++)
+        {
+            foliageCollections[i].biomeMaterials = new Material[2];
+        }
 
         isInstantiated = true;
     }

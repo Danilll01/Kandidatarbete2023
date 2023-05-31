@@ -636,7 +636,7 @@ public class Creature : MonoBehaviour
         float gravity = -9.82f; // May want different gravity in the future
         Vector3 targetDirection = (transform.position - planet.transform.position).normalized;
 
-        rigidbody.AddForce(targetDirection * gravity);
+        rigidbody.AddForce(targetDirection * (gravity * (rigidbody.mass / 2)));
     }
 
     private Vector3 GetRandomPoint()
@@ -893,6 +893,7 @@ public class Creature : MonoBehaviour
                     parameters[i].name == name)
                 {
                     animator.SetBool(name, value);
+                    //Debug.Log("SET: " + name);
                 }
                 //HACK. Replace if more divergences are found
                 else if (parameters[i].type == AnimatorControllerParameterType.Bool &&

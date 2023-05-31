@@ -237,7 +237,7 @@ public class Foliage : MonoBehaviour
         }
         else
         {
-            if (heightAboveSea < planetMaxHeight * 0.8 && !planet.name.Contains("Moon"))
+            if (heightAboveSea < planetMaxHeight * 0.8 && planet.willGeneratePlanetLife)
             {
                 BelowAngle(hit, rayOrigin, heightAboveSea);
             } else
@@ -255,7 +255,11 @@ public class Foliage : MonoBehaviour
         if (depth < 3)
         {
             GameObject waterObject = InstantiateObject(foliageHandler.GetWaterPlantType(), hit, rayOrigin);
-            
+            int index = waterObject.name.Contains("Type") ? 1 : 0;
+
+            Material materialForFoliageObject = foliageHandler.foliageCollections[0].biomeMaterials[index];
+            waterObject.GetComponent<MeshRenderer>().material = materialForFoliageObject;
+
             waterObject.transform.localScale = new Vector3(2, depth + 6, 2);
             objectsNr++;
         }
@@ -275,7 +279,7 @@ public class Foliage : MonoBehaviour
     private void BelowAngle(RaycastHit hit, Vector3 rayOrigin, float heightAboveSea)
     {
         //Remove packs based on local biome
-        BiomeValue localBiome = Biomes.EvaluteBiomeMap(planet.Biome, hit.point, planet.DistanceToSun);
+        BiomeValue localBiome = Biomes.EvaluteBiomeMap(planet.Biome, hit.point);
         int[] acceptableIndexes = new int[foliageHandler.foliageCollections.Length];
 
         int j = 0;
@@ -296,12 +300,17 @@ public class Foliage : MonoBehaviour
         if (j > 0)
         {
             FoliageCollection chosenCollection = foliageHandler.foliageCollections[chosenIndex];
+            
 
             if (chosenCollection.probabilityToSkip < random.Value())
             {
                 GameObject foliageObj = chosenCollection.gameObjects[random.Next(chosenCollection.gameObjects.Length)];
 
-                SpawnTreesInForest(foliageObj, rayOrigin, hit.point, chosenCollection.name, chosenCollection.probabilityToSkip);
+                int index = foliageObj.name.Contains("Type") ? 1 : 0;
+
+                Material materialForFoliageObject = chosenCollection.biomeMaterials[index];
+
+                SpawnTreesInForest(foliageObj, rayOrigin, hit.point, chosenCollection.name, chosenCollection.probabilityToSkip, materialForFoliageObject);
             }
 
         }
@@ -324,7 +333,7 @@ public class Foliage : MonoBehaviour
 
             spawnedObject = Instantiate(objectToSpawn.prefab, objectToSpawn.position, objectToSpawn.rotation, transform);
 
-            //spawnedObject.name += objectToSpawn.biome;
+            spawnedObject.GetComponent<MeshRenderer>().material = objectToSpawn.material;
             spawnedObject.transform.localScale *= random.Value(0.7f, 1.4f);
 
             objectsNr++;
@@ -332,7 +341,7 @@ public class Foliage : MonoBehaviour
     }
 
     // Forest spawning function
-    private void SpawnTreesInForest(GameObject treeObject, Vector3 rayOrigin, Vector3 position, string name, float probToSkip)
+    private void SpawnTreesInForest(GameObject treeObject, Vector3 rayOrigin, Vector3 position, string name, float probToSkip, Material materialForObject)
     {
         
         // Used to introduce some variation in forest sizes.
@@ -360,7 +369,7 @@ public class Foliage : MonoBehaviour
                 rotation *= Quaternion.Euler(0, random.Next(0, 360), 0);
 
                 // Add spawn position to priority queue
-                objectsToSpawn.Enqueue(new FoliageSpawnData(hit.point - (hit.point.normalized * 0.1f), rotation, treeObject, name));
+                objectsToSpawn.Enqueue(new FoliageSpawnData(hit.point - (hit.point.normalized * 0.1f), rotation, treeObject, materialForObject, name));
                 
                 if (foliageHandler.debug) Debug.DrawLine(localpos, hit.point, Color.yellow, 10f);
             }
@@ -370,14 +379,23 @@ public class Foliage : MonoBehaviour
     // Bush spawning function
     private void SpawnBushes(RaycastHit hit, Vector3 rayOrigin)
     {
-        InstantiateObject(foliageHandler.GetBushType(), hit, hit.normal);
+        GameObject foliageObj = InstantiateObject(foliageHandler.GetBushType(), hit, hit.normal);
+        int index = foliageObj.name.Contains("Type") ? 1 : 0;
+
+        Material materialForFoliageObject = foliageHandler.foliageCollections[3].biomeMaterials[index];
+        foliageObj.GetComponent<MeshRenderer>().material = materialForFoliageObject;
         objectsNr++;
     }
 
     // Stone spawning fucntion
     private void SpawnStones(RaycastHit hit, Vector3 rayOrigin)
     {
-        InstantiateObject(foliageHandler.GetStoneType(), hit, hit.normal);
+        GameObject foliageObj = InstantiateObject(foliageHandler.GetStoneType(), hit, hit.normal);
+
+        int index = foliageObj.name.Contains("Type") ? 1 : 0;
+
+        Material materialForFoliageObject = foliageHandler.foliageCollections[3].biomeMaterials[index];
+        foliageObj.GetComponent<MeshRenderer>().material = materialForFoliageObject;
         objectsNr++;
     }
 

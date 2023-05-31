@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Pathfinding.Util;
+using TMPro;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -40,6 +41,7 @@ public class SpaceShipController : MonoBehaviour
     [SerializeField] private Transform spaceshipRoot;
     [SerializeField] private RectTransform crosshairTexture;
     [SerializeField] private Image travelModeGUIImage;
+    [SerializeField] private TextMeshProUGUI speedGauge;
     [SerializeField] private Material travelModePanel;
     [SerializeField] private Sprite[] travelTypeSprites;
     [SerializeField] private Texture2D[] travelTypeTextures;
@@ -141,6 +143,7 @@ public class SpaceShipController : MonoBehaviour
             physicsBody.isKinematic = true;
             crosshairTexture.gameObject.SetActive(false);
             travelModeGUIImage.enabled = false;
+            speedGauge.gameObject.SetActive(false);
             
             // Setup for Ship transition handover
             isOutsidePlanet = true;
@@ -155,7 +158,8 @@ public class SpaceShipController : MonoBehaviour
         physicsBody.isKinematic = false;
         crosshairTexture.gameObject.SetActive(true);
         travelModeGUIImage.enabled = true;
-        
+        speedGauge.gameObject.SetActive(true);
+
         // Movement
         float thrust = Input.GetAxis("Spaceship Thrust");
         float strafe = Input.GetAxis("Spaceship Strafe");
@@ -188,10 +192,13 @@ public class SpaceShipController : MonoBehaviour
         moveDirection = transform.TransformDirection(moveDirection);
         
         //Set the velocity, so you can move
-        physicsBody.velocity = new Vector3(moveDirection.x, moveDirection.y, moveDirection.z);
+        physicsBody.velocity = moveDirection;
         
         // Plays thruster audio if needed
         PlayThrustAudio(newMovementVector);
+        
+        // Updates speed GUI
+        speedGauge.SetText(Mathf.Round(moveDirection.magnitude) + "km/h");
 
         //Camera follow
         mainCamera.transform.position = Vector3.Lerp(mainCamera.transform.position, cameraPosition.position, Time.deltaTime * cameraSmooth);
