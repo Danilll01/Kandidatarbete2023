@@ -44,9 +44,25 @@ public class MarchingCubes
     }
 
     /// <summary>
-    /// Generate the mesh from the given parameters in the constructor
+    /// Generate the mesh from the given parameters in the constructor while updating min/max terrain levels
     /// </summary>
     public int generateMesh(MinMaxTerrainLevel hightFillerTerrainLevel, int index, int resolution, Mesh mesh)
+    {
+        int vertexCount = generateMesh(index, resolution, mesh);
+
+        for (int i = 0; i < mesh.vertexCount; i++)
+        {
+            
+            hightFillerTerrainLevel.UpdateMinMax(mesh.vertices[i]);
+        }
+
+        return vertexCount;
+    }
+
+    /// <summary>
+    /// Generate the mesh from the given parameters in the constructor
+    /// </summary>
+    public int generateMesh(int index, int resolution, Mesh mesh)
     {
         resolution *= 1 << chunkResolution;
 
@@ -104,7 +120,6 @@ public class MarchingCubes
             for (int j = 0; j < 3; j++)
             {
                 meshTriangles[i * 3 + j] = i * 3 + j;
-                hightFillerTerrainLevel.UpdateMinMax(triangles[i][j]);  //This is slow, need to implement fix so that this is only called the first time the chunks are created
                 meshVertices[i * 3 + j] = triangles[i][j];
             }
         }

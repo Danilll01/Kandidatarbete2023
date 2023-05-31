@@ -340,7 +340,7 @@ public class ChunkGenerator
                 {
                     chunk.SetActivated(true);
                     Mesh mesh = new Mesh();
-                    generator.generateMesh(terrainLevel, chunk.Index, resolution, mesh);
+                    generator.generateMesh(chunk.Index, resolution, mesh);
                     physicsBakeQueue.Enqueue(mesh.GetInstanceID());
                     chunkJobs.Add((chunk, mesh, resolution));
                 }
