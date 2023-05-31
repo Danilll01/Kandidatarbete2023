@@ -29,6 +29,7 @@ public class ChunksHandler : MonoBehaviour
 
     private bool playerOnPlanet;
     private bool updateChunks = false;
+    private int chunkVisibilityIndex = 0;
 
     // The amount of chunks
     [SerializeField] public int lowChunkRes = 1;
@@ -234,8 +235,10 @@ public class ChunksHandler : MonoBehaviour
         else
             cutoffPoint = playerPos / 1.5f;
 
-        foreach (Chunk chunk in chunksHighRes)
+        for (int i = 0; i < 50; i++)
         {
+            Chunk chunk = chunksHighRes[chunkVisibilityIndex];
+
             bool isBelowHalfWayPoint = CheckIfPointBIsBelowPointA(cutoffPoint, chunk.position, cutoffPoint.normalized);
             if (isBelowHalfWayPoint)
             {
@@ -252,6 +255,8 @@ public class ChunksHandler : MonoBehaviour
                 }
                     
             }
+
+            chunkVisibilityIndex = (chunkVisibilityIndex + 1) % chunksHighRes.Count;
         }
     }
 
