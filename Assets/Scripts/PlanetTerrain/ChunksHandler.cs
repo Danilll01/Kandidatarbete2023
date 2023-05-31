@@ -258,7 +258,6 @@ public class ChunksHandler : MonoBehaviour
 
 public class ChunkGenerator
 {
-
     //Chunk work
     private List<(Chunk, Mesh, int)> chunkJobs;
     private Queue<int> physicsBakeQueue = new Queue<int>();
@@ -305,7 +304,10 @@ public class ChunkGenerator
             {
                 if (!chunk.initialized) continue;
 
-                //MBY only check sometimes or only so many, idk, save 5%
+                if (physicsBakeQueue.Count >= 3)
+                {
+                    break;
+                }
 
                 float playerDistance = Vector3.Distance(playerPos, chunk.position);
                 int resolution;
