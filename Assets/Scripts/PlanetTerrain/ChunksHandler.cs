@@ -96,7 +96,7 @@ public class ChunksHandler : MonoBehaviour
             UpdateChunksVisibility();
         }
 
-        chunkGenerator = new ChunkGenerator(chunksHighRes, this, marchingCubes, terrainLevel);
+        chunkGenerator = new ChunkGenerator(chunksHighRes, this, marchingCubes);
     }
 
     // Update is called once per frame
@@ -267,24 +267,22 @@ public class ChunkGenerator
 
     ChunksHandler handler;
     MarchingCubes generator;
-    MinMaxTerrainLevel terrainLevel;
 
-    Thread worker;
     Semaphore physicsWorkerSemaphore = new Semaphore(0, 1);
     bool chunkPhysicsActive = false;
     bool chunkPhysicsComplete = false;
 
-    public ChunkGenerator(List<Chunk> chunks, ChunksHandler handler, MarchingCubes generator, MinMaxTerrainLevel terrainLevel)
+    public ChunkGenerator(List<Chunk> chunks, ChunksHandler handler, MarchingCubes generator)
     {
         this.chunks = chunks;
         this.handler = handler;
         this.generator = generator;
-        this.terrainLevel = terrainLevel;
         player = Universe.player;
 
-        worker = new Thread(Work);
-        worker.IsBackground = true;
-        worker.Start();
+        new Thread(Work)
+        {
+            IsBackground = true
+        }.Start();
     }
 
     public void Update()
