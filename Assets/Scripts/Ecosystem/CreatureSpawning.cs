@@ -1,6 +1,8 @@
 using ExtendedRandom;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.Collections;
+using Unity.Jobs;
 using UnityEngine;
 
 public class CreatureSpawning : MonoBehaviour
@@ -84,14 +86,26 @@ public class CreatureSpawning : MonoBehaviour
         Vector3 planetPos = creatureHandler.PlanetPosition;
         float radius = creatureHandler.PlanetRadius;
         float waterRadius = creatureHandler.WaterRadius;
+        Debug.Log(creatureSpots.Length);
+        // Set up raycasts
+        int rayCount = creatureSpots.Length;
+        var results = new NativeArray<RaycastHit>(rayCount, Allocator.TempJob);
+        var commands = new NativeArray<RaycastCommand>(rayCount, Allocator.TempJob);
+        for (int i = 0; i < rayCount; i++)
+        {
+            Vector3 origin = creatureSpots[i] + planetPos;
+            Vector3 direction = planetPos - origin;
+            commands[i] = new RaycastCommand(origin, direction);
+        }
+        // Send them off
+        JobHandle rayHandle = RaycastCommand.ScheduleBatch(commands, results, 1);
+        rayHandle.Complete();
 
         // Loops though all spots for this chunk
-        foreach (Vector3 spot in creatureSpots)
+        for (int i = 0; i < commands.Length; i++)
         {
-            // Shots a ray towards the center of the planet 
-            Vector3 rayOrigin = spot + planetPos;
-            Ray ray = new Ray(rayOrigin, planetPos - rayOrigin);
-            Physics.Raycast(ray, out RaycastHit hit, float.MaxValue, 1 << LayerMask.NameToLayer("Planet"));
+            RaycastHit hit = results[i];
+            Vector3 rayOrigin = commands[i].from;
 
             if (creatureHandler.debug)
             {
@@ -124,6 +138,9 @@ public class CreatureSpawning : MonoBehaviour
 
         }
         if (creatureHandler.debug) Debug.Log("Hits: " + hits + " %: " + hits / (float)positionArrayLength * 100f);
+
+        results.Dispose();
+        commands.Dispose();
 
         // Removes spots making the chunk unable to spawn new trees
         creatureSpots = null;
