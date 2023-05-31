@@ -12,13 +12,11 @@ public class ChunksHandler : MonoBehaviour
 {
     private Planet planet;
     private PillPlayerController player;
-    private Vector3 playerLastPosition;
     private int foliageInitialized = 10;
     private int chunkResolution; //This is 2^chunkResolution
     private MarchingCubes marchingCubes;
     private Material planetMaterial;
     [HideInInspector] public float planetRadius;
-    private MinMaxTerrainLevel terrainLevel;
     private RandomX rand;
 
     [SerializeField] private Chunk chunkPrefab;
@@ -40,9 +38,8 @@ public class ChunksHandler : MonoBehaviour
     [SerializeField] public ResolutionSetting mediumRes;
     [SerializeField] public ResolutionSetting lowRes;
 
-    // Used for chunk culling
+    // Used for chunk generation
     private ChunkGenerator chunkGenerator;
-    private Vector3 lastChunkUpdatePlayerPosition = Vector3.zero;
 
     enum ChunkResolution
     {
@@ -77,7 +74,6 @@ public class ChunksHandler : MonoBehaviour
         player = Universe.player;
         marchingCubes = planet.marchingCubes;
         planetRadius = planet.radius;
-        this.terrainLevel = terrainLevel;
 
         playerOnPlanet = spawn;
 
@@ -142,12 +138,6 @@ public class ChunksHandler : MonoBehaviour
         }
 
         UpdateChunksVisibility();
-
-        // Only update chunks if player has moved a certain distance
-        Vector3 playerPos = player.boarded ? Universe.spaceShip.localPosition : player.transform.localPosition;
-        if (Vector3.Magnitude(playerPos - lastChunkUpdatePlayerPosition) < 1.8f)
-            return;
-        lastChunkUpdatePlayerPosition = playerPos;
 
         chunkGenerator.Update();
 

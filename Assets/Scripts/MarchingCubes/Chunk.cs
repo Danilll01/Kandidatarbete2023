@@ -24,7 +24,6 @@ public class Chunk : MonoBehaviour
     private ResolutionSetting highRes;
     private ResolutionSetting mediumRes;
     private ResolutionSetting lowRes;
-    private Vector3 previousPlayerPos;
 
     private MeshFilter meshFilter;
     private MeshCollider meshCollider;
@@ -34,8 +33,6 @@ public class Chunk : MonoBehaviour
     private Planet planet;
     private MinMaxTerrainLevel terrainLevel;
     [HideInInspector] public float chunkSize;
-
-    private bool lowChunkResChunks;
 
     private RandomX random;
 
@@ -74,12 +71,10 @@ public class Chunk : MonoBehaviour
         meshFilter = transform.GetComponent<MeshFilter>();
         if(marchingCubes.chunkResolution == 1)
         {
-            lowChunkResChunks = true;
             GetComponent<MeshCollider>().enabled = false;
         }
         else
         {
-            lowChunkResChunks = false;
             meshCollider = transform.GetComponent<MeshCollider>();
         }
 
@@ -90,66 +85,6 @@ public class Chunk : MonoBehaviour
 
         return numVerts;
     }
-
-    /*private void Update()
-    {
-        if (!initialized || lowChunkResChunks) return;
-        
-        Vector3 playerPos = player.boarded ? Universe.spaceShip.localPosition : player.transform.localPosition;
-            
-        // Check every 5 meter so that we don't check all the time
-        if (Vector3.Magnitude(playerPos - previousPlayerPos) < 2)
-            return;
-            
-        previousPlayerPos = playerPos;
-
-        float playerDistance = Vector3.Magnitude(playerPos - position);
-        if (playerDistance < highRes.upperRadius)
-        {
-            meshCollider.enabled = true;
-            foliageGameObject.SetActive(true);
-            creatureGameObject.SetActive(true);
-
-            int numVerts = UpdateMesh(highRes.resolution);
-
-            if (planet.willGeneratePlanetLife)
-            {
-                if (!foliage.initialized)
-                {
-                    if (numVerts > 500)
-                        foliage.Initialize(numVerts, position, random.Next(), planet);
-                }
-
-                if (!creatures.initialized)
-                {
-                    if (numVerts > 500)
-                        creatures.Initialize(numVerts, position, random.Next());
-                }
-                if (!creatures.finishedSpawning)
-                {
-                    creatures.BatchedSpawning();
-                }
-                foliage.BatchedSpawning();
-            }
-                    
-                    
-        } 
-        else if (mediumRes.lowerRadius < playerDistance && playerDistance < mediumRes.upperRadius)
-        {
-            foliageGameObject.SetActive(false);
-            creatureGameObject.SetActive(false);
-            meshCollider.enabled = false;
-            UpdateMesh(mediumRes.resolution);
-                
-        }
-        else if (lowRes.lowerRadius < playerDistance)
-        {
-            foliageGameObject.SetActive(false);
-            creatureGameObject.SetActive(false);
-            meshCollider.enabled = false;
-            UpdateMesh(lowRes.resolution);
-        }
-    }*/
 
     /// <summary>
     /// Sets the material of the chunk
