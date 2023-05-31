@@ -152,7 +152,7 @@ public class ChunksHandler : MonoBehaviour
             return;
         lastChunkUpdatePlayerPosition = playerPos;
 
-        UpdateChunksResolution();
+        chunkGenerator.Update();
 
         //Foliage & creatures
         foreach (Chunk chunk in chunksHighRes)
@@ -257,11 +257,6 @@ public class ChunksHandler : MonoBehaviour
             count++;
             index = index == 0 ? chunksHighRes.Count - 1 : index - 1;
         }
-    }
-
-    private void UpdateChunksResolution()
-    {
-        chunkGenerator.Update();
     }
 
     private bool CheckIfPointBIsBelowPointA(Vector3 a, Vector3 b, Vector3 up)
