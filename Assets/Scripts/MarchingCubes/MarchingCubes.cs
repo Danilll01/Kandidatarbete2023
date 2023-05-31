@@ -178,6 +178,7 @@ public class MarchingCubes
 
 
         // Release all buffers
+        data.buffers = null;
         trianglesBuffer.Release();
         layersBuffer.Release();
         biomesBuffer.Release();
@@ -240,13 +241,13 @@ public class MarchingCubes
         }
     }
 
-    public struct ChunkGPUCallbackData
+    public class ChunkGPUCallbackData
     {
         public MinMaxTerrainLevel terrainLevel;
         public Mesh mesh;
         public ComputeBuffer[] buffers; //triangle, layers, biomes
 
-        public ChunkGPUCallbackData(MinMaxTerrainLevel terrainLevel, Mesh mesh, ComputeBuffer[] buffers) : this()
+        public ChunkGPUCallbackData(MinMaxTerrainLevel terrainLevel, Mesh mesh, ComputeBuffer[] buffers)
         {
             this.terrainLevel = terrainLevel;
             this.mesh = mesh;
