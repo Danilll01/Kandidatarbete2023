@@ -18,7 +18,7 @@ public class Foliage : MonoBehaviour
 
     private Queue<FoliageSpawnData> objectsToSpawn = new Queue<FoliageSpawnData>();
     private FoliageSpawnData objectToSpawn;
-    private int objectsPerBatchedSpawn = 80;
+    private int objectsPerBatchedSpawn = 10;
 
     // FoliageHandler, the controller of the operation
     private FoliageHandler foliageHandler;

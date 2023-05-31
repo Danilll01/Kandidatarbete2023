@@ -154,14 +154,16 @@ public class ChunksHandler : MonoBehaviour
         chunkGenerator.Update();
 
         //Foliage & creatures
+        bool spawnedAnimals = false;
         foreach (Chunk chunk in chunksHighRes)
         {
             if (!chunk.initialized)
             {
                 continue;
             }
-            if (chunk.creatures.initialized && !chunk.creatures.FinishedSpawning)
+            if (!spawnedAnimals && chunk.creatures.initialized && !chunk.creatures.FinishedSpawning)
             {
+                spawnedAnimals = true;
                 chunk.creatures.BatchedSpawning();
             }
             if (chunk.foliage.initialized && !chunk.foliage.FinishedSpawning)
