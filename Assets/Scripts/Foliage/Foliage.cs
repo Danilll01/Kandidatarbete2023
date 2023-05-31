@@ -351,11 +351,10 @@ public class Foliage : MonoBehaviour
         float distToPlayer = Vector3.Distance(position, Universe.player.transform.position);
 
         // Set up raycasts
-        int rayCount = plantSpots.Length;
-        var results = new NativeArray<RaycastHit>(rayCount, Allocator.TempJob);
-        var commands = new NativeArray<RaycastCommand>(rayCount, Allocator.TempJob);
+        var results = new NativeArray<RaycastHit>(nrObjectsToSpawn, Allocator.TempJob);
+        var commands = new NativeArray<RaycastCommand>(nrObjectsToSpawn, Allocator.TempJob);
 
-        for (int i = 0; i < rayCount; i++)
+        for (int i = 0; i < nrObjectsToSpawn; i++)
         {
             if (probToSkip > random.Value()) continue;
 
