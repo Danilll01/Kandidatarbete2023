@@ -4,6 +4,7 @@ using Noise;
 using System.Collections.Generic;
 using Unity.Collections;
 using Unity.Jobs;
+using Assets.Scripts.Tools;
 
 public class Foliage : MonoBehaviour
 {
@@ -169,8 +170,7 @@ public class Foliage : MonoBehaviour
 
         // Set up raycasts
         int rayCount = plantSpots.Length;
-        var results = new NativeArray<RaycastHit>(rayCount, Allocator.TempJob);
-        var commands = new NativeArray<RaycastCommand>(rayCount, Allocator.TempJob);
+        RaycastCommand[] commands = new RaycastCommand[rayCount];
         for (int i = 0; i < rayCount; i++)
         {
             Vector3 origin = plantSpots[i] + planetPos;
@@ -178,8 +178,7 @@ public class Foliage : MonoBehaviour
             commands[i] = new RaycastCommand(origin, direction);
         }
         // Send them off
-        JobHandle rayHandle = RaycastCommand.ScheduleBatch(commands, results, 1);
-        rayHandle.Complete();
+        RaycastHit[] results = Raycasting.BatchRaycast(commands);
 
         for (int i = 0; i < rayCount; i++)
         {
@@ -220,10 +219,6 @@ public class Foliage : MonoBehaviour
         plantSpots = null;
         // Update debug menu
         OnEnable();
-
-        // Dispose of batch arrays
-        results.Dispose();
-        commands.Dispose();
     }
 
     // On land
@@ -350,10 +345,7 @@ public class Foliage : MonoBehaviour
         // Use distance to player in priority queue to prioritize spawning objects closer to the player first
         float distToPlayer = Vector3.Distance(position, Universe.player.transform.position);
 
-        // Set up raycasts
-        var results = new NativeArray<RaycastHit>(nrObjectsToSpawn, Allocator.TempJob);
-        var commands = new NativeArray<RaycastCommand>(nrObjectsToSpawn, Allocator.TempJob);
-
+        RaycastCommand[] commands = new RaycastCommand[nrObjectsToSpawn];
         for (int i = 0; i < nrObjectsToSpawn; i++)
         {
             if (probToSkip > random.Value()) continue;
@@ -368,9 +360,7 @@ public class Foliage : MonoBehaviour
             Vector3 direction = -localpos;
             commands[i] = new RaycastCommand(origin, direction);
         }
-        // Send them off
-        JobHandle rayHandle = RaycastCommand.ScheduleBatch(commands, results, 1);
-        rayHandle.Complete();
+        RaycastHit[] results = Raycasting.BatchRaycast(commands);
 
         // Spawns 5 trees around a found forest spot! Bigger number = denser forest
         for (int i = 0; i < nrObjectsToSpawn; i++)
@@ -389,9 +379,6 @@ public class Foliage : MonoBehaviour
                 if (foliageHandler.debug) Debug.DrawLine(localpos, hit.point, Color.yellow, 10f);
             }
         }
-
-        results.Dispose();
-        commands.Dispose();
     }
 
     // Bush spawning function
