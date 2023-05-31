@@ -215,7 +215,6 @@ public class Chunk : MonoBehaviour
         {
             if (!foliage.initialized)
             {
-                Debug.Log("Initialize foliage");
                 if (numVerts > 500)
                     foliage.Initialize(numVerts, position, random.Next(), planet);
             }
