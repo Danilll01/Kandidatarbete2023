@@ -1,13 +1,17 @@
 # Exo Explorer: A Bachelor Thesis Project
+![GameImage](https://github.com/Danilll01/Kandidatarbete2023/assets/59963395/45db6b6b-36d9-42e7-a423-2b6215497d20)
 
 Welcome to Exo Explorer, a procedurally generated space exploration simulation. This application has been designed to provide an immersive and dynamic space exploration experience, with a multitude of celestial bodies and ecosystems to explore.
 
 # Overview
 This application invites you to explore a universe of procedurally generated planets, each full of unique ecosystems and vibrant life.
+![FinalFoliage8](https://github.com/Danilll01/Kandidatarbete2023/assets/59963395/dd26a405-d070-47fe-97fa-4847d9a9bad0)
 
 On these diverse worlds, you will encounter a variety of creatures, each with their own behavioral patterns. They seek food and water, and when the conditions are right, they reproduce, offering a truly dynamic and immersive exploration experience.
+![Animals](https://github.com/Danilll01/Kandidatarbete2023/assets/59963395/8d4f996c-cc04-41d2-821c-35b419253009)
 
 One of the key features of Exo Explorer is its deterministic design. With a particular seed, the same solar system is generated every time, allowing you to revisit your favorite systems and even share them with others. So, embark on your journey through the stars with Exo Explorer and witness the grandeur of the cosmos at your fingertips.
+![FinalWater](https://github.com/Danilll01/Kandidatarbete2023/assets/59963395/065ec52b-0dc2-43f7-8ef9-2f799097205e)
 
 # Key Features
 - Procedural Solar System Generation: Each solar system is uniquely generated, providing an endless array of celestial bodies to discover.
@@ -17,6 +21,11 @@ One of the key features of Exo Explorer is its deterministic design. With a part
 - Deterministic Generation: The procedural generation is deterministic, allowing for revisit and sharing of specific solar systems using seed numbers.
 
 - User Interface and Sound Design: The application features a robust user interface complemented by an engaging soundscape, enhancing the user experience.
+
+# How to run
+1. Navigate to [releases](https://github.com/Danilll01/Kandidatarbete2023/releases) and download the latest StandaloneWindows64.zip build.
+2. Unzip the file and run "StandaloneWindows64.exe"
+3. Enjoy :)
 
 ### Group members
 Github name       | Real name
