@@ -13,8 +13,8 @@ namespace Assets.Scripts.Tools
     {
         static private int size = 1000;
 
-        static private NativeArray<RaycastHit> resultArray = new NativeArray<RaycastHit>(size, Allocator.TempJob);
-        static private NativeArray<RaycastCommand> commandArray = new NativeArray<RaycastCommand>(size, Allocator.TempJob);
+        static private NativeArray<RaycastHit> resultArray = new NativeArray<RaycastHit>(size, Allocator.Persistent);
+        static private NativeArray<RaycastCommand> commandArray = new NativeArray<RaycastCommand>(size, Allocator.Persistent);
 
         public static RaycastHit[] BatchRaycast(RaycastCommand[] commands)
         {
