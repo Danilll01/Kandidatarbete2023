@@ -7,7 +7,6 @@ using ExtendedRandom;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Rendering;
-using System.Collections.Concurrent;
 
 public class ChunksHandler : MonoBehaviour
 {
@@ -269,10 +268,8 @@ public class ChunkGenerator
 {
 
     //Chunk work
-    private List<(Chunk chunk, int resolution, (AsyncGPUReadbackRequest request, MarchingCubes.ChunkGPUCallbackData data) GPUCall)> chunkJobs;
-    private ConcurrentQueue<int> physicsBakeQueue = new ConcurrentQueue<int>();
-    int chunkJobDoneIndex;
-    bool complete = false;
+    private List<(Chunk, Mesh, int)> chunkJobs;
+    private Queue<int> physicsBakeQueue = new Queue<int>();
     private PillPlayerController player;
     private List<Chunk> chunks;
 
@@ -282,7 +279,6 @@ public class ChunkGenerator
 
     Thread worker;
     Semaphore physicsWorkerSemaphore = new Semaphore(0, 1);
-    bool chunkWorkActive = false;
     bool chunkPhysicsActive = false;
     bool chunkPhysicsComplete = false;
 
@@ -301,37 +297,19 @@ public class ChunkGenerator
 
     public void Update()
     {
-        //Check if GPU generation is complete
-        if (chunkWorkActive && !chunkPhysicsActive)
-        {
-            while (chunkJobDoneIndex != chunkJobs.Count && chunkJobs[chunkJobDoneIndex].GPUCall.request.done)
-            {
-                physicsBakeQueue.Enqueue(chunkJobs[chunkJobDoneIndex].GPUCall.data.mesh.GetInstanceID());
-                chunkJobDoneIndex++;
-                if (chunkJobDoneIndex == chunkJobs.Count)
-                {
-                    for (int i = 0; i < chunkJobDoneIndex; i++)
-                    {
-                        generator.GenerateMeshAsyncCallback(chunkJobs[i].GPUCall.data);
-                    }
-                    chunkPhysicsActive = true;
-                    physicsWorkerSemaphore.Release();
-                }
-            }
-        }
         //Update new chunk meshes with precalculated physics from worker
         if (chunkPhysicsComplete)
         {
-            foreach ((Chunk chunk, int resolution, (AsyncGPUReadbackRequest request, MarchingCubes.ChunkGPUCallbackData data)) in chunkJobs)
+            foreach ((Chunk chunk, Mesh mesh, int resolution) in chunkJobs)
             {
-                chunk.UpdateMesh(data.mesh, resolution);
+                chunk.UpdateMesh(mesh, resolution);
             }
-            chunkWorkActive = chunkPhysicsActive = chunkPhysicsComplete = false;
+            chunkPhysicsActive = chunkPhysicsComplete = false;
         }
         //Start new work
-        if (!chunkWorkActive)
+        if (!chunkPhysicsActive)
         {
-            chunkJobs = new List<(Chunk, int resolution, (AsyncGPUReadbackRequest, MarchingCubes.ChunkGPUCallbackData))>();
+            chunkJobs = new List<(Chunk, Mesh, int)>();
             Vector3 playerPos = player.boarded ? Universe.spaceShip.localPosition : player.transform.localPosition;
             foreach (Chunk chunk in chunks)
             {
@@ -362,14 +340,15 @@ public class ChunkGenerator
                 {
                     chunk.SetActivated(true);
                     Mesh mesh = new Mesh();
-                    var chunkJob = (chunk, resolution, generator.GenerateMeshAsync(terrainLevel, chunk.Index, resolution, mesh));
-                    chunkJobs.Add(chunkJob);
+                    generator.generateMesh(terrainLevel, chunk.Index, resolution, mesh);
+                    physicsBakeQueue.Enqueue(mesh.GetInstanceID());
+                    chunkJobs.Add((chunk, mesh, resolution));
                 }
             }
-            if (chunkJobs.Count != 0)
+            if (physicsBakeQueue.Count != 0)
             {
-                chunkJobDoneIndex = 0;
-                chunkWorkActive = true;
+                chunkPhysicsActive = true;
+                physicsWorkerSemaphore.Release();
             }
         }
     }
