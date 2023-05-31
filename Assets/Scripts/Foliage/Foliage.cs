@@ -338,13 +338,10 @@ public class Foliage : MonoBehaviour
     // Forest spawning function
     private void SpawnTreesInForest(GameObject treeObject, Vector3 rayOrigin, Vector3 position, string name, float probToSkip, Material materialForObject)
     {
-        
         // Used to introduce some variation in forest sizes.
         int nrObjectsToSpawn = random.Next((int)(objectsInForest * 0.8f), objectsInForest);
 
-        // Use distance to player in priority queue to prioritize spawning objects closer to the player first
-        float distToPlayer = Vector3.Distance(position, Universe.player.transform.position);
-
+        // Spawns 5 trees around a found forest spot! Bigger number = denser forest
         RaycastCommand[] commands = new RaycastCommand[nrObjectsToSpawn];
         for (int i = 0; i < nrObjectsToSpawn; i++)
         {
@@ -361,7 +358,7 @@ public class Foliage : MonoBehaviour
             commands[i] = new RaycastCommand(origin, direction);
         }
         RaycastHit[] results = Raycasting.BatchRaycast(commands);
-        // Spawns 5 trees around a found forest spot! Bigger number = denser forest
+
         for (int i = 0; i < nrObjectsToSpawn; i++)
         {
             RaycastHit hit = results[i];
