@@ -18,6 +18,11 @@ namespace Assets.Scripts.Tools
 
         public static RaycastHit[] BatchRaycast(RaycastCommand[] commands)
         {
+            if (commands.Length < 100)
+            {
+                return RaycastLinear(commands);
+            }
+
             if (size < commands.Length)
             {
                 resultArray.Dispose();
@@ -37,6 +42,18 @@ namespace Assets.Scripts.Tools
             rayHandle.Complete();
 
             return resultArray.GetSubArray(0, commands.Length).ToArray();
+        }
+        private static RaycastHit[] RaycastLinear(RaycastCommand[] commands)
+        {
+            RaycastHit[] results = new RaycastHit[commands.Length];
+
+            for (int i = 0; i < commands.Length; i++)
+            {
+                Physics.Raycast(commands[i].from, commands[i].direction, out RaycastHit hit);
+                results[i] = hit;
+            }
+
+            return results;
         }
     }
 }
