@@ -373,8 +373,7 @@ public class Foliage : MonoBehaviour
 
             if (hit.transform == transform.parent && hit.distance < foliageHandler.PlanetRadius - foliageHandler.WaterRadius)
             {
-                Quaternion rotation = Quaternion.LookRotation(rayOrigin) * Quaternion.Euler(90, 0, 0);
-                rotation *= Quaternion.Euler(0, random.Next(0, 360), 0);
+                Quaternion rotation = Quaternion.LookRotation(rayOrigin) * Quaternion.Euler(90, random.Next(0, 360), 0);
 
                 // Add spawn position to priority queue
                 objectsToSpawn.Enqueue(new FoliageSpawnData(hit.point - (hit.point.normalized * 0.1f), rotation, treeObject, materialForObject, name));
