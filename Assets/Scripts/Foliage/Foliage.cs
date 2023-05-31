@@ -361,11 +361,14 @@ public class Foliage : MonoBehaviour
             commands[i] = new RaycastCommand(origin, direction);
         }
         RaycastHit[] results = Raycasting.BatchRaycast(commands);
-
         // Spawns 5 trees around a found forest spot! Bigger number = denser forest
         for (int i = 0; i < nrObjectsToSpawn; i++)
         {
             RaycastHit hit = results[i];
+            if (hit.distance == 0)
+            {
+                continue;
+            }
             Vector3 localpos = commands[i].from;
 
             if (hit.transform == transform.parent && hit.distance < foliageHandler.PlanetRadius - foliageHandler.WaterRadius)
