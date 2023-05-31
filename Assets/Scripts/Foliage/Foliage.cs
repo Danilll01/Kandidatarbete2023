@@ -350,20 +350,36 @@ public class Foliage : MonoBehaviour
         // Use distance to player in priority queue to prioritize spawning objects closer to the player first
         float distToPlayer = Vector3.Distance(position, Universe.player.transform.position);
 
-        // Spawns 5 trees around a found forest spot! Bigger number = denser forest
-        for (int i = 0; i < nrObjectsToSpawn; i++)
+        // Set up raycasts
+        int rayCount = plantSpots.Length;
+        var results = new NativeArray<RaycastHit>(rayCount, Allocator.TempJob);
+        var commands = new NativeArray<RaycastCommand>(rayCount, Allocator.TempJob);
+
+        for (int i = 0; i < rayCount; i++)
         {
             if (probToSkip > random.Value()) continue;
 
+            // Assumes we are spawning trees on a planet located in origin!
             float x = (float)random.Value() * 2 - 1;
             float y = (float)random.Value() * 2 - 1;
             float z = (float)random.Value() * 2 - 1;
             Vector3 localpos = Quaternion.Euler(x, y, z) * rayOrigin;
 
-            // Assumes we are spawning trees on a planet located in origin!
-            // If shit is bugged might have to change this ray
-            Physics.Raycast(localpos, -localpos, out RaycastHit hit);
-            if(hit.transform == transform.parent && hit.distance < foliageHandler.PlanetRadius - foliageHandler.WaterRadius)
+            Vector3 origin = localpos;
+            Vector3 direction = -localpos;
+            commands[i] = new RaycastCommand(origin, direction);
+        }
+        // Send them off
+        JobHandle rayHandle = RaycastCommand.ScheduleBatch(commands, results, 1);
+        rayHandle.Complete();
+
+        // Spawns 5 trees around a found forest spot! Bigger number = denser forest
+        for (int i = 0; i < nrObjectsToSpawn; i++)
+        {
+            RaycastHit hit = results[i];
+            Vector3 localpos = commands[i].from;
+
+            if (hit.transform == transform.parent && hit.distance < foliageHandler.PlanetRadius - foliageHandler.WaterRadius)
             {
                 Quaternion rotation = Quaternion.LookRotation(rayOrigin) * Quaternion.Euler(90, 0, 0);
                 rotation *= Quaternion.Euler(0, random.Next(0, 360), 0);
@@ -374,6 +390,9 @@ public class Foliage : MonoBehaviour
                 if (foliageHandler.debug) Debug.DrawLine(localpos, hit.point, Color.yellow, 10f);
             }
         }
+
+        results.Dispose();
+        commands.Dispose();
     }
 
     // Bush spawning function
