@@ -41,8 +41,6 @@ public class ChunksHandler : MonoBehaviour
     [SerializeField] public ResolutionSetting lowRes;
 
     // Used for chunk culling
-    private int index = 0;
-    [SerializeField] private int maxChunkChecksPerFrame = 50;
     private ChunkGenerator chunkGenerator;
     private Vector3 lastChunkUpdatePlayerPosition = Vector3.zero;
 
@@ -236,27 +234,24 @@ public class ChunksHandler : MonoBehaviour
         else
             cutoffPoint = playerPos / 1.5f;
 
-        int count = 0;
-        while (count < maxChunkChecksPerFrame)
+        foreach (Chunk chunk in chunksHighRes)
         {
-            bool isBelowHalfWayPoint = CheckIfPointBIsBelowPointA(cutoffPoint, chunksHighRes[index].position, cutoffPoint.normalized);
+            bool isBelowHalfWayPoint = CheckIfPointBIsBelowPointA(cutoffPoint, chunk.position, cutoffPoint.normalized);
             if (isBelowHalfWayPoint)
             {
-                chunksHighRes[index].gameObject.SetActive(false);
+                chunk.gameObject.SetActive(false);
             }
             else
             {
-                chunksHighRes[index].gameObject.SetActive(true);
+                chunk.gameObject.SetActive(true);
                 if (foliageInitialized == 0)
                 {
-                    chunksHighRes[index].foliage.SpawnFoliageOnChunk();
-                    CreatureSpawning creatureSpawning = chunksHighRes[index].creatures;
+                    chunk.foliage.SpawnFoliageOnChunk();
+                    CreatureSpawning creatureSpawning = chunk.creatures;
                     if (creatureSpawning.initialized) creatureSpawning.GeneratePackSpawns();
                 }
                     
             }
-            count++;
-            index = index == 0 ? chunksHighRes.Count - 1 : index - 1;
         }
     }
 
