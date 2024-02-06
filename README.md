@@ -3,6 +3,9 @@
 
 Welcome to Exo Explorer, a procedurally generated space exploration simulation. This application has been designed to provide an immersive and dynamic space exploration experience, with a multitude of celestial bodies and ecosystems to explore.
 
+## Project video
+A video showcasing the project and how it works can be found by following this link: [Youtube Exo Explorer](https://www.youtube.com/watch?v=dVtItZSd-88)
+
 # Overview
 This application invites you to explore a universe of procedurally generated planets, each full of unique ecosystems and vibrant life.
 ![FinalFoliage8](https://github.com/Danilll01/Kandidatarbete2023/assets/59963395/dd26a405-d070-47fe-97fa-4847d9a9bad0)
