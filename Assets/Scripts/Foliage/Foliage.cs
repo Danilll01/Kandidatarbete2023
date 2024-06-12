@@ -2,6 +2,9 @@ using UnityEngine;
 using ExtendedRandom;
 using Noise;
 using System.Collections.Generic;
+using Unity.Collections;
+using Unity.Jobs;
+using Assets.Scripts.Tools;
 
 public class Foliage : MonoBehaviour
 {
@@ -14,9 +17,9 @@ public class Foliage : MonoBehaviour
     // Spawning spots
     private Vector3[] plantSpots = null;
 
-    private PriorityQueue<FoliageSpawnData> objectsToSpawn = new PriorityQueue<FoliageSpawnData>();
+    private Queue<FoliageSpawnData> objectsToSpawn = new Queue<FoliageSpawnData>();
     private FoliageSpawnData objectToSpawn;
-    private int objectsPerBatchedSpawn = 80;
+    private int objectsPerBatchedSpawn = 30;
 
     // FoliageHandler, the controller of the operation
     private FoliageHandler foliageHandler;
@@ -165,13 +168,22 @@ public class Foliage : MonoBehaviour
         float radius = foliageHandler.PlanetRadius;
         float waterRadius = foliageHandler.WaterRadius;
 
-        // Loops though all spots for this chunk
-        foreach(Vector3 spot in plantSpots)
+        // Set up raycasts
+        int rayCount = plantSpots.Length;
+        RaycastCommand[] commands = new RaycastCommand[rayCount];
+        for (int i = 0; i < rayCount; i++)
         {
-            // Shots a ray towards the center of the planet 
-            Vector3 rayOrigin = spot + planetPos;
-            Ray ray = new Ray(rayOrigin, planetPos - rayOrigin);
-            Physics.Raycast(ray, out RaycastHit hit);
+            Vector3 origin = plantSpots[i] + planetPos;
+            Vector3 direction = planetPos - origin;
+            commands[i] = new RaycastCommand(origin, direction);
+        }
+        // Send them off
+        RaycastHit[] results = Raycasting.BatchRaycast(commands);
+
+        for (int i = 0; i < rayCount; i++)
+        {
+            RaycastHit hit = results[i];
+            Vector3 rayOrigin = commands[i].from;
 
             if (foliageHandler.debug)
             {
@@ -200,7 +212,6 @@ public class Foliage : MonoBehaviour
                 if (foliageHandler.debug) Debug.Log("Foliage break");
                 break;
             }
-                
         }
         if(foliageHandler.debug) Debug.Log("Hits: " + hits + " %: " + hits / (float)positionArrayLength * 100f);
         
@@ -308,50 +319,61 @@ public class Foliage : MonoBehaviour
         GameObject spawnedObject;
         for (int i = 0; i < objectsPerBatchedSpawn; i++)
         {
-            if (objectsToSpawn.Count > 0)
+            if (objectsToSpawn.Count == 0)
             {
-                objectToSpawn = objectsToSpawn.Dequeue();
-
-                spawnedObject = Instantiate(objectToSpawn.prefab, objectToSpawn.position, objectToSpawn.rotation, transform);
-
-                spawnedObject.GetComponent<MeshRenderer>().material = objectToSpawn.material;
-                spawnedObject.transform.localScale *= random.Value(0.7f, 1.4f);
-
-                objectsNr++;
+                break;
             }
+
+            objectToSpawn = objectsToSpawn.Dequeue();
+
+            spawnedObject = Instantiate(objectToSpawn.prefab, objectToSpawn.position, objectToSpawn.rotation, transform);
+
+            spawnedObject.GetComponent<MeshRenderer>().material = objectToSpawn.material;
+            spawnedObject.transform.localScale *= random.Value(0.7f, 1.4f);
+
+            objectsNr++;
         }
     }
 
     // Forest spawning function
     private void SpawnTreesInForest(GameObject treeObject, Vector3 rayOrigin, Vector3 position, string name, float probToSkip, Material materialForObject)
     {
-        
         // Used to introduce some variation in forest sizes.
         int nrObjectsToSpawn = random.Next((int)(objectsInForest * 0.8f), objectsInForest);
 
-        // Use distance to player in priority queue to prioritize spawning objects closer to the player first
-        float distToPlayer = Vector3.Distance(position, Universe.player.transform.position);
-
         // Spawns 5 trees around a found forest spot! Bigger number = denser forest
+        RaycastCommand[] commands = new RaycastCommand[nrObjectsToSpawn];
         for (int i = 0; i < nrObjectsToSpawn; i++)
         {
             if (probToSkip > random.Value()) continue;
 
+            // Assumes we are spawning trees on a planet located in origin!
             float x = (float)random.Value() * 2 - 1;
             float y = (float)random.Value() * 2 - 1;
             float z = (float)random.Value() * 2 - 1;
             Vector3 localpos = Quaternion.Euler(x, y, z) * rayOrigin;
 
-            // Assumes we are spawning trees on a planet located in origin!
-            // If shit is bugged might have to change this ray
-            Physics.Raycast(localpos, -localpos, out RaycastHit hit);
-            if(hit.transform == transform.parent && hit.distance < foliageHandler.PlanetRadius - foliageHandler.WaterRadius)
+            Vector3 origin = localpos;
+            Vector3 direction = -localpos;
+            commands[i] = new RaycastCommand(origin, direction);
+        }
+        RaycastHit[] results = Raycasting.BatchRaycast(commands);
+
+        for (int i = 0; i < nrObjectsToSpawn; i++)
+        {
+            RaycastHit hit = results[i];
+            if (hit.distance == 0)
             {
-                Quaternion rotation = Quaternion.LookRotation(rayOrigin) * Quaternion.Euler(90, 0, 0);
-                rotation *= Quaternion.Euler(0, random.Next(0, 360), 0);
+                continue;
+            }
+            Vector3 localpos = commands[i].from;
+
+            if (hit.transform == transform.parent && hit.distance < foliageHandler.PlanetRadius - foliageHandler.WaterRadius)
+            {
+                Quaternion rotation = Quaternion.LookRotation(rayOrigin) * Quaternion.Euler(90, random.Next(0, 360), 0);
 
                 // Add spawn position to priority queue
-                objectsToSpawn.Enqueue(new FoliageSpawnData(hit.point - (hit.point.normalized * 0.1f), rotation, treeObject, materialForObject, name), distToPlayer);
+                objectsToSpawn.Enqueue(new FoliageSpawnData(hit.point - (hit.point.normalized * 0.1f), rotation, treeObject, materialForObject, name));
                 
                 if (foliageHandler.debug) Debug.DrawLine(localpos, hit.point, Color.yellow, 10f);
             }
@@ -388,5 +410,8 @@ public class Foliage : MonoBehaviour
         return Instantiate(prefab, hit.point, rotation, transform);
     }
 
-    
+    public bool FinishedSpawning
+    {
+        get { return objectsToSpawn.Count == 0; }
+    }
 }

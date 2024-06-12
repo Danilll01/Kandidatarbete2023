@@ -1,15 +1,16 @@
 using ExtendedRandom;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.Collections;
+using Unity.Jobs;
 using UnityEngine;
 
 public class CreatureSpawning : MonoBehaviour
 {
     [SerializeField] private float terrainSteepnesAngle = 30f;
-    [SerializeField] private int packsPerBatchedSpawn = 5;
+    [SerializeField] private int packsPerBatchedSpawn = 1;
 
     public bool initialized = false;
-    public bool finishedSpawning = false;
 
     // Spawning spots
     private Vector3[] creatureSpots = null;
@@ -86,13 +87,25 @@ public class CreatureSpawning : MonoBehaviour
         float radius = creatureHandler.PlanetRadius;
         float waterRadius = creatureHandler.WaterRadius;
 
-        // Loops though all spots for this chunk
-        foreach (Vector3 spot in creatureSpots)
+        // Set up raycasts
+        int rayCount = creatureSpots.Length;
+        var results = new NativeArray<RaycastHit>(rayCount, Allocator.TempJob);
+        var commands = new NativeArray<RaycastCommand>(rayCount, Allocator.TempJob);
+        for (int i = 0; i < rayCount; i++)
         {
-            // Shots a ray towards the center of the planet 
-            Vector3 rayOrigin = spot + planetPos;
-            Ray ray = new Ray(rayOrigin, planetPos - rayOrigin);
-            Physics.Raycast(ray, out RaycastHit hit, float.MaxValue, 1 << LayerMask.NameToLayer("Planet"));
+            Vector3 origin = creatureSpots[i] + planetPos;
+            Vector3 direction = planetPos - origin;
+            commands[i] = new RaycastCommand(origin, direction);
+        }
+        // Send them off
+        JobHandle rayHandle = RaycastCommand.ScheduleBatch(commands, results, 1);
+        rayHandle.Complete();
+
+        // Loops though all spots for this chunk
+        for (int i = 0; i < commands.Length; i++)
+        {
+            RaycastHit hit = results[i];
+            Vector3 rayOrigin = commands[i].from;
 
             if (creatureHandler.debug)
             {
@@ -126,6 +139,9 @@ public class CreatureSpawning : MonoBehaviour
         }
         if (creatureHandler.debug) Debug.Log("Hits: " + hits + " %: " + hits / (float)positionArrayLength * 100f);
 
+        results.Dispose();
+        commands.Dispose();
+
         // Removes spots making the chunk unable to spawn new trees
         creatureSpots = null;
         objectsToSpawnIndex = 0;
@@ -144,7 +160,6 @@ public class CreatureSpawning : MonoBehaviour
             {
                 if (totalIndex >= objectsToSpawn.Count || objectsToSpawn.Count == 0)
                 {
-                    finishedSpawning = true;
                     return;
                 }
                 SpawnPack newPack = objectsToSpawn.Dequeue();
@@ -292,5 +307,10 @@ public class CreatureSpawning : MonoBehaviour
             packToSpawn = new CreaturePack();
             return false;
         }
+    }
+
+    public bool FinishedSpawning
+    {
+        get { return objectsToSpawn.Count == 0; }
     }
 }

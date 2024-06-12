@@ -6,12 +6,12 @@ using System.Threading;
 using ExtendedRandom;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class ChunksHandler : MonoBehaviour
 {
     private Planet planet;
     private PillPlayerController player;
-    private Vector3 playerLastPosition;
     private int foliageInitialized = 10;
     private int chunkResolution; //This is 2^chunkResolution
     private MarchingCubes marchingCubes;
@@ -29,6 +29,7 @@ public class ChunksHandler : MonoBehaviour
 
     private bool playerOnPlanet;
     private bool updateChunks = false;
+    private int chunkVisibilityIndex = 0;
 
     // The amount of chunks
     [SerializeField] public int lowChunkRes = 1;
@@ -39,9 +40,8 @@ public class ChunksHandler : MonoBehaviour
     [SerializeField] public ResolutionSetting mediumRes;
     [SerializeField] public ResolutionSetting lowRes;
 
-    // Used for chunk culling
-    private int index = 0;
-    [SerializeField] private int maxChunkChecksPerFrame = 50;
+    // Used for chunk generation
+    private ChunkGenerator chunkGenerator;
 
     enum ChunkResolution
     {
@@ -73,10 +73,10 @@ public class ChunksHandler : MonoBehaviour
         rand = new RandomX(seed);
 
         this.planet = planet;
+        this.terrainLevel = terrainLevel;
         player = Universe.player;
         marchingCubes = planet.marchingCubes;
         planetRadius = planet.radius;
-        this.terrainLevel = terrainLevel;
 
         playerOnPlanet = spawn;
 
@@ -93,6 +93,8 @@ public class ChunksHandler : MonoBehaviour
             chunksParentLowRes.SetActive(false);
             UpdateChunksVisibility();
         }
+
+        chunkGenerator = new ChunkGenerator(chunksHighRes, this, marchingCubes);
     }
 
     public void SetupMaterial()
@@ -136,8 +138,33 @@ public class ChunksHandler : MonoBehaviour
         }
 
         // Only update the chunks if the player is close to the planet
-        if (playerOnPlanet)
-            UpdateChunksVisibility();
+        if (!playerOnPlanet)
+        {
+            return;
+        }
+
+        UpdateChunksVisibility();
+
+        chunkGenerator.Update();
+
+        //Foliage & creatures
+        bool spawnedAnimals = false;
+        foreach (Chunk chunk in chunksHighRes)
+        {
+            if (!chunk.initialized)
+            {
+                continue;
+            }
+            if (!spawnedAnimals && chunk.creatures.initialized && !chunk.creatures.FinishedSpawning)
+            {
+                spawnedAnimals = true;
+                chunk.creatures.BatchedSpawning();
+            }
+            if (chunk.foliage.initialized && !chunk.foliage.FinishedSpawning)
+            {
+                chunk.foliage.BatchedSpawning();
+            }
+        }
     }
 
     private void SetupChunks(int chunkResolution, ref List<Chunk> chunksList, ref GameObject chunksParent, ChunkResolution res)
@@ -185,8 +212,13 @@ public class ChunksHandler : MonoBehaviour
     {
         for (int i = chunksList.Count - 1; i != -1; i--)
         {
+            chunksList[i].Initialize(planet, this, rand.Next());
+
+            Mesh newMesh = new Mesh();
+            int verticesCount = marchingCubes.generateMesh(terrainLevel, chunksList[i].Index, lowRes.resolution, newMesh);
+            chunksList[i].UpdateMesh(newMesh, lowRes.resolution);
             // Remove chunks without vertices
-            if (chunksList[i].Initialize(planet, terrainLevel, this, rand.Next()) == 0)
+            if (verticesCount == 0)
             {
                 Destroy(chunksList[i].gameObject);
                 chunksList.RemoveAt(i);
@@ -195,14 +227,7 @@ public class ChunksHandler : MonoBehaviour
     }
     private void UpdateChunksVisibility()
     {
-
         Vector3 playerPos = player.boarded ? Universe.spaceShip.localPosition : player.transform.localPosition;
-        
-        // Only update chunks if player has moved a certain distance
-        if (Vector3.Magnitude(playerPos - playerLastPosition) < 1.8f)
-            return;
-            
-        playerLastPosition = playerPos;
 
         Vector3 cutoffPoint;
         if (playerPos.magnitude > (planetRadius + 30f))
@@ -210,32 +235,143 @@ public class ChunksHandler : MonoBehaviour
         else
             cutoffPoint = playerPos / 1.5f;
 
-        int count = 0;
-        while (count < maxChunkChecksPerFrame)
+        for (int i = 0; i < 50; i++)
         {
-            bool isBelowHalfWayPoint = CheckIfPointBIsBelowPointA(cutoffPoint, chunksHighRes[index].position, cutoffPoint.normalized);
+            Chunk chunk = chunksHighRes[chunkVisibilityIndex];
+
+            bool isBelowHalfWayPoint = CheckIfPointBIsBelowPointA(cutoffPoint, chunk.position, cutoffPoint.normalized);
             if (isBelowHalfWayPoint)
             {
-                chunksHighRes[index].gameObject.SetActive(false);
+                chunk.gameObject.SetActive(false);
             }
             else
             {
-                chunksHighRes[index].gameObject.SetActive(true);
+                chunk.gameObject.SetActive(true);
                 if (foliageInitialized == 0)
                 {
-                    chunksHighRes[index].foliage.SpawnFoliageOnChunk();
-                    CreatureSpawning creatureSpawning = chunksHighRes[index].creatures;
+                    chunk.foliage.SpawnFoliageOnChunk();
+                    CreatureSpawning creatureSpawning = chunk.creatures;
                     if (creatureSpawning.initialized) creatureSpawning.GeneratePackSpawns();
                 }
                     
             }
-            count++;
-            index = index == 0 ? chunksHighRes.Count - 1 : index - 1;
+
+            chunkVisibilityIndex = (chunkVisibilityIndex + 1) % chunksHighRes.Count;
         }
     }
 
     private bool CheckIfPointBIsBelowPointA(Vector3 a, Vector3 b, Vector3 up)
     {
         return (Vector3.Dot(b - a, up) <= 0);
+    }
+}
+
+public class ChunkGenerator
+{
+    const int chunksPerFrame = 3;
+
+    //Chunk work
+    private List<(Chunk, Mesh, int)> chunkJobs;
+    private Queue<int> physicsBakeQueue = new Queue<int>();
+    private PillPlayerController player;
+    private List<Chunk> chunks;
+
+    ChunksHandler handler;
+    MarchingCubes generator;
+
+    Semaphore physicsWorkerSemaphore = new Semaphore(0, 1);
+    bool chunkPhysicsActive = false;
+    bool chunkPhysicsComplete = false;
+
+    public ChunkGenerator(List<Chunk> chunks, ChunksHandler handler, MarchingCubes generator)
+    {
+        this.chunks = chunks;
+        this.handler = handler;
+        this.generator = generator;
+        player = Universe.player;
+
+        new Thread(Work)
+        {
+            IsBackground = true
+        }.Start();
+    }
+
+    public void Update()
+    {
+        //Update new chunk meshes with precalculated physics from worker
+        if (chunkPhysicsComplete)
+        {
+            foreach ((Chunk chunk, Mesh mesh, int resolution) in chunkJobs)
+            {
+                chunk.UpdateMesh(mesh, resolution);
+            }
+            chunkPhysicsActive = chunkPhysicsComplete = false;
+        }
+        //Start new work
+        if (!chunkPhysicsActive)
+        {
+            chunkJobs = new List<(Chunk, Mesh, int)>();
+            Vector3 playerPos = player.boarded ? Universe.spaceShip.localPosition : player.transform.localPosition;
+            foreach (Chunk chunk in chunks)
+            {
+                if (!chunk.initialized) continue;
+
+                if (physicsBakeQueue.Count >= chunksPerFrame)
+                {
+                    break;
+                }
+
+                float playerDistance = Vector3.Distance(playerPos, chunk.position);
+                int resolution;
+                if (playerDistance < handler.highRes.upperRadius)
+                {
+                    resolution = handler.highRes.resolution;
+                }
+                else if (handler.mediumRes.lowerRadius < playerDistance && playerDistance < handler.mediumRes.upperRadius)
+                {
+                    resolution = handler.mediumRes.resolution;
+                }
+                else if (handler.lowRes.lowerRadius < playerDistance)
+                {
+                    resolution = handler.lowRes.resolution;
+                }
+                //No work to be done
+                else
+                {
+                    continue;
+                }
+                if (!chunk.HasResolution(resolution))
+                {
+                    chunk.SetActivated(true);
+                    Mesh mesh = new Mesh();
+                    generator.generateMesh(chunk.Index, resolution, mesh);
+                    physicsBakeQueue.Enqueue(mesh.GetInstanceID());
+                    chunkJobs.Add((chunk, mesh, resolution));
+                }
+            }
+            if (physicsBakeQueue.Count != 0)
+            {
+                chunkPhysicsActive = true;
+                physicsWorkerSemaphore.Release();
+            }
+        }
+    }
+
+    private void Work()
+    {
+        while (true)
+        {
+            //Wait for work to become available
+            physicsWorkerSemaphore.WaitOne();
+
+            //Calculate physics
+            while (physicsBakeQueue.TryDequeue(out int meshID))
+            {
+                Physics.BakeMesh(meshID, false);
+            }
+
+            //Inform that work is done
+            chunkPhysicsComplete = true;
+        }
     }
 }
