@@ -1,7 +1,7 @@
 fileFormatVersion: 2
 guid: d623cd35a78380d4eb0457c4e483abed
 ModelImporter:
-  serializedVersion: 21300
+  serializedVersion: 24200
   internalIDToNameTable:
   - first:
       1: 100000
@@ -184,8 +184,6 @@ ModelImporter:
     optimizeGameObjects: 1
     removeConstantScaleCurves: 0
     motionNodeName: 
-    rigImportErrors: 
-    rigImportWarnings: 
     animationImportErrors: 
     animationImportWarnings: 
     animationRetargetingWarnings: 
@@ -208,6 +206,7 @@ ModelImporter:
     addColliders: 0
     useSRGBMaterialColor: 1
     sortHierarchyByName: 1
+    importPhysicalCameras: 1
     importVisibility: 1
     importBlendShapes: 0
     importCameras: 0
@@ -225,6 +224,9 @@ ModelImporter:
     maxBonesPerVertex: 1
     minBoneWeight: 0.001
     optimizeBones: 1
+    generateMeshLods: 0
+    meshLodGenerationFlags: 0
+    maximumMeshLod: -1
     meshOptimizationFlags: -1
     indexFormat: 0
     secondaryUVAngleDistortion: 8
@@ -235,6 +237,7 @@ ModelImporter:
     secondaryUVMinObjectScale: 1
     secondaryUVPackMargin: 4
     useFileScale: 1
+    strictVertexDataChecks: 0
   tangentSpace:
     normalSmoothAngle: 60
     normalImportMode: 0
@@ -243,14 +246,7 @@ ModelImporter:
     legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 1
     blendShapeNormalImportMode: 1
     normalSmoothingSource: 0
-  referencedClips:
-  - 40880eeba3ef1d943b22f7b445e502d9
-  - 46d0b1354c1891d458a732548bb69bf6
-  - 8655854fe0299a548b9c79b29ab40b8c
-  - d279d6200c85ac140aa9c93ce39f4ad4
-  - 863ab454f80da6f4e9a86cfebbb3a15d
-  - 01ad6942c5071ee4dbe84fa59bb44e44
-  - 9daf622be675b864ca009e73347d95f3
+  referencedClips: []
   importAnimation: 1
   humanDescription:
     serializedVersion: 3
@@ -274,6 +270,7 @@ ModelImporter:
   humanoidOversampling: 1
   avatarSetup: 1
   addHumanoidExtraRootOnlyWhenUsingAvatar: 0
+  importBlendShapeDeformPercent: 0
   remapMaterialsIfMaterialImportModeIsNone: 1
   additionalBone: 0
   userData: 

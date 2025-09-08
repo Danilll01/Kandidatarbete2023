@@ -192,7 +192,7 @@ public class SpaceShipController : MonoBehaviour
         moveDirection = transform.TransformDirection(moveDirection);
         
         //Set the velocity, so you can move
-        physicsBody.velocity = moveDirection;
+        physicsBody.linearVelocity = moveDirection;
         
         // Plays thruster audio if needed
         PlayThrustAudio(newMovementVector);

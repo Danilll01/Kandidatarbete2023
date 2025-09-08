@@ -182,7 +182,7 @@ public class PillPlayerController : MonoBehaviour
     {
         //Keep old Y velocity. Rotates to world space, grabs y velocity and rotates back to planet orientation
         Vector3 yGround = Grounded ? GroundNormal : transform.rotation * transform.up;
-        Vector3 oldY = Vector3.Project(body.velocity, yGround);
+        Vector3 oldY = Vector3.Project(body.linearVelocity, yGround);
         
         //New movement
         float inputDirection = Input.GetAxisRaw("Horizontal");
@@ -248,7 +248,7 @@ public class PillPlayerController : MonoBehaviour
             //Ground controls + swim controls
             if (Swimming)
             {
-                float currentUppSpeed = (Quaternion.Inverse(transform.rotation) * body.velocity).y + movementVector.y;
+                float currentUppSpeed = (Quaternion.Inverse(transform.rotation) * body.linearVelocity).y + movementVector.y;
 
                 if (Mathf.Abs(currentUppSpeed) > maxSwimSpeed)
                 {
@@ -258,7 +258,7 @@ public class PillPlayerController : MonoBehaviour
                 {
                     movementVector.y = currentUppSpeed;
                 }
-                body.velocity = transform.rotation * movementVector;
+                body.linearVelocity = transform.rotation * movementVector;
 
 
             }
@@ -271,21 +271,21 @@ public class PillPlayerController : MonoBehaviour
                 {
                     movementVector -= Vector3.Project(movementVector, yGround);
                 }
-                body.velocity = movementVector;
+                body.linearVelocity = movementVector;
             }
             //Air controls
             else
             {
                 //Add movement
-                body.velocity += transform.rotation * movementVector * (Time.deltaTime * airControlFactor);
+                body.linearVelocity += transform.rotation * movementVector * (Time.deltaTime * airControlFactor);
                 //Normalize to maxSpeed if necessary
-                Vector3 oldVelocity = (Quaternion.Inverse(transform.rotation) * body.velocity);
+                Vector3 oldVelocity = (Quaternion.Inverse(transform.rotation) * body.linearVelocity);
                 Vector3 oldHorizontalVelocity = new Vector3(oldVelocity.x, 0, oldVelocity.z);
                 if (oldHorizontalVelocity.magnitude > maxSpeed)
                 {
                     Vector3 newHorizontalVelocity = oldHorizontalVelocity.normalized * maxSpeed;
                     Vector3 newVelocity = oldVelocity - oldHorizontalVelocity + newHorizontalVelocity;
-                    body.velocity = transform.rotation * newVelocity;
+                    body.linearVelocity = transform.rotation * newVelocity;
                 }
             }
         }
@@ -294,7 +294,7 @@ public class PillPlayerController : MonoBehaviour
         {
             Vector3 velocity = Vector3.zero;
             velocity += oldY;
-            body.velocity = velocity;
+            body.linearVelocity = velocity;
         }
 
         // Sets animation state
@@ -310,7 +310,7 @@ public class PillPlayerController : MonoBehaviour
     private void PlayWindAudio()
     {
         // Play wind sound effect
-        if (body.velocity.magnitude > 1f)
+        if (body.linearVelocity.magnitude > 1f)
         {
             audio.PlaySoundEffect(HandleAudio.SoundEffects.Wind, true, false, 2f, 0.3f);
         }

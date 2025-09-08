@@ -18,7 +18,7 @@ public class RaySpring : MonoBehaviour
         if (Physics.Raycast(transform.position, transform.transform.forward, out RaycastHit hit, rayLength))
         {
             // Get direction speed for spring dampen
-            Vector3 bodyVelocity = body.velocity;
+            Vector3 bodyVelocity = body.linearVelocity;
             bodyVelocity.Scale(transform.forward);
             float directionSpeed = bodyVelocity.magnitude;
 

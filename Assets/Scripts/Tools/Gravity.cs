@@ -35,6 +35,6 @@ public class Gravity
         Vector3 attractionDirection = (attractingBodyPos - entityPos).normalized;
         float gravity = Mathf.Max(13, (Universe.gravitationalConstant * attractingBodyMass) / r2);
 
-        entityRigidbody.velocity += attractionDirection * (gravity * Time.deltaTime);
+        entityRigidbody.linearVelocity += attractionDirection * (gravity * Time.deltaTime);
     }
 }
