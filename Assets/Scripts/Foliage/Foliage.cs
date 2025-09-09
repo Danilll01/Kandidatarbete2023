@@ -225,6 +225,7 @@ public class Foliage : MonoBehaviour
     private void SpawnOnLand(RaycastHit hit, Vector3 rayOrigin, Vector3 planetPosition, float heightAboveSea)
     {
 
+        print($"Nu startar vi!!! Är {Mathf.Abs(Vector3.Angle(rayOrigin - planetPosition, hit.normal))} > {maxAngle}?? Isåfall Inte bra!!");
         // Checks how steep the terrain is
         if(Mathf.Abs(Vector3.Angle(rayOrigin - planetPosition, hit.normal)) > maxAngle)
         {
@@ -232,8 +233,10 @@ public class Foliage : MonoBehaviour
         }
         else
         {
-            if (heightAboveSea < planetMaxHeight * 0.8 && planet.willGeneratePlanetLife)
+            print($"Nästa nu: Är {heightAboveSea - 100000} < {planetMaxHeight * 0.8}?? och {planet.willGeneratePlanetLife}??");
+            if (heightAboveSea - 100000 < planetMaxHeight * 0.8 && planet.willGeneratePlanetLife)
             {
+                print("Nu kör vi!!!");
                 BelowAngle(hit, rayOrigin, heightAboveSea);
             } else
             {
@@ -370,7 +373,8 @@ public class Foliage : MonoBehaviour
 
             if (hit.transform == transform.parent && hit.distance < foliageHandler.PlanetRadius - foliageHandler.WaterRadius)
             {
-                Quaternion rotation = Quaternion.LookRotation(rayOrigin) * Quaternion.Euler(90, random.Next(0, 360), 0);
+                Quaternion rotation = Quaternion.LookRotation(rayOrigin) * Quaternion.Euler(90, 0, 0);
+                rotation *= Quaternion.Euler(0, random.Next(0, 360), 0);
 
                 // Add spawn position to priority queue
                 objectsToSpawn.Enqueue(new FoliageSpawnData(hit.point - (hit.point.normalized * 0.1f), rotation, treeObject, materialForObject, name));

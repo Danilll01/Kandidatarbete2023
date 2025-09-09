@@ -105,7 +105,7 @@ public class FoliageHandler : MonoBehaviour
     }
 
     // Returns a tree from a given index
-    public GameObject GetForstetTree(int treeType)
+    public GameObject GetForestTree(int treeType)
     {
         return trees[treeType];
     }
