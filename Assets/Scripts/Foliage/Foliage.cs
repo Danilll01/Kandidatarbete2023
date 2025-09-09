@@ -195,13 +195,23 @@ public class Foliage : MonoBehaviour
             if (hit.transform == transform.parent)
             {
                 // Checks if the ray hit land or water
-                if (hit.distance < radius - waterRadius) 
+                
+                Debug.DrawLine(rayOrigin, hit.point,
+                    Vector3.Distance(hit.point, Vector3.zero) > waterRadius ? Color.green : Color.red, 10f);
+                print($"Radius: {radius}, HitHeight: {Vector3.Distance(hit.point, Vector3.zero)}, RayOriginToPoint: {Vector3.Distance(hit.point, rayOrigin)}, HitDistance: {hit.distance}, Combined: {Vector3.Distance(hit.point, Vector3.zero) + hit.distance},");
+
+                //float rayLength = Vector3.Distance(rayOrigin, hit.point); // From space (radius --> planet surface)
+                float rayHitHeight = Vector3.Distance(hit.point, Vector3.zero); // The hit position height
+                
+                if (rayHitHeight > waterRadius)
                 {
-                    SpawnOnLand(hit, rayOrigin, planetPos, waterRadius - hit.distance);
+                    //Debug.DrawLine(rayOrigin, hit.point, Color.green, 10f);
+                    SpawnOnLand(hit, rayOrigin, planetPos, rayHitHeight - waterRadius);
                 }
                 else
                 {
-                    SpawnInWater(hit, rayOrigin, hit.distance - (radius - waterRadius));
+                    //Debug.DrawLine(rayOrigin, hit.point, Color.red, 10f);
+                    SpawnInWater(hit, rayOrigin, waterRadius - rayHitHeight);;
                 }
                 hits++;
             }
@@ -233,8 +243,9 @@ public class Foliage : MonoBehaviour
         }
         else
         {
-            print($"Nästa nu: Är {heightAboveSea - 100000} < {planetMaxHeight * 0.8}?? och {planet.willGeneratePlanetLife}??");
-            if (heightAboveSea - 100000 < planetMaxHeight * 0.8 && planet.willGeneratePlanetLife)
+            print($"Nästa nu: Är {heightAboveSea} < {planetMaxHeight * 0.8}?? och {planet.willGeneratePlanetLife}?? TotalRadie: {foliageHandler.PlanetRadius}");
+            print($"TotalRadie: {foliageHandler.PlanetRadius}, HögstaTerräng: {planetMaxHeight}, Minsta terräng: {planet.terrainLevel.GetMin()}, Waterlevel: {foliageHandler.WaterRadius}");
+            if (heightAboveSea < (planetMaxHeight - foliageHandler.WaterRadius) * 0.8 && planet.willGeneratePlanetLife)
             {
                 print("Nu kör vi!!!");
                 BelowAngle(hit, rayOrigin, heightAboveSea);
@@ -250,6 +261,7 @@ public class Foliage : MonoBehaviour
     // Water spawning function
     private void SpawnInWater(RaycastHit hit, Vector3 rayOrigin, float depth)
     {
+        print($"DJUP: {depth}");
         if (depth < 3)
         {
             GameObject waterObject = InstantiateObject(foliageHandler.GetWaterPlantType(), hit, rayOrigin);

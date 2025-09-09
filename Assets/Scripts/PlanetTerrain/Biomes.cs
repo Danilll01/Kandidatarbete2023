@@ -119,7 +119,7 @@ public struct BiomeValue
 
         return
             (!range.mountainRelevant || (range.mountainMin <= mountains && mountains <= range.mountainMax)) &&
-            (!range.temperatureDependent || (range.temperatureMin <= temperatureC && temperatureC <= range.temperatureMax)) &&
+            (!range.temperatureDependent || (range.temperatureMin - 100 <= temperatureC && temperatureC <= range.temperatureMax + 100)) &&
             (!range.treesDependent || (range.treesMin <= trees && trees <= range.treesMax));
     }
 }
