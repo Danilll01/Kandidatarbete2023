@@ -120,8 +120,29 @@ public class Water
 
         computeShader.Dispatch(kernelId, resolution / 32, resolution / 32, 1);
 
-        bufferVertices.GetData(vertices);
-        bufferTrianglesUp.GetData(trianglesUp);
+        var verticesRequest = AsyncGPUReadback.Request(bufferVertices);
+        var trianglesRequest = AsyncGPUReadback.Request(bufferTrianglesUp);
+
+        verticesRequest.WaitForCompletion();
+        trianglesRequest.WaitForCompletion();
+
+        if (verticesRequest.hasError)
+        {
+            Debug.LogError("GPU readback error on vertices.");
+        }
+        else
+        {
+            verticesRequest.GetData<Vector3>().CopyTo(vertices);
+        }
+
+        if (trianglesRequest.hasError)
+        {
+            Debug.LogError("GPU readback error on triangles.");
+        }
+        else
+        {
+            trianglesRequest.GetData<int>().CopyTo(trianglesUp);
+        }
 
         bufferVertices.Dispose();
         bufferTrianglesUp.Dispose();

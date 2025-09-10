@@ -61,8 +61,8 @@ float getTerrain(float3 pos, RWStructuredBuffer<TerrainLayer> terrainLayers, int
         // Create mountains
         float mountains = evalutateBiomeMapMountains(biomeSettings, pos);
         mountains *= mountains;
-        float mountainGround = pow(noiseLayer, (1 + mountains) * terrainLayers[i].mountainPeakness) * mountains;
-        float flatGround = pow(noiseLayer, terrainLayers[i].flatSmoothness);
+        float mountainGround = pow(abs(noiseLayer), (1 + mountains) * terrainLayers[i].mountainPeakness) * mountains;
+        float flatGround = pow(abs(noiseLayer), terrainLayers[i].flatSmoothness);
         noiseLayer = mountainGround * terrainLayers[i].mountainHeight + flatGround;
         
         // Multiply the noiselayer with the wanted strength
