@@ -175,7 +175,7 @@ public class Foliage : MonoBehaviour
         {
             Vector3 origin = plantSpots[i] + planetPos;
             Vector3 direction = planetPos - origin;
-            commands[i] = new RaycastCommand(origin, direction);
+            commands[i] = new RaycastCommand(origin, direction, QueryParameters.Default);
         }
         // Send them off
         RaycastHit[] results = Raycasting.BatchRaycast(commands);
@@ -195,22 +195,14 @@ public class Foliage : MonoBehaviour
             if (hit.transform == transform.parent)
             {
                 // Checks if the ray hit land or water
-                
-                Debug.DrawLine(rayOrigin, hit.point,
-                    Vector3.Distance(hit.point, Vector3.zero) > waterRadius ? Color.green : Color.red, 10f);
-                print($"Radius: {radius}, HitHeight: {Vector3.Distance(hit.point, Vector3.zero)}, RayOriginToPoint: {Vector3.Distance(hit.point, rayOrigin)}, HitDistance: {hit.distance}, Combined: {Vector3.Distance(hit.point, Vector3.zero) + hit.distance},");
-
-                //float rayLength = Vector3.Distance(rayOrigin, hit.point); // From space (radius --> planet surface)
                 float rayHitHeight = Vector3.Distance(hit.point, Vector3.zero); // The hit position height
                 
                 if (rayHitHeight > waterRadius)
                 {
-                    //Debug.DrawLine(rayOrigin, hit.point, Color.green, 10f);
                     SpawnOnLand(hit, rayOrigin, planetPos, rayHitHeight - waterRadius);
                 }
                 else
                 {
-                    //Debug.DrawLine(rayOrigin, hit.point, Color.red, 10f);
                     SpawnInWater(hit, rayOrigin, waterRadius - rayHitHeight);;
                 }
                 hits++;
@@ -234,8 +226,7 @@ public class Foliage : MonoBehaviour
     // On land
     private void SpawnOnLand(RaycastHit hit, Vector3 rayOrigin, Vector3 planetPosition, float heightAboveSea)
     {
-
-        print($"Nu startar vi!!! Är {Mathf.Abs(Vector3.Angle(rayOrigin - planetPosition, hit.normal))} > {maxAngle}?? Isåfall Inte bra!!");
+        
         // Checks how steep the terrain is
         if(Mathf.Abs(Vector3.Angle(rayOrigin - planetPosition, hit.normal)) > maxAngle)
         {
@@ -243,11 +234,8 @@ public class Foliage : MonoBehaviour
         }
         else
         {
-            print($"Nästa nu: Är {heightAboveSea} < {planetMaxHeight * 0.8}?? och {planet.willGeneratePlanetLife}?? TotalRadie: {foliageHandler.PlanetRadius}");
-            print($"TotalRadie: {foliageHandler.PlanetRadius}, HögstaTerräng: {planetMaxHeight}, Minsta terräng: {planet.terrainLevel.GetMin()}, Waterlevel: {foliageHandler.WaterRadius}");
             if (heightAboveSea < (planetMaxHeight - foliageHandler.WaterRadius) * 0.8 && planet.willGeneratePlanetLife)
             {
-                print("Nu kör vi!!!");
                 BelowAngle(hit, rayOrigin, heightAboveSea);
             } else
             {
@@ -261,7 +249,6 @@ public class Foliage : MonoBehaviour
     // Water spawning function
     private void SpawnInWater(RaycastHit hit, Vector3 rayOrigin, float depth)
     {
-        print($"DJUP: {depth}");
         if (depth < 3)
         {
             GameObject waterObject = InstantiateObject(foliageHandler.GetWaterPlantType(), hit, rayOrigin);
@@ -370,7 +357,7 @@ public class Foliage : MonoBehaviour
 
             Vector3 origin = localpos;
             Vector3 direction = -localpos;
-            commands[i] = new RaycastCommand(origin, direction);
+            commands[i] = new RaycastCommand(origin, direction, QueryParameters.Default);
         }
         RaycastHit[] results = Raycasting.BatchRaycast(commands);
 

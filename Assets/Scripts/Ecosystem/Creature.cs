@@ -548,7 +548,7 @@ public class Creature : MonoBehaviour
         // Get random points around the creature and try to find water
         for (int i = 0; i < 2; i++)
         {
-            Vector3 randPos = transform.position + transform.rotation * Random.insideUnitCircle * detectionRadius * 3;
+            Vector3 randPos = transform.position + transform.rotation * Random.insideUnitCircle * (detectionRadius * 3);
 
             Ray ray = new(randPos, planet.transform.position - randPos);
             RaycastHit hit;
@@ -615,13 +615,13 @@ public class Creature : MonoBehaviour
             GameObject hitChunk = hit.transform.gameObject;
             GameObject currentChunk = transform.parent.parent.gameObject;
 
-            if (hitChunk != null && currentChunk != null)
+            if (hitChunk && currentChunk)
             {
                 // Switches chunk if entered into new chunk
                 if (hitChunk != currentChunk)
                 {
                     Chunk newChunk = hitChunk.transform.GetComponent<Chunk>();
-                    if (newChunk != null)
+                    if (newChunk)
                     {
                         transform.parent = newChunk.creatureGameObject.transform;
                     }
