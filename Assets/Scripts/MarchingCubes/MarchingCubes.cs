@@ -90,16 +90,34 @@ public class MarchingCubes
         meshGenerator.Dispatch(kernelIndex, resolution >> chunkResolution, resolution >> chunkResolution, resolution >> chunkResolution);
 
         // Retrieve triangles
-        int length = getLengthBuffer(ref trianglesBuffer); // This is slow!!!
+        int length = getLengthBuffer(ref trianglesBuffer);
 
-        Triangle[] triangles = new Triangle[length];
-        trianglesBuffer.GetData(triangles, 0, 0, length);
-        
+        if (length == 0)
+        {
+            mesh.Clear();
+            trianglesBuffer.Release();
+            layersBuffer.Release();
+            biomesBuffer.Release();
+            return 0;
+        }
+
+        var trianglesRequest = AsyncGPUReadback.Request(trianglesBuffer, length * sizeof(float) * 9, 0);
+        trianglesRequest.WaitForCompletion();
 
         // Release all buffers
         trianglesBuffer.Release();
         layersBuffer.Release();
         biomesBuffer.Release();
+
+        if (trianglesRequest.hasError)
+        {
+            Debug.LogError("GPU readback error on triangles.");
+            mesh.Clear();
+            return 0;
+        }
+
+        var triangles = trianglesRequest.GetData<Triangle>().ToArray();
+        
 
         // Process our data from the compute shader
         int[] meshTriangles = new int[length * 3];
@@ -132,11 +150,20 @@ public class MarchingCubes
     {
         
         ComputeBuffer counter = new ComputeBuffer(1, sizeof(int), ComputeBufferType.IndirectArguments);
-        int[] count = { 0 };
         ComputeBuffer.CopyCount(buffer, counter, 0);
-        counter.GetData(count); //This call takes alot of time!!
+        
+        var request = AsyncGPUReadback.Request(counter);
+        request.WaitForCompletion();
+        
         counter.Release();
-        return count[0];
+
+        if (request.hasError)
+        {
+            Debug.LogError("GPU readback error on getting buffer length.");
+            return 0;
+        }
+
+        return request.GetData<int>()[0];
     }
 
     // Triangle struct with three points

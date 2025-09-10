@@ -95,7 +95,7 @@ public class CreatureSpawning : MonoBehaviour
         {
             Vector3 origin = creatureSpots[i] + planetPos;
             Vector3 direction = planetPos - origin;
-            commands[i] = new RaycastCommand(origin, direction);
+            commands[i] = new RaycastCommand(origin, direction, QueryParameters.Default);
         }
         // Send them off
         JobHandle rayHandle = RaycastCommand.ScheduleBatch(commands, results, 1);
