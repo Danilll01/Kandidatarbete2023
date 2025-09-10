@@ -1,15 +1,7 @@
-using JetBrains.Annotations;
-using System;
-
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using Unity.Mathematics;
-using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.Rendering;
-using UnityEngine.UI;
+
 
 public class MarchingCubes
 {
