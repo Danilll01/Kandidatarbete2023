@@ -55,6 +55,7 @@ Material:
     - _Darkness: 0.938
     - _Depth: -61
     - _DstBlend: 10
+    - _DstBlendAlpha: 10
     - _FullscreenIntensity: 1
     - _Intensity: 0.115
     - _QueueControl: 1
@@ -62,6 +63,7 @@ Material:
     - _RadiusPower: 1.64
     - _Seafloor: 0.195
     - _SrcBlend: 5
+    - _SrcBlendAlpha: 1
     - _Strength: 0.0121
     - _Surface: 1
     - _UnderWater: 0
@@ -72,7 +74,7 @@ Material:
     - _ZWrite: 0
     - _ZWriteControl: 0
     m_Colors:
-    - _C1: {r: 0.18431373, g: 0.7294118, b: 0.98039216, a: 1}
+    - _C1: {r: 0.49019608, g: 0.85882354, b: 0.4, a: 1}
     - _C2: {r: 0.39215684, g: 1, b: 0.6918673, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
