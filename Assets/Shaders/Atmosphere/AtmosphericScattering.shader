@@ -1,4 +1,4 @@
-Shader "Atmosphere/Atmospheric Scattering" 
+Shader "Atmosphere/Atmospheric Scattering"
 {
     Properties
     {
@@ -18,7 +18,7 @@ Shader "Atmosphere/Atmospheric Scattering"
     {
         //Blend OneMinusDstColor One
         Blend SrcAlpha OneMinusSrcAlpha
-        Tags { "Queue" = "Transparent" "RenderType"="Transparent" }
+        Tags { "Queue" = "Transparent" "RenderType"="Transparent" "RenderPipeline"="UniversalPipeline" }
         LOD 100
 
         ZWrite Off
@@ -26,11 +26,11 @@ Shader "Atmosphere/Atmospheric Scattering"
 
         Pass
         {
-            CGPROGRAM
+            HLSLPROGRAM
             #pragma vertex vert
             #pragma fragment frag
 
-            #include "UnityCG.cginc"
+            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
             #define PI 3.14159265
 
             struct appdata
@@ -69,7 +69,7 @@ Shader "Atmosphere/Atmospheric Scattering"
                 float t = dot(_PlanetCenter - ro, rd);
                 float3 pM = ro + rd * t;
                 float height = sqrLength(pM - _PlanetCenter);
-                
+
                 if (height > _AtmosphereRadius * _AtmosphereRadius) return false;
                 float x = sqrt(_AtmosphereRadius * _AtmosphereRadius - height);
                 t0 = (t - x < 0) ? 0 : t - x;
@@ -90,7 +90,7 @@ Shader "Atmosphere/Atmospheric Scattering"
                 {
                     float3 p = p1 + rd * (time + ds * 0.5);
                     float height = length(p - _PlanetCenter) - _PlanetRadius;
-                    
+
                     if (height < 0) return false;
 
                     lightDepth.x += exp(-height / _RayleighScattering.w) * ds;
@@ -103,10 +103,10 @@ Shader "Atmosphere/Atmospheric Scattering"
             v2f vert (appdata v)
             {
                 v2f o;
-                o.vertex = UnityObjectToClipPos(v.vertex);
-                o.startPos = mul(unity_ObjectToWorld, v.vertex).xyz;
+                o.vertex = TransformObjectToHClip(v.vertex.xyz);
+                o.startPos = TransformObjectToWorld(v.vertex.xyz);
                 o.wPos = o.startPos;
-                o.viewDir = normalize(o.startPos - _WorldSpaceCameraPos.xyz);
+                o.viewDir = normalize(o.startPos - GetCameraPositionWS());
                 v.normal *= -1;
                 o.normal = v.normal;
                 return o;
@@ -117,10 +117,10 @@ Shader "Atmosphere/Atmospheric Scattering"
                 float luma = dot(In, float3(0.2126729, 0.7151522, 0.0721750));
                 return  luma.xxx + Saturation.xxx * (In - luma.xxx);
             }
-            
-            fixed4 frag(v2f i) : SV_Target
+
+            half4 frag(v2f i) : SV_Target
             {
-                _PlanetCenter = mul(unity_ObjectToWorld, float4(0, 0, 0, 1));
+                _PlanetCenter = TransformObjectToWorld(float3(0, 0, 0));
                 if (_PlanetRadius > _AtmosphereRadius) _PlanetRadius = _AtmosphereRadius - 2;
                 if (_AtmosphereRadius < 0) _AtmosphereRadius = 1;
 
@@ -129,8 +129,8 @@ Shader "Atmosphere/Atmospheric Scattering"
                 float rSH = _RayleighScattering.w;
                 float mSH = _MieScattering.w;
 
-                i.viewDir = normalize(i.startPos - _WorldSpaceCameraPos.xyz);
-                i.startPos = _WorldSpaceCameraPos;
+                i.viewDir = normalize(i.startPos - GetCameraPositionWS());
+                i.startPos = GetCameraPositionWS();
 
                 float t0,t1;
                 if (!SphereIntersect(i.startPos, i.viewDir, t0, t1, true)) discard;
@@ -138,8 +138,8 @@ Shader "Atmosphere/Atmospheric Scattering"
                 float mu = dot(i.viewDir, normalize(-_LightDirection));
                 float g = _MieScattering.y;
                 float phaseR = 3.0 / (16.0 * PI) * (1 + mu * mu);
-                float phaseM = 3.0 / (8.0 * PI) * ((1.f - g * g) * (1.f + mu * mu)) / ((2.f + g * g) * pow(1.f + g * g - 2.f * g * mu, 1.5f));
-                
+                float phaseM = 3.0 / (8.0 * PI) * ((1.0 - g * g) * (1.0 + mu * mu)) / ((2.0 + g * g) * pow(1.0 + g * g - 2.0 * g * mu, 1.5));
+
                 float3 sumR, sumM;
                 float2 opticalDepth;
 
@@ -157,19 +157,19 @@ Shader "Atmosphere/Atmospheric Scattering"
                     float2 opticalLightDepth;
                     float3 lp1 = p + lrd * lt0;
                     if (LightMarch(lp1, lrd, lt1 - lt0, opticalLightDepth)) {
-                        
+
                         float height = length(p - _PlanetCenter) - _PlanetRadius;
                         height = pow(height, 1/1.1f);
-                        
+
                         float hr = exp(-height / rSH) * ds;
                         float hm = exp(-height / mSH) * ds;
-                        
+
                         opticalDepth.x += hr;
                         opticalDepth.y += hm;
-                        
+
                         float3 tau = rsRGB* (opticalDepth.x + opticalLightDepth.x) + msRGB * 1.1 * (opticalDepth.y + opticalLightDepth.y);
                         float3 attenuation = float3 (exp(-tau.x), exp(-tau.y), exp(-tau.z));
-                        
+
 
                         sumR += attenuation * hr;
                         sumM += attenuation * hm;
@@ -181,22 +181,22 @@ Shader "Atmosphere/Atmospheric Scattering"
                 float3 color = (sumR * rsRGB * phaseR + sumM * msRGB * phaseM) * _LightIntensity * _LightColor;
 
                 // Nan check to make blinding lights disappear
-                vector<bool,3> nanCheck = isnan(color);
+                bool3 nanCheck = isnan(color);
                 if (nanCheck.x || nanCheck.y || nanCheck.z)
                 {
-                    return fixed4(0,0,0,0);
+                    return half4(0,0,0,0);
                 }
-                
+
                 color = Unity_Saturation_float(color, _AtmosphereSaturation);
-                
-                float a = pow(saturate(sqrLength(_WorldSpaceCameraPos.xyz - i.wPos) - 0.4),2);
+
+                float a = pow(saturate(sqrLength(GetCameraPositionWS() - i.wPos) - 0.4),2);
                 float a1 = (color.x + color.y + color.z) / 3;
                 if (a1 < _ClipThreshold)
                     a1 = lerp(0,a1, a1 / _ClipThreshold);
 
-                return fixed4(color.xyz, min(a,a1));
+                return half4(color.xyz, min(a,a1));
             }
-            ENDCG
+            ENDHLSL
         }
     }
 }

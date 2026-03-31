@@ -2,9 +2,7 @@ using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using ExtendedRandom;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.Rendering;
 
@@ -272,16 +270,11 @@ public class ChunkGenerator
 
     //Chunk work
     private List<(Chunk, Mesh, int)> chunkJobs = new List<(Chunk, Mesh, int)>();
-    private Queue<int> physicsBakeQueue = new Queue<int>();
     private PillPlayerController player;
     private List<Chunk> chunks;
 
     ChunksHandler handler;
     MarchingCubes generator;
-
-    Semaphore physicsWorkerSemaphore = new Semaphore(0, 1);
-    bool chunkPhysicsActive = false;
-    bool chunkPhysicsComplete = false;
 
     public ChunkGenerator(List<Chunk> chunks, ChunksHandler handler, MarchingCubes generator)
     {
@@ -289,89 +282,57 @@ public class ChunkGenerator
         this.handler = handler;
         this.generator = generator;
         player = Universe.player;
-
-        new Thread(Work)
-        {
-            IsBackground = true
-        }.Start();
     }
 
     public void Update()
     {
-        //Update new chunk meshes with precalculated physics from worker
-        if (chunkPhysicsComplete)
-        {
-            foreach ((Chunk chunk, Mesh mesh, int resolution) in chunkJobs)
-            {
-                chunk.UpdateMesh(mesh, resolution);
-            }
-            chunkPhysicsActive = chunkPhysicsComplete = false;
-        }
-        //Start new work
-        if (!chunkPhysicsActive)
-        {
-            chunkJobs.Clear();
-            Vector3 playerPos = player.boarded ? Universe.spaceShip.localPosition : player.transform.localPosition;
-            foreach (Chunk chunk in chunks)
-            {
-                if (!chunk.initialized) continue;
+        chunkJobs.Clear();
+        Vector3 playerPos = player.boarded ? Universe.spaceShip.localPosition : player.transform.localPosition;
+        int jobCount = 0;
 
-                if (physicsBakeQueue.Count >= chunksPerFrame)
-                {
-                    break;
-                }
+        foreach (Chunk chunk in chunks)
+        {
+            if (!chunk.initialized) continue;
 
-                float playerDistance = Vector3.Distance(playerPos, chunk.position);
-                int resolution;
-                if (playerDistance < handler.highRes.upperRadius)
-                {
-                    resolution = handler.highRes.resolution;
-                }
-                else if (handler.mediumRes.lowerRadius < playerDistance && playerDistance < handler.mediumRes.upperRadius)
-                {
-                    resolution = handler.mediumRes.resolution;
-                }
-                else if (handler.lowRes.lowerRadius < playerDistance)
-                {
-                    resolution = handler.lowRes.resolution;
-                }
-                //No work to be done
-                else
-                {
-                    continue;
-                }
-                if (!chunk.HasResolution(resolution))
-                {
-                    chunk.SetActivated(true);
-                    Mesh mesh = new Mesh();
-                    generator.generateMesh(chunk.Index, resolution, mesh);
-                    physicsBakeQueue.Enqueue(mesh.GetInstanceID());
-                    chunkJobs.Add((chunk, mesh, resolution));
-                }
-            }
-            if (physicsBakeQueue.Count != 0)
+            if (jobCount >= chunksPerFrame)
             {
-                chunkPhysicsActive = true;
-                physicsWorkerSemaphore.Release();
+                break;
+            }
+
+            float playerDistance = Vector3.Distance(playerPos, chunk.position);
+            int resolution;
+            if (playerDistance < handler.highRes.upperRadius)
+            {
+                resolution = handler.highRes.resolution;
+            }
+            else if (handler.mediumRes.lowerRadius < playerDistance && playerDistance < handler.mediumRes.upperRadius)
+            {
+                resolution = handler.mediumRes.resolution;
+            }
+            else if (handler.lowRes.lowerRadius < playerDistance)
+            {
+                resolution = handler.lowRes.resolution;
+            }
+            //No work to be done
+            else
+            {
+                continue;
+            }
+            if (!chunk.HasResolution(resolution))
+            {
+                chunk.SetActivated(true);
+                Mesh mesh = new Mesh();
+                generator.generateMesh(chunk.Index, resolution, mesh);
+                Physics.BakeMesh(mesh.GetInstanceID(), false);
+                chunkJobs.Add((chunk, mesh, resolution));
+                jobCount++;
             }
         }
-    }
 
-    private void Work()
-    {
-        while (true)
+        // Apply all generated meshes
+        foreach ((Chunk chunk, Mesh mesh, int resolution) in chunkJobs)
         {
-            //Wait for work to become available
-            physicsWorkerSemaphore.WaitOne();
-
-            //Calculate physics
-            while (physicsBakeQueue.TryDequeue(out int meshID))
-            {
-                Physics.BakeMesh(meshID, false);
-            }
-
-            //Inform that work is done
-            chunkPhysicsComplete = true;
+            chunk.UpdateMesh(mesh, resolution);
         }
     }
 }
