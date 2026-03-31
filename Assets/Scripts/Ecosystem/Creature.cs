@@ -126,6 +126,9 @@ public class Creature : MonoBehaviour
     private GameObject lastResourceFound;
     private Vector3 foundWaterAt = Vector3.zero;
 
+    // Pre-allocated buffers for OverlapSphereNonAlloc
+    private static readonly Collider[] overlapBuffer = new Collider[64];
+
     // Start is called before the first frame update
     void Start()
     {
@@ -435,15 +438,16 @@ public class Creature : MonoBehaviour
 
     private void LookingForPartner()
     {
-        Collider[] hitColliders = Physics.OverlapSphere(transform.position, detectionRadius, creatureLayerMask);
+        int hitCount = Physics.OverlapSphereNonAlloc(transform.position, detectionRadius, overlapBuffer, creatureLayerMask);
         GameObject nearestObject = null;
         float nearestDistance = Mathf.Infinity;
         bool foundPartner;
         float distanceToGameObject;
 
-        foreach (Collider coll in hitColliders)
+        for (int i = 0; i < hitCount; i++)
         {
-            if (coll != collider && coll.gameObject.CompareTag("Creature")) 
+            Collider coll = overlapBuffer[i];
+            if (coll != collider && coll.gameObject.CompareTag("Creature"))
             {
                 foundPartner = coll.GetComponent<Creature>().wantToReproduce && coll.name.Contains(gameObject.name);
                 if (!foundPartner) continue;
@@ -506,13 +510,14 @@ public class Creature : MonoBehaviour
 
     private GameObject GetNearestGameobject(ResourceType type)
     {
-        Collider[] hitColliders = Physics.OverlapSphere(transform.position, detectionRadius, resourceLayerMask);
+        int hitCount = Physics.OverlapSphereNonAlloc(transform.position, detectionRadius, overlapBuffer, resourceLayerMask);
         GameObject nearestObject = null;
         float nearestDistance = Mathf.Infinity;
 
         // Find nearest object with tag
-        foreach (Collider coll in hitColliders)
+        for (int i = 0; i < hitCount; i++)
         {
+            Collider coll = overlapBuffer[i];
             if (coll != collider && coll.gameObject.CompareTag(type.ToString()))
             {
                 if (type == ResourceType.Creature)

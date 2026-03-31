@@ -271,7 +271,7 @@ public class ChunkGenerator
     const int chunksPerFrame = 3;
 
     //Chunk work
-    private List<(Chunk, Mesh, int)> chunkJobs;
+    private List<(Chunk, Mesh, int)> chunkJobs = new List<(Chunk, Mesh, int)>();
     private Queue<int> physicsBakeQueue = new Queue<int>();
     private PillPlayerController player;
     private List<Chunk> chunks;
@@ -310,7 +310,7 @@ public class ChunkGenerator
         //Start new work
         if (!chunkPhysicsActive)
         {
-            chunkJobs = new List<(Chunk, Mesh, int)>();
+            chunkJobs.Clear();
             Vector3 playerPos = player.boarded ? Universe.spaceShip.localPosition : player.transform.localPosition;
             foreach (Chunk chunk in chunks)
             {
