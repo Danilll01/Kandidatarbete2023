@@ -24,6 +24,7 @@ public class Chunk : MonoBehaviour
     private int highRes;
 
     private MeshFilter meshFilter;
+    private MeshRenderer meshRenderer;
     private MeshCollider meshCollider;
     public MarchingCubes marchingCubes;
     private Planet planet;
@@ -60,6 +61,7 @@ public class Chunk : MonoBehaviour
         chunkSize = (2 * chunkHandler.planetRadius) / (1 << marchingCubes.chunkResolution);
 
         meshFilter = transform.GetComponent<MeshFilter>();
+        meshRenderer = transform.GetComponent<MeshRenderer>();
         if(marchingCubes.chunkResolution == 1)
         {
             GetComponent<MeshCollider>().enabled = false;
@@ -76,7 +78,7 @@ public class Chunk : MonoBehaviour
     /// Sets the material of the chunk
     /// </summary>
     public void SetMaterial(Material material) {
-        GetComponent<MeshRenderer>().material = material;
+        meshRenderer.sharedMaterial = material;
     }
 
     private void CalculateChunkPosition()

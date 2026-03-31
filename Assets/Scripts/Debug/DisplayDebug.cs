@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 using UnityEngine;
 using TMPro;
 
@@ -8,6 +9,7 @@ public static class DisplayDebug
 #if DEBUG || UNITY_EDITOR
     private static TextMeshProUGUI debugTextContainer;
     private static List<KeyValuePair<string, string>> debugList;
+    private static readonly StringBuilder sb = new StringBuilder();
 
     /// <summary>
     /// Initialize the parameters
@@ -25,12 +27,14 @@ public static class DisplayDebug
     public static void UpdateDebugs()
     {
         
-        debugTextContainer.text = "";
+        sb.Clear();
 
         foreach (var debug in debugList)
         {
-            debugTextContainer.text += debug.Key + ": " + debug.Value + "\n";
+            sb.Append(debug.Key).Append(": ").Append(debug.Value).Append('\n');
         }
+
+        debugTextContainer.text = sb.ToString();
         
     }
 
