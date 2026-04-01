@@ -3,7 +3,7 @@ using UnityEngine.Rendering;
 
 public class Water
 {
-    
+
     private Vector3 localUp, axisA, axisB;
     public Vector3 waterPos;
 
@@ -22,11 +22,6 @@ public class Water
     /// <summary>
     /// Initializes the water mesh
     /// </summary>
-    /// <param name="computeShader"></param>
-    /// <param name="meshFilter"></param>
-    /// <param name="resolution"></param>
-    /// <param name="waterRadius"></param>
-    /// <param name="localUp"></param>
     public Water(ComputeShader computeShader, MeshFilter meshFilter, int resolution, float waterRadius, Vector3 localUp, int position, int sideResolution)
     {
         this.computeShader = computeShader;
@@ -41,34 +36,107 @@ public class Water
         axisA = new Vector3(localUp.y, localUp.z, localUp.x);
         axisB = Vector3.Cross(localUp, axisA);
 
-        waterPos = (localUp + 
+        waterPos = (localUp +
             (1 / (2.0f * sideResolution) + (position % sideResolution) / (float)sideResolution - .5f) * 2 * axisA +
             (1 / (2.0f * sideResolution) + (position / sideResolution) / (float)sideResolution - .5f) * 2 * axisB).normalized * waterRadius;
     }
 
     /// <summary>
-    /// Constructs the mesh
+    /// Constructs both mesh resolutions using async GPU readback (WebGPU compatible).
+    /// High-res mesh is applied as soon as its callback fires.
     /// </summary>
     public void ConstructMesh()
     {
-        ConsturctMeshResolution(ref meshHigh);
-        resolution = 64;
-        ConsturctMeshResolution(ref meshLow);
-        ApplyMesh(true);
+        int highResolution = resolution;
+        int lowResolution = 64;
+
+        // Dispatch high-res mesh generation
+        ConstructMeshAsync(highResolution, (mesh) =>
+        {
+            meshHigh = mesh;
+            ApplyMesh(true);
+        });
+
+        // Dispatch low-res mesh generation
+        ConstructMeshAsync(lowResolution, (mesh) =>
+        {
+            meshLow = mesh;
+        });
     }
 
-    private void ConsturctMeshResolution(ref Mesh mesh)
+    private void ConstructMeshAsync(int res, System.Action<Mesh> onComplete)
     {
-        mesh = new Mesh { indexFormat = IndexFormat.UInt32 };
-        Vector3[] vertices = new Vector3[resolution * resolution];
-        int[] trianglesUp = new int[(resolution - 1) * (resolution - 1) * 2 * 3];
+        int vertCount = res * res;
+        int triCount = (res - 1) * (res - 1) * 2 * 3;
 
-        ConstructUnitSphere(vertices, trianglesUp);
+        Vector3[] vertices = new Vector3[vertCount];
+        int[] trianglesUp = new int[triCount];
 
-        mesh.vertices = vertices;
-        mesh.triangles = trianglesUp;
-        mesh.RecalculateBounds();
-        mesh.RecalculateNormals();
+        // Set up GPU buffers
+        ComputeBuffer bufferVertices = new ComputeBuffer(vertCount, 3 * sizeof(float));
+        ComputeBuffer bufferTrianglesUp = new ComputeBuffer(triCount, sizeof(int));
+        ComputeBuffer bufferTrianglesDown = new ComputeBuffer(triCount, sizeof(int));
+
+        bufferVertices.SetData(vertices);
+        bufferTrianglesUp.SetData(trianglesUp);
+
+        int kernelId = computeShader.FindKernel("CSMesh");
+
+        computeShader.SetBuffer(kernelId, "trianglesUp", bufferTrianglesUp);
+        computeShader.SetBuffer(kernelId, "trianglesDown", bufferTrianglesDown);
+        computeShader.SetBuffer(kernelId, "vertices", bufferVertices);
+
+        computeShader.SetInt("resolution", res);
+        computeShader.SetInt("sideResolution", sideResolution);
+        computeShader.SetInt("posx", position % sideResolution);
+        computeShader.SetInt("posy", position / sideResolution);
+        computeShader.SetFloat("radius", waterRadius);
+
+        computeShader.SetFloats("localUp", new float[] { localUp.x, localUp.y, localUp.z });
+        computeShader.SetFloats("axisA", new float[] { axisA.x, axisA.y, axisA.z });
+        computeShader.SetFloats("axisB", new float[] { axisB.x, axisB.y, axisB.z });
+
+        computeShader.Dispatch(kernelId, res / 32, res / 32, 1);
+
+        // Async readback for vertices
+        AsyncGPUReadback.Request(bufferVertices, (AsyncGPUReadbackRequest vertRequest) =>
+        {
+            if (vertRequest.hasError)
+            {
+                Debug.LogError("GPU readback error on water vertices.");
+                bufferVertices.Dispose();
+                bufferTrianglesUp.Dispose();
+                bufferTrianglesDown.Dispose();
+                return;
+            }
+
+            vertRequest.GetData<Vector3>().CopyTo(vertices);
+
+            // Chain: now read back triangles
+            AsyncGPUReadback.Request(bufferTrianglesUp, (AsyncGPUReadbackRequest triRequest) =>
+            {
+                bufferVertices.Dispose();
+                bufferTrianglesUp.Dispose();
+                bufferTrianglesDown.Dispose();
+
+                if (triRequest.hasError)
+                {
+                    Debug.LogError("GPU readback error on water triangles.");
+                    return;
+                }
+
+                triRequest.GetData<int>().CopyTo(trianglesUp);
+
+                // Build and deliver the mesh
+                Mesh mesh = new Mesh { indexFormat = IndexFormat.UInt32 };
+                mesh.vertices = vertices;
+                mesh.triangles = trianglesUp;
+                mesh.RecalculateBounds();
+                mesh.RecalculateNormals();
+
+                onComplete?.Invoke(mesh);
+            });
+        });
     }
 
 
@@ -84,68 +152,6 @@ public class Water
             meshFilter.sharedMesh = meshLow;
             highRes = false;
         }
-            
-    }
 
-    /// <summary>
-    /// Calls the GPU which creates the mesh
-    /// </summary>
-    /// <param name="vertices"></param>
-    private void ConstructUnitSphere(Vector3[] vertices, int[] trianglesUp)
-    {
-
-        //Calculate the vertices on the GPU
-        ComputeBuffer bufferVertices = new ComputeBuffer(resolution * resolution, 3 * sizeof(float));
-        ComputeBuffer bufferTrianglesUp = new ComputeBuffer((resolution - 1) * (resolution - 1) * 2 * 3, sizeof(int));
-        ComputeBuffer bufferTrianglesDown = new ComputeBuffer((resolution - 1) * (resolution - 1) * 2 * 3, sizeof(int));
-
-        bufferVertices.SetData(vertices);
-        bufferTrianglesUp.SetData(trianglesUp);
-
-        int kernelId = computeShader.FindKernel("CSMesh");
-
-        computeShader.SetBuffer(kernelId, "trianglesUp", bufferTrianglesUp);
-        computeShader.SetBuffer(kernelId, "trianglesDown", bufferTrianglesDown);
-        computeShader.SetBuffer(kernelId, "vertices", bufferVertices);
-
-        computeShader.SetInt("resolution", resolution);
-        computeShader.SetInt("sideResolution", sideResolution);
-        computeShader.SetInt("posx", position % sideResolution);
-        computeShader.SetInt("posy", position / sideResolution);
-        computeShader.SetFloat("radius", waterRadius);
-
-        computeShader.SetFloats("localUp", new float[] { localUp.x, localUp.y, localUp.z });
-        computeShader.SetFloats("axisA", new float[] { axisA.x, axisA.y, axisA.z });
-        computeShader.SetFloats("axisB", new float[] { axisB.x, axisB.y, axisB.z });
-
-        computeShader.Dispatch(kernelId, resolution / 32, resolution / 32, 1);
-
-        var verticesRequest = AsyncGPUReadback.Request(bufferVertices);
-        var trianglesRequest = AsyncGPUReadback.Request(bufferTrianglesUp);
-
-        verticesRequest.WaitForCompletion();
-        trianglesRequest.WaitForCompletion();
-
-        if (verticesRequest.hasError)
-        {
-            Debug.LogError("GPU readback error on vertices.");
-        }
-        else
-        {
-            verticesRequest.GetData<Vector3>().CopyTo(vertices);
-        }
-
-        if (trianglesRequest.hasError)
-        {
-            Debug.LogError("GPU readback error on triangles.");
-        }
-        else
-        {
-            trianglesRequest.GetData<int>().CopyTo(trianglesUp);
-        }
-
-        bufferVertices.Dispose();
-        bufferTrianglesUp.Dispose();
-        bufferTrianglesDown.Dispose();
     }
 }

@@ -1,10 +1,6 @@
-using JetBrains.Annotations;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using ExtendedRandom;
 using UnityEngine;
-using UnityEngine.Rendering;
 
 public class ChunksHandler : MonoBehaviour
 {
@@ -149,7 +145,7 @@ public class ChunksHandler : MonoBehaviour
         bool spawnedAnimals = false;
         foreach (Chunk chunk in chunksHighRes)
         {
-            if (!chunk.initialized)
+            if (chunk == null || !chunk.initialized)
             {
                 continue;
             }
@@ -212,15 +208,20 @@ public class ChunksHandler : MonoBehaviour
         {
             chunksList[i].Initialize(planet, this, rand.Next());
 
-            Mesh newMesh = new Mesh();
-            int verticesCount = marchingCubes.generateMesh(terrainLevel, chunksList[i].Index, lowRes.resolution, newMesh);
-            chunksList[i].UpdateMesh(newMesh, lowRes.resolution);
-            // Remove chunks without vertices
-            if (verticesCount == 0)
+            Chunk chunk = chunksList[i];
+            int res = lowRes.resolution;
+            marchingCubes.generateMesh(terrainLevel, chunk.Index, res, (mesh, vertexCount) =>
             {
-                Destroy(chunksList[i].gameObject);
-                chunksList.RemoveAt(i);
-            }
+                if (mesh != null && vertexCount > 0)
+                {
+                    chunk.UpdateMesh(mesh, res);
+                }
+                else
+                {
+                    // Deactivate empty chunks (can't remove from list safely in async callback)
+                    chunk.gameObject.SetActive(false);
+                }
+            });
         }
     }
     private void UpdateChunksVisibility()
@@ -236,6 +237,9 @@ public class ChunksHandler : MonoBehaviour
         for (int i = 0; i < 50; i++)
         {
             Chunk chunk = chunksHighRes[chunkVisibilityIndex];
+            chunkVisibilityIndex = (chunkVisibilityIndex + 1) % chunksHighRes.Count;
+
+            if (chunk == null) continue;
 
             bool isBelowHalfWayPoint = CheckIfPointBIsBelowPointA(cutoffPoint, chunk.position, cutoffPoint.normalized);
             if (isBelowHalfWayPoint)
@@ -253,8 +257,6 @@ public class ChunksHandler : MonoBehaviour
                 }
                     
             }
-
-            chunkVisibilityIndex = (chunkVisibilityIndex + 1) % chunksHighRes.Count;
         }
     }
 
@@ -268,13 +270,14 @@ public class ChunkGenerator
 {
     const int chunksPerFrame = 3;
 
-    //Chunk work
-    private List<(Chunk, Mesh, int)> chunkJobs = new List<(Chunk, Mesh, int)>();
     private PillPlayerController player;
     private List<Chunk> chunks;
 
     ChunksHandler handler;
     MarchingCubes generator;
+
+    // Track pending async work to avoid re-dispatching the same chunks
+    private int pendingCallbacks = 0;
 
     public ChunkGenerator(List<Chunk> chunks, ChunksHandler handler, MarchingCubes generator)
     {
@@ -286,13 +289,15 @@ public class ChunkGenerator
 
     public void Update()
     {
-        chunkJobs.Clear();
+        // Don't start new work until previous batch completes
+        if (pendingCallbacks > 0) return;
+
         Vector3 playerPos = player.boarded ? Universe.spaceShip.localPosition : player.transform.localPosition;
         int jobCount = 0;
 
         foreach (Chunk chunk in chunks)
         {
-            if (!chunk.initialized) continue;
+            if (chunk == null || !chunk.initialized) continue;
 
             if (jobCount >= chunksPerFrame)
             {
@@ -321,18 +326,20 @@ public class ChunkGenerator
             if (!chunk.HasResolution(resolution))
             {
                 chunk.SetActivated(true);
-                Mesh mesh = new Mesh();
-                generator.generateMesh(chunk.Index, resolution, mesh);
-                Physics.BakeMesh(mesh.GetInstanceID(), false);
-                chunkJobs.Add((chunk, mesh, resolution));
+                int res = resolution;
+                Chunk targetChunk = chunk;
+                pendingCallbacks++;
+                generator.generateMesh(targetChunk.Index, res, (mesh, vertexCount) =>
+                {
+                    pendingCallbacks--;
+                    if (mesh != null && vertexCount > 0)
+                    {
+                        Physics.BakeMesh(mesh.GetInstanceID(), false);
+                        targetChunk.UpdateMesh(mesh, res);
+                    }
+                });
                 jobCount++;
             }
-        }
-
-        // Apply all generated meshes
-        foreach ((Chunk chunk, Mesh mesh, int resolution) in chunkJobs)
-        {
-            chunk.UpdateMesh(mesh, resolution);
         }
     }
 }

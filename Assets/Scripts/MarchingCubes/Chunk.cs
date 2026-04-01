@@ -108,7 +108,7 @@ public class Chunk : MonoBehaviour
 
         meshFilter.sharedMesh = mesh;
 
-        if (marchingCubes.chunkResolution != 1 && meshCollider.enabled)
+        if (meshCollider != null && meshCollider.enabled)
             meshCollider.sharedMesh = mesh;
 
         int numVerts = mesh.vertexCount;
@@ -130,7 +130,7 @@ public class Chunk : MonoBehaviour
 
     public void SetActivated(bool state)
     {
-        meshCollider.enabled = state;
+        if (meshCollider != null) meshCollider.enabled = state;
         foliageGameObject.SetActive(state);
         creatureGameObject.SetActive(state);
     }

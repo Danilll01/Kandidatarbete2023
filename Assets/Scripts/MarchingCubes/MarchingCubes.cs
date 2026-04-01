@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -36,25 +37,31 @@ public class MarchingCubes
     }
 
     /// <summary>
-    /// Generate the mesh from the given parameters in the constructor while updating min/max terrain levels
+    /// Generate the mesh from the given parameters in the constructor while updating min/max terrain levels.
+    /// Uses callback-based async GPU readback (WebGPU compatible).
     /// </summary>
-    public int generateMesh(MinMaxTerrainLevel hightFillerTerrainLevel, int index, int resolution, Mesh mesh)
+    public void generateMesh(MinMaxTerrainLevel hightFillerTerrainLevel, int index, int resolution, Action<Mesh, int> onComplete)
     {
-        int vertexCount = generateMesh(index, resolution, mesh);
-
-        for (int i = 0; i < mesh.vertexCount; i++)
+        generateMesh(index, resolution, (mesh, vertexCount) =>
         {
-            
-            hightFillerTerrainLevel.UpdateMinMax(mesh.vertices[i]);
-        }
+            if (mesh != null)
+            {
+                Vector3[] verts = mesh.vertices;
+                for (int i = 0; i < verts.Length; i++)
+                {
+                    hightFillerTerrainLevel.UpdateMinMax(verts[i]);
+                }
+            }
 
-        return vertexCount;
+            onComplete?.Invoke(mesh, vertexCount);
+        });
     }
 
     /// <summary>
-    /// Generate the mesh from the given parameters in the constructor
+    /// Generate the mesh from the given parameters in the constructor.
+    /// Uses callback-based async GPU readback (WebGPU compatible).
     /// </summary>
-    public int generateMesh(int index, int resolution, Mesh mesh)
+    public void generateMesh(int index, int resolution, Action<Mesh, int> onComplete)
     {
         resolution *= 1 << chunkResolution;
 
@@ -89,81 +96,76 @@ public class MarchingCubes
         meshGenerator.SetBuffer(kernelIndex, "biomeSettings", biomesBuffer);
         meshGenerator.Dispatch(kernelIndex, resolution >> chunkResolution, resolution >> chunkResolution, resolution >> chunkResolution);
 
-        // Retrieve triangles
-        int length = getLengthBuffer(ref trianglesBuffer);
-
-        if (length == 0)
-        {
-            mesh.Clear();
-            trianglesBuffer.Release();
-            layersBuffer.Release();
-            biomesBuffer.Release();
-            return 0;
-        }
-
-        var trianglesRequest = AsyncGPUReadback.Request(trianglesBuffer, length * sizeof(float) * 9, 0);
-        trianglesRequest.WaitForCompletion();
-
-        // Release all buffers
-        trianglesBuffer.Release();
-        layersBuffer.Release();
-        biomesBuffer.Release();
-
-        if (trianglesRequest.hasError)
-        {
-            Debug.LogError("GPU readback error on triangles.");
-            mesh.Clear();
-            return 0;
-        }
-
-        var triangles = trianglesRequest.GetData<Triangle>().ToArray();
-        
-
-        // Process our data from the compute shader
-        int[] meshTriangles = new int[length * 3];
-        Vector3[] meshVertices = new Vector3[length * 3];
-
-        
-        // Set values for the meshtriangles and meshvertices arrays
-        for (int i = 0; i < length; i++)
-        {
-            for (int j = 0; j < 3; j++)
-            {
-                meshTriangles[i * 3 + j] = i * 3 + j;
-                meshVertices[i * 3 + j] = triangles[i][j];
-            }
-        }
-
-        // Set values in mesh
-        mesh.indexFormat = IndexFormat.UInt32;
-        mesh.Clear();
-        mesh.vertices = meshVertices;
-        mesh.triangles = meshTriangles;
-        mesh.RecalculateBounds();
-        mesh.RecalculateNormals();
-
-        return meshVertices.Length;
-    }
-
-    // Get the length buffer of type append
-    private int getLengthBuffer(ref ComputeBuffer buffer)
-    {
-        
+        // Read back counter asynchronously
         ComputeBuffer counter = new ComputeBuffer(1, sizeof(int), ComputeBufferType.IndirectArguments);
-        ComputeBuffer.CopyCount(buffer, counter, 0);
-        
-        var request = AsyncGPUReadback.Request(counter);
-        request.WaitForCompletion();
-        
-        counter.Release();
+        ComputeBuffer.CopyCount(trianglesBuffer, counter, 0);
 
-        if (request.hasError)
+        AsyncGPUReadback.Request(counter, (AsyncGPUReadbackRequest counterRequest) =>
         {
-            Debug.LogError("GPU readback error on getting buffer length.");
-            return 0;
-        }
+            counter.Release();
 
-        return request.GetData<int>()[0];
+            if (counterRequest.hasError)
+            {
+                Debug.LogError("GPU readback error on getting buffer length.");
+                trianglesBuffer.Release();
+                layersBuffer.Release();
+                biomesBuffer.Release();
+                onComplete?.Invoke(null, 0);
+                return;
+            }
+
+            int length = counterRequest.GetData<int>()[0];
+
+            if (length == 0)
+            {
+                trianglesBuffer.Release();
+                layersBuffer.Release();
+                biomesBuffer.Release();
+                onComplete?.Invoke(null, 0);
+                return;
+            }
+
+            // Read back triangle data asynchronously
+            AsyncGPUReadback.Request(trianglesBuffer, length * sizeof(float) * 9, 0, (AsyncGPUReadbackRequest triRequest) =>
+            {
+                trianglesBuffer.Release();
+                layersBuffer.Release();
+                biomesBuffer.Release();
+
+                if (triRequest.hasError)
+                {
+                    Debug.LogError("GPU readback error on triangles.");
+                    onComplete?.Invoke(null, 0);
+                    return;
+                }
+
+                var triangles = triRequest.GetData<Triangle>().ToArray();
+
+                // Process our data from the compute shader
+                int[] meshTriangles = new int[length * 3];
+                Vector3[] meshVertices = new Vector3[length * 3];
+
+                // Set values for the meshtriangles and meshvertices arrays
+                for (int i = 0; i < length; i++)
+                {
+                    for (int j = 0; j < 3; j++)
+                    {
+                        meshTriangles[i * 3 + j] = i * 3 + j;
+                        meshVertices[i * 3 + j] = triangles[i][j];
+                    }
+                }
+
+                // Set values in mesh
+                Mesh mesh = new Mesh();
+                mesh.indexFormat = IndexFormat.UInt32;
+                mesh.vertices = meshVertices;
+                mesh.triangles = meshTriangles;
+                mesh.RecalculateBounds();
+                mesh.RecalculateNormals();
+
+                onComplete?.Invoke(mesh, meshVertices.Length);
+            });
+        });
     }
 
     // Triangle struct with three points
@@ -182,20 +184,6 @@ public class MarchingCubes
                     default: return vertexC;
                 }
             }
-        }
-    }
-
-    public class ChunkGPUCallbackData
-    {
-        public MinMaxTerrainLevel terrainLevel;
-        public Mesh mesh;
-        public ComputeBuffer[] buffers; //triangle, layers, biomes
-
-        public ChunkGPUCallbackData(MinMaxTerrainLevel terrainLevel, Mesh mesh, ComputeBuffer[] buffers)
-        {
-            this.terrainLevel = terrainLevel;
-            this.mesh = mesh;
-            this.buffers = buffers;
         }
     }
 }
