@@ -73,3 +73,6 @@ crashlytics-build.properties
 /[Aa]ssets/[Ss]treamingAssets/aa/*
 .vsconfig
 Assets/Assets/SkyBox/NightSkybox.mat
+
+# Claude Code worktrees
+/.claude/worktrees/
