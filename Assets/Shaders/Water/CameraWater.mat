@@ -8,8 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: CameraWater
-  m_Shader: {fileID: -6465566751694194690, guid: 24c2cbc92a838d34d9e68874946f0867,
-    type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: 24c2cbc92a838d34d9e68874946f0867, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
@@ -74,7 +73,7 @@ Material:
     - _ZWrite: 0
     - _ZWriteControl: 0
     m_Colors:
-    - _C1: {r: 0.18431373, g: 0.5372549, b: 0.98039216, a: 1}
+    - _C1: {r: 0.85882354, g: 0.4, b: 0.4, a: 1}
     - _C2: {r: 0.39215684, g: 1, b: 0.6918673, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
