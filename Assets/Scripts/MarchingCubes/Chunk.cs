@@ -1,12 +1,5 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Threading;
-using Unity.Mathematics;
 using ExtendedRandom;
 using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.UIElements;
 using static ChunksHandler;
 
 public class Chunk : MonoBehaviour
@@ -43,15 +36,6 @@ public class Chunk : MonoBehaviour
         CalculateChunkPosition();
     }
 
-    /// <summary>
-    /// Initializes a given chunk
-    /// </summary>
-    /// <param name="planet"></param>
-    /// <param name="player"></param>
-    /// <param name="terrainLevel"></param>
-    /// <param name="chunkHandler"></param>
-    /// <param name="seed"></param>
-    /// <returns></returns>
     public void Initialize(Planet planet, ChunksHandler chunkHandler, int seed)
     {
         this.planet = planet;
@@ -69,34 +53,31 @@ public class Chunk : MonoBehaviour
         else
         {
             meshCollider = transform.GetComponent<MeshCollider>();
+            meshCollider.enabled = false; // Disabled until highest res is loaded
         }
 
         initialized = true;
     }
 
-    /// <summary>
-    /// Sets the material of the chunk
-    /// </summary>
     public void SetMaterial(Material material) {
         meshRenderer.sharedMaterial = material;
     }
 
     private void CalculateChunkPosition()
     {
-        // Extra the chunkindex in terms of x,y,z
         int mask = 0;
         for (int i = 0; i < marchingCubes.chunkResolution; i++)
         {
             mask += 1 << i;
         }
 
-        Vector3 chunkIndex = 
+        Vector3 chunkIndex =
             new Vector3(
                 (index & (mask << (marchingCubes.chunkResolution * 0))) >> (marchingCubes.chunkResolution * 0),
                 (index & (mask << (marchingCubes.chunkResolution * 1))) >> (marchingCubes.chunkResolution * 1),
                 (index & (mask << (marchingCubes.chunkResolution * 2))) >> (marchingCubes.chunkResolution * 2)
             );
-            
+
         position = -(chunkIndex - (Mathf.Pow(2, marchingCubes.chunkResolution) - 1) / 2 * Vector3.one) * (marchingCubes.radius * 2 / (1 << (marchingCubes.chunkResolution)));
     }
 
@@ -108,11 +89,22 @@ public class Chunk : MonoBehaviour
 
         meshFilter.sharedMesh = mesh;
 
-        if (meshCollider != null && meshCollider.enabled)
-            meshCollider.sharedMesh = mesh;
+        // Only enable collider and assign physics mesh at highest resolution
+        if (meshCollider != null)
+        {
+            if (resolution == highRes)
+            {
+                meshCollider.enabled = true;
+                meshCollider.sharedMesh = mesh;
+            }
+            else
+            {
+                meshCollider.enabled = false;
+            }
+        }
 
         int numVerts = mesh.vertexCount;
-        
+
         if (resolution == highRes && planet.willGeneratePlanetLife)
         {
             if (!foliage.initialized)
@@ -130,9 +122,14 @@ public class Chunk : MonoBehaviour
 
     public void SetActivated(bool state)
     {
-        if (meshCollider != null) meshCollider.enabled = state;
+        // Don't enable collider here — UpdateMesh handles it at highest resolution only
         foliageGameObject.SetActive(state);
         creatureGameObject.SetActive(state);
+    }
+
+    public void MarkResolution(int resolution)
+    {
+        currentRes = resolution;
     }
 
     public bool HasResolution(int resolution)

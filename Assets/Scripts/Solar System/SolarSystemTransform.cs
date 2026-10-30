@@ -120,6 +120,9 @@ public class SolarSystemTransform : MonoBehaviour
             {
                 Universe.spaceShip.position -= distanceFromOrigin;
             }
+
+            // Interpolated rigidbodies would otherwise snap back to their old position
+            Physics.SyncTransforms();
         }
     }
 

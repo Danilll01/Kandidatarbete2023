@@ -34,7 +34,9 @@ public class SpaceShipTransition : MonoBehaviour
     private AudioSource audioPlayer;
     [SerializeField] private AudioClip errorSound;
     [SerializeField] private new HandleAudio audio;
-    
+
+    private Rigidbody physicsBody;
+
     /// <summary>
     /// Initializes ship transition script
     /// </summary>
@@ -42,6 +44,7 @@ public class SpaceShipTransition : MonoBehaviour
     {
         player = Universe.player;
         audioPlayer = GetComponent<AudioSource>();
+        physicsBody = GetComponent<Rigidbody>();
 
         transform.position = player.transform.position;
         transform.rotation = player.transform.rotation;
@@ -132,6 +135,10 @@ public class SpaceShipTransition : MonoBehaviour
 
         transform.position = Vector3.Lerp(transitionFromPos, transitionToPos, transitionProgress / landingTime);
         transform.rotation = Quaternion.Lerp(transitionFromRot, transitionToRot, transitionProgress / landingTime);
+
+        // Interpolated rigidbodies overwrite transform changes, so move the body as well
+        physicsBody.position = transform.position;
+        physicsBody.rotation = transform.rotation;
 
         if (transitionProgress / landingTime >= 1)
         {
