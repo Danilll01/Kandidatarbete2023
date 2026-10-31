@@ -50,6 +50,8 @@ public class ChunksHandler : MonoBehaviour
     [Header("Streaming")]
     [SerializeField, Tooltip("Start building the detailed chunks when the player is this many planet radii from the planet centre")]
     private float prefetchRadiusMultiplier = 4f;
+    [SerializeField, Tooltip("Show the detailed chunks instead of the low resolution planet within this many planet radii")]
+    private float detailViewRadiusMultiplier = 3f;
     [SerializeField, Tooltip("How far past a level of detail boundary a chunk may be before it changes resolution")]
     private float lodHysteresis = 50f;
     [SerializeField, Tooltip("Seconds between checks of the terrain height under the player")]
@@ -221,8 +223,10 @@ public class ChunksHandler : MonoBehaviour
             ScheduleChunkJobs(playerPos);
         }
 
-        // Keep showing the low resolution planet until the detailed one is complete, so it never has holes
-        bool showHighRes = playerOnPlanet && HighGridReady;
+        // Show the detailed planet once it is complete (so it never has holes) and the player is close enough,
+        // which can be well before the planet becomes the centre of the solar system
+        float detailRange = planetRadius * detailViewRadiusMultiplier * (showingHighRes ? 1.1f : 1f);
+        bool showHighRes = HighGridReady && (playerOnPlanet || playerPos.magnitude < detailRange);
         if (showHighRes != showingHighRes)
         {
             chunksParentHighRes.SetActive(showHighRes);

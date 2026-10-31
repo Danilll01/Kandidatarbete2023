@@ -300,7 +300,7 @@ public class SolarSystemTransform : MonoBehaviour
 
         if (Universe.player.boarded && TryGetVelocityRelativeTo(leftPlanet, out Vector3 localVelocity))
         {
-            ShipController.AddFrameVelocity(leftPlanet.transform.TransformDirection(leavingLocalVelocity - localVelocity));
+            ShipController.AddLeavingFrameVelocity(leftPlanet.transform.TransformDirection(leavingLocalVelocity - localVelocity));
         }
 
         leftPlanet = null;

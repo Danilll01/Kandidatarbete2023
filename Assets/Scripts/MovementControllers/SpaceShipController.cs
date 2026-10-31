@@ -54,8 +54,11 @@ public class SpaceShipController : MonoBehaviour
     private bool? shipGUIActive;
     // Velocity kept from a change of reference frame, in the ship's local space
     private Vector3 frameVelocity;
-    // Seconds for the speed kept from a reference frame change to mostly fade into what the controls ask for
-    [SerializeField] private float frameVelocityFadeTime = 1.5f;
+    // Seconds for the speed kept from a reference frame change to mostly fade into what the controls ask for.
+    // Short when entering a planet so the ship quickly settles to it, longer when leaving where drifting along with it feels natural.
+    [SerializeField] private float enterFrameVelocityFadeTime = 0.5f;
+    [SerializeField] private float leaveFrameVelocityFadeTime = 4f;
+    private float frameVelocityFadeTime = 1f;
     // Spin kept from a reference frame change, as a world axis times radians per second
     private Vector3 frameAngularVelocity;
     // Seconds for the spin kept from a reference frame change to mostly fade out
@@ -150,7 +153,6 @@ public class SpaceShipController : MonoBehaviour
     /// Sets the ship's world velocity, keeping the difference to what the controls ask for as frame velocity that fades out.
     /// Used when a planet becomes the centre of the solar system and stops moving.
     /// </summary>
-    public float FrameVelocityFadeTime => frameVelocityFadeTime;
 
     /// <summary>
     /// Adds a spin from a change of reference frame (world axis times radians per second), which fades out over time.
@@ -168,13 +170,23 @@ public class SpaceShipController : MonoBehaviour
         if (physicsBody == null || physicsBody.isKinematic) return;
 
         AddFrameVelocity(velocity - physicsBody.linearVelocity);
+        frameVelocityFadeTime = enterFrameVelocityFadeTime;
     }
 
     /// <summary>
-    /// Adds a velocity from a change of reference frame (for example a planet's orbit speed when leaving it).
+    /// Adds a velocity from leaving a planet, its orbit speed, so the ship keeps moving along with it for a while.
+    /// </summary>
+    public void AddLeavingFrameVelocity(Vector3 worldVelocity)
+    {
+        AddFrameVelocity(worldVelocity);
+        frameVelocityFadeTime = leaveFrameVelocityFadeTime;
+    }
+
+    /// <summary>
+    /// Adds a velocity from a change of reference frame.
     /// It is kept relative to the ship, so it turns with the ship like the controls do, and fades out over time.
     /// </summary>
-    public void AddFrameVelocity(Vector3 worldVelocity)
+    private void AddFrameVelocity(Vector3 worldVelocity)
     {
         if (physicsBody == null || physicsBody.isKinematic) return;
 
