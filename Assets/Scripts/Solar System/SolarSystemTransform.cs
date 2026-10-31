@@ -4,6 +4,12 @@ using UnityEngine;
 public class SolarSystemTransform : MonoBehaviour
 {
     [SerializeField] private SpawnPlanets spawnPlanets;
+
+    // A planet or moon becomes the centre of the solar system within this many of its radii, and stops being it beyond the
+    // release distance. Moons orbit three planet radii out and are at most half a planet radius big, so the release distance
+    // must stay below two radii for a planet's and its moon's spheres not to overlap.
+    [SerializeField] private float captureRadiusMultiplier = 1.8f;
+    [SerializeField] private float releaseRadiusMultiplier = 1.9f;
     private TintFoliageTextures tintFoliageTexturesHandler;
     private Planet activePlanet;
     private Planet oldActivePlanet;
@@ -34,7 +40,8 @@ public class SolarSystemTransform : MonoBehaviour
     private Quaternion previousSunRotation = Quaternion.identity;
     private Quaternion currentSunRotation = Quaternion.identity;
     private bool matchSkyNextStep;
-    private const float maxTrackedSpeed = 20000f;
+    // The ship boosts at up to 4000 and planets orbit and spin at up to about 2000, so anything faster is a teleport
+    private const float maxTrackedSpeed = 10000f;
     private Vector3 leavingLocalVelocity;
     private int leavingSteps;
     private SpaceShipController shipController;
@@ -169,7 +176,7 @@ public class SolarSystemTransform : MonoBehaviour
     private bool CheckIfNewActivePlanet(Planet planet)
     {
         float distance = (player.transform.position - planet.transform.position).magnitude;
-        if (distance <= (planet.radius * 1.3) && planet != activePlanet)
+        if (distance <= (planet.radius * captureRadiusMultiplier) && planet != activePlanet)
         {
             // The planet stops moving and spinning when it becomes the centre, so remember how the ship moved relative to its surface
             if (TryGetVelocityRelativeTo(planet, out Vector3 localVelocity))
@@ -193,7 +200,7 @@ public class SolarSystemTransform : MonoBehaviour
             return true;
         }
 
-        if (planet == activePlanet && distance > (planet.radius * 1.4))
+        if (planet == activePlanet && distance > (planet.radius * releaseRadiusMultiplier))
         {
             // The planet starts moving again, so the ship gets its speed once it does (see MatchShipToLeftPlanet)
             if (TryGetVelocityRelativeTo(planet, out Vector3 localVelocity))

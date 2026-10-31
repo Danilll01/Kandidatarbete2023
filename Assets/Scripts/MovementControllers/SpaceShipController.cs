@@ -18,6 +18,9 @@ public class SpaceShipController : MonoBehaviour
     [SerializeField] private float normalSpeed = 25f;
     [SerializeField] private float maxSpeed = 45f;
     [SerializeField] [Range(0,1)] private float planetSlowdownFactor = 0.6f;
+    // The slowdown starts at this many planet radii from the centre and is at its full strength at the second distance
+    [SerializeField] private float slowdownStartRadius = 1.8f;
+    [SerializeField] private float slowdownFullRadius = 1.3f;
     
     [Header("Hovering stuff")]
     [SerializeField] private float springLength = 10f;
@@ -244,10 +247,13 @@ public class SpaceShipController : MonoBehaviour
 
         Vector3 newMovementVector = new(strafe, lift, thrust);
 
-        // Slows down if near planet
-        if (Universe.player.attractor != null)
+        // Slows down when getting close to a planet, gradually so there is no sudden change in speed
+        Planet attractor = Universe.player.attractor;
+        if (attractor != null)
         {
-            newMovementVector *= planetSlowdownFactor;
+            float distance = (transform.position - attractor.transform.position).magnitude / attractor.radius;
+            float closeness = Mathf.InverseLerp(slowdownStartRadius, slowdownFullRadius, distance);
+            newMovementVector *= Mathf.Lerp(1, planetSlowdownFactor, closeness);
         }
         
         oldMovementVector = Vector3.Lerp(oldMovementVector, newMovementVector, Time.deltaTime * movementDampening);

@@ -30,6 +30,10 @@ public class SpawnPlanets : MonoBehaviour
 
     private int spawnPlanetIndex;
 
+    // Radii around a body where it captures the player as the centre of the solar system, with some margin
+    // (SolarSystemTransform releases the player at 1.9 radii)
+    private const float captureSphereRadii = 2f;
+
     void Awake()
     {
         // Checks if we are in the Unity editor, this will make it so we don't have to start from start meny
@@ -102,9 +106,13 @@ public class SpawnPlanets : MonoBehaviour
             
             planet.gameObject.name = "Planet " + i + " body";
 
-            planetOrbitObject.transform.localPosition = CalculatePositionForPlanet(planetBody, i);
-            float sunDistance = planetOrbitObject.transform.localPosition.magnitude;
+            Vector3 position = CalculatePositionForPlanet(planetBody, i);
             int nrOfMoonsForPlanet = GetNrOfMoonsToGenerate();
+
+            // Move the planet out so its whole system, with its moons and their capture spheres, fits outside the previous one
+            position += position.normalized * SystemRadius(planetBody.radius, nrOfMoonsForPlanet);
+            planetOrbitObject.transform.localPosition = position;
+            float sunDistance = position.magnitude;
             InstantiateMoons(planetBody, nrOfMoonsForPlanet, sunDistance);
             planetBody.positionRelativeToSunDistance = sunDistance;
             planetBody.Initialize(random.Next(), i == spawnPlanetIndex);
@@ -119,47 +127,38 @@ public class SpawnPlanets : MonoBehaviour
     {
         Vector3 pos = Vector3.one;
 
-        // Calculates the position from the sun given the number of moons 
+        // Calculates the position from the sun. The planet's own system radius is added by the caller once its moons are known.
         if (index == 0)
         {
-            float totalMoonRadiusOfPlanet = GetTotalMoonRadiusOfPlanet(planet);
-            float totalRadiusOfCurrentPlanet = planet.radius + totalMoonRadiusOfPlanet;
             float sunRadius = sun.GetComponent<Sun>().diameter;
             float offset = random.Next(radiusMinValue, radiusMaxValue) * 2f;
-            float distanceFromSun = sunRadius + totalRadiusOfCurrentPlanet + offset;
+            float distanceFromSun = sunRadius + offset;
 
             pos = RandomPointOnCircleEdge(distanceFromSun);
         }
 
-        // Calculates the position from the sun based on previous planets position and radius
+        // Calculates the position from the sun based on previous planets position and system radius
         else
         {
             Planet previousPlanet = bodies[index - 1];
-            float totalMoonRadiusOfPreviousPlanet = GetTotalMoonRadiusOfPlanet(previousPlanet);
-            float totalRadiusOfPreviousPlanet = previousPlanet.radius + totalMoonRadiusOfPreviousPlanet;
+            float previousSystemRadius = SystemRadius(previousPlanet.radius, previousPlanet.moons.Count);
             float previousPlanetPosMagnitude = previousPlanet.gameObject.transform.position.magnitude;
 
-            float totalMoonRadiusOfCurrentPlanet = GetTotalMoonRadiusOfPlanet(planet);
-            float totalRadiusOfCurrentPlanet = planet.radius + totalMoonRadiusOfCurrentPlanet;
-
             float offset = random.Next(radiusMaxValue, radiusMaxValue * 2) * 2f;
-            float distanceFromSun = previousPlanetPosMagnitude + totalRadiusOfPreviousPlanet + totalRadiusOfCurrentPlanet + offset;
+            float distanceFromSun = previousPlanetPosMagnitude + previousSystemRadius + offset;
             pos = RandomPointOnCircleEdge(distanceFromSun);
         }
         return pos;
     }
 
-    private float GetTotalMoonRadiusOfPlanet(Planet planet)
+    /// <summary>
+    /// How far from a planet its system reaches: its outermost moon plus that moon's capture sphere, or the planet's own
+    /// capture sphere if that is further. Moon i orbits at 3 * i planet radii and is at most half a planet radius big.
+    /// </summary>
+    private static float SystemRadius(float planetRadius, int numberOfMoons)
     {
-        int lastMoonIndex = planet.moons.Count - 1;
-
-        if (lastMoonIndex < 0)
-        {
-            return 0;
-        }
-        
-        float totalMoonRadius = (planet.moons[lastMoonIndex].transform.position - planet.transform.position).magnitude;
-        return totalMoonRadius;
+        float moonsReach = numberOfMoons > 0 ? 3f * numberOfMoons * planetRadius + captureSphereRadii * planetRadius / 2f : 0;
+        return Mathf.Max(captureSphereRadii * planetRadius, moonsReach);
     }
 
 
