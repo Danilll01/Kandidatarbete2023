@@ -28,8 +28,11 @@ public class SolarSystemTransform : MonoBehaviour
     // Used to keep the ship's speed relative to a planet when it becomes the centre of the solar system
     private System.Collections.Generic.Dictionary<Planet, Vector3> currentShipOffsets = new System.Collections.Generic.Dictionary<Planet, Vector3>();
     private System.Collections.Generic.Dictionary<Planet, Vector3> previousShipOffsets = new System.Collections.Generic.Dictionary<Planet, Vector3>();
-    private Vector3 pendingRelativeVelocity;
-    private bool hasPendingRelativeVelocity;
+    private Vector3 enteringLocalVelocity;
+    private bool hasEnteringVelocity;
+    private Planet leftPlanet;
+    private Vector3 leavingLocalVelocity;
+    private int leavingSteps;
     private SpaceShipController shipController;
 
 
@@ -80,6 +83,7 @@ public class SolarSystemTransform : MonoBehaviour
 
         InitializeValues();
         CaptureShipOffsets();
+        MatchShipToLeftPlanet();
 
         if (!releasePlayer)
         {
@@ -162,12 +166,13 @@ public class SolarSystemTransform : MonoBehaviour
         float distance = (player.transform.position - planet.transform.position).magnitude;
         if (distance <= (planet.radius * 1.3) && planet != activePlanet)
         {
-            // The planet stops moving when it becomes the centre, so remember how fast the ship moved relative to it
-            if (previousShipOffsets.TryGetValue(planet, out Vector3 previousOffset) && currentShipOffsets.TryGetValue(planet, out Vector3 currentOffset))
+            // The planet stops moving and spinning when it becomes the centre, so remember how the ship moved relative to its surface
+            if (TryGetVelocityRelativeTo(planet, out Vector3 localVelocity))
             {
-                pendingRelativeVelocity = (currentOffset - previousOffset) / Time.fixedDeltaTime;
-                hasPendingRelativeVelocity = true;
+                enteringLocalVelocity = localVelocity;
+                hasEnteringVelocity = true;
             }
+            leftPlanet = null;
 
             activePlanet = planet;
                 
@@ -184,6 +189,14 @@ public class SolarSystemTransform : MonoBehaviour
 
         if (planet == activePlanet && distance > (planet.radius * 1.4))
         {
+            // The planet starts moving again, so the ship gets its speed once it does (see MatchShipToLeftPlanet)
+            if (TryGetVelocityRelativeTo(planet, out Vector3 localVelocity))
+            {
+                leftPlanet = planet;
+                leavingLocalVelocity = localVelocity;
+                leavingSteps = 0;
+            }
+
             activePlanet = null;
             return true;
         }
@@ -191,8 +204,8 @@ public class SolarSystemTransform : MonoBehaviour
         return false;
     }
 
-    // Records where the ship (or player) is relative to every body at the start of each physics step.
-    // Relative offsets aren't affected when the whole solar system is moved to keep the player near the origin.
+    // Records where the ship (or player) is in every body's own rotating space at the start of each physics step.
+    // These offsets aren't affected when the whole solar system is moved to keep the player near the origin.
     private void CaptureShipOffsets()
     {
         (previousShipOffsets, currentShipOffsets) = (currentShipOffsets, previousShipOffsets);
@@ -201,38 +214,60 @@ public class SolarSystemTransform : MonoBehaviour
         Vector3 moverPosition = Universe.player.boarded ? Universe.spaceShip.position : player.transform.position;
         foreach (Planet planet in spawnPlanets.bodies)
         {
-            currentShipOffsets[planet] = moverPosition - planet.transform.position;
+            currentShipOffsets[planet] = planet.transform.InverseTransformPoint(moverPosition);
             foreach (Planet moon in planet.moons)
             {
-                currentShipOffsets[moon] = moverPosition - moon.transform.position;
+                currentShipOffsets[moon] = moon.transform.InverseTransformPoint(moverPosition);
             }
         }
     }
 
+    // Velocity of the ship relative to a body's surface over the last physics step, in the body's local space
+    private bool TryGetVelocityRelativeTo(Planet planet, out Vector3 localVelocity)
+    {
+        localVelocity = Vector3.zero;
+        if (!previousShipOffsets.TryGetValue(planet, out Vector3 previousOffset) || !currentShipOffsets.TryGetValue(planet, out Vector3 currentOffset))
+            return false;
+
+        localVelocity = (currentOffset - previousOffset) / Time.fixedDeltaTime;
+        return true;
+    }
+
+    private SpaceShipController ShipController
+    {
+        get
+        {
+            if (shipController == null) shipController = Universe.spaceShip.GetComponent<SpaceShipController>();
+            return shipController;
+        }
+    }
+
+    // The new centre doesn't move or spin, so the ship's velocity becomes the one it had relative to its surface
     private void MatchShipToNewActivePlanet()
     {
-        if (!hasPendingRelativeVelocity) return;
-        hasPendingRelativeVelocity = false;
+        if (!hasEnteringVelocity) return;
+        hasEnteringVelocity = false;
 
-        if (!Universe.player.boarded) return;
+        if (!Universe.player.boarded || activePlanet == null) return;
 
-        if (shipController == null) shipController = Universe.spaceShip.GetComponent<SpaceShipController>();
+        ShipController.MatchReferenceFrame(activePlanet.transform.TransformDirection(enteringLocalVelocity));
+    }
 
-        // The kept speed fades over time, so the ship travels about speed * fade time. Limit the speed towards the planet
-        // so that distance is at most half the way down to the highest terrain, otherwise small planets could still be hit.
-        Vector3 toPlanet = activePlanet.transform.position - Universe.spaceShip.position;
-        float terrainTop = activePlanet.terrainLevel.GetMax();
-        if (float.IsInfinity(terrainTop)) terrainTop = activePlanet.radius; // Not measured yet
-        float heightAboveTerrain = toPlanet.magnitude - terrainTop;
-        float maxInwardSpeed = Mathf.Max(0, heightAboveTerrain) * 0.5f / shipController.FrameVelocityFadeTime;
-        Vector3 inwardDirection = toPlanet.normalized;
-        float inwardSpeed = Vector3.Dot(pendingRelativeVelocity, inwardDirection);
-        if (inwardSpeed > maxInwardSpeed)
+    // After leaving a planet it starts orbiting and spinning again. Once it has moved for a full physics step, measure the
+    // ship's velocity relative to it again and add the difference, so the ship keeps moving the same way relative to the planet.
+    private void MatchShipToLeftPlanet()
+    {
+        if (leftPlanet == null) return;
+
+        // Wait until the ship is released and the planet has moved for a full step
+        if (releasePlayer || Universe.spaceShip.parent == leftPlanet.transform || ++leavingSteps < 2) return;
+
+        if (Universe.player.boarded && TryGetVelocityRelativeTo(leftPlanet, out Vector3 localVelocity))
         {
-            pendingRelativeVelocity -= inwardDirection * (inwardSpeed - maxInwardSpeed);
+            ShipController.AddFrameVelocity(leftPlanet.transform.TransformDirection(leavingLocalVelocity - localVelocity));
         }
 
-        shipController.MatchReferenceFrame(pendingRelativeVelocity);
+        leftPlanet = null;
     }
 
     private void HandleUpdatedActivePlanet()

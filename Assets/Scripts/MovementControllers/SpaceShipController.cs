@@ -52,6 +52,7 @@ public class SpaceShipController : MonoBehaviour
     private Rigidbody physicsBody;
     private Quaternion lookRotation;
     private bool? shipGUIActive;
+    // Velocity kept from a change of reference frame, in the ship's local space
     private Vector3 frameVelocity;
     // Seconds for the speed kept from a reference frame change to mostly fade into what the controls ask for
     [SerializeField] private float frameVelocityFadeTime = 1.5f;
@@ -139,17 +140,28 @@ public class SpaceShipController : MonoBehaviour
     }
 
     /// <summary>
-    /// Called when the solar system moves so a planet becomes the centre. The planet stops moving, so the ship's velocity
-    /// is changed to the velocity it had relative to that planet, and then eased back to what the controls ask for.
+    /// Sets the ship's world velocity, keeping the difference to what the controls ask for as frame velocity that fades out.
+    /// Used when a planet becomes the centre of the solar system and stops moving.
     /// </summary>
     public float FrameVelocityFadeTime => frameVelocityFadeTime;
 
-    public void MatchReferenceFrame(Vector3 velocityRelativeToPlanet)
+    public void MatchReferenceFrame(Vector3 velocity)
     {
         if (physicsBody == null || physicsBody.isKinematic) return;
 
-        frameVelocity = velocityRelativeToPlanet - (physicsBody.linearVelocity - frameVelocity);
-        physicsBody.linearVelocity = velocityRelativeToPlanet;
+        AddFrameVelocity(velocity - physicsBody.linearVelocity);
+    }
+
+    /// <summary>
+    /// Adds a velocity from a change of reference frame (for example a planet's orbit speed when leaving it).
+    /// It is kept relative to the ship, so it turns with the ship like the controls do, and fades out over time.
+    /// </summary>
+    public void AddFrameVelocity(Vector3 worldVelocity)
+    {
+        if (physicsBody == null || physicsBody.isKinematic) return;
+
+        frameVelocity += Quaternion.Inverse(transform.rotation) * worldVelocity;
+        physicsBody.linearVelocity += worldVelocity;
     }
 
     private void SetShipGUIActive(bool active)
@@ -218,7 +230,7 @@ public class SpaceShipController : MonoBehaviour
         
         //Set the velocity, so you can move. The frame velocity keeps the speed relative to a planet that just became the centre.
         frameVelocity *= Mathf.Exp(-Time.fixedDeltaTime / frameVelocityFadeTime);
-        physicsBody.linearVelocity = moveDirection + frameVelocity;
+        physicsBody.linearVelocity = moveDirection + transform.rotation * frameVelocity;
         
         // Plays thruster audio if needed
         PlayThrustAudio(newMovementVector);
