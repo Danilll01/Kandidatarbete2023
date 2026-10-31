@@ -3,7 +3,8 @@ using UnityEngine;
 using UnityEngine.UI;
 
 /// <summary>
-/// Covers the screen and pauses the game until the terrain around the spawn point is fully generated
+/// Pauses the game until the terrain around the spawn point is fully generated, and covers the screen
+/// when the Load Menu's loading screen isn't already doing that (when Main is started directly in the Editor)
 /// </summary>
 public class WorldLoadingScreen : MonoBehaviour
 {
@@ -15,6 +16,11 @@ public class WorldLoadingScreen : MonoBehaviour
     private Image progressBar;
     private float startTime;
 
+    /// <summary>
+    /// How much of the terrain around the spawn point is generated, between 0 and 1
+    /// </summary>
+    public static float Progress { get; private set; }
+
     public static void Show(ChunksHandler spawnTerrain)
     {
         WorldLoadingScreen screen = new GameObject("World Loading Screen").AddComponent<WorldLoadingScreen>();
@@ -24,22 +30,29 @@ public class WorldLoadingScreen : MonoBehaviour
     private void Awake()
     {
         Universe.worldReady = false;
+        Progress = 0;
         Time.timeScale = 0;
         startTime = Time.unscaledTime;
-        CreateUI();
+
+        // The Load Menu's loading screen shows the progress when the game is started from the menus
+        if (!LoadManager.IsShowing) CreateUI();
     }
 
     private void Update()
     {
         bool ready = spawnTerrain == null || (spawnTerrain.HighGridReady && spawnTerrain.OutstandingNearbyChunks == 0);
-        float progress = spawnTerrain == null ? 1 : spawnTerrain.HighGridProgress;
+        Progress = spawnTerrain == null ? 1 : spawnTerrain.HighGridProgress;
 
-        progressText.text = "Generating planet... " + Mathf.RoundToInt(progress * 100) + "%";
-        progressBar.rectTransform.anchorMax = new Vector2(progress, 1);
+        if (progressText != null)
+        {
+            progressText.text = "Generating planet... " + Mathf.RoundToInt(Progress * 100) + "%";
+            progressBar.rectTransform.anchorMax = new Vector2(Progress, 1);
+        }
 
         if (ready || Time.unscaledTime - startTime > timeout)
         {
             if (!ready) Debug.LogWarning("Terrain around the spawn point was not finished in time, starting anyway");
+            Progress = 1;
             Time.timeScale = 1;
             Universe.worldReady = true;
             Destroy(gameObject);

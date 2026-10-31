@@ -28,6 +28,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 938852981703260768}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -15.398933, y: -15.821121, z: -8.87612}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -38,7 +39,6 @@ Transform:
   - {fileID: 2251488951527953380}
   - {fileID: 5536552789248980764}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &8085060048720669979
 MonoBehaviour:
@@ -87,6 +87,7 @@ MonoBehaviour:
     temperatureRoughness: 0.1
     mountainTemperatureAffect: 0.15
     treeFrequency: 1
+  biomeColors: []
   orbitSpeed: 0
   rotationAxis: {x: 0, y: 0, z: 0}
   rotationSpeed: 0
@@ -136,6 +137,7 @@ MonoBehaviour:
     atime6: 0
     atime7: 0
     m_Mode: 0
+    m_ColorSpace: -1
     m_NumColorKeys: 2
     m_NumAlphaKeys: 2
   tempMin: 200
@@ -145,6 +147,7 @@ MonoBehaviour:
   shader: {fileID: -6465566751694194690, guid: 582627e993e00c442b71e98ced60fb20, type: 3}
   bottomColor: {r: 0, g: 0, b: 0, a: 0}
   groundColor: {r: 0, g: 0, b: 0, a: 0}
+  biomeColors: []
   mountainGradients:
   - gradient:
       serializedVersion: 2
@@ -173,6 +176,7 @@ MonoBehaviour:
       atime6: 0
       atime7: 0
       m_Mode: 0
+      m_ColorSpace: -1
       m_NumColorKeys: 4
       m_NumAlphaKeys: 2
   - gradient:
@@ -202,6 +206,7 @@ MonoBehaviour:
       atime6: 0
       atime7: 0
       m_Mode: 0
+      m_ColorSpace: -1
       m_NumColorKeys: 4
       m_NumAlphaKeys: 2
   - gradient:
@@ -231,6 +236,7 @@ MonoBehaviour:
       atime6: 0
       atime7: 0
       m_Mode: 0
+      m_ColorSpace: -1
       m_NumColorKeys: 4
       m_NumAlphaKeys: 2
   - gradient:
@@ -260,6 +266,7 @@ MonoBehaviour:
       atime6: 0
       atime7: 0
       m_Mode: 0
+      m_ColorSpace: -1
       m_NumColorKeys: 4
       m_NumAlphaKeys: 2
   - gradient:
@@ -289,6 +296,7 @@ MonoBehaviour:
       atime6: 0
       atime7: 0
       m_Mode: 0
+      m_ColorSpace: -1
       m_NumColorKeys: 4
       m_NumAlphaKeys: 2
   - gradient:
@@ -318,6 +326,7 @@ MonoBehaviour:
       atime6: 0
       atime7: 0
       m_Mode: 0
+      m_ColorSpace: -1
       m_NumColorKeys: 5
       m_NumAlphaKeys: 2
   - gradient:
@@ -347,6 +356,7 @@ MonoBehaviour:
       atime6: 0
       atime7: 0
       m_Mode: 0
+      m_ColorSpace: -1
       m_NumColorKeys: 5
       m_NumAlphaKeys: 2
   plainsGradients:
@@ -377,6 +387,7 @@ MonoBehaviour:
       atime6: 0
       atime7: 0
       m_Mode: 0
+      m_ColorSpace: -1
       m_NumColorKeys: 2
       m_NumAlphaKeys: 2
   - gradient:
@@ -406,6 +417,7 @@ MonoBehaviour:
       atime6: 0
       atime7: 0
       m_Mode: 0
+      m_ColorSpace: -1
       m_NumColorKeys: 2
       m_NumAlphaKeys: 2
   - gradient:
@@ -435,6 +447,7 @@ MonoBehaviour:
       atime6: 0
       atime7: 0
       m_Mode: 0
+      m_ColorSpace: -1
       m_NumColorKeys: 2
       m_NumAlphaKeys: 2
   - gradient:
@@ -464,6 +477,7 @@ MonoBehaviour:
       atime6: 0
       atime7: 0
       m_Mode: 0
+      m_ColorSpace: -1
       m_NumColorKeys: 2
       m_NumAlphaKeys: 2
   - gradient:
@@ -493,6 +507,7 @@ MonoBehaviour:
       atime6: 0
       atime7: 0
       m_Mode: 0
+      m_ColorSpace: -1
       m_NumColorKeys: 5
       m_NumAlphaKeys: 2
   - gradient:
@@ -522,6 +537,7 @@ MonoBehaviour:
       atime6: 0
       atime7: 0
       m_Mode: 0
+      m_ColorSpace: -1
       m_NumColorKeys: 6
       m_NumAlphaKeys: 2
   - gradient:
@@ -551,6 +567,7 @@ MonoBehaviour:
       atime6: 0
       atime7: 0
       m_Mode: 0
+      m_ColorSpace: -1
       m_NumColorKeys: 2
       m_NumAlphaKeys: 2
   polarCapGradients:
@@ -581,6 +598,7 @@ MonoBehaviour:
       atime6: 0
       atime7: 0
       m_Mode: 0
+      m_ColorSpace: -1
       m_NumColorKeys: 2
       m_NumAlphaKeys: 2
   - gradient:
@@ -610,6 +628,7 @@ MonoBehaviour:
       atime6: 0
       atime7: 0
       m_Mode: 0
+      m_ColorSpace: -1
       m_NumColorKeys: 3
       m_NumAlphaKeys: 2
   - gradient:
@@ -639,6 +658,7 @@ MonoBehaviour:
       atime6: 0
       atime7: 0
       m_Mode: 0
+      m_ColorSpace: -1
       m_NumColorKeys: 2
       m_NumAlphaKeys: 2
   - gradient:
@@ -668,6 +688,7 @@ MonoBehaviour:
       atime6: 0
       atime7: 0
       m_Mode: 0
+      m_ColorSpace: -1
       m_NumColorKeys: 2
       m_NumAlphaKeys: 2
   - gradient:
@@ -697,6 +718,7 @@ MonoBehaviour:
       atime6: 0
       atime7: 0
       m_Mode: 0
+      m_ColorSpace: -1
       m_NumColorKeys: 2
       m_NumAlphaKeys: 2
   - gradient:
@@ -726,6 +748,7 @@ MonoBehaviour:
       atime6: 0
       atime7: 0
       m_Mode: 0
+      m_ColorSpace: -1
       m_NumColorKeys: 2
       m_NumAlphaKeys: 2
   - gradient:
@@ -755,6 +778,7 @@ MonoBehaviour:
       atime6: 0
       atime7: 0
       m_Mode: 0
+      m_ColorSpace: -1
       m_NumColorKeys: 3
       m_NumAlphaKeys: 2
   equatorGradients:
@@ -785,6 +809,7 @@ MonoBehaviour:
       atime6: 0
       atime7: 0
       m_Mode: 0
+      m_ColorSpace: -1
       m_NumColorKeys: 2
       m_NumAlphaKeys: 2
   - gradient:
@@ -814,6 +839,7 @@ MonoBehaviour:
       atime6: 0
       atime7: 0
       m_Mode: 0
+      m_ColorSpace: -1
       m_NumColorKeys: 2
       m_NumAlphaKeys: 2
   - gradient:
@@ -843,6 +869,7 @@ MonoBehaviour:
       atime6: 0
       atime7: 0
       m_Mode: 0
+      m_ColorSpace: -1
       m_NumColorKeys: 2
       m_NumAlphaKeys: 2
   - gradient:
@@ -872,6 +899,7 @@ MonoBehaviour:
       atime6: 0
       atime7: 0
       m_Mode: 0
+      m_ColorSpace: -1
       m_NumColorKeys: 2
       m_NumAlphaKeys: 2
   - gradient:
@@ -901,6 +929,7 @@ MonoBehaviour:
       atime6: 0
       atime7: 0
       m_Mode: 0
+      m_ColorSpace: -1
       m_NumColorKeys: 4
       m_NumAlphaKeys: 2
   - gradient:
@@ -930,6 +959,7 @@ MonoBehaviour:
       atime6: 0
       atime7: 0
       m_Mode: 0
+      m_ColorSpace: -1
       m_NumColorKeys: 4
       m_NumAlphaKeys: 2
   - gradient:
@@ -959,6 +989,7 @@ MonoBehaviour:
       atime6: 0
       atime7: 0
       m_Mode: 0
+      m_ColorSpace: -1
       m_NumColorKeys: 3
       m_NumAlphaKeys: 2
 --- !u!114 &6742904736247445569
@@ -974,8 +1005,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   planetRadius: 0
-  chunkPrefab: {fileID: 5146216955868432244, guid: 8531586e98093b342af8fdd2a736c017,
-    type: 3}
+  chunkPrefab: {fileID: 5146216955868432244, guid: 8531586e98093b342af8fdd2a736c017, type: 3}
   chunksParentLowRes: {fileID: 3939805141923606249}
   chunksParentHighRes: {fileID: 6617800754153101217}
   terrainColor: {fileID: 3175307376905995560}
@@ -993,7 +1023,11 @@ MonoBehaviour:
     lowerRadius: 800
     upperRadius: 6.871948e+10
     resolution: 1
-  maxChunkChecksPerFrame: 50
+  prefetchRadiusMultiplier: 4
+  lodHysteresis: 50
+  groundCheckInterval: 0.1
+  foliageColliderRadius: 80
+  foliageColliderInterval: 10
 --- !u!114 &6368680446637308804
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1007,10 +1041,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   debug: 0
-  debugObject: {fileID: 9103161053431881372, guid: 3d0d5ab07100a804ab34c91787727f8d,
-    type: 3}
-  fallenTree: {fileID: 1493958779012120596, guid: b9de24523a11d714db3851b5f0f9d527,
-    type: 3}
+  debugObject: {fileID: 9103161053431881372, guid: 3d0d5ab07100a804ab34c91787727f8d, type: 3}
+  fallenTree: {fileID: 1493958779012120596, guid: b9de24523a11d714db3851b5f0f9d527, type: 3}
   trees:
   - {fileID: 108507113624723981, guid: eebb56c82efbd8d4bb0eb6bd925a0e9d, type: 3}
   - {fileID: 2222111361404534124, guid: 88f2fd29f58b9734683512546acec310, type: 3}
@@ -1113,6 +1145,7 @@ MonoBehaviour:
       treesDependent: 1
       treesMin: 0.261
       treesMax: 1
+    biomeMaterials: []
     probabilityToSkip: 0
   - name: Normal trees with flowers
     gameObjects:
@@ -1137,6 +1170,7 @@ MonoBehaviour:
       treesDependent: 1
       treesMin: 0.281
       treesMax: 1
+    biomeMaterials: []
     probabilityToSkip: 0
   - name: Warm trees
     gameObjects:
@@ -1160,6 +1194,7 @@ MonoBehaviour:
       treesDependent: 0
       treesMin: 0.706
       treesMax: 1
+    biomeMaterials: []
     probabilityToSkip: 0.38
   - name: Mountain trees
     gameObjects:
@@ -1193,6 +1228,7 @@ MonoBehaviour:
       treesDependent: 0
       treesMin: 0.706
       treesMax: 1
+    biomeMaterials: []
     probabilityToSkip: 0.415
   - name: 'Cold '
     gameObjects:
@@ -1212,6 +1248,7 @@ MonoBehaviour:
       treesDependent: 0
       treesMin: 0.706
       treesMax: 1
+    biomeMaterials: []
     probabilityToSkip: 0.6
   - name: 'Tropic '
     gameObjects:
@@ -1238,6 +1275,7 @@ MonoBehaviour:
       treesDependent: 0
       treesMin: 0.706
       treesMax: 1
+    biomeMaterials: []
     probabilityToSkip: 0.9
   - name: Bushes and flowers
     gameObjects:
@@ -1261,6 +1299,7 @@ MonoBehaviour:
       treesDependent: 1
       treesMin: 0.22
       treesMax: 0.723
+    biomeMaterials: []
     probabilityToSkip: 0.498
   isInstantiated: 0
   objectsNr: 0
@@ -1309,8 +1348,7 @@ MonoBehaviour:
       treesDependent: 0
       treesMin: 0
       treesMax: 1
-  - prefab: {fileID: 4623556101495578335, guid: 35ac99dff6947ea49803b114e95b9605,
-      type: 3}
+  - prefab: {fileID: 4623556101495578335, guid: 35ac99dff6947ea49803b114e95b9605, type: 3}
     ratio: 5
     minPackSize: 5
     maxPackSize: 10
@@ -1452,13 +1490,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2724481626477248778}
+  serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0.022738457, y: -2.3879032, z: 8.679689}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2176386958015389607}
-  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &2086984749959753239
 MeshFilter:
@@ -1485,6 +1523,11 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials: []
@@ -1505,9 +1548,11 @@ MeshRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!114 &8052205839722006373
 MonoBehaviour:
@@ -1549,6 +1594,7 @@ MonoBehaviour:
     atime6: 0
     atime7: 0
     m_Mode: 0
+    m_ColorSpace: -1
     m_NumColorKeys: 4
     m_NumAlphaKeys: 2
   ambientGradients:
@@ -1578,6 +1624,7 @@ MonoBehaviour:
     atime6: 0
     atime7: 0
     m_Mode: 0
+    m_ColorSpace: -1
     m_NumColorKeys: 4
     m_NumAlphaKeys: 2
   - serializedVersion: 2
@@ -1606,6 +1653,7 @@ MonoBehaviour:
     atime6: 0
     atime7: 0
     m_Mode: 0
+    m_ColorSpace: -1
     m_NumColorKeys: 4
     m_NumAlphaKeys: 2
   - serializedVersion: 2
@@ -1634,6 +1682,7 @@ MonoBehaviour:
     atime6: 0
     atime7: 0
     m_Mode: 0
+    m_ColorSpace: -1
     m_NumColorKeys: 4
     m_NumAlphaKeys: 2
   - serializedVersion: 2
@@ -1662,6 +1711,7 @@ MonoBehaviour:
     atime6: 0
     atime7: 0
     m_Mode: 0
+    m_ColorSpace: -1
     m_NumColorKeys: 4
     m_NumAlphaKeys: 2
   - serializedVersion: 2
@@ -1690,6 +1740,7 @@ MonoBehaviour:
     atime6: 0
     atime7: 0
     m_Mode: 0
+    m_ColorSpace: -1
     m_NumColorKeys: 4
     m_NumAlphaKeys: 2
   - serializedVersion: 2
@@ -1718,6 +1769,7 @@ MonoBehaviour:
     atime6: 0
     atime7: 0
     m_Mode: 0
+    m_ColorSpace: -1
     m_NumColorKeys: 4
     m_NumAlphaKeys: 2
   - serializedVersion: 2
@@ -1746,6 +1798,7 @@ MonoBehaviour:
     atime6: 0
     atime7: 0
     m_Mode: 0
+    m_ColorSpace: -1
     m_NumColorKeys: 4
     m_NumAlphaKeys: 2
   - serializedVersion: 2
@@ -1774,6 +1827,7 @@ MonoBehaviour:
     atime6: 0
     atime7: 0
     m_Mode: 0
+    m_ColorSpace: -1
     m_NumColorKeys: 4
     m_NumAlphaKeys: 2
   - serializedVersion: 2
@@ -1802,6 +1856,7 @@ MonoBehaviour:
     atime6: 0
     atime7: 0
     m_Mode: 0
+    m_ColorSpace: -1
     m_NumColorKeys: 4
     m_NumAlphaKeys: 2
 --- !u!1 &3800433809544220050
@@ -1828,13 +1883,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3800433809544220050}
+  serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2176386958015389607}
-  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &7974886500941765792
 MonoBehaviour:
@@ -1850,8 +1905,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   resolution: 5
   computeShader: {fileID: 7200000, guid: a3ea61cf1daaef9468701842c0c49e63, type: 3}
-  waterShader: {fileID: -6465566751694194690, guid: 1ce4e973287db1a4ea2f21145f0c4770,
-    type: 3}
+  waterShader: {fileID: -6465566751694194690, guid: 1ce4e973287db1a4ea2f21145f0c4770, type: 3}
   sideResolution: 3
   material: {fileID: 0}
 --- !u!1 &3939805141923606249
@@ -1877,13 +1931,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3939805141923606249}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2176386958015389607}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6617800754153101217
 GameObject:
@@ -1908,11 +1962,11 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6617800754153101217}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2176386958015389607}
-  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

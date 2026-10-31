@@ -4,11 +4,15 @@ using UnityEngine;
 
 public class ChunksHandler : MonoBehaviour
 {
-    // Mesh jobs in flight for every planet together, so the GPU and the readbacks are never flooded
-    private const int maxJobsInFlight = 8;
+    // Medium and high resolution mesh jobs in flight for every planet together, so the GPU is never flooded
+    private const int maxDetailJobsInFlight = 8;
     // Planets the player is only approaching get a smaller share
-    private const int maxPrefetchJobsInFlight = 4;
-    private static int jobsInFlight;
+    private const int maxPrefetchDetailJobsInFlight = 4;
+    // Low resolution jobs are tiny and mostly wait on the readback, so many can run at once.
+    // They build the first complete version of a planet, which has to be done before it replaces the low resolution planet.
+    private const int maxCoarseJobsInFlight = 48;
+    private static int detailJobsInFlight;
+    private static int coarseJobsInFlight;
 
     private enum SlotState : byte
     {
@@ -45,7 +49,7 @@ public class ChunksHandler : MonoBehaviour
 
     [Header("Streaming")]
     [SerializeField, Tooltip("Start building the detailed chunks when the player is this many planet radii from the planet centre")]
-    private float prefetchRadiusMultiplier = 2.5f;
+    private float prefetchRadiusMultiplier = 4f;
     [SerializeField, Tooltip("How far past a level of detail boundary a chunk may be before it changes resolution")]
     private float lodHysteresis = 50f;
     [SerializeField, Tooltip("Seconds between checks of the terrain height under the player")]
@@ -63,15 +67,64 @@ public class ChunksHandler : MonoBehaviour
     private int unresolvedSlots;
     private int initialUnresolvedSlots;
     private bool highGridCreated;
-    private int jobsInFlightHere;
+    private int detailJobsHere;
+    private int coarseJobsHere;
     private int lowJobsPending;
     private float chunkHalfDiagonal;
     private int nextFoliageColliderUpdate;
 
     // Best slots to generate this frame, sorted by distance
-    private readonly int[] candidateSlots = new int[maxJobsInFlight];
-    private readonly int[] candidateResolutions = new int[maxJobsInFlight];
-    private readonly float[] candidateDistances = new float[maxJobsInFlight];
+    private readonly CandidateList detailCandidates = new CandidateList(maxDetailJobsInFlight);
+    private readonly CandidateList coarseCandidates = new CandidateList(maxCoarseJobsInFlight);
+
+    /// <summary>
+    /// The closest chunks that need a new mesh, up to a budget, sorted by distance
+    /// </summary>
+    private class CandidateList
+    {
+        public readonly int[] slots;
+        public readonly int[] resolutions;
+        private readonly float[] distances;
+        public int count;
+        public int budget;
+
+        public CandidateList(int capacity)
+        {
+            slots = new int[capacity];
+            resolutions = new int[capacity];
+            distances = new float[capacity];
+        }
+
+        public void Reset(int newBudget)
+        {
+            count = 0;
+            budget = Mathf.Clamp(newBudget, 0, slots.Length);
+        }
+
+        public void Insert(int slot, int resolution, float distance)
+        {
+            if (budget <= 0) return;
+
+            int position = count < budget ? count : budget;
+            while (position > 0 && distances[position - 1] > distance)
+            {
+                if (position < budget)
+                {
+                    slots[position] = slots[position - 1];
+                    resolutions[position] = resolutions[position - 1];
+                    distances[position] = distances[position - 1];
+                }
+                position--;
+            }
+            if (position < budget)
+            {
+                slots[position] = slot;
+                resolutions[position] = resolution;
+                distances[position] = distance;
+                if (count < budget) count++;
+            }
+        }
+    }
 
     private bool playerOnPlanet;
     private bool showingHighRes;
@@ -115,7 +168,8 @@ public class ChunksHandler : MonoBehaviour
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
     private static void ResetStatics()
     {
-        jobsInFlight = 0;
+        detailJobsInFlight = 0;
+        coarseJobsInFlight = 0;
     }
 
     public void Initialize(Planet planet, MinMaxTerrainLevel terrainLevel, bool spawn, int seed)
@@ -332,10 +386,10 @@ public class ChunksHandler : MonoBehaviour
     /// </summary>
     private void ScheduleChunkJobs(Vector3 playerPos)
     {
-        int ownLimit = playerOnPlanet ? maxJobsInFlight : maxPrefetchJobsInFlight;
-        int budget = Mathf.Min(maxJobsInFlight - jobsInFlight, ownLimit - jobsInFlightHere);
+        int detailLimit = playerOnPlanet ? maxDetailJobsInFlight : maxPrefetchDetailJobsInFlight;
+        detailCandidates.Reset(Mathf.Min(maxDetailJobsInFlight - detailJobsInFlight, detailLimit - detailJobsHere));
+        coarseCandidates.Reset(maxCoarseJobsInFlight - coarseJobsInFlight);
 
-        int found = 0;
         int outstandingNearby = 0;
         for (int i = 0; i < slotStates.Length; i++)
         {
@@ -348,33 +402,20 @@ public class ChunksHandler : MonoBehaviour
             if (target == current) continue;
 
             if (distance < mediumRes.upperRadius) outstandingNearby++;
-            if (slotPending[i] || budget <= 0) continue;
+            if (slotPending[i]) continue;
 
-            // Insert into the sorted list of the closest candidates
-            int position = found < budget ? found : budget;
-            while (position > 0 && candidateDistances[position - 1] > distance)
-            {
-                if (position < budget)
-                {
-                    candidateSlots[position] = candidateSlots[position - 1];
-                    candidateResolutions[position] = candidateResolutions[position - 1];
-                    candidateDistances[position] = candidateDistances[position - 1];
-                }
-                position--;
-            }
-            if (position < budget)
-            {
-                candidateSlots[position] = i;
-                candidateResolutions[position] = target;
-                candidateDistances[position] = distance;
-                if (found < budget) found++;
-            }
+            if (target == lowRes.resolution) coarseCandidates.Insert(i, target, distance);
+            else detailCandidates.Insert(i, target, distance);
         }
         OutstandingNearbyChunks = outstandingNearby;
 
-        for (int i = 0; i < found; i++)
+        for (int i = 0; i < detailCandidates.count; i++)
         {
-            DispatchChunkJob(candidateSlots[i], candidateResolutions[i]);
+            DispatchChunkJob(detailCandidates.slots[i], detailCandidates.resolutions[i]);
+        }
+        for (int i = 0; i < coarseCandidates.count; i++)
+        {
+            DispatchChunkJob(coarseCandidates.slots[i], coarseCandidates.resolutions[i]);
         }
     }
 
@@ -392,9 +433,18 @@ public class ChunksHandler : MonoBehaviour
 
     private void DispatchChunkJob(int slot, int resolution)
     {
+        bool coarse = resolution == lowRes.resolution;
         slotPending[slot] = true;
-        jobsInFlight++;
-        jobsInFlightHere++;
+        if (coarse)
+        {
+            coarseJobsInFlight++;
+            coarseJobsHere++;
+        }
+        else
+        {
+            detailJobsInFlight++;
+            detailJobsHere++;
+        }
 
         marchingCubes.GenerateMesh(slot, resolution, highChunkRes, (mesh, vertices) =>
         {
@@ -404,8 +454,16 @@ public class ChunksHandler : MonoBehaviour
                 return;
             }
 
-            jobsInFlight--;
-            jobsInFlightHere--;
+            if (coarse)
+            {
+                coarseJobsInFlight--;
+                coarseJobsHere--;
+            }
+            else
+            {
+                detailJobsInFlight--;
+                detailJobsHere--;
+            }
             slotPending[slot] = false;
 
             if (slotStates[slot] == SlotState.Unknown)
@@ -540,7 +598,9 @@ public class ChunksHandler : MonoBehaviour
     private void OnDestroy()
     {
         // Jobs that finish after this are ignored, so give their share of the budget back now
-        jobsInFlight -= jobsInFlightHere;
-        jobsInFlightHere = 0;
+        detailJobsInFlight -= detailJobsHere;
+        coarseJobsInFlight -= coarseJobsHere;
+        detailJobsHere = 0;
+        coarseJobsHere = 0;
     }
 }
