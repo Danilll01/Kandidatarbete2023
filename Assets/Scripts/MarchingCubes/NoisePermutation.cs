@@ -32,12 +32,8 @@ public static class NoisePermutation
     private static void CreateBuffer()
     {
         _ = Buffer;
-#if UNITY_EDITOR
-        // Only released when leaving Play mode. A build frees it when it exits, and releasing it here crashed the web
-        // build, since Unity still renders a frame with the terrain and water shaders after quitting starts.
         Application.quitting -= Release;
         Application.quitting += Release;
-#endif
     }
 
     private static void Release()
