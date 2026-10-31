@@ -31,10 +31,11 @@ struct BiomeSettings
 
 float evalutateBiomeMapMountains(BiomeSettings biomeSettings, float3 pos);
 
-float getTerrain(float3 pos, RWStructuredBuffer<TerrainLayer> terrainLayers, int numTerrainLayers, float seed, BiomeSettings biomeSettings)
+// Returns the terrain height in the direction of pos, in the same unit as length(pos) (planet radius = 1)
+float getTerrainHeight(float3 pos, RWStructuredBuffer<TerrainLayer> terrainLayers, int numTerrainLayers, float seed, BiomeSettings biomeSettings)
 {
     float3 pointOnSphere = pos / length(pos);
-   
+
     float noiseValue = 0;
     
     float3 noiseOffset = float3(perlin.Evaluate(seed) * seed, perlin.Evaluate(seed + 17.8f) * seed, perlin.Evaluate(seed + 23.5) * seed);
@@ -43,7 +44,7 @@ float getTerrain(float3 pos, RWStructuredBuffer<TerrainLayer> terrainLayers, int
     {
         float amplitude = 1;
         float frequency = terrainLayers[i].baseRoughness;
-        float noiseLayer;
+        float noiseLayer = 0;
         float amplitudeSum = 0;
     
         for (int j = 0; j < terrainLayers[i].numLayers; j++)
@@ -72,7 +73,13 @@ float getTerrain(float3 pos, RWStructuredBuffer<TerrainLayer> terrainLayers, int
         noiseValue += noiseLayer;
     }
     
-    return length(pos) < (.7 + noiseValue) ? ((.7 + noiseValue) - length(pos)) * 255 : 0;
+    return .7 + noiseValue;
+}
+
+float getTerrain(float3 pos, RWStructuredBuffer<TerrainLayer> terrainLayers, int numTerrainLayers, float seed, BiomeSettings biomeSettings)
+{
+    float height = getTerrainHeight(pos, terrainLayers, numTerrainLayers, seed, biomeSettings);
+    return length(pos) < height ? (height - length(pos)) * 255 : 0;
 }
 
 

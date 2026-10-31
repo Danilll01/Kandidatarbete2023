@@ -90,6 +90,15 @@ public class TerrainColor : MonoBehaviour {
         return material;
     }
 
+    /// <summary>
+    /// Updates the material with new terrain heights, since chunk meshes are generated after the material is created
+    /// </summary>
+    public void UpdateTerrainLevel(MinMaxTerrainLevel terrainLevel) {
+        tempMin = terrainLevel.GetMin();
+        tempMax = terrainLevel.GetMax();
+        if (material != null) UpdateMinMaxHight();
+    }
+
     // Updates the min and max color hight
     private void UpdateMinMaxHight() {
         material.SetVector("_HightMinMax", new Vector4(tempMin, tempMax));

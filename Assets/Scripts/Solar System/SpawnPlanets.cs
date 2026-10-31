@@ -44,6 +44,7 @@ public class SpawnPlanets : MonoBehaviour
         player.Initialize(bodies[spawnPlanetIndex], random.Next());
         sunLightning.Initialize();
         solarSystemGenerated = true;
+        WorldLoadingScreen.Show(bodies[spawnPlanetIndex].ChunksHandler);
     }
 
     private void GetValues()

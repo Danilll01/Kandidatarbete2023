@@ -1,6 +1,5 @@
 using ExtendedRandom;
 using UnityEngine;
-using static ChunksHandler;
 
 public class Chunk : MonoBehaviour
 {
@@ -11,15 +10,16 @@ public class Chunk : MonoBehaviour
     [SerializeField] public GameObject creatureGameObject;
 
     private int index;
+    private int chunkResolution;
 
     // Resolutions of chunk
     private int currentRes;
     private int highRes;
+    private int colliderRes;
 
     private MeshFilter meshFilter;
     private MeshRenderer meshRenderer;
     private MeshCollider meshCollider;
-    public MarchingCubes marchingCubes;
     private Planet planet;
     [HideInInspector] public float chunkSize;
 
@@ -28,57 +28,56 @@ public class Chunk : MonoBehaviour
     [HideInInspector] public Vector3 position;
     [HideInInspector] public bool initialized = false;
 
-    public void Setup(int index, MarchingCubes marchingCubes)
+    public void Setup(int index, int chunkResolution, float planetRadius)
     {
         this.index = index;
-        this.marchingCubes = marchingCubes;
+        this.chunkResolution = chunkResolution;
 
-        CalculateChunkPosition();
+        position = CalculatePosition(index, chunkResolution, planetRadius);
     }
 
     public void Initialize(Planet planet, ChunksHandler chunkHandler, int seed)
     {
         this.planet = planet;
         highRes = chunkHandler.highRes.resolution;
+        colliderRes = chunkHandler.mediumRes.resolution;
         random = new RandomX(seed);
 
-        chunkSize = (2 * chunkHandler.planetRadius) / (1 << marchingCubes.chunkResolution);
+        chunkSize = (2 * chunkHandler.planetRadius) / (1 << chunkResolution);
 
         meshFilter = transform.GetComponent<MeshFilter>();
         meshRenderer = transform.GetComponent<MeshRenderer>();
-        if(marchingCubes.chunkResolution == 1)
+        if (chunkResolution == 1)
         {
             GetComponent<MeshCollider>().enabled = false;
         }
         else
         {
             meshCollider = transform.GetComponent<MeshCollider>();
-            meshCollider.enabled = false; // Disabled until highest res is loaded
+            meshCollider.enabled = false; // Disabled until a mesh detailed enough for collisions is loaded
         }
 
         initialized = true;
     }
 
-    public void SetMaterial(Material material) {
-        meshRenderer.sharedMaterial = material;
+    /// <summary>
+    /// Local position of the centre of a chunk in a planet split into 2^chunkResolution chunks per axis
+    /// </summary>
+    public static Vector3 CalculatePosition(int index, int chunkResolution, float planetRadius)
+    {
+        int mask = (1 << chunkResolution) - 1;
+
+        Vector3 chunkIndex = new Vector3(
+            index & mask,
+            (index >> chunkResolution) & mask,
+            (index >> (chunkResolution * 2)) & mask
+        );
+
+        return -(chunkIndex - ((1 << chunkResolution) - 1) / 2f * Vector3.one) * (planetRadius * 2 / (1 << chunkResolution));
     }
 
-    private void CalculateChunkPosition()
-    {
-        int mask = 0;
-        for (int i = 0; i < marchingCubes.chunkResolution; i++)
-        {
-            mask += 1 << i;
-        }
-
-        Vector3 chunkIndex =
-            new Vector3(
-                (index & (mask << (marchingCubes.chunkResolution * 0))) >> (marchingCubes.chunkResolution * 0),
-                (index & (mask << (marchingCubes.chunkResolution * 1))) >> (marchingCubes.chunkResolution * 1),
-                (index & (mask << (marchingCubes.chunkResolution * 2))) >> (marchingCubes.chunkResolution * 2)
-            );
-
-        position = -(chunkIndex - (Mathf.Pow(2, marchingCubes.chunkResolution) - 1) / 2 * Vector3.one) * (marchingCubes.radius * 2 / (1 << (marchingCubes.chunkResolution)));
+    public void SetMaterial(Material material) {
+        meshRenderer.sharedMaterial = material;
     }
 
     public void UpdateMesh(Mesh mesh, int resolution)
@@ -89,21 +88,18 @@ public class Chunk : MonoBehaviour
 
         meshFilter.sharedMesh = mesh;
 
-        // Only enable collider and assign physics mesh at highest resolution
+        // Medium and high resolution meshes get colliders so the ground is solid before the most detailed mesh is loaded
+        bool hasCollider = meshCollider != null && resolution >= colliderRes;
         if (meshCollider != null)
         {
-            if (resolution == highRes)
-            {
-                meshCollider.enabled = true;
-                meshCollider.sharedMesh = mesh;
-            }
-            else
-            {
-                meshCollider.enabled = false;
-            }
+            meshCollider.sharedMesh = hasCollider ? mesh : null;
+            meshCollider.enabled = hasCollider;
         }
 
         int numVerts = mesh.vertexCount;
+
+        // Nothing reads the vertices of meshes without colliders again, so free their CPU copy
+        if (!hasCollider) mesh.UploadMeshData(true);
 
         if (resolution == highRes && planet.willGeneratePlanetLife)
         {
@@ -120,22 +116,23 @@ public class Chunk : MonoBehaviour
         }
     }
 
-    public void SetActivated(bool state)
-    {
-        // Don't enable collider here — UpdateMesh handles it at highest resolution only
-        foliageGameObject.SetActive(state);
-        creatureGameObject.SetActive(state);
-    }
-
     public void MarkResolution(int resolution)
     {
         currentRes = resolution;
+    }
+
+    public void SetActivated(bool state)
+    {
+        foliageGameObject.SetActive(state);
+        creatureGameObject.SetActive(state);
     }
 
     public bool HasResolution(int resolution)
     {
         return currentRes == resolution;
     }
+
+    public int CurrentResolution => currentRes;
 
     public int Index
     {

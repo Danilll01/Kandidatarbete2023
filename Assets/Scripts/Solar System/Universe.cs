@@ -16,6 +16,9 @@ public static class Universe
     public static Transform spaceShip = null;
     public static Transform sunPosition = null;
 
+    // False while the terrain around the spawn point is still being generated
+    public static bool worldReady = true;
+
     /// <summary>
     /// Initializes the System.Random with the given seed
     /// </summary>

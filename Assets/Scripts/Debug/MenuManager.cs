@@ -70,7 +70,7 @@ public class MenuManager : MonoBehaviour
         }
         #endif
 
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.Escape) && Universe.worldReady)
         {
             PausGame();
         }

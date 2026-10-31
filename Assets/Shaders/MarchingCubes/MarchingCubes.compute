@@ -1,5 +1,6 @@
 // Each #kernel tells which function to compile; you can have many kernels
 #pragma kernel GenerateMesh
+#pragma kernel SurfaceHeight
 
 #include "Includes/MarchTables.hlsl"
 #include "../Terrain/Terrain.hlsl"
@@ -109,6 +110,17 @@ void GenerateMesh(uint3 id : SV_DispatchThreadID)
         tri.vertexC = interpolateVerts(cubeCorners[a2], cubeCorners[b2]);
         triangles.Append(tri);
     }
+}
+
+// Distance from the planet centre to the surface (where the density equals threshold) in the given direction
+float3 surfaceDirection;
+RWStructuredBuffer<float> surfaceHeight;
+
+[numthreads(1, 1, 1)]
+void SurfaceHeight(uint3 id : SV_DispatchThreadID)
+{
+    float height = getTerrainHeight(surfaceDirection, terrainLayers, numTerrainLayers, seed, biomeSettings[0]);
+    surfaceHeight[0] = (height - threshold / 255) * radius;
 }
 
 // Interpolate between two points

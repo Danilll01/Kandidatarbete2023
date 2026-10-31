@@ -106,7 +106,7 @@ public class Planet : MonoBehaviour
             float biomeSeed = rand.Value();
             biomeSettings.seed = biomeSeed;
             
-            marchingCubes = new MarchingCubes(biomeSeed, 1, meshGenerator, threshold, radius, terrainLayers, biomeSettings);
+            marchingCubes = new MarchingCubes(biomeSeed, meshGenerator, threshold, radius, terrainLayers, biomeSettings);
         }
 
         // Set water diameter
@@ -345,6 +345,8 @@ public class Planet : MonoBehaviour
 
     public BiomeSettings Biome => biomeSettings;
 
+    public ChunksHandler ChunksHandler => chunksHandler;
+
     public Color GetSeaColor => waterHandler.GetWaterColor;
 
     /// <summary>
@@ -410,6 +412,11 @@ public class Planet : MonoBehaviour
     private static float DistanceFromPlane(Vector3 planeOffset, Vector3 planeNormal, Vector3 point)
     {
         return Vector3.Dot(planeOffset - point, planeNormal);
+    }
+
+    private void OnDestroy()
+    {
+        marchingCubes?.Dispose();
     }
 
     private void OnDrawGizmos()
