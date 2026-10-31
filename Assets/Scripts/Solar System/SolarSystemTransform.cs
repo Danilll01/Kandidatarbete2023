@@ -31,6 +31,10 @@ public class SolarSystemTransform : MonoBehaviour
     private Vector3 enteringLocalVelocity;
     private bool hasEnteringVelocity;
     private Planet leftPlanet;
+    private Quaternion previousSunRotation = Quaternion.identity;
+    private Quaternion currentSunRotation = Quaternion.identity;
+    private bool matchSkyNextStep;
+    private const float maxTrackedSpeed = 20000f;
     private Vector3 leavingLocalVelocity;
     private int leavingSteps;
     private SpaceShipController shipController;
@@ -84,6 +88,7 @@ public class SolarSystemTransform : MonoBehaviour
         InitializeValues();
         CaptureShipOffsets();
         MatchShipToLeftPlanet();
+        MatchShipToSkyRotation();
 
         if (!releasePlayer)
         {
@@ -171,6 +176,7 @@ public class SolarSystemTransform : MonoBehaviour
             {
                 enteringLocalVelocity = localVelocity;
                 hasEnteringVelocity = true;
+                matchSkyNextStep = true;
             }
             leftPlanet = null;
 
@@ -197,6 +203,10 @@ public class SolarSystemTransform : MonoBehaviour
                 leavingSteps = 0;
             }
 
+            // The sky stops turning now, so the ship takes over that rotation and slows it down gradually
+            if (Universe.player.boarded) ShipController.AddFrameAngularVelocity(-SkyAngularVelocity());
+            matchSkyNextStep = false;
+
             activePlanet = null;
             return true;
         }
@@ -210,6 +220,10 @@ public class SolarSystemTransform : MonoBehaviour
     {
         (previousShipOffsets, currentShipOffsets) = (currentShipOffsets, previousShipOffsets);
         currentShipOffsets.Clear();
+
+        // The skybox follows the sun's rotation, so this is also how the sky turns
+        previousSunRotation = currentSunRotation;
+        currentSunRotation = sun.transform.rotation;
 
         Vector3 moverPosition = Universe.player.boarded ? Universe.spaceShip.position : player.transform.position;
         foreach (Planet planet in spawnPlanets.bodies)
@@ -230,7 +244,29 @@ public class SolarSystemTransform : MonoBehaviour
             return false;
 
         localVelocity = (currentOffset - previousOffset) / Time.fixedDeltaTime;
-        return true;
+
+        // Far faster than anything can fly means the ship was teleported, so there is no real velocity to keep
+        return localVelocity.sqrMagnitude < maxTrackedSpeed * maxTrackedSpeed;
+    }
+
+    // How fast the sky turned during the last physics step, as a world axis times radians per second
+    private Vector3 SkyAngularVelocity()
+    {
+        Quaternion delta = currentSunRotation * Quaternion.Inverse(previousSunRotation);
+        delta.ToAngleAxis(out float angle, out Vector3 axis);
+        if (angle > 180) angle -= 360;
+        if (Mathf.Abs(angle) < 1e-5f || float.IsInfinity(axis.x)) return Vector3.zero;
+        return axis * (angle * Mathf.Deg2Rad / Time.fixedDeltaTime);
+    }
+
+    // When entering a planet the sky starts turning around it. After it has turned for a step, let the ship turn the
+    // same way so the view doesn't jump, and fade that out so the sky's rotation eases in.
+    private void MatchShipToSkyRotation()
+    {
+        if (!matchSkyNextStep) return;
+        matchSkyNextStep = false;
+
+        if (Universe.player.boarded) ShipController.AddFrameAngularVelocity(SkyAngularVelocity());
     }
 
     private SpaceShipController ShipController

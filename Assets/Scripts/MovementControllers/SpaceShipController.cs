@@ -56,6 +56,13 @@ public class SpaceShipController : MonoBehaviour
     private Vector3 frameVelocity;
     // Seconds for the speed kept from a reference frame change to mostly fade into what the controls ask for
     [SerializeField] private float frameVelocityFadeTime = 1.5f;
+    // Spin kept from a reference frame change, as a world axis times radians per second
+    private Vector3 frameAngularVelocity;
+    // Seconds for the spin kept from a reference frame change to mostly fade out
+    [SerializeField] private float frameRotationFadeTime = 2f;
+    // How the ship turns to stay upright over a planet's surface, and how much of that is used right after entering
+    private Vector3 surfaceFollowAngularVelocity;
+    private float surfaceFollowBlend = 1;
     private int lastShownSpeed = -1;
     private float rotationX = 0;
     private float rotationY = 0;
@@ -145,6 +152,17 @@ public class SpaceShipController : MonoBehaviour
     /// </summary>
     public float FrameVelocityFadeTime => frameVelocityFadeTime;
 
+    /// <summary>
+    /// Adds a spin from a change of reference frame (world axis times radians per second), which fades out over time.
+    /// Used so the sky keeps turning the same way relative to the ship when its rotation starts or stops.
+    /// </summary>
+    public void AddFrameAngularVelocity(Vector3 worldAngularVelocity)
+    {
+        if (physicsBody == null || physicsBody.isKinematic) return;
+
+        frameAngularVelocity += worldAngularVelocity;
+    }
+
     public void MatchReferenceFrame(Vector3 velocity)
     {
         if (physicsBody == null || physicsBody.isKinematic) return;
@@ -188,6 +206,7 @@ public class SpaceShipController : MonoBehaviour
             lookRotation = transform.rotation;
             oldMovementVector = Vector3.zero;
             frameVelocity = Vector3.zero;
+            frameAngularVelocity = Vector3.zero;
             mouseXSmooth = 0;
             mouseYSmooth = 0;
             return;
@@ -296,11 +315,16 @@ public class SpaceShipController : MonoBehaviour
                 // The inverse is only needed when automatic orbiting is turned on
                 lookRotation = orbitPlanetMovement ? Quaternion.Inverse(standardShip.transform.rotation) * transform.rotation : transform.rotation;
                 isOutsidePlanet = true;
+
+                // Keep turning the way the ship followed the planet's surface, and let it fade out instead of stopping at once
+                frameAngularVelocity += surfaceFollowAngularVelocity;
+                surfaceFollowAngularVelocity = Vector3.zero;
             }
         }
         else
         {
             // Model the standard ship around the planet
+            Quaternion oldStandardRotation = standardShip.transform.rotation;
             standardShip.transform.position = transform.position;
             standardShip.transform.rotation = Gravity.UprightRotation(standardShip.transform, transform.parent.transform);
 
@@ -310,16 +334,52 @@ public class SpaceShipController : MonoBehaviour
                 // Camera fix when entering planets if automatic planet following is turned on
                 if (orbitPlanetMovement) { lookRotation = Quaternion.Inverse(standardShip.transform.rotation) * transform.rotation; }
                 isOutsidePlanet = false;
+                surfaceFollowBlend = 0;
+                surfaceFollowAngularVelocity = Vector3.zero;
+            }
+            else if (orbitPlanetMovement)
+            {
+                // How much keeping upright over the curved surface turns the ship this step
+                Quaternion followTurn = standardShip.transform.rotation * Quaternion.Inverse(oldStandardRotation);
+
+                // Right after entering, only follow part of that turn so the ship eases into following the surface
+                if (surfaceFollowBlend < 1)
+                {
+                    surfaceFollowBlend = Mathf.Min(1, surfaceFollowBlend + Time.fixedDeltaTime / frameRotationFadeTime);
+                    followTurn = Quaternion.Slerp(Quaternion.identity, followTurn, surfaceFollowBlend);
+                    lookRotation = Quaternion.Inverse(standardShip.transform.rotation) * followTurn * oldStandardRotation * lookRotation;
+                }
+
+                surfaceFollowAngularVelocity = AngularVelocity(followTurn, Time.fixedDeltaTime);
             }
         }
         
+        // Keep turning with the spin kept from a reference frame change, so the sky doesn't suddenly start or stop rotating
+        Quaternion frame = orbitPlanetMovement ? standardShip.transform.rotation : Quaternion.identity;
+        if (frameAngularVelocity.sqrMagnitude > 1e-10f)
+        {
+            frameAngularVelocity *= Mathf.Exp(-Time.fixedDeltaTime / frameRotationFadeTime);
+            float angle = frameAngularVelocity.magnitude * Mathf.Rad2Deg * Time.fixedDeltaTime;
+            Quaternion worldDelta = Quaternion.AngleAxis(angle, frameAngularVelocity.normalized);
+            lookRotation = Quaternion.Inverse(frame) * worldDelta * frame * lookRotation;
+        }
+
         // Rotate the main ship (remove standardShip if automatic planet following is turned of)
-        transform.rotation = orbitPlanetMovement ? standardShip.transform.rotation * lookRotation : lookRotation;
+        transform.rotation = frame * lookRotation;
 
     }
     
     
     
+    // A rotation over a time step as a world axis times radians per second
+    private static Vector3 AngularVelocity(Quaternion rotation, float deltaTime)
+    {
+        rotation.ToAngleAxis(out float angle, out Vector3 axis);
+        if (angle > 180) angle -= 360;
+        if (Mathf.Abs(angle) < 1e-5f || float.IsInfinity(axis.x) || float.IsNaN(axis.x)) return Vector3.zero;
+        return axis * (angle * Mathf.Deg2Rad / deltaTime);
+    }
+
     // Rotates visual model
     private void RotateVisualShipModel()
     {
