@@ -47,20 +47,11 @@ public class Water
     /// </summary>
     public void ConstructMesh()
     {
-        int highResolution = resolution;
-        int lowResolution = 64;
-
-        // Dispatch high-res mesh generation
-        ConstructMeshAsync(highResolution, (mesh) =>
+        // Only the high resolution mesh is built. A low resolution one was built too, but nothing ever switched to it.
+        ConstructMeshAsync(resolution, (mesh) =>
         {
             meshHigh = mesh;
             ApplyMesh(true);
-        });
-
-        // Dispatch low-res mesh generation
-        ConstructMeshAsync(lowResolution, (mesh) =>
-        {
-            meshLow = mesh;
         });
     }
 
@@ -72,18 +63,14 @@ public class Water
         Vector3[] vertices = new Vector3[vertCount];
         int[] trianglesUp = new int[triCount];
 
-        // Set up GPU buffers
+        // Set up GPU buffers. The compute shader writes every vertex and index, so nothing needs to be uploaded first
+        // (uploading the empty arrays for every water patch at once overflowed the graphics ring buffer)
         ComputeBuffer bufferVertices = new ComputeBuffer(vertCount, 3 * sizeof(float));
         ComputeBuffer bufferTrianglesUp = new ComputeBuffer(triCount, sizeof(int));
-        ComputeBuffer bufferTrianglesDown = new ComputeBuffer(triCount, sizeof(int));
-
-        bufferVertices.SetData(vertices);
-        bufferTrianglesUp.SetData(trianglesUp);
 
         int kernelId = computeShader.FindKernel("CSMesh");
 
         computeShader.SetBuffer(kernelId, "trianglesUp", bufferTrianglesUp);
-        computeShader.SetBuffer(kernelId, "trianglesDown", bufferTrianglesDown);
         computeShader.SetBuffer(kernelId, "vertices", bufferVertices);
 
         computeShader.SetInt("resolution", res);
@@ -106,7 +93,6 @@ public class Water
                 Debug.LogError("GPU readback error on water vertices.");
                 bufferVertices.Dispose();
                 bufferTrianglesUp.Dispose();
-                bufferTrianglesDown.Dispose();
                 return;
             }
 
@@ -117,7 +103,6 @@ public class Water
             {
                 bufferVertices.Dispose();
                 bufferTrianglesUp.Dispose();
-                bufferTrianglesDown.Dispose();
 
                 if (triRequest.hasError)
                 {
@@ -147,7 +132,7 @@ public class Water
             meshFilter.sharedMesh = meshHigh;
             highRes = true;
         }
-        else
+        else if (meshLow != null)
         {
             meshFilter.sharedMesh = meshLow;
             highRes = false;
