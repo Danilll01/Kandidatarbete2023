@@ -11,6 +11,8 @@ public class ChunksHandler : MonoBehaviour
     // Low resolution jobs are tiny and mostly wait on the readback, so many can run at once.
     // They build the first complete version of a planet, which has to be done before it replaces the low resolution planet.
     private const int maxCoarseJobsInFlight = 48;
+    // Planets or moons that are only being approached build slower, so passing by one doesn't drop the frame rate
+    private const int maxPrefetchCoarseJobsInFlight = 16;
     private static int detailJobsInFlight;
     private static int coarseJobsInFlight;
 
@@ -130,6 +132,7 @@ public class ChunksHandler : MonoBehaviour
 
     private bool playerOnPlanet;
     private bool showingHighRes;
+    private bool lifeActive = true;
     private int chunkVisibilityIndex = 0;
 
     // Ground safety net
@@ -239,12 +242,25 @@ public class ChunksHandler : MonoBehaviour
             KeepAboveGround(playerMover, playerPos);
         }
 
+        // Foliage and creatures only exist while this planet is the centre. Away from it the planet moves every frame, which
+        // makes every collider on it expensive for physics, and they are too small to be seen from that far anyway.
+        if (playerOnPlanet != lifeActive)
+        {
+            lifeActive = playerOnPlanet;
+            foreach (Chunk chunk in chunksHighRes) chunk.SetActivated(lifeActive);
+        }
+
         if (!showingHighRes)
         {
             return;
         }
 
         UpdateChunksVisibility(playerPos);
+
+        if (!lifeActive)
+        {
+            return;
+        }
 
         if (Time.frameCount >= nextFoliageColliderUpdate)
         {
@@ -392,7 +408,9 @@ public class ChunksHandler : MonoBehaviour
     {
         int detailLimit = playerOnPlanet ? maxDetailJobsInFlight : maxPrefetchDetailJobsInFlight;
         detailCandidates.Reset(Mathf.Min(maxDetailJobsInFlight - detailJobsInFlight, detailLimit - detailJobsHere));
-        coarseCandidates.Reset(maxCoarseJobsInFlight - coarseJobsInFlight);
+        // Full speed while on the planet, or behind the loading screen when the game starts
+        int coarseLimit = playerOnPlanet || !Universe.worldReady ? maxCoarseJobsInFlight : maxPrefetchCoarseJobsInFlight;
+        coarseCandidates.Reset(Mathf.Min(maxCoarseJobsInFlight - coarseJobsInFlight, coarseLimit - coarseJobsHere));
 
         int outstandingNearby = 0;
         for (int i = 0; i < slotStates.Length; i++)
@@ -499,7 +517,7 @@ public class ChunksHandler : MonoBehaviour
             {
                 Physics.BakeMesh(mesh.GetEntityId(), false);
             }
-            chunk.SetActivated(true);
+            chunk.SetActivated(lifeActive);
             chunk.UpdateMesh(mesh, resolution);
         });
     }
@@ -584,7 +602,7 @@ public class ChunksHandler : MonoBehaviour
             else
             {
                 chunk.gameObject.SetActive(true);
-                if (foliageInitialized == 0)
+                if (foliageInitialized == 0 && lifeActive)
                 {
                     chunk.foliage.SpawnFoliageOnChunk();
                     CreatureSpawning creatureSpawning = chunk.creatures;

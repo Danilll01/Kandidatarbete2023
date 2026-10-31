@@ -200,6 +200,25 @@ public class Creature : MonoBehaviour
         idleSoundTimer = timeBetweenIdleSounds + Random.Range(-2f,2f);
     }
 
+    // Coroutines stop while the creature is disabled (its chunk is hidden or the player is away from the planet),
+    // so finish what they would have done when it comes back
+    private void OnEnable()
+    {
+        if (isDying)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        if (currentState == CreatureState.PerformingAction && animatorParameters != null)
+        {
+            animatorParameters.SetBool("isDrinking", false);
+            animatorParameters.SetBool("isAttacking", false);
+            animatorParameters.SetBool("isWalking", true);
+            currentState = CreatureState.Walking;
+        }
+    }
+
     // Update is called once per frame
     void Update()
     {

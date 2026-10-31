@@ -72,6 +72,8 @@ public class SpaceShipController : MonoBehaviour
     private float rotationZ = 0;
     private float mouseXSmooth = 0;
     private float mouseYSmooth = 0;
+    private float mouseXAccumulated = 0;
+    private float mouseYAccumulated = 0;
     private Vector3 defaultShipRotation;
     private Vector3 oldMovementVector = new();
     private Vector3 currentRotationVector = Vector3.zero;
@@ -123,9 +125,14 @@ public class SpaceShipController : MonoBehaviour
         float currentMouseXMovement = Input.GetButton("ShipFreeLook") ? 0 : Input.GetAxis("Horizontal Look");
         float currentMouseYMovement = Input.GetButton("ShipFreeLook") ? 0 : Input.GetAxis("Vertical Look");
         currentRotationVector = new Vector3(currentMouseXMovement, currentMouseYMovement, rotationZTmp);
-        
-        mouseXSmooth = Mathf.Lerp(mouseXSmooth, currentMouseXMovement * rotationSpeed,  0.02f * mouseSensitivity);
-        mouseYSmooth = Mathf.Lerp(mouseYSmooth, currentMouseYMovement * rotationSpeed, 0.02f * mouseSensitivity);
+
+        // Mouse movement is reported per frame, so add it up and turn the ship by the total in FixedUpdate,
+        // which runs at a fixed rate. That way the sensitivity doesn't depend on the frame rate.
+        if (Time.timeScale > 0)
+        {
+            mouseXAccumulated += currentMouseXMovement;
+            mouseYAccumulated += currentMouseYMovement;
+        }
 
         // Change movement type between orbit follow and straight
         if (Input.GetButtonDown("ChangeShipMovementType") && Universe.player.boarded)
@@ -221,6 +228,8 @@ public class SpaceShipController : MonoBehaviour
             frameAngularVelocity = Vector3.zero;
             mouseXSmooth = 0;
             mouseYSmooth = 0;
+            mouseXAccumulated = 0;
+            mouseYAccumulated = 0;
             return;
         }
         
@@ -279,6 +288,7 @@ public class SpaceShipController : MonoBehaviour
         mainCamera.transform.rotation = Quaternion.Lerp(mainCamera.transform.rotation, cameraPosition.rotation, Time.deltaTime * cameraSmooth);
 
         //Rotation
+        SmoothMouseInput();
         Quaternion localRotation = Quaternion.Euler(mouseYSmooth, mouseXSmooth, currentRotationVector.z * rotationSpeed);
 
         // The mouse local look rotation
@@ -300,7 +310,23 @@ public class SpaceShipController : MonoBehaviour
         CalculateSpringForces();
     }
 
-    // Plays thruster audio if needed 
+    // Turns the mouse movement since the last physics step into degrees to turn this step, smoothed over time
+    private void SmoothMouseInput()
+    {
+        // Scaled and smoothed so it feels like the old per frame handling did at 60 frames per second
+        const float referenceFrameRate = 60f;
+        float mouseScale = rotationSpeed / (referenceFrameRate * Time.fixedDeltaTime);
+        float perFrameSmoothing = Mathf.Clamp(0.02f * mouseSensitivity, 0.001f, 0.999f);
+        float smoothTime = -1f / (referenceFrameRate * Mathf.Log(1 - perFrameSmoothing));
+        float smoothing = 1 - Mathf.Exp(-Time.fixedDeltaTime / smoothTime);
+
+        mouseXSmooth = Mathf.Lerp(mouseXSmooth, mouseXAccumulated * mouseScale, smoothing);
+        mouseYSmooth = Mathf.Lerp(mouseYSmooth, mouseYAccumulated * mouseScale, smoothing);
+        mouseXAccumulated = 0;
+        mouseYAccumulated = 0;
+    }
+
+    // Plays thruster audio if needed
     private void PlayThrustAudio(Vector3 newMovementVector)
     {
         // Play thrust sound effect if player is accelerating
