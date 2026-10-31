@@ -10,6 +10,10 @@ namespace Assets.Scripts.Tools
     {
         public static RaycastHit[] BatchRaycast(RaycastCommand[] commands)
         {
+#if UNITY_WEBGL && !UNITY_EDITOR
+            // The web has no worker threads, so a job would run on the main thread anyway with extra copies
+            return RaycastLinear(commands);
+#else
             if (commands.Length < 100)
             {
                 return RaycastLinear(commands);
@@ -30,6 +34,7 @@ namespace Assets.Scripts.Tools
             resultArray.CopyTo(results);
 
             return results;
+#endif
         }
 
         private static RaycastHit[] RaycastLinear(RaycastCommand[] commands)
@@ -38,6 +43,9 @@ namespace Assets.Scripts.Tools
 
             for (int i = 0; i < commands.Length; i++)
             {
+                // Skipped commands are left empty
+                if (commands[i].direction == Vector3.zero) continue;
+
                 Physics.Raycast(commands[i].from, commands[i].direction, out RaycastHit hit);
                 results[i] = hit;
             }

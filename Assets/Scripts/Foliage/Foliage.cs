@@ -18,6 +18,8 @@ public class Foliage : MonoBehaviour
     private Vector3[] plantSpots = null;
 
     private Queue<FoliageSpawnData> objectsToSpawn = new Queue<FoliageSpawnData>();
+    private int[] acceptableIndexes;
+    private static readonly Dictionary<GameObject, int> materialIndexCache = new Dictionary<GameObject, int>();
     private FoliageSpawnData objectToSpawn;
     private int objectsPerBatchedSpawn = 30;
 
@@ -251,11 +253,11 @@ public class Foliage : MonoBehaviour
     {
         if (depth < 3)
         {
-            GameObject waterObject = InstantiateObject(foliageHandler.GetWaterPlantType(), hit, rayOrigin);
-            int index = waterObject.name.Contains("Type") ? 1 : 0;
+            GameObject prefab = foliageHandler.GetWaterPlantType();
+            GameObject waterObject = InstantiateObject(prefab, hit, rayOrigin);
 
-            Material materialForFoliageObject = foliageHandler.foliageCollections[0].biomeMaterials[index];
-            waterObject.GetComponent<MeshRenderer>().material = materialForFoliageObject;
+            Material materialForFoliageObject = foliageHandler.foliageCollections[0].biomeMaterials[MaterialIndex(prefab)];
+            waterObject.GetComponent<MeshRenderer>().sharedMaterial = materialForFoliageObject;
 
             waterObject.transform.localScale = new Vector3(2, depth + 6, 2);
             objectsNr++;
@@ -277,7 +279,8 @@ public class Foliage : MonoBehaviour
     {
         //Remove packs based on local biome
         BiomeValue localBiome = Biomes.EvaluteBiomeMap(planet.Biome, hit.point);
-        int[] acceptableIndexes = new int[foliageHandler.foliageCollections.Length];
+        if (acceptableIndexes == null || acceptableIndexes.Length != foliageHandler.foliageCollections.Length)
+            acceptableIndexes = new int[foliageHandler.foliageCollections.Length];
 
         int j = 0;
 
@@ -303,9 +306,7 @@ public class Foliage : MonoBehaviour
             {
                 GameObject foliageObj = chosenCollection.gameObjects[random.Next(chosenCollection.gameObjects.Length)];
 
-                int index = foliageObj.name.Contains("Type") ? 1 : 0;
-
-                Material materialForFoliageObject = chosenCollection.biomeMaterials[index];
+                Material materialForFoliageObject = chosenCollection.biomeMaterials[MaterialIndex(foliageObj)];
 
                 SpawnTreesInForest(foliageObj, rayOrigin, hit.point, chosenCollection.name, chosenCollection.probabilityToSkip, materialForFoliageObject);
             }
@@ -330,7 +331,7 @@ public class Foliage : MonoBehaviour
 
             spawnedObject = Instantiate(objectToSpawn.prefab, objectToSpawn.position, objectToSpawn.rotation, transform);
 
-            spawnedObject.GetComponent<MeshRenderer>().material = objectToSpawn.material;
+            spawnedObject.GetComponent<MeshRenderer>().sharedMaterial = objectToSpawn.material;
             spawnedObject.transform.localScale *= random.Value(0.7f, 1.4f);
 
             objectsNr++;
@@ -386,24 +387,34 @@ public class Foliage : MonoBehaviour
     // Bush spawning function
     private void SpawnBushes(RaycastHit hit, Vector3 rayOrigin)
     {
-        GameObject foliageObj = InstantiateObject(foliageHandler.GetBushType(), hit, hit.normal);
-        int index = foliageObj.name.Contains("Type") ? 1 : 0;
+        GameObject prefab = foliageHandler.GetBushType();
+        GameObject foliageObj = InstantiateObject(prefab, hit, hit.normal);
 
-        Material materialForFoliageObject = foliageHandler.foliageCollections[3].biomeMaterials[index];
-        foliageObj.GetComponent<MeshRenderer>().material = materialForFoliageObject;
+        Material materialForFoliageObject = foliageHandler.foliageCollections[3].biomeMaterials[MaterialIndex(prefab)];
+        foliageObj.GetComponent<MeshRenderer>().sharedMaterial = materialForFoliageObject;
         objectsNr++;
     }
 
     // Stone spawning fucntion
     private void SpawnStones(RaycastHit hit, Vector3 rayOrigin)
     {
-        GameObject foliageObj = InstantiateObject(foliageHandler.GetStoneType(), hit, hit.normal);
+        GameObject prefab = foliageHandler.GetStoneType();
+        GameObject foliageObj = InstantiateObject(prefab, hit, hit.normal);
 
-        int index = foliageObj.name.Contains("Type") ? 1 : 0;
-
-        Material materialForFoliageObject = foliageHandler.foliageCollections[3].biomeMaterials[index];
-        foliageObj.GetComponent<MeshRenderer>().material = materialForFoliageObject;
+        Material materialForFoliageObject = foliageHandler.foliageCollections[3].biomeMaterials[MaterialIndex(prefab)];
+        foliageObj.GetComponent<MeshRenderer>().sharedMaterial = materialForFoliageObject;
         objectsNr++;
+    }
+
+    // Prefabs with "Type" in the name use the second biome material. Cached per prefab since reading a name allocates a string.
+    private static int MaterialIndex(GameObject prefab)
+    {
+        if (!materialIndexCache.TryGetValue(prefab, out int index))
+        {
+            index = prefab.name.Contains("Type") ? 1 : 0;
+            materialIndexCache[prefab] = index;
+        }
+        return index;
     }
 
     private GameObject InstantiateObject(GameObject prefab, RaycastHit hit, Vector3 up)

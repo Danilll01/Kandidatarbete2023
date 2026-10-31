@@ -14,6 +14,7 @@ public class CreatureSpawning : MonoBehaviour
 
     // Spawning spots
     private Vector3[] creatureSpots = null;
+    private static int planetLayerMask;
 
     private Planet planet;
     private CreatureHandler creatureHandler;
@@ -188,7 +189,8 @@ public class CreatureSpawning : MonoBehaviour
             RaycastHit hit;
 
             // Registered a hit
-            if (Physics.Raycast(ray, out hit, creatureHandler.PlanetRadius, 1 << LayerMask.NameToLayer("Planet")))
+            if (planetLayerMask == 0) planetLayerMask = 1 << LayerMask.NameToLayer("Planet");
+            if (Physics.Raycast(ray, out hit, creatureHandler.PlanetRadius, planetLayerMask))
             {
                 // Check if the hit colliding with a creature
                 if (hit.transform.CompareTag("Creature"))
@@ -223,7 +225,7 @@ public class CreatureSpawning : MonoBehaviour
                 //Quaternion rotation2 = Quaternion.LookRotation(hit.point) * Quaternion.Euler(90, 0, 0);
                 GameObject newObject = Instantiate(packData.prefab, hit.point, rotation2, transform);
                 newObject.transform.rotation = rotation2;
-                newObject.name = newObject.name.Replace("(Clone)", "").Trim();
+                newObject.name = packData.prefab.name;
 
                 if (creatureHandler.debug) Debug.DrawLine(randomOrigin, hit.point, Color.cyan, 10f);
 
@@ -238,7 +240,7 @@ public class CreatureSpawning : MonoBehaviour
     // Check if a point is near other points in an array
     private bool CloseToListOfPoints(Vector3[] positions, Vector3 newPoint, float minDistance)
     {
-        for (int j = 0; j < positions.Count(); j++)
+        for (int j = 0; j < positions.Length; j++)
         {
             if (Vector3.Distance(newPoint, positions[j]) < minDistance)
             {

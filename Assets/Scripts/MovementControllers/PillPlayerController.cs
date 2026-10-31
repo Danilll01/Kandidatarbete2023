@@ -49,6 +49,12 @@ public class PillPlayerController : MonoBehaviour
     [SerializeField] private float lookLimitAngle = 80f;
     private float pitch = 0f;
 
+    private int groundedFrame = -1;
+    private bool isGrounded;
+    private bool showingTemperature;
+    private float nextTemperatureUpdate;
+    private float nextDebugUpdate;
+
     // Start is called before the first frame update
     public void Initialize(Planet planetToSpawnOn, int seed)
     {
@@ -105,13 +111,17 @@ public class PillPlayerController : MonoBehaviour
                 if (!ReferenceEquals(attractor, playerWater.planet)) playerWater.UpdatePlanet(attractor);
                 playerWater.UpdateWater(transform.position);
             }
-            else
+            else if (showingTemperature)
             {
                 temperatureHUD.SetText("---");
+                showingTemperature = false;
             }
         }
-        
+
         #if DEBUG || UNITY_EDITOR
+        // Building these strings every frame allocates a lot, a few updates a second is enough for debugging
+        if (Time.unscaledTime < nextDebugUpdate) return;
+        nextDebugUpdate = Time.unscaledTime + 0.5f;
         if (attractor != null)
         {
             DisplayDebug.AddOrSetDebugVariable("Current planet", attractor.bodyName);
@@ -173,6 +183,11 @@ public class PillPlayerController : MonoBehaviour
     // Updates the temperature gauge on screen
     private void HandleTemperatureGUI()
     {
+        // The temperature changes slowly, so don't build a new string and text mesh every frame
+        if (showingTemperature && Time.unscaledTime < nextTemperatureUpdate) return;
+        nextTemperatureUpdate = Time.unscaledTime + 0.25f;
+        showingTemperature = true;
+
         temperatureHUD.SetText(
             Biomes.GetTemperatureAt(
                 attractor.biomeSettings, transform.position));
@@ -360,10 +375,14 @@ public class PillPlayerController : MonoBehaviour
             {
                 return false;
             }
-            
-            bool isGrounded = Physics.Raycast(transform.position, attractor.transform.position - transform.position, 0.75f);
+
+            // Read several times per frame, so only raycast once per frame
+            if (groundedFrame == Time.frameCount) return isGrounded;
+            groundedFrame = Time.frameCount;
+
+            isGrounded = Physics.Raycast(transform.position, attractor.transform.position - transform.position, 0.75f);
             animator.SetBool(Jump, !isGrounded); // Sets animation
-            return isGrounded;      
+            return isGrounded;
         }
     }
 

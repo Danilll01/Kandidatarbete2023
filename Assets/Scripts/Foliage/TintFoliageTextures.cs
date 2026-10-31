@@ -16,7 +16,8 @@ public class TintFoliageTextures : MonoBehaviour
     public Color[] biomeColors;
     public Material[] biomeMaterials;
     private BiomeFoliageData[] biomeFoliageDatas;
-    
+    private readonly Dictionary<Texture2D, Color[]> pixelBuffers = new Dictionary<Texture2D, Color[]>();
+
 
     private bool Initialized;
 
@@ -80,7 +81,7 @@ public class TintFoliageTextures : MonoBehaviour
     {
         Texture2D textureToCopy = textureAndRows[packageIndex].texture;
         Texture2D newTexture = new Texture2D(textureToCopy.width, textureToCopy.height);
-        newTexture.SetPixels(textureToCopy.GetPixels());
+        newTexture.SetPixels(originalColors[packageIndex]);
         newTexture.Apply();
         material.mainTexture = newTexture;
         return newTexture;
@@ -114,13 +115,16 @@ public class TintFoliageTextures : MonoBehaviour
             int[] rowIndexes = textureAndRow.rowIndexesToTaint;
             GetRows();
 
+            // Tint into a reused buffer and upload it once, instead of one SetPixel call per pixel
+            Color[] pixels = GetPixelBuffer(texture);
             for (int h = 0; h < rowIndexes.Length; h++)
             {
                 int index = rowIndexes[h];
                 (int, int) startAndEndPixelRows = pixelRows[index];
-                TintColorOnRows(biomeFoliageData.packageIndex - 1, texture, startAndEndPixelRows, biomeFoliageData.biomeColor);
+                TintColorOnRows(biomeFoliageData.packageIndex - 1, pixels, texture.width, startAndEndPixelRows, biomeFoliageData.biomeColor);
             }
 
+            texture.SetPixels(pixels);
             texture.Apply();
         }
     }
@@ -138,19 +142,35 @@ public class TintFoliageTextures : MonoBehaviour
         }
     }
 
-    private void TintColorOnRows(int t, Texture2D texture, (int startRow, int endRow) startAndEndPixelRows, Color biomeColor)
+    // The texture's current pixels, read once per texture and kept so later tints don't allocate
+    private Color[] GetPixelBuffer(Texture2D texture)
+    {
+        if (!pixelBuffers.TryGetValue(texture, out Color[] pixels))
+        {
+            pixels = texture.GetPixels();
+            pixelBuffers[texture] = pixels;
+        }
+        return pixels;
+    }
+
+    private void TintColorOnRows(int t, Color[] pixels, int textureWidth, (int startRow, int endRow) startAndEndPixelRows, Color biomeColor)
     {
         for (int j = startAndEndPixelRows.startRow; j > startAndEndPixelRows.endRow - 1; j--)
         {
+            // SetPixel ignored rows outside the texture, so skip them here too
+            if (j < 0 || j >= textureHeight) continue;
+
             for (int i = 0; i < textureHeight; i++)
             {
+                if (i >= textureWidth) break;
+
                 int indexInOriginalColors = ((j - 1) * textureHeight) + i;
                 if (j == 0)
                 {
                     indexInOriginalColors = i;
                 }
                 Color newColor = (originalColors[t][indexInOriginalColors] + biomeColor) * 0.5f;
-                texture.SetPixel(i, j, newColor);
+                pixels[j * textureWidth + i] = newColor;
             }
         }
     }

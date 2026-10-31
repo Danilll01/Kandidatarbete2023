@@ -164,11 +164,9 @@ public class HandleAudio : MonoBehaviour
 
     private void StopCurrentCoroutines()
     {
-        if (fadeInCoroutine != null && fadeOutCoroutine != null)
-        {
-            StopCoroutine(fadeOutCoroutine);
-            StopCoroutine(fadeInCoroutine);
-        }
+        // Stop each one on its own, otherwise fades started while the other is null pile up and fight each other
+        if (fadeOutCoroutine != null) StopCoroutine(fadeOutCoroutine);
+        if (fadeInCoroutine != null) StopCoroutine(fadeInCoroutine);
     }
 
     /// <summary>

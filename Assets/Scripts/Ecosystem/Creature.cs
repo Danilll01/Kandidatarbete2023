@@ -1,7 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.Burst.CompilerServices;
-using Unity.VisualScripting;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
@@ -124,10 +122,27 @@ public class Creature : MonoBehaviour
     private int getResourceTickSkips = 20;
     private int getResourceTicks = 20;
     private GameObject lastResourceFound;
+    private ResourceType lastResourceType;
+    private Creature lastPartnerFound;
+    private int getPartnerTicks = 0;
     private Vector3 foundWaterAt = Vector3.zero;
+    private Collider lastGroundCollider;
 
     // Pre-allocated buffers for OverlapSphereNonAlloc
     private static readonly Collider[] overlapBuffer = new Collider[64];
+
+    // Cached so that comparing tags and names doesn't allocate a new string every time
+    private static readonly string[] resourceTags = System.Enum.GetNames(typeof(ResourceType));
+    private static readonly int baseMapId = Shader.PropertyToID("_BaseMap");
+    private static readonly WaitForSeconds walkAnimationWait = new WaitForSeconds(0.1f);
+    private static readonly WaitForSeconds afterActionWait = new WaitForSeconds(1f);
+    private static int planetLayerMask;
+    private string speciesName;
+    private string parentPrefabName;
+    private string childPrefabName;
+
+    // Tries per frame to find a random walkable point before trying again next frame
+    private const int randomPointTries = 10;
 
     // Start is called before the first frame update
     void Start()
@@ -146,6 +161,11 @@ public class Creature : MonoBehaviour
         audioSource.volume = volume;
         audioSource.spatialBlend = 1.0f;
 
+        speciesName = gameObject.name;
+        parentPrefabName = parentPrefab.name;
+        childPrefabName = childPrefab.name;
+        if (planetLayerMask == 0) planetLayerMask = 1 << LayerMask.NameToLayer("Planet");
+
         // Teleport the creature 1 meter up in correct direction based on position on planet
         transform.position += -(planet.transform.position - transform.position).normalized * 0.3f;
 
@@ -157,7 +177,7 @@ public class Creature : MonoBehaviour
 
             if (alternativeTexture != null && Random.value < alternativeTextureProb)
             {
-                renderer.material.SetTexture("_BaseMap", alternativeTexture);
+                renderer.material.SetTexture(baseMapId, alternativeTexture);
                 alternativeTextureActive = true;
             }
         }
@@ -206,13 +226,7 @@ public class Creature : MonoBehaviour
                 RandomWalking();
                 break;
             case CreatureState.LookingForFood:
-                foreach (ResourceType resource in resourceTypes)
-                {
-                    if (resource == ResourceType.Water) continue;
-                    
-                    LookingForResource(resource);
-                }
-                
+                LookingForFood();
                 break;
             case CreatureState.LookingForWater:
                 LookingForResource(ResourceType.Water);
@@ -303,7 +317,7 @@ public class Creature : MonoBehaviour
         // Only apply alternative texture if i exists
         if (alternativeTexture != null && genes.alternaviteColor)
         {
-            renderer.material.SetTexture("_BaseMap", alternativeTexture);
+            renderer.material.SetTexture(baseMapId, alternativeTexture);
         }
         speed = genes.speed;
 
@@ -393,6 +407,37 @@ public class Creature : MonoBehaviour
             resourcePos = foundWaterAt == Vector3.zero ? GetNearestWaterSource() : foundWaterAt;
         }
 
+        ApproachResource(nearestResource, resourcePos, resource);
+    }
+
+    // Looks for every kind of food in the diet with a single overlap query
+    private void LookingForFood()
+    {
+        GameObject nearestFood;
+        if (getResourceTicks <= 0)
+        {
+            // Unsubsribe to the last resource to enable other creatures to eat it
+            if (lastResourceFound != null && lastResourceType == ResourceType.Creature) lastResourceFound.GetComponent<Creature>().gettingEatenBy = null;
+
+            nearestFood = GetNearestFood(out lastResourceType);
+
+            // Set this object as the consumer of the nearest creature
+            if (nearestFood != null && lastResourceType == ResourceType.Creature) nearestFood.GetComponent<Creature>().gettingEatenBy = gameObject;
+            lastResourceFound = nearestFood;
+
+            getResourceTicks = getResourceTickSkips;
+        }
+        else
+        {
+            nearestFood = lastResourceFound;
+            getResourceTicks--;
+        }
+
+        ApproachResource(nearestFood, nearestFood != null ? nearestFood.transform.position : Vector3.zero, lastResourceType);
+    }
+
+    private void ApproachResource(GameObject nearestResource, Vector3 resourcePos, ResourceType resource)
+    {
         // If there is no resource, walk around randomly
         if (nearestResource != null || resourcePos != Vector3.zero)
         {
@@ -438,29 +483,18 @@ public class Creature : MonoBehaviour
 
     private void LookingForPartner()
     {
-        int hitCount = Physics.OverlapSphereNonAlloc(transform.position, detectionRadius, overlapBuffer, creatureLayerMask);
-        GameObject nearestObject = null;
-        float nearestDistance = Mathf.Infinity;
-        bool foundPartner;
-        float distanceToGameObject;
-
-        for (int i = 0; i < hitCount; i++)
+        // Search on the same interval as for food, and follow the last found partner in between
+        if (getPartnerTicks <= 0 || lastPartnerFound == null || !lastPartnerFound.wantToReproduce)
         {
-            Collider coll = overlapBuffer[i];
-            if (coll != collider && coll.gameObject.CompareTag("Creature"))
-            {
-                foundPartner = coll.GetComponent<Creature>().wantToReproduce && coll.name.Contains(gameObject.name);
-                if (!foundPartner) continue;
-
-                distanceToGameObject = Vector3.Distance(transform.position, coll.transform.position);
-
-                if (nearestDistance > distanceToGameObject)
-                {
-                    nearestDistance = distanceToGameObject;
-                    nearestObject = coll.gameObject;
-                }
-            }
+            lastPartnerFound = GetNearestPartner();
+            getPartnerTicks = getResourceTickSkips;
         }
+        else
+        {
+            getPartnerTicks--;
+        }
+
+        GameObject nearestObject = lastPartnerFound != null ? lastPartnerFound.gameObject : null;
 
         if (nearestObject != null)
         {
@@ -508,6 +542,30 @@ public class Creature : MonoBehaviour
         currentState = CreatureState.Walking;
     }
 
+    private Creature GetNearestPartner()
+    {
+        int hitCount = Physics.OverlapSphereNonAlloc(transform.position, detectionRadius, overlapBuffer, creatureLayerMask);
+        Creature nearestPartner = null;
+        float nearestDistance = Mathf.Infinity;
+
+        for (int i = 0; i < hitCount; i++)
+        {
+            Collider coll = overlapBuffer[i];
+            if (coll == collider || !coll.CompareTag("Creature")) continue;
+            if (!coll.TryGetComponent(out Creature other) || !other.wantToReproduce) continue;
+            if (other.speciesName == null || !other.speciesName.Contains(speciesName)) continue;
+
+            float distanceToGameObject = Vector3.Distance(transform.position, coll.transform.position);
+            if (nearestDistance > distanceToGameObject)
+            {
+                nearestDistance = distanceToGameObject;
+                nearestPartner = other;
+            }
+        }
+
+        return nearestPartner;
+    }
+
     private GameObject GetNearestGameobject(ResourceType type)
     {
         int hitCount = Physics.OverlapSphereNonAlloc(transform.position, detectionRadius, overlapBuffer, resourceLayerMask);
@@ -518,22 +576,8 @@ public class Creature : MonoBehaviour
         for (int i = 0; i < hitCount; i++)
         {
             Collider coll = overlapBuffer[i];
-            if (coll != collider && coll.gameObject.CompareTag(type.ToString()))
+            if (coll != collider && IsEdible(coll, type))
             {
-                if (type == ResourceType.Creature)
-                {
-                    Creature creature = coll.gameObject.GetComponent<Creature>();
-
-                    if (creature.isDying) continue;
-
-                    CreatureType creatureType = creature.GetCreatureType;
-                    if (creatureDiet != creatureType) continue;
-
-                    if (SameSpecies(coll.gameObject.name)) continue;
-
-                    if (creature.gettingEatenBy != null) continue;
-                }
-                
                 float distanceToGameObject = Vector3.Distance(transform.position, coll.transform.position);
 
                 if (nearestDistance > distanceToGameObject)
@@ -542,10 +586,53 @@ public class Creature : MonoBehaviour
                     nearestObject = coll.gameObject;
                 }
             }
-            
+
         }
 
         return nearestObject;
+    }
+
+    // Finds the nearest object of any food type in the diet
+    private GameObject GetNearestFood(out ResourceType foundType)
+    {
+        int hitCount = Physics.OverlapSphereNonAlloc(transform.position, detectionRadius, overlapBuffer, resourceLayerMask);
+        GameObject nearestObject = null;
+        float nearestDistance = Mathf.Infinity;
+        foundType = ResourceType.Plant;
+
+        for (int i = 0; i < hitCount; i++)
+        {
+            Collider coll = overlapBuffer[i];
+            if (coll == collider) continue;
+
+            foreach (ResourceType type in resourceTypes)
+            {
+                if (type == ResourceType.Water || !IsEdible(coll, type)) continue;
+
+                float distanceToGameObject = Vector3.Distance(transform.position, coll.transform.position);
+                if (nearestDistance > distanceToGameObject)
+                {
+                    nearestDistance = distanceToGameObject;
+                    nearestObject = coll.gameObject;
+                    foundType = type;
+                }
+                break;
+            }
+        }
+
+        return nearestObject;
+    }
+
+    private bool IsEdible(Collider coll, ResourceType type)
+    {
+        if (!coll.CompareTag(resourceTags[(int)type])) return false;
+        if (type != ResourceType.Creature) return true;
+
+        if (!coll.TryGetComponent(out Creature creature)) return false;
+        if (creature.isDying) return false;
+        if (creatureDiet != creature.GetCreatureType) return false;
+        if (SameSpecies(creature.speciesName)) return false;
+        return creature.gettingEatenBy == null;
     }
 
     private Vector3 GetNearestWaterSource()
@@ -599,8 +686,9 @@ public class Creature : MonoBehaviour
 
         RaycastHit hit;
         
-        // Cast a ray down to get the normal of the terrain
-        if (Physics.Linecast(transform.position, planet.transform.position, out hit))
+        // Cast a short ray down against the terrain to get its normal
+        Vector3 down = planet.transform.position - transform.position;
+        if (Physics.Raycast(transform.position, down, out hit, 10f, planetLayerMask))
         {
             Vector3 newUp = hit.normal;
             Vector3 oldForward = transform.forward;
@@ -617,22 +705,19 @@ public class Creature : MonoBehaviour
             // Rotate the creature to the direction it is walking
             transform.Rotate(new (0, angle * Time.fixedDeltaTime * 2f, 0));
 
-            GameObject hitChunk = hit.transform.gameObject;
-            GameObject currentChunk = transform.parent.parent.gameObject;
-
-            if (hitChunk && currentChunk)
+            // Switches chunk if entered into new chunk, only looked up when the ground under the creature changes
+            if (hit.collider != lastGroundCollider)
             {
-                // Switches chunk if entered into new chunk
-                if (hitChunk != currentChunk)
+                lastGroundCollider = hit.collider;
+
+                GameObject hitChunk = hit.transform.gameObject;
+                GameObject currentChunk = transform.parent.parent.gameObject;
+                if (hitChunk != currentChunk && hitChunk.TryGetComponent(out Chunk newChunk))
                 {
-                    Chunk newChunk = hitChunk.transform.GetComponent<Chunk>();
-                    if (newChunk)
-                    {
-                        transform.parent = newChunk.creatureGameObject.transform;
-                    }
+                    transform.parent = newChunk.creatureGameObject.transform;
                 }
             }
-            
+
 
         }
     }
@@ -649,8 +734,8 @@ public class Creature : MonoBehaviour
         Quaternion rotation = Quaternion.FromToRotation(Vector3.forward, transform.position);
         Vector3 randomRayPoint;
 
-        // Randomize points around the creature
-        for (int i = 0; i < 200; i++)
+        // Randomize points around the creature, a few per frame
+        for (int i = 0; i < randomPointTries; i++)
         {
             randomRayPoint = transform.position + rotation * Random.insideUnitCircle * detectionRadius;
             
@@ -688,7 +773,7 @@ public class Creature : MonoBehaviour
     private IEnumerator InteractWithResource(GameObject resource, bool disable, ResourceType type)
     {
         // Wait until walk animation is done
-        yield return new WaitForSeconds(0.1f);
+        yield return walkAnimationWait;
         animatorParameters.SetBool("isWalking", false);
         
         // Animation clip length
@@ -719,7 +804,7 @@ public class Creature : MonoBehaviour
         animatorParameters.SetBool(animationType, false);
         animatorParameters.SetBool("isWalking", true);
 
-        yield return new WaitForSeconds(1);
+        yield return afterActionWait;
 
         currentState = CreatureState.Walking;
     }
@@ -828,8 +913,8 @@ public class Creature : MonoBehaviour
 
     private bool SameSpecies(string creatureName)
     {
-        bool sameAsParent = parentPrefab.name == creatureName;
-        bool sameAsChild = childPrefab.name == creatureName;
+        bool sameAsParent = parentPrefabName == creatureName;
+        bool sameAsChild = childPrefabName == creatureName;
 
         return sameAsParent || sameAsChild;
     }

@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Pathfinding.Util;
 using TMPro;
 using Unity.Mathematics;
 using UnityEngine;
@@ -52,6 +51,8 @@ public class SpaceShipController : MonoBehaviour
     private float speed;
     private Rigidbody physicsBody;
     private Quaternion lookRotation;
+    private bool? shipGUIActive;
+    private int lastShownSpeed = -1;
     private float rotationX = 0;
     private float rotationY = 0;
     private float rotationZ = 0;
@@ -134,6 +135,16 @@ public class SpaceShipController : MonoBehaviour
         }
     }
 
+    private void SetShipGUIActive(bool active)
+    {
+        if (shipGUIActive == active) return;
+        shipGUIActive = active;
+
+        crosshairTexture.gameObject.SetActive(active);
+        travelModeGUIImage.enabled = active;
+        speedGauge.gameObject.SetActive(active);
+    }
+
     // Handles movement of ship
     void FixedUpdate()
     {
@@ -141,10 +152,8 @@ public class SpaceShipController : MonoBehaviour
         if (!Universe.player.boarded || shipTransitionScript.UnderTransition())
         {
             physicsBody.isKinematic = true;
-            crosshairTexture.gameObject.SetActive(false);
-            travelModeGUIImage.enabled = false;
-            speedGauge.gameObject.SetActive(false);
-            
+            SetShipGUIActive(false);
+
             // Setup for Ship transition handover
             isOutsidePlanet = true;
             lookRotation = transform.rotation;
@@ -156,9 +165,7 @@ public class SpaceShipController : MonoBehaviour
         
         // Setup for when ship is active
         physicsBody.isKinematic = false;
-        crosshairTexture.gameObject.SetActive(true);
-        travelModeGUIImage.enabled = true;
-        speedGauge.gameObject.SetActive(true);
+        SetShipGUIActive(true);
 
         // Movement
         float thrust = Input.GetAxis("Spaceship Thrust");
@@ -197,8 +204,13 @@ public class SpaceShipController : MonoBehaviour
         // Plays thruster audio if needed
         PlayThrustAudio(newMovementVector);
         
-        // Updates speed GUI
-        speedGauge.SetText(Mathf.Round(moveDirection.magnitude) + "km/h");
+        // Updates speed GUI, only rebuilding the text when the shown value changes
+        int shownSpeed = Mathf.RoundToInt(moveDirection.magnitude);
+        if (shownSpeed != lastShownSpeed)
+        {
+            lastShownSpeed = shownSpeed;
+            speedGauge.SetText("{0}km/h", shownSpeed);
+        }
 
         //Camera follow
         mainCamera.transform.position = Vector3.Lerp(mainCamera.transform.position, cameraPosition.position, Time.deltaTime * cameraSmooth);
