@@ -145,7 +145,7 @@ public class Creature : MonoBehaviour
     private const int randomPointTries = 10;
 
     // Creatures further from the camera than this are still drawn, but stand still
-    private const float simulationDistance = 80f;
+    private const float simulationDistance = 160f;
     private static int cameraFrame = -1;
     private static Vector3 cameraPosition;
 

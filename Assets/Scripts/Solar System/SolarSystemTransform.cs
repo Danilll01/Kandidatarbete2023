@@ -25,6 +25,13 @@ public class SolarSystemTransform : MonoBehaviour
     private static readonly int Rotation = Shader.PropertyToID("_Rotation");
     private bool releasedPlayer;
 
+    // Used to keep the ship's speed relative to a planet when it becomes the centre of the solar system
+    private System.Collections.Generic.Dictionary<Planet, Vector3> currentShipOffsets = new System.Collections.Generic.Dictionary<Planet, Vector3>();
+    private System.Collections.Generic.Dictionary<Planet, Vector3> previousShipOffsets = new System.Collections.Generic.Dictionary<Planet, Vector3>();
+    private Vector3 pendingRelativeVelocity;
+    private bool hasPendingRelativeVelocity;
+    private SpaceShipController shipController;
+
 
 
 
@@ -72,11 +79,13 @@ public class SolarSystemTransform : MonoBehaviour
         }
 
         InitializeValues();
+        CaptureShipOffsets();
 
         if (!releasePlayer)
         {
             UpdateClosestPlanet();
             HandleUpdatedActivePlanet();
+            MatchShipToNewActivePlanet();
 
             if (releasePlayer)
             {
@@ -153,6 +162,13 @@ public class SolarSystemTransform : MonoBehaviour
         float distance = (player.transform.position - planet.transform.position).magnitude;
         if (distance <= (planet.radius * 1.3) && planet != activePlanet)
         {
+            // The planet stops moving when it becomes the centre, so remember how fast the ship moved relative to it
+            if (previousShipOffsets.TryGetValue(planet, out Vector3 previousOffset) && currentShipOffsets.TryGetValue(planet, out Vector3 currentOffset))
+            {
+                pendingRelativeVelocity = (currentOffset - previousOffset) / Time.fixedDeltaTime;
+                hasPendingRelativeVelocity = true;
+            }
+
             activePlanet = planet;
                 
             if (!player.boarded)
@@ -173,6 +189,50 @@ public class SolarSystemTransform : MonoBehaviour
         }
 
         return false;
+    }
+
+    // Records where the ship (or player) is relative to every body at the start of each physics step.
+    // Relative offsets aren't affected when the whole solar system is moved to keep the player near the origin.
+    private void CaptureShipOffsets()
+    {
+        (previousShipOffsets, currentShipOffsets) = (currentShipOffsets, previousShipOffsets);
+        currentShipOffsets.Clear();
+
+        Vector3 moverPosition = Universe.player.boarded ? Universe.spaceShip.position : player.transform.position;
+        foreach (Planet planet in spawnPlanets.bodies)
+        {
+            currentShipOffsets[planet] = moverPosition - planet.transform.position;
+            foreach (Planet moon in planet.moons)
+            {
+                currentShipOffsets[moon] = moverPosition - moon.transform.position;
+            }
+        }
+    }
+
+    private void MatchShipToNewActivePlanet()
+    {
+        if (!hasPendingRelativeVelocity) return;
+        hasPendingRelativeVelocity = false;
+
+        if (!Universe.player.boarded) return;
+
+        if (shipController == null) shipController = Universe.spaceShip.GetComponent<SpaceShipController>();
+
+        // The kept speed fades over time, so the ship travels about speed * fade time. Limit the speed towards the planet
+        // so that distance is at most half the way down to the highest terrain, otherwise small planets could still be hit.
+        Vector3 toPlanet = activePlanet.transform.position - Universe.spaceShip.position;
+        float terrainTop = activePlanet.terrainLevel.GetMax();
+        if (float.IsInfinity(terrainTop)) terrainTop = activePlanet.radius; // Not measured yet
+        float heightAboveTerrain = toPlanet.magnitude - terrainTop;
+        float maxInwardSpeed = Mathf.Max(0, heightAboveTerrain) * 0.5f / shipController.FrameVelocityFadeTime;
+        Vector3 inwardDirection = toPlanet.normalized;
+        float inwardSpeed = Vector3.Dot(pendingRelativeVelocity, inwardDirection);
+        if (inwardSpeed > maxInwardSpeed)
+        {
+            pendingRelativeVelocity -= inwardDirection * (inwardSpeed - maxInwardSpeed);
+        }
+
+        shipController.MatchReferenceFrame(pendingRelativeVelocity);
     }
 
     private void HandleUpdatedActivePlanet()

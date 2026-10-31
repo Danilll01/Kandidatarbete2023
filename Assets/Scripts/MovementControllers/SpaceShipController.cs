@@ -52,6 +52,9 @@ public class SpaceShipController : MonoBehaviour
     private Rigidbody physicsBody;
     private Quaternion lookRotation;
     private bool? shipGUIActive;
+    private Vector3 frameVelocity;
+    // Seconds for the speed kept from a reference frame change to mostly fade into what the controls ask for
+    [SerializeField] private float frameVelocityFadeTime = 1.5f;
     private int lastShownSpeed = -1;
     private float rotationX = 0;
     private float rotationY = 0;
@@ -135,6 +138,20 @@ public class SpaceShipController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Called when the solar system moves so a planet becomes the centre. The planet stops moving, so the ship's velocity
+    /// is changed to the velocity it had relative to that planet, and then eased back to what the controls ask for.
+    /// </summary>
+    public float FrameVelocityFadeTime => frameVelocityFadeTime;
+
+    public void MatchReferenceFrame(Vector3 velocityRelativeToPlanet)
+    {
+        if (physicsBody == null || physicsBody.isKinematic) return;
+
+        frameVelocity = velocityRelativeToPlanet - (physicsBody.linearVelocity - frameVelocity);
+        physicsBody.linearVelocity = velocityRelativeToPlanet;
+    }
+
     private void SetShipGUIActive(bool active)
     {
         if (shipGUIActive == active) return;
@@ -158,6 +175,7 @@ public class SpaceShipController : MonoBehaviour
             isOutsidePlanet = true;
             lookRotation = transform.rotation;
             oldMovementVector = Vector3.zero;
+            frameVelocity = Vector3.zero;
             mouseXSmooth = 0;
             mouseYSmooth = 0;
             return;
@@ -198,14 +216,15 @@ public class SpaceShipController : MonoBehaviour
         //Transform the vector3 to local space
         moveDirection = transform.TransformDirection(moveDirection);
         
-        //Set the velocity, so you can move
-        physicsBody.linearVelocity = moveDirection;
+        //Set the velocity, so you can move. The frame velocity keeps the speed relative to a planet that just became the centre.
+        frameVelocity *= Mathf.Exp(-Time.fixedDeltaTime / frameVelocityFadeTime);
+        physicsBody.linearVelocity = moveDirection + frameVelocity;
         
         // Plays thruster audio if needed
         PlayThrustAudio(newMovementVector);
         
         // Updates speed GUI, only rebuilding the text when the shown value changes
-        int shownSpeed = Mathf.RoundToInt(moveDirection.magnitude);
+        int shownSpeed = Mathf.RoundToInt(physicsBody.linearVelocity.magnitude);
         if (shownSpeed != lastShownSpeed)
         {
             lastShownSpeed = shownSpeed;
