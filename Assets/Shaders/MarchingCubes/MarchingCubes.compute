@@ -1,6 +1,8 @@
 // Each #kernel tells which function to compile; you can have many kernels
 #pragma kernel GenerateMesh
 #pragma kernel SurfaceHeight
+// The terrain noise reads its permutation table from a buffer (see Noise.hlsl)
+#define NOISE_PERMUTATION_BUFFER
 
 #include "Includes/MarchTables.hlsl"
 #include "../Terrain/Terrain.hlsl"
@@ -9,14 +11,18 @@
 float4 getTexturePoint(uint3 pos, int3 chunkId, float maxPos);
 float3 interpolateVerts(float4 v1, float4 v2);
 
+// Plain floats so the layout is 36 bytes like the C# struct on every platform (WebGPU aligns a float3 to 16 bytes)
 struct Triangle
 {
-    float3 vertexA;
-    float3 vertexB;
-    float3 vertexC;
+    float ax, ay, az;
+    float bx, by, bz;
+    float cx, cy, cz;
 };
 
 AppendStructuredBuffer<Triangle> triangles;
+
+// 16 edge indices per corner configuration, ended by -1 (see MarchTables.cs)
+StructuredBuffer<int> triangulationTable;
 
 int numTerrainLayers;
 RWStructuredBuffer<TerrainLayer> terrainLayers;
@@ -29,7 +35,8 @@ float radius;
 int chunkIndex;
 int chunkResolution;
 
-[numthreads(8, 8, 8)]
+// WebGPU allows at most 256 threads per group by default, so 4x4x4 (MarchingCubes.cs dispatches twice the groups per axis)
+[numthreads(4, 4, 4)]
 void GenerateMesh(uint3 id : SV_DispatchThreadID)
 {
     
@@ -88,26 +95,35 @@ void GenerateMesh(uint3 id : SV_DispatchThreadID)
         cubeindex |= 1 << 7;
     
     // Create triangles from the cube
-    for (i = 0; triangulation[cubeindex][i] != -1; i += 3)
+    int tableStart = cubeindex * 16;
+    for (i = 0; i < 15 && triangulationTable[tableStart + i] != -1; i += 3)
     {
+        int edge0 = triangulationTable[tableStart + i];
+        int edge1 = triangulationTable[tableStart + i + 1];
+        int edge2 = triangulationTable[tableStart + i + 2];
+
         // Get edge from corner a0 -> b0 one on which point 0 in triangle i lies
-        int a0 = cornerIndexAFromEdge[triangulation[cubeindex][i]];
-        int b0 = cornerIndexBFromEdge[triangulation[cubeindex][i]];
-        
+        int a0 = cornerIndexAFromEdge[edge0];
+        int b0 = cornerIndexBFromEdge[edge0];
+
         // Get edge from corner a1 -> b1 one on which point 0 in triangle i lies
-        int a1 = cornerIndexAFromEdge[triangulation[cubeindex][i + 1]];
-        int b1 = cornerIndexBFromEdge[triangulation[cubeindex][i + 1]];
-        
+        int a1 = cornerIndexAFromEdge[edge1];
+        int b1 = cornerIndexBFromEdge[edge1];
+
         // Get edge from corner a2 -> b2 one on which point 0 in triangle i lies
-        int a2 = cornerIndexAFromEdge[triangulation[cubeindex][i + 2]];
-        int b2 = cornerIndexBFromEdge[triangulation[cubeindex][i + 2]];
+        int a2 = cornerIndexAFromEdge[edge2];
+        int b2 = cornerIndexBFromEdge[edge2];
         
         // Instead of just picking middle point between corners, we interpolate
         // based on the strength of the alpha value in the corners.
+        float3 vertexA = interpolateVerts(cubeCorners[a0], cubeCorners[b0]);
+        float3 vertexB = interpolateVerts(cubeCorners[a1], cubeCorners[b1]);
+        float3 vertexC = interpolateVerts(cubeCorners[a2], cubeCorners[b2]);
+
         Triangle tri;
-        tri.vertexA = interpolateVerts(cubeCorners[a0], cubeCorners[b0]);
-        tri.vertexB = interpolateVerts(cubeCorners[a1], cubeCorners[b1]);
-        tri.vertexC = interpolateVerts(cubeCorners[a2], cubeCorners[b2]);
+        tri.ax = vertexA.x; tri.ay = vertexA.y; tri.az = vertexA.z;
+        tri.bx = vertexB.x; tri.by = vertexB.y; tri.bz = vertexB.z;
+        tri.cx = vertexC.x; tri.cy = vertexC.y; tri.cz = vertexC.z;
         triangles.Append(tri);
     }
 }

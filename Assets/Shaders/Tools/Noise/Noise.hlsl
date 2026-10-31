@@ -11,24 +11,17 @@ float grad(int hash, float x, float y, float z);
 float2 randomVector(float2 UV, float offset);
 float3 randomVector(float3 UV, float offset);
 
+#if defined(NOISE_PERMUTATION_BUFFER) || defined(SHADER_API_WEBGPU)
+// The permutation table is read from a global buffer (filled from NoisePermutation.cs). As a constant array that is
+// indexed this often it made the WebGPU shader compilation hang and freeze the browser, in the compute shader as well as
+// in the terrain and water shader graphs.
+StructuredBuffer<int> noisePermutation;
+#define PERM(index) noisePermutation[index]
+#else
 static const int p[512] =
 { 151, 160, 137, 91, 90, 15, 131, 13, 201, 95, 96, 53, 194, 233, 7, 225, 140, 36, 103, 30, 69, 142, 8, 99, 37, 240, 21, 10, 23, 190, 6, 148, 247, 120, 234, 75, 0, 26, 197, 62, 94, 252, 219, 203, 117, 35, 11, 32, 57, 177, 33, 88, 237, 149, 56, 87, 174, 20, 125, 136, 171, 168, 68, 175, 74, 165, 71, 134, 139, 48, 27, 166, 77, 146, 158, 231, 83, 111, 229, 122, 60, 211, 133, 230, 220, 105, 92, 41, 55, 46, 245, 40, 244, 102, 143, 54, 65, 25, 63, 161, 1, 216, 80, 73, 209, 76, 132, 187, 208, 89, 18, 169, 200, 196, 135, 130, 116, 188, 159, 86, 164, 100, 109, 198, 173, 186, 3, 64, 52, 217, 226, 250, 124, 123, 5, 202, 38, 147, 118, 126, 255, 82, 85, 212, 207, 206, 59, 227, 47, 16, 58, 17, 182, 189, 28, 42, 223, 183, 170, 213, 119, 248, 152, 2, 44, 154, 163, 70, 221, 153, 101, 155, 167, 43, 172, 9, 129, 22, 39, 253, 19, 98, 108, 110, 79, 113, 224, 232, 178, 185, 112, 104, 218, 246, 97, 228, 251, 34, 242, 193, 238, 210, 144, 12, 191, 179, 162, 241, 81, 51, 145, 235, 249, 14, 239, 107, 49, 192, 214, 31, 181, 199, 106, 157, 184, 84, 204, 176, 115, 121, 50, 45, 127, 4, 150, 254, 138, 236, 205, 93, 222, 114, 67, 29, 24, 72, 243, 141, 128, 195, 78, 66, 215, 61, 156, 180, 151, 160, 137, 91, 90, 15, 131, 13, 201, 95, 96, 53, 194, 233, 7, 225, 140, 36, 103, 30, 69, 142, 8, 99, 37, 240, 21, 10, 23, 190, 6, 148, 247, 120, 234, 75, 0, 26, 197, 62, 94, 252, 219, 203, 117, 35, 11, 32, 57, 177, 33, 88, 237, 149, 56, 87, 174, 20, 125, 136, 171, 168, 68, 175, 74, 165, 71, 134, 139, 48, 27, 166, 77, 146, 158, 231, 83, 111, 229, 122, 60, 211, 133, 230, 220, 105, 92, 41, 55, 46, 245, 40, 244, 102, 143, 54, 65, 25, 63, 161, 1, 216, 80, 73, 209, 76, 132, 187, 208, 89, 18, 169, 200, 196, 135, 130, 116, 188, 159, 86, 164, 100, 109, 198, 173, 186, 3, 64, 52, 217, 226, 250, 124, 123, 5, 202, 38, 147, 118, 126, 255, 82, 85, 212, 207, 206, 59, 227, 47, 16, 58, 17, 182, 189, 28, 42, 223, 183, 170, 213, 119, 248, 152, 2, 44, 154, 163, 70, 221, 153, 101, 155, 167, 43, 172, 9, 129, 22, 39, 253, 19, 98, 108, 110, 79, 113, 224, 232, 178, 185, 112, 104, 218, 246, 97, 228, 251, 34, 242, 193, 238, 210, 144, 12, 191, 179, 162, 241, 81, 51, 145, 235, 249, 14, 239, 107, 49, 192, 214, 31, 181, 199, 106, 157, 184, 84, 204, 176, 115, 121, 50, 45, 127, 4, 150, 254, 138, 236, 205, 93, 222, 114, 67, 29, 24, 72, 243, 141, 128, 195, 78, 66, 215, 61, 156, 180 };
-
-static const int grad3[] =
-{
-    int3(1, 1, 0),
-    int3(-1, 1, 0),
-    int3(1, -1, 0),
-    int3(-1, -1, 0),
-    int3(1, 0, 1),
-    int3(-1, 0, 1),
-    int3(1, 0, -1),
-    int3(-1, 0, -1),
-    int3(0, 1, 1),
-    int3(0, -1, 1),
-    int3(0, 1, -1),
-    int3(0, -1, -1)
-};
+#define PERM(index) p[index]
+#endif
 
 class Perlin
 {
@@ -59,22 +52,22 @@ class Perlin
 
         float3 f = fade(pos);
     
-        int A = p[cube.x] + cube.y & 255;
-        int B = p[cube.x + 1] + cube.y & 255;
-        int AA = p[A] + cube.z & 255;
-        int AB = p[A + 1] + cube.z & 255;
-        int BA = p[B] + cube.z & 255;
-        int BB = p[B + 1] + cube.z & 255;
+        int A = PERM(cube.x) + cube.y & 255;
+        int B = PERM(cube.x + 1) + cube.y & 255;
+        int AA = PERM(A) + cube.z & 255;
+        int AB = PERM(A + 1) + cube.z & 255;
+        int BA = PERM(B) + cube.z & 255;
+        int BB = PERM(B + 1) + cube.z & 255;
     
     
-        return lerp(lerp(lerp(grad(p[AA], pos.x, pos.y, pos.z), // Add
-			grad(p[BA], pos.x - 1, pos.y, pos.z), f.x), // blended
-			lerp(grad(p[AB], pos.x, pos.y - 1, pos.z), // results
-				grad(p[BB], pos.x - 1, pos.y - 1, pos.z), f.x), f.y), // from 8
-			lerp(lerp(grad(p[AA + 1], pos.x, pos.y, pos.z - 1), // corners
-				grad(p[BA + 1], pos.x - 1, pos.y, pos.z - 1), f.x), // of cube
-				lerp(grad(p[AB + 1], pos.x, pos.y - 1, pos.z - 1),
-					grad(p[BB + 1], pos.x - 1, pos.y - 1, pos.z - 1), f.x), f.y), f.z);
+        return lerp(lerp(lerp(grad(PERM(AA), pos.x, pos.y, pos.z), // Add
+			grad(PERM(BA), pos.x - 1, pos.y, pos.z), f.x), // blended
+			lerp(grad(PERM(AB), pos.x, pos.y - 1, pos.z), // results
+				grad(PERM(BB), pos.x - 1, pos.y - 1, pos.z), f.x), f.y), // from 8
+			lerp(lerp(grad(PERM(AA + 1), pos.x, pos.y, pos.z - 1), // corners
+				grad(PERM(BA + 1), pos.x - 1, pos.y, pos.z - 1), f.x), // of cube
+				lerp(grad(PERM(AB + 1), pos.x, pos.y - 1, pos.z - 1),
+					grad(PERM(BB + 1), pos.x - 1, pos.y - 1, pos.z - 1), f.x), f.y), f.z);
     }
     
     // Evaluate at pos
@@ -90,14 +83,14 @@ class Perlin
         float2 f = fade(pos);
 
 	    //Hash coordinates for each of the four corners
-        int A = p[square.x] + square.y & 255;
-        int B = p[square.x + 1] + square.y & 255;
+        int A = PERM(square.x) + square.y & 255;
+        int B = PERM(square.x + 1) + square.y & 255;
 
 	    //Add blended results from 4 corners of square
-        return lerp(lerp(grad(p[A], pos.x, pos.y),
-			grad(p[B], pos.x - 1, pos.y), f.x),
-			lerp(grad(p[A + 1], pos.x, pos.y - 1),
-				grad(p[B + 1], pos.x - 1, pos.y - 1), f.x), f.y);
+        return lerp(lerp(grad(PERM(A), pos.x, pos.y),
+			grad(PERM(B), pos.x - 1, pos.y), f.x),
+			lerp(grad(PERM(A + 1), pos.x, pos.y - 1),
+				grad(PERM(B + 1), pos.x - 1, pos.y - 1), f.x), f.y);
     }
     
     float Evaluate(float x)
@@ -112,7 +105,7 @@ class Perlin
         float u = fade(x);
 
 		//Add blended results from edges of interval
-        return lerp(u, grad(p[X], x), grad(p[X + 1], x - 1)) * 2;
+        return lerp(u, grad(PERM(X), x), grad(PERM(X + 1), x - 1)) * 2;
     }
 };
 
@@ -227,10 +220,10 @@ class Simplex
         int ii = i[0] & 255;
         int jj = i[1] & 255;
         int kk = i[2] & 255;
-        int gi0 = p[ii + p[jj + p[kk]]];
-        int gi1 = p[ii + i1[0] + p[jj + i1[1] + p[kk + i1[2]]]];
-        int gi2 = p[ii + i2[0] + p[jj + i2[1] + p[kk + i2[2]]]];
-        int gi3 = p[ii + 1 + p[jj + 1 + p[kk + 1]]];
+        int gi0 = PERM(ii + PERM(jj + PERM(kk)));
+        int gi1 = PERM(ii + i1[0] + PERM(jj + i1[1] + PERM(kk + i1[2])));
+        int gi2 = PERM(ii + i2[0] + PERM(jj + i2[1] + PERM(kk + i2[2])));
+        int gi3 = PERM(ii + 1 + PERM(jj + 1 + PERM(kk + 1)));
 
         // Calculate the contribution from the four corners
         float t0 = 0.6f - pos0.x * pos0.x - pos0.y * pos0.y - pos0.z * pos0.z;
@@ -317,9 +310,9 @@ class Simplex
         // Work out the hashed gradient indices of the three simplex corners
         int ii = i[0] & 255;
         int jj = i[1] & 255;
-        int gi0 = p[ii + p[jj]] & 255;
-        int gi1 = p[ii + i1[0] + p[jj + i1[1]]] & 255;
-        int gi2 = p[ii + 1 + p[jj + 1]] & 255;
+        int gi0 = PERM(ii + PERM(jj)) & 255;
+        int gi1 = PERM(ii + i1[0] + PERM(jj + i1[1])) & 255;
+        int gi2 = PERM(ii + 1 + PERM(jj + 1)) & 255;
 
         // Calculate the contribution from the first corner
         float t0 = 0.5f - pos0.x * pos0.x - pos0.y * pos0.y;

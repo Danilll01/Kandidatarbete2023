@@ -47,12 +47,43 @@ public class Water
     /// </summary>
     public void ConstructMesh()
     {
-        // Only the high resolution mesh is built. A low resolution one was built too, but nothing ever switched to it.
-        ConstructMeshAsync(resolution, (mesh) =>
+        // Queued instead of started directly: every planet's water patches at once meant hundreds of GPU readbacks in
+        // flight, which made web builds stop. ProcessQueue starts a few at a time.
+        pending.Enqueue(this);
+    }
+
+    // Water patches waiting to be built, shared by all planets, and how many are being built right now
+    private static readonly System.Collections.Generic.Queue<Water> pending = new System.Collections.Generic.Queue<Water>();
+    private static int inFlight;
+    private const int maxInFlight = 4;
+
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+    private static void ResetStatics()
+    {
+        pending.Clear();
+        inFlight = 0;
+    }
+
+    /// <summary>
+    /// Starts building queued water patches, a few at a time. Called every frame by the water handlers.
+    /// </summary>
+    public static void ProcessQueue()
+    {
+        while (inFlight < maxInFlight && pending.Count > 0)
         {
-            meshHigh = mesh;
-            ApplyMesh(true);
-        });
+            Water water = pending.Dequeue();
+            if (water.meshFilter == null) continue; // Its planet was destroyed
+
+            inFlight++;
+            // Only the high resolution mesh is built. A low resolution one was built too, but nothing ever switched to it.
+            water.ConstructMeshAsync(water.resolution, mesh =>
+            {
+                inFlight--;
+                if (mesh == null || water.meshFilter == null) return;
+                water.meshHigh = mesh;
+                water.ApplyMesh(true);
+            });
+        }
     }
 
     private void ConstructMeshAsync(int res, System.Action<Mesh> onComplete)
@@ -83,7 +114,8 @@ public class Water
         computeShader.SetFloats("axisA", new float[] { axisA.x, axisA.y, axisA.z });
         computeShader.SetFloats("axisB", new float[] { axisB.x, axisB.y, axisB.z });
 
-        computeShader.Dispatch(kernelId, res / 32, res / 32, 1);
+        // 16x16 threads per group, since WebGPU allows at most 256 threads per group
+        computeShader.Dispatch(kernelId, res / 16, res / 16, 1);
 
         // Async readback for vertices
         AsyncGPUReadback.Request(bufferVertices, (AsyncGPUReadbackRequest vertRequest) =>
@@ -93,6 +125,7 @@ public class Water
                 Debug.LogError("GPU readback error on water vertices.");
                 bufferVertices.Dispose();
                 bufferTrianglesUp.Dispose();
+                onComplete?.Invoke(null);
                 return;
             }
 
@@ -107,6 +140,7 @@ public class Water
                 if (triRequest.hasError)
                 {
                     Debug.LogError("GPU readback error on water triangles.");
+                    onComplete?.Invoke(null);
                     return;
                 }
 

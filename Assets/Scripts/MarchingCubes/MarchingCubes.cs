@@ -23,6 +23,7 @@ public class MarchingCubes : IDisposable
     private int heightKernel = -1;
     private ComputeBuffer layersBuffer;
     private ComputeBuffer biomesBuffer;
+    private ComputeBuffer triangulationBuffer;
     private readonly Dictionary<int, Stack<ComputeBuffer>> trianglePool = new Dictionary<int, Stack<ComputeBuffer>>();
     private readonly Stack<ComputeBuffer> counterPool = new Stack<ComputeBuffer>();
     private readonly Stack<ComputeBuffer> heightPool = new Stack<ComputeBuffer>();
@@ -83,7 +84,9 @@ public class MarchingCubes : IDisposable
         meshGenerator.SetInt("chunkResolution", chunkRes);
         meshGenerator.SetInt("resolution", resolution << 3);
         meshGenerator.SetBuffer(meshKernel, "triangles", trianglesBuffer);
-        meshGenerator.Dispatch(meshKernel, resolution >> chunkRes, resolution >> chunkRes, resolution >> chunkRes);
+        // The kernel runs 4x4x4 threads per group (WebGPU's limit is 256 per group), so two groups cover what one 8x8x8 group did
+        int groups = (resolution >> chunkRes) * 2;
+        meshGenerator.Dispatch(meshKernel, groups, groups, groups);
 
         // Read back the triangle count, then only the triangles that were written
         ComputeBuffer counter = counterPool.Count > 0 ? counterPool.Pop() : new ComputeBuffer(1, sizeof(int), ComputeBufferType.IndirectArguments);
@@ -190,6 +193,9 @@ public class MarchingCubes : IDisposable
 
             biomesBuffer = new ComputeBuffer(1, sizeof(float) * 8);
             biomesBuffer.SetData(biomeSettings.ToArray());
+
+            triangulationBuffer = new ComputeBuffer(MarchTables.Triangulation.Length, sizeof(int));
+            triangulationBuffer.SetData(MarchTables.Triangulation);
         }
 
         meshGenerator.SetFloat("seed", seed);
@@ -198,8 +204,11 @@ public class MarchingCubes : IDisposable
         meshGenerator.SetInt("numTerrainLayers", terrainLayers.Count);
         meshGenerator.SetBuffer(meshKernel, "terrainLayers", layersBuffer);
         meshGenerator.SetBuffer(meshKernel, "biomeSettings", biomesBuffer);
+        meshGenerator.SetBuffer(meshKernel, "triangulationTable", triangulationBuffer);
+        meshGenerator.SetBuffer(meshKernel, "noisePermutation", NoisePermutation.Buffer);
         meshGenerator.SetBuffer(heightKernel, "terrainLayers", layersBuffer);
         meshGenerator.SetBuffer(heightKernel, "biomeSettings", biomesBuffer);
+        meshGenerator.SetBuffer(heightKernel, "noisePermutation", NoisePermutation.Buffer);
     }
 
     private ComputeBuffer RentTriangleBuffer(int capacity)
@@ -250,6 +259,7 @@ public class MarchingCubes : IDisposable
 
         layersBuffer?.Release();
         biomesBuffer?.Release();
+        triangulationBuffer?.Release();
         foreach (Stack<ComputeBuffer> pool in trianglePool.Values)
             foreach (ComputeBuffer buffer in pool)
                 buffer.Release();

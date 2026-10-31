@@ -108,6 +108,12 @@ public class WaterHandler : MonoBehaviour
         }
     }
 
+    private void Update()
+    {
+        // Water patches are built a few at a time across all planets
+        Water.ProcessQueue();
+    }
+
     private void UpdateWater()
     {
         if (planet == Universe.player.attractor)

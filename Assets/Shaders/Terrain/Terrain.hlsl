@@ -12,7 +12,9 @@ struct TerrainLayer
     float mountainPeakness;
     float mountainHeight;
     float flatSmoothness;
-    float3 centre;
+    // Plain floats instead of a float3: WebGPU aligns a float3 to 16 bytes, which shifted numLayers and made the
+    // noise loop below run practically forever. Scalars are packed the same way as the C# struct on every platform.
+    float centreX, centreY, centreZ;
     int numLayers;
 };
 

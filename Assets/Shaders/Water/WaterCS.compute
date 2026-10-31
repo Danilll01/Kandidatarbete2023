@@ -19,7 +19,8 @@ float radius;
 
 float3 localUp, axisA, axisB;
 
-[numthreads(32, 32, 1)]
+// WebGPU allows at most 256 threads per group by default (Water.cs dispatches resolution / 16 groups per axis)
+[numthreads(16, 16, 1)]
 void CSMesh(uint3 id : SV_DispatchThreadID)
 {
     int x = id.x;
