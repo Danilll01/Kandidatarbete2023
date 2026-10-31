@@ -23,7 +23,6 @@ public class CreatureSpawning : MonoBehaviour
     private int positionArrayLength;
 
     private Queue<SpawnPack> objectsToSpawn;
-    private int objectsToSpawnIndex = 0;
     private bool readyToSpawn = false;
 
     /// <summary>
@@ -127,7 +126,6 @@ public class CreatureSpawning : MonoBehaviour
                     continue;
                 }
                 objectsToSpawn.Enqueue(new SpawnPack(rayOrigin, rotation, newCreature));
-                objectsToSpawnIndex++;
             }
 
             // Exits early if max nr of things has spawned
@@ -145,7 +143,6 @@ public class CreatureSpawning : MonoBehaviour
 
         // Removes spots making the chunk unable to spawn new trees
         creatureSpots = null;
-        objectsToSpawnIndex = 0;
         readyToSpawn = true;
     }
 
@@ -154,28 +151,21 @@ public class CreatureSpawning : MonoBehaviour
     /// </summary>
     public void BatchedSpawning()
     {
-        if (readyToSpawn && objectsToSpawn.Count > 0)
-        {
-            int totalIndex = objectsToSpawnIndex;
-            while (totalIndex < objectsToSpawnIndex + packsPerBatchedSpawn)
-            {
-                if (totalIndex >= objectsToSpawn.Count || objectsToSpawn.Count == 0)
-                {
-                    return;
-                }
-                SpawnPack newPack = objectsToSpawn.Dequeue();
-                SpawnPack(newPack.rayOrigin, newPack.rotation, newPack.creature);
+        if (!readyToSpawn) return;
 
-                totalIndex++;
-            }
-            objectsToSpawnIndex += totalIndex - objectsToSpawnIndex;
+        // The queue shrinks as packs are spawned, so only its size decides when to stop. Comparing it to a running
+        // index (as before) stopped halfway and left about half of the packs unspawned.
+        for (int i = 0; i < packsPerBatchedSpawn && objectsToSpawn.Count > 0; i++)
+        {
+            SpawnPack newPack = objectsToSpawn.Dequeue();
+            SpawnPack(newPack.rayOrigin, newPack.rotation, newPack.creature);
         }
     }
 
     private void SpawnPack(Vector3 rayOrigin, Quaternion rotation, CreaturePack packData)
     {
-        // How many creatures in this pack
-        int packSize = random.Next(packData.minPackSize, packData.maxPackSize);
+        // How many creatures in this pack, the maximum included
+        int packSize = random.Next(packData.minPackSize, packData.maxPackSize + 1);
 
         // Used to keep track of all creature positions in a pack
         Vector3[] positions = new Vector3[packSize];
