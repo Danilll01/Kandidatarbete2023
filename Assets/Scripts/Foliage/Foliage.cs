@@ -19,9 +19,11 @@ public class Foliage : MonoBehaviour
 
     private Queue<FoliageSpawnData> objectsToSpawn = new Queue<FoliageSpawnData>();
     private int[] acceptableIndexes;
+    private readonly FoliageInstances instances = new FoliageInstances();
     private static readonly Dictionary<GameObject, int> materialIndexCache = new Dictionary<GameObject, int>();
     private FoliageSpawnData objectToSpawn;
-    private int objectsPerBatchedSpawn = 30;
+    // Instanced foliage is cheap to add, so forests can appear faster than when every tree was a GameObject
+    private int objectsPerBatchedSpawn = 100;
 
     // FoliageHandler, the controller of the operation
     private FoliageHandler foliageHandler;
@@ -254,13 +256,10 @@ public class Foliage : MonoBehaviour
         if (depth < 3)
         {
             GameObject prefab = foliageHandler.GetWaterPlantType();
-            GameObject waterObject = InstantiateObject(prefab, hit, rayOrigin);
+            Quaternion rotation = SpawnRotation(rayOrigin);
 
             Material materialForFoliageObject = foliageHandler.foliageCollections[0].biomeMaterials[MaterialIndex(prefab)];
-            waterObject.GetComponent<MeshRenderer>().sharedMaterial = materialForFoliageObject;
-
-            waterObject.transform.localScale = new Vector3(2, depth + 6, 2);
-            objectsNr++;
+            SpawnObject(prefab, hit.point, rotation, new Vector3(2, depth + 6, 2), materialForFoliageObject);
         }
     }
 
@@ -319,7 +318,6 @@ public class Foliage : MonoBehaviour
     /// </summary>
     public void BatchedSpawning()
     {
-        GameObject spawnedObject;
         for (int i = 0; i < objectsPerBatchedSpawn; i++)
         {
             if (objectsToSpawn.Count == 0)
@@ -329,13 +327,43 @@ public class Foliage : MonoBehaviour
 
             objectToSpawn = objectsToSpawn.Dequeue();
 
-            spawnedObject = Instantiate(objectToSpawn.prefab, objectToSpawn.position, objectToSpawn.rotation, transform);
-
-            spawnedObject.GetComponent<MeshRenderer>().sharedMaterial = objectToSpawn.material;
-            spawnedObject.transform.localScale *= random.Value(0.7f, 1.4f);
-
-            objectsNr++;
+            Vector3 scale = objectToSpawn.prefab.transform.localScale * random.Value(0.7f, 1.4f);
+            SpawnObject(objectToSpawn.prefab, objectToSpawn.position, objectToSpawn.rotation, scale, objectToSpawn.material);
         }
+    }
+
+    // Draws the instanced foliage, which only happens while the chunk is active
+    private void LateUpdate()
+    {
+        if (instances.Count > 0) instances.Draw(transform, Camera.main);
+    }
+
+    /// <summary>
+    /// Gives the foliage close to a world position its colliders, and removes them from foliage far away
+    /// </summary>
+    public void UpdateColliders(Vector3 worldPosition, float radius)
+    {
+        instances.UpdateColliders(transform, worldPosition, radius);
+    }
+
+    public bool HasActiveColliders => instances.HasActiveColliders;
+
+    // Prefabs without scripts are drawn with instancing, the rest (like food bushes) are spawned as GameObjects
+    private void SpawnObject(GameObject prefab, Vector3 position, Quaternion rotation, Vector3 localScale, Material material)
+    {
+        FoliagePrefabInfo info = FoliagePrefabInfo.Get(prefab);
+        if (info.instanced)
+        {
+            instances.Add(info, material, transform.InverseTransformPoint(position), Quaternion.Inverse(transform.rotation) * rotation, localScale);
+        }
+        else
+        {
+            GameObject spawnedObject = Instantiate(prefab, position, rotation, transform);
+            spawnedObject.transform.localScale = localScale;
+            spawnedObject.GetComponent<MeshRenderer>().sharedMaterial = material;
+        }
+
+        objectsNr++;
     }
 
     // Forest spawning function
@@ -388,22 +416,20 @@ public class Foliage : MonoBehaviour
     private void SpawnBushes(RaycastHit hit, Vector3 rayOrigin)
     {
         GameObject prefab = foliageHandler.GetBushType();
-        GameObject foliageObj = InstantiateObject(prefab, hit, hit.normal);
+        Quaternion rotation = SpawnRotation(hit.normal);
 
         Material materialForFoliageObject = foliageHandler.foliageCollections[3].biomeMaterials[MaterialIndex(prefab)];
-        foliageObj.GetComponent<MeshRenderer>().sharedMaterial = materialForFoliageObject;
-        objectsNr++;
+        SpawnObject(prefab, hit.point, rotation, prefab.transform.localScale, materialForFoliageObject);
     }
 
     // Stone spawning fucntion
     private void SpawnStones(RaycastHit hit, Vector3 rayOrigin)
     {
         GameObject prefab = foliageHandler.GetStoneType();
-        GameObject foliageObj = InstantiateObject(prefab, hit, hit.normal);
+        Quaternion rotation = SpawnRotation(hit.normal);
 
         Material materialForFoliageObject = foliageHandler.foliageCollections[3].biomeMaterials[MaterialIndex(prefab)];
-        foliageObj.GetComponent<MeshRenderer>().sharedMaterial = materialForFoliageObject;
-        objectsNr++;
+        SpawnObject(prefab, hit.point, rotation, prefab.transform.localScale, materialForFoliageObject);
     }
 
     // Prefabs with "Type" in the name use the second biome material. Cached per prefab since reading a name allocates a string.
@@ -417,11 +443,11 @@ public class Foliage : MonoBehaviour
         return index;
     }
 
-    private GameObject InstantiateObject(GameObject prefab, RaycastHit hit, Vector3 up)
+    private Quaternion SpawnRotation(Vector3 up)
     {
         Quaternion rotation = Quaternion.LookRotation(up) * Quaternion.Euler(90, 0, 0);
         rotation *= Quaternion.Euler(0, random.Next(0, 360), 0);
-        return Instantiate(prefab, hit.point, rotation, transform);
+        return rotation;
     }
 
     public bool FinishedSpawning

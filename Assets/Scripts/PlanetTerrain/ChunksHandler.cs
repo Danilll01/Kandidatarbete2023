@@ -50,6 +50,10 @@ public class ChunksHandler : MonoBehaviour
     private float lodHysteresis = 50f;
     [SerializeField, Tooltip("Seconds between checks of the terrain height under the player")]
     private float groundCheckInterval = 0.1f;
+    [SerializeField, Tooltip("Foliage closer than this to the player gets colliders")]
+    private float foliageColliderRadius = 80f;
+    [SerializeField, Tooltip("Frames between updates of which foliage has colliders")]
+    private int foliageColliderInterval = 10;
 
     // The detailed grid, one slot per possible chunk. Chunk objects are only created for slots with terrain.
     private SlotState[] slotStates;
@@ -61,6 +65,8 @@ public class ChunksHandler : MonoBehaviour
     private bool highGridCreated;
     private int jobsInFlightHere;
     private int lowJobsPending;
+    private float chunkHalfDiagonal;
+    private int nextFoliageColliderUpdate;
 
     // Best slots to generate this frame, sorted by distance
     private readonly int[] candidateSlots = new int[maxJobsInFlight];
@@ -182,6 +188,12 @@ public class ChunksHandler : MonoBehaviour
 
         UpdateChunksVisibility(playerPos);
 
+        if (Time.frameCount >= nextFoliageColliderUpdate)
+        {
+            nextFoliageColliderUpdate = Time.frameCount + foliageColliderInterval;
+            UpdateFoliageColliders(playerMover.position, playerPos);
+        }
+
         //Foliage & creatures
         bool spawnedAnimals = false;
         foreach (Chunk chunk in chunksHighRes)
@@ -257,7 +269,7 @@ public class ChunksHandler : MonoBehaviour
 
         // Chunks entirely inside the lowest or outside the highest possible surface can't have any terrain
         marchingCubes.GetSurfaceBounds(out float minSurface, out float maxSurface);
-        float chunkHalfDiagonal = planetRadius / (1 << highChunkRes) * Mathf.Sqrt(3) * 1.05f;
+        chunkHalfDiagonal = planetRadius / (1 << highChunkRes) * Mathf.Sqrt(3) * 1.05f;
 
         unresolvedSlots = 0;
         for (int i = 0; i < noChunks; i++)
@@ -467,6 +479,22 @@ public class ChunksHandler : MonoBehaviour
             {
                 float inwardSpeed = Vector3.Dot(body.linearVelocity, up);
                 if (inwardSpeed < 0) body.linearVelocity -= up * inwardSpeed;
+            }
+        }
+    }
+
+    // Foliage is drawn with instancing and only gets colliders near the player, including chunks the player just left
+    private void UpdateFoliageColliders(Vector3 playerWorldPos, Vector3 playerPos)
+    {
+        float reach = foliageColliderRadius + chunkHalfDiagonal;
+        foreach (Chunk chunk in chunksHighRes)
+        {
+            Foliage foliage = chunk.foliage;
+            if (!foliage.initialized) continue;
+
+            if ((chunk.position - playerPos).sqrMagnitude < reach * reach || foliage.HasActiveColliders)
+            {
+                foliage.UpdateColliders(playerWorldPos, foliageColliderRadius);
             }
         }
     }
