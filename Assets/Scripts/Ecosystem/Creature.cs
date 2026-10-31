@@ -144,6 +144,11 @@ public class Creature : MonoBehaviour
     // Tries per frame to find a random walkable point before trying again next frame
     private const int randomPointTries = 10;
 
+    // Creatures further from the camera than this are still drawn, but stand still
+    private const float simulationDistance = 80f;
+    private static int cameraFrame = -1;
+    private static Vector3 cameraPosition;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -198,15 +203,20 @@ public class Creature : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // If creature is not visible, dont perform physics update
-        if (!renderer.isVisible)
+        // If creature is not visible, or so far away that it's only a few pixels, dont perform physics, AI or animation updates
+        if (!renderer.isVisible || IsFarFromCamera())
         {
-            if (!isSleeping) rigidbody.Sleep();
+            if (!isSleeping)
+            {
+                rigidbody.Sleep();
+                animator.enabled = false;
+            }
             isSleeping = true;
             return;
-        } else
+        } else if (isSleeping)
         {
             isSleeping = false;
+            animator.enabled = true;
         }
 
         // If the creature is performing animation, dont do anything
@@ -267,6 +277,21 @@ public class Creature : MonoBehaviour
             AttractToPlanet();
             Rotate();
         }
+    }
+
+    private bool IsFarFromCamera()
+    {
+        // Camera.main is looked up once per frame for all creatures
+        if (cameraFrame != Time.frameCount)
+        {
+            cameraFrame = Time.frameCount;
+            Camera camera = Camera.main;
+            cameraPosition = camera != null ? camera.transform.position : transform.position;
+        }
+
+        // A little further to wake up again than to go to sleep, so creatures on the edge don't flicker between states
+        float distance = isSleeping ? simulationDistance - 5f : simulationDistance;
+        return (transform.position - cameraPosition).sqrMagnitude > distance * distance;
     }
 
     private void UpdateCreatureState()
